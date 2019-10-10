@@ -1,2 +1,2 @@
-# pb
-Population Builder: A python library for building genetic and breeding populations.
+# PyBrOpt
+Python Breeding Optimizer: A python library for optimizing breeding-related problems.
