@@ -23,8 +23,8 @@ def opv(hcoeff, rslice = None):
         An array of coefficients for haplotype effects. The dtype of 'hcoeff'
         should be either 'float32' or 'float64'. Array shape should be
         (depth, row, column) = (M, N, H) where 'M' represents number of
-        chromosomes, 'N' represents number of individuals, 'H' represents number
-        of haplotypes. Array format should be the 'C' format.
+        chromosome phases, 'N' represents number of individuals, 'H' represents
+        number of haplotypes. Array format should be the 'C' format.
         # TODO: performance testing to see which array format is better 'F' or
                 'C'.
     rslice : numpy.ndarray, tuple, list, None
@@ -84,7 +84,7 @@ def opv(geno, coeff, hbin = None, rslice = None):
     geno : numpy.ndarray
         An array of allele states. The dtype of 'geno' should be 'uint8'. Array
         shape should be (depth, row, column) = (M, N, L) where 'M' represents
-        number of chromosomes, 'N' represents number of individuals, 'L'
+        number of chromosome phases, 'N' represents number of individuals, 'L'
         represents number of markers. Array format should be the 'C' format.
         # TODO: performance testing to see which array format is better 'F' or
                 'C'.
