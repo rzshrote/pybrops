@@ -1,12 +1,9 @@
 import numpy
 
 # TODO: maybe make data return type option, currently only float64
-def D_measure(phase):
+def r2_measure(phase):
     """
-    Calculate LD as a measure of D as introduced by Lewontin and Kojima (1960).
-    This is calculated by t(geno)*geno - t(p)*p. Where geno is a binary matrix
-    of allele states and p is a column vector of allele probabilities for the
-    dominant state (=1).
+    Calculate LD as a measure of r^2.
 
     Parameters
     ----------
@@ -38,13 +35,19 @@ def D_measure(phase):
     # reshape the matrix to be a column matrix.
     allele_prob.shape = (columns, 1)
 
-    # calculate the matrix and return it
-    return ((numpy.matmul(geno.transpose(), geno) / nseq_f64) -
-             numpy.matmul(allele_prob, allele_prob.transpose()))
+    # calculate D
+    D = ((numpy.matmul(geno.transpose(), geno) / nseq_f64) -
+          numpy.matmul(allele_prob, allele_prob.transpose()))
+
+    # calculate A = p(1-p)
+    A = allele_prob * (1 - allele_prob)
+
+    # calculate r^2 matrix
+    return (D*D) / numpy.matmul(A, A.transpose())
 
 
 
-def D_measure(phase, cchunk, diag=True):
+def r2_measure(phase, cchunk, diag=True):
     """
     Generator function for calculating an entire LD matrix in chunks.
 
@@ -104,6 +107,9 @@ def D_measure(phase, cchunk, diag=True):
     # reshape the matrix to be a column matrix.
     allele_prob.shape = (columns, 1)
 
+    # calculate A = p(1-p)
+    A = allele_prob * (1 - allele_prob)
+
     ##############################
     # calculate LD matrix chunks #
     ##############################
@@ -144,6 +150,9 @@ def D_measure(phase, cchunk, diag=True):
             # select a section of the allele probability column vector
             row_prob = allele_prob[row_pos_cnt:(row_pos_cnt + cchunk),:]
 
+            # select a section of A column vector
+            row_A = A[row_pos_cnt:(row_pos_cnt + cchunk),:]
+
             # offset the col_pos_cnt variable
             col_pos_cnt = row_pos_cnt
 
@@ -155,15 +164,21 @@ def D_measure(phase, cchunk, diag=True):
                 # select a section of the allele probability column vector
                 col_prob = allele_prob[col_pos_cnt:(col_pos_cnt + cchunk),:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:(col_pos_cnt + cchunk),:]
+
                 # calculate the LD in the chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
+
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
 
                 # increment col_pos_cnt
                 col_pos_cnt += cchunk
 
                 # yield whole thing, otherwise upper triangle matrix.
-                yield D if row_pos_cnt != col_pos_cnt else numpy.triu(D)
+                yield r_sq if row_pos_cnt != col_pos_cnt else numpy.triu(r_sq)
 
             # calculate a rectangular matrix if one needs to be calculated
             if columns > col_pos_cnt:
@@ -173,13 +188,19 @@ def D_measure(phase, cchunk, diag=True):
                 # get the last remaining allele probabilities
                 col_prob = allele_prob[col_pos_cnt:columns,:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:columns,:]
+
                 # calculate the LD matrix chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
 
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
+
                 # yield D. D should never be a square matrix along the diagonal
                 # it should always be a rectangular matrix.
-                yield D
+                yield r_sq
             # increment the counter by cchunk
             row_pos_cnt += cchunk
 
@@ -191,6 +212,9 @@ def D_measure(phase, cchunk, diag=True):
             # get everything from row_pos_cnt to the end
             row_prob = allele_prob[row_pos_cnt:columns,:]
 
+            # select a section of the A column vector
+            row_A = A[row_pos_cnt:columns,:]
+
             # offset the col_pos_cnt variable
             col_pos_cnt = row_pos_cnt
 
@@ -200,13 +224,19 @@ def D_measure(phase, cchunk, diag=True):
             # get the last remaining allele probabilities
             col_prob = allele_prob[col_pos_cnt:columns,:]
 
+            # select a section of the A column vector
+            col_A = A[col_pos_cnt:columns,:]
+
             # calculate the LD matrix chunk
             D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                   numpy.matmul(row_prob, col_prob.transpose()))
 
+            # calculate r_sq
+            r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
+
             # yield upper trangle matrix of D. D should always be a square
             # matrix along the diagonal.
-            yield numpy.triu(D)
+            yield numpy.triu(r_sq)
 
     # else we're doing the entire matrix in chunks
     else:
@@ -219,6 +249,9 @@ def D_measure(phase, cchunk, diag=True):
             # select a section of the allele probability column vector
             row_prob = allele_prob[row_pos_cnt:(row_pos_cnt + cchunk),:]
 
+            # select a section of the A column vector
+            row_A = A[row_pos_cnt:(row_pos_cnt + cchunk),:]
+
             # offset the col_pos_cnt variable
             col_pos_cnt = 0
 
@@ -230,6 +263,9 @@ def D_measure(phase, cchunk, diag=True):
                 # select a section of the allele probability column vector
                 col_prob = allele_prob[col_pos_cnt:(col_pos_cnt + cchunk),:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:(col_pos_cnt + cchunk),:]
+
                 # calculate the LD in the chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
@@ -237,8 +273,11 @@ def D_measure(phase, cchunk, diag=True):
                 # increment col_pos_cnt
                 col_pos_cnt += cchunk
 
-                # yield whole thing, otherwise upper triangle matrix.
-                yield D
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
+
+                # yield r squared chunk
+                yield r_sq
 
             # calculate a rectangular matrix if one needs to be calculated
             if columns > col_pos_cnt:
@@ -248,12 +287,18 @@ def D_measure(phase, cchunk, diag=True):
                 # get the last remaining allele probabilities
                 col_prob = allele_prob[col_pos_cnt:columns,:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:columns,:]
+
                 # calculate the LD matrix chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
 
-                # yield D. D should never be a square matrix along the diagonal
-                # it should always be a rectangular matrix.
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
+
+                # yield r_sq. r_sq should never be a square matrix along the
+                # diagonal it should always be a rectangular matrix.
                 yield D
             # increment the counter by cchunk
             row_pos_cnt += cchunk
@@ -266,6 +311,9 @@ def D_measure(phase, cchunk, diag=True):
             # get everything from row_pos_cnt to the end
             row_prob = allele_prob[row_pos_cnt:columns,:]
 
+            # select a section of the A column vector
+            row_A = A[row_pos_cnt:columns,:]
+
             # offset the col_pos_cnt variable
             col_pos_cnt = 0
 
@@ -277,9 +325,15 @@ def D_measure(phase, cchunk, diag=True):
                 # select a section of the allele probability column vector
                 col_prob = allele_prob[col_pos_cnt:(col_pos_cnt + cchunk),:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:(col_pos_cnt + cchunk),:]
+
                 # calculate the LD in the chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
+
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
 
                 # increment col_pos_cnt
                 col_pos_cnt += cchunk
@@ -295,10 +349,15 @@ def D_measure(phase, cchunk, diag=True):
                 # get the last remaining allele probabilities
                 col_prob = allele_prob[col_pos_cnt:columns,:]
 
+                # select a section of the A column vector
+                col_A = A[col_pos_cnt:columns,:]
+
                 # calculate the LD matrix chunk
                 D = ((numpy.matmul(row_mat, col_mat) / nseq_f64) -
                       numpy.matmul(row_prob, col_prob.transpose()))
 
-                # yield D. D should never be a square matrix along the diagonal
-                # it should always be a rectangular matrix.
-                yield D
+                # calculate r_sq
+                r_sq = (D*D) / numpy.matmul(row_A, col_A.transpose())
+
+                # yield r squared
+                yield r_sq
