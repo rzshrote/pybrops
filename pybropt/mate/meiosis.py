@@ -1,0 +1,105 @@
+import numpy
+import time
+
+def meiosis(geno,
+            d,
+            lgroup_size,
+            gamete_index,
+            interference = None,
+            seed = None,
+            verbose = True):
+    """
+    Simulate meiosis. Generate gametes from a genotype matrix.
+    NOTE: only handles diploids
+
+    Parameters
+    ==========
+    geno : numpy.ndarray
+    d : numpy.ndarray
+    lgroup_size : numpy.ndarray
+    gamete_index : numpy.ndarray
+    interference : None or int
+    seed : None or int
+    verbose : boolean
+    """
+
+    # if there is no seed, use time to seed rng
+    if seed == None:
+        seed = time.time()
+
+    # seed the rng
+    numpy.random.seed(seed)
+
+    if verbose:
+        print("Meiosis engine state:")
+        print("Genotype array at:", id(geno))
+        print("Genotype shape =", geno.shape)
+        print("Linkage group sizes =", lgroup_size)
+        print("Gamete index =", gamete_index)
+        print("Interference =", interference)
+        print("numpy.random seed =", seed)
+
+    # make an empty matrix to contain gametes
+    gamete = numpy.empty((1,len(gamete_index),geno.shape[2]), dtype=geno.dtype)
+
+    # calculate stop indices for linkage group maps
+    dsp = numpy.cumsum(lgroup_size)
+
+    # calculate start indices for linkage group maps
+    dst = dsp - lgroup_size[0]
+
+    ##################################################
+    # calculate lambdas for the Poisson distribution #
+    ##################################################
+
+    # allocate memory for the array
+    lambdas = numpy.empty(len(lgroup_size), dtype=d.dtype)
+
+    # for start, stop indices subtract d[start] from d[stop]
+    lambdas[i] = d[sp] - d[st] for i,(st,sp) in enumerate(zip(dst, dsp))
+
+    # generate Poisson samples to determine the number of crossover events
+    # each row corresponds to a gamete_index; each column, a linkage group
+    chiasmata = numpy.random.poisson(lambdas, (len(gamete_index),len(lgroup_size)))
+
+    # generate phase decisions
+    phase = numpy.random.binomial(1, 0.5, (len(gamete_index),len(lgroup_size)))
+
+    # for each gamete
+    for i in range(len(gamete_index)):
+        # for each linkage group
+        for j,(st,sp) in enumerate(zip(dst,dsp)):
+            # TODO: support for interference, what is implemented is no interference
+            # generate a number of chiasmata points between map start, stop
+            xo_pts = numpy.sort(
+                        numpy.random.uniform(
+                            d[st],
+                            d[sp],
+                            chiasmata[i,j]
+                        ))
+            # initialize start indices for data exchange
+            st_index = st
+            sp_index = sp
+
+            # for each value in the xo_pts array
+            for chiasma in xo_pts:
+                # first do binary search for map chiasmata index
+                cindex = numpy.searchsorted(d[st_index:sp_index], chiasma)
+
+                # copy a chosen phase fragment from individual
+                gamete[i, st_index:st_index+cindex] = \
+                    geno[phase[i,j], gamete_index[i], st_index:st_index+cindex]
+
+                # increment the st_index by cindex
+                st_index += cindex
+
+                # alternate the phase for the next loop iteration
+                phase[i,j] = 1 - phase[i,j]
+
+            # finish up by copying all remaining sites to the gamete.
+            # if there are no chiasma, this is the entire chromosome.
+            gamete[i, st_index:sp_index] = \
+                geno[phase[i,j], gamete_index[i], st_index:sp_index]
+
+
+    return gamete
