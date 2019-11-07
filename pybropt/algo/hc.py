@@ -3,7 +3,6 @@ import time
 
 def hc(n,
        states,
-       states_dtype,
        objfn,
        objfn_varg,
        seed = None,
@@ -12,7 +11,7 @@ def hc(n,
     """
     n : int
         Number of hillclimbs.
-    states : list of numpy.ndarray's
+    states : numpy.ndarray of numpy.ndarray objects
         Possible states for the hillclimb.
     objfn : function
         Objective function.
@@ -70,7 +69,7 @@ def hc(n,
             hc_result = list()
 
             # initialize X_pos to zeros
-            X_pos_best = numpy.zeros(len(states), dtype=states_dtype)
+            X_pos_best = numpy.zeros(len(states), dtype=states[0].dtype)
 
             # for each dimension, choose a random state.
             for dim in range(len(states)):
