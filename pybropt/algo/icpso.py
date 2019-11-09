@@ -166,8 +166,9 @@ def icpso(objfn,
     #        2. iterate through start, stop positions
     #        3. modify the matrix in blocks by dividing row-wise the sum of the
     #           row-wise block sum
-    X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None] for st,sp in zip(dst, dsp)
-    X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None] for st,sp in zip(dst, dsp)
+    for st,sp in zip(dst, dsp):
+        X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None]
+        X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None]
 
     ############################################################################
     # Step 1c) initialize best positions, take samples, calculate start scores #
@@ -176,15 +177,19 @@ def icpso(objfn,
     # copy randomly initialized position matrix to an X_pbest_pos matrix
     X_pbest_pos = X_pos.copy()
 
-    # generate sample from X personal best position
-    for i in range(n):                          # for each row
-        X_pos_smpl[i,j] = numpy.random.choice(  # set sample to random choice
-                states[st:sp],                  # with these states
-                size=1,                         # only sample 1
-                p=X_pbest_pos[i,st:sp]          # with these probabilities
-            ) for j,(st,sp) in enumerate(       # for each index, start, stop
-                zip(dst, dsp)                   # zip up start, stop to iterate
-            )
+    #################################################
+    # generate sample from X personal best position #
+    #################################################
+    # for each row
+    for i in range(n):
+        # for each index, start, stop
+        for j,(st,sp) in enumerate(zip(dst, dsp)):
+            X_pos_smpl[i,j] = \
+                numpy.random.choice(        # set sample to random choice
+                    states[st:sp],          # with these states
+                    size=1,                 # only sample 1
+                    p=X_pbest_pos[i,st:sp]  # with these probabilities
+                )
 
     # copy personal best samples
     X_pbest_smpl = X_pos_smpl.copy()
@@ -235,7 +240,8 @@ def icpso(objfn,
         X_vel[X_vel > 1] = 1
 
         # ... and scale to sum to 1 for each dimension
-        X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None] for st,sp in zip(dst, dsp)
+        for st,sp in zip(dst, dsp):
+            X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None]
 
         # add velocity vectors to X positions
         X_pos += X_vel
@@ -244,7 +250,8 @@ def icpso(objfn,
         X_pos[X_pos > 1] = 1
 
         # ... and scale to sum to 1 for each dimension
-        X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None] for st,sp in zip(dst, dsp)
+        for st,sp in zip(dst, dsp):
+            X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None]
 
         ################################################################
         # Step 2b) generate samples from X_pos and score those samples #
@@ -252,13 +259,14 @@ def icpso(objfn,
         # TODO: maybe replace this with for one-liner?
         # generate sample from X position
         for i in range(n):                          # for each row
-            X_pos_smpl[i,j] = numpy.random.choice(  # set sample to random choice
-                    states[st:sp],                  # with these states
-                    size=1,                         # only sample 1
-                    p=X_pos[i,st:sp]                # with these probabilities
-                ) for j,(st,sp) in enumerate(       # for each index, start, stop
-                    zip(dst, dsp)                   # zip up start, stop to iterate
-                )
+            for j,(st,sp) in enumerate(             # for each index, start, stop
+                zip(dst, dsp)                       # zip up start, stop to iterate
+            ):
+                X_pos_smpl[i,j] = numpy.random.choice(  # set sample to random choice
+                        states[st:sp],                  # with these states
+                        size=1,                         # only sample 1
+                        p=X_pos[i,st:sp]                # with these probabilities
+                    )
 
         # score samples (threading applicable)
         if nthreads > 1:
