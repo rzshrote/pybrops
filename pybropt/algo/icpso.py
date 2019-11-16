@@ -73,7 +73,7 @@ def icpso(objfn,
 
     # if no seed is provided, use time as random seed
     if seed == None:
-        seed = time.time()
+        seed = numpy.uint32(time.time())
 
     # seed random number generator
     numpy.random.seed(seed)
@@ -105,6 +105,9 @@ def icpso(objfn,
     # Step 1a) allocate memory, initialize select arrays #
     ######################################################
 
+    # create list to store history of the swarm.
+    history = list()
+
     # create an array of dimension state stop indices
     # 1D array for dimension stop indices
     dsp = numpy.cumsum(dim_sizes)
@@ -115,7 +118,7 @@ def icpso(objfn,
     dst = dsp - dim_sizes[0]
 
     # particle population matrix shape
-    pshape = (n, len(dim_sizes))
+    pshape = (n, len(states))
 
     # initialize random X probability positions with matrix shape 'pshape'
     # use uniform distribution; dtype of this array is numpy.float64
@@ -161,6 +164,10 @@ def icpso(objfn,
     X_pos[X_pos > 1] = 1
     X_vel[X_vel > 1] = 1
 
+    # Map probabilities <0 to their edge, 0
+    X_pos[X_pos < 0] = 0
+    X_vel[X_vel < 0] = 0
+
     # adjust values to sum to 1 in highly obfuscated manner
     # Logic: 1. zip dimension starts and stops into iterable object (single use)
     #        2. iterate through start, stop positions
@@ -202,7 +209,7 @@ def icpso(objfn,
         return
     else:
         # evaluate the objective function
-        X_pbest_scr = numpy.apply_along_axis(objfn, 0, X_pos_smpl, **objfn_varg)
+        X_pbest_scr = numpy.apply_along_axis(objfn, 1, X_pos_smpl, **objfn_varg)
 
     # find the index of the highest scoring
     argmax_index = numpy.argmax(X_pbest_scr)
@@ -210,6 +217,9 @@ def icpso(objfn,
     # since up until this point, we're agnostic about what previous scores have
     # been, we set the X global best position to the view of the argmax row.
     X_gbest_pos = X_pbest_pos[argmax_index,:]
+
+    # set the X global best sample (not for use by algorithm, for output)
+    X_gbest_smpl = X_pbest_smpl[argmax_index,:]
 
     # set the X_gbest_scr to X_pbest_scr[argmax]
     X_gbest_scr = X_pbest_scr[argmax_index]
@@ -221,11 +231,19 @@ def icpso(objfn,
     # define a variable to track iteration number; initialization counts as 0.
     iter = 0
 
+    # stash the initialization result into the history list.
+    history.append([iter, X_gbest_smpl.copy(), X_gbest_scr])
+
+    #print(iter, end=' ', flush=True)
+
     # while stpfn is True, we haven't been told to stop
     while stpfn(iter):
         #####################################################
         # Step 2a) update particle velocities and positions #
         #####################################################
+
+        # increment iteration counter
+        iter += 1
 
         # generate random acceleration coefficients for personal and global
         acoef_pbest = numpy.random.uniform(low=0,high=accel_coeff_pbest,size=n)
@@ -238,6 +256,7 @@ def icpso(objfn,
 
         # restrict limits of velocity values ...
         X_vel[X_vel > 1] = 1
+        X_vel[X_vel < 0] = 0
 
         # ... and scale to sum to 1 for each dimension
         for st,sp in zip(dst, dsp):
@@ -248,6 +267,7 @@ def icpso(objfn,
 
         # restrict limits of position values ...
         X_pos[X_pos > 1] = 1
+        X_pos[X_pos < 0] = 0
 
         # ... and scale to sum to 1 for each dimension
         for st,sp in zip(dst, dsp):
@@ -274,7 +294,7 @@ def icpso(objfn,
             return
         else:
             # evaluate the objective function for each sample
-            scores = numpy.apply_along_axis(objfn, 0, X_pos_smpl, **objfn_varg)
+            scores = numpy.apply_along_axis(objfn, 1, X_pos_smpl, **objfn_varg)
 
         # determine if scores improve
         for i in range(n):                  # for each score
@@ -324,15 +344,16 @@ def icpso(objfn,
         # set the X_gbest_scr to X_pbest_scr[argmax]
         X_gbest_scr = X_pbest_scr[argmax_index]
 
-        # increment iteration counter
-        iter += 1
+        # stash the initialization result into the history list.
+        history.append([iter, X_gbest_smpl.copy(), X_gbest_scr])
 
         if verbose:
             print("Iteration", iter, "\tgBest =", X_gbest_scr)
 
     # Step 3) return positions of particles in a dictionary
 
-    return {"X_pos": X_pos,
+    return {"history": history,
+            "X_pos": X_pos,
             "X_vel": X_vel,
             "X_pbest_pos": X_pbest_pos,
             "X_pbest_smpl": X_pbest_smpl,

@@ -39,7 +39,7 @@ def hc_sa_set(objfn,
 
     # if no seed is provided, use time as random seed
     if seed == None:
-        seed = time.time()
+        seed = numpy.uint32(time.time())
     # seed random number generator
     numpy.random.seed(seed)
 
@@ -59,8 +59,8 @@ def hc_sa_set(objfn,
     # Computation part #
     ####################
 
-    # create list to store results from the hillclimb.
-    hc_result = list()
+    # create list to store history of the hillclimb.
+    history = list()
 
     # iteration counter
     iter = 0
@@ -74,8 +74,12 @@ def hc_sa_set(objfn,
     # score the initial configuration
     X_scr = objfn(X_pos[0:k], **objfn_varg)
 
-    # stash the initialization result into the hc_result list.
-    hc_result.append([iter, X_pos[0:k].copy(), X_scr])
+    # stash the initialization result into the history list.
+    history.append([iter, X_pos[0:k].copy(), X_scr])
+
+    # print verbose statements
+    if verbose:
+        print("Iteration", iter, "\tX_scr =", X_scr)
 
     # make exit variable
     found_local_optima = False
@@ -99,6 +103,7 @@ def hc_sa_set(objfn,
                 for s in range(k, len(X_pos)):              # for each available
                     X_pos[e], X_pos[s] = X_pos[s], X_pos[e] # swap to new
                     scr = objfn(X_pos[0:k], **objfn_varg)   # score matrix
+                    #print(X_pos[0:k],scr)
                     if scr > new_scr:                       # if better score
                         new_scr = scr                       # set new best score
                         e_best = e                          # record e_best
@@ -112,7 +117,7 @@ def hc_sa_set(objfn,
                 # update X score
                 X_scr = new_scr
                 # append result to list
-                hc_result.append([iter, X_pos[0:k].copy(), X_scr])
+                history.append([iter, X_pos[0:k].copy(), X_scr])
             # else we didn't and no further improvements can be made
             else:
                 # we've found a local optima
@@ -122,7 +127,9 @@ def hc_sa_set(objfn,
                 print("Iteration", iter, "\tX_scr =", X_scr)
 
     # return a history list from the hillclimb
-    return hc_result
+    return {"history": history,
+            "X_gbest_pos": X_pos[0:k].copy(),
+            "X_gbest_scr": X_scr}
 
 
 
@@ -172,7 +179,7 @@ def hc_sa_state(objfn,
 
     # if no seed is provided, use time as random seed
     if seed == None:
-        seed = time.time()
+        seed = numpy.uint32(time.time())
     # seed random number generator
     numpy.random.seed(seed)
 
@@ -194,7 +201,7 @@ def hc_sa_state(objfn,
     ####################
 
     # create list to store results from the hillclimb.
-    hc_result = list()
+    history = list()
 
     # iteration counter
     iter = 0
@@ -217,8 +224,8 @@ def hc_sa_state(objfn,
     # get an array view of only our first indices for each dimension.
     X_scr = objfn(X_pos[dst], **objfn_varg)
 
-    # stash the initialization result into the hc_result list.
-    hc_result.append([iter, X_pos[dst].copy(), X_scr])
+    # stash the initialization result into the history list.
+    history.append([iter, X_pos[dst].copy(), X_scr])
 
     # make loop exit variable
     found_local_optima = False
@@ -269,7 +276,7 @@ def hc_sa_state(objfn,
                 # update X score
                 X_scr = new_scr
                 # append result to list
-                hc_result.append([iter, X_pos[dst].copy(), X_scr])
+                history.append([iter, X_pos[dst].copy(), X_scr])
             # else we didn't and no further improvements can be made
             else:
                 # we've found a local optima; set variable to exit loop
@@ -279,4 +286,6 @@ def hc_sa_state(objfn,
                 print("Iteration", iter, "\tX_scr =", X_scr)
 
     # return a history list from the hillclimb
-    return hc_result
+    return {"history": history,
+            "X_gbest_pos": X_pos[dst].copy(),
+            "X_gbest_scr": X_scr}
