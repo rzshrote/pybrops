@@ -1,5 +1,7 @@
-import pybropt.mate.meiosis as meiosis
 import numpy
+
+# import meiosis simulating engine
+import pybropt.mate.meiosis as meiosis
 
 # generate binary marker data
 n_lines = 20
