@@ -6,10 +6,11 @@ from pybropt.algo.hc import hc_sa_set, hc_sa_state
 from pybropt.algo.icpso import icpso
 from pybropt.algo.ga import ga_fps
 # import meiosis simulating engine
-from pybropt.mate.meiosis import meiosis
+from pybropt.sim.meiosis import meiosis
 # import scoring function
 from pybropt.objfn.opv import opv
 from pybropt.objfn.cgs import cgs
+from pybropt.stpfn.inum import inum50
 
 ################################################################################
 
@@ -37,10 +38,6 @@ d = numpy.random.uniform(0.0, 1.5, n_loci)
 for b in range(0, n_loci, n_loci//10):
     d[b:b+(n_loci//10)] = numpy.sort(d[b:b+(n_loci//10)])
 d_size = numpy.repeat(n_loci//10, 10)
-
-# define a stopping function for the PSO algorithm
-def stop(x):
-    return x < 50
 
 # test the efficacy of each method for long term genetic gain
 method1_pop = list()    # hc_sa_set population statistics
