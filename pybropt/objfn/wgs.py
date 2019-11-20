@@ -1,6 +1,6 @@
 import numpy
 
-def wgs(geno, coeff, weight, rslice = None):
+def wgs(rslice, geno, coeff, weight):
     """
     Score a population of individuals based on Weighted Genomic Selection (WGS)
     (Goddard, 2009; Jannink, 2010). Scoring for WGS is defined as the adjusted
@@ -12,6 +12,11 @@ def wgs(geno, coeff, weight, rslice = None):
 
     Parameters
     ----------
+    rslice : numpy.ndarray, tuple, list, None
+        A 1D array of indices to use for slicing and summing the matrix by row.
+        Each index in 'rslice' represents a single individual's row. If 'rslice'
+        is None, use all individuals.
+        # TODO: performance testing to see which array type is better.
     geno : numpy.ndarray
         An array of allele states. The dtype of 'geno' should be 'uint8'. Array
         shape should be (depth, row, column) = (M, N, L) where 'M' represents
@@ -28,11 +33,6 @@ def wgs(geno, coeff, weight, rslice = None):
         'weight' should be either 'float32' or 'float64'. This array should be
         single dimensional (column,) = (N,) where 'N' represents number of
         markers.
-    rslice : numpy.ndarray, tuple, list, None
-        A 1D array of indices to use for slicing and summing the matrix by row.
-        Each index in 'rslice' represents a single individual's row. If 'rslice'
-        is None, use all individuals.
-        # TODO: performance testing to see which array type is better.
 
     Returns
     -------
@@ -40,6 +40,4 @@ def wgs(geno, coeff, weight, rslice = None):
         Returns a 1D array of floating point number representing GEBVs for each
         individual.
     """
-    if rslice != None:
-        return numpy.dot(geno[:,rslice,:], coeff / numpy.sqrt(weight)).sum(0)
-    return numpy.dot(geno, coeff / numpy.sqrt(weight)).sum(0)
+    return numpy.dot(geno[:,rslice,:], coeff / numpy.sqrt(weight)).sum(0)
