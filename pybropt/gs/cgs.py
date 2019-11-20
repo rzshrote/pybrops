@@ -1,6 +1,7 @@
 # import 3rd party libraries
 import numpy
 import time
+import pandas
 # hack to append into our path the parent directory for this file
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
@@ -10,9 +11,10 @@ import objfn
 def cgs(geno,
         coeff,
         k,
-        algo = None):
+        algo = None,
+        zwidth = 3):
     """
-    Conventional Genomic Selection
+    Conventional Genomic Selection (CGS)
 
     Parameters
     ==========
@@ -75,18 +77,49 @@ def cgs(geno,
             (type(k),)
         )
 
-    # calculate GEBVs
+    ########################################
+    # Step 1) calculate GEBVs
+    ########################################
     gebv = objfn.cgs(
         numpy.arange(geno.shape[1]), # select everything
         geno,
         coeff
     )
 
-    # calculate indices for sorted array
+    ########################################
+    # Step 2) calculate indices for sorted array
+    ########################################
     gebv_argsort = numpy.argsort(gebv, kind=algo)
 
+    ########################################
+    # Step 3) create a results dataframe
+    ########################################
+
+    # make info, scores, positions dataframes to concatenate together
+    info_df = pandas.DataFrame(
+        data = [["cgs",algo,"NA"] for _ in range(k)],
+        columns = ["method","algorithm","seed"]
+    )
+    scores_df = pandas.DataFrame(
+        data = gebv[gebv_argsort[-k:]],
+        columns = ["score"]
+    )
+    positions_df = pandas.DataFrame(
+        data = gebv_argsort[-k:],
+        columns = ["x" + str(i).zfill(zwidth) for i in range(1)]
+    )
+
+    # concatenate everything
+    results_df = pandas.concat(
+        objs = [info_df, scores_df, positions_df],
+        axis = 1
+    )
+
+    # make history dataframe (this algorithm does not generate a history)
+    history_df = None
+
     # return the 'k' highest scoring indices
-    return gebv_argsort[-k:].copy()
+    return results_df, history_df
 
 def cgs_sim(geno,
             d,
