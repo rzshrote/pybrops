@@ -286,9 +286,9 @@ def opv(geno,
             columns = ["score"]
         )
         positions_df = pandas.DataFrame(
-            data = algo_out["X_pbest_smpl"].T,
+            data = algo_out["X_pbest_smpl"],
             columns = ["x"+str(i).zfill(zwidth)
-                       for i in range(algo_out["X_gbest_pos"].shape[1])]
+                       for i in range(algo_out["X_pbest_smpl"].shape[1])]
         )
 
     # concatenate results together
