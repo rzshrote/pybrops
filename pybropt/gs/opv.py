@@ -134,7 +134,7 @@ def opv(geno,
         if isinstance(algorithm_varg, type(None)):
             # make a default dictionary
             algorithm_varg = {
-                "states": numpy.tile(numpy.arange(geno.shape[1]), (sel_size,1)),
+                "states": numpy.tile(numpy.arange(geno.shape[1]), (sel_size,)),
                 "dim_sizes": numpy.repeat(geno.shape[1], sel_size)
             }
         # make sure we've received a dictionary
@@ -263,7 +263,7 @@ def opv(geno,
     # create an info dataframe for storing algorithm details, etc.
     if algorithm == "hc_sa_set" or algorithm == "hc_sa_state":
         info_df = pandas.DataFrame(
-            data = ["opv",algorithm,seed],
+            data = [["opv",algorithm,seed]],
             columns = ["method","algorithm","seed"]
         )
         scores_df = pandas.DataFrame(
@@ -305,7 +305,7 @@ def opv(geno,
     tmp = pandas.DataFrame(
         data = history_df["x_pos"].tolist(),
         columns = ["x"+str(i).zfill(zwidth)
-                   for i in range(history_df["x_pos"][0])]
+                   for i in range(len(history_df["x_pos"][0]))]
     )
     history_df = pandas.concat(
         objs = [history_df, tmp],
