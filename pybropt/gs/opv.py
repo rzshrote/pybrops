@@ -13,8 +13,8 @@ import util
 def opv(geno,
         coeff,
         sel_size,
-        algo,
-        algo_varg = None,
+        algorithm,
+        algorithm_varg = None,
         seed = None,
         nthreads = 1,
         zwidth = 3,
@@ -38,7 +38,7 @@ def opv(geno,
     sel_size : int, numpy.integer, float, numpy.float
         Number of individuals to select OR proportion of individuals to select.
         If a proportion is given, round to the nearest individual.
-    algo : {'hc_sa_set', 'hc_sa_state', 'icpso'}
+    algorithm : {'hc_sa_set', 'hc_sa_state', 'icpso'}
         Specification for algorithm to use for selecting individuals.
         Algorithm overview:
             hc_sa_set       Greedy steepest ascent hillclimb for sets
@@ -52,7 +52,7 @@ def opv(geno,
             hc_sa_set       Okay, at least locally optimal
             hc_sa_state     Okay, at least locally optimal
             icpso           Good, at least locally optimal
-    algo_varg : dictionary, None
+    algorithm_varg : dictionary, None
         Dictionary of algorithm variable arguments. If None, will provide
         default options for hillclimb algorithms. Will throw error for icpso.
     seed : int
@@ -112,62 +112,62 @@ def opv(geno,
         )
 
     # tests for algorithm choice
-    if algo == 'hc_sa_set':
-        # if algo_varg is None
-        if isinstance(algo_varg, type(None)):
+    if algorithm == 'hc_sa_set':
+        # if algorithm_varg is None
+        if isinstance(algorithm_varg, type(None)):
             # make a default dictionary
-            algo_varg = {
+            algorithm_varg = {
                 "states": numpy.arange(geno.shape[1])
             }
         # make sure we've received a dictionary
-        elif not isinstance(algo_varg, dict):
+        elif not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg),)
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg),)
             )
-        # if algo_varg does not have a 'states' key
-        elif "states" not in algo_varg.keys():
+        # if algorithm_varg does not have a 'states' key
+        elif "states" not in algorithm_varg.keys():
             # add a default 'states' key
-            algo_varg["states"] = numpy.arange(geno.shape[1])
-    elif algo == 'hc_sa_state':
-        if isinstance(algo_varg, type(None)):
+            algorithm_varg["states"] = numpy.arange(geno.shape[1])
+    elif algorithm == 'hc_sa_state':
+        if isinstance(algorithm_varg, type(None)):
             # make a default dictionary
-            algo_varg = {
+            algorithm_varg = {
                 "states": numpy.tile(numpy.arange(geno.shape[1]), (sel_size,1)),
                 "dim_sizes": numpy.repeat(geno.shape[1], sel_size)
             }
         # make sure we've received a dictionary
-        elif not isinstance(algo_varg, dict):
+        elif not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg))
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg))
             )
-        elif "states" or "dim_sizes" not in algo_varg.keys():
+        elif "states" or "dim_sizes" not in algorithm_varg.keys():
             raise ValueError(
-                "Expected 'algo_varg' dict to have fields "\
+                "Expected 'algorithm_varg' dict to have fields "\
                 "'states' and 'dim_sizes'"
             )
-    elif algo == 'icpso':
+    elif algorithm == 'icpso':
         # make sure we've received a dictionary
-        if not isinstance(algo_varg, dict):
+        if not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg))
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg))
             )
         # make sure we have all of our necessary arguments.
-        elif ("n"                 not in algo_varg.keys() or
-              "states"            not in algo_varg.keys() or
-              "dim_sizes"         not in algo_varg.keys() or
-              "inertia_wt"        not in algo_varg.keys() or
-              "accel_coeff_pbest" not in algo_varg.keys() or
-              "accel_coeff_gbest" not in algo_varg.keys() or
-              "scale_factor"      not in algo_varg.keys() or
-              "stpfn"             not in algo_varg.keys()):
+        elif ("n"                 not in algorithm_varg.keys() or
+              "states"            not in algorithm_varg.keys() or
+              "dim_sizes"         not in algorithm_varg.keys() or
+              "inertia_wt"        not in algorithm_varg.keys() or
+              "accel_coeff_pbest" not in algorithm_varg.keys() or
+              "accel_coeff_gbest" not in algorithm_varg.keys() or
+              "scale_factor"      not in algorithm_varg.keys() or
+              "stpfn"             not in algorithm_varg.keys()):
             raise ValueError(
-                "Expected 'algo_varg' to have all of the following fields:\n"\
+                "Expected 'algorithm_varg' to have all of the following fields:\n"\
                 "    Field              Received\n"\
                 "    n                  %s\n"\
                 "    states             %s\n"\
@@ -177,18 +177,18 @@ def opv(geno,
                 "    accel_coeff_gbest  %s\n"\
                 "    scale_factor       %s\n"\
                 "    stpfn              %s\n" %
-                ("n" in algo_varg.keys(),
-                 "states" in algo_varg.keys(),
-                 "dim_sizes" in algo_varg.keys(),
-                 "inertia_wt" in algo_varg.keys(),
-                 "accel_coeff_pbest" in algo_varg.keys(),
-                 "accel_coeff_gbest" in algo_varg.keys(),
-                 "scale_factor" in algo_varg.keys(),
-                 "stpfn" in algo_varg.keys())
+                ("n" in algorithm_varg.keys(),
+                 "states" in algorithm_varg.keys(),
+                 "dim_sizes" in algorithm_varg.keys(),
+                 "inertia_wt" in algorithm_varg.keys(),
+                 "accel_coeff_pbest" in algorithm_varg.keys(),
+                 "accel_coeff_gbest" in algorithm_varg.keys(),
+                 "scale_factor" in algorithm_varg.keys(),
+                 "stpfn" in algorithm_varg.keys())
             )
     else:
         raise ValueError(
-            "Expected 'algo' to be one of the following\n"\
+            "Expected 'algorithm' to be one of the following\n"\
             "    'hc_sa_set'\n"\
             "    'hc_sa_state'\n"\
             "    'icpso'"
@@ -220,30 +220,30 @@ def opv(geno,
     algo_out = None
 
     # use the correct algorithm
-    if algo == "hc_sa_set":
+    if algorithm == "hc_sa_set":
         algo_out = algo.hc_sa_set(
             objfn = objfn.opv,
             objfn_varg = opv_varg,
             k = sel_size,
-            **algo_varg,        # variable args: contains 'states'
+            **algorithm_varg,        # variable args: contains 'states'
             seed = seed,
             nthreads = nthreads,
             verbose = False
         )
-    elif algo == "hc_sa_state":
+    elif algorithm == "hc_sa_state":
         algo_out = algo.hc_sa_state(
             objfn = objfn.opv,
             objfn_varg = opv_varg,
-            **algo_varg,        # variable args: contains 'states', 'dim_sizes'
+            **algorithm_varg,        # variable args: contains 'states', 'dim_sizes'
             seed = seed,
             nthreads = nthreads,
             verbose = False
         )
-    elif algo == "icpso":
+    elif algorithm == "icpso":
         algo_out = algo.icpso(
             objfn = objfn.opv,
             objfn_varg = opv_varg,
-            **algo_varg,        # variable args
+            **algorithm_varg,        # variable args
             seed = seed,
             nthreads = nthreads,
             verbose = False
@@ -261,9 +261,9 @@ def opv(geno,
     history_df = None
 
     # create an info dataframe for storing algorithm details, etc.
-    if algo == "hc_sa_set" or algo == "hc_sa_state":
+    if algorithm == "hc_sa_set" or algorithm == "hc_sa_state":
         info_df = pandas.DataFrame(
-            data = ["opv",algo,seed],
+            data = ["opv",algorithm,seed],
             columns = ["method","algorithm","seed"]
         )
         scores_df = pandas.DataFrame(
@@ -275,9 +275,9 @@ def opv(geno,
             columns = ["x"+str(i).zfill(zwidth)
                        for i in range(len(algo_out["X_gbest_pos"]))]
         )
-    elif algo == "icpso":
+    elif algorithm == "icpso":
         info_df = pandas.DataFrame(
-            data = [["opv",algo,seed]
+            data = [["opv",algorithm,seed]
                     for _ in range(algo_out["X_pbest_smpl"].shape[0])],
             columns = ["method","algorithm","seed"]
         )
@@ -327,8 +327,8 @@ def opv_sim(geno,
             d,
             lgroup_size,
             cycles,
-            algo,
-            algo_varg = None,
+            algorithm,
+            algorithm_varg = None,
             interference = None,
             seed = None,
             nthreads = 1,
@@ -362,7 +362,7 @@ def opv_sim(geno,
         length of 'd'.
     cycles : int
         Number of breeding cycles to simulate.
-    algo : {'hc_sa_set', 'hc_sa_state', 'icpso'}
+    algorithm : {'hc_sa_set', 'hc_sa_state', 'icpso'}
         Specification for algorithm to use for selecting individuals.
         Algorithm overview:
             hc_sa_set       Greedy steepest ascent hillclimb for sets
@@ -376,7 +376,7 @@ def opv_sim(geno,
             hc_sa_set       Okay, at least locally optimal
             hc_sa_state     Okay, at least locally optimal
             icpso           Good, at least locally optimal
-    algo_varg : dictionary, None
+    algorithm_varg : dictionary, None
         Dictionary of algorithm variable arguments. If None, will provide
         default options for hillclimb algorithms. Will throw error for icpso.
     seed : int
@@ -473,60 +473,60 @@ def opv_sim(geno,
         )
 
     # tests for algorithm choice
-    if algo == 'hc_sa_set':
-        # if algo_varg is None
-        if isinstance(algo_varg, type(None)):
+    if algorithm == 'hc_sa_set':
+        # if algorithm_varg is None
+        if isinstance(algorithm_varg, type(None)):
             # make a default dictionary
-            algo_varg = {
+            algorithm_varg = {
                 "states": numpy.arange(geno.shape[1])
             }
         # make sure we've received a dictionary
-        elif not isinstance(algo_varg, dict):
+        elif not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg),)
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg),)
             )
-        # if algo_varg does not have a 'states' key
-        elif "states" not in algo_varg.keys():
+        # if algorithm_varg does not have a 'states' key
+        elif "states" not in algorithm_varg.keys():
             # add a default 'states' key
-            algo_varg["states"] = numpy.arange(geno.shape[1])
-    elif algo == 'hc_sa_state':
-        if isinstance(algo_varg, type(None)):
+            algorithm_varg["states"] = numpy.arange(geno.shape[1])
+    elif algorithm == 'hc_sa_state':
+        if isinstance(algorithm_varg, type(None)):
             # make a default dictionary
-            algo_varg = {
+            algorithm_varg = {
                 "states": numpy.tile(numpy.arange(geno.shape[1]), (sel_size,1)),
                 "dim_sizes": numpy.repeat(geno.shape[1], sel_size)
             }
         # make sure we've received a dictionary
-        elif not isinstance(algo_varg, dict):
+        elif not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg))
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg))
             )
-        elif "states" or "dim_sizes" not in algo_varg.keys():
+        elif "states" or "dim_sizes" not in algorithm_varg.keys():
             raise ValueError(
-                "Expected 'algo_varg' dict to have fields "\
+                "Expected 'algorithm_varg' dict to have fields "\
                 "'states' and 'dim_sizes'"
             )
-    elif algo == 'icpso':
+    elif algorithm == 'icpso':
         # make sure we've received a dictionary
-        if not isinstance(algo_varg, dict):
+        if not isinstance(algorithm_varg, dict):
             raise TypeError(
-                "Expected 'algo_varg' to be a dict\n"\
-                "    type(algo_varg) = %s" %
-                (type(algo_varg))
+                "Expected 'algorithm_varg' to be a dict\n"\
+                "    type(algorithm_varg) = %s" %
+                (type(algorithm_varg))
             )
         # make sure we have all of our necessary arguments.
-        elif ("n"                 not in algo_varg.keys() or
-              "inertia_wt"        not in algo_varg.keys() or
-              "accel_coeff_pbest" not in algo_varg.keys() or
-              "accel_coeff_gbest" not in algo_varg.keys() or
-              "scale_factor"      not in algo_varg.keys() or
-              "stpfn"             not in algo_varg.keys()):
+        elif ("n"                 not in algorithm_varg.keys() or
+              "inertia_wt"        not in algorithm_varg.keys() or
+              "accel_coeff_pbest" not in algorithm_varg.keys() or
+              "accel_coeff_gbest" not in algorithm_varg.keys() or
+              "scale_factor"      not in algorithm_varg.keys() or
+              "stpfn"             not in algorithm_varg.keys()):
             raise ValueError(
-                "Expected 'algo_varg' to have all of the following fields:\n"\
+                "Expected 'algorithm_varg' to have all of the following fields:\n"\
                 "    Field              Received\n"\
                 "    n                  %s\n"\
                 "    inertia_wt         %s\n"\
@@ -534,33 +534,33 @@ def opv_sim(geno,
                 "    accel_coeff_gbest  %s\n"\
                 "    scale_factor       %s\n"\
                 "    stpfn              %s\n" %
-                ("n" in algo_varg.keys(),
-                 "inertia_wt" in algo_varg.keys(),
-                 "accel_coeff_pbest" in algo_varg.keys(),
-                 "accel_coeff_gbest" in algo_varg.keys(),
-                 "scale_factor" in algo_varg.keys(),
-                 "stpfn" in algo_varg.keys())
+                ("n" in algorithm_varg.keys(),
+                 "inertia_wt" in algorithm_varg.keys(),
+                 "accel_coeff_pbest" in algorithm_varg.keys(),
+                 "accel_coeff_gbest" in algorithm_varg.keys(),
+                 "scale_factor" in algorithm_varg.keys(),
+                 "stpfn" in algorithm_varg.keys())
             )
         # if the user has not specified the states, dim_sizes, default to all
-        if ("states"    not in algo_varg.keys() and
-            "dim_sizes" not in algo_varg.keys()):
-            algo_varg["states"] = numpy.tile(
+        if ("states"    not in algorithm_varg.keys() and
+            "dim_sizes" not in algorithm_varg.keys()):
+            algorithm_varg["states"] = numpy.tile(
                 numpy.arange(geno.shape[1]),
                 (sel_size,1)
             )
-            algo_varg["dim_sizes"] = numpy.repeat(geno.shape[1], sel_size)
+            algorithm_varg["dim_sizes"] = numpy.repeat(geno.shape[1], sel_size)
         # elif 'states' and 'dim_sizes' have both been provided
-        elif ("states"    in algo_varg.keys() and
-              "dim_sizes" in algo_varg.keys()):
+        elif ("states"    in algorithm_varg.keys() and
+              "dim_sizes" in algorithm_varg.keys()):
             pass
         else:
             raise ValueError(
-                "Inconsistent 'state' and 'dim_sizes' in 'algo_varg'\n"\
+                "Inconsistent 'state' and 'dim_sizes' in 'algorithm_varg'\n"\
                 "    Must provide both or none"
             )
     else:
         raise ValueError(
-            "Expected 'algo' to be one of the following\n"\
+            "Expected 'algorithm' to be one of the following\n"\
             "    'hc_sa_set'\n"\
             "    'hc_sa_state'\n"\
             "    'icpso'"
@@ -623,30 +623,30 @@ def opv_sim(geno,
         optout = None
 
         # do the algorithm
-        if algo == "hc_sa_set":
+        if algorithm == "hc_sa_set":
             optout = algo.hc_sa_set(
                 objfn = objfn.opv,
                 objfn_varg = opv_varg,
                 k = sel_size,
-                **algo_varg,
+                **algorithm_varg,
                 seed = cycle_seed[cycle],
                 nthreads = nthreads,
                 verbose = False
             )
-        elif algo == "hc_sa_state":
+        elif algorithm == "hc_sa_state":
             optout = algo.hc_sa_state(
                 objfn = objfn.opv,
                 objfn_varg = opv_varg,
-                **algo_varg,
+                **algorithm_varg,
                 seed = cycle_seed[cycle],
                 nthreads = nthreads,
                 verbose = False
             )
-        elif algo == "icpso":
+        elif algorithm == "icpso":
             optout = algo.icpso(
                 objfn = objfn.opv,
                 objfn_varg = opv_varg,
-                **algo_varg,
+                **algorithm_varg,
                 seed = cycle_seed[cycle],
                 nthreads = nthreads,
                 verbose = False
@@ -656,12 +656,12 @@ def opv_sim(geno,
         selection_score = None
 
         # process output
-        if algo == "hc_sa_set" or algo == "hc_sa_state":
+        if algorithm == "hc_sa_set" or algorithm == "hc_sa_state":
             # get selection_indices
             selection_indices = optout["X_gbest_pos"]
             # get selection_score
             selection_score = optout["X_gbest_scr"]
-        elif algo == "icpso":
+        elif algorithm == "icpso":
             # get selection_indices
             selection_indices = optout["X_gbest_smpl"]
             # get selection_score
@@ -675,7 +675,7 @@ def opv_sim(geno,
 
         # store everything into selections_list
         selections_list.append(
-            ["opv", algo, seed, cycle+1, selection_score] + gebvs
+            ["opv", algorithm, seed, cycle+1, selection_score] + gebvs
         )
 
         # seed the rng for shuffling
@@ -743,7 +743,7 @@ def opv_sim(geno,
 
         # append population stats to list
         population_list.append(
-            ["opv", algo, seed, cycle+1, population_score] + gebvs
+            ["opv", algorithm, seed, cycle+1, population_score] + gebvs
         )
 
         # recalculate haplotype coefficients
@@ -760,14 +760,14 @@ def opv_sim(geno,
     # make population dataframe
     population_df = pandas.DataFrame(
         population_list,
-        columns = (["method", "algo", "seed", "cycle", "score"] +
+        columns = (["method", "algorithm", "seed", "cycle", "score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(pop_size)])
     )
 
     # make selections dataframe
     selections_df = pandas.DataFrame(
         selections_list,
-        columns = (["method", "algo", "seed", "cycle", "score"] +
+        columns = (["method", "algorithm", "seed", "cycle", "score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(sel_size)])
     )
 
