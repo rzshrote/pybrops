@@ -14,7 +14,8 @@ def cgs(geno,
         coeff,
         sel_size,
         algorithm = None,
-        zwidth = 3):
+        zwidth = 3,
+        verbose = True):
     """
     Conventional Genomic Selection (CGS)
 
@@ -97,24 +98,16 @@ def cgs(geno,
     # Step 3) create a results dataframe
     ########################################
 
-    # make info, scores, positions dataframes to concatenate together
-    info_df = pandas.DataFrame(
-        data = [["cgs",algorithm,"NA"] for _ in range(sel_size)],
-        columns = ["method","algorithm","seed"]
-    )
-    scores_df = pandas.DataFrame(
-        data = gebv[gebv_argsort[-sel_size:]],
-        columns = ["score"]
-    )
-    positions_df = pandas.DataFrame(
-        data = gebv_argsort[-sel_size:],
-        columns = ["x" + str(i).zfill(zwidth) for i in range(1)]
-    )
-
-    # concatenate everything
-    results_df = pandas.concat(
-        objs = [info_df, scores_df, positions_df],
-        axis = 1
+    # make results dataframe
+    results_df = pandas.DataFrame(
+        data = [
+            ["cgs", algorithm, "NA", gebv[gebv_argsort[-sel_size:]].sum()] +
+            gebv_argsort[-sel_size:].tolist()
+        ],
+        columns = (
+            ["method", "algorithm", "seed", "score"] +
+            ["x" + str(i).zfill(zwidth) for i in range(sel_size)]
+        )
     )
 
     # make history dataframe (this algorithm does not generate a history)
@@ -267,7 +260,7 @@ def cgs_sim(geno,
         )
 
     # tests for algorithm choice
-    if algorithm not in ['quicksort', 'mergesort', 'heapsort', 'stable']
+    if algorithm not in ['quicksort', 'mergesort', 'heapsort', 'stable']:
         raise ValueError(
             "Expected 'algorithm' to be one of the following\n"\
             "    'quicksort'\n"\
@@ -343,8 +336,8 @@ def cgs_sim(geno,
         # get the top 'sel_size' individuals
         selection_indices = gebv_argsort[-sel_size:]
 
-        # get the top score to rate the population
-        selection_score = gebv[gebv_argsort[-1]]
+        # get the sum of scores to rate the population
+        selection_score = gebv[selection_indices].sum()
 
         # calculate GEBVs, put into list
         gebvs = numpy.dot(
@@ -420,7 +413,7 @@ def cgs_sim(geno,
             rslice = slice(None),
             geno = cgs_geno,
             coeff = coeff
-        ).max()
+        ).sum()
 
         # append population stats to list
         population_list.append(
