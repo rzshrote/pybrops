@@ -1,8 +1,77 @@
 import numpy
 
 # population architect selection
-def pa_sel(rslice, geno, coeff, tfreq, tfreq_edge, tld, tld_edge,
-           cycles, d, lgroup_size):
+def pa_sel(rslice,
+           geno,
+           coeff,
+           tfreq,
+           tfreq_edge,
+           tld,
+           tld_edge,
+           cycles,
+           d,
+           lgroup_size,
+           chunk = None):
+    """
+    Population Architect (PA) Selection
+
+    Parameters
+    ==========
+    rslice : numpy.ndarray, tuple, list, None
+        A 1D array of indices to use for slicing and summing the matrix by row.
+        Each index in 'rslice' represents a single individual's row. If 'rslice'
+        is None, use all individuals.
+        # TODO: performance testing to see which array type is better.
+    geno : numpy.ndarray
+        An array of allele states. The dtype of 'geno' should be 'uint8'. Array
+        shape should be (depth, row, column) = (M, N, L) where 'M' represents
+        number of chromosome phases, 'N' represents number of individuals, 'L'
+        represents number of markers. Array format should be the 'C' format.
+        # TODO: performance testing to see which array format is better 'F' or
+                'C'.
+    coeff : numpy.ndarray
+        An array of coefficients for allele effects. The dtype of 'coeff'
+        should be either 'float32' or 'float64'. This array should be single
+        dimensional (column,) = (N,) where 'N' represents number of markers.
+    tfreq : numpy.ndarray
+        An array of target allele frequencies.
+        Example:
+            tfreq = numpy.array([0.2, 0.6, 0.7])
+    tfreq_edge : numpy.ndarray
+        An array of allele frequencies maximally distant from the target
+        frequency.
+        Example:
+            tfreq      = numpy.array([0.2, 0.6, 0.7])
+            tfreq_edge = numpy.array([1.0, 0.0, 0.0])
+    tld : numpy.ndarray
+        An array of target LD values. Current measure is in r squared.
+        Example:
+            tld = numpy.array([1.0, 1.0, 1.0])
+    tld_edge : numpy.ndarray
+        An array of LD values maximally distant from the target LD. Current
+        measure is in r squared.
+        Example:
+            tld      = numpy.array([1.0, 1.0, 1.0])
+            tld_edge = numpy.array([0.0, 0.0, 0.0])
+    cycles : int, numpy.integer
+        Number of breeding cycles left to the deadline.
+    d : numpy.ndarray
+        Genetic map in Morgan units.
+    lgroup_size : numpy.ndarray
+        Array of linkage group sizes. The sum of the elements should equal the
+        length of 'd'.
+    chunk : None, int, numpy.integer
+        Matrix chunk size to compute. This is useful in situations with large
+        numbers of markers (>5000). Large matrix calculations are exceedingly
+        memory hungry (memory needed = n^2). Set this to a lower number to
+        reduce memory consumption during matrix operations.
+
+    Returns
+    =======
+    numpy.float64
+        A floating point number representing the Population Architect score for
+        the selected subset.
+    """
     # calculate pairwise marker weights
     # make triangle matrix
     marker_score = numpy.triu(coeff * coeff[:,None])
