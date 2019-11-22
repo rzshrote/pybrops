@@ -84,7 +84,7 @@ def cgs(geno,
     # Step 1) calculate GEBVs
     ########################################
     gebv = objfn.cgs(
-        numpy.arange(geno.shape[1]), # select everything
+        slice(None), # select everything
         geno,
         coeff
     )
@@ -260,9 +260,10 @@ def cgs_sim(geno,
         )
 
     # tests for algorithm choice
-    if algorithm not in ['quicksort', 'mergesort', 'heapsort', 'stable']:
+    if algorithm not in [None, 'quicksort', 'mergesort', 'heapsort', 'stable']:
         raise ValueError(
             "Expected 'algorithm' to be one of the following\n"\
+            "    None\n"\
             "    'quicksort'\n"\
             "    'mergesort'\n"\
             "    'heapsort'\n"\
