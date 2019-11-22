@@ -324,9 +324,9 @@ def opv_sim(geno,
             coeff,
             pop_size,
             sel_size,
+            cycles,
             d,
             lgroup_size,
-            cycles,
             algorithm,
             algorithm_varg = None,
             interference = None,
@@ -355,13 +355,13 @@ def opv_sim(geno,
     sel_size : int, numpy.integer, float, numpy.float
         Number of individuals to select OR proportion of individuals to select.
         If a proportion is given, round to the nearest individual.
+    cycles : int
+        Number of breeding cycles to simulate.
     d : numpy.ndarray
         Genetic map in Morgan units.
     lgroup_size : numpy.ndarray
         Array of linkage group sizes. The sum of the elements should equal the
         length of 'd'.
-    cycles : int
-        Number of breeding cycles to simulate.
     algorithm : {'hc_sa_set', 'hc_sa_state', 'icpso'}
         Specification for algorithm to use for selecting individuals.
         Algorithm overview:
@@ -379,6 +379,8 @@ def opv_sim(geno,
     algorithm_varg : dictionary, None
         Dictionary of algorithm variable arguments. If None, will provide
         default options for hillclimb algorithms. Will throw error for icpso.
+    interference : int
+        Meiosis interference.
     seed : int
         Random number seed.
     nthreads : int
@@ -579,7 +581,7 @@ def opv_sim(geno,
 
     # print engine state before beginning.
     if verbose:
-        print("OPV engine state:")
+        print("OPV siumlation engine state:")
         print("Miscellaneous", "=============", sep='\n')
         print("numpy.random seed =", seed)
         print("Number of threads =", nthreads)
@@ -711,11 +713,12 @@ def opv_sim(geno,
             numpy.arange(sel_size),
             reps
         )
-        sources[-rands:] = numpy.random.choice(
-            numpy.arange(sel_size),
-            rands,
-            replace = False
-        )
+        if rands > 0:
+            sources[-rands:] = numpy.random.choice(
+                numpy.arange(sel_size),
+                rands,
+                replace = False
+            )
 
         # generate gametes
         gout = util.meiosis(
@@ -737,8 +740,8 @@ def opv_sim(geno,
 
         # score the population using objfn.opv
         population_score = objfn.opv(
-            numpy.arange(pop_size),
-            opv_geno * hcoeff
+            slice(None),
+            opv_geno * coeff
         )
 
         # append population stats to list
@@ -747,7 +750,7 @@ def opv_sim(geno,
         )
 
         # recalculate haplotype coefficients
-        varg = {"hcoeff": phases * effects}
+        varg = {"hcoeff": opv_geno * coeff}
 
         # print progress
         if verbose:
