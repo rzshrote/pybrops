@@ -131,7 +131,7 @@ def opv(geno,
             # add a default 'states' key
             algorithm_varg["states"] = numpy.arange(geno.shape[1])
     elif algorithm == 'hc_sa_state':
-        if isinstance(algorithm_varg, type(None)):
+        if algorithm_varg is None:
             # make a default dictionary
             algorithm_varg = {
                 "states": numpy.tile(numpy.arange(geno.shape[1]), (sel_size,)),
@@ -548,7 +548,7 @@ def opv_sim(geno,
             "dim_sizes" not in algorithm_varg.keys()):
             algorithm_varg["states"] = numpy.tile(
                 numpy.arange(geno.shape[1]),
-                (sel_size,1)
+                (sel_size,)
             )
             algorithm_varg["dim_sizes"] = numpy.repeat(geno.shape[1], sel_size)
         # elif 'states' and 'dim_sizes' have both been provided
