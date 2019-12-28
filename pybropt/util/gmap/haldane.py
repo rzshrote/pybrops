@@ -1,5 +1,6 @@
 import math
 import numpy
+from itertools import chain
 # hack to append into our path the parent directory for this file
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
@@ -78,7 +79,7 @@ def haldane2r_gen(gmap, lgroup, mem=None, mtype=None, dtype=None):
     ############################## Parse 'dtype' ##############################
     # if there is no provided dtype, set it to the genetic map dtype
     if dtype is None:
-        dtype = d.dtype
+        dtype = gmap.dtype
 
     ############################### Parse 'mem' ###############################
     # if 'mem' is None, set to compute whole matrix
@@ -103,6 +104,12 @@ def haldane2r_gen(gmap, lgroup, mem=None, mtype=None, dtype=None):
             "    Options: None, int, numpy.int, str\n"\
             "    type(mem) = %s" % type(mem)
         )
+    # if mem is < 1, raise an error
+    if mem < 1:
+        raise ValueError(
+            "'mem' must be greater than zero:\n"\
+            "    Received: %s" % mem
+        )
 
     ############################## Parse 'mtype' ##############################
     # if 'mtype' is None, set to compute entire matrix in blocks
@@ -119,6 +126,10 @@ def haldane2r_gen(gmap, lgroup, mem=None, mtype=None, dtype=None):
     # get length of gmap
     l = len(gmap)
 
+    # take cumulative sum to calculate stop indices
+    lsp_arr = numpy.cumsum(lgroup)
+
+    # if 'mtype' equals 'sym', we're doing the entire matrix
     if mtype == 'sym':
         # row loop
         for rst,rsp in zip(             # zip start, stop indices
@@ -129,47 +140,41 @@ def haldane2r_gen(gmap, lgroup, mem=None, mtype=None, dtype=None):
             )
         ):
             # column loop
-            for cst,csp in zip(         # zip start, stop indices
-                range(0, l, mem),       # cst) start indices
-                chain(                  # csp) chain stop indices
-                    range(mem, l, mem), # 1) first several indices
-                    (l,)                # 2) last index
+            for cst,csp in zip(             # zip start, stop indices
+                range(0, l, mem),           # cst) start indices
+                chain(                      # csp) chain stop indices
+                    range(mem, l, mem),     # 1) first several indices
+                    (l,)                    # 2) last index
                 )
             ):
-                # Step 1) Allocate an empty matrix containing random bit garbage.
-                #         The dimensions correspond to start, stop positions
-                out = numpy.empty(
-                    shape = (rsp-rst, csp-cst),     # (rows, columns) dimensions
-                    dtype = dtype                   # set data type
+                # Allocate an empty matrix containing random bit garbage.
+                out = numpy.zeros(
+                    (rsp-rst, csp-cst),     # (rows, columns) dimensions
+                    dtype = dtype           # set data type
                 )
 
-                # Step 2) make a counter to track current column we've filled
-                #         This starts at 'cst' and advances with each processed
-                #         linkage group.
-                curcol = cst
+                # variables to track columns we haven't filled yet
+                lcols = csp  # cols to the left not filled (index)
+                rcols = cst  # cols to the right not filled (index)
 
-                # Pseudocode:
-                # declare start variable
-                # st = 0
-                # for sp in lsp_arr:
-                #     overlap lgroup_box{ (st,st), (sp,sp) } and chunk_box{ (cst, rst), (csp, rsp) }
-                #     if any are greater than or equal to 0 there is an overlap
+                # Algorithm:
+                #     For each linkage group, calculate the overlap with the
+                #     current computational chunk. If there is an overlap,
+                #     compute the overlap. Otherwise, fill with 0.5.
 
-                # Step 3) declare start coordinate variable for the linkage groups.
-                # note: this is independent of the starting sector, so all linkage
-                #       groups are tested.
+                # start coordinate variable for the linkage groups.
                 lst = 0
 
-                # Step 4) cycle through all the linkage group sectors trying to
-                # identify regions of overlap between the computational chunk and
-                # the linkage group block
+                # cycle through all the linkage group sectors trying to identify
+                # regions of overlap between the computational chunk and the
+                # linkage group block
                 for lsp in lsp_arr:
                     # calculate an overlap region defining a box: (x1,y1,x2,y2)
                     # where x1 < x2, y1 < y2
-                    x1 = max(lst, cst),  # x1
-                    y1 = max(lst, rst),  # y1
-                    x2 = min(lsp, csp),  # x2
-                    y2 = min(lsp, rsp)   # y2
+                    x1 = max(lst, cst)   # x1; matrix start column
+                    y1 = max(lst, rst)   # y1; matrix start row
+                    x2 = min(lsp, csp)   # x2; matrix stop column
+                    y2 = min(lsp, rsp)   # y2; matrix start row
 
                     # calclulate the differences between x2-x1, y2-y1
                     dx = x2 - x1  # x overlap; if negative, no overlap
@@ -177,266 +182,245 @@ def haldane2r_gen(gmap, lgroup, mem=None, mtype=None, dtype=None):
 
                     # if we've found a linkage group that overlaps
                     if (dx >= 0) and (dy >= 0):
-                        # get the cols overlap (x range) as a slice; this slice will
-                        # be reused multiple times, so we want to save time for
-                        # allocation
-                        cslice = slice(cst - x1, cst - x2)
+                        # get the cols overlap (x range) as a slice
+                        cols = slice(x1-cst, x2-cst)
 
-                        # make mesh for the overlap region
+                        # make distance mesh for the overlap region
                         # first argument specifies number of columns
                         # second argument specifies number of rows
-                        tmpmesh = numpy.meshgrid(d[x1:x2], d[y1:y2])
+                        dmesh = numpy.meshgrid(gmap[x1:x2], gmap[y1:y2])
 
                         # fill the recombination frequencies in the matrix
-                        out[
-                            slice(rst - y1, rst - y2),  # rows (y)
-                            cslice                      # cols (x)
-                        ] = 0.5 * (
-                            1 - numpy.exp(-2 * numpy.abs(tmpmesh[0] - tmpmesh[1]))
+                        #   rst-y1:rst-y2     # rows (y)
+                        #   cols              # columns (x)
+                        out[y1-rst:y2-rst,cols] = 0.5 * (
+                            1 - numpy.exp(-2 * numpy.abs(dmesh[0] - dmesh[1]))
                         )
 
                         # fill rows above the linkage block with 0.5
-                        out[
-                            slice(0, rst - y1),     # rows above linkage group block
-                            cslice                  # cols (x)
-                        ].fill(0.5)
+                        out[:y1-rst,cols].fill(0.5)
 
                         # fill rows below the linkage block with 0.5
-                        out[
-                            slice(rst - y2, rsp),   # rows above linkage group block
-                            cslice                  # cols (x)
-                        ].fill(0.5)
+                        out[y2-rst:,cols].fill(0.5)
 
-                        # advance the curcol variable to the next location
-                        curcol = x2
+                        # alter column tracking variables
+                        if x1 < lcols:  # if x1 is before lcols index
+                            lcols = x1  # set the index to x1
+                        if x2 > rcols:  # if x2 is after rcols index
+                            rcols = x2  # set the index to x2
 
                     # advance the linkage group start index to the current stop
                     lst = lsp
 
-                # Step 5) fill the rest of the remaining matrix with 0.5, since it
-                # does not intersect with a linkage block.
-                # linkage group blocks should always be touching at their
-                # vertices, so advancing curcol will not skip empty sectors.
-                out[:,curcol:].fill(0.5)
+                # fill the remaining untouched columns with 0.5
+                if lcols > rcols:               # if lcols and rcols overlap
+                    out.fill(0.5)               # fill the whole thing in one go
+                else:                           # else fill each side
+                    out[:,:lcols-cst].fill(0.5) # fill left
+                    out[:,rcols-cst:].fill(0.5) # fill right
 
-                # Step 6) if the computational chunk is along the diagonal
-                # (rst == cst since we are dealing with square matrices), get the
-                # upper triangle.
+                # yield the output matrix
+                yield out
+    elif mtype == 'triu':
+        # row loop
+        for rst,rsp in zip(             # zip start, stop indices
+            range(0, l, mem),           # rst) range start indices
+            chain(                      # rsp) chain stop indices
+                range(mem, l, mem),     # 1) first several indices
+                (l,)                    # 2) last index
+            )
+        ):
+            # column loop
+            for cst,csp in zip(             # zip start, stop indices
+                range(rst, l, mem),         # cst) start indices
+                chain(                      # csp) chain stop indices
+                    range(rst+mem, l, mem), # 1) first several indices
+                    (l,)                    # 2) last index
+                )
+            ):
+                # Allocate an empty matrix containing random bit garbage.
+                out = numpy.empty(
+                    (rsp-rst, csp-cst),     # (rows, columns) dimensions
+                    dtype = dtype           # set data type
+                )
+
+                # variables to track columns we haven't filled yet
+                lcols = csp  # cols to the left not filled (index)
+                rcols = cst  # cols to the right not filled (index)
+
+                # Algorithm:
+                #     For each linkage group, calculate the overlap with the
+                #     current computational chunk. If there is an overlap,
+                #     compute the overlap. Otherwise, fill with 0.5.
+
+                # start coordinate variable for the linkage groups.
+                lst = 0
+
+                # cycle through all the linkage group sectors trying to identify
+                # regions of overlap between the computational chunk and the
+                # linkage group block
+                for lsp in lsp_arr:
+                    # calculate an overlap region defining a box: (x1,y1,x2,y2)
+                    # where x1 < x2, y1 < y2
+                    x1 = max(lst, cst)   # x1; matrix start column
+                    y1 = max(lst, rst)   # y1; matrix start row
+                    x2 = min(lsp, csp)   # x2; matrix stop column
+                    y2 = min(lsp, rsp)   # y2; matrix start row
+
+                    # calclulate the differences between x2-x1, y2-y1
+                    dx = x2 - x1  # x overlap; if negative, no overlap
+                    dy = y2 - y1  # y overlap; if negative, no overlap
+
+                    # if we've found a linkage group that overlaps
+                    if (dx > 0) and (dy > 0):
+                        # get the cols overlap (x range) as a slice
+                        cols = slice(x1-cst, x2-cst)
+
+                        # make distance mesh for the overlap region
+                        # first argument specifies number of columns
+                        # second argument specifies number of rows
+                        dmesh = numpy.meshgrid(gmap[x1:x2], gmap[y1:y2])
+
+                        # fill the recombination frequencies in the matrix
+                        out[y1-rst:y2-rst,cols] = 0.5 * (
+                            1 - numpy.exp(-2 * numpy.abs(dmesh[0] - dmesh[1]))
+                        )
+
+                        # fill rows above the linkage block with 0.5
+                        out[:y1-rst,cols].fill(0.5)
+
+                        # fill rows below the linkage block with 0.5
+                        out[y2-rst:,cols].fill(0.5)
+
+                        # alter column tracking variables
+                        if x1 < lcols:  # if x1 is before lcols index
+                            lcols = x1  # set the index to x1
+                        if x2 > rcols:  # if x2 is after rcols index
+                            rcols = x2  # set the index to x2
+
+                    # advance the linkage group start index to the current stop
+                    lst = lsp
+
+                # fill the remaining untouched columns with 0.5
+                if lcols > rcols:               # if lcols and rcols overlap
+                    out.fill(0.5)               # fill the whole thing in one go
+                else:                           # else fill each side
+                    out[:,:lcols-cst].fill(0.5) # fill left
+                    out[:,rcols-cst:].fill(0.5) # fill right
+
+                # if we are along the diagonal
                 if rst == cst:
                     # multiply in place by an upper triangle mask
-                    # performance notes: data conversion from bool to float will
-                    # reduce speed. May need to do some testing to determine if
-                    # doing 1 - tri(dtype=dtype) is faster
-                    out *= numpy.logical_not(   # invert triangle mask for triu (fast)
+                    out *= numpy.logical_not(   # invert triangle mask for triu
                         numpy.tri(              # make inverse of triu mask
                             *out.shape[-2:],    # get first two dimensions
                             k=-1,               # offset to get lower triangle
-                            dtype=numpy.bool    # use bool (1 byte) data type (fast)
+                            dtype=numpy.bool    # use bool data type
                         )
                     )
 
                 # yield the output matrix
                 yield out
-    elif
-
-    # take cumulative sum to calculate stop indices
-    # calculate start indices from stop indices
-    lsp_arr = numpy.cumsum(lgroup)
-
-    yield 0
-
-def haldane_to_r_triu(d, lgroup, sector = None, chunk = None, dtype = None):
-    """
-    Convert genetic map distances in Morgans to recombination probabilities
-    using the Haldane mapping function (Haldane, 1919).
-
-    This will only calculate an upper triangle matrix for the provided sector.
-
-    Parameters
-    ==========
-    d : numpy.ndarray
-        A 1D array of genetic map positions. Data type should be floating point.
-    lgroup : numpy.ndarray
-        A 1D array of linkage group sizes. The sum of the elements should equal
-        the length of 'd'. Data type should be integral.
-    sector : None, tuple, array-like
-        A 2-mer tuple or 2-mer array-like representing the region of the
-        recombination matrix to calculate. The format of this tuple is:
-            (x1, x2)
-            Where:
-                x1 is an integer index *Inclusive*
-                x2 is an integer index *Exclusive*
-                x1 value corresponds to index start in a 2D numpy.ndarray.
-                x2 value corresponds to index stop in a 2D numpy.ndarray.
-                This will always specify along the diagonal
-
-          +---------------------------------> x (index increases to right)
-          |   rest of matrix
-          |
-          |   (x1,x1)+-------------------+
-          |          |                   |
-          |          |      sector       |
-          |          |                   |
-          |          +-------------------+(x2,x2)
-          |
-          |
-          v
-          y (index increases downwards)
-
-    chunk : None, integer, numpy.int
-        Length of elements in 'sector' to process at once. This will cut up a
-        large sector into a number of mostly square, but also rectangular
-        computational chunks. This can be used to limit memory usage.
-
-    Yields
-    ======
-    yield : numpy.ndarray
-        A numpy array of recombination probabilities.
-    """
-    # if sector is None, compute the entire matrix
-    # format: (x1, x2)
-    if sector is None:
-        sector = (0, len(d))
-
-    # if the chunk size is None, set chunk to compute whole matrix
-    if chunk is None:
-        chunk = sector[1]-sector[0]
-
-    # if there is no provided dtype, set it to the genetic map dtype
-    if dtype is None:
-        dtype = d.dtype
-
-    # take cumulative sum to calculate stop indices
-    # calculate start indices from stop indices
-    lsp_arr = numpy.cumsum(lgroup)
-
-
-    # row loop
-    for rst,rsp in zip(             # enumerate, zip start, stop indices
-        range(                      # generator for start indices
-            sector[0],              # start in sector.x1 (inclusive)
-            sector[1],              # stop in x2 (exclusive)
-            chunk[1]                # advance by chunk.y
-        ),
-        chain(                      # calculate stop indices
-            range(                  # calculate first several indices
-                sector[0]+chunk,    # start in sector.x1 + chunk (inclusive)
-                sector[1],          # stop in sector.x2 (exclusive)
-                chunk[1]            # advance by chunk
-            ),
-            (sector[3],)            # tack on last index
-        )
-    ):
-        # column loop
-        for cst,csp in zip(                     # enumerate, zip start, stop indices
-            range(rst,stop,chunk),              # calculate start indices
-            chain(                              # calculate stop indices
-                range(rst+chunk,stop,chunk),    # calculate first several
-                (stop,)                         # tack on last index
+    elif mtype == 'tril':
+        # row loop
+        for rst,rsp in zip(             # zip start, stop indices
+            range(0, l, mem),           # rst) range start indices
+            chain(                      # rsp) chain stop indices
+                range(mem, l, mem),     # 1) first several indices
+                (l,)                    # 2) last index
             )
-        )):
-            # Step 1) Allocate an empty matrix containing random bit garbage.
-            #         The dimensions correspond to start, stop positions
-            out = numpy.empty(
-                shape = (rsp-rst, csp-cst),     # (rows, columns) dimensions
-                dtype = dtype                   # set data type
-            )
-
-            # Step 2) make a counter to track current column we've filled
-            #         This starts at 'cst' and advances with each processed
-            #         linkage group.
-            curcol = cst
-
-            # Pseudocode:
-            # declare start variable
-            # st = 0
-            # for sp in lsp_arr:
-            #     overlap lgroup_box{ (st,st), (sp,sp) } and chunk_box{ (cst, rst), (csp, rsp) }
-            #     if any are greater than or equal to 0 there is an overlap
-
-            # Step 3) declare start coordinate variable for the linkage groups.
-            # note: this is independent of the starting sector, so all linkage
-            #       groups are tested.
-            lst = 0
-
-            # Step 4) cycle through all the linkage group sectors trying to
-            # identify regions of overlap between the computational chunk and
-            # the linkage group block
-            for lsp in lsp_arr:
-                # calculate an overlap region defining a box: (x1,y1,x2,y2)
-                # where x1 < x2, y1 < y2
-                x1 = max(lst, cst),  # x1
-                y1 = max(lst, rst),  # y1
-                x2 = min(lsp, csp),  # x2
-                y2 = min(lsp, rsp)   # y2
-
-                # calclulate the differences between x2-x1, y2-y1
-                dx = x2 - x1  # x overlap; if negative, no overlap
-                dy = y2 - y1  # y overlap; if negative, no overlap
-
-                # if we've found a linkage group that overlaps
-                if (dx >= 0) and (dy >= 0):
-                    # get the cols overlap (x range) as a slice; this slice will
-                    # be reused multiple times, so we want to save time for
-                    # allocation
-                    cslice = slice(cst - x1, cst - x2)
-
-                    # make mesh for the overlap region
-                    # first argument specifies number of columns
-                    # second argument specifies number of rows
-                    tmpmesh = numpy.meshgrid(d[x1:x2], d[y1:y2])
-
-                    # fill the recombination frequencies in the matrix
-                    out[
-                        slice(rst - y1, rst - y2),  # rows (y)
-                        cslice                      # cols (x)
-                    ] = 0.5 * (
-                        1 - numpy.exp(-2 * numpy.abs(tmpmesh[0] - tmpmesh[1]))
-                    )
-
-                    # fill rows above the linkage block with 0.5
-                    out[
-                        slice(0, rst - y1),     # rows above linkage group block
-                        cslice                  # cols (x)
-                    ].fill(0.5)
-
-                    # fill rows below the linkage block with 0.5
-                    out[
-                        slice(rst - y2, rsp),   # rows above linkage group block
-                        cslice                  # cols (x)
-                    ].fill(0.5)
-
-                    # advance the curcol variable to the next location
-                    curcol = x2
-
-                # advance the linkage group start index to the current stop
-                lst = lsp
-
-            # Step 5) fill the rest of the remaining matrix with 0.5, since it
-            # does not intersect with a linkage block.
-            # linkage group blocks should always be touching at their
-            # vertices, so advancing curcol will not skip empty sectors.
-            out[:,curcol:].fill(0.5)
-
-            # Step 6) if the computational chunk is along the diagonal
-            # (rst == cst since we are dealing with square matrices), get the
-            # upper triangle.
-            if rst == cst:
-                # multiply in place by an upper triangle mask
-                # performance notes: data conversion from bool to float will
-                # reduce speed. May need to do some testing to determine if
-                # doing 1 - tri(dtype=dtype) is faster
-                out *= numpy.logical_not(   # invert triangle mask for triu (fast)
-                    numpy.tri(              # make inverse of triu mask
-                        *out.shape[-2:],    # get first two dimensions
-                        k=-1,               # offset to get lower triangle
-                        dtype=numpy.bool    # use bool (1 byte) data type (fast)
-                    )
+        ):
+            # column loop
+            for cst,csp in zip(             # zip start, stop indices
+                range(0, rsp, mem),         # cst) start indices
+                chain(                      # csp) chain stop indices
+                    range(mem, rsp, mem),   # 1) first several indices
+                    (rsp,)                  # 2) last index
+                )
+            ):
+                # Allocate an empty matrix containing random bit garbage.
+                out = numpy.empty(
+                    (rsp-rst, csp-cst),     # (rows, columns) dimensions
+                    dtype = dtype           # set data type
                 )
 
-            # yield the output matrix
-            yield out
+                # variables to track columns we haven't filled yet
+                lcols = csp  # cols to the left not filled (index)
+                rcols = cst  # cols to the right not filled (index)
 
+                # Algorithm:
+                #     For each linkage group, calculate the overlap with the
+                #     current computational chunk. If there is an overlap,
+                #     compute the overlap. Otherwise, fill with 0.5.
+
+                # start coordinate variable for the linkage groups.
+                lst = 0
+
+                # cycle through all the linkage group sectors trying to identify
+                # regions of overlap between the computational chunk and the
+                # linkage group block
+                for lsp in lsp_arr:
+                    # calculate an overlap region defining a box: (x1,y1,x2,y2)
+                    # where x1 < x2, y1 < y2
+                    x1 = max(lst, cst)   # x1; matrix start column
+                    y1 = max(lst, rst)   # y1; matrix start row
+                    x2 = min(lsp, csp)   # x2; matrix stop column
+                    y2 = min(lsp, rsp)   # y2; matrix start row
+
+                    # calclulate the differences between x2-x1, y2-y1
+                    dx = x2 - x1  # x overlap; if negative, no overlap
+                    dy = y2 - y1  # y overlap; if negative, no overlap
+
+                    # if we've found a linkage group that overlaps
+                    if (dx > 0) and (dy > 0):
+                        # get the cols overlap (x range) as a slice
+                        cols = slice(x1-cst, x2-cst)
+
+                        # make distance mesh for the overlap region
+                        # first argument specifies number of columns
+                        # second argument specifies number of rows
+                        dmesh = numpy.meshgrid(gmap[x1:x2], gmap[y1:y2])
+
+                        # fill the recombination frequencies in the matrix
+                        out[y1-rst:y2-rst,cols] = 0.5 * (
+                            1 - numpy.exp(-2 * numpy.abs(dmesh[0] - dmesh[1]))
+                        )
+
+                        # fill rows above the linkage block with 0.5
+                        out[:y1-rst,cols].fill(0.5)
+
+                        # fill rows below the linkage block with 0.5
+                        out[y2-rst:,cols].fill(0.5)
+
+                        # alter column tracking variables
+                        if x1 < lcols:  # if x1 is before lcols index
+                            lcols = x1  # set the index to x1
+                        if x2 > rcols:  # if x2 is after rcols index
+                            rcols = x2  # set the index to x2
+
+                    # advance the linkage group start index to the current stop
+                    lst = lsp
+
+                # fill the remaining untouched columns with 0.5
+                if lcols > rcols:               # if lcols and rcols overlap
+                    out.fill(0.5)               # fill the whole thing in one go
+                else:                           # else fill each side
+                    out[:,:lcols-cst].fill(0.5) # fill left
+                    out[:,rcols-cst:].fill(0.5) # fill right
+
+                # if we are along the diagonal
+                if rst == cst:
+                    # multiply in place by an lower triangle mask
+                    out *= numpy.tri(       # make tril mask
+                        *out.shape[-2:],    # get first two dimensions
+                        k=0,                # offset to get lower triangle
+                        dtype=numpy.bool    # use bool data type
+                    )
+
+                # yield the output matrix
+                yield out
+    else:
+        yield 0
 
 def haldane2r_fast(d):
     """
@@ -502,12 +486,12 @@ def haldane2r(gmap, lgroup, mtype = None, dtype = None):
 
     # if there is no provided dtype, set it to the genetic map dtype
     if dtype is None:
-        dtype = d.dtype
+        dtype = gmap.dtype
 
     # allocate an empty matrix for recombination probabilities
-    r = numpy.empty(        # make empty matrix
-        (len(d), len(d)),   # make a square matrix of size (r=len(d), c=len(d))
-        dtype=dtype         # set the data type as dtype
+    r = numpy.empty(            # make empty matrix
+        (len(gmap), len(gmap)), # make a square matrix of width len(gmap)
+        dtype=dtype             # set the data type as dtype
     )
 
     # calculate start, stop indices for matrix navigation
@@ -549,8 +533,6 @@ def haldane2r(gmap, lgroup, mtype = None, dtype = None):
 
     # return probability matrix
     return r
-
-
 
 def r2haldane_fast(r):
     """
