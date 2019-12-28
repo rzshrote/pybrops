@@ -23,22 +23,32 @@ def human2bytes(s):
     s = s.strip()
 
     # make some variables
-    sym = None  # variable to store the symbol
+    sym = ''    # variable to store the symbol
     num = 0     # variable to count index and later store the parsed number
 
     # for each character in string 's'
     for c in s:
-        # if c is not a digit nor a decimal point, then we've hit the symbol
+        # if c is not a digit nor a decimal point,
+        # then we've hit the symbol
         if not c.isdigit() and c != '.':
-            sym = s[num:].strip()   # extract symbol and strip it of whitespace
-            num = float(s[:num])    # convert number string to floating point
             break
         # increment index counter
         num += 1
 
+    # extract symbol and strip it of whitespace
+    sym = s[num:].strip()
+
+    # convert number string to floating point
+    num = float(s[:num]) if num > 0 else 0
+
     # if the parsed symbol is not in the list of keys, raise an error
     if sym not in SYMBOL_DICT.keys():
-        raise ValueError("Cannot interpret %s" % s")
+        raise ValueError(
+            "Cannot interpret string '%s':\n"\
+            "    Negative numbers are not allowed.\n"\
+            "    Available symbol keys:\n"\
+            "        %s" % (s,SYMBOL_DICT.keys())
+        )
 
     # return number of bytes needed rounded up
     return int(math.ceil(num * SYMBOL_DICT[sym]))
