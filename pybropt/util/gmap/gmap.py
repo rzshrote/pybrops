@@ -373,7 +373,7 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
                 )
             ):
                 # Allocate an empty matrix containing random bit garbage.
-                out = numpy.zeros(
+                out = numpy.empty(
                     (rsp-rst, csp-cst),     # (rows, columns) dimensions
                     dtype = dtype           # set data type
                 )
