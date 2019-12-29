@@ -21,7 +21,7 @@ def gmap2r(gmap, lgroup, mapfn = None, mtype = None, dtype = None):
         probabilities. The positions units should be in Morgans.
     lgroup : numpy.ndarray
         A 1D array of linkage group sizes. The sum of the elements should equal
-        the length of 'd'.
+        the length of 'gmap'.
     mapfn : None, callable, {'haldane', 'kosambi'}
         Mapping function to use. If None is provided, default to 'haldane'.
         Options:
@@ -47,7 +47,7 @@ def gmap2r(gmap, lgroup, mapfn = None, mtype = None, dtype = None):
             'tril'  : Lower triangular matrix
     dtype : None, numpy.dtype
         The type of the output array. If dtype is None, infer the data
-        type from the 'd' argument.
+        type from the 'gmap' argument.
 
     Returns
     -------
@@ -197,7 +197,7 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
         probabilities. The positions units should be in Morgans.
     lgroup : numpy.ndarray
         A 1D array of linkage group sizes. The sum of the elements should equal
-        the length of 'd'.
+        the length of 'gmap'.
     mapfn : None, callable, {'haldane', 'kosambi'}
         Mapping function to use. If None is provided, default to 'haldane'.
         Options:
@@ -215,7 +215,7 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
                                     as that of 'd'.
             'haldane'   : Haldane (1919) mapping function
             'kosambi'   : Kosambi (1944) mapping function
-    mem : None, int, numpy.int, str
+    mem : None, {int, numpy.integer, str}
         Size of memory chunk to compute at a time. This has several options.
         Options:
             None:
@@ -237,7 +237,7 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
             'tril'  : Lower triangular matrix
     dtype : numpy.dtype
         The type of the output array. If dtype is not given, infer the data
-        type from the 'd' argument.
+        type from the 'gmap' argument.
 
     Returns
     -------
