@@ -1,12 +1,12 @@
 import math
 import numpy
 from itertools import chain
-import haldane
-import kosambi
 # hack to append into our path the parent directory for this file
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-import human2bytes
+from util.human2bytes import human2bytes
+from util.gmap.haldane import haldane2r
+from util.gmap.kosambi import kosambi2r
 
 
 def gmap2r(gmap, lgroup, mapfn = None, mtype = None, dtype = None):
@@ -401,12 +401,8 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
                     x2 = min(lsp, csp)   # x2; matrix stop column
                     y2 = min(lsp, rsp)   # y2; matrix start row
 
-                    # calclulate the differences between x2-x1, y2-y1
-                    dx = x2 - x1  # x overlap; if negative, no overlap
-                    dy = y2 - y1  # y overlap; if negative, no overlap
-
                     # if we've found a linkage group that overlaps
-                    if (dx >= 0) and (dy >= 0):
+                    if (x2 >= x1) and (y2 >= y1):
                         # get the cols overlap (x range) as a slice
                         cols = slice(x1-cst, x2-cst)
 
@@ -492,12 +488,8 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
                     x2 = min(lsp, csp)   # x2; matrix stop column
                     y2 = min(lsp, rsp)   # y2; matrix start row
 
-                    # calclulate the differences between x2-x1, y2-y1
-                    dx = x2 - x1  # x overlap; if negative, no overlap
-                    dy = y2 - y1  # y overlap; if negative, no overlap
-
                     # if we've found a linkage group that overlaps
-                    if (dx > 0) and (dy > 0):
+                    if (x2 >= x1) and (y2 >= y1):
                         # get the cols overlap (x range) as a slice
                         cols = slice(x1-cst, x2-cst)
 
@@ -592,12 +584,8 @@ def gmap2r_gen(gmap, lgroup, mapfn = None, mem = None, mtype = None,
                     x2 = min(lsp, csp)   # x2; matrix stop column
                     y2 = min(lsp, rsp)   # y2; matrix start row
 
-                    # calclulate the differences between x2-x1, y2-y1
-                    dx = x2 - x1  # x overlap; if negative, no overlap
-                    dy = y2 - y1  # y overlap; if negative, no overlap
-
                     # if we've found a linkage group that overlaps
-                    if (dx > 0) and (dy > 0):
+                    if (x2 >= x1) and (y2 >= y1):
                         # get the cols overlap (x range) as a slice
                         cols = slice(x1-cst, x2-cst)
 
