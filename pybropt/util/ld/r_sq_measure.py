@@ -6,10 +6,6 @@ def r_sq(rgeno, cgeno, rprob, cprob, r, cycles):
 
     Parameters
     ==========
-    rsel : numpy.ndarray, tuple, list, None
-        A 1D array of indices to use for slicing the 'geno' matrix by row.
-        Each index in 'rsel' represents a single individual's row. If 'rsel'
-        is None, use all individuals.
     rgeno : numpy.ndarray
         A binary array of allele states for output matrix rows. This array
         determines row number of the output matrix. The dtype of 'rgeno'

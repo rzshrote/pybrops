@@ -43,7 +43,7 @@ MTYPE_IXFTY_DICT = {
 }
 
 # population architect selection
-def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
+def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
        efreq = None, eld = None, mapfn = None, ldfn = None,
        mem = None, mtype = None, dtype = numpy.dtype("float64") ):
     """
@@ -62,10 +62,11 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
         shape should be (depth, row, column) = (M, N, L) where 'M' represents
         number of chromosome phases, 'N' represents number of individuals, 'L'
         represents number of markers. Array format should be the 'C' format.
-    coeff : numpy.ndarray
-        An array of coefficients for allele effects. The dtype of 'coeff'
-        should be either 'float32' or 'float64'. This array should be single
-        dimensional (column,) = (N,) where 'N' represents number of markers.
+    wcoeff : numpy.ndarray
+        An array of coefficients for allele weights. Values in 'wcoeff' should
+        be non-negative. The dtype of 'wcoeff' should be either 'float32' or
+        'float64'. This array should be of shape (column,) = (N,) where 'N'
+        represents number of markers.
     tfreq : numpy.ndarray
         An array of target allele frequencies.
         Example:
@@ -81,18 +82,23 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
         length of 'gmap'.
     cycles : int, numpy.integer
         Number of breeding cycles left to the deadline.
-    efreq : numpy.ndarray
+    efreq : None, numpy.ndarray
         An array of allele frequencies maximally distant from the target
-        frequency.
+        frequency. If None, function will calculate this (at a speed cost).
+        It is better to provide a pre-calculated array if scoring multiple
+        selection subsets from the same population and selection criteria.
         Example:
             tfreq   = numpy.array([0.2, 0.6, 0.7])
             efreq   = numpy.array([1.0, 0.0, 0.0])
-    eld : numpy.ndarray
-        An array of LD values maximally distant from the target LD. Current
-        measure is in r squared.
+    eld : None, numpy.ndarray
+        An array of LD values maximally distant from the target LD. If None,
+        function will calculate this (at a speed cost) assuming a valid LD
+        range of [0.0,1.0]. It is better to provide a pre-calculated array if
+        scoring multiple selection subsets from the same population and
+        selection criteria.
         Example:
-            tld     = numpy.array([1.0, 1.0, 1.0])
-            eld     = numpy.array([0.0, 0.0, 0.0])
+            tld     = numpy.array([1.0, 1.0, 0.0])
+            eld     = numpy.array([0.0, 0.0, 1.0])
     mapfn : None, callable, {'haldane', 'kosambi'}
         Mapping function to use. If None is provided, default to 'haldane'.
         Options:
@@ -116,26 +122,20 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
         Options:
             callable  : A custom callable Python function.
                         Must take the following arguments:
-                            ldfn(rsel, geno, r, cycles)
-                            Parameters:
-                                rsel : numpy.ndarray
-                                    A 1D array of indices to use for slicing
-                                    and summing the matrix by row. Each index
-                                    in 'rsel' represents a single individual's
-                                    row. If 'rsel' is None, use all
-                                    individuals.
-                                geno : numpy.ndarray
-                                    An array of allele states. The dtype of
-                                    'geno' should be 'uint8'. Array shape should
-                                    be (depth, row, column) = (M, N, L) where
-                                    'M' represents number of chromosome phases,
-                                    'N' represents number of individuals, 'L'
-                                    represents number of markers. Array format
-                                    should be the 'C' format.
+                            ldfn(rgeno, cgeno, rprob, cprob, r, cycles)
+                            Parameters: see r_sq function documentation for details
+                                rgeno : numpy.ndarray
+                                    Row allele states
+                                cgeno : numpy.ndarray
+                                    Column allele states
+                                rprob : numpy.ndarray
+                                    Row allele probabilities
+                                cprob : numpy.ndarray
+                                    Column allele probabilities
                                 r : numpy.ndarray
-                                    An array of recombination probabilities.
-                                    The shape of the array is the same shape
-                                    as that of 'd'.
+                                    Recombination probabilities
+                                cycles : int, numpy.integer
+                                    Random mating cycles
             'r_sq'    : R squared linkage disequilibrium metric.
             'D_prime' : D' linkage disequilibrium metric.
     mem : None, {int, numpy.integer}
@@ -230,12 +230,12 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
 
     # WEIGHT SCORE: calc scaling factor for pairwise matrix
     # divide matrix chunks by this this scaling factor
-    divisor = coeff.sum(                # take sum of coeff array
+    divisor = wcoeff.sum(               # take sum of wcoeff array
         dtype=numpy.float64             # force double-precision
     )
     divisor *= divisor                  # square the sum
     if mtype in ["tril", "triu"]:       # if we want a triangle matrix
-        divisor += (coeff*coeff).sum(   # add sum of squared elements
+        divisor += (wcoeff*wcoeff).sum( # add sum of squared elements
             dtype=numpy.float64         # force double-precision
         )
         divisor /= 2.0                  # divide by two to get upper/lower sum
@@ -280,7 +280,7 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
             ## Calculate pairwise marker weights for the weight component ##
             ################################################################
             # make exhaustive pairwise product; divide by divisor
-            cumprod = (coeff[rst:rsp,None] @ coeff[None,cst:csp]) / divisor
+            cumprod = (wcoeff[rst:rsp,None] @ wcoeff[None,cst:csp]) / divisor
 
             #################################################################
             ## Calculate pairwise allele frequency distance scores for all ##
@@ -403,9 +403,9 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
                 lst = lsp
 
             # fill the remaining untouched columns with 0.5
-            if lcols > rcols:               # if lcols and rcols overlap
+            if lcols > rcols:             # if lcols and rcols overlap
                 r.fill(0.5)               # fill the whole thing in one go
-            else:                           # else fill each side
+            else:                         # else fill each side
                 r[:,:lcols-cst].fill(0.5) # fill left
                 r[:,rcols-cst:].fill(0.5) # fill right
 
@@ -451,472 +451,5 @@ def pa(rsel, geno, coeff, tfreq, tld, gmap, lgroup, cycles,
             # finally, accumulate the matrix and add to score
             score += cumprod.sum()
 
-    # return the score
+    # return the score casted as the output data type
     return dtype.type(score)
-
-
-
-
-
-
-
-
-    # # if 'mtype' equals 'sym', we're doing the entire matrix
-    # if mtype == 'sym':
-    #     # row loop
-    #     for rst,rsp in zip(             # zip start, stop indices
-    #         range(0, l, mem),           # rst) range start indices
-    #         chain(                      # rsp) chain stop indices
-    #             range(mem, l, mem),     # 1) first several indices
-    #             (l,)                    # 2) last index
-    #         )
-    #     ):
-    #         # column loop
-    #         for cst,csp in zip(             # zip start, stop indices
-    #             range(0, l, mem),           # cst) start indices
-    #             chain(                      # csp) chain stop indices
-    #                 range(mem, l, mem),     # 1) first several indices
-    #                 (l,)                    # 2) last index
-    #             )
-    #         ):
-    #             # Allocate an empty matrix for recombination probabilities
-    #             r = numpy.empty(
-    #                 (rsp-rst, csp-cst),     # (rows, columns) dimensions
-    #                 dtype = dtype           # set data type
-    #             )
-    #
-    #             # variables to track columns we haven't filled yet
-    #             lcols = csp  # cols to the left not filled (index)
-    #             rcols = cst  # cols to the right not filled (index)
-    #
-    #             # Algorithm:
-    #             #     For each linkage group, calculate the overlap with the
-    #             #     current computational chunk. If there is an overlap,
-    #             #     compute the overlap. Otherwise, fill with 0.5.
-    #
-    #             # start coordinate variable for the linkage groups.
-    #             lst = 0
-    #
-    #             # cycle through all the linkage group sectors trying to identify
-    #             # regions of overlap between the computational chunk and the
-    #             # linkage group block
-    #             for lsp in lsp_arr:
-    #                 # calculate an overlap region defining a box: (x1,y1,x2,y2)
-    #                 # where x1 < x2, y1 < y2
-    #                 x1 = max(lst, cst)   # x1; matrix start column
-    #                 y1 = max(lst, rst)   # y1; matrix start row
-    #                 x2 = min(lsp, csp)   # x2; matrix stop column
-    #                 y2 = min(lsp, rsp)   # y2; matrix start row
-    #
-    #                 # if we've found a linkage group that overlaps
-    #                 if (x2 >= x1) and (y2 >= y1):
-    #                     # get the cols overlap (x range) as a slice
-    #                     cols = slice(x1-cst, x2-cst)
-    #
-    #                     # make distance mesh for the overlap region
-    #                     # first argument specifies number of columns
-    #                     # second argument specifies number of rows
-    #                     dmesh = numpy.meshgrid(gmap[y1:y2], gmap[x1:x2], indexing='ij')
-    #
-    #                     # fill the recombination frequencies in the matrix
-    #                     #   rst-y1:rst-y2     # rows (y)
-    #                     #   cols              # columns (x)
-    #                     r[y1-rst:y2-rst,cols] = mapfn(
-    #                         numpy.absolute(dmesh[0] - dmesh[1])
-    #                     )
-    #
-    #                     # fill rows above the linkage block with 0.5
-    #                     r[:y1-rst,cols].fill(0.5)
-    #
-    #                     # fill rows below the linkage block with 0.5
-    #                     r[y2-rst:,cols].fill(0.5)
-    #
-    #                     # alter column tracking variables
-    #                     if x1 < lcols:  # if x1 is before lcols index
-    #                         lcols = x1  # set the index to x1
-    #                     if x2 > rcols:  # if x2 is after rcols index
-    #                         rcols = x2  # set the index to x2
-    #
-    #                 # advance the linkage group start index to the current stop
-    #                 lst = lsp
-    #
-    #             # fill the remaining untouched columns with 0.5
-    #             if lcols > rcols:               # if lcols and rcols overlap
-    #                 r.fill(0.5)               # fill the whole thing in one go
-    #             else:                           # else fill each side
-    #                 r[:,:lcols-cst].fill(0.5) # fill left
-    #                 r[:,rcols-cst:].fill(0.5) # fill right
-    #
-    #             # calculate pairwise allele availability
-    #             pair_avail = allele_avail[rst:rsp,None] @ allele_avail[None,cst:csp]
-    #
-    #             # make a mesh for differences between target and population
-    #             mesh_tp = numpy.meshgrid(   # meshgrid returns a list
-    #                 diff_tp[rst:rsp],       # n_rows: repeat vector for n_cols (mesh 1)
-    #                 diff_tp[cst:csp],       # n_cols: repeat vector for n_rows (mesh 2)
-    #                 indexing='ij'           # use 'ij' indexing (faster)
-    #             )
-    #
-    #             # make a mesh for differences between edge and population
-    #             mesh_te = numpy.meshgrid(   # meshgrid returns a list
-    #                 diff_te[rst:rsp],       # n_rows: repeat vector for n_cols (mesh 1)
-    #                 diff_te[cst:csp],       # n_cols: repeat vector for n_rows (mesh 2)
-    #                 indexing='ij'           # use 'ij' indexing (faster)
-    #             )
-    #
-    #             # calculate distance between target and population allele freq.
-    #             # Gory details:
-    #             #     Recall: diff_tp = tfreq - pfreq        for each locus
-    #             #     Therefore:
-    #             #         mesh_tp[0] = (tfreq_i - pfreq_i)
-    #             #         mesh_tp[1] = (tfreq_j - pfreq_j)
-    #             #     We want to calculate euclidian distance: dist_tp
-    #             #         c = sqrt(a^2 + b^2)
-    #             #         sqrt((tfreq_i - pfreq_i)**2 + (tfreq_j - pfreq_j)**2)
-    #             #     Therefore the calculation is:
-    #             dist_tp = numpy.sqrt(           # sqrt to get euclidian distance
-    #                 (mesh_tp[0] * mesh_tp[0]) + # use m*m format (faster)
-    #                 (mesh_tp[1] * mesh_tp[1])   # use m*m format (faster)
-    #             )
-    #
-    #             # distance between target and edge allele freq is similar:
-    #             # Gory details:
-    #             #     Recall: diff_te = tfreq - efreq
-    #             #     Therefore:
-    #             #         mesh_te[0] = (tfreq_i - efreq_i)
-    #             #         mesh_te[1] = (tfreq_j - efreq_j)
-    #             #     We want to calculate euclidian distance: dist_tp
-    #             #         c = sqrt(a^2 + b^2)
-    #             #         sqrt((tfreq_i - efreq_i)**2 + (tfreq_j - efreq_j)**2)
-    #             #     Therefore the calculation is:
-    #             dist_te = numpy.sqrt(           # sqrt to get euclidian distance
-    #                 (mesh_te[0] * mesh_te[0]) + # use m*m format (faster)
-    #                 (mesh_te[1] * mesh_te[1])   # use m*m format (faster)
-    #             )
-    #
-    #             # divide distance from the target by distance from the edge
-    #             # assuming that the edge is the maximal distance between the
-    #             # target and any hypothetical allele frequency (range [0.0,1.0])
-    #             # this guarantees that the distance metric is in range [0.0,1.0]
-    #             # do (1 - dist_prime) to get an allele score:
-    #             #     allele_score == 0.0  --> maximal distance from target
-    #             #     allele_score == 1.0  --> on target
-    #             allele_score = 1 - (dist_tp / dist_te)
-    #
-    #             # calculate the difference between target LD and population LD
-    #             # calculate the difference between target LD and edge LD
-    #             # calculate LD score component
-    #             # modify the ld_score based on ambiguous LD states (r_sq == 0)
-    #             # TODO: replace this with an approx. equal due to floating point errors
-    #             ld_score = numpy.where(
-    #                 r_sq == 0.0,
-    #                 allele_avail,
-    #                 1 - ((tld - r_sq) / (tld - eld))
-    #             )
-    #
-    #             tmpdiag = (marker_score * allele_score * ld_score)
-    #
-    #             # marker_score is a triangle matrix, so it should zero out.
-    #             # calculate product and return the sum of the triangle matrix.
-    #             return tmpdiag.sum()
-    #
-    #             # yield the output matrix
-    #             yield r
-    # elif mtype == 'triu':
-    #     # row loop
-    #     for rst,rsp in zip(             # zip start, stop indices
-    #         range(0, l, mem),           # rst) range start indices
-    #         chain(                      # rsp) chain stop indices
-    #             range(mem, l, mem),     # 1) first several indices
-    #             (l,)                    # 2) last index
-    #         )
-    #     ):
-    #         # column loop
-    #         for cst,csp in zip(             # zip start, stop indices
-    #             range(rst, l, mem),         # cst) start indices
-    #             chain(                      # csp) chain stop indices
-    #                 range(rst+mem, l, mem), # 1) first several indices
-    #                 (l,)                    # 2) last index
-    #             )
-    #         ):
-    #             # Allocate an empty matrix containing random bit garbage.
-    #             r = numpy.empty(
-    #                 (rsp-rst, csp-cst),     # (rows, columns) dimensions
-    #                 dtype = dtype           # set data type
-    #             )
-    #
-    #             # variables to track columns we haven't filled yet
-    #             lcols = csp  # cols to the left not filled (index)
-    #             rcols = cst  # cols to the right not filled (index)
-    #
-    #             # Algorithm:
-    #             #     For each linkage group, calculate the overlap with the
-    #             #     current computational chunk. If there is an overlap,
-    #             #     compute the overlap. Otherwise, fill with 0.5.
-    #
-    #             # start coordinate variable for the linkage groups.
-    #             lst = 0
-    #
-    #             # cycle through all the linkage group sectors trying to identify
-    #             # regions of overlap between the computational chunk and the
-    #             # linkage group block
-    #             for lsp in lsp_arr:
-    #                 # calculate an overlap region defining a box: (x1,y1,x2,y2)
-    #                 # where x1 < x2, y1 < y2
-    #                 x1 = max(lst, cst)   # x1; matrix start column
-    #                 y1 = max(lst, rst)   # y1; matrix start row
-    #                 x2 = min(lsp, csp)   # x2; matrix stop column
-    #                 y2 = min(lsp, rsp)   # y2; matrix start row
-    #
-    #                 # if we've found a linkage group that overlaps
-    #                 if (x2 >= x1) and (y2 >= y1):
-    #                     # get the cols overlap (x range) as a slice
-    #                     cols = slice(x1-cst, x2-cst)
-    #
-    #                     # make distance mesh for the overlap region
-    #                     # first argument specifies number of columns
-    #                     # second argument specifies number of rows
-    #                     dmesh = numpy.meshgrid(gmap[y1:y2], gmap[x1:x2], indexing='ij')
-    #
-    #                     # fill the recombination frequencies in the matrix
-    #                     r[y1-rst:y2-rst,cols] = mapfn(
-    #                         numpy.abs(dmesh[0] - dmesh[1])
-    #                     )
-    #
-    #                     # fill rows above the linkage block with 0.5
-    #                     r[:y1-rst,cols].fill(0.5)
-    #
-    #                     # fill rows below the linkage block with 0.5
-    #                     r[y2-rst:,cols].fill(0.5)
-    #
-    #                     # alter column tracking variables
-    #                     if x1 < lcols:  # if x1 is before lcols index
-    #                         lcols = x1  # set the index to x1
-    #                     if x2 > rcols:  # if x2 is after rcols index
-    #                         rcols = x2  # set the index to x2
-    #
-    #                 # advance the linkage group start index to the current stop
-    #                 lst = lsp
-    #
-    #             # fill the remaining untouched columns with 0.5
-    #             if lcols > rcols:               # if lcols and rcols overlap
-    #                 r.fill(0.5)               # fill the whole thing in one go
-    #             else:                           # else fill each side
-    #                 r[:,:lcols-cst].fill(0.5) # fill left
-    #                 r[:,rcols-cst:].fill(0.5) # fill right
-    #
-    #             # if we are along the diagonal
-    #             if rst == cst:
-    #                 # multiply in place by an upper triangle mask
-    #                 r *= numpy.logical_not(   # invert triangle mask for triu
-    #                     numpy.tri(              # make inverse of triu mask
-    #                         *r.shape[-2:],    # get first two dimensions
-    #                         k=-1,               # offset to get lower triangle
-    #                         dtype=numpy.bool    # use bool data type
-    #                     )
-    #                 )
-    #
-    #             # yield the output matrix
-    #             yield r
-    # elif mtype == 'tril':
-    #     # row loop
-    #     for rst,rsp in zip(             # zip start, stop indices
-    #         range(0, l, mem),           # rst) range start indices
-    #         chain(                      # rsp) chain stop indices
-    #             range(mem, l, mem),     # 1) first several indices
-    #             (l,)                    # 2) last index
-    #         )
-    #     ):
-    #         # column loop
-    #         for cst,csp in zip(             # zip start, stop indices
-    #             range(0, rsp, mem),         # cst) start indices
-    #             chain(                      # csp) chain stop indices
-    #                 range(mem, rsp, mem),   # 1) first several indices
-    #                 (rsp,)                  # 2) last index
-    #             )
-    #         ):
-    #             # Allocate an empty matrix containing random bit garbage.
-    #             r = numpy.empty(
-    #                 (rsp-rst, csp-cst),     # (rows, columns) dimensions
-    #                 dtype = dtype           # set data type
-    #             )
-    #
-    #             # variables to track columns we haven't filled yet
-    #             lcols = csp  # cols to the left not filled (index)
-    #             rcols = cst  # cols to the right not filled (index)
-    #
-    #             # Algorithm:
-    #             #     For each linkage group, calculate the overlap with the
-    #             #     current computational chunk. If there is an overlap,
-    #             #     compute the overlap. Otherwise, fill with 0.5.
-    #
-    #             # start coordinate variable for the linkage groups.
-    #             lst = 0
-    #
-    #             # cycle through all the linkage group sectors trying to identify
-    #             # regions of overlap between the computational chunk and the
-    #             # linkage group block
-    #             for lsp in lsp_arr:
-    #                 # calculate an overlap region defining a box: (x1,y1,x2,y2)
-    #                 # where x1 < x2, y1 < y2
-    #                 x1 = max(lst, cst)   # x1; matrix start column
-    #                 y1 = max(lst, rst)   # y1; matrix start row
-    #                 x2 = min(lsp, csp)   # x2; matrix stop column
-    #                 y2 = min(lsp, rsp)   # y2; matrix start row
-    #
-    #                 # if we've found a linkage group that overlaps
-    #                 if (x2 >= x1) and (y2 >= y1):
-    #                     # get the cols overlap (x range) as a slice
-    #                     cols = slice(x1-cst, x2-cst)
-    #
-    #                     # make distance mesh for the overlap region
-    #                     # first argument specifies number of columns
-    #                     # second argument specifies number of rows
-    #                     dmesh = numpy.meshgrid(gmap[y1:y2], gmap[x1:x2], indexing='ij')
-    #
-    #                     # fill the recombination frequencies in the matrix
-    #                     r[y1-rst:y2-rst,cols] = mapfn(
-    #                         numpy.abs(dmesh[0] - dmesh[1])
-    #                     )
-    #
-    #                     # fill rows above the linkage block with 0.5
-    #                     r[:y1-rst,cols].fill(0.5)
-    #
-    #                     # fill rows below the linkage block with 0.5
-    #                     r[y2-rst:,cols].fill(0.5)
-    #
-    #                     # alter column tracking variables
-    #                     if x1 < lcols:  # if x1 is before lcols index
-    #                         lcols = x1  # set the index to x1
-    #                     if x2 > rcols:  # if x2 is after rcols index
-    #                         rcols = x2  # set the index to x2
-    #
-    #                 # advance the linkage group start index to the current stop
-    #                 lst = lsp
-    #
-    #             # fill the remaining untouched columns with 0.5
-    #             if lcols > rcols:               # if lcols and rcols overlap
-    #                 r.fill(0.5)               # fill the whole thing in one go
-    #             else:                           # else fill each side
-    #                 r[:,:lcols-cst].fill(0.5) # fill left
-    #                 r[:,rcols-cst:].fill(0.5) # fill right
-    #
-    #             # if we are along the diagonal
-    #             if rst == cst:
-    #                 # multiply in place by an lower triangle mask
-    #                 r *= numpy.tri(       # make tril mask
-    #                     *r.shape[-2:],    # get first two dimensions
-    #                     k=0,                # offset to get lower triangle
-    #                     dtype=numpy.bool    # use bool data type
-    #                 )
-    #
-    #             # yield the output matrix
-    #             yield r
-    # else:
-    #     raise ValueError(
-    #         "Invalid 'mtype' value '%s'.\n"\
-    #         "    Options: None, {'sym', 'triu', 'tril'}" % mtype
-    #     )
-    #
-    #
-    #
-    # if chunk is None:
-    #     # calculate pairwise marker weights
-    #     # make triangle matrix
-    #     marker_score = numpy.triu(coeff * coeff[:,None])
-    #     # scale to sum to 1
-    #     marker_score /= marker_score.sum()
-    #
-    #     # calculate probabilities for recombination
-    #     # fill with 0.5 (for independent assortment)
-    #     prec = numpy.empty((len(gmap), len(gmap)), dtype=numpy.float64)
-    #     prec.fill(0.5)
-    #
-    #     # stop indices
-    #     dsp = numpy.cumsum(lgroup)
-    #
-    #     # start indices
-    #     dst = dsp - lgroup[0]
-    #
-    #     # for each start, stop index
-    #     for st,sp in zip(dst,dsp):
-    #         # make mesh for that array region
-    #         tmpmesh = numpy.meshgrid(gmap[st:sp], gmap[st:sp])
-    #         # calculate Haldane distance for that region
-    #         prec[st:sp,st:sp] = 0.5 * (1 - numpy.exp(
-    #                         -2 * numpy.abs(tmpmesh[0] - tmpmesh[1])))
-    #
-    #     # select rows, THIS MAKES A COPY OF THE ARRAY (PERFORMANCE ISSUE)
-    #     phase = geno[:,rsel,:].reshape(len(rsel)*geno.shape[0], geno.shape[2])
-    #
-    #     # get the dimensions of the matrix
-    #     rows, columns = phase.shape
-    #
-    #     # convert the number of sequences (rows) to float64
-    #     nseq_f64 = numpy.float64(rows)
-    #
-    #     # calculate allele sums (axis=0), divide by nseq_f64 to get probabilities
-    #     pfreq = phase.sum(0) / nseq_f64
-    #
-    #     # calculate D; multiply by decay over 'cycles' based on recombination rate
-    #     D = ((numpy.matmul(phase.transpose(), phase) / nseq_f64) - \
-    #           numpy.matmul(pfreq[:,None], pfreq[None,:])) * \
-    #           (1 - prec)**cycles
-    #
-    #     # calculate A = p(1-p)
-    #     A = pfreq * (1 - pfreq)
-    #
-    #     # calculate r^2 matrix
-    #     r_sq = (D**2) / numpy.matmul(A, A.transpose())
-    #
-    #     # determine allele availability
-    #     allele_avail = numpy.where(
-    #         tfreq >= 1.0,
-    #         pfreq > 0.0,
-    #         numpy.where(
-    #             tfreq > 0.0,
-    #             numpy.logical_and(pfreq > 0.0, pfreq < 1.0),
-    #             pfreq < 1.0
-    #         )
-    #     )
-    #
-    #     # calculate pairwise allele availability
-    #     pair_avail = allele_avail * allele_avail[:,None]
-    #
-    #     # calculate difference between target and population
-    #     diff_tp = tfreq - pfreq
-    #
-    #     # calculate difference between target and edge
-    #     diff_te = tfreq - efreq
-    #
-    #     # make a mesh for differences between target and population; this is a list
-    #     mesh_tp = numpy.meshgrid(diff_tp, diff_tp)
-    #
-    #     # make a mesh for differences between edge and population; this is a list
-    #     mesh_te = numpy.meshgrid(diff_te, diff_te)
-    #
-    #     # calculate pairwise distances between target and population freq. loci
-    #     # calculate pairwise distances between the edge and population freq. loci
-    #     # finally divide population distance from target by distance to edge
-    #     # do 1 - dist_prime
-    #     allele_score = 1 - (numpy.sqrt(mesh_tp[0]**2, mesh_tp[1]**2) /
-    #                         numpy.sqrt(mesh_te[0]**2, mesh_te[1]**2))
-    #
-    #     # calculate the difference between target LD and population LD
-    #     # calculate the difference between target LD and edge LD
-    #     # calculate LD score component
-    #     # modify the ld_score based on ambiguous LD states (r_sq == 0)
-    #     # TODO: replace this with an approx. equal due to floating point errors
-    #     ld_score = numpy.where(
-    #         r_sq == 0.0,
-    #         allele_avail,
-    #         1 - ((tld - r_sq) / (tld - eld))
-    #     )
-    #
-    #     tmpdiag = (marker_score * allele_score * ld_score)
-    #
-    #     # marker_score is a triangle matrix, so it should zero out.
-    #     # calculate product and return the sum of the triangle matrix.
-    #     return tmpdiag.sum()
-    # else:
-    #     return 0
