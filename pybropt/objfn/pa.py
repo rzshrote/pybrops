@@ -63,10 +63,17 @@ def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
         number of chromosome phases, 'N' represents number of individuals, 'L'
         represents number of markers. Array format should be the 'C' format.
     wcoeff : numpy.ndarray
-        An array of coefficients for allele weights. Values in 'wcoeff' should
-        be non-negative. The dtype of 'wcoeff' should be either 'float32' or
-        'float64'. This array should be of shape (column,) = (N,) where 'N'
-        represents number of markers.
+        An array of coefficients for allele weights. Values in 'wcoeff' have
+        several assumptions:
+            Critical: All values should be non-negative.
+            Critical: The dtype of 'wcoeff' should be a floating point.
+            Ideally: The values should be scaled according to 'mtype'.
+                If mtype == 'sym', wcoeff values should be scaled such that:
+                    sum(wcoeff^T * wcoeff) == 1
+                If mtype == 'tril' or 'triu', values should be scaled such that:
+                    sum(tri(wcoeff^T * wcoeff)) == 1
+         This array should be of shape (column,) = (N,) where 'N' represents
+         number of markers.
     tfreq : numpy.ndarray
         An array of target allele frequencies.
         Example:
@@ -228,18 +235,6 @@ def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
     # ALL: calculate number of phases
     phases = geno[:,rsel,:].shape[0] * geno[:,rsel,:].shape[1]
 
-    # WEIGHT SCORE: calc scaling factor for pairwise matrix
-    # divide matrix chunks by this this scaling factor
-    divisor = wcoeff.sum(               # take sum of wcoeff array
-        dtype=numpy.float64             # force double-precision
-    )
-    divisor *= divisor                  # square the sum
-    if mtype in ["tril", "triu"]:       # if we want a triangle matrix
-        divisor += (wcoeff*wcoeff).sum( # add sum of squared elements
-            dtype=numpy.float64         # force double-precision
-        )
-        divisor /= 2.0                  # divide by two to get upper/lower sum
-
     # ALLELE SCORE, LD SCORE: calculate allele frequencies
     # take sum column and divide by num phases
     pfreq = geno[:,rsel,:].sum((0,1)) / numpy.float64(phases)
@@ -279,8 +274,8 @@ def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
             ################################################################
             ## Calculate pairwise marker weights for the weight component ##
             ################################################################
-            # make exhaustive pairwise product; divide by divisor
-            cumprod = (wcoeff[rst:rsp,None] @ wcoeff[None,cst:csp]) / divisor
+            # make pairwise product
+            cumprod = wcoeff[rst:rsp,None] @ wcoeff[None,cst:csp]
 
             #################################################################
             ## Calculate pairwise allele frequency distance scores for all ##
@@ -420,13 +415,18 @@ def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
                 cycles                  # number of random matings after
             )
 
-            # if: linkage disequilibrium is approximately zero,
+            # convert nan's to 0.0's
+            pld[numpy.isnan(pld)] = 0.0
+
+            # if: linkage disequilibrium is zero,
+            #     # Note: approx equal to zero is not used because a high number
+            #     # of 'cycles' can substantially reduce this.
             #     the LD component is equal to the allele availability
             # else:
             #     calculate distance scaled distance from target to actual;
             # accumulate product into 'cumprod'
             cumprod *= numpy.where(
-                pld < 1e-8,
+                pld <= 0.0,
                 allele_avail[rst:rsp,None] @ allele_avail[None,cst:csp],
                 1.0 - ((tld - pld) / (tld - eld))
             )
