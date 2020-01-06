@@ -49,28 +49,28 @@ cycles = 10
 ################################################################################
 
 # declare dataframes for storing things
-pa_population_df = None
-pa_selections_df = None
+# pa_population_df = None
+# pa_selections_df = None
 opv_population_df = None
 opv_selections_df = None
 
 # simulate breeding cycles
 for trial in range(n_trials):
     # simulate
-    pa_pop_df, pa_sel_df = gs.pa_sim(
-        pop_size = n_indiv,
-        sel_size = sel_size,
-        geno = geno,
-        coeff = coeff,
-        tfreq = tfreq,
-        tld = tld,
-        gmap = gmap,
-        lgroup = lgroup,
-        cycles = cycles,
-        algorithm = "hc_sa_set",
-        mtype = "tril",
-        verbose = False
-    )
+    # pa_pop_df, pa_sel_df = gs.pa_sim(
+    #     pop_size = n_indiv,
+    #     sel_size = sel_size,
+    #     geno = geno,
+    #     coeff = coeff,
+    #     tfreq = tfreq,
+    #     tld = tld,
+    #     gmap = gmap,
+    #     lgroup = lgroup,
+    #     cycles = cycles,
+    #     algorithm = "hc_sa_set",
+    #     mtype = "tril",
+    #     verbose = False
+    # )
     opv_pop_df, opv_sel_df = gs.opv_sim(
         geno = geno,
         coeff = coeff,
@@ -88,15 +88,15 @@ for trial in range(n_trials):
         verbose = False
     )
     # concatenate
-    pa_population_df = pandas.concat([pa_population_df, pa_pop_df])
-    pa_selections_df = pandas.concat([pa_selections_df, pa_sel_df])
+    # pa_population_df = pandas.concat([pa_population_df, pa_pop_df])
+    # pa_selections_df = pandas.concat([pa_selections_df, pa_sel_df])
     opv_population_df = pandas.concat([opv_population_df, opv_pop_df])
     opv_selections_df = pandas.concat([opv_selections_df, opv_sel_df])
     # print cycle trial number
     print("Trial:", trial+1)
 
 # write to files
-pa_population_df.to_csv("pa_population.csv")
-pa_selections_df.to_csv("pa_selections.csv")
+# pa_population_df.to_csv("pa_population.csv")
+# pa_selections_df.to_csv("pa_selections.csv")
 opv_population_df.to_csv("opv_population.csv")
 opv_selections_df.to_csv("opv_selections.csv")

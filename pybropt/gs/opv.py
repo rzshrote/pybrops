@@ -567,6 +567,21 @@ def opv_sim(geno,
             "    'hc_sa_state'\n"\
             "    'icpso'"
         )
+    ######################### Calculate objfn.pa stuff #########################
+    # here we calculate 'wcoeff', which will be input into objfn.pa
+    wcoeff = numpy.absolute(coeff)              # take absolute values
+    divisor = wcoeff.sum(dtype=numpy.float64)   # take sum of wcoeff array
+    divisor *= divisor                          # square the sum
+    divisor += (wcoeff*wcoeff).sum(             # add sum of squared elements
+        dtype=numpy.float64                     # force double-precision
+    )
+    divisor /= 2.0                              # divide by two
+    wcoeff /= numpy.sqrt(divisor)               # scale so sums equal one
+    # make target frequency
+    tfreq = numpy.where(coeff >= 0, 1.0, 0.0)
+    # make target ld
+    tld = 1.0
+
 
     ########################################
     # Step 1) establish engine states
@@ -739,14 +754,28 @@ def opv_sim(geno,
         ).sum(0).tolist()
 
         # score the population using objfn.opv
-        population_score = objfn.opv(
+        opv_score = objfn.opv(
             slice(None),
             opv_geno * coeff
         )
 
+        # score population using objfn.pa
+        pa_score = objfn.pa(
+            slice(None),
+            opv_geno,
+            wcoeff,
+            tfreq,
+            tld,
+            d,
+            lgroup_size,
+            cycles - cycle,
+            mem = 1000,
+            mtype = 'tril'
+        )
+
         # append population stats to list
         population_list.append(
-            ["opv", algorithm, seed, cycle+1, population_score] + gebvs
+            ["opv", algorithm, seed, cycle+1, opv_score, pa_score] + gebvs
         )
 
         # recalculate haplotype coefficients
@@ -763,7 +792,7 @@ def opv_sim(geno,
     # make population dataframe
     population_df = pandas.DataFrame(
         population_list,
-        columns = (["method", "algorithm", "seed", "cycle", "score"] +
+        columns = (["method", "algorithm", "seed", "cycle", "opv_score", "pa_score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(pop_size)])
     )
 
