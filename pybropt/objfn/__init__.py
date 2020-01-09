@@ -4,4 +4,5 @@ from .opv import opv, opv_geno
 from .pa import pa
 from .wgs import wgs
 from .paa import paa
-from .pad import pad, pad_prime
+from .pafd import pafd, pafd_prime
+from .pldd import pldd

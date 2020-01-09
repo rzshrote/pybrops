@@ -428,7 +428,7 @@ def pa(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, cycles,
             cumprod *= numpy.where(
                 pld <= 0.0,
                 allele_avail[rst:rsp,None] @ allele_avail[None,cst:csp],
-                1.0 - ((tld - pld) / (tld - eld))
+                1.0 - (numpy.absolute(tld - pld) / numpy.absolute(tld - eld))
             )
 
             # add triangle modifications if necessary

@@ -1,6 +1,6 @@
 import numpy
 
-def D_prime(rsel, geno, rslice, cslice, r, cycles, dtype = None):
+def D_prime(rgeno, cgeno, rprob, cprob, r, cycles):
     """
     Calculate r squared linkage disequilibrium matrix.
 
@@ -36,34 +36,18 @@ def D_prime(rsel, geno, rslice, cslice, r, cycles, dtype = None):
         A matrix of size (rslice, cslice) containing D prime values for
         linkage disequilibrium.
     """
-    ############################## Parse 'dtype' ##############################
-    if dtype is None:
-        dtype = r.dtype
-
     ############################# Compute matrix ##############################
-    # get number of phases
-    phases = geno.shape[0] * geno.shape[1]
-    depth, rows, columns = geno.shape
-
-    # grab a matrix view for target rows and columns
-    row_view = geno[:,rsel,rslice]
-    col_view = geno[:,rsel,cslice]
-
-    # calculate allele proportions for rows and columns
-    # step 1) grab 'rsel' rows; grab columns using 'rslice' or 'cslice'
-    # step 2) sum across depth and rows
-    # step 3) divide by number of phases to get probability of allele
-    row_prob = geno[:,rsel,rslice].sum((0,1)) / phases  # P(A1)
-    col_prob = geno[:,rsel,cslice].sum((0,1)) / phases  # P(B1)
+    # get number of phases from row matrix
+    phases = rgeno.shape[0] * rgeno.shape[1]
 
     # calculate coupling phase matrix
-    coupling = numpy.sum(                       # sum across each phase slice
-        row_view.transpose(0,2,1) @ col_view,   # multiply each phase slice
-        axis=0                                  # phases: axis=0
-    ) / phases                                  # divide by number of phases
+    coupling = numpy.sum(                 # sum across each phase slice
+        rgeno.transpose(0,2,1) @ cgeno,   # multiply each phase slice
+        axis=0                            # phases: axis=0
+    ) / rprob.dtype.type(phases)          # divide by phases; use rprob dtype
 
     # calculate repulsion phase matrix
-    repulsion = row_prob[:,None] @ col_prob[None,:]
+    repulsion = rprob[:,None] @ cprob[None,:]
 
     # calculate D matrix; multiply by (1-r)**cycles for LD decay
     D = (coupling - repulsion) * ( (1 - r)**cycles )
@@ -72,12 +56,12 @@ def D_prime(rsel, geno, rslice, cslice, r, cycles, dtype = None):
     D_max = numpy.where(
         D < 0,          # if D < 0
         numpy.maximum(  # then take max( -P(A1)P(B1), -(1-P(A1))(1-P(B1)) )
-            -row_prob[:,None] @ col_prob[None,:],
-            -(1-row_prob)[:,None] @ (1-col_prob)[None,:]
+            -rprob[:,None] @ cprob[None,:],
+            -(1-rprob)[:,None] @ (1-cprob)[None,:]
         ),
         numpy.minimum(  # else take min( P(A1)(1-P(B1)), (1-P(A1))P(B1) )
-            row_prob[:,None] @ (1-col_prob)[None,:],
-            (1-row_prob)[:,None] @ col_prob[None,:]
+            rprob[:,None] @ (1-cprob)[None,:],
+            (1-rprob)[:,None] @ cprob[None,:]
         )
     )
 
@@ -86,6 +70,7 @@ def D_prime(rsel, geno, rslice, cslice, r, cycles, dtype = None):
 
     # return D prime
     return D_prime
+
 
 
 # TODO: D_prime generator function

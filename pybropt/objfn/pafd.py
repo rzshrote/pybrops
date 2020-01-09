@@ -1,9 +1,9 @@
 import numpy
 
-def pad(rsel, geno, wcoeff, tfreq, efreq=None, scaled=False,
+def pafd(rsel, geno, wcoeff, tfreq, efreq=None, scaled=False,
         dtype=numpy.dtype("float64")):
     """
-    Population Allele Availability (PAA) objective function. If a target allele
+    Population Allele Frequency Distance (PAFD) objective function. If a target allele
     count (tct) or
 
     This is a bare bones function. Minimal error checking.
@@ -62,12 +62,12 @@ def pad(rsel, geno, wcoeff, tfreq, efreq=None, scaled=False,
         dist /= numpy.absolute(tfreq - efreq)
 
     # calculate population allele distance score using max precision
-    pad = (wcoeff * dist).sum(dtype='float64')
+    pafd = (wcoeff * dist).sum(dtype='float64')
 
     # return score as the specified output data type
-    return dtype.type(pad)
+    return dtype.type(pafd)
 
 # helper function
-def pad_prime(rsel, geno, wcoeff, tfreq, efreq=None,
+def pafd_prime(rsel, geno, wcoeff, tfreq, efreq=None,
               dtype=numpy.dtype("float64")):
-    return pad(rsel, geno, wcoeff, tfreq, efreq, scaled=True, dtype=dtype)
+    return pafd(rsel, geno, wcoeff, tfreq, efreq, scaled=True, dtype=dtype)
