@@ -1,0 +1,57 @@
+
+Call:
+lm(formula = pad ~ paa, data = pts_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-16.2679  -2.6761  -0.0271   2.6903  16.0070 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  3.716e+03  2.499e+01  148.73   <2e-16 ***
+paa         -7.403e-02  3.232e-03  -22.91   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 3.937 on 9998 degrees of freedom
+Multiple R-squared:  0.04986,	Adjusted R-squared:  0.04977 
+F-statistic: 524.7 on 1 and 9998 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = pad_prime ~ paa, data = pts_df)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-32.536  -5.352  -0.054   5.381  32.014 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  7.432e+03  4.997e+01  148.73   <2e-16 ***
+paa         -1.481e-01  6.464e-03  -22.91   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.875 on 9998 degrees of freedom
+Multiple R-squared:  0.04986,	Adjusted R-squared:  0.04977 
+F-statistic: 524.7 on 1 and 9998 DF,  p-value: < 2.2e-16
+
+
+Call:
+lm(formula = pad_prime ~ pad, data = pts_df)
+
+Residuals:
+       Min         1Q     Median         3Q        Max 
+-1.735e-12  2.000e-17  2.600e-16  4.900e-16  2.679e-14 
+
+Coefficients:
+             Estimate Std. Error   t value Pr(>|t|)    
+(Intercept) 1.281e-11  1.526e-13 8.392e+01   <2e-16 ***
+pad         2.000e+00  4.854e-17 4.120e+16   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1.961e-14 on 9998 degrees of freedom
+Multiple R-squared:      1,	Adjusted R-squared:      1 
+F-statistic: 1.698e+33 on 1 and 9998 DF,  p-value: < 2.2e-16
+
