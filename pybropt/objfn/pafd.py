@@ -3,8 +3,9 @@ import numpy
 def pafd(rsel, geno, wcoeff, tfreq, efreq=None, scaled=False,
         dtype=numpy.dtype("float64")):
     """
-    Population Allele Frequency Distance (PAFD) objective function. If a target allele
-    count (tct) or
+    Population Allele Frequency Distance (PAFD) objective function.
+
+    The goal is to minimize this function. Lower is better.
 
     This is a bare bones function. Minimal error checking.
 
