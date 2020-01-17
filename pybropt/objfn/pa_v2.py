@@ -39,8 +39,8 @@ MTYPE_IXFTY_DICT = {
 }
 
 def pa_v2(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
-         mapfn = 'haldane', ldfn = 'r_sq', mem = None,
-         mtype = 'tril', dtype = numpy.dtype('float64')):
+          mapfn = 'haldane', ldfn = 'r_sq', mtype = 'tril', mem = None, 
+          dtype = numpy.dtype('float64')):
     """
     Population Architect v2 (PA v2) objective function.
         The goal is to minimize this function. Lower is better.
