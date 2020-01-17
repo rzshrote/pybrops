@@ -2,8 +2,8 @@ import numpy
 import time
 
 def meiosis(geno,
-            d,
-            lgroup_size,
+            gmap,
+            lgroup,
             gamete_index,
             interference = None,
             seed = None,
@@ -15,8 +15,8 @@ def meiosis(geno,
     Parameters
     ==========
     geno : numpy.ndarray
-    d : numpy.ndarray
-    lgroup_size : numpy.ndarray
+    gmap : numpy.ndarray
+    lgroup : numpy.ndarray
     gamete_index : numpy.ndarray
     interference : None or int
     seed : None or int
@@ -34,7 +34,7 @@ def meiosis(geno,
         print("Meiosis engine state:")
         print("Genotype array at:", id(geno))
         print("Genotype shape =", geno.shape)
-        print("Linkage group sizes =", lgroup_size)
+        print("Linkage group sizes =", lgroup)
         print("Gamete index =", gamete_index)
         print("Interference =", interference)
         print("numpy.random seed =", seed)
@@ -46,10 +46,10 @@ def meiosis(geno,
     )
 
     # calculate stop indices for linkage group maps
-    dsp = numpy.cumsum(lgroup_size)
+    dsp = numpy.cumsum(lgroup)
 
     # calculate start indices for linkage group maps
-    dst = dsp - lgroup_size[0]
+    dst = dsp - lgroup[0]
 
     ##################################################
     # calculate lambdas for the Poisson distribution #
@@ -59,20 +59,20 @@ def meiosis(geno,
     # these lambda values will be used to determine how many recombination
     # points to generate from the Poisson distribution
     lambdas = numpy.empty(
-        len(lgroup_size),
-        dtype=d.dtype
+        len(lgroup),
+        dtype=gmap.dtype
     )
 
-    # for start, stop indices subtract d[start] from d[stop]
+    # for start, stop indices subtract gmap[start] from gmap[stop]
     # this calculates the lambda for each linkage group
     for i,(st,sp) in enumerate(zip(dst, dsp)):
-        lambdas[i] = d[sp-1] - d[st]
+        lambdas[i] = gmap[sp-1] - gmap[st]
 
     # generate Poisson samples to determine the number of crossover events
     # each row corresponds to a gamete_index; each column, a linkage group
     chiasmata = numpy.random.poisson(
         lambdas,
-        (len(gamete_index), len(lgroup_size))
+        (len(gamete_index), len(lgroup))
     )
 
     # generate phase decisions for each gamete and linkage group
@@ -81,7 +81,7 @@ def meiosis(geno,
     phase = numpy.random.binomial(
         1,
         0.5,
-        (len(gamete_index),len(lgroup_size))
+        (len(gamete_index),len(lgroup))
     )
 
     # for each gamete
@@ -93,8 +93,8 @@ def meiosis(geno,
             # generate a number of chiasmata points between map start, stop
             xo_pts = numpy.sort(
                 numpy.random.uniform(
-                    d[st],
-                    d[sp-1],
+                    gmap[st],
+                    gmap[sp-1],
                     chiasmata[i,j]
                 )
             )
@@ -104,7 +104,7 @@ def meiosis(geno,
             for chiasma in xo_pts:
                 # first do binary search for map chiasmata index
                 cindex = numpy.searchsorted(
-                    d[st:sp],
+                    gmap[st:sp],
                     chiasma
                 )
 
