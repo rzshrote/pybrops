@@ -17,7 +17,7 @@ def pa(sel_size, geno, coeff, tfreq, tld, gmap, lgroup, cycles, algorithm,
        algorithm_varg = None, seed = None, nthreads = 1, zwidth = 3,
        verbose = True):
     """
-    Optimal Population Value (OPV) selection
+    Population Architect (PA) Selection
 
     Parameters
     ==========
