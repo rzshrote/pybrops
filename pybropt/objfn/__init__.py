@@ -10,4 +10,5 @@ from .paf import paf
 from .pau import pau
 from .pafd_v2 import pafd_v2
 from .pldd_v2 import pldd_v2
-from .pa_v2 import pa_v2
+from .pa_v2 import pa_v2, pa_v2_max
+from .mogs import mogs, mogs_max
