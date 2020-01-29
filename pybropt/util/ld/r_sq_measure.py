@@ -179,7 +179,7 @@ def r_sq_imp(rgeno, cgeno, rprob, cprob, ravail, cavail, r, generations):
 
     # Step 1) calculate D matrix; multiply by (1-r)**cycles for LD decay
     # since coupling is guaranteed to be float64, this is a float64 matrix
-    r_sq = (coupling - repulsion) * ( (1 - r)**cycles )
+    r_sq = (coupling - repulsion) * ( (1 - r)**generations )
 
     # Step 2) now square D to get D_sq
     r_sq *= r_sq
