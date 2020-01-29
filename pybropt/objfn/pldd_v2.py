@@ -192,8 +192,8 @@ def pldd_v2(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations,
                 geno[:,rsel,cst:csp],   # col markers
                 pfreq[rst:rsp],         # row frequencies
                 pfreq[cst:csp],         # col frequencies
-                allele_avail[rst:rsp]   # row allele availabilities
-                allele_avail[cst:csp]   # column allele availabilities
+                allele_avail[rst:rsp],  # row allele availabilities
+                allele_avail[cst:csp],  # column allele availabilities
                 r,                      # recombination probabilities
                 generations             # random matings & meiosis after
             )
