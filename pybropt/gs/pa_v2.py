@@ -14,7 +14,9 @@ from util.arg_proc import proc_wcoeff
 from util.arg_proc import proc_tfreq_tld
 from util.arg_proc import proc_gmap_lgroup
 from util.arg_proc import proc_dcoeff
+from util.arg_proc import proc_dcoeff_t
 from util.arg_proc import proc_mem
+from util.arg_proc import proc_bcycles
 from util.arg_proc import proc_hc_sa_set_varg
 from util.arg_proc import proc_hc_sa_state_varg
 from util.arg_proc import proc_icpso_varg
@@ -155,7 +157,7 @@ def pa_v2(sel_size, geno, coeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
 
     # lookup the algorithm in the dict, and execute the function with arguments
     algo_out = PA_ALGORITHM_DICT[algorithm](
-        objfn = objfn.pa_v2,
+        objfn = objfn.pa_v2_max,
         objfn_varg = pa_v2_varg,
         **algorithm_varg,
         seed = seed,
@@ -177,7 +179,7 @@ def pa_v2(sel_size, geno, coeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
     # create an info dataframe for storing algorithm details, etc.
     if algorithm == "hc_sa_set" or algorithm == "hc_sa_state":
         info_df = pandas.DataFrame(
-            data = [["opv",algorithm,seed]],
+            data = [["pa_v2",algorithm,seed]],
             columns = ["method","algorithm","seed"]
         )
         scores_df = pandas.DataFrame(
@@ -191,7 +193,7 @@ def pa_v2(sel_size, geno, coeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
         )
     elif algorithm == "icpso":
         info_df = pandas.DataFrame(
-            data = [["opv",algorithm,seed]
+            data = [["pa_v2",algorithm,seed]
                     for _ in range(algo_out["X_pbest_smpl"].shape[0])],
             columns = ["method","algorithm","seed"]
         )
@@ -241,7 +243,7 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
               cgenerations = 1, matefn = None, algorithm_varg = None,
               interference = None,
               seed = None, nthreads = 1, zwidth = 3, verbose = True,
-              averbose = False):
+              verbose_algo = False):
     """
     Population Architect (PA) selection simulation
 
@@ -266,10 +268,11 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
     cycles : int
         Number of breeding cycles to simulate.
     gmap : numpy.ndarray
-        Genetic map in Morgan units.
+        A 1D array of genetic map positions to convert to recombination
+        probabilities. The positions units should be in Morgans.
     lgroup : numpy.ndarray
-        Array of linkage group sizes. The sum of the elements should equal the
-        length of 'gmap'.
+        A 1D array of linkage group sizes. The sum of the elements should equal
+        the length of 'gmap'.
     algorithm : {'hc_sa_set', 'hc_sa_state', 'icpso'}
         Specification for algorithm to use for selecting individuals.
         Algorithm overview:
@@ -351,7 +354,7 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
         print("numpy.random seed =", seed)
         print("Number of threads =", nthreads)
 
-    # generate random seeds for cycle, shuffle, meiosis, for each cycle
+    # generate random seeds for bcycle, shuffle, meiosis, for each bcycle
     seeds = numpy.random.randint(
         low = numpy.iinfo(numpy.uint32).min,
         high = numpy.iinfo(numpy.uint32).max,
@@ -367,7 +370,7 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
     pa_geno = geno.copy()
 
     for bcycle in range(bcycles):
-        pa_varg = {
+        pa_v2_varg = {
             "geno": pa_geno,
             "wcoeff": wcoeff,
             "tfreq": tfreq,
@@ -386,12 +389,12 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
 
         # use algorithm selected, get output
         optout = PA_ALGORITHM_DICT[algorithm](
-            objfn = objfn.pa,
-            objfn_varg = pa_varg,
+            objfn = objfn.pa_v2_max,
+            objfn_varg = pa_v2_varg,
             **algorithm_varg,
             seed = seeds[0,bcycle],
             nthreads = nthreads,
-            verbose = verbose
+            verbose = verbose_algo
         )
 
         selection_indices = None
@@ -416,7 +419,7 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
 
         # store everything into selections_list
         selections_list.append(
-            [method, algorithm, seed, cycle+1, selection_score] + gebvs
+            [method, algorithm, seed, bcycle+1, selection_score] + gebvs
         )
 
         # seed the rng for shuffling
@@ -488,17 +491,17 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
         # score the population using objfn.pa
         pop_pa_score = objfn.pa_v2(
             slice(None),
-            **pa_varg
+            **pa_v2_varg
         )
 
         # append population stats to list
         population_list.append(
-            [method, algorithm, seed, cycle+1, pop_opv_score, pop_pa_score] + gebvs
+            [method, algorithm, seed, bcycle+1, pop_opv_score, pop_pa_score] + gebvs
         )
 
         # print progress
         if verbose:
-            print("Cycle:", cycle+1)
+            print("BCycle:", bcycle+1)
 
     ########################################
     # Step 3) create a results dataframes
@@ -507,14 +510,14 @@ def pa_v2_sim(pop_size, sel_size, geno, coeff, tfreq, tld, gmap, lgroup,
     # make population dataframe
     population_df = pandas.DataFrame(
         population_list,
-        columns = (["method", "algorithm", "seed", "cycle", "opv_score", "pa_score"] +
+        columns = (["method", "algorithm", "seed", "bcycle", "opv_score", "pa_score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(pop_size)])
     )
 
     # make selections dataframe
     selections_df = pandas.DataFrame(
         selections_list,
-        columns = (["method", "algorithm", "seed", "cycle", "score"] +
+        columns = (["method", "algorithm", "seed", "bcycle", "score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(sel_size)])
     )
 

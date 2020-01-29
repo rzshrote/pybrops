@@ -39,7 +39,7 @@ MTYPE_IXFTY_DICT = {
 }
 
 def pa_v2(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
-          mapfn = 'haldane', ldfn = 'r_sq', mtype = 'tril', mem = None, 
+          mapfn = 'haldane', ldfn = 'r_sq', mtype = 'tril', mem = None,
           dtype = numpy.dtype('float64')):
     """
     Population Architect v2 (PA v2) objective function.
@@ -221,8 +221,8 @@ def pa_v2(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
                 geno[:,rsel,cst:csp],   # col markers
                 pfreq[rst:rsp],         # row frequencies
                 pfreq[cst:csp],         # col frequencies
-                allele_avail[rst:rsp]   # row allele availabilities
-                allele_avail[cst:csp]   # column allele availabilities
+                allele_avail[rst:rsp],  # row allele availabilities
+                allele_avail[cst:csp],  # column allele availabilities
                 r,                      # recombination probabilities
                 generations             # random matings & meiosis after
             )
@@ -264,3 +264,13 @@ def pa_v2(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
 
     # return the score casted as the output data type
     return dtype.type(score)
+
+
+def pa_v2_max(rsel, geno, wcoeff, tfreq, tld, gmap, lgroup, generations, dcoeff,
+          mapfn = 'haldane', ldfn = 'r_sq', mtype = 'tril', mem = None,
+          dtype = numpy.dtype('float64')):
+    """
+    Negate Population Architect (PA) selection function 'pa_v2' so that the
+    objective becomes to maximize the function instead.
+    """
+    return -1 * pa_v2(**locals())
