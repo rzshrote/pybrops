@@ -116,19 +116,9 @@ def cgs(geno,
     # return the 'sel_size' highest scoring indices
     return results_df, history_df
 
-def cgs_sim(geno,
-            coeff,
-            pop_size,
-            sel_size,
-            cycles,
-            d,
-            lgroup_size,
-            algorithm,
-            interference = None,
-            seed = None,
-            nthreads = 1,
-            zwidth = 3,
-            verbose = True):
+def cgs_sim(pop_size, sel_size, geno, coeff, gmap, lgroup, bcycles,
+            algorithm = None, interference = None, seed = None, nthreads = 1,
+            zwidth = 3, verbose = True):
     """
     Conventional Genomic Selection (CGS)
 
@@ -150,13 +140,13 @@ def cgs_sim(geno,
     sel_size : int, numpy.integer, float, numpy.float
         Number of individuals to select OR proportion of individuals to select.
         If a proportion is given, round to the nearest individual.
-    cycles : int
+    bcycles : int
         Number of breeding cycles to simulate.
-    d : numpy.ndarray
+    gmap : numpy.ndarray
         Genetic map in Morgan units.
-    lgroup_size : numpy.ndarray
+    lgroup : numpy.ndarray
         Array of linkage group sizes. The sum of the elements should equal the
-        length of 'd'.
+        length of 'gmap'.
     algorithm : None, {'quicksort', 'mergesort', 'heapsort', 'stable'}
         Optional specification for algorithm to use for sorting GEBVs. Default
         is 'quicksort'. Only worry about this for an extremely large number of
@@ -226,37 +216,37 @@ def cgs_sim(geno,
             (type(sel_size),)
         )
 
-    # make sure d is a numpy.ndarray
-    if not isinstance(d, numpy.ndarray):
+    # make sure gmap is a numpy.ndarray
+    if not isinstance(gmap, numpy.ndarray):
         raise TypeError(
-            "'d' must be of type numpy.ndarray\n"\
-            "    type(d) = %s" %
-            (type(d),)
+            "'gmap' must be of type numpy.ndarray\n"\
+            "    type(gmap) = %s" %
+            (type(gmap),)
         )
 
-    # make sure lgroup_size is a numpy.ndarray
-    if not isinstance(lgroup_size, numpy.ndarray):
+    # make sure lgroup is a numpy.ndarray
+    if not isinstance(lgroup, numpy.ndarray):
         raise TypeError(
-            "'lgroup_size' must be of type numpy.ndarray\n"\
-            "    type(lgroup_size) = %s" %
-            (type(lgroup_size),)
+            "'lgroup' must be of type numpy.ndarray\n"\
+            "    type(lgroup) = %s" %
+            (type(lgroup),)
         )
 
     # make sure that the linkage map and the bins line up
-    if len(d) != lgroup_size.sum():
+    if len(gmap) != lgroup.sum():
         raise ValueError(
-            "Length of 'd' must equal the sum of elements in 'lgroup_size'\n"\
-            "    len(d) = %s\n"\
-            "    sum(lgroup_size) = %s" %
-            (len(d), lgroup_size.sum())
+            "Length of 'gmap' must equal the sum of elements in 'lgroup'\n"\
+            "    len(gmap) = %s\n"\
+            "    sum(lgroup) = %s" %
+            (len(gmap), lgroup.sum())
         )
 
-    # test to make sure 'cycles' is good
-    if not isinstance(cycles, (int, numpy.integer)):
+    # test to make sure 'bcycles' is good
+    if not isinstance(bcycles, (int, numpy.integer)):
         raise TypeError(
-            "Expected 'cycles' to be an int or numpy.integer\n"\
-            "    type(cycles) = %s" %
-            (type(cycles),)
+            "Expected 'bcycles' to be an int or numpy.integer\n"\
+            "    type(bcycles) = %s" %
+            (type(bcycles),)
         )
 
     # tests for algorithm choice
@@ -292,7 +282,7 @@ def cgs_sim(geno,
     cycle_seed = numpy.random.randint(
         low = numpy.iinfo(numpy.uint32).min,
         high = numpy.iinfo(numpy.uint32).max,
-        size = cycles,
+        size = bcycles,
         dtype = numpy.uint32
     )
 
@@ -300,7 +290,7 @@ def cgs_sim(geno,
     meiosis_seed = numpy.random.randint(
         low = numpy.iinfo(numpy.uint32).min,
         high = numpy.iinfo(numpy.uint32).max,
-        size = cycles,
+        size = bcycles,
         dtype = numpy.uint32
     )
 
@@ -308,7 +298,7 @@ def cgs_sim(geno,
     shuffle_seed = numpy.random.randint(
         low = numpy.iinfo(numpy.uint32).min,
         high = numpy.iinfo(numpy.uint32).max,
-        size = cycles,
+        size = bcycles,
         dtype = numpy.uint32
     )
 
@@ -319,8 +309,8 @@ def cgs_sim(geno,
     # declare a working copy for genotype data
     cgs_geno = geno.copy()
 
-    # simulate the breeding cycles
-    for cycle in range(cycles):
+    # simulate the breeding bcycles
+    for cycle in range(bcycles):
         # get estimated GEBVs for initial population
         gebv = objfn.cgs(
             rslice = slice(None), # all slices
@@ -394,8 +384,8 @@ def cgs_sim(geno,
         # generate gametes
         gout = util.meiosis(
             hybrids,
-            d,
-            lgroup_size,
+            gmap,
+            lgroup,
             sources,
             verbose=False
         )
@@ -409,8 +399,14 @@ def cgs_sim(geno,
             coeff
         ).sum(0).tolist()
 
-        # score the population using objfn.opv
-        population_score = objfn.cgs(
+        # score population using objfn.opv
+        pop_opv_score = objfn.opv(
+            slice(None),
+            cgs_geno * coeff
+        )
+
+        # score the population using objfn.cgs
+        pop_cgs_score = objfn.cgs(
             rslice = slice(None),
             geno = cgs_geno,
             coeff = coeff
@@ -418,7 +414,7 @@ def cgs_sim(geno,
 
         # append population stats to list
         population_list.append(
-            ["cgs", algorithm, seed, cycle+1, population_score] + gebvs
+            ["cgs", algorithm, seed, cycle+1, pop_opv_score, pop_cgs_score] + gebvs
         )
 
         # print progress
@@ -432,7 +428,7 @@ def cgs_sim(geno,
     # make population dataframe
     population_df = pandas.DataFrame(
         population_list,
-        columns = (["method", "algorithm", "seed", "cycle", "score"] +
+        columns = (["method", "algorithm", "seed", "cycle", "opv_score", "cgs_score"] +
             ["gebv"+str(i).zfill(zwidth) for i in range(pop_size)])
     )
 
