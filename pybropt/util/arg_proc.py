@@ -6,7 +6,7 @@
 import numpy
 import warnings
 # import our libraries
-from human2bytes import human2bytes
+from .human2bytes import human2bytes
 
 def proc_pop_sel_sizes(pop_size, sel_size, geno):
     """
@@ -130,6 +130,66 @@ def proc_wcoeff(wcoeff, coeff, divisor = None):
         wcoeff = wcoeff / divisor       # divide wcoeff by divisor
 
     return wcoeff
+
+def proc_tfreq(tfreq):
+    # check if tfreq is a numpy.ndarray, if it is increase precision if needed.
+    if isinstance(tfreq, numpy.ndarray):
+        if tfreq.dtype != 'float64':
+            tfreq = numpy.float64(tfreq)
+            # courteously warn the user
+            warnings.warn(
+                "'tfreq' dtype is not 'float64'.\n    tfreq.dtype = %s\n"\
+                "Increasing precision to 'float64'." % tfreq.dtype.name,
+                UserWarning, stacklevel = 2
+            )
+    # check if tfreq is a number, if it is increase precision if necessary
+    elif numpy.issubdtype(type(tfreq), numpy.number):
+        if not numpy.issubdtype(type(tfreq), numpy.float64):
+            tfreq = numpy.float64(tfreq)
+            # courteously warn the user
+            warnings.warn(
+                "'tfreq' is not a 'numpy.float64'.\n    type(tfreq) = %s\n"\
+                "Increasing precision to 'numpy.float64'." % (type(tfreq),),
+                UserWarning, stacklevel = 2
+            )
+    # else tfreq is not an interpretable data type.
+    else:
+        raise TypeError(
+            "'tfreq' must be of type numpy.ndarray or numpy.number.\n"\
+            "    type(tfreq) = %s" % (type(tfreq),)
+        )
+
+    return tfreq
+
+def proc_tld(tld):
+    # check if tld is a numpy.ndarray, if it is increase precision if needed.
+    if isinstance(tld, numpy.ndarray):
+        if tld.dtype != 'float64':
+            tld = numpy.float64(tld)
+            # courteously warn the user
+            warnings.warn(
+                "'tld' dtype is not 'float64'.\n    tld.dtype = %s\n"\
+                "Increasing precision to 'float64'." % tld.dtype.name,
+                UserWarning, stacklevel = 2
+            )
+    # check if tld is a number, if it is increase precision if necessary
+    elif numpy.issubdtype(type(tld), numpy.number):
+        if not numpy.issubdtype(type(tld), numpy.float64):
+            tld = numpy.float64(tld)
+            # courteously warn the user
+            warnings.warn(
+                "'tld' is not a 'numpy.float64'.\n    type(tld) = %s\n"\
+                "Increasing precision to 'numpy.float64'." % (type(tld),),
+                UserWarning, stacklevel = 2
+            )
+    # else tfreq is not an interpretable data type.
+    else:
+        raise TypeError(
+            "'tld' must be of type numpy.ndarray or numpy.number.\n"\
+            "    type(tld) = %s" % (type(tld),)
+        )
+
+    return tld
 
 def proc_tfreq_tld(tfreq, tld):
     ################# check for correct 'tfreq' type and dtype #################
@@ -291,8 +351,8 @@ def proc_dcoeff_t(dcoeff_t, bcycles, n):
             "    dcoeff_t.shape = %s" % ((bcycles,n),dcoeff_t.shape)
         )
 
-    # dcoeff.sum() does not have to be equal to 1.0
-    return dcoeff
+    # dcoeff_t.sum() does not have to be equal to 1.0
+    return dcoeff_t
 
 def proc_bcycles(bcycles):
     if not numpy.issubdtype(type(bcycles), numpy.integer):
