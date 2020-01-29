@@ -3,6 +3,13 @@ import numpy
 import time
 import pandas
 
+# hack to append into our path the parent directory for this file
+import os, sys
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.realpath(__file__)
+    )))
+)
 # import our libraries
 from pybropt import gs
 from pybropt import stpfn
@@ -46,13 +53,30 @@ lgroup = numpy.repeat(n_loci//10, 10)
 # number of random breedings
 cycles = 10
 
+# calculate initial condition GEBVs
+gebvs = numpy.dot(geno, coeff).sum(0).tolist()
+pop_opv_score = objfn.opv(slice(None), geno * coeff)
+
+# calculate initial conditions
+initial_df = pandas.DataFrame(
+    [["method", "algorithm", seed, 0, pop_opv_score] + gebvs],
+    columns = (["method", "algorithm", "seed", "bcycle", "opv_score"] +
+        ["gebv"+str(i).zfill(3) for i in range(n_indiv)])
+)
+
+# write initial_df to file
+initial_df.to_csv("initial.csv")
+
+
 ################################################################################
 
 # declare dataframes for storing things
 # pa_population_df = None
 # pa_selections_df = None
-opv_population_df = None
-opv_selections_df = None
+# opv_population_df = None
+# opv_selections_df = None
+cgs_population_df = None
+cgs_selections_df = None
 
 # simulate breeding cycles
 for trial in range(n_trials):
@@ -71,32 +95,45 @@ for trial in range(n_trials):
     #     mtype = "tril",
     #     verbose = False
     # )
-    opv_pop_df, opv_sel_df = gs.opv_sim(
-        geno = geno,
-        coeff = coeff,
+    # opv_pop_df, opv_sel_df = gs.opv_sim(
+    #     geno = geno,
+    #     coeff = coeff,
+    #     pop_size = n_indiv,
+    #     sel_size = sel_size,
+    #     cycles = cycles,
+    #     d = gmap,
+    #     lgroup_size = lgroup,
+    #     algorithm = "hc_sa_set",
+    #     algorithm_varg = None,
+    #     interference = None,
+    #     seed = None,
+    #     nthreads = 1,
+    #     zwidth = 3,
+    #     verbose = False
+    # )
+    cgs_pop_df, cgs_sel_df = gs.cgs_sim(
         pop_size = n_indiv,
         sel_size = sel_size,
-        cycles = cycles,
-        d = gmap,
-        lgroup_size = lgroup,
-        algorithm = "hc_sa_set",
-        algorithm_varg = None,
-        interference = None,
-        seed = None,
-        nthreads = 1,
-        zwidth = 3,
-        verbose = False
+        geno = geno,
+        coeff = coeff,
+        gmap = gmap,
+        lgroup = lgroup,
+        bcycles = cycles
     )
     # concatenate
     # pa_population_df = pandas.concat([pa_population_df, pa_pop_df])
     # pa_selections_df = pandas.concat([pa_selections_df, pa_sel_df])
-    opv_population_df = pandas.concat([opv_population_df, opv_pop_df])
-    opv_selections_df = pandas.concat([opv_selections_df, opv_sel_df])
+    # opv_population_df = pandas.concat([opv_population_df, opv_pop_df])
+    # opv_selections_df = pandas.concat([opv_selections_df, opv_sel_df])
+    cgs_population_df = pandas.concat([cgs_population_df, cgs_pop_df])
+    cgs_selections_df = pandas.concat([cgs_selections_df, cgs_sel_df])
     # print cycle trial number
     print("Trial:", trial+1)
 
 # write to files
 # pa_population_df.to_csv("pa_population.csv")
 # pa_selections_df.to_csv("pa_selections.csv")
-opv_population_df.to_csv("opv_population.csv")
-opv_selections_df.to_csv("opv_selections.csv")
+# opv_population_df.to_csv("opv_population.csv")
+# opv_selections_df.to_csv("opv_selections.csv")
+cgs_population_df.to_csv("cgs_population.csv")
+cgs_selections_df.to_csv("cgs_selections.csv")
