@@ -103,7 +103,8 @@ def hc_sa_set(objfn,
                 for s in range(k, len(X_pos)):              # for each available
                     X_pos[e], X_pos[s] = X_pos[s], X_pos[e] # swap to new
                     scr = objfn(X_pos[0:k], **objfn_varg)   # score matrix
-                    #print(X_pos[0:k],scr)
+                    # if verbose:
+                    #     print("Test:", X_pos[0:k], '\tScore:', scr)
                     if scr > new_scr:                       # if better score
                         new_scr = scr                       # set new best score
                         e_best = e                          # record e_best
