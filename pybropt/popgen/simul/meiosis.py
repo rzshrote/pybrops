@@ -1,34 +1,40 @@
 import numpy
 import time
 
-def meiosis(geno,
-            gmap,
-            lgroup,
-            gamete_index,
-            interference = None,
-            seed = None,
-            verbose = True):
+def meiosis(geno, gmap, lgroup, gamete_index,
+            interference = None, seed = None, verbose = False):
     """
     Simulate meiosis. Generate gametes from a genotype matrix.
-    NOTE: only handles diploids
+    NOTE: only handles diploids and no interference.
 
     Parameters
     ==========
     geno : numpy.ndarray
+        An array of allele states. The dtype of 'geno' should be 'uint8'. Array
+        shape should be (depth, row, column) = (M, N, L) where 'M' represents
+        number of chromosome phases, 'N' represents number of individuals, 'L'
+        represents number of markers. Array format should be the 'C' format.
     gmap : numpy.ndarray
+        Genetic map in Morgan units.
     lgroup : numpy.ndarray
+        Array of linkage group sizes. The sum of the elements should equal the
+        length of 'gmap'.
     gamete_index : numpy.ndarray
+        A vector of indices corresponding to rows in the 'geno' matrix to
+        generate gametes for.
     interference : None or int
-    seed : None or int
+        Chiasma interference. Only supports None at the moment.
+    seed : None, int
+        A seed for initializing the random number generator. If 'seed' is None,
+        the internal state of the random number generator is unaltered
+        (i.e. the system time is NOT used to seed the RNG engine)
     verbose : boolean
+        Display verbose messages.
     """
 
-    # if there is no seed, use time to seed rng
-    if seed == None:
-        seed = numpy.uint32(time.time())
-
-    # seed the rng
-    numpy.random.seed(seed)
+    # if there is a RNG seed, seed the RNG
+    if seed is not None:
+        numpy.random.seed(seed)
 
     if verbose:
         print("Meiosis engine state:")
