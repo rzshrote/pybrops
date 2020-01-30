@@ -3,7 +3,7 @@ import numpy
 ################################################################################
 # Calculate OPV using a haplotype value matrix.
 ################################################################################
-def opv(rslice, hcoeff):
+def opv(rsel, hcoeff):
     """
     Score a population of individuals based on Optimal Population Value (OPV)
     (Goiffon et al., 2017). Scoring for OPV is defined as the Genomic Estimated
@@ -19,9 +19,9 @@ def opv(rslice, hcoeff):
 
     Parameters
     ----------
-    rslice : numpy.ndarray, tuple, list, None
+    rsel : numpy.ndarray, tuple, list, None
         A 1D array of indices to use for slicing and summing the matrix by row.
-        Each index in 'rslice' represents a single individual's row. If 'rslice'
+        Each index in 'rsel' represents a single individual's row. If 'rsel'
         is None, use all individuals.
         # TODO: performance testing to see which array type is better.
     hcoeff : numpy.ndarray
@@ -45,13 +45,13 @@ def opv(rslice, hcoeff):
     #     axes (axis=(0,1), respectively), then take the sum of the 1D array to
     #     arrive at OPV GEBV.
     ############################################################################
+    opv = hcoeff.shape[0] * numpy.amax( # array max function
+        hcoeff[:,rsel,:],               # subset hcoeff rows
+        axis=(0,1)                      # calculate max along slice and row axes
+                                        # NOTE: this is on a per-haplotype basis
+    ).sum()                             # take sum of maximum haplotypes
 
-    return numpy.amax(      # array max function
-        hcoeff[:,rslice,:], # subset hcoeff rows
-        axis=(0,1)          # calculate max along slice and row axes
-                            # NOTE: this is on a per-haplotype basis.
-    ).sum()                 # take sum of maximum haplotypes
-
+    return opv
 
 
 ################################################################################
