@@ -143,13 +143,3 @@ def varA_2way(geno, coeff, gmap, lgroup, t = None,
 
     # return the symmetrical variance matrix
     return varA
-
-
-
-
-
-
-
-
-
-    return 0
