@@ -1,5 +1,7 @@
 import numpy
 
+from .stdA import STDA_DICT
+
 def mogm(rsel, geno, wcoeff, tfreq, varA, varAfn, dcoeff,
          dtype = numpy.dtype('float64')):
     """
@@ -75,7 +77,7 @@ def mogm(rsel, geno, wcoeff, tfreq, varA, varAfn, dcoeff,
     F_x[1] = numpy.absolute(tfreq - pfreq).dot(wcoeff)
 
     ############################ Compute f_stdA(x) #############################
-    F_x[2] = varAfn(rsel, varA)
+    F_x[2] = -varAfn(rsel, varA)
 
     ###################### Compute F(x) and return score #######################
     # calculate weight sum method
@@ -91,4 +93,4 @@ def mogm_max(rsel, geno, wcoeff, tfreq, varA, varAfn, dcoeff,
     Negate Multi-Objective Genomic Mating (MOGM) function 'mogm' such that the
     objective becomes to maximize the function instead.
     """
-    return -1 * mogs(**locals())
+    return -1 * mogm(**locals())
