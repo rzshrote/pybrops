@@ -1,10 +1,5 @@
 import numpy
 
-# lookup table for cross variance objective functions
-STDA_DICT = {
-    '2-way': stdA_2way
-}
-
 def stdA_2way(rsel, varA, dtype=numpy.dtype("float64")):
     """
     Given a position vector, return the sum of standard deviations for each
@@ -52,3 +47,8 @@ def stdA_2way(rsel, varA, dtype=numpy.dtype("float64")):
 
     # cast as dtype and return stdA
     return dtype.type(stdA)
+
+# lookup table for cross variance objective functions
+STDA_DICT = {
+    '2-way': stdA_2way
+}
