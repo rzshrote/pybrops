@@ -1,7 +1,12 @@
 import numpy
-
-import .mate
-
+# hack to append into our path the parent directory for this file
+import os, sys
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.realpath(__file__)
+    )))
+)
+from popgen.simul import mate
 
 def f1_dh(male, female, geno, gmap, lgroup, n,
           interference = None, seed = None):
