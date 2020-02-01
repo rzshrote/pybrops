@@ -143,7 +143,7 @@ def erand(male, female, geno, gmap, lgroup,
 
     # if exact female contributions are not provided, assume equal contribution.
     if efemale is None:
-        efemale = numpy.repeat(1, len(female
+        efemale = numpy.repeat(1, len(female))
 
     # generate a list of male and female sources
     malesrc = numpy.repeat(male, n * emale)
