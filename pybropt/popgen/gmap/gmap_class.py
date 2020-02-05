@@ -279,24 +279,24 @@ class gmap:
         if header:
             # fill with required fields
             df_dict = {
-                "chr_grp" : self.chr_grp if col_present[0] else None,
-                "chr_start" : self.chr_start if col_present[1] else None,
-                "chr_stop" : self.chr_stop if col_present[2] else None,
-                "map_pos" : self.map_pos if col_present[3] else None,
-                "map_name" : self.map_name if col_present[4] else None,
-                "map_fncode" : self.map_fncode if col_present[5] else None
+                "chr_grp" : self.chr_grp if self.col_present[0] else None,
+                "chr_start" : self.chr_start if self.col_present[1] else None,
+                "chr_stop" : self.chr_stop if self.col_present[2] else None,
+                "map_pos" : self.map_pos if self.col_present[3] else None,
+                "map_name" : self.map_name if self.col_present[4] else None,
+                "map_fncode" : self.map_fncode if self.col_present[5] else None
             }
 
         # else we do not want a named header (only integer)
         else:
             # fill with required fields
             df_dict = {
-                0 : self.chr_grp if col_present[0] else None,
-                1 : self.chr_start if col_present[1] else None,
-                2 : self.chr_stop if col_present[2] else None,
-                3 : self.map_pos if col_present[3] else None,
-                4 : self.map_name if col_present[4] else None,
-                5 : self.map_fncode if col_present[5] else None
+                0 : self.chr_grp if self.col_present[0] else None,
+                1 : self.chr_start if self.col_present[1] else None,
+                2 : self.chr_stop if self.col_present[2] else None,
+                3 : self.map_pos if self.col_present[3] else None,
+                4 : self.map_name if self.col_present[4] else None,
+                5 : self.map_fncode if self.col_present[5] else None
             }
 
         # create DataFrame
