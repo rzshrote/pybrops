@@ -186,6 +186,29 @@ class gmap:
         return it
 
     @classmethod
+    def __len__(self):
+        return len(self.map_pos)
+
+    @classmethod
+    def dist(self, rst, rsp, cst, csp):
+        """
+        Get distance matrix.
+        """
+        # make an mesh grid for row and column gmap's
+        mesh = numpy.meshgrid(
+            self.map_pos[rst:rsp],
+            self.map_pos[cst:csp],
+            indexing='ij'
+        )
+
+        # take the difference of the two components in the grid and return abs()
+        d = numpy.absolute(mesh[0] - mesh[1])
+
+        # return distances
+        return d
+
+
+    @classmethod
     def build_spline(self, kind = 'linear', fill_value = 'extrapolate'):
         """
         Build a spline for estimating genetic map distances. This is built
