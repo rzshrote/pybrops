@@ -501,11 +501,12 @@ class gmap:
         self.chr_start = self.chr_start[correct_pos]
         self.chr_stop = self.chr_stop[correct_pos]
         self.map_pos = self.map_pos[correct_pos]
+        self.map_name = self.map_name[correct_pos]
         self.map_fncode = self.map_fncode[correct_pos]
 
 
     @staticmethod
-    def read_gmap(fpath):
+    def from_gmap(fpath):
         """
         Read genetic map file (*.gmap).
 
