@@ -721,10 +721,9 @@ class gmap:
         # iterate though each group of markers by chromosome (col index = 0)
         for chr_name, chr_df in df.groupby(0):
             # sort the data inplace
-            chr_df.sort_values(
+            chr_df = chr_df.sort_values(
                 by=[1,2],                   # by chr_start, then by chr_stop
-                ascending=[True, True],     # ascending for both columns
-                inplace=True                # modify dataframe inplace
+                ascending=[True, True]      # ascending for both columns
             )
 
             #####################
