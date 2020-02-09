@@ -62,7 +62,7 @@ class gmap:
         )
         self.chr_grpls = chr_grpls
         self.chr_grplen = chr_grplen
-        self.chr_grpstix = numpy.cumsum(chr_grplen) - chr_grplen[0]
+        self.chr_grpstix = numpy.cumsum(chr_grplen) - chr_grplen
         self.chr_grpspix = numpy.cumsum(chr_grplen)
         self.chr_grp = chr_grp
         self.chr_start = chr_start
@@ -406,14 +406,14 @@ class gmap:
         df_groups = df.groupby(0)
 
         # declare several variables
-        new_chr_grpls = []  # list to store string variables
-        new_chr_grplen = [] # list to store linkage group sizes
-        new_chr_grp = []    # list to store chr_grp's
-        new_chr_start = []  # list to store chr_start's
-        new_chr_stop = []   # list to store chr_stop's
-        new_map_pos = []    # list to store map_pos's
-        new_map_name = []   # list to store map_name's
-        new_map_fncode = [] # list to store map_fncode codes
+        chr_grpls = []  # list to store string variables
+        chr_grplen = [] # list to store linkage group sizes
+        chr_grp = []    # list to store chr_grp's
+        chr_start = []  # list to store chr_start's
+        chr_stop = []   # list to store chr_stop's
+        map_pos = []    # list to store map_pos's
+        map_name = []   # list to store map_name's
+        map_fncode = [] # list to store map_fncode codes
 
         # for each chromosome in self,
         for i, chr_name in enumerate(self.chr_grpls):
@@ -484,18 +484,19 @@ class gmap:
         for i,(stix,spix) in enumerate(zip(self.chr_grpstix, self.chr_grpspix)):
             prev_pos = self.map_pos[stix]   # get the first map position
             correct_pos[k] = True           # we assume it is true
+            k += 1
             for j in range(stix+1, spix):   # for each marker after
-                k += 1
                 if prev_pos <= self.map_pos[j]: # if the current is <= prev
                     correct_pos[k] = True       # the position is consistent
                     prev_pos = self.map_pos[j]  # move the previous position up
                     new_chr_grplen[i] += 1      # increase correct length by one
                 else:
                     correct_pos[k] = False      # else, it is inconsistent
+                k += 1
 
         # next we physically remove discrepancies
         self.chr_grplen = new_chr_grplen
-        self.chr_grpstix = numpy.cumsum(new_chr_grplen) - new_chr_grplen[0]
+        self.chr_grpstix = numpy.cumsum(new_chr_grplen) - new_chr_grplen
         self.chr_grpspix = numpy.cumsum(new_chr_grplen)
         self.chr_grp = self.chr_grp[correct_pos]
         self.chr_start = self.chr_start[correct_pos]
