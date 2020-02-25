@@ -1,19 +1,10 @@
 import numpy
 import time
 
-def icpso(objfn,
-          objfn_varg,
-          n,
-          states,
-          dim_sizes,
-          inertia_wt,
-          accel_coeff_pbest,
-          accel_coeff_gbest,
-          scale_factor,
-          stpfn,
-          seed = None,
-          nthreads = 1,
-          verbose = True):
+def icpso(objfn, objfn_varg,
+          n, states, dim_sizes, inertia_wt, accel_coeff_pbest,
+          accel_coeff_gbest, scale_factor,
+          stpfn, seed = None, nthreads = 1, verbose = True):
     """
     Perform Integer/Categorical Particle Swarm Optimization.
 
@@ -108,14 +99,13 @@ def icpso(objfn,
     # create list to store history of the swarm.
     history = list()
 
-    # create an array of dimension state stop indices
-    # 1D array for dimension stop indices
-    dsp = numpy.cumsum(dim_sizes)
-
     # create an array of dimension state start indices
     # 1D arrray for dimension start indices
-    # take 'dsp' and subtract number at first index
-    dst = dsp - dim_sizes[0]
+    dst = dim_sizes.cumsum() - dim_sizes
+
+    # create an array of dimension state stop indices
+    # 1D array for dimension stop indices
+    dsp = dim_sizes.cumsum()
 
     # particle population matrix shape
     pshape = (n, len(states))
