@@ -1,4 +1,9 @@
 import numpy
+import os, sys
+import cyvcf2
+sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+# import our libraries
+from util.error_subroutines import *
 
 class population:
     """
@@ -203,21 +208,12 @@ class population:
         ########################################################################
         # process 'geno'
         if geno is not None:
-            # convert 'geno' to a numpy.ndarray
-            geno = numpy.array(geno)
-            # make sure geno is an integer matrix
-            if not numpy.issubdtype(geno.dtype, numpy.integer):
-                raise ValueError("'geno' must be an integer matrix.")
-            # make sure matrix is right shape.
-            if geno.ndim != 3:
-                raise ValueError("'geno' must have 3 dimensions.")
-            # make sure we have values that are either 0 or 1.
-            if (geno.max() > 1) or (geno.min() < 0):
-                raise ValueError("'geno' must be a binary matrix.")
-            # convert geno to int8 matrix
-            geno = numpy.int8(geno)
-        # set a private variable _geno that holds the genotype matrix.
-        self._geno = geno
+            geno = numpy.array(geno)        # convert to a numpy.ndarray
+            check_matrix_dtype_is_integer(geno, 'geno') # check dtype
+            check_matrix_ndim(geno, 'geno', 3)          # check ndim
+            check_matrix_is_binary(geno, 'geno')        # check for binary
+            geno = numpy.int8(geno)         # convert to int8 matrix
+        self._geno = geno   # set a private variable _geno
 
         ########################################################################
         # process 'coeff'
@@ -227,17 +223,14 @@ class population:
             # convert 'coeff' to a numpy.ndarray
             coeff = numpy.array(coeff)
             # make sure 'coeff' is a numeric type
-            if not numpy.issubdtype(coeff.dtype, numpy.number):
-                raise ValueError("'coeff' must be a numeric matrix.")
-            # make sure matrix is the right shape
-            if coeff.ndim != 2:
-                raise ValueError("'coeff' must have 2 dimensions.")
+            check_matrix_dtype_is_numeric(coeff, 'coeff')# check dtype
+            check_matrix_ndim(coeff, 'coeff', 2)# check ndim
             # convert matrix to float64 matrix
             coeff = numpy.float64(coeff)
             # calculate wcoeff matrix
             wcoeff = numpy.absolute(coeff)  # take abs(coeff)
             wcoeff /= wcoeff.sum(0)         # divide each col by its col sum
-        # set private variables _coeff and _wcoeff to hold coefficients
+        # set private variables _coeff and _wcoeff
         self._coeff = coeff
         self._wcoeff = wcoeff
 
@@ -263,14 +256,9 @@ class population:
             # convert 'chr_pos' to a numpy.ndarray
             chr_pos = numpy.array(chr_pos)
             # make sure 'chr_pos' is an integer type
-            if not numpy.issubdtype(chr_pos.dtype, numpy.integer):
-                raise ValueError("'chr_pos' must be an integer type.")
-            # make sure matrix is the right shape
-            if chr_pos.ndim != 2:
-                raise ValueError("'chr_pos' must have 2 dimensions.")
-            # make sure row axis is 2
-            if chr_pos.shape[0] != 2:
-                raise ValueError("'chr_pos' must have 2 rows.")
+            check_matrix_dtype_is_integer(chr_pos, 'chr_pos')
+            check_matrix_ndim(chr_pos, 'chr_pos', 2)
+            check_matrix_axis_len(chr_pos, 'chr_pos', 0, 2)
             # convert chr_pos to int64 type.
             chr_pos = numpy.int64(chr_pos)
         # set private variable _chr_pos to hold positions
@@ -289,102 +277,19 @@ class population:
         if pheno is not None:
             # convert pheno to numpy.ndarray
             pheno = numpy.ndarray(pheno)
-            # make sure pheno is a numeric type
-            if not numpy.issubdtype(pheno.dtype, numpy.number):
-                raise ValueError("'pheno' must be a numeric type.")
-            # make sure matrix is the right shape
-            if pheno.ndim != 2:
-                raise ValueError("'pheno' must have 2 dimensions.")
+            check_matrix_dtype_is_numeric(pheno, 'pheno')
+            check_matrix_ndim(pheno, 'pheno', 2)
             # convert pheno to float64 type
             pheno = numpy.float64(pheno)
         # set private variable _pheno to hold phenotypes
         self._pheno = pheno
 
         ########################################################################
+        # set internal boolean to indicate the internals need to be validated
+        self._internals_valid = False
+
         # final sanity checks to make sure matrix sizes are compatible
-        if self._geno is not None:
-            M, N, L = self._geno.shape
-            # test L dimensions
-            if self._coeff is not None:
-                if L != self._coeff.shape[0]:
-                    raise ValueError("'geno' and 'coeff' are incompatible.")
-            if self._chr_grp is not None:
-                if L != self._chr_grp.shape[0]:
-                    raise ValueError("'geno' and 'chr_grp' are incompatible.")
-            if self._chr_pos is not None:
-                if L != self._chr_pos.shape[1]:
-                    raise ValueError("'geno' and 'chr_pos' are incompatible.")
-            # test N dimensions
-            if self._taxa is not None:
-                if N != self._taxa.shape[0]:
-                    raise ValueError("'geno' and 'taxa' are incompatible.")
-            if self._pheno is not None:
-                if N != self._pheno.shape[1]
-                    raise ValueError("'geno' and 'pheno' are incompatible.")
-        if self._coeff is not None:
-            L, T = self._coeff.shape
-            # test T dimensions
-            if self._trait is not None:
-                if T != self._trait.shape[0]:
-                    raise ValueError("'coeff' and 'trait' are incompatible.")
-            if self._pheno is not None:
-                if T != self._pheno.shape[0]:
-                    raise ValueError("'coeff' and 'trait' are incompatible.")
-            # test L dimensions
-            if self._chr_grp is not None:
-                if L != self._chr_grp.shape[0]:
-                    raise ValueError("'coeff' and 'chr_grp' are incompatible.")
-            if self._chr_pos is not None:
-                if L != self._chr_pos.shape[1]:
-                    raise ValueError("'coeff' and 'chr_pos' are incompatible.")
-        if self._chr_grp is not None:
-            L, = self._chr_grp.shape
-            # test L dimensions
-            if self._chr_pos is not None:
-                if L != self._chr_pos.shape[1]:
-                    raise ValueError("'chr_grp' and 'chr_pos' are incompatible.")
-        if self._trait is not None:
-            T, = self._trait.shape
-            # test T dimensions
-            if self._pheno is not None:
-                if T != self._pheno.shape[1]:
-                    raise ValueError("'trait' and 'pheno' are incompatible.")
-        if self._taxa is not None:
-            N, = self._taxa.shape
-            # test N dimensions
-            if self._pheno is not None:
-                if N != self._pheno.shape[0]:
-                    raise ValueError("'taxa' and 'pheno' are incompatible.")
-
-        ########################################################################
-        # get data dimensions for quick checking
-        # data dimension private variables
-        self._nphase = None
-        self._nindiv = None
-        self._nmarker = None
-        self._ntrait = None
-
-        # attempt to get number of phases, individuals, and markers from geno.
-        if self._geno is not None:
-            self._nphase, self._nindiv, self._nmarker = self._geno.shape
-        # attempt to get number of traits and number of markers from coeff
-        if self._coeff is not None:
-            self._nmarker, self._ntrait = self._coeff.shape
-        # attempt to get number taxa from taxa
-        if self._taxa is not None:
-            self._nindiv, = self._taxa.shape # need that comma before =
-        # attempt to get number of markers from chr_grp
-        if self._chr_grp is not None:
-            self._nmarker, = self._chr_grp.shape # need that comma before =
-        # attempt to get number of markers from chr_pos
-        if self._chr_pos is not None:
-            self._nmarker = self._chr_pos.shape[1] # only want 2nd element
-        # attempt to get number of traits from trait
-        if self._trait is not None:
-            self._ntrait, = self._trait.shape # need that comma before =
-        # attempt to get number of traits and number of taxa from pheno
-        if self._pheno is not None:
-            self._ntrait, self._nindiv = self._pheno.shape
+        self.validate_internals()
 
     ############################################################################
     ############################ Object Properties #############################
@@ -400,24 +305,14 @@ class population:
             # convert 'value' to a numpy.ndarray
             value = numpy.array(value)
             # make sure geno is an integer matrix
-            if not numpy.issubdtype(value.dtype, numpy.integer):
-                raise ValueError("'geno' must be an integer matrix.")
-            # make sure matrix is right shape.
-            if value.ndim != 3:
-                raise ValueError("'geno' must have 3 dimensions.")
-            # make sure matrix has the right number of markers
-            # NOTE: phase number and individual number are allowed to vary
-            #       (at one's own peril).
-            if value.shape[2] != self._nmarker:
-                raise ValueError("'geno' must have %s markers" % self._nmarker)
-            # make sure we have values that are either 0 or 1.
-            if (value.max() > 1) or (value.min() < 0):
-                raise ValueError("'geno' must be a binary matrix.")
+            check_matrix_dtype_is_integer(value, 'geno')
+            check_matrix_ndim(value, 'geno', 3)
+            check_matrix_is_binary(value, 'geno')
             # convert value to int8 matrix
             value = numpy.int8(value)
             # assign private variables
             self._geno = value
-            self._nphase, self._nindiv, self._nmarker = self._geno.shape
+            self._internals_valid = False
         def fdel(self):
             del self._geno      # delete
             self._geno = None   # and set to None
@@ -434,17 +329,12 @@ class population:
             # convert 'coeff' to a numpy.ndarray
             value = numpy.array(value)
             # make sure 'coeff' is a numeric type
-            if not numpy.issubdtype(value.dtype, numpy.number):
-                raise ValueError("'coeff' must be a numeric matrix.")
-            # make sure matrix is the right shape
-            if value.shape != (self._nmarker, self._ntrait):
-                raise ValueError("'coeff' must have the shape %s" %
-                    ( (self._nmarker, self._ntrait), )
-                )
+            check_matrix_dtype_is_numeric(value, 'coeff')
             # convert matrix to float64 matrix
             value = numpy.float64(value)
             # set private variable _coeff
             self._coeff = value
+            self._internals_valid = False
         def fdel(self):
             del self._coeff
             self._coeff = None
@@ -461,17 +351,12 @@ class population:
             # convert 'wcoeff' to a numpy.ndarray
             value = numpy.array(value)
             # make sure 'wcoeff' is a numeric type
-            if not numpy.issubdtype(value.dtype, numpy.number):
-                raise ValueError("'wcoeff' must be a numeric matrix.")
-            # make sure matrix has right dimension lengths
-            if value.shape != (self._ntrait, self._nmarker):
-                raise ValueError("'wcoeff' must have the shape %s" %
-                    ( (self._ntrait, self._nmarker), )
-                )
+            check_matrix_dtype_is_numeric(value, 'wcoeff')
             # convert matrix to float64 matrix
             value = numpy.float64(value)
             # set private variable _wcoeff
             self._wcoeff = value
+            self._internals_valid = False
         def fdel(self):
             del self._wcoeff
             self._wcoeff = None
@@ -487,13 +372,9 @@ class population:
         def fset(self, value):
             # cast as strings, put into object numpy.ndarray
             value = numpy.object_([str(e) for e in value])
-            # make sure matrix has right number of dimension lengths
-            if value.shape != (self._ntaxa,):
-                raise ValueError("'taxa' must have the shape %s" %
-                    ( (self._ntaxa,) )
-                )
             # set private variable _taxa
             self._taxa = value
+            self._internals_valid = False
         def fdel(self):
             del self._taxa
             self._taxa = None
@@ -509,13 +390,9 @@ class population:
         def fset(self, value):
             # cast as strings, put into object numpy.ndarray
             value = numpy.object_([str(e) for e in value])
-            # make sure matrix has right number of dimension lengths
-            if value.shape != (self._nmarker,):
-                raise ValueError("'chr_grp' must have the shape %s" %
-                    ( (self._nmarker,) )
-                )
             # set private variable _chr_grp
             self._chr_grp = value
+            self._internals_valid = False
         def fdel(self):
             del self._chr_grp
         return locals()
@@ -531,17 +408,12 @@ class population:
             # convert 'chr_pos' to a numpy.ndarray
             value = numpy.array(value)
             # make sure 'chr_pos' is an integer type
-            if not numpy.issubdtype(value.dtype, numpy.integer):
-                raise ValueError("'chr_pos' must be an integer type.")
-            # make sure dimension lengths are correct
-            if value.shape != (2, self._nmarker):
-                raise ValueError("'chr_pos' must have the shape %s" %
-                    ( (2, self._nmarker) )
-                )
+            check_matrix_dtype_is_integer(value, 'chr_pos')
             # convert chr_pos to int64 type.
             value = numpy.int64(value)
             # set private variable _chr_pos
             self._chr_pos = value
+            self._internals_valid = False
         def fdel(self):
             del self._chr_pos
             self._chr_pos = None
@@ -558,10 +430,9 @@ class population:
             # convert 'chr_start' to a numpy.ndarray
             value = numpy.array(value)
             # make sure 'chr_start' is an integer type
-            if not numpy.issubdtype(value.dtype, numpy.integer):
-                raise ValueError("'chr_start' must be an integer type.")
+            check_matrix_dtype_is_integer(value, 'chr_start')
             # make sure dimension lengths are correct
-            if value.shape != (self._nmarker,):
+            if value.shape != (self._chr_pos.shape[1],):
                 raise ValueError("'chr_start' must have the shape %s" %
                     ( (self._nmarker,) )
                 )
@@ -584,8 +455,7 @@ class population:
             # convert 'chr_stop' to a numpy.ndarray
             value = numpy.array(value)
             # make sure 'chr_stop' is an integer type
-            if not numpy.issubdtype(value.dtype, numpy.integer):
-                raise ValueError("'chr_stop' must be an integer type.")
+            check_matrix_dtype_is_integer(value, 'chr_stop')
             # make sure dimension lengths are correct
             if value.shape != (self._nmarker,):
                 raise ValueError("'chr_stop' must have the shape %s" %
@@ -609,13 +479,9 @@ class population:
         def fset(self, value):
             # cast as strings, put into object numpy.ndarray
             value = numpy.object_([str(e) for e in value])
-            # make sure matrix has right number of dimension lengths
-            if value.shape != (self._ntrait,):
-                raise ValueError("'trait' must have the shape %s" %
-                    ( (self._ntrait,) )
-                )
             # set private variable _trait
             self._trait = value
+            self._internals_valid = False
         def fdel(self):
             del self._trait
             self._trait = None
@@ -632,17 +498,12 @@ class population:
             # convert pheno to numpy.ndarray
             value = numpy.ndarray(value)
             # make sure pheno is a numeric type
-            if not numpy.issubdtype(value.dtype, numpy.number):
-                raise ValueError("'pheno' must be a numeric type.")
-            # make sure matrix is the right shape
-            if value.shape != (self._ntrait, self._ntaxa):
-                raise ValueError("'pheno' must have shape %s." %
-                    (self._ntrait, self._ntaxa)
-                )
+            check_matrix_dtype_is_numeric(value, 'pheno')
             # convert pheno to float64 type
             value = numpy.float64(value)
             # set private variable _pheno
             self._pheno = value
+            self._internals_valid = False
         def fdel(self):
             del self._pheno
             self._pheno = None
@@ -702,27 +563,170 @@ class population:
     ntrait = property(**ntrait())
 
     ############################################################################
-    ############################## Object Methods ##############################
+    ########################## Object Static Methods ###########################
     ############################################################################
-
     # geno = None, coeff = None, taxa = None, chr_grp = None,
-    #              chr_pos = None, trait = None, pheno = None
+    # chr_pos = None, trait = None, pheno = None
 
-    def add_phase(new_phase = None):
-        raise RuntimeError("Method not implemented.")
-    def add_marker(new_geno = None, new_coeff = None, new_chr_grp = None,
-                   new_chr_pos = None):
-        raise RuntimeError("Method not implemented.")
-    def add_trait(new_trait = None, new_coeff = None, new_pheno = None):
-        raise RuntimeError("Method not implemented.")
-    def add_taxa(new_taxa = None, new_geno = None, new_pheno = None):
-        raise RuntimeError("Method not implemented.")
+    @staticmethod
+    def from_vcf(fname):
+        # make VCF iterator
+        vcf = cyvcf2.VCF(fname)
 
-    def remove_phase(old_phase):
-        raise RuntimeError("Method not implemented.")
-    def remove_marker(old_marker):
-        raise RuntimeError("Method not implemented.")
-    def remove_trait(old_trait):
-        raise RuntimeError("Method not implemented.")
-    def remove_taxa(old_taxa):
-        raise RuntimeError("Method not implemented.")
+        # extract taxa names from vcf header
+        taxa = numpy.object_(vcf.samples)
+
+        # make empty lists to store extracted values
+        geno = []
+        chr_grp = []
+        chr_pos = []
+
+        # iterate through VCF file and accumulate variants
+        for variant in vcf:
+            # append chromosome string
+            chr_grp.append(variant.CHROM)
+
+            # append variant position coordinates
+            chr_pos.append([variant.POS, variant.POS + len(variant.REF) - 1])
+
+            # extract allele states + whether they are phased or not
+            phases = numpy.int8(variant.genotypes)
+
+            # check that they are all phased
+            check_matrix_all_value(phases[:,2], "is_phased", True)
+
+            # append genotype states
+            geno.append(phases[:,0:2].copy())
+
+        # convert and transpose genotype matrix
+        geno = numpy.int8(geno).transpose(2,1,0).copy()
+
+        # convert to object array
+        chr_grp = numpy.object_(chr_grp)
+
+        # convert and transpose chr_pos matrix
+        chr_pos = numpy.int64(chr_pos).T.copy()
+
+        # make output object
+        outpop = population(
+            geno = geno,
+            taxa = taxa,
+            chr_grp = chr_grp,
+            chr_pos = chr_pos
+        )
+
+        return outpop
+
+    ############################################################################
+    ########################## Object Class Methods ############################
+    ############################################################################
+    @classmethod
+    def validate_internals(self):
+        # if we are internally valid
+        if self._internals_valid:
+            return
+
+        # begin testing matrix shapes
+        if self._geno is not None:
+            M, N, L = self._geno.shape
+            # test L dimensions
+            if self._coeff is not None:
+                if L != self._coeff.shape[0]:
+                    raise ValueError("'geno' and 'coeff' are incompatible.")
+            if self._wcoeff is not None:
+                if L != self._wcoeff.shape[0]:
+                    raise ValueError("'geno' and 'wcoeff' are incompatible.")
+            if self._chr_grp is not None:
+                if L != self._chr_grp.shape[0]:
+                    raise ValueError("'geno' and 'chr_grp' are incompatible.")
+            if self._chr_pos is not None:
+                if L != self._chr_pos.shape[1]:
+                    raise ValueError("'geno' and 'chr_pos' are incompatible.")
+            # test N dimensions
+            if self._taxa is not None:
+                if N != self._taxa.shape[0]:
+                    raise ValueError("'geno' and 'taxa' are incompatible.")
+            if self._pheno is not None:
+                if N != self._pheno.shape[1]
+                    raise ValueError("'geno' and 'pheno' are incompatible.")
+        if self._coeff is not None:
+            L, T = self._coeff.shape
+            # test T dimensions
+            if self._trait is not None:
+                if T != self._trait.shape[0]:
+                    raise ValueError("'coeff' and 'trait' are incompatible.")
+            if self._pheno is not None:
+                if T != self._pheno.shape[0]:
+                    raise ValueError("'coeff' and 'trait' are incompatible.")
+            # test L dimensions
+            if self._chr_grp is not None:
+                if L != self._chr_grp.shape[0]:
+                    raise ValueError("'coeff' and 'chr_grp' are incompatible.")
+            if self._chr_pos is not None:
+                if L != self._chr_pos.shape[1]:
+                    raise ValueError("'coeff' and 'chr_pos' are incompatible.")
+            # test wcoeff
+            if self._wcoeff is not None:
+                if self._coeff.shape != self._wcoeff.shape:
+                    raise ValueError("'coeff' and 'wcoeff' are incompatible.")
+        if self._wcoeff is not None:
+            L, T = self._wcoeff.shape
+            # test T dimensions
+            if self._trait is not None:
+                if T != self._trait.shape[0]:
+                    raise ValueError("'wcoeff' and 'trait' are incompatible.")
+            if self._pheno is not None:
+                if T != self._pheno.shape[0]:
+                    raise ValueError("'wcoeff' and 'trait' are incompatible.")
+            # test L dimensions
+            if self._chr_grp is not None:
+                if L != self._chr_grp.shape[0]:
+                    raise ValueError("'wcoeff' and 'chr_grp' are incompatible.")
+            if self._chr_pos is not None:
+                if L != self._chr_pos.shape[1]:
+                    raise ValueError("'wcoeff' and 'chr_pos' are incompatible.")
+        if self._chr_grp is not None:
+            L, = self._chr_grp.shape
+            # test L dimensions
+            if self._chr_pos is not None:
+                if L != self._chr_pos.shape[1]:
+                    raise ValueError("'chr_grp' and 'chr_pos' are incompatible.")
+        if self._trait is not None:
+            T, = self._trait.shape
+            # test T dimensions
+            if self._pheno is not None:
+                if T != self._pheno.shape[1]:
+                    raise ValueError("'trait' and 'pheno' are incompatible.")
+        if self._taxa is not None:
+            N, = self._taxa.shape
+            # test N dimensions
+            if self._pheno is not None:
+                if N != self._pheno.shape[0]:
+                    raise ValueError("'taxa' and 'pheno' are incompatible.")
+
+        # attempt to get number of phases, individuals, and markers from geno.
+        if self._geno is not None:
+            self._nphase, self._nindiv, self._nmarker = geno.shape
+        # attempt to get number of traits and number of markers from coeff
+        if self._coeff is not None:
+            self._nmarker, self._ntrait = self._coeff.shape
+        # attempt to get number of traits and number of markers from wcoeff
+        if self._wcoeff is not None:
+            self._nmarker, self._ntrait = self._wcoeff.shape
+        # attempt to get number taxa from taxa
+        if self._taxa is not None:
+            self._nindiv, = self._taxa.shape # need that comma before =
+        # attempt to get number of markers from chr_grp
+        if self._chr_grp is not None:
+            self._nmarker, = self._chr_grp.shape # need that comma before =
+        # attempt to get number of markers from chr_pos
+        if self._chr_pos is not None:
+            self._nmarker = self._chr_pos.shape[1] # only want 2nd element
+        # attempt to get number of traits from trait
+        if self._trait is not None:
+            self._ntrait, = self._trait.shape # need that comma before =
+        # attempt to get number of traits and number of taxa from pheno
+        if self._pheno is not None:
+            self._ntrait, self._nindiv = self._pheno.shape
+
+        return
