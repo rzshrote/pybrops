@@ -170,6 +170,87 @@ def erand(male, female, geno, gmap, lgroup,
     return progeny
 
 
+def erand_dh(male, female, geno, gmap, lgroup,
+          emale = None, efemale = None, n = 1,
+          interference = None, seed = None):
+    """
+    Perform an exact contribution random mating. Males and females are assigned
+    an exact number of gametes that they contribute to the progeny.
+    Assume complete inbred male, female
+    Parameters
+    ==========
+    male : numpy.ndarray
+        An array of indices to the 'geno' array indicating the male parents.
+    female : numpy.ndarray
+        An array of indices to the 'geno' array indicating the female parents.
+    geno : numpy.ndarray
+        An array of allele states. The dtype of 'geno' should be 'uint8'. Array
+        shape should be (depth, row, column) = (M, N, L) where 'M' represents
+        number of chromosome phases, 'N' represents number of individuals, 'L'
+        represents number of markers. Array format should be the 'C' format.
+    gmap : numpy.ndarray
+        Genetic map in Morgan units.
+    lgroup : numpy.ndarray
+        Array of linkage group sizes. The sum of the elements should equal the
+        length of 'gmap'.
+    emale : None, numpy.ndarray
+        A vector of exact male contributions to the progeny. If None, it
+        is assumed that all males contribute one gamete to the offspring.
+    efemale : None, numpy.ndarray
+        A probability vector of the female contributions to the progeny. If
+        None, it is assumed that all females contribute one gamete to the
+        offspring.
+    n : None, int
+        Multiplier for number of progeny to generate.
+    interference : None, int
+        Interference term for crossovers.
+    seed : None, int
+        A seed for initializing the random number generator. If 'seed' is None,
+        the internal state of the random number generator is unaltered
+        (i.e. the system time is NOT used to seed the RNG engine)
+
+    Returns
+    =======
+    progeny : numpy.ndarray
+        An array of binary allele states in the progeny. Array dimensions are
+        (M, n, L) where 'M' represents number of chromosome phases, 'n'
+        represents number of progeny specified by the user, and 'L' represents
+        number of markers.
+    """
+    # if a seed is provided, seed the RNG
+    if seed is not None:
+        numpy.random.seed(seed)
+
+    # if exact male contributions are not provided, assume equal contribution.
+    if emale is None:
+        emale = numpy.repeat(1, len(male))
+
+    # if exact female contributions are not provided, assume equal contribution.
+    if efemale is None:
+        efemale = numpy.repeat(1, len(female))
+
+    # generate a list of male and female sources
+    malesrc = numpy.repeat(male, n * emale)
+    femalesrc = numpy.repeat(female, n * efemale)
+
+    # shuffle the source arrays to make random mating pairs
+    numpy.random.shuffle(malesrc)
+    numpy.random.shuffle(femalesrc)
+
+    hybrid = numpy.stack((geno[0,malesrc,:], geno[0,femalesrc,:]))
+
+    # generate female gametes.
+    femalegamete = meiosis(
+        hybrid, gmap, lgroup, numpy.arange(len(femalesrc)),
+        interference = interference
+    )
+
+    # stack our gametes to DH progeny
+    progeny = numpy.stack((femalegamete, femalegamete))
+
+    # return our progeny
+    return progeny
+
 
 def controlled(male, female, geno, gmap, lgroup, n,
                interference = None, seed = None):

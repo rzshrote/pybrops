@@ -4,13 +4,33 @@ def check_is_matrix(mat, varname):
     if not isinstance(mat, numpy.ndarray):
         raise TypeError("'%s' must be a numpy.ndarray." % varname)
 
+def check_is_string(s, varname):
+    if not isinstance(s, str):
+        raise TypeError("'%s' must be a string." % varname)
+
+def check_is_integer_or_floating_dtype(dtype, varname):
+    if ((not numpy.issubdtype(dtype, numpy.integer)) and
+        (not numpy.issubdtype(dtype, numpy.floating))):
+        raise TypeError("'%s' must be an integer or floating dtype." % varname)
+
+def check_is_integer_or_floating(var, varname):
+    dtype_var = type(var)
+    if ((not numpy.issubdtype(dtype_var, numpy.integer)) and
+        (not numpy.issubdtype(dtype_var, numpy.floating))):
+        raise TypeError("'%s' must be an integer or floating dtype." % varname)
+
+def check_is_string_or_object_dtype(dtype, varname):
+    if ((not numpy.issubdtype(dtype, numpy.str_)) and
+        (not numpy.issubdtype(dtype, numpy.object_))):
+        raise TypeError("'%s' must be a string or object dtype." % varname)
+
 def check_is_numeric_or_bool_dtype(dtype, varname):
-    if ((not numpy.issubdtype(dtype, numpy.numeric)) and
+    if ((not numpy.issubdtype(dtype, numpy.number)) and
         (not numpy.issubdtype(dtype, numpy.bool_))):
         raise TypeError("'%s' must be a numeric or bool dtype." % varname)
 
 def check_is_numeric_dtype(dtype, varname):
-    if not numpy.issubdtype(dtype, numpy.numeric):
+    if not numpy.issubdtype(dtype, numpy.number):
         raise ValueError("'%s' must be a numeric dtype." % varname)
 
 def check_is_numeric(n, varname):
@@ -34,7 +54,7 @@ def check_is_floating(f, varname):
         raise TypeError("'%s' must be a floating type." % varname)
 
 def check_matrix_dtype_is_numeric_or_bool(mat, varname):
-    if ((not numpy.issubdtype(mat.dtype, numpy.numeric)) and
+    if ((not numpy.issubdtype(mat.dtype, numpy.number)) and
         (not numpy.issubdtype(mat.dtype, numpy.bool_))):
         raise TypeError("'%s' must be a numeric or bool matrix." % varname)
 
@@ -82,3 +102,21 @@ def check_divisibility(a, aname, b, bname):
         raise ValueError(
             "'%s' (%d) is not divisible by '%s' (%d)." % (aname, a, bname, b)
         )
+
+def check_is_dict(d, varname):
+    if not isinstance(d, dict):
+        raise TypeError("'%s' must be a dictionary." % varname)
+
+def check_keys_in_dict(d, varname, *argv):
+    key_absent = [arg not in d for arg in argv]
+    if any(key_absent):
+        # build error string
+        err_str = "'%s' does not have the required fields.\n" % varname
+        for i,absent in enumerate(key_absent):
+            if absent:
+                err_str += "    %s is missing.\n" % argv[i]
+        raise ValueError(err_str)
+
+def check_matrix_sum(mat, varname, sum):
+    if mat.sum() != sum:
+        raise ValueError("'%s' must have a sum of %s" % (varname, sum))

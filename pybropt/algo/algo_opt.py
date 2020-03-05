@@ -1,5 +1,6 @@
 import numpy
 import pandas
+import sys, os
 
 # HACK: add more directories to path.
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
@@ -54,10 +55,10 @@ class algo_opt:
         self._dtype_score = dtype_score
         self._dtype_pos = dtype_pos
 
-        # assign empty variables to iter, score, pos private variables
-        self._iter = None
-        self._score = None
-        self._pos = None
+        # assign empty lists to iter, score, pos private variables
+        self._iter = []
+        self._score = []
+        self._pos = []
 
     def __len__(self):
         """
@@ -173,23 +174,19 @@ class algo_opt:
         check_matrix_dtype(pos, "pos", self._dtype_pos)         # check pos matrix dtype
 
         ### finally append the matrices
-        # append iter
-        if self._iter is None:
-            self._iter = iter.copy()
-        else:
-            self._iter = numpy.append(self._iter, iter)
-        # append score
-        if self._score is None:
-            self._score = score.copy()
-        else:
-            self._score = numpy.append(self._score, score)
-        # append pos
-        if self._pos is None:
-            self._pos = pos.copy()
-        else:
-            self._pos = numpy.append(self._pos, pos)
+        self._iter.append(iter)     # append iter
+        self._score.append(score)   # append score
+        self._pos.append(pos)       # append pos
 
         return
+
+    def _concatenate(self):
+        if len(self._iter) > 1:
+            self._iter = [numpy.concatenate(self._iter, axis=0)]
+        if len(self._score) > 1:
+            self._score = [numpy.concatenate(self._score, axis=0)]
+        if len(self._pos) > 1:
+            self._pos = [numpy.concatenate(self._pos, axis=0)]
 
     def history_to_df(self, zfill = 3):
         """
@@ -205,18 +202,20 @@ class algo_opt:
         df : pandas.DataFrame
             A pandas DataFrame of the results.
         """
+        self._concatenate()
+
         # make a dictionary to construct the pandas.DataFrame
         df_dict = {
-            "iter" : self._iter.copy(),
-            "score" : self._score.copy()
+            "iter" : self._iter[0],
+            "score" : self._score[0]
         }
 
         # make labels for the X position headers
-        headers = ["x"+str(i).zfill(zfill) for i in range(self._pos.shape[1])]
+        headers = ["x"+str(i).zfill(zfill) for i in range(self._pos[0].shape[1])]
 
         # add columns + header name to df_dict
         for i,header in enumerate(headers):
-            df_dict[header] = self._pos[:,i].copy()
+            df_dict[header] = self._pos[0][:,i].copy()
 
         # make DataFrame
         df = pandas.DataFrame(df_dict)
@@ -233,8 +232,10 @@ class algo_opt:
         ix : int
             An index of the global best score.
         """
+        self._concatenate()
+
         # use argmax to get the first instance of the best score.
-        ix = self._score.argmax()
+        ix = self._score[0].argmax()
 
         return ix
 
@@ -254,9 +255,9 @@ class algo_opt:
 
         # construct tuple
         gbest = (
-            self._iter[ix],
-            self._score[ix],
-            self._pos[ix,:]
+            self._iter[0][ix],
+            self._score[0][ix],
+            self._pos[0][ix,:]
         )
 
         # return gbest

@@ -1,6 +1,8 @@
 import numpy
 import time
 
+from .icpso_opt import icpso_opt
+
 def icpso(objfn, objfn_varg,
           n, states, dim_sizes, inertia_wt, accel_coeff_pbest,
           accel_coeff_gbest, scale_factor,
@@ -96,135 +98,142 @@ def icpso(objfn, objfn_varg,
     # Step 1a) allocate memory, initialize select arrays #
     ######################################################
 
-    # create list to store history of the swarm.
-    history = list()
+    # create arrays of dimension state start and stop indices
+    dst = dim_sizes.cumsum() - dim_sizes    # start indices
+    dsp = dim_sizes.cumsum()                # stop indices
 
-    # create an array of dimension state start indices
-    # 1D arrray for dimension start indices
-    dst = dim_sizes.cumsum() - dim_sizes
+    #################################################
+    # generate position probability array
+    #################################################
 
-    # create an array of dimension state stop indices
-    # 1D array for dimension stop indices
-    dsp = dim_sizes.cumsum()
+    # initialize random X probability positions with n rows, len(states) columns
+    pos = numpy.random.uniform(     # use uniform distribution (dtype=float64)
+        low = 0.0,                  # min probability (inclusive)
+        high = 1.0,                 # max probability (exclusive)
+        size = (n, len(states))     # n rows by len(states) columns
+    )
 
-    # particle population matrix shape
-    pshape = (n, len(states))
+    #################################################
+    # generate velocity vectors
+    #################################################
+    # initialize random X velocity with matrix shape 'pshape'
+    vel = numpy.random.uniform( # use uniform distribution (dtype=float64)
+        low = 0.0,             # min trajectory strength (inclusive)
+        high = 1.0,             # max trajectory strength (exclusive)
+        size = pos.shape        # use same shape as pos
+    )
 
-    # initialize random X probability positions with matrix shape 'pshape'
-    # use uniform distribution; dtype of this array is numpy.float64
-    X_pos = numpy.random.uniform(0.0, 1.0, pshape)
+    # for each group adjust values to sum to 1
+    for st,sp in zip(dst, dsp):
+        pos[:,st:sp] /= pos[:,st:sp].sum(1)[:,None]
+        vel[:,st:sp] /= vel[:,st:sp].sum(1)[:,None] # not needed???
+
+    #################################################
+    # generate sample array
+    #################################################
 
     # allocate memory for an empty sample array
-    # holds samples from X_pos vectors
-    X_pos_smpl = numpy.empty((n, len(dim_sizes)), dtype=states.dtype)
+    smpl = numpy.empty(                 # holds samples from pos vector
+        shape = (n, len(dim_sizes)),    # n rows by len(dim_sizes) columns
+        dtype = states.dtype            # use same dtype as states
+    )
 
-    # initialize random X velocity with matrix shape 'pshape'
-    X_vel = numpy.random.uniform(0.0, 1.0, pshape)
-
-    # set X_best_pos to None, it will be initialized in Step 1c
-    # individual particle personal best values
-    X_pbest_pos = None
-
-    # personal best samples, not used by the algorithm per se, but updated and
-    # returned
-    X_pbest_smpl = None
-
-    # set X_pbest_scr to None, it will be initialized in Step 1c
-    # X personal best scores for the positions of the 'n' particles.
-    X_pbest_scr = None
-
-    # set X_gbest_pos to None, it will be initialized in Step 1c
-    # global best position for the swarm
-    # note: this is a view of X_pbest_pos
-    X_gbest_pos = None
-
-    # global best samples, not used by the algorithm per se, but updated and
-    # returned
-    X_gbest_smpl = None
-
-    # global best score for the swarm
-    X_gbest_scr = None
-
-    ############################################################
-    # Step 1b) restrict limits of values and scale to sum to 1 #
-    ############################################################
-
-    # Map probabilities >1 to their edge, 1
-    # Logic: if value > 1 then set to 1
-    X_pos[X_pos > 1] = 1
-    X_vel[X_vel > 1] = 1
-
-    # Map probabilities <0 to their edge, 0
-    X_pos[X_pos < 0] = 0
-    X_vel[X_vel < 0] = 0
-
-    # adjust values to sum to 1 in highly obfuscated manner
-    # Logic: 1. zip dimension starts and stops into iterable object (single use)
-    #        2. iterate through start, stop positions
-    #        3. modify the matrix in blocks by dividing row-wise the sum of the
-    #           row-wise block sum
-    for st,sp in zip(dst, dsp):
-        X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None]
-        X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None]
-
-    ############################################################################
-    # Step 1c) initialize best positions, take samples, calculate start scores #
-    ############################################################################
-
-    # copy randomly initialized position matrix to an X_pbest_pos matrix
-    X_pbest_pos = X_pos.copy()
-
-    #################################################
-    # generate sample from X personal best position #
-    #################################################
-    # for each row
+    # take samples for each row, for each grouping
     for i in range(n):
-        # for each index, start, stop
+        # for each index, start, stop (for each group)
         for j,(st,sp) in enumerate(zip(dst, dsp)):
-            X_pos_smpl[i,j] = \
-                numpy.random.choice(        # set sample to random choice
-                    states[st:sp],          # with these states
-                    size=1,                 # only sample 1
-                    p=X_pbest_pos[i,st:sp]  # with these probabilities
-                )
+            smpl[i,j] = numpy.random.choice(    # set sample to random choice
+                states[st:sp],                  # with these states
+                size = 1,                       # only sample 1
+                p = pos[i,st:sp]                # with these probabilities
+            )
 
-    # copy personal best samples
-    X_pbest_smpl = X_pos_smpl.copy()
+    #################################################
+    # declare score matrix variable
+    #################################################
+
+    score = None
+
+    #################################################
+    # initialize personal and global best positions and score variables
+    #################################################
+
+    # personal best variables
+    pbest_pos = None    # personal best positions (probability matrix)
+    pbest_score = None  # personal best scores (vector; dtype depends on objfn)
+
+    # global best variables
+    gbest_pos = None    # global best position (probability vector); a matrix view
+    gbest_score = None  # global best score (dtype depends on objfn)
+
+    #################################################
+    # score initial positions
+    #################################################
 
     # score samples that have been created (threading applicable)
     if nthreads > 1:
         # https://stackoverflow.com/questions/3033952/threading-pool-similar-to-the-multiprocessing-pool
         # https://stackoverflow.com/questions/3044580/multiprocessing-vs-threading-python
-        print("Multithreading not supported yet...")
-        return
+        raise RuntimeError("Multithreading not supported yet...")
     else:
         # evaluate the objective function
-        X_pbest_scr = numpy.apply_along_axis(objfn, 1, X_pos_smpl, **objfn_varg)
+        score = numpy.apply_along_axis(objfn, 1, smpl, **objfn_varg)
 
-    # find the index of the highest scoring
-    argmax_index = numpy.argmax(X_pbest_scr)
 
-    # since up until this point, we're agnostic about what previous scores have
-    # been, we set the X global best position to the view of the argmax row.
-    X_gbest_pos = X_pbest_pos[argmax_index,:]
+    #################################################
+    # set personal best positions and scores
+    #################################################
 
-    # set the X global best sample (not for use by algorithm, for output)
-    X_gbest_smpl = X_pbest_smpl[argmax_index,:]
+    # copy randomly initialized position matrix to an pbest_pos matrix
+    pbest_pos = pos.copy()
 
-    # set the X_gbest_scr to X_pbest_scr[argmax]
-    X_gbest_scr = X_pbest_scr[argmax_index]
+    # copy initial scores
+    pbest_score = score.copy()
 
-    #####################################
-    #### Step 2) Main iteration loop ####
-    #####################################
+    #################################################
+    # identify global best
+    #################################################
+
+    # find the index of the highest scoring particle
+    gbest_ix = pbest_score.argmax()
+
+    # get matrix of global best position
+    gbest_pos = pbest_pos[gbest_ix,:].copy()
+
+    # set the gbest_score to pbest_score[argmax]
+    gbest_score = pbest_score[gbest_ix]
+
+    #################################################
+    # define iteration counter global best
+    #################################################
 
     # define a variable to track iteration number; initialization counts as 0.
     iter = 0
 
-    # stash the initialization result into the history list.
-    history.append([iter, X_gbest_smpl.copy(), X_gbest_scr])
+    #################################################
+    # create, append history
+    #################################################
 
-    #print(iter, end=' ', flush=True)
+    # create history object
+    opt = icpso_opt(
+        ssize = n,
+        inertia_wt = inertia_wt,
+        pbest_comp = accel_coeff_pbest,
+        gbest_comp = accel_coeff_gbest,
+        scale_factor = scale_factor,
+        dtype_iter = numpy.dtype('int64'),
+        dtype_score = score.dtype,
+        dtype_pos = pos.dtype,
+        dtype_vel = vel.dtype,
+        dtype_smpl = smpl.dtype
+    )
+
+    # add history to history object
+    opt.history_add(iter, score, pos, vel, smpl)
+
+    #####################################
+    #### Step 2) Main iteration loop ####
+    #####################################
 
     # while stpfn is True, we haven't been told to stop
     while stpfn(iter):
@@ -236,86 +245,90 @@ def icpso(objfn, objfn_varg,
         iter += 1
 
         # generate random acceleration coefficients for personal and global
-        acoef_pbest = numpy.random.uniform(low=0,high=accel_coeff_pbest,size=n)
-        acoef_gbest = numpy.random.uniform(low=0,high=accel_coeff_gbest,size=n)
+        acoef_pbest = numpy.random.uniform(
+            low = 0.0,
+            high = accel_coeff_pbest,
+            size = n
+        )
+        acoef_gbest = numpy.random.uniform(
+            low = 0.0,
+            high = accel_coeff_gbest,
+            size = n
+        )
 
         # calculate the new velocities
-        X_vel = (inertia_wt * X_vel) + \
-                (acoef_pbest[:,None] * (X_pbest_pos - X_pos)) + \
-                (acoef_gbest[:,None] * (X_gbest_pos - X_pos))
+        vel = (inertia_wt * vel) + \
+                (acoef_pbest[:,None] * (pbest_pos - pos)) + \
+                (acoef_gbest[:,None] * (gbest_pos - pos))
 
-        # restrict limits of velocity values ...
-        X_vel[X_vel > 1] = 1
-        X_vel[X_vel < 0] = 0
+        # map to edge
+        vel[vel > 1.0] = 1.0
+        vel[vel < 0.0] = 0.0
 
-        # ... and scale to sum to 1 for each dimension
+        # scale velocities
         for st,sp in zip(dst, dsp):
-            X_vel[:,st:sp] /= X_vel[:,st:sp].sum(1)[:,None]
+            vel[:,st:sp] /= vel[:,st:sp].sum(1)[:,None] # do not scale???
 
         # add velocity vectors to X positions
-        X_pos += X_vel
+        pos += vel
 
-        # restrict limits of position values ...
-        X_pos[X_pos > 1] = 1
-        X_pos[X_pos < 0] = 0
+        # Map position probabilities to their edge
+        # Logic: if pos > 1, set to 1; if pos < 0, set to 0
+        pos[pos > 1.0] = 1.0
+        pos[pos < 0.0] = 0.0
 
-        # ... and scale to sum to 1 for each dimension
+        # for each group adjust pos values to sum to 1
         for st,sp in zip(dst, dsp):
-            X_pos[:,st:sp] /= X_pos[:,st:sp].sum(1)[:,None]
+            pos[:,st:sp] /= pos[:,st:sp].sum(1)[:,None]
 
         ################################################################
-        # Step 2b) generate samples from X_pos and score those samples #
+        # Step 2b) generate samples from pos and score those samples #
         ################################################################
-        # TODO: maybe replace this with for one-liner?
-        # generate sample from X position
-        for i in range(n):                          # for each row
-            for j,(st,sp) in enumerate(             # for each index, start, stop
-                zip(dst, dsp)                       # zip up start, stop to iterate
-            ):
-                X_pos_smpl[i,j] = numpy.random.choice(  # set sample to random choice
-                        states[st:sp],                  # with these states
-                        size=1,                         # only sample 1
-                        p=X_pos[i,st:sp]                # with these probabilities
-                    )
+        # take samples for each row, for each grouping
+        for i in range(n):
+            # for each index, start, stop (for each group)
+            for j,(st,sp) in enumerate(zip(dst, dsp)):
+                smpl[i,j] = numpy.random.choice(    # set sample to random choice
+                    states[st:sp],                  # with these states
+                    size = 1,                       # only sample 1
+                    p = pos[i,st:sp]                # with these probabilities
+                )
 
         # score samples (threading applicable)
         if nthreads > 1:
-            print("Multithreading not supported yet...")
-            return
+            raise RuntimeError("Multithreading not supported yet...")
         else:
             # evaluate the objective function for each sample
-            scores = numpy.apply_along_axis(objfn, 1, X_pos_smpl, **objfn_varg)
+            score = numpy.apply_along_axis(objfn, 1, smpl, **objfn_varg)
 
+        ################################################################
+        # add history
+        ################################################################
+        opt.history_add(iter, score, pos, vel, smpl)
+
+        ################################################################
         # determine if scores improve
+        ################################################################
+        # create an improvement mask
+        improve_mask = score > pbest_score
+
         for i in range(n):                  # for each score
-            if scores[i] > X_pbest_scr[i]:  # if score beats previous best
-                X_pbest_scr[i] = scores[i]  # update best score
+            if improve_mask[i]:             # if score beats previous best
+                pbest_score[i] = score[i]   # update best score
 
-                # update best samples (not used by algorithm, for output)
-                X_pbest_smpl[i,:] = X_pos_smpl[i,:]
-
-                # set new X_pbest_pos that is biased for values
+                # set new pbest_pos that is biased for values
                 for j,(st,sp) in enumerate(zip(dst,dsp)):
-                    # make mask for when potential state == sample state
-                    mask = (states[st:sp] == X_pos_smpl[i,j])
-
-                    # find the index of the state making new best score
-                    smpl_index = numpy.flatnonzero(mask)[0]
+                    # find where sample state is not equal to potential state
+                    inv_mask = states[st:sp] != smpl[i,j]
 
                     # calculate positive bias for sample values
-                    # multiply the sum of non-sample positions by (1 -
-                    # scale_factor)
-                    pos_bias = (1 - scale_factor) * \
-                                numpy.delete(
-                                    X_pos[i,st:sp],
-                                    smpl_index
-                                ).sum()
+                    pos_bias = ((1-scale_factor) * pos[i,st:sp] * inv_mask).sum()
 
                     # bias and assign new personal best position
-                    X_pbest_pos[i,st:sp] = numpy.where(
-                        mask,                           # if in sample
-                        X_pos[i,st:sp] + pos_bias,      # add positive bias
-                        scale_factor * X_pos[i,st:sp]   # else add neg bias
+                    pbest_pos[i,st:sp] = numpy.where(
+                        inv_mask,                     # if element not sample
+                        scale_factor * pos[i,st:sp],  # add neg bias
+                        pos[i,st:sp] + pos_bias       # else add positive bias
                     )
 
         ##########################################
@@ -323,33 +336,16 @@ def icpso(objfn, objfn_varg,
         ##########################################
 
         # find the index of the highest scoring
-        argmax_index = numpy.argmax(X_pbest_scr)
+        gbest_ix = pbest_score.argmax()
 
         # set the X global best position to the view of the argmax row.
-        X_gbest_pos = X_pbest_pos[argmax_index,:]
+        gbest_pos = pbest_pos[gbest_ix,:].copy()
 
-        # set the X global best sample (not for use by algorithm, for output)
-        X_gbest_smpl = X_pbest_smpl[argmax_index,:]
+        # set the gbest_score to pbest_score[argmax]
+        gbest_score = pbest_score[gbest_ix]
 
-        # set the X_gbest_scr to X_pbest_scr[argmax]
-        X_gbest_scr = X_pbest_scr[argmax_index]
+        # if verbose:
+        print("Iteration", iter, "\tgBest =", gbest_score)
 
-        # stash the initialization result into the history list.
-        history.append([iter, X_gbest_smpl.copy(), X_gbest_scr])
-
-        if verbose:
-            print("Iteration", iter, "\tgBest =", X_gbest_scr)
-
-    # Step 3) return positions of particles in a dictionary
-
-    return {"history": history,
-            "X_pos": X_pos,
-            "X_vel": X_vel,
-            "X_pbest_pos": X_pbest_pos,
-            "X_pbest_smpl": X_pbest_smpl,
-            "X_pbest_scr": X_pbest_scr,
-            "X_gbest_pos": X_gbest_pos.copy(),
-            "X_gbest_smpl": X_gbest_smpl.copy(),
-            "X_gbest_scr": X_gbest_scr,
-            "iter": iter,
-            "gbest_index": numpy.argmax(X_pbest_scr)}
+    # Step 3) return optimization history
+    return opt

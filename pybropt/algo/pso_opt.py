@@ -1,3 +1,4 @@
+import sys, os
 import pandas
 import numpy
 
@@ -36,7 +37,7 @@ class pso_opt(algo_opt):
 
         # assign arguments (or their default) to private variables
         self._dtype_vel = dtype_vel
-        self._vel = None                # assign None to vel private variable
+        self._vel = []                # assign None to vel private variable
         self._ssize = ssize
         self._inertia_wt = inertia_wt
         self._pbest_comp = pbest_comp
@@ -167,28 +168,18 @@ class pso_opt(algo_opt):
         check_matrix_dtype(vel, "vel", self._dtype_vel)         # check vel matrix dtype
 
         ### finally append the matrices
-        # append iter
-        if self._iter is None:
-            self._iter = iter.copy()
-        else:
-            self._iter = numpy.append(self._iter, iter)
-        # append score
-        if self._score is None:
-            self._score = score.copy()
-        else:
-            self._score = numpy.append(self._score, score)
-        # append pos
-        if self._pos is None:
-            self._pos = pos.copy()
-        else:
-            self._pos = numpy.append(self._pos, pos)
-        # append vel
-        if self._vel is None:
-            self._vel = vel.copy()
-        else:
-            self._vel = numpy.append(self._vel, vel)
+        self._iter.append(iter)
+        self._score.append(score)
+        self._pos.append(pos)
+        self._vel.append(vel)
 
         return
+
+    def _concatenate(self):
+        super(pso_opt, self)._concatenate()
+        if len(self._vel) > 1:
+            self._vel = [numpy.concatenate(self._vel, axis=0)]
+
 
     def history_to_df(self, zfill = 3):
         """
@@ -204,21 +195,23 @@ class pso_opt(algo_opt):
         df : pandas.DataFrame
             A pandas DataFrame of the results.
         """
+        self._concatenate()
+
         # make a dictionary to construct the pandas.DataFrame
         df_dict = {
-            "iter" : self._iter.copy(),
-            "score" : self._score.copy()
+            "iter" : self._iter[0],
+            "score" : self._score[0]
         }
 
         # make labels for the X position headers
-        xhead = ["x"+str(i).zfill(zfill) for i in range(self._pos.shape[1])]
-        vhead = ["v"+str(i).zfill(zfill) for i in range(self._vel.shape[1])]
+        xhead = ["x"+str(i).zfill(zfill) for i in range(self._pos[0].shape[1])]
+        vhead = ["v"+str(i).zfill(zfill) for i in range(self._vel[0].shape[1])]
 
         # add columns + header name to df_dict
         for i,header in enumerate(xhead):
-            df_dict[header] = self._pos[:,i].copy()
+            df_dict[header] = self._pos[0][:,i].copy()
         for i,header in enumerate(vhead):
-            df_dict[header] = self._vel[:,i].copy()
+            df_dict[header] = self._vel[0][:,i].copy()
 
         # make DataFrame
         df = pandas.DataFrame(df_dict)
@@ -239,14 +232,16 @@ class pso_opt(algo_opt):
                 iter = 1 -> grab gbest from iter 0
                 iter = n -> grab gbest from iter 0, 1, ..., n-1
         """
+        self._concatenate()
+
         # test if length of score is divisible by ssize; raise error if not
-        check_divisibility(self._score.size, "score.size", self._ssize, "ssize")
+        check_divisibility(self._score[0].size, "score.size", self._ssize, "ssize")
 
         # convert iter to an index on the score matrix
-        iter = self._score.size if iter is None else iter * self._ssize
+        iter = self._score[0].size if iter is None else iter * self._ssize
 
         # grab argmax index
-        ix = self._score[i:iter].argmax()
+        ix = self._score[0][:iter].argmax()
 
         return ix
 
@@ -266,10 +261,10 @@ class pso_opt(algo_opt):
 
         # construct tuple
         gbest = (
-            self._iter[ix],
-            self._score[ix],
-            self._pos[ix,:],
-            self._vel[ix,:]
+            self._iter[0][ix],
+            self._score[0][ix],
+            self._pos[0][ix,:],
+            self._vel[0][ix,:]
         )
 
         # return gbest
@@ -290,15 +285,15 @@ class pso_opt(algo_opt):
                 iter = n -> grab pbest from iter 0, 1, ..., n-1
         """
         # test if length of score is divisible by ssize; raise error if not
-        check_divisibility(self._score.size, "score.size", self._ssize, "ssize")
+        check_divisibility(self._score[0].size, "score.size", self._ssize, "ssize")
 
         # convert iter to an index on the score matrix
-        iter = self._score.size if iter is None else iter * self._ssize
+        iter = self._score[0].size if iter is None else iter * self._ssize
 
         # grab indices along score matrix
         ix = numpy.from_iter(
             (
-                i + (self._score[i:iter:self._ssize].argmax() * self._ssize)
+                i + (self._score[0][i:iter:self._ssize].argmax() * self._ssize)
                 for i in range(self._ssize)
             )
         )

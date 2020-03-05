@@ -1,3 +1,4 @@
+import sys, os
 import numpy
 import pandas
 
@@ -28,7 +29,7 @@ class icpso_opt(pso_opt):
 
         # assign arguments or their defaults to private variables
         self._dtype_smpl = dtype_smpl
-        self._smpl = None
+        self._smpl = []
         self._scale_factor = scale_factor
 
     ############################################################################
@@ -133,33 +134,18 @@ class icpso_opt(pso_opt):
         check_matrix_dtype(smpl, "smpl", self._dtype_smpl)      # check smpl matrix dtype
 
         ### finally append the matrices
-        # append iter
-        if self._iter is None:
-            self._iter = iter.copy()
-        else:
-            self._iter = numpy.append(self._iter, iter)
-        # append score
-        if self._score is None:
-            self._score = score.copy()
-        else:
-            self._score = numpy.append(self._score, score)
-        # append pos
-        if self._pos is None:
-            self._pos = pos.copy()
-        else:
-            self._pos = numpy.append(self._pos, pos)
-        # append vel
-        if self._vel is None:
-            self._vel = vel.copy()
-        else:
-            self._vel = numpy.append(self._vel, vel)
-        # append smpl
-        if self._smpl is None:
-            self._smpl = smpl.copy()
-        else:
-            self._smpl = numpy.append(self._smpl, smpl)
+        self._iter.append(iter)
+        self._score.append(score)
+        self._pos.append(pos)
+        self._vel.append(vel)
+        self._smpl.append(smpl)
 
         return
+
+    def _concatenate(self):
+        super(icpso_opt, self)._concatenate()
+        if len(self._smpl) > 1:
+            self._smpl = [numpy.concatenate(self._smpl, axis=0)]
 
     def history_to_df(self, zfill = 3):
         """
@@ -175,24 +161,26 @@ class icpso_opt(pso_opt):
         df : pandas.DataFrame
             A pandas DataFrame of the results.
         """
+        self._concatenate()
+
         # make a dictionary to construct the pandas.DataFrame
         df_dict = {
-            "iter" : self._iter.copy(),
-            "score" : self._score.copy()
+            "iter" : self._iter[0],
+            "score" : self._score[0]
         }
 
         # make labels for the X position headers
-        xhead = ["x"+str(i).zfill(zfill) for i in range(self._pos.shape[1])]
-        vhead = ["v"+str(i).zfill(zfill) for i in range(self._vel.shape[1])]
-        shead = ["s"+str(i).zfill(zfill) for i in range(self._smpl.shape[1])]
+        xhead = ["x"+str(i).zfill(zfill) for i in range(self._pos[0].shape[1])]
+        vhead = ["v"+str(i).zfill(zfill) for i in range(self._vel[0].shape[1])]
+        shead = ["s"+str(i).zfill(zfill) for i in range(self._smpl[0].shape[1])]
 
         # add columns + header name to df_dict
         for i,header in enumerate(xhead):
-            df_dict[header] = self._pos[:,i].copy()
+            df_dict[header] = self._pos[0][:,i].copy()
         for i,header in enumerate(vhead):
-            df_dict[header] = self._vel[:,i].copy()
+            df_dict[header] = self._vel[0][:,i].copy()
         for i,header in enumerate(shead):
-            df_dict[header] = self._smpl[:,i].copy()
+            df_dict[header] = self._smpl[0][:,i].copy()
 
         # make DataFrame
         df = pandas.DataFrame(df_dict)
@@ -215,11 +203,11 @@ class icpso_opt(pso_opt):
 
         # construct tuple
         gbest = (
-            self._iter[ix],
-            self._score[ix],
-            self._pos[ix,:],
-            self._vel[ix,:],
-            self._smpl[ix,:]
+            self._iter[0][ix],
+            self._score[0][ix],
+            self._pos[0][ix,:],
+            self._vel[0][ix,:],
+            self._smpl[0][ix,:]
         )
 
         # return gbest
@@ -233,11 +221,11 @@ class icpso_opt(pso_opt):
         ix = self.pbest_ix(iter)
 
         # grab pbest iter, score, pos, vel
-        pbest_iter = self._iter[ix][ptcl]
-        pbest_score = self._score[ix][ptcl]
-        pbest_pos = self._pos[ix][ptcl,:]
-        pbest_vel = self._vel[ix][ptcl,:]
-        pbest_smpl = self._smpl[ix][ptcl,:]
+        pbest_iter = self._iter[0][ix][ptcl]
+        pbest_score = self._score[0][ix][ptcl]
+        pbest_pos = self._pos[0][ix][ptcl,:]
+        pbest_vel = self._vel[0][ix][ptcl,:]
+        pbest_smpl = self._smpl[0][ix][ptcl,:]
 
         # pack into tuple
         pbest = (pbest_iter, pbest_score, pbest_pos, pbest_vel, pbest_smpl)

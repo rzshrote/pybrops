@@ -1,6 +1,17 @@
 import numpy
 import time
 
+from .algo_opt import algo_opt
+
+def _set_exchange_matrix(vec, exch):
+    out_vec = numpy.tile(vec, (len(vec)*len(exch),1))
+    for i in range(len(vec)):
+        out_vec[i*len(exch):(i+1)*len(exch),i] = exch
+    out_exch = numpy.tile(exch, (len(vec)*len(exch),1))
+    for i in range(len(exch)):
+        out_exch[i::len(exch),i] = vec
+    return out_vec, out_exch
+
 def hc_sa_set(objfn,
               objfn_varg,
               k,
@@ -59,78 +70,68 @@ def hc_sa_set(objfn,
     # Computation part #
     ####################
 
-    # create list to store history of the hillclimb.
-    history = list()
-
     # iteration counter
     iter = 0
 
-    # make X position array
-    X_pos = states.copy()
-
-    # shuffle the X_pbest_pos for random initialization
-    numpy.random.shuffle(X_pos)
+    tmp = states.copy()         # copy state list
+    numpy.random.shuffle(tmp)   # shuffle the copy
+    gbest_pos = tmp[:k].copy()  # extract start position
+    gbest_exch = tmp[k:].copy() # extract start exchange vector
 
     # score the initial configuration
-    X_scr = objfn(X_pos[0:k], **objfn_varg)
+    gbest_score = objfn(gbest_pos, **objfn_varg)
 
-    # stash the initialization result into the history list.
-    history.append([iter, X_pos[0:k].copy(), X_scr])
+    # make and add history
+    opt = algo_opt(
+        dtype_iter = numpy.dtype(type(iter)),
+        dtype_score = numpy.dtype(type(gbest_score)),
+        dtype_pos = gbest_pos.dtype
+    )
+    opt.history_add(iter, [gbest_score], gbest_pos)
+
+    # variables for position, exchange, score matrices
+    pos = None
+    exch = None
+    score = None
 
     # print verbose statements
     if verbose:
-        print("Iteration", iter, "\tX_scr =", X_scr)
+        print("Iteration", iter, "\tscore =", score)
 
     # make exit variable
     found_local_optima = False
 
-    # determine if we're threading
-    if nthreads > 1:
-        print("Greater than 1 thread not supported yet.")
-        return
-    # else we're single threading
-    else:
-        # begin exchange process
-        while not found_local_optima:
-            # increment iteration
-            iter += 1
+    # begin exchange process
+    while not found_local_optima:
+        # increment iteration
+        iter += 1
 
-            e_best = None       # index for chosen elements best swap
-            s_best = None       # index for available elements best swap
-            new_scr = X_scr     # variable to store better scores if found
+        pos, exch = _set_exchange_matrix(gbest_pos, gbest_exch)
 
-            for e in range(k):                              # for each chosen
-                for s in range(k, len(X_pos)):              # for each available
-                    X_pos[e], X_pos[s] = X_pos[s], X_pos[e] # swap to new
-                    scr = objfn(X_pos[0:k], **objfn_varg)   # score matrix
-                    # if verbose:
-                    #     print("Test:", X_pos[0:k], '\tScore:', scr)
-                    if scr > new_scr:                       # if better score
-                        new_scr = scr                       # set new best score
-                        e_best = e                          # record e_best
-                        s_best = s                          # record s_best
-                    X_pos[e], X_pos[s] = X_pos[s], X_pos[e] # swap to original
+        # score positions that have been created (threading applicable)
+        if nthreads > 1:
+            # https://stackoverflow.com/questions/3033952/threading-pool-similar-to-the-multiprocessing-pool
+            # https://stackoverflow.com/questions/3044580/multiprocessing-vs-threading-python
+            raise RuntimeError("Multithreading not supported yet...")
+        else:
+            # evaluate the objective function
+            score = numpy.apply_along_axis(objfn, 1, pos, **objfn_varg)
 
-            # if we found something better (e_best got set)
-            if e_best != None:
-                # swap to new best position
-                X_pos[e_best], X_pos[s_best] = X_pos[s_best], X_pos[e_best]
-                # update X score
-                X_scr = new_scr
-                # append result to list
-                history.append([iter, X_pos[0:k].copy(), X_scr])
-            # else we didn't and no further improvements can be made
-            else:
-                # we've found a local optima
-                found_local_optima = True
+        if numpy.any(score > gbest_score):
+            gbest_ix = score.argmax()
+            gbest_pos = pos[gbest_ix,:].copy()
+            gbest_exch = exch[gbest_ix,:].copy()
+            gbest_score = score[gbest_ix]
+        else:
+            found_local_optima = True
 
-            if verbose:
-                print("Iteration", iter, "\tX_scr =", X_scr)
+        # add history
+        opt.history_add(iter, score, pos)
+
+        print("Iteration", iter, "\tscore =", gbest_score)
 
     # return a history list from the hillclimb
-    return {"history": history,
-            "X_gbest_pos": X_pos[0:k].copy(),
-            "X_gbest_scr": X_scr}
+    return opt
 
 
 
@@ -214,19 +215,19 @@ def hc_sa_state(objfn,
     dst = dsp - dim_sizes[0]
 
     # copy states array
-    X_pos = states.copy()
+    pos = states.copy()
 
     # randomly shuffle from state options
-    # the first index in X_pos[st:sp] represents the chosen state
+    # the first index in pos[st:sp] represents the chosen state
     for st,sp in zip(dst,dsp):
-        numpy.random.shuffle(X_pos[st:sp])
+        numpy.random.shuffle(pos[st:sp])
 
     # score the initial configuration
     # get an array view of only our first indices for each dimension.
-    X_scr = objfn(X_pos[dst], **objfn_varg)
+    score = objfn(pos[dst], **objfn_varg)
 
     # stash the initialization result into the history list.
-    history.append([iter, X_pos[dst].copy(), X_scr])
+    history.append([iter, pos[dst].copy(), score])
 
     # make loop exit variable
     found_local_optima = False
@@ -245,18 +246,18 @@ def hc_sa_state(objfn,
             st_best = None
             sp_best = None
             s_best = None       # index for available elements best swap
-            new_scr = X_scr     # variable to store better scores if found
+            new_scr = score     # variable to store better scores if found
 
             # for each dimension
             for st,sp in zip(dst,dsp):
                 # for each alternative state within the dimension
-                for s in range(1, len(X_pos[st:sp])):
+                for s in range(1, len(pos[st:sp])):
                     # swap to new state
-                    X_pos[st:sp][0], X_pos[st:sp][s] = \
-                        X_pos[st:sp][s], X_pos[st:sp][0]
+                    pos[st:sp][0], pos[st:sp][s] = \
+                        pos[st:sp][s], pos[st:sp][0]
 
                     # score position
-                    scr = objfn(X_pos[dst], **objfn_varg)
+                    scr = objfn(pos[dst], **objfn_varg)
 
                     # if better a better score is generated
                     if scr > new_scr:
@@ -266,27 +267,27 @@ def hc_sa_state(objfn,
                         s_best = s      # record s_best
 
                     # swap back to original state
-                    X_pos[st:sp][0], X_pos[st:sp][s] = \
-                        X_pos[st:sp][s], X_pos[st:sp][0]
+                    pos[st:sp][0], pos[st:sp][s] = \
+                        pos[st:sp][s], pos[st:sp][0]
 
             # if we found something better (e_best got set)
             if st_best != None:
                 # swap to new best position
-                X_pos[st_best:sp_best][0], X_pos[st_best:sp_best][s_best] = \
-                    X_pos[st_best:sp_best][s_best], X_pos[st_best:sp_best][0]
+                pos[st_best:sp_best][0], pos[st_best:sp_best][s_best] = \
+                    pos[st_best:sp_best][s_best], pos[st_best:sp_best][0]
                 # update X score
-                X_scr = new_scr
+                score = new_scr
                 # append result to list
-                history.append([iter, X_pos[dst].copy(), X_scr])
+                history.append([iter, pos[dst].copy(), score])
             # else we didn't and no further improvements can be made
             else:
                 # we've found a local optima; set variable to exit loop
                 found_local_optima = True
 
             if verbose:
-                print("Iteration", iter, "\tX_scr =", X_scr)
+                print("Iteration", iter, "\tscore =", score)
 
     # return a history list from the hillclimb
     return {"history": history,
-            "X_gbest_pos": X_pos[dst].copy(),
-            "X_gbest_scr": X_scr}
+            "X_gbest_pos": pos[dst].copy(),
+            "X_gbest_scr": score}
