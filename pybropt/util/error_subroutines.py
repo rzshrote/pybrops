@@ -70,6 +70,14 @@ def check_matrix_dtype_is_numeric(mat, varname):
     if not numpy.issubdtype(mat.dtype, numpy.number):
         raise ValueError("'%s' must be a numeric matrix." % varname)
 
+def check_matrix_dtype_is_object_(mat, varname):
+    if not numpy.issubdtype(mat.dtype, numpy.object_):
+        raise ValueError("'%s' must be an object_ matrix." % varname)
+
+def check_matrix_dtype_is_string_(mat, varname):
+    if not numpy.issubdtype(mat.dtype, numpy.string_):
+        raise ValueError("'%s' must be a string_ matrix." % varname)
+
 def check_matrix_dtype(mat, varname, dtype):
     if not mat.dtype == dtype:
         raise ValueError("'%s' must have a dtype of %s.", (varname, dtype))
@@ -94,9 +102,6 @@ def check_matrix_all_value(mat, varname, value):
     if not numpy.all(mat == value):
         raise ValueError("All elments in '%s' must be %s." % (varname, value))
 
-def error_readonly(varname):
-    raise AttributeError("'%s' is read-only." % varname)
-
 def check_divisibility(a, aname, b, bname):
     if a % b != 0:
         raise ValueError(
@@ -120,3 +125,50 @@ def check_keys_in_dict(d, varname, *argv):
 def check_matrix_sum(mat, varname, sum):
     if mat.sum() != sum:
         raise ValueError("'%s' must have a sum of %s" % (varname, sum))
+
+def check_is_not_none(var, varname):
+    if var is None:
+        raise ValueError("'%s' cannot be None." % varname)
+
+def check_is_GeneticMap(gmap, varname):
+    if not isinstance(type(gmap), GeneticMap):
+        raise TypeError("'%s' must be a GeneticMap object." % varname)
+
+def check_is_GenomicModel(gmod, varname):
+    if not isinstance(type(gmod), GenomicModel):
+        raise TypeError("'%s' must be a GenomicModel object." % varname)
+
+################################################################################
+
+def error_readonly(varname):
+    raise AttributeError("'%s' is read-only." % varname)
+
+################################################################################
+
+def cond_check_is_matrix(mat, varname, cond=(lambda mat: mat is not None)):
+    if cond(mat):
+        check_is_matrix(mat, varname)
+
+def cond_check_is_GeneticMap(gmap, varname, cond=(lambda gmap: gmap is not None)):
+    if cond(gmap):
+        check_is_GeneticMap(gmap, varname)
+
+def cond_check_is_GenomicModel(gmod, varname, cond=(lambda gmod: gmod is not None)):
+    if cond(gmod):
+        check_is_GenomicModel(gmod, varname)
+
+def cond_check_matrix_dtype_is_object_(mat, varname, cond=(lambda mat: mat is not None)):
+    if cond(mat):
+        check_matrix_dtype_is_object_(mat, varname)
+
+def cond_check_matrix_ndim(mat, varname, ndim, cond=(lambda mat: mat is not None)):
+    if cond(mat):
+        check_matrix_ndim(mat, varname, ndim)
+
+def cond_check_matrix_size(mat, varname, matsize, cond=(lambda mat: mat is not None)):
+    if cond(mat):
+        check_matrix_size(mat, varname, matsize)
+
+def cond_check_matrix_dtype_is_string_(mat, varname, cond=(lambda mat: mat is not None)):
+    if cond(mat):
+        check_matrix_dtype_is_string_(mat, varname)
