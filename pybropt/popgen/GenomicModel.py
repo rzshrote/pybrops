@@ -62,3 +62,7 @@ class GenomicModel:
     @classmethod
     def predict(self, geno):
         raise NotImplementedError("The method 'predict' is not implemented.")
+
+    @classmethod
+    def reorder(self, a):
+        raise NotImplementedError("This method is not implemented yet.")

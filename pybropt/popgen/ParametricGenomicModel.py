@@ -101,3 +101,15 @@ class ParametricGenomicModel(GenomicModel):
 
         # return predictions
         return pred
+
+    @classmethod
+    def reorder(self, a):
+        """
+        Reorder the internals of this model (for matrix operations).
+
+        Parameters
+        ----------
+        a : numpy.ndarray
+            An array of indices specifying reordering of self.coeff.
+        """
+        self._coeff = self._coeff[a]
