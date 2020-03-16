@@ -365,6 +365,7 @@ class GeneticMap(MarkerSet):
         return d
 
     @classmethod
+    # FIXME: will not work with probabilities that span different chromosomes.
     def recomb_prob(self, rst, rsp, cst, csp, mapfn = None):
         """
         Get a Morgan distance matrix chunk given coordinates.
