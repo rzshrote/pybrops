@@ -7,7 +7,7 @@ class Breeding:
         """
         pass
 
-    def objfn(sel, *args, **kwargs):
+    def objfn(self, sel, *args, **kwargs):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -25,4 +25,36 @@ class Breeding:
         error : NotImplementedError
             This function raises an error on execution.
         """
-        raise NotImplementedError("This static method is not implemented.")
+        raise NotImplementedError("This method is not implemented.")
+
+    def objfn_vec(self, sel, *args, **kwargs):
+        """
+        Breeding method objective function. Implement this in derived classes.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A 2D matrix of selection data.
+        *args : tuple
+            Additional arguments for this function.
+        **kwargs : dict
+            Additional arguments for this function.
+
+        Returns
+        -------
+        error : NotImplementedError
+            This function raises an error on execution.
+        """
+        raise NotImplementedError("This method is not implemented.")
+
+    @classmethod
+    def optimize(self, algorithm):
+        """
+        """
+        raise NotImplementedError("This method is not implemented.")
+
+    @classmethod
+    def simulate(self, algorithm):
+        """
+        """
+        raise NotImplementedError("This method is not implemented.")

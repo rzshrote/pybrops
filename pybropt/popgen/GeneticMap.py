@@ -16,15 +16,43 @@ class GeneticMap(MarkerSet):
     ############################################################################
 
     # table of map function codes
-    MAP_FNCODE = {
-        "H": "Haldane",
-        "I": "interpolate",
-        "K": "Kosambi",
-        "U": "unknown",
-        "Haldane": "I",
-        "interpolate": "I",
-        "Kosambi": "K",
-        "unknown": "U"
+    KEY_TO_MAP_FNCODE = {
+        # haldane keys
+        "haldane": "h",
+        GeneticMap.haldane_to_r: 'h',
+        GeneticMap.haldane_to_r.__name__: 'h',
+
+        # kosambi keys
+        "kosambi": "k",
+        GeneticMap.kosambi_to_r: 'k',
+        GeneticMap.kosambi_to_r.__name__: 'k',
+
+        # unknown keys
+        "unknown": "u"
+        "None": 'u',
+        None: 'u',
+
+        # other keys
+        "interpolate": "i",
+    }
+
+    MAP_FNCODE_TO_KEY = {
+        "h": "haldane",
+        "i": "interpolate",
+        "k": "kosambi",
+        "u": "unknown"
+    }
+
+    KEY_TO_MAPFN = {
+        # haldane keys
+        "h": GeneticMap.haldane_to_r,
+        "haldane" : GeneticMap.haldane_to_r,
+        GeneticMap.haldane_to_r.__name__: GeneticMap.haldane_to_r,
+
+        # kosambi keys
+        "k": GeneticMap.kosambi_to_r,
+        "kosambi": GeneticMap.kosambi_to_r,
+        GeneticMap.kosambi_to_r.__name__: GeneticMap.kosambi_to_r
     }
 
     ############################################################################
@@ -32,9 +60,8 @@ class GeneticMap(MarkerSet):
     ############################################################################
 
     def __init__(self, chr_grp, chr_start, chr_stop, map_pos,
-            mkr_name = None, map_fncode = None, auto_sort = True,
-            auto_mkr_rename = True,
-            auto_fncode = GeneticMap.MAP_FNCODE["unknown"],
+            mkr_name = None, map_fncode = None, mapfn = 'haldane',
+            auto_sort = True, auto_mkr_rename = True, auto_fncode = True,
             auto_spline = True
             ):
         # calls super constructor
@@ -46,6 +73,7 @@ class GeneticMap(MarkerSet):
             auto_sort = False,
             auto_mkr_name = False
         )
+
         # check for matricies
         check_is_matrix(map_pos, "map_pos")
         cond_check_is_matrix(map_fncode, "map_fncode")
@@ -62,6 +90,9 @@ class GeneticMap(MarkerSet):
         check_matrix_dtype_is_numeric(map_pos, "map_pos")
         cond_check_matrix_dtype_is_string_(map_fncode, "map_fncode")
 
+        # if mapfn is a string, make it a lowercase
+        mapfn = cond_str_lower(mapfn)
+
         # set private variables
         self._map_pos = map_pos
         self._map_fncode = map_fncode
@@ -72,12 +103,19 @@ class GeneticMap(MarkerSet):
         self._map_spline = None
         self._map_spline_type = None
 
-        # give default marker names if needed
-        if (self._mkr_name is None) and auto_mkr_name:
+        # set mapfn: convert to callable, otherwise set to None
+        self._mapfn = GeneticMap.key_to_mapfn(mapfn)
+
+        # rename markers if desired
+        if auto_mkr_name:
             self.mkr_rename()
 
-        # give default map_fncode values if needed
-        if auto_fncode is not None:
+        # if True, auto extract code from mapfn using KEY_TO_MAP_FNCODE dict
+        if auto_fncode is True:
+            auto_fncode = GeneticMap.KEY_TO_MAP_FNCODE.get(mapfn, 'u') # default == 'u'
+
+        # if auto_fncode is a string, fill map_fncode with its value
+        if isinstance(auto_fncode, str):
             self._map_fncode = numpy.repeat(
                 numpy.string_(auto_fncode),
                 self.__len__()
@@ -85,11 +123,10 @@ class GeneticMap(MarkerSet):
 
         # sort if needed
         if auto_sort:
-            self.sort()
+            self.sort() # sort
+            self.remove_discrepancies() # remove any discrepancies in map
 
-            # remove discrepancies in the genetic map if there are any
-            self.remove_discrepancies()
-
+        # build spline if needed
         if auto_spline:
             self.build_spline()
 
@@ -148,6 +185,17 @@ class GeneticMap(MarkerSet):
             del self._map_spline_type
         return locals()
     map_spline_type = property(**map_spline_type())
+
+    def mapfn():
+        doc = "The mapfn property."
+        def fget(self):
+            return self._mapfn
+        def fset(self, value):
+            self._mapfn = value
+        def fdel(self):
+            del self._mapfn
+        return locals()
+    mapfn = property(**mapfn())
 
     ############################################################################
     ############################## Class Methods ###############################
@@ -315,6 +363,54 @@ class GeneticMap(MarkerSet):
 
         # return distances
         return d
+
+    @classmethod
+    def recomb_prob(self, rst, rsp, cst, csp, mapfn = None):
+        """
+        Get a Morgan distance matrix chunk given coordinates.
+
+        Parameters
+        ----------
+        rst : int
+            Row start index (inclusive).
+            Must fall within the length of the GeneticMap.
+        rsp : int
+            Row stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+        cst : int
+            Column start position (inclusive).
+            Must fall within the length of the GeneticMap.
+        csp : int
+            Column stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+        mapfn : str, callable
+            Name of mapping function or custom mapping function.
+
+        Returns
+        -------
+        r : numpy.ndarray
+            A ((rst-rsp), (cst-csp)) recombination probability matrix of every
+            pair of markers in the designated GeneticMap regions.
+        """
+        # convert mapfn to a callable function
+        if mapfn is None:
+            mapfn = self._mapfn
+        elif callable(mapfn):
+            pass
+        else:
+            mapfn = GeneticMap.KEY_TO_MAPFN.get(mapfn, None)
+
+        # check if we have a callable function after the chain above
+        if not callable(mapfn):
+            raise ValueError("Unrecognized type for 'mapfn'")
+
+        # calculate genetic distance
+        d = self.genetic_dist(rst, rsp, cst, csp)
+
+        # convert to recombination probability
+        r = mapfn(d)
+
+        return r
 
     @classmethod
     def build_spline(self, kind = 'linear', fill_value = 'extrapolate'):
@@ -685,13 +781,12 @@ class GeneticMap(MarkerSet):
         # calculate chr_grp_spix (stop indices)
         self._chr_grp_spix = self._chr_grp_stix + self._chr_grp_len
 
-
     ############################################################################
     ############################# Static Methods ###############################
     ############################################################################
 
     @staticmethod
-    def from_egmap(fpath):
+    def from_egmap(fpath, mapfn = 'haldane'):
         """
         Read extended genetic map file (*.egmap).
 
@@ -767,7 +862,8 @@ class GeneticMap(MarkerSet):
             chr_stop_ix = 2,
             map_pos_ix = 3,
             mkr_name_ix = 4 if 4 in df else None,
-            map_fncode_ix = 5 if 5 in df else None
+            map_fncode_ix = 5 if 5 in df else None,
+            mapfn = mapfn
         )
 
         return genetic_map
@@ -775,7 +871,7 @@ class GeneticMap(MarkerSet):
     @staticmethod
     def from_pandas_df(pandas_df, chr_grp_ix = 0, chr_start_ix = 1,
                        chr_stop_ix = 2, map_pos_ix = 3, mkr_name_ix = None,
-                       map_fncode_ix = None):
+                       map_fncode_ix = None, mapfn = 'haldane'):
         """
         Read genetic map data from a CSV-like file.
 
@@ -864,7 +960,7 @@ class GeneticMap(MarkerSet):
         chr_stop = numpy.int64(chr_stop)
         map_pos = numpy.float64(map_pos)
         mkr_name = numpy.string_([str(e) for e in mkr_name]) if mkr_name is not None else None
-        map_fncode = numpy.object([str(e) for e in map_fncode]) if map_fncode is not None else None
+        map_fncode = numpy.string_([str(e) for e in map_fncode]) if map_fncode is not None else None
 
         # construct the gmap object
         genetic_map = GeneticMap(
@@ -873,15 +969,16 @@ class GeneticMap(MarkerSet):
             chr_stop = chr_stop,
             map_pos = map_pos,
             mkr_name = mkr_name,
-            map_fncode = map_fncode
+            map_fncode = map_fncode,
+            mapfn = mapfn
         )
 
         return genetic_map
 
     @staticmethod
-    def from_csv(fpath, sep = ',', header=0,
-                 chr_grp_ix = 0, chr_start_ix = 1, chr_stop_ix = 2,
-                 map_pos_ix = 3, mkr_name_ix = None, map_fncode_ix = None):
+    def from_csv(fpath, sep = ',', header=0, chr_grp_ix = 0, chr_start_ix = 1,
+            chr_stop_ix = 2, map_pos_ix = 3, mkr_name_ix = None,
+            map_fncode_ix = None, mapfn = 'haldane'):
         """
         Parameters
         ----------
@@ -908,7 +1005,8 @@ class GeneticMap(MarkerSet):
             chr_stop_ix = chr_stop_ix,
             map_pos_ix = map_pos_ix,
             mkr_name_ix = mkr_name_ix,
-            map_fncode_ix = map_fncode_ix
+            map_fncode_ix = map_fncode_ix,
+            mapfn = mapfn
         )
 
         return genetic_map
@@ -1016,3 +1114,7 @@ class GeneticMap(MarkerSet):
         """
         d = numpy.log(1 + (2 * r)) / (4 - (8 * r))  # convert r to d
         return d                                    # return d
+
+    @staticmethod
+    def key_to_mapfn(key):
+        return mapfn if callable(mapfn) else GeneticMap.KEY_TO_MAPFN.get(mapfn, None)

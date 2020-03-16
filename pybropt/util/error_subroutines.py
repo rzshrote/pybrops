@@ -8,6 +8,22 @@ def check_is_string(s, varname):
     if not isinstance(s, str):
         raise TypeError("'%s' must be a string." % varname)
 
+def check_is_list(l, varname):
+    if not isinstance(l, list):
+        raise TypeError("'%s' must be a list." % varname)
+
+def check_is_tuple(t, varname):
+    if not isinstance(t, list):
+        raise TypeError("'%s' must be a tuple." % varname)
+
+def check_is_iterable(i, varname):
+    if not hasattr(i, "__iter__"):
+        raise TypeError("'%s' must be iterable." % varname)
+
+def check_is_tuple_or_list(v, varname):
+    if not isinstance(v, (tuple,list)):
+        raise TypeError("'%s' must be a tuple or list." % varname)
+
 def check_is_integer_or_floating_dtype(dtype, varname):
     if ((not numpy.issubdtype(dtype, numpy.integer)) and
         (not numpy.issubdtype(dtype, numpy.floating))):
@@ -131,12 +147,28 @@ def check_is_not_none(var, varname):
         raise ValueError("'%s' cannot be None." % varname)
 
 def check_is_GeneticMap(gmap, varname):
-    if not isinstance(type(gmap), GeneticMap):
+    if not isinstance(gmap, GeneticMap):
         raise TypeError("'%s' must be a GeneticMap object." % varname)
 
 def check_is_GenomicModel(gmod, varname):
-    if not isinstance(type(gmod), GenomicModel):
+    if not isinstance(gmod, GenomicModel):
         raise TypeError("'%s' must be a GenomicModel object." % varname)
+
+def check_is_SearchSpace(sspace, varname):
+    if not isinstance(sspace, SearchSpace):
+        raise TypeError("'%s' must be a SearchSpace object." % varname)
+
+def check_is_CategoricalSearchSpace(sspace, varname):
+    if not isinstance(sspace, CategoricalSearchSpace):
+        raise TypeError("'%s' must be a CategoricalSearchSpace object." % varname)
+
+def check_is_SetSearchSpace(sspace, varname):
+    if not isinstance(sspace, SetSearchSpace):
+        raise TypeError("'%s' must be a SetSearchSpace object." % varname)
+
+def check_is_Population(pop, varname):
+    if not isinstance(pop, Population):
+        raise TypeError("'%s' must be a Population object." % varname)
 
 ################################################################################
 
