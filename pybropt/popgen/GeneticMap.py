@@ -33,7 +33,7 @@ class GeneticMap(MarkerSet):
         None: 'u',
 
         # other keys
-        "interpolate": "i",
+        "interpolate": "i"
     }
 
     MAP_FNCODE_TO_KEY = {
@@ -102,6 +102,10 @@ class GeneticMap(MarkerSet):
         self._chr_grp_spix = None
         self._map_spline = None
         self._map_spline_type = None
+        self._xo_prob = None
+        self._xo_prob_len = None
+        self._xo_prob_stix = None
+        self._xo_prob_spix = None
 
         # set mapfn: convert to callable, otherwise set to None
         self._mapfn = GeneticMap.key_to_mapfn(mapfn)
@@ -129,6 +133,8 @@ class GeneticMap(MarkerSet):
         # build spline if needed
         if auto_spline:
             self.build_spline()
+
+        self.calc_xo_prob(self._mapfn)
 
     @classmethod
     def __len__(self):
@@ -196,6 +202,50 @@ class GeneticMap(MarkerSet):
             del self._mapfn
         return locals()
     mapfn = property(**mapfn())
+
+    def xo_prob():
+        doc = "The xo_prob property."
+        def fget(self):
+            return self._xo_prob
+        def fset(self, value):
+            self._xo_prob = value
+        def fdel(self):
+            del self._xo_prob
+        return locals()
+    xo_prob = property(**xo_prob())
+
+    def xo_prob_len():
+        doc = "The xo_prob_len property."
+        def fget(self):
+            return self._xo_prob_len
+        def fset(self, value):
+            self._xo_prob_len = value
+        def fdel(self):
+            del self._xo_prob_len
+        return locals()
+    xo_prob_len = property(**xo_prob_len())
+
+    def xo_prob_stix():
+        doc = "The xo_prob_stix property."
+        def fget(self):
+            return self._xo_prob_stix
+        def fset(self, value):
+            self._xo_prob_stix = value
+        def fdel(self):
+            del self._xo_prob_stix
+        return locals()
+    xo_prob_stix = property(**xo_prob_stix())
+
+    def xo_prob_spix():
+        doc = "The xo_prob_spix property."
+        def fget(self):
+            return self._xo_prob_spix
+        def fset(self, value):
+            self._xo_prob_spix = value
+        def fdel(self):
+            del self._xo_prob_spix
+        return locals()
+    xo_prob_spix = property(**xo_prob_spix())
 
     ############################################################################
     ############################## Class Methods ###############################
@@ -363,6 +413,57 @@ class GeneticMap(MarkerSet):
 
         # return distances
         return d
+
+    @classmethod
+    def calc_xo_prob(self, mapfn = None):
+        """
+        Calculate vector of crossover probabilities for between neighbors.
+        This sets the internal xo_prob, xo_prob_len, xo_prob_stix, and
+        xo_prob_spix variables.
+
+        Parameters
+        ----------
+        mapfn : str, callable
+            String name for the mapping function to use, or a callable mapping
+            function.
+
+        Returns
+        -------
+        xo_prob : numpy.ndarray
+            A vector of crossover probabilities between each neighbor. This is
+            the same vector as self.xo_prob.
+        """
+        # convert mapfn to a callable function
+        mapfn = GeneticMap.key_to_mapfn(mapfn)
+
+        # since probabilities are between elements, we subtract 1 from chr len
+        self._xo_prob_len = self._chr_grp_len - 1
+
+        # get cumsum for stop indices
+        self._xo_prob_spix = self._xo_prob_len.cumsum()
+
+        # subtract lengths to get the start indices
+        self._xo_prob_stix = self._xo_prob_spix - self._xo_prob_len
+
+        # allocate empty vector for our crossover probability vector
+        self._xo_prob = numpy.empty(
+            self._xo_prob_len.sum(),
+            dtype = 'float64'
+        )
+
+        # calculate probabilities for recombination between neighbors
+        for gst, gsp, pst, psp in zip(
+                self._chr_grp_stix, self._chr_grp_spix,
+                self._xo_prob_stix, self._xo_prob_spix
+        ):
+            # Step 1) take n+1 map positions and subtract n map positions
+            # Step 2) then take the probability of the genetic distance.
+            self._xo_prob[pst:psp] = mapfn(
+                self._map_pos[gst+1:gsp] - self._map_pos[gst:gsp-1]
+            )
+
+        return self._xo_prob
+
 
     @classmethod
     # FIXME: will not work with probabilities that span different chromosomes.
