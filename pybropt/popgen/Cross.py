@@ -1,26 +1,75 @@
 import numpy
 
 class Cross:
-    """docstring for Cross."""
+    """
+    The Cross class.
+
+    Supports variance calculations for 2-, 3-, 4-, dihybrid crosses.
+    Simulates mating for 2-, 3-, 4-way crosses.
+    """
     ############################################################################
     ############################# Class Constants ##############################
     ############################################################################
 
+    # dictionary of varAfn keys
     KEY_TO_VARAFN = {
-        '2wayDH' :      ('varA_2wayDH', 'varA_2wayDH_vec'),
-        '3wayDH' :      ('varA_3wayDH', 'varA_3wayDH_vec'),
-        '4wayDH' :      ('varA_4wayDH', 'varA_4wayDH_vec'),
-        'dihybridDH' :  ('varA_dihybridDH', 'varA_dihybridDH_vec'),
-        None :          ('varA_default', 'varA_default')
+        False : {
+            '2way' :        ('varA_2way', 'varA_2way_vec'),
+            '2wayDH' :      ('varA_2wayDH', 'varA_2wayDH_vec'),
+            '3way' :        ('varA_3way', 'varA_3way_vec'),
+            '3wayDH' :      ('varA_3wayDH', 'varA_3wayDH_vec'),
+            '4way' :        ('varA_4way', 'varA_4way_vec'),
+            '4wayDH' :      ('varA_4wayDH', 'varA_4wayDH_vec'),
+            'dihybrid' :    ('varA_dihybrid', 'varA_dihybrid_vec'),
+            'dihybridDH' :  ('varA_dihybridDH', 'varA_dihybridDH_vec'),
+            None :          ('varA_default', 'varA_default')
+        },
+        True : {
+            '2way' :        ('varA_2way_sparse', 'varA_2way_sparse_vec'),
+            '2wayDH' :      ('varA_2wayDH_sparse', 'varA_2wayDH_sparse_vec'),
+            '3way' :        ('varA_3way_sparse', 'varA_3way_sparse_vec'),
+            '3wayDH' :      ('varA_3wayDH_sparse', 'varA_3wayDH_sparse_vec'),
+            '4way' :        ('varA_4way_sparse', 'varA_4way_sparse_vec'),
+            '4wayDH' :      ('varA_4wayDH_sparse', 'varA_4wayDH_sparse_vec'),
+            'dihybrid' :    ('varA_dihybrid_sparse', 'varA_dihybrid_sparse_vec'),
+            'dihybridDH' :  ('varA_dihybridDH_sparse', 'varA_dihybridDH_sparse_vec'),
+            None :          ('varA_default', 'varA_default')
+        },
+        None : {
+            None : ('varA_default', 'varA_default')
+        }
     }
 
-    KEY_TO_VARAFN_SPARSE = {
-        '2wayDH' :      ('varA_2wayDH_sparse', 'varA_2wayDH_sparse_vec'),
-        '3wayDH' :      ('varA_3wayDH_sparse', 'varA_3wayDH_sparse_vec'),
-        '4wayDH' :      ('varA_4wayDH_sparse', 'varA_4wayDH_sparse_vec'),
-        'dihybridDH' :  ('varA_dihybridDH_sparse', 'varA_dihybridDH_sparse_vec'),
-        None :          ('varA_default', 'varA_default')
+    KEY_TO_MATEFN = {
+        'ctrl' : {
+            '2way' :    'mate_2way_ctrl',
+            '2wayDH' :  'mate_2wayDH_ctrl',
+            '3way' :    'mate_3way_ctrl',
+            '3wayDH' :  'mate_3wayDH_ctrl',
+            '4way' :    'mate_4way_ctrl',
+            '4wayDH' :  'mate_4wayDH_ctrl'
+        },
+        'wrand' : {
+            '2way' :    'mate_2way_wrand',
+            '2wayDH' :  'mate_2wayDH_wrand',
+            '3way' :    'mate_3way_wrand',
+            '3wayDH' :  'mate_3wayDH_wrand',
+            '4way' :    'mate_4way_wrand',
+            '4wayDH' :  'mate_4wayDH_wrand'
+        },
+        'erand' : {
+            '2way' :    'mate_2way_erand',
+            '2wayDH' :  'mate_2wayDH_erand',
+            '3way' :    'mate_3way_erand',
+            '3wayDH' :  'mate_3wayDH_erand',
+            '4way' :    'mate_4way_erand',
+            '4wayDH' :  'mate_4wayDH_erand'
+        },
+        None : {
+            None : 'mate_default'
+        }
     }
+
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -115,11 +164,22 @@ class Cross:
         return locals()
     mem = property(**mem())
 
+    def varA_2way_mat():
+        doc = "The varA_2way_mat property."
+        def fget(self):
+            return self._varA_2way_mat
+        def fset(self, value):
+            self._varA_2way_mat = value
+        def fdel(self):
+            del self._varA_2way_mat
+        return locals()
+    varA_2way_mat = property(**varA_2way_mat())
+
     def varA_2wayDH_mat():
         doc = "The varA_2wayDH_mat property."
         def fget(self):
             if not hasattr(self, '_varA_2wayDH_mat'):
-                self.calc_varA_2wayDH_mat()
+                self._varA_2wayDH_mat = self.calc_varA_2wayDH_mat()
             return self._varA_2wayDH_mat
         def fset(self, value):
             self._varA_2wayDH_mat = value
@@ -129,11 +189,22 @@ class Cross:
         return locals()
     varA_2wayDH_mat = property(**varA_2wayDH_mat())
 
+    def varA_3way_mat():
+        doc = "The varA_3way_mat property."
+        def fget(self):
+            return self._varA_3way_mat
+        def fset(self, value):
+            self._varA_3way_mat = value
+        def fdel(self):
+            del self._varA_3way_mat
+        return locals()
+    varA_3way_mat = property(**varA_3way_mat())
+
     def varA_3wayDH_mat():
         doc = "The varA_3wayDH_mat property."
         def fget(self):
             if not hasattr(self, '_varA_3wayDH_mat'):
-                self.calc_varA_3wayDH_mat()
+                self._varA_3wayDH_mat = self.calc_varA_3wayDH_mat()
             return self._varA_3wayDH_mat
         def fset(self, value):
             self._varA_3wayDH_mat = value
@@ -143,11 +214,22 @@ class Cross:
         return locals()
     varA_3wayDH_mat = property(**varA_3wayDH_mat())
 
+    def varA_4way_mat():
+        doc = "The varA_4way_mat property."
+        def fget(self):
+            return self._varA_4way_mat
+        def fset(self, value):
+            self._varA_4way_mat = value
+        def fdel(self):
+            del self._varA_4way_mat
+        return locals()
+    varA_4way_mat = property(**varA_4way_mat())
+
     def varA_4wayDH_mat():
         doc = "The varA_4wayDH_mat property."
         def fget(self):
             if not hasattr(self, '_varA_4wayDH_mat'):
-                self.calc_varA_4wayDH_mat()
+                self._varA_4wayDH_mat = self.calc_varA_4wayDH_mat()
             return self._varA_4wayDH_mat
         def fset(self, value):
             self._varA_4wayDH_mat = value
@@ -157,11 +239,22 @@ class Cross:
         return locals()
     varA_4wayDH_mat = property(**varA_4wayDH_mat())
 
+    def varA_dihybrid_mat():
+        doc = "The varA_dihybrid_mat property."
+        def fget(self):
+            return self._varA_dihybrid_mat
+        def fset(self, value):
+            self._varA_dihybrid_mat = value
+        def fdel(self):
+            del self._varA_dihybrid_mat
+        return locals()
+    varA_dihybrid_mat = property(**varA_dihybrid_mat())
+
     def varA_dihybridDH_mat():
         doc = "The varA_dihybridDH_mat property."
         def fget(self):
             if not hasattr(self, "_varA_dihybridDH_mat"):
-                self.calc_varA_dihybridDH_mat()
+                self._varA_dihybridDH_mat = self.calc_varA_dihybridDH_mat()
             return self._varA_dihybridDH_mat
         def fset(self, value):
             self._varA_dihybridDH_mat = value
@@ -170,10 +263,23 @@ class Cross:
         return locals()
     varA_dihybridDH_mat = property(**varA_dihybridDH_mat())
 
+    def varA_2way_sparse_mat():
+        doc = "The varA_2way_sparse_mat property."
+        def fget(self):
+            return self._varA_2way_sparse_mat
+        def fset(self, value):
+            self._varA_2way_sparse_mat = value
+        def fdel(self):
+            del self._varA_2way_sparse_mat
+        return locals()
+    varA_2way_sparse_mat = property(**varA_2way_sparse_mat())
+
     def varA_2wayDH_sparse_mat():
         doc = "The varA_2wayDH_sparse_mat property."
         def fget(self):
-            if not hasattr(self, 'varA_')
+            # TODO: sparse matrices
+            # if not hasattr(self, '_varA_2wayDH_sparse_mat'):
+            #     self._varA_2wayDH_sparse_mat = None
             return self._varA_2wayDH_sparse_mat
         def fset(self, value):
             self._varA_2wayDH_sparse_mat = value
@@ -181,6 +287,17 @@ class Cross:
             del self._varA_2wayDH_sparse_mat
         return locals()
     varA_2wayDH_sparse_mat = property(**varA_2wayDH_sparse_mat())
+
+    def varA_3way_sparse_mat():
+        doc = "The varA_3way_sparse_mat property."
+        def fget(self):
+            return self._varA_3way_sparse_mat
+        def fset(self, value):
+            self._varA_3way_sparse_mat = value
+        def fdel(self):
+            del self._varA_3way_sparse_mat
+        return locals()
+    varA_3way_sparse_mat = property(**varA_3way_sparse_mat())
 
     def varA_3wayDH_sparse_mat():
         doc = "The varA_3wayDH_sparse_mat property."
@@ -193,6 +310,17 @@ class Cross:
         return locals()
     varA_3wayDH_sparse_mat = property(**varA_3wayDH_sparse_mat())
 
+    def varA_4way_sparse_mat():
+        doc = "The varA_4way_sparse_mat property."
+        def fget(self):
+            return self._varA_4way_sparse_mat
+        def fset(self, value):
+            self._varA_4way_sparse_mat = value
+        def fdel(self):
+            del self._varA_4way_sparse_mat
+        return locals()
+    varA_4way_sparse_mat = property(**varA_4way_sparse_mat())
+
     def varA_4wayDH_sparse_mat():
         doc = "The varA_4wayDH_sparse_mat property."
         def fget(self):
@@ -203,6 +331,17 @@ class Cross:
             del self._varA_4wayDH_sparse_mat
         return locals()
     varA_4wayDH_sparse_mat = property(**varA_4wayDH_sparse_mat())
+
+    def varA_dihybrid_sparse_mat():
+        doc = "The varA_dihybrid_sparse_mat property."
+        def fget(self):
+            return self._varA_dihybrid_sparse_mat
+        def fset(self, value):
+            self._varA_dihybrid_sparse_mat = value
+        def fdel(self):
+            del self._varA_dihybrid_sparse_mat
+        return locals()
+    varA_dihybrid_sparse_mat = property(**varA_dihybrid_sparse_mat())
 
     def varA_dihybridDH_sparse_mat():
         doc = "The varA_dihybridDH_sparse_mat property."
@@ -245,32 +384,8 @@ class Cross:
     ############################################################################
     ###################### Variance Related Class Methods ######################
     @classmethod
-    def set_varAfn(self, varAfn = None, sparse = False):
-        """
-        Set the varA() and varA_vec() attributes. Calling these will result in
-        the gathering of a default variance component.
-
-        Parameters
-        ----------
-        varAfn : str, None
-            A key to lookup in internal lookup tables.
-            Valid keys: {'2wayDH', '3wayDH', '4wayDH', 'dihybridDH'}
-        sparse : boolean, default = False
-            Whether 'varAfn' is a sparse matrix calculation.
-        """
-        # make string variables to hold the name of attributes
-        varA_str = None
-        varA_vec_str = None
-
-        # lookup varAfn in lookup table
-        if sparse:
-            varA_str, varA_vec_str = Cross.KEY_TO_VARAFN_SPARSE[varAfn]
-        else:
-            varA_str, varA_vec_str = Cross.KEY_TO_VARAFN[varAfn]
-
-        # set new function attributes
-        self.varA = getattr(self, varA_str)
-        self.varA_vec = getattr(self, varA_vec_str)
+    def calc_varA_2way_mat(self):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_2wayDH_mat(self):
@@ -290,7 +405,7 @@ class Cross:
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        self._varA_2wayDH_mat = numpy.zeros((ntaxa, ntaxa), dtype='float64')
+        varA_mat = numpy.zeros((ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -322,14 +437,18 @@ class Cross:
                             varA_part = reffect.dot(D).dot(ceffect)
 
                             # add this partial variance to the lower triangle
-                            self._varA_2wayDH_mat[female,male] += varA_part
+                            varA_mat[female,male] += varA_part
 
         # since varA matrix is symmetrical, copy lower triangle to the upper
         for female in range(1, n_indiv):
             for male in range(0, female):
-                self._varA_2wayDH_mat[male,female] = self._varA_2wayDH_mat[female,male]
+                varA_mat[male,female] = varA_mat[female,male]
 
-        return self._varA_2wayDH_mat
+        return varA_mat
+
+    @classmethod
+    def calc_varA_3way_mat(self):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_3wayDH_mat(self):
@@ -348,11 +467,8 @@ class Cross:
         # get the number of individuals
         ntaxa = geno.shape[1]
 
-        # allocate a square matrix for each pairwise variance
-        self._varA_3wayDH_mat = numpy.zeros(
-            (ntaxa, ntaxa, ntaxa),
-            dtype='float64'
-        )
+        # allocate a cube matrix for each 3-way variance
+        varA_mat = numpy.zeros((ntaxa, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -414,19 +530,23 @@ class Cross:
                                 varA_part = (2.0 * (varA_part21 + varA_part31)) + varA_part23
 
                                 # add this partial variance to the lower triangle
-                                self._varA_3wayDH_mat[recurr,female,male] += varA_part
+                                varA_mat[recurr,female,male] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
-        self._varA_3wayDH_mat /= 4.0
+        varA_mat /= 4.0
 
         # each matrix is symmetrical within a slice because exchanging female
         # and male orders is mathematically equivalent.
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female in range(1, ntaxa):
             for male in range(0, female):
-                self._varA_3wayDH_mat[:,male,female] = self._varA_3wayDH_mat[:,female,male]
+                varA_mat[:,male,female] = varA_mat[:,female,male]
 
-        return self._varA_3wayDH_mat
+        return varA_mat
+
+    @classmethod
+    def calc_varA_4way_mat(self):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_4wayDH_mat(self):
@@ -446,10 +566,7 @@ class Cross:
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        self._varA_4wayDH_mat = numpy.zeros(
-            (ntaxa, ntaxa, ntaxa, ntaxa),
-            dtype='float64'
-        )
+        varA_mat = numpy.zeros((ntaxa, ntaxa, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -536,19 +653,23 @@ class Cross:
                                     varA_part = varA_part21 + varA_part31 + varA_part32 + varA_part41 + varA_part42 + varA_part43
 
                                     # add this partial variance to the lower triangle
-                                    self._varA_4wayDH_mat[female2,male2,female1,male1] += varA_part
+                                    varA_mat[female2,male2,female1,male1] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
-        self._varA_4wayDH_mat /= 4.0
+        varA_mat /= 4.0
 
         # each matrix is symmetrical within a slice because exchanging female
         # and male orders is mathematically equivalent.
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female1 in range(1, ntaxa):
             for male1 in range(0, female1):
-                self._varA_4wayDH_mat[:,:,male1,female1] = self._varA_4wayDH_mat[:,:,female1,male1]
+                varA_mat[:,:,male1,female1] = varA_mat[:,:,female1,male1]
 
-        return self._varA_4wayDH_mat
+        return varA_mat
+
+    @classmethod
+    def calc_varA_dihybrid_mat(self):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_dihybridDH_mat(self):
@@ -568,10 +689,7 @@ class Cross:
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        self._varA_dihybridDH_mat = numpy.zeros(
-            (ntaxa, ntaxa),
-            dtype='float64'
-        )
+        varA_mat = numpy.zeros((ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -639,31 +757,47 @@ class Cross:
                             varA_part = varA_part21 + varA_part31 + varA_part32 + varA_part41 + varA_part42 + varA_part43
 
                             # add this partial variance to the lower triangle
-                            self._varA_dyhybridDH_mat[female,male] += varA_part
+                            varA_mat[female,male] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
-        self._varA_dyhybridDH_mat /= 4.0
+        varA_mat /= 4.0
 
         # each matrix is symmetrical within a slice because exchanging female
         # and male orders is mathematically equivalent.
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female in range(1, ntaxa):
             for male in range(0, female):
-                self._varA_dyhybridDH_mat[male,female] = self._varA_dyhybridDH_mat[female,male]
+                varA_mat[male,female] = varA_mat[female,male]
 
-        return self._varA_4wayDH_mat
+        return varA_mat
+
+    @classmethod
+    def calc_varA_2way_sparse_mat(self, sel):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_2wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
     @classmethod
+    def calc_varA_3way_sparse_mat(self, sel):
+        raise NotImplementedError
+
+    @classmethod
     def calc_varA_3wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
     @classmethod
+    def calc_varA_4way_sparse_mat(self, sel):
+        raise NotImplementedError
+
+    @classmethod
     def calc_varA_4wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
+
+    @classmethod
+    def calc_varA_dihybrid_sparse_mat(self, sel):
+        raise NotImplementedError
 
     @classmethod
     def calc_varA_dihybridDH_sparse_mat(self, sel):
@@ -671,15 +805,49 @@ class Cross:
 
     ##############################################
     @classmethod
-    def varA_default(self, sel):
+    def varA_default(self, sel, *args, **kwargs):
         """
         Default method for varA method. Raises a RuntimeError.
         """
         raise RuntimeError("varA function not set.")
+
+    @classmethod
+    def varA(self, sel, *args, **kwargs):
+        raise RuntimeError("varA function not set.")
+
+    @classmethod
+    def varA_vec(self, sel, *args, **kwargs):
+        raise RuntimeError("varA function not set.")
+
+    @classmethod
+    def set_varAfn(self, varAfn = None, sparse = False):
+        """
+        Set the varA() and varA_vec() attributes. Calling these will result in
+        the gathering of a default variance component.
+
+        Parameters
+        ----------
+        varAfn : str, None
+            A key to lookup in internal lookup tables.
+            Valid keys: {'2wayDH', '3wayDH', '4wayDH', 'dihybridDH'}
+        sparse : boolean, default = False
+            Whether 'varAfn' is a sparse matrix calculation.
+        """
+        # lookup varAfn in lookup table
+        varA_str, varA_vec_str = Cross.KEY_TO_VARAFN[sparse][varAfn]
+
+        # set new function attributes
+        self.varA = getattr(self, varA_str)
+        self.varA_vec = getattr(self, varA_vec_str)
+
     ##############################################
 
     ##############################################
     ########### Non-sparse matrix ops ############
+    @classmethod
+    def varA_2way(self, sel):
+        raise NotImplementedError()
+
     @classmethod
     def varA_2wayDH(self, sel):
         """
@@ -706,7 +874,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_2wayDH_mat"):
-            self.calc_varA_2wayDH_mat()
+            self._varA_2wayDH_mat = self.calc_varA_2wayDH_mat()
 
         # get female, male indices
         female = sel[0::2]
@@ -717,6 +885,10 @@ class Cross:
 
         # return variance terms
         return varA_val
+
+    @classmethod
+    def varA_3way(self, sel):
+        raise NotImplementedError()
 
     @classmethod
     def varA_3wayDH(self, sel):
@@ -746,7 +918,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_3wayDH_mat"):
-            self.calc_varA_3wayDH_mat()
+            self._varA_3wayDH_mat = self.calc_varA_3wayDH_mat()
 
         # get recurrent, female, male indices
         recurr = sel[0::3]
@@ -758,6 +930,10 @@ class Cross:
 
         # return variance terms
         return varA_val
+
+    @classmethod
+    def varA_4way(self, sel):
+        raise NotImplementedError()
 
     @classmethod
     def varA_4wayDH(self, sel):
@@ -789,7 +965,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_4wayDH_mat"):
-            self.calc_varA_4wayDH_mat()
+            self._varA_4wayDH_mat = self.calc_varA_4wayDH_mat()
 
         # get female2, male2, female1, male1 indices
         female2 = sel[0::4]
@@ -798,10 +974,14 @@ class Cross:
         male = sel[3::4]
 
         # get variance terms
-        varA_val = self._varA_3wayDH_mat[female2,male2,female1,male1]
+        varA_val = self._varA_4wayDH_mat[female2,male2,female1,male1]
 
         # return variance terms
         return varA_val
+
+    @classmethod
+    def varA_dihybrid(self, sel):
+        raise NotImplementedError()
 
     @classmethod
     def varA_dihybridDH(self, sel):
@@ -828,7 +1008,7 @@ class Cross:
             A 1D array of variance components of shape (k/2,)
         """
         if not hasattr(self, "_varA_dihybridDH_mat"):
-            self.calc_varA_dihybridDH_mat()
+            self._varA_dihybridDH_mat = self.calc_varA_dihybridDH_mat()
 
         # get female, male indices
         female = sel[0::2]
@@ -868,7 +1048,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_2wayDH_mat"):
-            self.calc_varA_2wayDH_mat()
+            self._varA_2wayDH_mat = self.calc_varA_2wayDH_mat()
 
         # get female, male indices
         female = sel[:,0::2]
@@ -910,7 +1090,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_3wayDH_mat"):
-            self.calc_varA_3wayDH_mat()
+            self._varA_3wayDH_mat = self.calc_varA_3wayDH_mat()
 
         # get recurrent, female, male indices
         recurr = sel[:,0::3]
@@ -955,7 +1135,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_4wayDH_mat"):
-            self.calc_varA_4wayDH_mat()
+            self._varA_4wayDH_mat = self.calc_varA_4wayDH_mat()
 
         # get female2, male2, female1, male1 indices
         female2 = sel[:,0::4]
@@ -964,7 +1144,7 @@ class Cross:
         male = sel[:,3::4]
 
         # get variance terms
-        varA_val = self._varA_3wayDH_mat[female2,male2,female1,male1]
+        varA_val = self._varA_4wayDH_mat[female2,male2,female1,male1]
 
         # return variance terms
         return varA_val
@@ -997,7 +1177,7 @@ class Cross:
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_dihybridDH_mat"):
-            self.calc_varA_dihybridDH_mat()
+            self._varA_dihybridDH_mat = self.calc_varA_dihybridDH_mat()
 
         # get female, male indices
         female = sel[:,0::2]
@@ -1076,6 +1256,25 @@ class Cross:
 
         return gamete
 
+    @classmethod
+    def mate_default(self, sel, *args, **kwargs):
+        """
+        Default method for mate method. Raises a RuntimeError.
+        """
+        raise RuntimeError("mate function not set.")
+
+    @classmethod
+    def mate(self, sel, *args, **kwargs):
+        raise RuntimeError("mate function not set.")
+
+    @classmethod
+    def set_matefn(self, matefn = None, crosstype = None):
+        # lookup matefn in lookup table
+        matefn_str = Cross.KEY_TO_VARAFN[crosstype][matefn]
+
+        # set new function attributes
+        self.mate = getattr(self, matefn_str)
+
     ##############################################
     ############# Controlled mating ##############
     @classmethod
@@ -1117,10 +1316,9 @@ class Cross:
         # seed rng
         cond_seed_rng(seed)
 
-        # repeat the female, male parents (c*n) times
-        # Remark: this only works for 2-way crosses with no DH.
-        fsel = numpy.repeat(sel[0::2], c*n)
-        msel = numpy.repeat(sel[1::2], c*n)
+        # repeat the female, male parents 'c' times
+        fsel = numpy.repeat(sel[0::2], c)
+        msel = numpy.repeat(sel[1::2], c)
 
         # allocate empty array
         matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
@@ -1134,6 +1332,7 @@ class Cross:
             matepair,
             self._population.geno,
             self._population.genetic_map,
+            n
         )
 
         # TODO: build taxa name array
@@ -1275,7 +1474,58 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng
+        cond_seed_rng(seed)
+
+        # repeat the recurrent, female, male parents 'c' times
+        rsel = numpy.repeat(sel[0::3], c)
+        fsel = numpy.repeat(sel[1::3], c)
+        msel = numpy.repeat(sel[2::3], c)
+
+        # allocate empty array for cross 1 (female x male) specification
+        cross1 = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # put female, male pairs in array
+        cross1[0::2] = fsel
+        cross1[1::2] = msel
+
+        # make hybrid (female x male) genotypes
+        geno = mate_geno(
+            cross1,
+            self._population.geno,
+            self._population.genetic_map,
+            1
+        )
+
+        # concatenate hybrid and original matrices together
+        geno = numpy.concatenate([geno, self._population.geno], axis=1)
+
+        # get indices for each hybrid: there are len(fsel) hybrids
+        hsel = numpy.arange(len(fsel))
+
+        # allocate empty array for cross 2 (recurrent x hybrid) specification
+        cross2 = numpy.empty(len(rsel) * 2, dtype = rsel.dtype)
+
+        # put recurrent, hybrid pairs in array
+        cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
+        cross2[1::2] = hsel
+
+        geno = mate_geno(
+            cross2,
+            geno,
+            self._population.genetic_map,
+            n
+        )
+
+        # TODO: build taxa name array
+
+        population = Population(
+            geno,
+            self._population.genomic_model,
+            self._population.genetic_map
+        )
+
+        return population
 
     @classmethod
     def mate_3wayDH_ctrl(self, sel, c, n, s = None, t = None, seed = None):
@@ -1324,7 +1574,65 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng
+        cond_seed_rng(seed)
+
+        # repeat the recurrent, female, male parents 'c' times
+        rsel = numpy.repeat(sel[0::3], c)
+        fsel = numpy.repeat(sel[1::3], c)
+        msel = numpy.repeat(sel[2::3], c)
+
+        # declare 'geno' variable
+        geno = None
+
+        if t == 0:
+            # allocate empty array for cross 1 (female x male) specification
+            cross1 = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+            # put female, male pairs in array
+            cross1[0::2] = fsel
+            cross1[1::2] = msel
+
+            # make hybrid (female x male) genotypes
+            geno = mate_geno(
+                cross1,
+                self._population.geno,
+                self._population.genetic_map,
+                1
+            )
+
+            # concatenate hybrid and original matrices together
+            geno = numpy.concatenate([geno, self._population.geno], axis=1)
+
+            # get indices for each hybrid: there are len(fsel) hybrids
+            hsel = numpy.arange(len(fsel))
+
+            # allocate empty array for cross 2 (recurrent x hybrid) specification
+            cross2 = numpy.empty(len(rsel) * 2, dtype = rsel.dtype)
+
+            # put recurrent, hybrid pairs in array
+            cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
+            cross2[1::2] = hsel
+
+            geno = dh_geno(
+                cross2,
+                geno,
+                self._population.genetic_map,
+                n,
+                s
+            )
+        else:
+            raise NotImplementedError("'t' protocol not implemented yet.")
+
+        # TODO: build taxa name array
+
+        population = Population(
+            geno,
+            self._population.genomic_model,
+            self._population.genetic_map
+        )
+
+        return population
 
     @classmethod
     def mate_4way_ctrl(self, sel, c, n, seed = None):
@@ -1621,19 +1929,19 @@ class Cross:
         return progeny
 
     @classmethod
-    def mate_3way_wrand(self, sel, weight, c, n, seed = None):
+    def mate_3way_erand(self, sel, weight, c, n, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_3wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_3wayDH_erand(self, sel, weight, c, n, s = None, t = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4way_wrand(self, sel, weight, c, n, seed = None):
+    def mate_4way_erand(self, sel, weight, c, n, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_4wayDH_erand(self, sel, weight, c, n, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
 
@@ -1926,6 +2234,7 @@ class Cross:
         Returns
         -------
         progeny : numpy.ndarray
+            A 3D genotype matrix of shape (2,k/2,p).
         """
         # seed RNG if needed
         if seed is not None:
