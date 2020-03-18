@@ -4,6 +4,10 @@ import math
 def cond_str_lower(s, cond=(lambda s: isinstance(s, str))):
     return s.lower() if cond(s) else s
 
+def cond_seed_rng(seed, cond=(lambda s: s is not None)):
+    if cond(seed):
+        numpy.random.seed(seed)
+
 def srange(start, stop, step):
     yield from range(start, stop, step)
     yield stop

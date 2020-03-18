@@ -1076,144 +1076,6 @@ class Cross:
 
         return gamete
 
-    @classmethod
-    def mate_2way_controlled(self, sel, n, seed = None):
-        """
-        Perform a controlled cross.
-
-        Parameters
-        ----------
-        sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
-            Where:
-                'k' is the number of selected individuals.
-            Indices are paired as follows:
-                Even indices are female.
-                Odd indices are male.
-            Example:
-                [1,5,3,8,2,7]
-                female = 1,3,2
-                male = 5,8,7
-
-        n : numpy.ndarray, int
-            An array of shape (k/2,) designating the number of progeny to
-            generate per cross. If an integer is provided, the number of each
-            cross is equivalent.
-
-        Returns
-        -------
-        population : Population
-            A new population of individuals from the designated crosses.
-        """
-        # if a seed is provided, seed the RNG
-        if seed is not None:
-            numpy.random.seed(seed)
-
-        # double the length of 'n'
-        n = numpy.repeat(n, 2)
-
-        # calculate gamete sources
-        gametesrc = numpy.tile(sel, n)
-
-        # generate male and female gametes.
-        gamete = self.meiosis(gametesrc)
-
-        # stack our gametes to progeny
-        progeny = numpy.stack((gamete[0::2,:], gamete[1::2,:]))
-
-        # create a new population
-        population = Population(
-            progeny,
-            self._population.genomic_model,
-            self._population.genetic_map
-        )
-
-        # return our progeny
-        return population
-
-    @classmethod
-    def mate_DH(self, sel, n, s = 0, t = 0, seed = None):
-        """
-        Perform a controlled cross.
-
-        Parameters
-        ----------
-        sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
-            Where:
-                'k' is the number of selected individuals.
-        n : numpy.ndarray, int
-            An array of shape (k/2,) designating the number of progeny to
-            generate per cross. If an integer is provided, the number of each
-            cross is equivalent.
-
-        Returns
-        -------
-        population : Population
-            A new population of individuals from the designated crosses.
-        """
-        raise NotImplementedError()
-        # if a seed is provided, seed the RNG
-        if seed is not None:
-            numpy.random.seed(seed)
-
-        # double the length of 'n'
-        n = numpy.repeat(n, 2)
-
-        # calculate gamete sources
-        gametesrc = numpy.tile(sel, n)
-
-        # generate male and female gametes.
-        gamete = self.meiosis(gametesrc)
-
-        # stack our gametes to progeny
-        progeny = numpy.stack((gamete[0::2,:], gamete[1::2,:]))
-
-        # create a new population
-        population = Population(
-            progeny,
-            self._population.genomic_model,
-            self._population.genetic_map
-        )
-
-        # return our progeny
-        return population
-
-
-    @classmethod
-    def mate_2way_erand(self, sel, n, exact, seed = None):
-        """
-        """
-        # if a seed is provided, seed the RNG
-        if seed is not None:
-            numpy.random.seed(seed)
-
-        if exact[0::2].sum() != exact[1::2].sum():
-            raise ValueError("Gamete numbers do not match.")
-
-        # get source indices
-        female = numpy.repeat(sel[0::2], exact[0::2])
-        male = numpy.repeat(sel[1::2], exact[1::2])
-
-        # shuffle source indices
-        numpy.random.shuffle(female)
-        numpy.random.shuffle(male)
-
-        # allocate mate config array
-        mate_config = numpy.empty(len(female) + len(male), dtype = sel.dtype)
-
-        # assign mate configurations
-        mate_config[0::2] = female
-        mate_config[1::2] = male
-
-        # make new population
-        population = self.mate_2way_controlled(mate_config, n)
-
-        return population
-
-
-
-
     ##############################################
     ############# Controlled mating ##############
     @classmethod
@@ -1237,6 +1099,7 @@ class Cross:
         c : numpy.ndarray, int
             A 1D array of integers representing the number of times the
             specified cross pattern should be performed.
+            shape = (k/2,)
         n : numpy.ndarray, int
             A 1D array of integers representing the number of progeny from each
             cross that should be simulated.
@@ -1251,7 +1114,37 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng
+        cond_seed_rng(seed)
+
+        # repeat the female, male parents (c*n) times
+        # Remark: this only works for 2-way crosses with no DH.
+        fsel = numpy.repeat(sel[0::2], c*n)
+        msel = numpy.repeat(sel[1::2], c*n)
+
+        # allocate empty array
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # put female, male pairs in
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # make genotypes
+        geno = mate_geno(
+            matepair,
+            self._population.geno,
+            self._population.genetic_map,
+        )
+
+        # TODO: build taxa name array
+
+        population = Population(
+            geno,
+            self._population.genomic_model,
+            self._population.genetic_map
+        )
+
+        return population
 
     @classmethod
     def mate_2wayDH_ctrl(self, sel, c, n, s = None, t = None, seed = None):
@@ -1283,6 +1176,7 @@ class Cross:
             Number of times progeny from the cross should be self-fertilized.
             If 's' is None, use self.s as the value.
         t : int, None
+            Not implemented yet.
             Number of times progeny from the cross should be randomly
             intermated.
             If 't' is None, use self.t as the value.
@@ -1298,7 +1192,51 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng
+        cond_seed_rng(seed)
+
+        # repeat the female, male parents 'c' times
+        fsel = numpy.repeat(sel[0::2], c)
+        msel = numpy.repeat(sel[1::2], c)
+
+        # allocate empty array
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # put female, male pairs in
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # declare 'geno' variable
+        geno = None
+
+        if t == 0:
+            # make genotypes
+            geno = mate_geno(
+                matepair,
+                self._population.geno,
+                self._population.genetic_map,
+            )
+
+            # make doubled haploids from the hybrid genotypes
+            geno = dh_geno(
+                numpy.arange(geno.shape[1]), # all hybrids
+                geno,
+                self._population.genetic_map,
+                n,
+                s,
+            )
+        else:
+            raise NotImplementedError("'t' protocol not implemented yet.")
+
+        # TODO: build taxa name array
+
+        population = Population(
+            geno,
+            self._population.genomic_model,
+            self._population.genetic_map
+        )
+
+        return population
 
     @classmethod
     def mate_3way_ctrl(self, sel, c, n, seed = None):
@@ -1512,9 +1450,9 @@ class Cross:
             Assumptions:
                 Female weights should sum to 1.
                 Male weights should sum to 1.
-        c : numpy.ndarray, int
-            A 1D array of integers representing the number of times the
-            specified cross pattern should be performed.
+        c : int
+            An integers representing the number of random crosses that should
+            be performed.
         n : numpy.ndarray, int
             A 1D array of integers representing the number of progeny from each
             cross that should be simulated.
@@ -1529,11 +1467,45 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng if needed
+        cond_seed_rng(seed)
+
+        # randomly choose indices for female, male parents
+        fsel = numpy.random.choice(sel[0::2], c, True, weight[0::2])
+        msel = numpy.random.choice(sel[1::2], c, True, weight[1::2])
+
+        # allocate mate pair matrix
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # copy female, male mates into matepair
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # make progeny
+        progeny = self.mate_2way_ctrl(matepair, 1, n)
+
+        return progeny
 
     @classmethod
     def mate_2wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
-        raise NotImplementedError()
+        # seed rng if needed
+        cond_seed_rng(seed)
+
+        # randomly choose indices for female, male parents
+        fsel = numpy.random.choice(sel[0::2], c, True, weight[0::2])
+        msel = numpy.random.choice(sel[1::2], c, True, weight[1::2])
+
+        # allocate mate pair matrix
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # copy female, male mates into matepair
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # make progeny
+        progeny = self.mate_2wayDH_ctrl(matepair, 1, n, s, t)
+
+        return progeny
 
     @classmethod
     def mate_3way_wrand(self, sel, weight, c, n, seed = None):
@@ -1600,11 +1572,53 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
-        raise NotImplementedError()
+        # seed rng if needed
+        cond_seed_rng(seed)
+
+        # replicate female, male exact number of times
+        fsel = numpy.repeat(sel[0::2], exact[0::2])
+        msel = numpy.repeat(sel[1::2], exact[1::2])
+
+        # randomly shuffle parents
+        numpy.random.shuffle(fsel)
+        numpy.random.shuffle(msel)
+
+        # allocate mate pair matrix
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # copy female, male mates into matepair
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # make progeny
+        progeny = self.mate_2way_ctrl(matepair, 1, n)
+
+        return progeny
 
     @classmethod
     def mate_2wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
-        raise NotImplementedError()
+        # seed rng if needed
+        cond_seed_rng(seed)
+
+        # replicate female, male exact number of times
+        fsel = numpy.repeat(sel[0::2], exact[0::2])
+        msel = numpy.repeat(sel[1::2], exact[1::2])
+
+        # randomly shuffle parents
+        numpy.random.shuffle(fsel)
+        numpy.random.shuffle(msel)
+
+        # allocate mate pair matrix
+        matepair = numpy.empty(len(fsel) * 2, dtype = fsel.dtype)
+
+        # copy female, male mates into matepair
+        matepair[0::2] = fsel
+        matepair[1::2] = msel
+
+        # make progeny
+        progeny = self.mate_2wayDH_ctrl(matepair, 1, n, s, t)
+
+        return progeny
 
     @classmethod
     def mate_3way_wrand(self, sel, weight, c, n, seed = None):
@@ -1623,14 +1637,9 @@ class Cross:
         raise NotImplementedError()
     ##############################################
 
-
-    ##############################################
-
-
     ############################################################################
     ############################# Static Methods ###############################
     ############################################################################
-
     @staticmethod
     def rk(r, k):
         """
@@ -1768,7 +1777,7 @@ class Cross:
             raise ValueError("s and t must be >= 0.")
 
     @staticmethod
-    def meiosis_geno(sel, geno, genetic_map, s = 0, seed = None):
+    def meiosis_geno(sel, geno, genetic_map, n, s = 0, seed = None):
         """
         Generate gametes from individuals. Only works with diploid data.
 
@@ -1814,6 +1823,10 @@ class Cross:
                 'p' is the number of markers.
         genetic_map : GeneticMap
             A genetic map.
+        n : numpy.ndarray, int
+            Number of gametes to produce from a single cross. Gametes from each
+            individual are placed right next to each other in the returned
+            array.
         s : int, inf
             Alter recombination probability to what would be observed in
             selfing generation 's' in a single seed descent scenario.
@@ -1833,8 +1846,7 @@ class Cross:
             Where:
         """
         # if there is a RNG seed, seed the RNG
-        if seed is not None:
-            numpy.random.seed(seed)
+        cond_seed_rng(seed)
 
         # make aliases for variables
         gstix = genetic_map.chr_grp_stix
@@ -1847,9 +1859,12 @@ class Cross:
         if s > 0:
             prob = Cross.rk(prob, s+1)
 
+        # replicate parent selections by the number of gametes desired.
+        fsel = numpy.repeat(sel, n)
+
         # make an empty matrix to contain gametes
         gamete = numpy.empty(
-            (len(sel), len(genetic_map.chr_start)), # num sel x len map
+            (len(fsel), len(genetic_map.chr_start)), # num fsel x len map
             dtype = 'int8'
         )
 
@@ -1897,7 +1912,7 @@ class Cross:
         return gamete
 
     @staticmethod
-    def mate_geno(sel, geno, genetic_map, seed = None):
+    def mate_geno(sel, geno, genetic_map, n, seed = None):
         """
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,)
@@ -1921,9 +1936,10 @@ class Cross:
         msel = sel[1::2]
 
         # generate gametes
-        fgamete = Cross.meiosis_geno(fsel, geno, genetic_map)
-        mgamete = Cross.meiosis_geno(msel, geno, genetic_map)
+        fgamete = Cross.meiosis_geno(fsel, geno, genetic_map, n)
+        mgamete = Cross.meiosis_geno(msel, geno, genetic_map, n)
 
+        # TODO: # OPTIMIZE:
         # generate offspring genotypes by stacking matrices to make 3d matrix
         progeny = numpy.stack([fgamete, mgamete])
 
@@ -1947,11 +1963,8 @@ class Cross:
         if seed is not None:
             numpy.random.seed(seed)
 
-        # get female indices
-        fsel = numpy.repeat(sel, n)
-
         # generate gametes
-        fgamete = Cross.meiosis_geno(fsel, geno, genetic_map)
+        fgamete = Cross.meiosis_geno(sel, geno, genetic_map, n, s)
 
         # generate offspring genotypes by stacking matrices to make 3d matrix
         progeny = numpy.stack([fgamete, fgamete])
