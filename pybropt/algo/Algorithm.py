@@ -9,8 +9,12 @@ class algorithm:
     ############################################################################
 
     @classmethod
-    def __init__(self):
+    def __init__(self, name = None):
+        # initialize empty lists
         self.reset()
+
+        # set name
+        self._name = name
 
     @classmethod
     def __len__(self):
@@ -56,6 +60,17 @@ class algorithm:
             del self._position
         return locals()
     position = property(**position())
+
+    def name():
+        doc = "The name property."
+        def fget(self):
+            return self._name
+        def fset(self, value):
+            self._name = value
+        def fdel(self):
+            del self._name
+        return locals()
+    name = property(**name())
 
     ############################################################################
     ############################## Class Methods ###############################
