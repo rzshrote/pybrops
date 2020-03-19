@@ -1,8 +1,15 @@
 class WGS(GenomicSelection):
     """docstring for CGS."""
 
-    def __init__(self):
-        super(CGS, self).__init__()
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    @classmethod
+    def __init__(self, population):
+        super(CGS, self).__init__(population)
+
+        # check that we have marker coefficients
+        check_is_ParametricGenomicModel(self._population.genomic_model)
 
     ############################################################################
     ############################## Class Methods ###############################
@@ -97,7 +104,7 @@ class WGS(GenomicSelection):
         return wgs
 
     @classmethod
-    def optimize(self, k, objcoeff, algorithm = None):
+    def optimize(self, k, objcoeff = None, algorithm = None):
         """
         k : int
             Number of individuals to select.
