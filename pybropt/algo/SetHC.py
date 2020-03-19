@@ -61,7 +61,7 @@ class SetHC(HillClimber):
         return out_vec, out_exch
 
     @classmethod
-    def optimize(self, objfn, stpfn = None, seed = None, nthreads = None,
+    def optimize(self, objfn, seed = None, nthreads = None,
             *args, **kwargs):
         """
         Perform a hillclimbing using steepest ascent strategy. A set of size
@@ -72,9 +72,6 @@ class SetHC(HillClimber):
         ==========
         objfn : function
             Objective function to optimize.
-        stpfn : function
-            A stop function. Should accept iteration number.
-            Returns False to stop the iterations.
         seed : int, default = None.
             Random number seed.
         nthreads : int, default = None
