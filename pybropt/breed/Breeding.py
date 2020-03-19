@@ -1,19 +1,36 @@
 class Breeding:
-    """docstring for Breeding."""
+    """
+    Base class to represent a breeding strategy.
+    """
 
     ############################################################################
     ############################# Reserved methods #############################
     ############################################################################
-
-    def __init__(self):
+    @classmethod
+    def __init__(self, population):
         """
         Constructor for Breeding class.
         """
+        # initialize history lists, etc.
         self.reset()
+
+        # set private variables
+        self._population = population
 
     ############################################################################
     ################################ Properties ################################
     ############################################################################
+
+    def population():
+        doc = "The population property."
+        def fget(self):
+            return self._population
+        def fset(self, value):
+            self._population = value
+        def fdel(self):
+            del self._population
+        return locals()
+    population = property(**population())
 
     def method_population():
         doc = "The method_population property."
@@ -172,7 +189,6 @@ class Breeding:
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
     @classmethod
     def history_add_population(self, method, algorithm, seed, cycle, score,
         gebv, geno = None):
@@ -240,7 +256,6 @@ class Breeding:
         self._gebv_selection.append(gebv)
         if geno is not None:
             self._genotype_selection.append(geno)
-
 
     @classmethod
     def reset(self):
@@ -354,6 +369,7 @@ class Breeding:
 
         return
 
+    @classmethod
     def objfn(self, sel, *args, **kwargs):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -374,6 +390,7 @@ class Breeding:
         """
         raise NotImplementedError("This method is not implemented.")
 
+    @classmethod
     def objfn_vec(self, sel, *args, **kwargs):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -395,13 +412,13 @@ class Breeding:
         raise NotImplementedError("This method is not implemented.")
 
     @classmethod
-    def optimize(self, algorithm):
+    def optimize(self, objfn_varg, algorithm, *args, **kwargs):
         """
         """
         raise NotImplementedError("This method is not implemented.")
 
     @classmethod
-    def simulate(self, algorithm):
+    def simulate(self, objfn_varg, pop_varg, algorithm, *args, **kwargs):
         """
         """
         raise NotImplementedError("This method is not implemented.")

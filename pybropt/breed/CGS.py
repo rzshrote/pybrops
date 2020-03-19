@@ -1,10 +1,160 @@
 class CGS(GenomicSelection):
     """docstring for CGS."""
 
-    def __init__(self):
-        super(CGS, self).__init__()
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    @classmethod
+    def __init__(self, population):
+        super(CGS, self).__init__(population)
 
-    def objfn(self, sel, geno, coeff):
+        # check that we have marker coefficients
+        check_is_ParametricGenomicModel(self._population.genomic_model)
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+    @classmethod
+    def objfn(self, sel, objcoeff = None):
+        """
+        Breeding method objective function. Implement this in derived classes.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply GEBVs by a weight sum vector.
+
+        Returns
+        -------
+        cgs : numpy.ndarray
+            A GEBV matrix of shape (k,) or (k,t) depending on whether 'objcoeff'
+            was specified or not, respectively.
+        """
+        # calculate GEBVs
+        cgs = CGS.objfn_mat(
+            sel,
+            self._population.geno,
+            self._population.genomic_model.coeff
+        )
+
+        # if we have objective weights, take dot product for weight sum method
+        if objcoeff is not None:
+            cgs = cgs.dot(objcoeff)
+
+        return cgs
+
+    @classmethod
+    def objfn_vec(self, sel, objcoeff = None):
+        """
+        Breeding method objective function. Implement this in derived classes.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape (j,k)
+            Where:
+                'j' is the number of selection configurations.
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,) or (t,j).
+            Where:
+                't' is the number of objectives.
+                'j' is the number of selection configurations.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply GEBVs by a weight sum vector.
+
+        Returns
+        -------
+        cgs : numpy.ndarray
+            A GEBV matrix.
+            Shape rules are as follows:
+                (j,k)   if objcoeff shape is (t,)
+                (j,k,t) if objcoeff shape is (t,j)
+                (j,k,t) if objcoeff is None
+            Where:
+                'j' is the number of selection configurations.
+                'k' is the number of individuals to select.
+                't' is the number of objectives.
+        """
+        # calculate GEBVs
+        cgs = CGS.objfn_vec_mat(
+            sel,
+            self._population.geno,
+            self._population.genomic_model.coeff
+        )
+
+        # if we have objective weights, take dot product for weight sum method
+        if objcoeff is not None:
+            cgs = cgs.dot(objcoeff)
+
+        return cgs
+
+    @classmethod
+    def optimize(self, k, objcoeff, algorithm = None):
+        """
+        k : int
+            Number of individuals to select.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply GEBVs by a weight sum vector.
+        algorithm : None, {'quicksort', 'mergesort', 'heapsort', 'stable'}
+            Optional specification for algorithm to use for sorting GEBVs.
+            Default is 'quicksort'. Only worry about this for an extremely
+            large number of individuals.
+
+        Returns
+        -------
+        sel : numpy.ndarray
+            A selection indices matrix.
+             of shape (k,)
+            Shape rules are as follows:
+                (k,)    if objcoeff shape is (t,)
+                (t,k)   if objcoeff is None
+            Where:
+                'k' is the number of individuals to select.
+                't' is the number of objectives.
+        """
+        # calculate GEBVs
+        cgs = self.objfn(None, objcoeff)
+
+        sel = None
+        if cgs.ndim == 1:
+            cgs_argsort = cgs.argsort(axis = 0)     # get sorted indices
+            sel = cgs_argsort[-k:]                  # get last k indices
+        elif cgs.ndim == 2:
+            cgs_argsort = cgs.argsort(axis = 1)     # get sorted indices
+            sel = cgs_argsort[:,-k:]                # get last k indices
+
+        return sel
+
+    @classmethod
+    def simulate(self, algorithm):
+        """
+        """
+        raise NotImplementedError("This method is not implemented.")
+
+    ############################################################################
+    ############################# Static Methods ###############################
+    ############################################################################
+    @staticmethod
+    def objfn_mat(sel, geno, coeff):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -39,8 +189,10 @@ class CGS(GenomicSelection):
         Returns
         -------
         cgs : numpy.ndarray
-            Returns an array of floating point number representing GEBVs for each
-            individual.
+            A trait prediction (GEBV) matrix of shape (p, t).
+            Where:
+                'p' is the number of markers.
+                't' is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:
@@ -54,7 +206,8 @@ class CGS(GenomicSelection):
 
         return cgs
 
-    def objfn_vec(self, sel, geno, coeff):
+    @staticmethod
+    def objfn_vec_mat(sel, geno, coeff):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -91,6 +244,3 @@ class CGS(GenomicSelection):
         if sel is None:
             return geno.sum(0).dot(coeff)
         return geno[:,sel].sum(0).dot(coeff)
-
-    def optimize(self, algorithm):
-        pass

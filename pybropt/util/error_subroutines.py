@@ -170,6 +170,10 @@ def check_is_Population(pop, varname):
     if not isinstance(pop, Population):
         raise TypeError("'%s' must be a Population object." % varname)
 
+def check_is_ParametricGenomicModel(gmod, varname):
+    if not isinstance(gmod, ParametricGenomicModel):
+        raise TypeError("'%s' must be a ParametricGenomicModel object." % varname)
+
 ################################################################################
 
 def error_readonly(varname):
