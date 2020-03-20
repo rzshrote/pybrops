@@ -4,7 +4,7 @@ class SetHC(HillClimber):
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
+    @classmethod
     def __init__(self, k, search_space):
         # call super constructor
         super(SetHC, self).__init__()
