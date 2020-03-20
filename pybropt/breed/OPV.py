@@ -5,14 +5,17 @@ class OPV(GenomicSelection):
     ########################## Special Object Methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population):
+    def __init__(self, population, hcoeff = None):
         super(OPV, self).__init__(population)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)
 
-        # calculate hcoeff
-        self._hcoeff = self.calc_hcoeff()
+        # calculate hcoeff if needed
+        if coeff is None:
+            hcoeff = self.calc_hcoeff()
+
+        self._hcoeff = hcoeff
 
     ############################################################################
     ################################ Properties ################################
@@ -80,8 +83,7 @@ class OPV(GenomicSelection):
         # get OPV scores
         opv = OPV.objfn_mat(
             sel,
-            self._population.geno,
-            self._population.genomic_model.coeff
+            hcoeff = self._hcoeff
         )
 
         # negate OPV scores if necessary
@@ -137,8 +139,7 @@ class OPV(GenomicSelection):
         # calculate OPV scores
         opv = OPV.objfn_vec_mat(
             sel,
-            self._population.geno,
-            self._population.genomic_model.coeff
+            hcoeff = self._hcoeff
         )
 
         # negate OPV scores if necessary.
