@@ -61,7 +61,7 @@ class SetHC(HillClimber):
         return out_vec, out_exch
 
     @classmethod
-    def optimize(self, objfn, seed = None, nthreads = None,
+    def optimize(self, objfn, seed = None, nthreads = None, minimize = True,
             *args, **kwargs):
         """
         Perform a hillclimbing using steepest ascent strategy. A set of size
@@ -150,6 +150,7 @@ class SetHC(HillClimber):
         if verbose:
             print("Iteration", iter, "\tscore =", score)
 
+        # OPTIMIZE: flip this test variable to not need 'not' in front
         # make exit variable
         found_local_optima = False
 
@@ -170,10 +171,18 @@ class SetHC(HillClimber):
                 # evaluate the objective function
                 score = numpy.apply_along_axis(objfn, 1, pos, *args, **kwargs)
 
-            if numpy.any(score > gbest_score):
-                gbest_ix = score.argmax()
-                gbest_pos = pos[gbest_ix,:].copy()
-                gbest_exch = exch[gbest_ix,:].copy()
+            # OPTIMIZE: see if any optimizations can be made in this logic chain
+            # determine if any improvement has been made
+            improvement = None
+            if minimize:
+                improvement = (score < gbest_score).any()
+            else:
+                improvement = (score > gbest_score).any()
+
+            if improvement:
+                gbest_ix = score.argmin() if minimize else score.argmax()
+                gbest_pos = pos[gbest_ix,:].copy() # OPTIMIZE: see if copy is needed
+                gbest_exch = exch[gbest_ix,:].copy() # # OPTIMIZE: see if copy is needed
                 gbest_score = score[gbest_ix]
             else:
                 found_local_optima = True
