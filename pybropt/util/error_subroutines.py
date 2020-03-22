@@ -13,8 +13,12 @@ def check_is_list(l, varname):
         raise TypeError("'%s' must be a list." % varname)
 
 def check_is_tuple(t, varname):
-    if not isinstance(t, list):
+    if not isinstance(t, tuple):
         raise TypeError("'%s' must be a tuple." % varname)
+
+def check_is_bool(b, varname):
+    if not isinstance(b, bool):
+        raise TypeError("'%s' must be a bool." % varname)
 
 def check_is_iterable(i, varname):
     if not hasattr(i, "__iter__"):
