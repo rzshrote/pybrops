@@ -153,8 +153,7 @@ class OPV(GenomicSelection):
         return opv
 
     @classmethod
-    def optimize(self, objcoeff = None, negate = True, algorithm = None,
-        gbestix = None, *args, **kwargs):
+    def optimize(self, objcoeff = None, negate = True, algorithm = None, gbestix = 2, *args, **kwargs):
         """
         objcoeff : numpy.ndarray, None
             An objective coefficients matrix of shape (t,).
@@ -200,7 +199,7 @@ class OPV(GenomicSelection):
 
     @classmethod
     def simulate(self, objcoeff = None, negate = True, algorithm = None,
-        gbestix = None, *args, **kwargs):
+        gbestix = 2, *args, **kwargs):
         raise NotImplementedError
 
     ############################################################################
