@@ -174,6 +174,10 @@ def check_is_ParametricGenomicModel(gmod, varname):
     if not isinstance(gmod, ParametricGenomicModel):
         raise TypeError("'%s' must be a ParametricGenomicModel object." % varname)
 
+def check_is_Cross(cross, varname):
+    if not isinstance(cross, Cross):
+        raise TypeError("'%s' must be a Cross object." % varname)
+
 ################################################################################
 
 def error_readonly(varname):

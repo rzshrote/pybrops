@@ -1,0 +1,15 @@
+Standardization
+---------------
+[ ] Default objective functions should be minimizing functions.
+
+Code reuse
+----------
+[ ] Alter inheritance structure of MOGS, MOGM, PAFD, PAU such that they inherit
+    from a class with wcoeff and tfreq.
+
+Performance Improvements
+------------------------
+[ ] For bare bones objfn_mat and objfn_vec_mat functions, maybe force use of
+    only precomputed values (e.g. wcoeff must be already calculated)? This
+    would reduce flexibility in the accessible static method, but may slightly
+    improve performance by eliminating if statements.

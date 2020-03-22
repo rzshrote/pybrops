@@ -5,8 +5,8 @@ class CGS(GenomicSelection):
     ########################## Special Object Methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population):
-        super(CGS, self).__init__(population)
+    def __init__(self, population, cross):
+        super(CGS, self).__init__(population, cross)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)

@@ -5,8 +5,8 @@ class PAFD(GenomicSelection):
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, wcoeff = None, tfreq = None):
-        super(PAFD, self).__init__(population)
+    def __init__(self, population, cross, wcoeff = None, tfreq = None):
+        super(PAFD, self).__init__(population, cross)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)
@@ -284,7 +284,7 @@ class PAFD(GenomicSelection):
         sgeno = geno[:,sel,:] # (m,n,p)[1] -> (m,j,k,p)
 
         # calculate the number of chromosome phases present (depth * rows)
-        phases = numpy.float64(sgeno.shape[0] * sgeno.shape[1])
+        phases = numpy.float64(sgeno.shape[0] * sgeno.shape[2])
 
         # calculate population frequencies; add axis for correct broadcast
         pfreq = (sgeno.sum((0,2)) / phases)[:,None] # (m,j,k,p)[0,2] -> (j,p,1)

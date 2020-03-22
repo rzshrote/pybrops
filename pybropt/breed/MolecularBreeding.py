@@ -4,5 +4,5 @@ class MolecularBreeding(Breeding):
     ############################################################################
     ############################# Reserved methods #############################
     ############################################################################
-    def __init__(self, population):
-        super(MolecularBreeding, self).__init__(population)
+    def __init__(self, population, cross):
+        super(MolecularBreeding, self).__init__(population, cross)

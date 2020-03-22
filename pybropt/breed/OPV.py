@@ -5,8 +5,8 @@ class OPV(GenomicSelection):
     ########################## Special Object Methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, hcoeff = None):
-        super(OPV, self).__init__(population)
+    def __init__(self, population, cross, hcoeff = None):
+        super(OPV, self).__init__(population, cross)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)

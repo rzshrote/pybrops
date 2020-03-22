@@ -5,8 +5,8 @@ class PAU(GenomicSelection):
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, wcoeff = None, tfreq = None):
-        super(PAU, self).__init__(population)
+    def __init__(self, population, cross, wcoeff = None, tfreq = None):
+        super(PAU, self).__init__(population, cross)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)

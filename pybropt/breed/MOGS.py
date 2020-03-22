@@ -5,8 +5,8 @@ class MOGS(GenomicSelection):
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, wcoeff = None, tfreq = None):
-        super(MOGS, self).__init__(population)
+    def __init__(self, population, cross, wcoeff = None, tfreq = None):
+        super(MOGS, self).__init__(population, cross)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)
@@ -338,17 +338,17 @@ class MOGS(GenomicSelection):
 
         # if wcoeff is None, calculate it
         if wcoeff is None:
-            wcoeff = MOGS.wcoeff(coeff)
+            wcoeff = MOGS.wcoeff_mat(coeff)
 
         # if wcoeff is None, calculate it
         if tfreq is None:
-            tfreq = MOGS.tfreq(coeff)
+            tfreq = MOGS.tfreq_mat(coeff)
 
         # generate a view of the geno matrix that only contains 'sel' rows.
         sgeno = geno[:,sel,:] # (m,n,p)[1] -> (m,j,k,p)
 
         # calculate number of phases
-        phases = numpy.float64(sgeno.shape[0] * sgeno.shape[1])
+        phases = numpy.float64(sgeno.shape[0] * sgeno.shape[2])
 
         # calculate population frequencies; add axis for correct broadcast
         pfreq = (sgeno.sum((0,2)) / phases)[:,None] # (m,j,k,p)[0,2] -> (j,p,1)

@@ -87,6 +87,7 @@ class Cross:
         # set private variables
         self._population = population
         self.set_varAfn(varAfn, sparse)
+        self._varAfn_str = varAfn
         self._s = s
         self._t = t
         self._sparse = sparse
@@ -109,16 +110,16 @@ class Cross:
         return locals()
     population = property(**population())
 
-    def variance():
-        doc = "The variance property."
+    def varAfn_str():
+        doc = "The varAfn_str property."
         def fget(self):
-            return self._variance
+            return self._varAfn_str
         def fset(self, value):
-            self._variance = value
+            self._varAfn_str = value
         def fdel(self):
-            del self._variance
+            del self._varAfn_str
         return locals()
-    variance = property(**variance())
+    varAfn_str = property(**varAfn_str())
 
     def sparse():
         doc = "The sparse property."

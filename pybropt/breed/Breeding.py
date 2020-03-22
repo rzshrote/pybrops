@@ -7,15 +7,20 @@ class Breeding:
     ############################# Reserved methods #############################
     ############################################################################
     @classmethod
-    def __init__(self, population):
+    def __init__(self, population, cross):
         """
         Constructor for Breeding class.
         """
         # initialize history lists, etc.
         self.reset()
 
+        # type checking
+        check_is_Population(population, "population")
+        check_is_Cross(cross, "cross")
+
         # set private variables
         self._population = population
+        self._cross = cross
 
     ############################################################################
     ################################ Properties ################################
@@ -31,6 +36,17 @@ class Breeding:
             del self._population
         return locals()
     population = property(**population())
+
+    def cross():
+        doc = "The cross property."
+        def fget(self):
+            return self._cross
+        def fset(self, value):
+            self._cross = value
+        def fdel(self):
+            del self._cross
+        return locals()
+    cross = property(**cross())
 
     def method_population():
         doc = "The method_population property."
