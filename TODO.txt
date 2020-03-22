@@ -13,3 +13,13 @@ Performance Improvements
     only precomputed values (e.g. wcoeff must be already calculated)? This
     would reduce flexibility in the accessible static method, but may slightly
     improve performance by eliminating if statements.
+
+Feature Additions
+-----------------
+[ ] calc_D in Population class.
+[ ] calc_D_prime in Population class.
+[ ] calc_r in Population class.
+
+Testing
+-------
+[ ] Unit testing for everything.
