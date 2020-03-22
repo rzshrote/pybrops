@@ -1,6 +1,5 @@
 class GenomicSelection(MolecularBreeding):
     """docstring for GenomicSelection."""
 
-    def __init__(self):
-        super(GenomicSelection, self).__init__()
-        
+    def __init__(self, population, cross):
+        super(GenomicSelection, self).__init__(population, cross)

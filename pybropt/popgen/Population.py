@@ -146,40 +146,73 @@ class Population:
     ############################################################################
 
     @classmethod
-    def D(self):
+    def calc_D(self):
         raise NotImplementedError("'D' method is not implemented.")
+
+    @classmethod
+    def calc_D_prime(self):
+        raise NotImplementedError("'D_prime' method is not implemented.")
+
+    @classmethod
+    def calc_r(self):
+        raise NotImplementedError("'r' method is not implemented.")
+
+    @classmethod
+    def calc_r_sq(self):
+        raise NotImplementedError("'r_sq' method is not implemented.")
 
     @classmethod
     def D_gen(self):
         raise NotImplementedError("'D_gen' method is not implemented.")
 
     @classmethod
-    def D_prime(self):
-        raise NotImplementedError("'D_prime' method is not implemented.")
-
-    @classmethod
     def D_prime_gen(self):
         raise NotImplementedError("'D_prime_gen' method is not implemented.")
-
-    @classmethod
-    def r(self):
-        raise NotImplementedError("'r' method is not implemented.")
 
     @classmethod
     def r_gen(self):
         raise NotImplementedError("'r_gen' method is not implemented.")
 
     @classmethod
-    def r_sq(self):
-        raise NotImplementedError("'r_sq' method is not implemented.")
-
-    @classmethod
     def r_sq_gen(self):
         raise NotImplementedError("'r_sq_gen' method is not implemented.")
 
     @classmethod
-    def afreq(self):
-        raise NotImplementedError("'afreq' method is not implemented.")
+    def afreq(self, sel = None):
+        """
+        Calculate allele frequencies for a given subset of the population. 
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+
+        Returns
+        -------
+        allele_freq : numpy.ndarray
+            An allele frequency matrix of shape (p,)
+            Where:
+                'p' is the number of marker loci.
+        """
+        # if no selections have been made, select all
+        if sel is None:
+            sel = slice(None)
+
+        # get selected genotype view
+        sgeno = self._geno[:,sel,:]
+
+        # calculate number of chromosome phases in selection
+        phases = numpy.float64(sgeno.shape[0] * sgeno.shape[1])
+
+        # calculate allele frequency
+        allele_freq = sgeno.sum(0,1) / phases
+
+        return allele_freq
 
     ############################################################################
     ############################# Static Methods ###############################
@@ -300,6 +333,3 @@ class Population:
                     "(NonparametricGenomicModel does not have a 'coeff' field "\
                     "that can be sorted)."
                 )
-
-    @staticmethod
-    def preprocess_geno_genetic_map

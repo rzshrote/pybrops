@@ -1,10 +1,144 @@
 class PAU(GenomicSelection):
     """docstring for PAU."""
 
-    def __init__(self):
-        super(PAU, self).__init__()
+    ############################################################################
+    ######################### Reserved object methods ##########################
+    ############################################################################
+    @classmethod
+    def __init__(self, population, cross, wcoeff = None, tfreq = None):
+        super(PAU, self).__init__(population, cross)
 
-    def objfn(self, sel, geno, coeff = None, wcoeff = None, tfreq = None):
+        # check that we have marker coefficients
+        check_is_ParametricGenomicModel(self._population.genomic_model)
+
+        # set wcoeff if needed
+        if wcoeff is None:
+            wcoeff = self.calc_wcoeff()
+        self._wcoeff = wcoeff
+
+        # set tfreq if needed
+        if tfreq is None:
+            tfreq = self.calc_tfreq()
+        self._tfreq = tfreq
+
+    ############################################################################
+    ################################ Properties ################################
+    ############################################################################
+
+    def wcoeff():
+        doc = "The wcoeff property."
+        def fget(self):
+            return self._wcoeff
+        def fset(self, value):
+            self._wcoeff = value
+        def fdel(self):
+            del self._wcoeff
+        return locals()
+    wcoeff = property(**wcoeff())
+
+    def tfreq():
+        doc = "The tfreq property."
+        def fget(self):
+            return self._tfreq
+        def fset(self, value):
+            self._tfreq = value
+        def fdel(self):
+            del self._tfreq
+        return locals()
+    tfreq = property(**tfreq())
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+    @classmethod
+    def calc_wcoeff(self):
+        """
+        Calculate weight coefficients.
+        """
+        # calculate wcoeff
+        wcoeff = PAU.wcoeff_mat(self._population.coeff)
+
+        return wcoeff
+
+    @classmethod
+    def calc_tfreq(self):
+        """
+        Calculate target frequencies
+        """
+        # calculate tfreq
+        tfreq = PAU.tfreq_mat(self._population.coeff)
+
+        return tfreq
+
+    @classmethod
+    def objfn(self, sel, objcoeff = None, negate = True):
+        # calculate PAU values
+        pau = PAU.objfn_mat(
+            sel,
+            self._population.geno,
+            wcoeff = self._wcoeff,
+            tfreq = self._tfreq
+        )
+
+        # negate PAU scores if necessary.
+        if negate:
+            pau = -pau
+
+        # if we have objective weights, take dot product for weight sum method
+        if objcoeff is not None:
+            pau = pau.dot(objcoeff)
+
+        return pau
+
+    @classmethod
+    def objfn_vec(self, sel, objcoeff = None, negate = True):
+        # calculate PAU values
+        pau = PAU.objfn_vec_mat(
+            sel,
+            self._population.geno,
+            wcoeff = self._wcoeff,
+            tfreq = self._tfreq
+        )
+
+        # negate OPV scores if necessary
+        if negate:
+            pau = -pau
+
+        # take the dot product if necessary
+        if objcoeff is not None:
+            pau = pau.dot(objcoeff)
+
+        return pau
+
+    @classmethod
+    def optimize(self, objcoeff = None, negate = True, algorithm = None,
+        gbestix = None, *args, **kwargs):
+        # we pass objcoeff onto optimizer. This will handle multiobjective.
+        algorithm.optimize(
+            self.objfn,
+            *args,
+            **kwargs,
+            objcoeff = objcoeff,
+            negate = negate
+        )
+
+        # get global best
+        gbest = algorithm.gbest()
+
+        # get selection indices or whole tuple
+        sel = gbest[gbestix] if gbestix is not None else gbest
+
+        return sel
+
+    @classmethod
+    def simulate(self):
+        raise NotImplementedError
+
+    ############################################################################
+    ############################# Static Methods ###############################
+    ############################################################################
+    @staticmethod
+    def objfn(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Population Allele Unvailability (PAU) objective function.
             The goal is to minimize this function. Lower is better.
@@ -59,13 +193,17 @@ class PAU(GenomicSelection):
         pau : numpy.ndarray
             A PAU score matrix of shape (t,)
         """
-        # if weight coefficient is not provided, calculate it.
-        if wcoeff is None:
-            wcoeff = PAU.wcoeff(coeff)
-
         # if 'sel' is None, set to all individuals
         if sel is None:
             sel = slice(None)
+
+        # if weight coefficient is not provided, calculate it.
+        if wcoeff is None:
+            wcoeff = PAU.wcoeff_mat(coeff)
+
+        # if tfreq is not provided, calculate it.
+        if tfreq is None:
+            tfreq = PAU.tfreq_mat(coeff)
 
         # generate a view of the geno matrix that only contains 'sel' rows.
         sgeno = geno[:,sel,:]
@@ -100,7 +238,8 @@ class PAU(GenomicSelection):
         # return score as the specified output data type
         return pau
 
-    def objfn_vec(self, sel, geno, coeff = None, wcoeff = None, tfreq = None):
+    @staticmethod
+    def objfn_vec(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Population Allele Unvailability (PAU) objective function.
             The goal is to minimize this function. Lower is better.
@@ -162,11 +301,11 @@ class PAU(GenomicSelection):
 
         # if weight coefficient is not provided, calculate it.
         if wcoeff is None:
-            wcoeff = PAU.wcoeff(coeff)
+            wcoeff = PAU.wcoeff_mat(coeff)
 
         # if tfreq is not provided, calculate it.
         if tfreq is None:
-            tfreq = PAU.tfreq(coeff)
+            tfreq = PAU.tfreq_mat(coeff)
 
         # generate a view of the geno matrix that only contains 'sel' rows.
         sgeno = geno[:,sel,:]
@@ -202,13 +341,13 @@ class PAU(GenomicSelection):
         return pau
 
     @staticmethod
-    def wcoeff(coeff):
+    def wcoeff_mat(coeff):
         wcoeff = numpy.absolute(coeff)
 
         return wcoeff
 
     @staticmethod
-    def tfreq(coeff):
+    def tfreq_mat(coeff):
         tfreq = (coeff >= 0).astype('float64')
 
         return tfreq

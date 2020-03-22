@@ -10,89 +10,259 @@ class Cross:
     ############################################################################
     ############################# Class Constants ##############################
     ############################################################################
-
     # dictionary of varAfn keys
     KEY_TO_VARAFN = {
-        False : {
-            '2way' :        ('varA_2way', 'varA_2way_vec'),
-            '2wayDH' :      ('varA_2wayDH', 'varA_2wayDH_vec'),
-            '3way' :        ('varA_3way', 'varA_3way_vec'),
-            '3wayDH' :      ('varA_3wayDH', 'varA_3wayDH_vec'),
-            '4way' :        ('varA_4way', 'varA_4way_vec'),
-            '4wayDH' :      ('varA_4wayDH', 'varA_4wayDH_vec'),
-            'dihybrid' :    ('varA_dihybrid', 'varA_dihybrid_vec'),
-            'dihybridDH' :  ('varA_dihybridDH', 'varA_dihybridDH_vec'),
-            None :          ('varA_default', 'varA_default')
+        '2way' : {
+            True :  ('varA_2way_sparse', 'varA_2way_sparse_vec'),
+            False : ('varA_2way', 'varA_2way_vec')
         },
-        True : {
-            '2way' :        ('varA_2way_sparse', 'varA_2way_sparse_vec'),
-            '2wayDH' :      ('varA_2wayDH_sparse', 'varA_2wayDH_sparse_vec'),
-            '3way' :        ('varA_3way_sparse', 'varA_3way_sparse_vec'),
-            '3wayDH' :      ('varA_3wayDH_sparse', 'varA_3wayDH_sparse_vec'),
-            '4way' :        ('varA_4way_sparse', 'varA_4way_sparse_vec'),
-            '4wayDH' :      ('varA_4wayDH_sparse', 'varA_4wayDH_sparse_vec'),
-            'dihybrid' :    ('varA_dihybrid_sparse', 'varA_dihybrid_sparse_vec'),
-            'dihybridDH' :  ('varA_dihybridDH_sparse', 'varA_dihybridDH_sparse_vec'),
-            None :          ('varA_default', 'varA_default')
+        '2wayDH' : {
+            True :  ('varA_2wayDH_sparse', 'varA_2wayDH_sparse_vec'),
+            False : ('varA_2wayDH', 'varA_2wayDH_vec')
+        },
+        '3way' : {
+            True :  ('varA_3way_sparse', 'varA_3way_sparse_vec'),
+            False : ('varA_3way', 'varA_3way_vec')
+        },
+        '3wayDH' : {
+            True :  ('varA_3wayDH_sparse', 'varA_3wayDH_sparse_vec'),
+            False : ('varA_3wayDH', 'varA_3wayDH_vec')
+        },
+        '4way' : {
+            True :  ('varA_4way_sparse', 'varA_4way_sparse_vec'),
+            False : ('varA_4way', 'varA_4way_vec')
+        },
+        '4wayDH' : {
+            True :  ('varA_4wayDH_sparse', 'varA_4wayDH_sparse_vec'),
+            False : ('varA_4wayDH', 'varA_4wayDH_vec')
+        },
+        'dihybrid' : {
+            True :  ('varA_dihybrid_sparse', 'varA_dihybrid_sparse_vec'),
+            False : ('varA_dihybrid', 'varA_dihybrid_vec')
+        },
+        'dihybridDH' : {
+            True :  ('varA_dihybridDH_sparse', 'varA_dihybridDH_sparse_vec'),
+            False : ('varA_dihybridDH', 'varA_dihybridDH_vec')
         },
         None : {
             None : ('varA_default', 'varA_default')
         }
     }
 
+    # dictionary of matefn keys
     KEY_TO_MATEFN = {
-        'ctrl' : {
-            '2way' :    'mate_2way_ctrl',
-            '2wayDH' :  'mate_2wayDH_ctrl',
-            '3way' :    'mate_3way_ctrl',
-            '3wayDH' :  'mate_3wayDH_ctrl',
-            '4way' :    'mate_4way_ctrl',
-            '4wayDH' :  'mate_4wayDH_ctrl'
+        '2way' : {
+            'ctrl' :    'mate_2way_ctrl',
+            'wrand' :   'mate_2way_wrand',
+            'erand' :   'mate_2way_erand'
         },
-        'wrand' : {
-            '2way' :    'mate_2way_wrand',
-            '2wayDH' :  'mate_2wayDH_wrand',
-            '3way' :    'mate_3way_wrand',
-            '3wayDH' :  'mate_3wayDH_wrand',
-            '4way' :    'mate_4way_wrand',
-            '4wayDH' :  'mate_4wayDH_wrand'
+        '2wayDH' : {
+            'ctrl' :    'mate_2wayDH_ctrl',
+            'wrand' :   'mate_2wayDH_wrand',
+            'erand' :   'mate_2wayDH_erand'
         },
-        'erand' : {
-            '2way' :    'mate_2way_erand',
-            '2wayDH' :  'mate_2wayDH_erand',
-            '3way' :    'mate_3way_erand',
-            '3wayDH' :  'mate_3wayDH_erand',
-            '4way' :    'mate_4way_erand',
-            '4wayDH' :  'mate_4wayDH_erand'
+        '3way' : {
+            'ctrl' :    'mate_3way_ctrl',
+            'wrand' :   'mate_3way_wrand',
+            'erand' :   'mate_3way_erand'
+        },
+        '3wayDH' : {
+            'ctrl' :    'mate_3wayDH_ctrl',
+            'wrand' :   'mate_3wayDH_wrand',
+            'erand' :   'mate_3wayDH_erand'
+        },
+        '4way' : {
+            'ctrl' :    'mate_4way_ctrl',
+            'wrand' :   'mate_4way_wrand',
+            'erand' :   'mate_4way_erand'
+        },
+        '4wayDH' : {
+            'ctrl' :    'mate_4wayDH_ctrl',
+            'wrand' :   'mate_4wayDH_wrand',
+            'erand' :   'mate_4wayDH_erand'
+        },
+        'dihybrid' : {
+            'ctrl' :    'mate_2way_ctrl',
+            'wrand' :   'mate_2way_wrand',
+            'erand' :   'mate_2way_erand'
+        },
+        'dihybridDH' : {
+            'ctrl' :    'mate_2wayDH_ctrl',
+            'wrand' :   'mate_2wayDH_wrand',
+            'erand' :   'mate_2wayDH_erand'
         },
         None : {
             None : 'mate_default'
         }
     }
 
+    # dictionary of rallocfn keys
+    KEY_TO_RALLOCFN = {
+        '2way' : {
+            'ctrl' : {
+                'equal' : 'ralloc_2way_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_2way_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_2way_erand_equal'
+            }
+        },
+        '2wayDH' : {
+            'ctrl' : {
+                'equal' : 'ralloc_2wayDH_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_2wayDH_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_2wayDH_erand_equal'
+            }
+        },
+        '3way' : {
+            'ctrl' : {
+                'equal' : 'ralloc_3way_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_3way_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_3way_erand_equal'
+            }
+        },
+        '3wayDH' : {
+            'ctrl' : {
+                'equal' : 'ralloc_3wayDH_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_3wayDH_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_3wayDH_erand_equal'
+            }
+        },
+        '4way' : {
+            'ctrl' : {
+                'equal' : 'ralloc_4way_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_4way_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_4way_erand_equal'
+            }
+        },
+        '4wayDH' : {
+            'ctrl' : {
+                'equal' : 'ralloc_4wayDH_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_4wayDH_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_4wayDH_erand_equal'
+            }
+        },
+        'dihybrid' : {
+            'ctrl' : {
+                'equal' : 'ralloc_2way_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_2way_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_2way_erand_equal'
+            }
+        },
+        'dihybridDH' : {
+            'ctrl' : {
+                'equal' : 'ralloc_2wayDH_ctrl_equal'
+            },
+            'wrand' : {
+                'equal' : 'ralloc_2wayDH_wrand_equal'
+            },
+            'erand' : {
+                'equal' : 'ralloc_2wayDH_erand_equal'
+            }
+        },
+        None : {
+            None : {
+                None : 'ralloc_default'
+            }
+        }
+    }
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-
+    @classmethod
     def __init__(self, population, varAfn = None, sparse = False,
-        s = 0, t = 0, mem = None):
+        crossfn = None, matefn = None, rallocfn = None,
+        c = 1, n = 1, s = 0, t = 0, mem = None):
         """
         population : Population
-            Population from which to determine
+            Population from which to cross.
+        varAfn : str
+            Additive variance function to use in calculations of varA matrix.
+            Options:
+                '2way', '2wayDH',
+                '3way', '3wayDH',
+                '4way', '4wayDH',
+                'dihybrid', 'dihybridDH'
+        sparse : bool
+            Boolean to indicate whether the variance matrix is to be calculated
+            as a sparse matrix (for memory efficiency)
+        crossfn : str
+            Cross structure to use.
+            Options:
+                '2way', '2wayDH',
+                '3way', '3wayDH',
+                '4way', '4wayDH',
+                'dihybrid', 'dihybridDH'
+        matefn : str
+            Mating format to use.
+            Options:
+                'ctrl'      Controlled cross
+                'wrand'     Weighted random cross
+                'erand'     Exact random cross
+        rallocfn : str
+            Resource allocation function to use.
+            Options:
+                'equal'     Give equal contribution to each parent.
+        c : int
+            Cross multiplier. Its functionality depends on the matefn chosen.
+        n : int
+            Number of progeny to generate per cross.
+        s : int
+            Number of selfing generations.
+        t : int
+            Number of random intermatings.
+
         """
         # check data types
         check_is_Population(population, "population")
+        check_is_string(varAfn, "varAfn")
+        check_is_bool(sparse, "sparse")
+        check_is_string(crossfn, "crossfn")
+        check_is_string(matefn, "matefn")
+        check_is_string(rallocfn, "rallocfn")
+        check_is_integer(c, "c")
+        check_is_integer(n, "n")
+        check_is_integer(s, "s")
+        check_is_integer(t, "t")
 
         # set private variables
         self._population = population
         self.set_varAfn(varAfn, sparse)
+        self.set_matefn(crossfn, matefn)
+        self.set_rallocfn(crossfn, matefn, rallocfn)
+        self._c = c
+        self._n = n
         self._s = s
         self._t = t
-        self._sparse = sparse
         if mem is None:
             self._mem = len(self._population.genetic_map)
-
 
     ############################################################################
     ############################ Object Properties #############################
@@ -109,16 +279,16 @@ class Cross:
         return locals()
     population = property(**population())
 
-    def variance():
-        doc = "The variance property."
+    def varAfn():
+        doc = "The varAfn property."
         def fget(self):
-            return self._variance
+            return self._varAfn
         def fset(self, value):
-            self._variance = value
+            self._varAfn = value
         def fdel(self):
-            del self._variance
+            del self._varAfn
         return locals()
-    variance = property(**variance())
+    varAfn = property(**varAfn())
 
     def sparse():
         doc = "The sparse property."
@@ -130,6 +300,61 @@ class Cross:
             del self._sparse
         return locals()
     sparse = property(**sparse())
+
+    def crossfn():
+        doc = "The crossfn property."
+        def fget(self):
+            return self._crossfn
+        def fset(self, value):
+            self._crossfn = value
+        def fdel(self):
+            del self._crossfn
+        return locals()
+    crossfn = property(**crossfn())
+
+    def matefn():
+        doc = "The matefn property."
+        def fget(self):
+            return self._matefn
+        def fset(self, value):
+            self._matefn = value
+        def fdel(self):
+            del self._matefn
+        return locals()
+    matefn = property(**matefn())
+
+    def rallocfn():
+        doc = "The rallocfn property."
+        def fget(self):
+            return self._rallocfn
+        def fset(self, value):
+            self._rallocfn = value
+        def fdel(self):
+            del self._rallocfn
+        return locals()
+    rallocfn = property(**rallocfn())
+
+    def c():
+        doc = "The c property."
+        def fget(self):
+            return self._c
+        def fset(self, value):
+            self._c = value
+        def fdel(self):
+            del self._c
+        return locals()
+    c = property(**c())
+
+    def n():
+        doc = "The n property."
+        def fget(self):
+            return self._n
+        def fset(self, value):
+            self._n = value
+        def fdel(self):
+            del self._n
+        return locals()
+    n = property(**n())
 
     def s():
         doc = "The s property."
@@ -357,7 +582,6 @@ class Cross:
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
     @classmethod
     def reset(self):
         """
@@ -805,21 +1029,6 @@ class Cross:
 
     ##############################################
     @classmethod
-    def varA_default(self, sel, *args, **kwargs):
-        """
-        Default method for varA method. Raises a RuntimeError.
-        """
-        raise RuntimeError("varA function not set.")
-
-    @classmethod
-    def varA(self, sel, *args, **kwargs):
-        raise RuntimeError("varA function not set.")
-
-    @classmethod
-    def varA_vec(self, sel, *args, **kwargs):
-        raise RuntimeError("varA function not set.")
-
-    @classmethod
     def set_varAfn(self, varAfn = None, sparse = False):
         """
         Set the varA() and varA_vec() attributes. Calling these will result in
@@ -834,12 +1043,30 @@ class Cross:
             Whether 'varAfn' is a sparse matrix calculation.
         """
         # lookup varAfn in lookup table
-        varA_str, varA_vec_str = Cross.KEY_TO_VARAFN[sparse][varAfn]
+        attribute_varA, attribute_varA_vec = Cross.KEY_TO_VARAFN[varAfn][sparse]
 
         # set new function attributes
-        self.varA = getattr(self, varA_str)
-        self.varA_vec = getattr(self, varA_vec_str)
+        self.varA = getattr(self, attribute_varA)
+        self.varA_vec = getattr(self, attribute_varA_vec)
 
+        # set private variables
+        self._varAfn = varAfn
+        self._sparse = sparse
+
+    @classmethod
+    def varA(self, sel, *args, **kwargs):
+        raise RuntimeError("varA function not set.")
+
+    @classmethod
+    def varA_vec(self, sel, *args, **kwargs):
+        raise RuntimeError("varA function not set.")
+
+    @classmethod
+    def varA_default(self, sel, *args, **kwargs):
+        """
+        Default method for varA method. Raises a RuntimeError.
+        """
+        raise RuntimeError("varA function not set.")
     ##############################################
 
     ##############################################
@@ -1224,7 +1451,6 @@ class Cross:
     def varA_dihybridDH_sparse_vec(self, self):
         raise NotImplementedError("Method not implemented.")
     ##############################################
-
     ############################################################################
 
 
@@ -1247,7 +1473,7 @@ class Cross:
         gametes : numpy.ndarray
         """
         # make gametes
-        gamete = Cross.meiosis_geno(
+        gamete = Cross.meiosis_mat(
             sel,
             self._population.geno,
             self._genetic_map,
@@ -1257,28 +1483,32 @@ class Cross:
         return gamete
 
     @classmethod
-    def mate_default(self, sel, *args, **kwargs):
+    def set_matefn(self, crossfn = None, matefn = None):
+        # lookup matefn in lookup table
+        attribute_string = Cross.KEY_TO_VARAFN[crossfn][matefn]
+
+        # set new function attributes
+        self.mate = getattr(self, attribute_string)
+
+        # set private variables
+        self._crossfn = crossfn
+        self._matefn = matefn
+
+    @classmethod
+    def mate(self, sel, seed = None, *args, **kwargs):
+        raise RuntimeError("mate function not set.")
+
+    @classmethod
+    def mate_default(self, sel, seed = None, *args, **kwargs):
         """
         Default method for mate method. Raises a RuntimeError.
         """
         raise RuntimeError("mate function not set.")
 
-    @classmethod
-    def mate(self, sel, *args, **kwargs):
-        raise RuntimeError("mate function not set.")
-
-    @classmethod
-    def set_matefn(self, matefn = None, crosstype = None):
-        # lookup matefn in lookup table
-        matefn_str = Cross.KEY_TO_VARAFN[crosstype][matefn]
-
-        # set new function attributes
-        self.mate = getattr(self, matefn_str)
-
     ##############################################
     ############# Controlled mating ##############
     @classmethod
-    def mate_2way_ctrl(self, sel, c, n, seed = None):
+    def mate_2way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 2-way cross.
 
@@ -1313,6 +1543,10 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n]):
+            c, n = self.ralloc(sel)
+
         # seed rng
         cond_seed_rng(seed)
 
@@ -1328,7 +1562,7 @@ class Cross:
         matepair[1::2] = msel
 
         # make genotypes
-        geno = mate_geno(
+        geno = mate_mat(
             matepair,
             self._population.geno,
             self._population.genetic_map,
@@ -1346,7 +1580,7 @@ class Cross:
         return population
 
     @classmethod
-    def mate_2wayDH_ctrl(self, sel, c, n, s = None, t = None, seed = None):
+    def mate_2wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 2-way cross with double haploiding.
 
@@ -1391,6 +1625,10 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, s, t]):
+            c, n, s, t = self.ralloc(sel)
+
         # seed rng
         cond_seed_rng(seed)
 
@@ -1410,14 +1648,14 @@ class Cross:
 
         if t == 0:
             # make genotypes
-            geno = mate_geno(
+            geno = mate_mat(
                 matepair,
                 self._population.geno,
                 self._population.genetic_map,
             )
 
             # make doubled haploids from the hybrid genotypes
-            geno = dh_geno(
+            geno = dh_mat(
                 numpy.arange(geno.shape[1]), # all hybrids
                 geno,
                 self._population.genetic_map,
@@ -1438,7 +1676,7 @@ class Cross:
         return population
 
     @classmethod
-    def mate_3way_ctrl(self, sel, c, n, seed = None):
+    def mate_3way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 3-way cross.
 
@@ -1474,6 +1712,10 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n]):
+            c, n = self.ralloc(sel)
+
         # seed rng
         cond_seed_rng(seed)
 
@@ -1490,7 +1732,7 @@ class Cross:
         cross1[1::2] = msel
 
         # make hybrid (female x male) genotypes
-        geno = mate_geno(
+        geno = mate_mat(
             cross1,
             self._population.geno,
             self._population.genetic_map,
@@ -1510,7 +1752,7 @@ class Cross:
         cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
         cross2[1::2] = hsel
 
-        geno = mate_geno(
+        geno = mate_mat(
             cross2,
             geno,
             self._population.genetic_map,
@@ -1528,7 +1770,7 @@ class Cross:
         return population
 
     @classmethod
-    def mate_3wayDH_ctrl(self, sel, c, n, s = None, t = None, seed = None):
+    def mate_3wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 3-way cross with double haploiding.
 
@@ -1574,6 +1816,10 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, s, t]):
+            c, n, s, t = self.ralloc(sel)
+
         # seed rng
         cond_seed_rng(seed)
 
@@ -1594,7 +1840,7 @@ class Cross:
             cross1[1::2] = msel
 
             # make hybrid (female x male) genotypes
-            geno = mate_geno(
+            geno = mate_mat(
                 cross1,
                 self._population.geno,
                 self._population.genetic_map,
@@ -1614,7 +1860,7 @@ class Cross:
             cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
             cross2[1::2] = hsel
 
-            geno = dh_geno(
+            geno = dh_mat(
                 cross2,
                 geno,
                 self._population.genetic_map,
@@ -1635,7 +1881,7 @@ class Cross:
         return population
 
     @classmethod
-    def mate_4way_ctrl(self, sel, c, n, seed = None):
+    def mate_4way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 4-way cross.
 
@@ -1676,7 +1922,7 @@ class Cross:
         raise NotImplementedError()
 
     @classmethod
-    def mate_4wayDH_ctrl(self, sel, c, n, s = None, t = None, seed = None):
+    def mate_4wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 4-way cross with double haploiding.
 
@@ -1730,7 +1976,7 @@ class Cross:
     ##############################################
     ########### Weighted random mating ###########
     @classmethod
-    def mate_2way_wrand(self, sel, weight, c, n, seed = None):
+    def mate_2way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         """
         Perform a 2-way cross with weighted random mating.
 
@@ -1775,6 +2021,10 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, weight]):
+            c, n, weight = self.ralloc(sel)
+
         # seed rng if needed
         cond_seed_rng(seed)
 
@@ -1795,7 +2045,11 @@ class Cross:
         return progeny
 
     @classmethod
-    def mate_2wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_2wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, weight, s, t]):
+            c, n, weight, s, t = self.ralloc(sel)
+
         # seed rng if needed
         cond_seed_rng(seed)
 
@@ -1816,26 +2070,26 @@ class Cross:
         return progeny
 
     @classmethod
-    def mate_3way_wrand(self, sel, weight, c, n, seed = None):
+    def mate_3way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_3wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_3wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4way_wrand(self, sel, weight, c, n, seed = None):
+    def mate_4way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_4wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
 
     ##############################################
     ############ Exact random mating #############
     @classmethod
-    def mate_2way_erand(self, sel, exact, c, n, seed = None):
+    def mate_2way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         """
         Perform a 2-way cross with exact random mating.
 
@@ -1863,9 +2117,8 @@ class Cross:
             Assumptions:
                 Female weights should sum to 1.
                 Male weights should sum to 1.
-        c : numpy.ndarray, int
-            A 1D array of integers representing the number of times the
-            specified cross pattern should be performed.
+        c : int
+            A multiplier for 'exact' contributions.
         n : numpy.ndarray, int
             A 1D array of integers representing the number of progeny from each
             cross that should be simulated.
@@ -1880,12 +2133,16 @@ class Cross:
         population : Population
             A new population of progeny individuals.
         """
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, exact]):
+            c, n, exact = self.ralloc(sel)
+
         # seed rng if needed
         cond_seed_rng(seed)
 
         # replicate female, male exact number of times
-        fsel = numpy.repeat(sel[0::2], exact[0::2])
-        msel = numpy.repeat(sel[1::2], exact[1::2])
+        fsel = numpy.repeat(sel[0::2], c * exact[0::2])
+        msel = numpy.repeat(sel[1::2], c * exact[1::2])
 
         # randomly shuffle parents
         numpy.random.shuffle(fsel)
@@ -1904,13 +2161,17 @@ class Cross:
         return progeny
 
     @classmethod
-    def mate_2wayDH_wrand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_2wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
+        # if all required variables are None, use ralloc to select them
+        if all(v is None for v in [c, n, exact, s, t]):
+            c, n, exact, s, t = self.ralloc(sel)
+
         # seed rng if needed
         cond_seed_rng(seed)
 
         # replicate female, male exact number of times
-        fsel = numpy.repeat(sel[0::2], exact[0::2])
-        msel = numpy.repeat(sel[1::2], exact[1::2])
+        fsel = numpy.repeat(sel[0::2], c * exact[0::2])
+        msel = numpy.repeat(sel[1::2], c * exact[1::2])
 
         # randomly shuffle parents
         numpy.random.shuffle(fsel)
@@ -1929,21 +2190,195 @@ class Cross:
         return progeny
 
     @classmethod
-    def mate_3way_erand(self, sel, weight, c, n, seed = None):
+    def mate_3way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_3wayDH_erand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_3wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4way_erand(self, sel, weight, c, n, seed = None):
+    def mate_4way_erand(self, sel, c = None, n = None, exact, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4wayDH_erand(self, sel, weight, c, n, s = None, t = None, seed = None):
+    def mate_4wayDH_erand(self, sel, c = None, n = None, exact, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
+    ############################################################################
+
+
+    ############################################################################
+    ################# Mating Resource Allocation Class Methods #################
+    @classmethod
+    def set_rallocfn(self, crossfn, matefn, rallocfn):
+        # get attribute string
+        attribute_string = self.KEY_TO_RALLOCFN[crossfn][matefn][rallocfn]
+
+        # set new function attributes
+        self.ralloc = getattr(self, attribute_string)
+
+        # set private variables
+        self._crossfn = crossfn
+        self._matefn = matefn
+        self._rallocfn = rallocfn
+
+    @classmethod
+    def ralloc(self, sel):
+        raise RuntimeError("Resource allocation function not set.")
+
+    @classmethod
+    def ralloc_default(self, sel):
+        raise RuntimeError("Resource allocation function not set.")
+
+    ##############################################
+    ############# Controlled mating ##############
+    @classmethod
+    def ralloc_2way_ctrl_equal(self, sel):
+        return self._c, self._n
+
+    @classmethod
+    def ralloc_2wayDH_ctrl_equal(self, sel):
+        return self._c, self._n, self._s, self._t
+
+    @classmethod
+    def ralloc_3way_ctrl_equal(self, sel):
+        return self._c, self._n
+
+    @classmethod
+    def ralloc_3wayDH_ctrl_equal(self, sel):
+        return self._c, self._n, self._s, self._t
+
+    @classmethod
+    def ralloc_4way_ctrl_equal(self, sel):
+        return self._c, self._n
+
+    @classmethod
+    def ralloc_4wayDH_ctrl_equal(self, sel):
+        return self._c, self._n, self._s, self._t
+    ##############################################
+
+    ##############################################
+    ########### Weighted random mating ###########
+    @classmethod
+    def ralloc_2way_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 2.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight
+
+    @classmethod
+    def ralloc_2wayDH_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 2.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight, self._s, self._t
+
+    @classmethod
+    def ralloc_3way_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 3.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight
+
+    @classmethod
+    def ralloc_3wayDH_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 3.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight, self._s, self._t
+
+    @classmethod
+    def ralloc_4way_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 4.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight
+
+    @classmethod
+    def ralloc_4wayDH_wrand_equal(self, sel):
+        # make a ones matrix
+        weight = numpy.ones(len(sel), dtype = 'float64')
+
+        # divide ones by number of mate sets
+        weight /= (len(sel) / 4.0)
+
+        # return tuple of resource allocations
+        return self._c, self._n, weight, self._s, self._t
+    ##############################################
+
+    ##############################################
+    ########### Weighted random mating ###########
+    @classmethod
+    def ralloc_2way_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact
+
+    @classmethod
+    def ralloc_2wayDH_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact, self._s, self._t
+
+    @classmethod
+    def ralloc_3way_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact
+
+    @classmethod
+    def ralloc_3wayDH_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact, self._s, self._t
+
+    @classmethod
+    def ralloc_4way_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact
+
+    @classmethod
+    def ralloc_4wayDH_erand_equal(self, sel):
+        # make an exact matrix
+        exact = numpy.ones(len(sel), dtype = 'int64')
+
+        # return tuple of resource allocations
+        return self._c, self._n, exact, self._s, self._t
+    ##############################################
+    ############################################################################
+
 
     ############################################################################
     ############################# Static Methods ###############################
@@ -2085,7 +2520,7 @@ class Cross:
             raise ValueError("s and t must be >= 0.")
 
     @staticmethod
-    def meiosis_geno(sel, geno, genetic_map, n, s = 0, seed = None):
+    def meiosis_mat(sel, geno, genetic_map, n, s = 0, seed = None):
         """
         Generate gametes from individuals. Only works with diploid data.
 
@@ -2220,7 +2655,7 @@ class Cross:
         return gamete
 
     @staticmethod
-    def mate_geno(sel, geno, genetic_map, n, seed = None):
+    def mate_mat(sel, geno, genetic_map, n, seed = None):
         """
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,)
@@ -2245,8 +2680,8 @@ class Cross:
         msel = sel[1::2]
 
         # generate gametes
-        fgamete = Cross.meiosis_geno(fsel, geno, genetic_map, n)
-        mgamete = Cross.meiosis_geno(msel, geno, genetic_map, n)
+        fgamete = Cross.meiosis_mat(fsel, geno, genetic_map, n)
+        mgamete = Cross.meiosis_mat(msel, geno, genetic_map, n)
 
         # TODO: # OPTIMIZE:
         # generate offspring genotypes by stacking matrices to make 3d matrix
@@ -2255,7 +2690,7 @@ class Cross:
         return progeny
 
     @staticmethod
-    def dh_geno(sel, geno, genetic_map, n, s = 0, seed = None):
+    def dh_mat(sel, geno, genetic_map, n, s = 0, seed = None):
         """
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,)
@@ -2273,9 +2708,39 @@ class Cross:
             numpy.random.seed(seed)
 
         # generate gametes
-        fgamete = Cross.meiosis_geno(sel, geno, genetic_map, n, s)
+        fgamete = Cross.meiosis_mat(sel, geno, genetic_map, n, s)
 
         # generate offspring genotypes by stacking matrices to make 3d matrix
         progeny = numpy.stack([fgamete, fgamete])
 
         return progeny
+
+    @staticmethod
+    def pop_ld_cross(pRec, mpAB, fpAB, mfreq, ffreq):
+        """
+        Function from the boneyard to calculate a population x population cross.
+        Calculate LD resulting from a cross between two populations.
+
+        Parameters
+        ----------
+        pRec : numpy.ndarray
+            Probability of recombination.
+        mpAB : numpy.ndarray
+            Male P(AB) matrix.
+        fpAB : numpy.ndarray
+            Female P(AB) matrix.
+        mfreq : numpy.ndarray
+            Male allele frequency matrix.
+        ffreq : numpy.ndarray
+            Female allele frequency matrix.
+
+        Returns
+        -------
+        pop_ld : numpy.ndarray
+        """
+        coupling = 0.5 * (1.0 - pRec) * (mpAB + fpAB)
+        repulsion = (0.5 * pRec * ((mfreq[:,None] * ffreq) + (ffreq[:,None] * mfreq)))
+
+        pop_ld = coupling + repulsion
+
+        return pop_ld

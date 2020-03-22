@@ -13,8 +13,12 @@ def check_is_list(l, varname):
         raise TypeError("'%s' must be a list." % varname)
 
 def check_is_tuple(t, varname):
-    if not isinstance(t, list):
+    if not isinstance(t, tuple):
         raise TypeError("'%s' must be a tuple." % varname)
+
+def check_is_bool(b, varname):
+    if not isinstance(b, bool):
+        raise TypeError("'%s' must be a bool." % varname)
 
 def check_is_iterable(i, varname):
     if not hasattr(i, "__iter__"):
@@ -169,6 +173,14 @@ def check_is_SetSearchSpace(sspace, varname):
 def check_is_Population(pop, varname):
     if not isinstance(pop, Population):
         raise TypeError("'%s' must be a Population object." % varname)
+
+def check_is_ParametricGenomicModel(gmod, varname):
+    if not isinstance(gmod, ParametricGenomicModel):
+        raise TypeError("'%s' must be a ParametricGenomicModel object." % varname)
+
+def check_is_Cross(cross, varname):
+    if not isinstance(cross, Cross):
+        raise TypeError("'%s' must be a Cross object." % varname)
 
 ################################################################################
 

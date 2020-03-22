@@ -1,6 +1,8 @@
 class MolecularBreeding(Breeding):
     """docstring for MolecularBreeding."""
 
-    def __init__(self):
-        super(MolecularBreeding, self).__init__()
-        
+    ############################################################################
+    ############################# Reserved methods #############################
+    ############################################################################
+    def __init__(self, population, cross):
+        super(MolecularBreeding, self).__init__(population, cross)
