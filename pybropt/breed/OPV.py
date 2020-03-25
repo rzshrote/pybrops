@@ -199,7 +199,98 @@ class OPV(GenomicSelection):
 
     @classmethod
     def simulate(self, objcoeff = None, negate = True, algorithm = None,
-        gbestix = 2, *args, **kwargs):
+        gbestix = 2, bcycle = 0, savegeno = True, seed = None, *args, **kwargs):
+        """
+        """
+        # set seed if needed
+        cond_seed_rng(seed)
+
+        # get initial conditions
+        score = self.objfn(None, objcoeff, negate)
+        gebv = self._population.gebv(None, objcoeff)
+
+        # record history
+        self.history_add_population(
+            method = self._method,
+            algorithm = algorithm.name,
+            seed = seed,
+            cycle = 0,
+            score = score,
+            gebv = gebv,
+            geno = self._population.geno if savegeno else None
+        )
+
+        # we pass objcoeff onto optimizer. This will handle multiobjective.
+        algorithm.optimize(
+            self.objfn,
+            *args,
+            **kwargs,
+            objcoeff = objcoeff,
+            negate = negate
+        )
+
+        # get global best
+        gbest = algorithm.gbest()
+
+        # get selection indices
+        sel = gbest[gbestix]
+
+        # duplicate the pointer to population and cross
+        new_population = self._population
+        new_cross = self._cross
+
+        # simulate the breeding cycles
+        for i in range(bcycle):
+            # get selection stats
+            score = self.objfn(sel, objcoeff, negate)
+            gebv = self._population.gebv(sel, objcoeff)
+
+            # add history selection
+            self.history_add_selection(
+                method = self._method,
+                algorithm = algorithm.name,
+                seed = seed,
+                cycle = i+1,
+                score = score,
+                gebv = gebv,
+                geno = new_population.geno[:,sel,:] is savegeno else None
+            )
+
+            # generate new population
+            new_population = new_cross.mate(sel)
+
+            # get population stats
+            score = self.objfn(None, objcoeff, negate)
+            gebv = self._population.gebv(None, objcoeff)
+
+            # record history
+            self.history_add_population(
+                method = self._method,
+                algorithm = algorithm.name,
+                seed = seed,
+                cycle = i+1,
+                score = score,
+                gebv = gebv,
+                geno = new_population.geno if savegeno else None
+            )
+
+            # make new cross object identical to first
+            new_cross = Cross(
+                new_population,
+                self._cross.varAfn,
+                self._cross.sparse,
+                self._cross.crossfn,
+                self._cross.matefn,
+                self._cross.rallocfn,
+                self._cross.c,
+                self._cross.n,
+                self._cross.s,
+                self._cross.t,
+                self._cross.mem
+            )
+
+
+
         raise NotImplementedError
 
     ############################################################################
