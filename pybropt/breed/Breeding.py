@@ -7,7 +7,7 @@ class Breeding:
     ############################# Reserved methods #############################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross):
+    def __init__(self, population, cross, method):
         """
         Constructor for Breeding class.
         """
@@ -17,10 +17,12 @@ class Breeding:
         # type checking
         check_is_Population(population, "population")
         check_is_Cross(cross, "cross")
+        check_is_string(method, "method")
 
         # set private variables
         self._population = population
         self._cross = cross
+        self._method = method
 
     ############################################################################
     ################################ Properties ################################
@@ -47,6 +49,17 @@ class Breeding:
             del self._cross
         return locals()
     cross = property(**cross())
+
+    def method():
+        doc = "The method property."
+        def fget(self):
+            return self._method
+        def fset(self, value):
+            self._method = value
+        def fdel(self):
+            del self._method
+        return locals()
+    method = property(**method())
 
     def method_population():
         doc = "The method_population property."
@@ -326,62 +339,119 @@ class Breeding:
         # concatenate all histories
         self.concatenate()
 
+        ####################################################
+        # create population stats dict
         population_dict = {
             "method" : self._method_population[0],
             "algorithm" : self._algorithm_population[0],
             "seed" : self._seed_population[0],
-            "cycle" : self._cycle_population[0],
-            "score" : self._score_population[0],
-            "gebv" : self._gebv_population[0]
-        }
-        selection_dict = {
-            "method" : self._sel_method[0],
-            "algorithm" : self._sel_algorithm[0],
-            "seed" : self._sel_seed[0],
-            "cycle" : self._sel_cycle[0],
-            "score" : self._sel_score[0],
-            "gebv" : self._sel_gebv[0]
+            "cycle" : self._cycle_population[0]
         }
 
+        # add scores to population_dict
+        shape = self._score_population[0].shape
+        if len(shape) == 1:
+            # add a single key to population_dict
+            population_dict.update({"score" : self._score_population[0]})
+        elif len(shape) == 2:
+            # add keys to population_dict
+            population_dict.update(dict(zip(
+                ["score" + e for e in range(shape[1])], # column names
+                self._score_population.[0].T            # iterate through columns
+            )))
+
+        # add GEBVs to population_dict
+        shape = self._gebv_population[0].shape
+        if len(shape) == 1:
+            # add a single key to population_dict
+            population_dict.update({"gebv" : self._gebv_population[0]})
+        elif len(shape) == 2:
+            # add keys to population_dict
+            population_dict.update(dict(zip(
+                ["gebv" + e for e in range(shape[1])],  # column names
+                self._gebv_population.[0].T             # iterate through columns
+            )))
+
+        # add genotypes to population_dict
         if len(self._genotype_population) > 0:
-            population_p1head = [
-                "p1"+str(i).zfill(zfill)
-                for i in range(self._pop_phase1[0].shape[1])
-            ]
-            population_p2head = [
-                "p2"+str(i).zfill(zfill)
-                for i in range(self._pop_phase2[0].shape[1])
-            ]
-            for i,header in enumerate(pop_p1head):
-                population_dict[header] = self._genotype_population[0][0,:,i]
-            for i,header in enumerate(pop_p2head):
-                population_dict[header] = self._genotype_population[0][1,:,i]
+            shape = self._genotype_population[0].shape
 
+            # add keys to population_dict
+            population_dict.update(dict(zip(
+                ["p1_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
+                self._gebv_population.[0][0].T                          # iterate through columns
+            )))
+
+            # add keys to population_dict
+            population_dict.update(dict(zip(
+                ["p2_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
+                self._gebv_population.[0][1].T                          # iterate through columns
+            )))
+        ####################################################
+
+
+        ####################################################
+        # create selection stats dict
+        selection_dict = {
+            "method" : self._method_selection[0],
+            "algorithm" : self._algorithm_selection[0],
+            "seed" : self._seed_selection[0],
+            "cycle" : self._cycle_selection[0]
+        }
+
+        # add scores to selection_dict
+        shape = self._score_selection[0].shape
+        if len(shape) == 1:
+            # add a single key to selection_dict
+            selection_dict.update({"score" : self._score_selection[0]})
+        elif len(shape) == 2:
+            # add keys to selection_dict
+            selection_dict.update(dict(zip(
+                ["score" + e for e in range(shape[1])], # column names
+                self._score_selection.[0].T             # iterate through columns
+            )))
+
+        # add GEBVs to selection_dict
+        shape = self._gebv_selection[0].shape
+        if len(shape) == 1:
+            # add a single key to selection_dict
+            selection_dict.update({"gebv" : self._gebv_selection[0]})
+        elif len(shape) == 2:
+            # add keys to selection_dict
+            selection_dict.update(dict(zip(
+                ["gebv" + e for e in range(shape[1])],  # column names
+                self._gebv_selection.[0].T              # iterate through columns
+            )))
+
+        # add genotypes to selection_dict
         if len(self._genotype_selection) > 0:
-            selection_p1head = [
-                "p1"+str(i).zfill(zfill)
-                for i in range(self._sel_phase1[0].shape[1])
-            ]
-            selection_p2head = [
-                "p2"+str(i).zfill(zfill)
-                for i in range(self._sel_phase2[0].shape[1])
-            ]
-            for i,header in enumerate(sel_p1head):
-                selection_dict[header] = self._genotype_selection[0][0,:,i]
-            for i,header in enumerate(sel_p2head):
-                selection_dict[header] = self._genotype_selection[0][1,:,i]
+            shape = self._genotype_selection[0].shape
 
+            # add keys to population_dict
+            selection_dict.update(dict(zip(
+                ["p1_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
+                self._gebv_selection.[0][0].T                           # iterate through columns
+            )))
+
+            # add keys to population_dict
+            selection_dict.update(dict(zip(
+                ["p2_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
+                self._gebv_selection.[0][1].T                           # iterate through columns
+            )))
+        ####################################################
+
+        # create DataFrame from dictionaries
         population_df = pandas.DataFrame(population_dict)
         selection_df = pandas.DataFrame(selection_dict)
 
         return population_df, selection_df
 
     @classmethod
-    def history_to_csv(population_fname, selection_fname, zfill = 6):
+    def history_to_csv(population_fname, selection_fname, zfill = 6, *args, **kwargs):
         population_df, selection_df = self.history_to_df(zfill = zfill)
 
-        population_df.to_csv(population_fname)
-        selection_df.to_csv(selection_fname)
+        population_df.to_csv(population_fname, *args, **kwargs)
+        selection_df.to_csv(selection_fname, *args, **kwargs)
 
         return
 
