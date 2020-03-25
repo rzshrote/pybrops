@@ -19,7 +19,12 @@ Feature Additions
 [ ] calc_D in Population class.
 [ ] calc_D_prime in Population class.
 [ ] calc_r in Population class.
+[ ] logger functionality like what Scott uses
 
 Testing
 -------
 [ ] Unit testing for everything.
+[ ] Unit testing for Population
+    [ ] Unit testing for 'from_vcf'
+    [ ] Unit testing for constructor
+    
