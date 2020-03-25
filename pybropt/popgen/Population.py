@@ -180,7 +180,7 @@ class Population:
     @classmethod
     def afreq(self, sel = None):
         """
-        Calculate allele frequencies for a given subset of the population. 
+        Calculate allele frequencies for a given subset of the population.
 
         Parameters
         ----------
@@ -213,6 +213,56 @@ class Population:
         allele_freq = sgeno.sum(0,1) / phases
 
         return allele_freq
+
+    @classmethod
+    def gebv(self, sel = None, objcoeff = None):
+        """
+        Calculate genomic estimated breeding values (GEBVs) using the internal
+        genomic_model.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply scores by a weight sum vector.
+
+        Returns
+        -------
+        gebv : numpy.ndarray
+            A gebv matrix of shape (k,) or (k, t).
+            Where:
+                'k' is the number of individuals to select.
+                't' is the number of traits.
+        """
+        # make sure we have a genomic_model
+        if self._genomic_model is None:
+            raise RuntimeError("Population has not been provided a GenomicModel.")
+
+        # if no individuals have been selected, select all
+        if sel is None:
+            sel = slice(None)
+
+        # get view of genotype matrix that is the selections
+        sgeno = geno[:,sel,:]
+
+        # calculate GEBVs
+        gebv = self._genomic_model.predict(sgeno)
+
+        # take the dot product if necessary
+        if objcoeff is not None:
+            gebv = gebv.dot(objcoeff)
+
+        return gebv
 
     ############################################################################
     ############################# Static Methods ###############################
