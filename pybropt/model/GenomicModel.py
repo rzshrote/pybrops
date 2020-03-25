@@ -6,9 +6,12 @@ class GenomicModel:
     ############################################################################
 
     def __init__(self, trait, model_name = None):
+        """
+
+        """
         # error check the input
         check_is_matrix(trait, "trait")
-        check_matrix_dtype_is_object_(trait, "trait")
+        check_matrix_dtype_is_string_(trait, "trait")
         check_matrix_ndim(trait, "trait", 1)
 
         # set private variables

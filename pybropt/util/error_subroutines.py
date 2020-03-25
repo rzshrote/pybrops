@@ -193,6 +193,10 @@ def cond_check_is_matrix(mat, varname, cond=(lambda mat: mat is not None)):
     if cond(mat):
         check_is_matrix(mat, varname)
 
+def cond_check_is_string(s, varname, cond=(lambda s: s is not None)):
+    if cond(s):
+        check_is_string(s, varname)
+
 def cond_check_is_GeneticMap(gmap, varname, cond=(lambda gmap: gmap is not None)):
     if cond(gmap):
         check_is_GeneticMap(gmap, varname)

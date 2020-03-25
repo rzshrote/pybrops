@@ -1,7 +1,14 @@
+# append paths
+import sys
+import os
+popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/test/popgen
+test_dir = os.path.dirname(popgen_dir)                      # get pybropt/test
+pybropt_dir = os.path.dirname(test_dir)                     # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# import 3rd party modules we'll need
 import cyvcf2
 import numpy
-import os
-import sys
 from util.error_subroutines import *
 from util.subroutines import *
 
@@ -306,14 +313,13 @@ class Population:
             geno.append(phases[:,0:2].copy())
 
         # convert and transpose genotype matrix
-        geno = numpy.int8(geno).transpose(2,1,0).copy()
+        geno = numpy.int8(geno).transpose(2,1,0) # may want to copy()?
 
-        # convert to object array
-        chr_grp = numpy.string_(chr_grp)
-
-        # convert chr_start, chr_stop to numpy.ndarray
-        chr_start = numpy.int64(chr_start)
-        chr_stop = numpy.int64(chr_stop)
+        # convert to numpy.ndarray
+        chr_grp = numpy.string_(chr_grp)    # convert to string array
+        chr_start = numpy.int64(chr_start)  # convert to int64 array
+        chr_stop = numpy.int64(chr_stop)    # convert to int64 array
+        mkr_name = numpy.string_(mkr_name)  # convert to string array
 
         # make output object
         outpop = Population.from_array(
@@ -322,9 +328,9 @@ class Population:
             chr_start = chr_start,
             chr_stop = chr_stop,
             mkr_name = mkr_name,
-            taxa = taxa,
-            chr_grp = chr_grp,
-            chr_pos = chr_pos
+            base_GenomicModel = base_GenomicModel,
+            base_GeneticMap = base_GeneticMap,
+            taxa = taxa
         )
 
         return outpop
@@ -333,7 +339,9 @@ class Population:
     def from_array(geno, chr_grp, chr_start, chr_stop, mkr_name = None,
             base_GenomicModel = None, base_GeneticMap = None, taxa = None):
         """
-        Align genotypes given several arrays.
+        Construct a Population object from arrays.
+
+        Assumes that GenomicModel is ordered.
 
         Parameters
         ----------
@@ -343,6 +351,7 @@ class Population:
         mkr_name : numpy.ndarray
         base_GenomicModel : GenomicModel
         base_GeneticMap : GeneticMap
+        taxa : numpy.ndarray
 
         Returns
         -------
@@ -357,6 +366,7 @@ class Population:
         cond_check_is_matrix(mkr_name, "mkr_name")
         cond_check_is_GenomicModel(base_GenomicModel, "base_GenomicModel")
         cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
+        cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
         # check dimensions
         check_matrix_ndim(geno, "geno", 3)
@@ -364,6 +374,7 @@ class Population:
         check_matrix_ndim(chr_start, "chr_start", 1)
         check_matrix_ndim(chr_stop, "chr_stop", 1)
         cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        cond_check_matrix_ndim(taxa, "taxa", 1)
 
         # check matrix compatiblity lengths
         nloci = geno.shape[2]
@@ -371,15 +382,43 @@ class Population:
         check_matrix_size(chr_start, "chr_start", nloci)
         check_matrix_size(chr_stop, "chr_stop", nloci)
         cond_check_matrix_size(mkr_name, "mkr_name", nloci)
+        cond_check_matrix_size(taxa, "taxa", geno.shape[1])
 
-        # check if chr_grp is sorted
-        if matrix_is_sorted(chr_grp):
-            pass
-        else:
-            if isinstance(type(base_GenomicModel), NonparametricGenomicModel):
-                raise ValueError(
-                    "Cannot sort marker data accordingly because of the non-"\
-                    "parametric nature of 'base_GenomicModel' "\
-                    "(NonparametricGenomicModel does not have a 'coeff' field "\
-                    "that can be sorted)."
-                )
+
+        # TODO: interpolate
+        # create genomic models
+        genetic_map = None
+        if base_GeneticMap is not None:
+            genetic_map = base_GeneticMap.interpolate(
+                chr_grp = chr_grp,
+                chr_start = chr_start,
+                chr_stop = chr_stop,
+                mkr_name = mkr_name,
+                map_fncode = None,
+                kind = 'linear',
+                fill_value = 'extrapolate'
+            )
+
+        genomic_model = base_GenomicModel
+
+        # make population
+        population = Population(
+            geno = geno,
+            genomic_model = genomic_model,
+            genetic_map = genetic_map,
+            taxa = taxa
+        )
+
+        return population
+
+        # # check if chr_grp is sorted
+        # if matrix_is_sorted(chr_grp):
+        #     pass
+        # else:
+        #     if isinstance(type(base_GenomicModel), NonparametricGenomicModel):
+        #         raise ValueError(
+        #             "Cannot sort marker data accordingly because of the non-"\
+        #             "parametric nature of 'base_GenomicModel' "\
+        #             "(NonparametricGenomicModel does not have a 'coeff' field "\
+        #             "that can be sorted)."
+        #         )
