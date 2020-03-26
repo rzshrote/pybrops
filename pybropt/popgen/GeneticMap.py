@@ -1130,7 +1130,7 @@ class GeneticMap(MarkerSet):
             An array of genetic map distance units (Morgans).
         """
         d = 0.01 * cM   # convert cM to d
-        return d        # return d
+        return d
 
     @staticmethod
     def haldane_to_r(d):
@@ -1152,8 +1152,9 @@ class GeneticMap(MarkerSet):
             An array of recombination probabilities. The shape of the array is
             the same shape as that of 'd'.
         """
-        r = 0.5 * (1 - numpy.exp(-2 * d))   # convert d to r
-        return r                            # return r
+        # convert d to r
+        r = 0.5 * (1.0 - numpy.exp(-2.0 * d))
+        return r
 
     @staticmethod
     def r_to_haldane(r):
@@ -1174,8 +1175,9 @@ class GeneticMap(MarkerSet):
             An array of genetic map distances as defined by the Haldane mapping
             function.
         """
-        d = -0.5 * numpy.log(1 - (2 * r))   # convert r to d
-        return d                            # return d
+        # convert r to d
+        d = -0.5 * numpy.log(1.0 - (2.0 * r))
+        return d
 
     @staticmethod
     def kosambi_to_r(d):
@@ -1194,8 +1196,9 @@ class GeneticMap(MarkerSet):
         r : numpy.ndarray
             An array of recombination probabilities between loci as defined by 'd'.
         """
-        r = 0.5 * numpy.tanh(2 * d) # convert d to r
-        return r                    # return r
+        # convert d to r
+        r = 0.5 * numpy.tanh(2.0 * d)
+        return r
 
     @staticmethod
     def r_to_kosambi(r):
@@ -1214,8 +1217,9 @@ class GeneticMap(MarkerSet):
             An array of genetic map distances as defined by the Kosambi mapping
             function.
         """
-        d = numpy.log(1 + (2 * r)) / (4 - (8 * r))  # convert r to d
-        return d                                    # return d
+        # convert r to d
+        d = numpy.log(1.0 + (2.0 * r)) / (4.0 - (8.0 * r))
+        return d
 
     @staticmethod
     def key_to_mapfn(key):
