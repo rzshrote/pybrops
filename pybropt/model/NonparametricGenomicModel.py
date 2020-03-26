@@ -6,5 +6,5 @@ class NonparametricGenomicModel(model.GenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self):
-        super(NonparametricGenomicModel, self).__init__()
+    def __init__(self, trait, model_name = "Nonparametric"):
+        super(NonparametricGenomicModel, self).__init__(trait, model_name)
