@@ -11,7 +11,7 @@ import unittest
 import numpy
 
 # import our libraries
-from popgen.GeneticMap import GeneticMap
+import popgen
 
 class test_GeneticMap(unittest.TestCase):
     """docstring for test_GeneticMap."""
@@ -29,7 +29,7 @@ class test_GeneticMap(unittest.TestCase):
         sort_chr_grp_spix = numpy.array([3,6,9])
         sort_chr_grp_len = numpy.array([3,3,3])
 
-        self.assertIsInstance(m1, GeneticMap)
+        self.assertIsInstance(m1, popgen.GeneticMap)
 
         # make sure it is sorted
         self.assertTrue(numpy.all(m1.chr_grp == sort_chr_grp))
@@ -41,6 +41,30 @@ class test_GeneticMap(unittest.TestCase):
         self.assertTrue(numpy.all(m1.chr_grp_stix == sort_chr_grp_stix))
         self.assertTrue(numpy.all(m1.chr_grp_spix == sort_chr_grp_spix))
         self.assertTrue(numpy.all(m1.chr_grp_len == sort_chr_grp_len))
+
+    def test_from_egmap(self):
+        # get test data file path
+        data_path = test_dir + "/maize_genetic_map_McMullen_2009_US_NAM.egmap"
+
+        # load data
+        gmap = popgen.GeneticMap.from_egmap(data_path, "kosambi")
+
+        self.assertIsInstance(gmap, popgen.GeneticMap)
+
+    def test_to_egmap(self):
+        # make file paths
+        data_path = test_dir + "/maize_genetic_map_McMullen_2009_US_NAM.egmap"
+        export_path = test_dir + "/test_to_egmap_export.egmap"
+
+        # load data
+        gmap = popgen.GeneticMap.from_egmap(data_path, "kosambi")
+
+        print(gmap.mkr_name)
+
+        # export data
+        gmap.to_egmap(export_path)
+
+        self.assertTrue(os.path.exists(export_path))
 
     def _create_fake_data():
         # make some fake data
@@ -61,7 +85,7 @@ class test_GeneticMap(unittest.TestCase):
         sort_chr_grp_len = numpy.array([3,3,3])
 
         # construct object
-        m1 = GeneticMap(
+        m1 = popgen.GeneticMap(
             chr_grp = chr_grp,
             chr_start = chr_start,
             chr_stop = chr_stop,

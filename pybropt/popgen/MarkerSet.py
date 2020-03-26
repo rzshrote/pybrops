@@ -8,15 +8,9 @@ sys.path.append(pybropt_dir)                                # append pybropt
 # 3rd party libraries
 import numpy
 
-from util.error_subroutines import check_is_matrix
-from util.error_subroutines import check_matrix_dtype_is_integer
-from util.error_subroutines import check_matrix_dtype_is_string_
-from util.error_subroutines import check_matrix_ndim
-from util.error_subroutines import check_matrix_size
-from util.error_subroutines import cond_check_is_matrix
-from util.error_subroutines import cond_check_matrix_dtype_is_string_
-from util.error_subroutines import cond_check_matrix_ndim
-from util.error_subroutines import cond_check_matrix_size
+# import out libraries
+import popgen
+import util
 
 
 class MarkerSet:
@@ -29,27 +23,27 @@ class MarkerSet:
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
             auto_sort = True, auto_mkr_rename = False):
         # check for matrices
-        check_is_matrix(chr_grp, "chr_grp")
-        check_is_matrix(chr_start, "chr_start")
-        check_is_matrix(chr_stop, "chr_stop")
-        cond_check_is_matrix(mkr_name, "mkr_name")
+        util.check_is_matrix(chr_grp, "chr_grp")
+        util.check_is_matrix(chr_start, "chr_start")
+        util.check_is_matrix(chr_stop, "chr_stop")
+        util.cond_check_is_matrix(mkr_name, "mkr_name")
 
         # check number of dimensions == 1
-        check_matrix_ndim(chr_grp, "chr_grp", 1)
-        check_matrix_ndim(chr_start, "chr_start", 1)
-        check_matrix_ndim(chr_stop, "chr_stop", 1)
-        cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        util.check_matrix_ndim(chr_grp, "chr_grp", 1)
+        util.check_matrix_ndim(chr_start, "chr_start", 1)
+        util.check_matrix_ndim(chr_stop, "chr_stop", 1)
+        util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
 
         # check length of matrix == chr_grp.size
-        check_matrix_size(chr_start, "chr_start", chr_grp.size)
-        check_matrix_size(chr_stop, "chr_stop", chr_grp.size)
-        cond_check_matrix_size(mkr_name, "mkr_name", chr_grp.size)
+        util.check_matrix_size(chr_start, "chr_start", chr_grp.size)
+        util.check_matrix_size(chr_stop, "chr_stop", chr_grp.size)
+        util.cond_check_matrix_size(mkr_name, "mkr_name", chr_grp.size)
 
         # check matrix dtypes
-        check_matrix_dtype_is_string_(chr_grp, "chr_grp")
-        check_matrix_dtype_is_integer(chr_start, "chr_start")
-        check_matrix_dtype_is_integer(chr_stop, "chr_stop")
-        cond_check_matrix_dtype_is_string_(mkr_name, "mkr_name")
+        util.check_matrix_dtype_is_string_(chr_grp, "chr_grp")
+        util.check_matrix_dtype_is_integer(chr_start, "chr_start")
+        util.check_matrix_dtype_is_integer(chr_stop, "chr_stop")
+        util.cond_check_matrix_dtype_is_string_(mkr_name, "mkr_name")
 
         # set private variables
         self._chr_grp = chr_grp
@@ -178,7 +172,7 @@ class MarkerSet:
             keys = (self._mkr_name, self._chr_stop, self._chr_start, self._chr_grp)
         else:
             for i,k in enumerate(keys):
-                check_matrix_size(k, "key"+i, self.__len__())
+                util.check_matrix_size(k, "key"+i, self.__len__())
 
         # filter out None; build tuple
         keys = tuple(k for k in keys if k is not None)
@@ -216,10 +210,10 @@ class MarkerSet:
     @classmethod
     # TODO: accept a pattern
     def mkr_rename(self):
-        new_name = numpy.string_([
-            "%s_%s" % (self._chr_grp[i], self._chr_start[i])
-            for i in range(self.__len__())
-        ])
+        new_name = numpy.core.defchararray.add(
+            self._chr_grp,
+            numpy.string_(["_%s" % e for e in self._chr_start])
+        )
 
         self._mkr_name = new_name
 

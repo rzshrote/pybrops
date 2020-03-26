@@ -11,20 +11,10 @@ import pandas
 from scipy.interpolate import interp1d
 
 # import our libraries
-from popgen.MarkerSet import MarkerSet
+import popgen
+import util
 
-from util.error_subroutines import check_is_matrix
-from util.error_subroutines import check_matrix_dtype_is_numeric
-from util.error_subroutines import check_matrix_ndim
-from util.error_subroutines import check_matrix_size
-from util.error_subroutines import cond_check_is_matrix
-from util.error_subroutines import cond_check_matrix_dtype_is_string_
-from util.error_subroutines import cond_check_matrix_ndim
-from util.error_subroutines import cond_check_matrix_size
-
-from util.subroutines import cond_str_lower
-
-class GeneticMap(MarkerSet):
+class GeneticMap(popgen.MarkerSet):
     """
     A class to represent genetic maps and perform associated operations.
     """
@@ -98,7 +88,7 @@ class GeneticMap(MarkerSet):
         df = pandas.read_csv(
             fpath,          # file path
             sep='\t',       # tab delimited
-            header=None     # no header
+            header=1        # there is a header
         )
 
         genetic_map = GeneticMap.from_pandas_df(
@@ -187,18 +177,18 @@ class GeneticMap(MarkerSet):
             A gmap object containing all data required for genetic inferences.
         """
         # check to make sure several indices aren't None.
-        check_is_not_none(chr_grp_ix, "chr_grp_ix")
-        check_is_not_none(chr_start_ix, "chr_start_ix")
-        check_is_not_none(chr_stop_ix, "chr_stop_ix")
-        check_is_not_none(map_pos_ix, "map_pos_ix")
+        util.check_is_not_none(chr_grp_ix, "chr_grp_ix")
+        util.check_is_not_none(chr_start_ix, "chr_start_ix")
+        util.check_is_not_none(chr_stop_ix, "chr_stop_ix")
+        util.check_is_not_none(map_pos_ix, "map_pos_ix")
 
         # get data
-        chr_grp = df[chr_grp_ix].values
-        chr_start = df[chr_start_ix].values
-        chr_stop = df[chr_stop_ix].values
-        map_pos = df[map_pos_ix].values
-        mkr_name = df[mkr_name_ix].values if mkr_name_ix is not None else None
-        map_fncode = df[map_fncode_ix].values if map_fncode_ix is not None else None
+        chr_grp     = pandas_df.iloc[:,chr_grp_ix].values
+        chr_start   = pandas_df.iloc[:,chr_start_ix].values
+        chr_stop    = pandas_df.iloc[:,chr_stop_ix].values
+        map_pos     = pandas_df.iloc[:,map_pos_ix].values
+        mkr_name    = pandas_df.iloc[:,mkr_name_ix].values if mkr_name_ix is not None else None
+        map_fncode  = pandas_df.iloc[:,map_fncode_ix].values if map_fncode_ix is not None else None
 
         # force data conversion
         chr_grp = numpy.string_([str(e) for e in chr_grp])
@@ -593,12 +583,12 @@ class GeneticMap(MarkerSet):
         """
         # create a dictionary of our values
         df_dict = {
-            "chr_grp" : self._chr_grp,
+            "chr_grp" : numpy.char.decode(self._chr_grp, 'utf-8'),
             "chr_start" : self._chr_start,
             "chr_stop" : self._chr_stop,
             "map_pos" : self._map_pos,
-            "mkr_name" : self._mkr_name,
-            "map_fncode" : self._map_fncode
+            "mkr_name" : numpy.char.decode(self._mkr_name, 'utf-8'),
+            "map_fncode" : numpy.char.decode(self._map_fncode, 'utf-8')
         }
 
         # make the DataFrame
@@ -626,7 +616,7 @@ class GeneticMap(MarkerSet):
         self.to_csv(
             fname = fname,
             sep = '\t',
-            header = False,
+            header = True,
             index = False
         )
 
@@ -999,9 +989,9 @@ class GeneticMap(MarkerSet):
     #         A genetic map containing interpolated positions
     #     """
     #     # check to make sure several indices aren't None.
-    #     check_is_not_none(chr_grp_ix, "chr_grp_ix")
-    #     check_is_not_none(chr_start_ix, "chr_start_ix")
-    #     check_is_not_none(chr_stop_ix, "chr_stop_ix")
+    #     util.check_is_not_none(chr_grp_ix, "chr_grp_ix")
+    #     util.check_is_not_none(chr_start_ix, "chr_start_ix")
+    #     util.check_is_not_none(chr_stop_ix, "chr_stop_ix")
     #
     #
     #     # get input indices as tuple
@@ -1108,7 +1098,7 @@ class GeneticMap(MarkerSet):
             )
         else:
             for i,k in enumerate(keys):
-                check_matrix_size(k, "key"+i, self.__len__())
+                util.check_matrix_size(k, "key"+i, self.__len__())
 
         # build tuple
         keys = tuple(k for k in keys if k is not None)
@@ -1173,23 +1163,23 @@ class GeneticMap(MarkerSet):
         )
 
         # check for matricies
-        check_is_matrix(map_pos, "map_pos")
-        cond_check_is_matrix(map_fncode, "map_fncode")
+        util.check_is_matrix(map_pos, "map_pos")
+        util.cond_check_is_matrix(map_fncode, "map_fncode")
 
         # check number of dimensions == 1
-        check_matrix_ndim(map_pos, "map_pos", 1)
-        cond_check_matrix_ndim(map_fncode, "map_fncode", 1)
+        util.check_matrix_ndim(map_pos, "map_pos", 1)
+        util.cond_check_matrix_ndim(map_fncode, "map_fncode", 1)
 
         # check length of matrix == chr_grp.size
-        check_matrix_size(map_pos, "map_pos", chr_grp.size)
-        cond_check_matrix_size(map_fncode, "map_fncode", chr_grp.size)
+        util.check_matrix_size(map_pos, "map_pos", chr_grp.size)
+        util.cond_check_matrix_size(map_fncode, "map_fncode", chr_grp.size)
 
         # check matrix dtypes
-        check_matrix_dtype_is_numeric(map_pos, "map_pos")
-        cond_check_matrix_dtype_is_string_(map_fncode, "map_fncode")
+        util.check_matrix_dtype_is_numeric(map_pos, "map_pos")
+        util.cond_check_matrix_dtype_is_string_(map_fncode, "map_fncode")
 
         # if mapfn is a string, make it a lowercase
-        mapfn = cond_str_lower(mapfn)
+        mapfn = util.cond_str_lower(mapfn)
 
         # set private variables
         self._map_pos = map_pos
