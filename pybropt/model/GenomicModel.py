@@ -55,7 +55,7 @@ class GenomicModel:
     def ntrait():
         doc = "The ntrait property."
         def fget(self):
-            return len(trait)
+            return len(self._trait)
         def fset(self, value):
             error_readonly("ntrait")
         def fdel(self):

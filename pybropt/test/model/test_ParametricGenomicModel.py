@@ -13,13 +13,24 @@ import numpy
 # import our libraries
 import model
 
-class test_GenomicModel(unittest.TestCase):
+class test_ParametricGenomicModel(unittest.TestCase):
     def test_constructor(self):
-        genomic_model = test_GenomicModel._create_fake_data()
+        genomic_model = test_ParametricGenomicModel._create_fake_data()
 
         self.assertIsInstance(genomic_model, model.GenomicModel)
 
     def _create_fake_data():
-        traits = numpy.string_(['trait1','trait2','trait3'])
-        genomic_model = model.GenomicModel(traits)
+        trait = numpy.string_(['trait1','trait2','trait3'])
+        coeff = numpy.float64([
+            [0.1, 0.2, 0.3],
+            [0.4, 0.5, 0.6],
+            [0.7, 0.8, 0.9],
+            [1.0, 1.1, 1.2]
+        ])
+
+        genomic_model = model.ParametricGenomicModel(
+            trait,
+            coeff
+        )
+        
         return genomic_model

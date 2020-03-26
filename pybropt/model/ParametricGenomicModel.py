@@ -3,6 +3,7 @@ import numpy
 
 # our libraries
 import model
+import util
 
 class ParametricGenomicModel(model.GenomicModel):
     """docstring for ParametricGenomicModel."""
@@ -10,7 +11,7 @@ class ParametricGenomicModel(model.GenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, trait, coeff, model_name = None):
+    def __init__(self, trait, coeff, model_name = "Parametric"):
         """
         Constructor for ParametricGenomicModel class.
 
@@ -31,12 +32,12 @@ class ParametricGenomicModel(model.GenomicModel):
         super(ParametricGenomicModel, self).__init__(trait, model_name)
 
         # error check the input
-        check_is_matrix(coeff, "coeff")
-        check_matrix_dtype_is_numeric(coeff, "coeff")
+        util.check_is_matrix(coeff, "coeff")
+        util.check_matrix_dtype_is_numeric(coeff, "coeff")
         if coeff.ndim == 1:         # if coeff is a vector,
             coeff = coeff[:,None]   # add new axis so shape=(len(coeff),1)
-        check_matrix_ndim(coeff, "coeff", 2)
-        check_matrix_axis_len(coeff, "coeff", 1, self.ntrait)
+        util.check_matrix_ndim(coeff, "coeff", 2)
+        util.check_matrix_axis_len(coeff, "coeff", 1, self.ntrait)
 
         # set private variable
         self._coeff = coeff
