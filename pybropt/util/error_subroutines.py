@@ -10,6 +10,7 @@ import numpy
 
 # import our libraries
 import popgen
+import model
 
 def check_is_matrix(mat, varname):
     if not isinstance(mat, numpy.ndarray):
@@ -170,7 +171,7 @@ def check_is_GeneticMap(gmap, varname):
         raise TypeError("'%s' must be a GeneticMap object." % varname)
 
 def check_is_GenomicModel(gmod, varname):
-    if not isinstance(gmod, GenomicModel):
+    if not isinstance(gmod, model.GenomicModel):
         raise TypeError("'%s' must be a GenomicModel object." % varname)
 
 def check_is_SearchSpace(sspace, varname):
@@ -186,12 +187,16 @@ def check_is_SetSearchSpace(sspace, varname):
         raise TypeError("'%s' must be a SetSearchSpace object." % varname)
 
 def check_is_Population(pop, varname):
-    if not isinstance(pop, Population):
+    if not isinstance(pop, popgen.Population):
         raise TypeError("'%s' must be a Population object." % varname)
 
 def check_is_ParametricGenomicModel(gmod, varname):
-    if not isinstance(gmod, ParametricGenomicModel):
+    if not isinstance(gmod, model.ParametricGenomicModel):
         raise TypeError("'%s' must be a ParametricGenomicModel object." % varname)
+
+def check_is_NonparametricGenomicModel(gmod, varname):
+    if not isinstance(gmod, model.NonparametricGenomicModel):
+        raise TypeError("'%s' must be a NonparametricGenomicModel object." % varname)
 
 def check_is_Cross(cross, varname):
     if not isinstance(cross, Cross):

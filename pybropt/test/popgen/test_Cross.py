@@ -14,4 +14,21 @@ import numpy
 import popgen
 
 class test_Cross(unittest.TestCase):
-    
+    def test_from_vcf_output_type(self):
+        # get test data file path
+        data_path = test_dir + "/example.vcf"
+
+        # load data
+        population = popgen.Population.from_vcf(data_path)
+
+        # create cross
+        cross = popgen.Cross(
+            population,
+            "2wayDH",
+            False,
+            "2wayDH",
+            "ctrl",
+            "equal"
+        )
+
+        self.assertIsInstance(cross, popgen.Cross)

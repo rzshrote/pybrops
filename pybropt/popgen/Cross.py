@@ -1,4 +1,16 @@
+# append paths
+import sys
+import os
+popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
+pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# import 3rd party libraries
 import numpy
+
+# import our libraries
+import popgen
+import util
 
 class Cross:
     """
@@ -12,7 +24,9 @@ class Cross:
     ############################################################################
     # NOTE: these dictionary can stay here because they do not reference
     #       internal methods; they only have strings.
+
     # dictionary of varAfn keys
+    # nesting is [varAfn][sparse]
     KEY_TO_VARAFN = {
         '2way' : {
             True :  ('varA_2way_sparse', 'varA_2way_sparse_vec'),
@@ -52,6 +66,7 @@ class Cross:
     }
 
     # dictionary of matefn keys
+    # nesting is [crossfn][matefn]
     KEY_TO_MATEFN = {
         '2way' : {
             'ctrl' :    'mate_2way_ctrl',
@@ -99,6 +114,7 @@ class Cross:
     }
 
     # dictionary of rallocfn keys
+    # nesting is [crossfn][matefn][rallocfn]
     KEY_TO_RALLOCFN = {
         '2way' : {
             'ctrl' : {
@@ -198,8 +214,8 @@ class Cross:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, population, varAfn = None, sparse = False,
-        crossfn = None, matefn = None, rallocfn = None,
+    # TODO: mem accepts strings in MB, GB, etc.
+    def __init__(self, population, varAfn, sparse, crossfn, matefn, rallocfn,
         c = 1, n = 1, s = 0, t = 0, mem = None):
         """
         population : Population
@@ -242,16 +258,16 @@ class Cross:
 
         """
         # check data types
-        check_is_Population(population, "population")
-        check_is_string(varAfn, "varAfn")
-        check_is_bool(sparse, "sparse")
-        check_is_string(crossfn, "crossfn")
-        check_is_string(matefn, "matefn")
-        check_is_string(rallocfn, "rallocfn")
-        check_is_integer(c, "c")
-        check_is_integer(n, "n")
-        check_is_integer(s, "s")
-        check_is_integer(t, "t")
+        util.check_is_Population(population, "population")
+        util.check_is_string(varAfn, "varAfn")
+        util.check_is_bool(sparse, "sparse")
+        util.check_is_string(crossfn, "crossfn")
+        util.check_is_string(matefn, "matefn")
+        util.check_is_string(rallocfn, "rallocfn")
+        util.check_is_integer(c, "c")
+        util.check_is_integer(n, "n")
+        util.check_is_integer(s, "s")
+        util.check_is_integer(t, "t")
 
         # set private variables
         self._population = population
@@ -263,7 +279,7 @@ class Cross:
         self._s = s
         self._t = t
         if mem is None:
-            self._mem = len(self._population.genetic_map)
+            self._mem = len(self._population.marker_set)
 
     ############################################################################
     ############################ Object Properties #############################
@@ -1442,7 +1458,7 @@ class Cross:
 
     def set_matefn(self, crossfn = None, matefn = None):
         # lookup matefn in lookup table
-        attribute_string = Cross.KEY_TO_VARAFN[crossfn][matefn]
+        attribute_string = Cross.KEY_TO_MATEFN[crossfn][matefn]
 
         # set new function attributes
         self.mate = getattr(self, attribute_string)

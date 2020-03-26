@@ -23,6 +23,7 @@ Feature Additions
 [ ] add MarkerEffect class/file import
 [ ] convert 'from_vcf', 'from_egmap', etc. to @classmethod that accept cls
     instead of self as arguments... maybe if not too many bugs are caused.
+[ ] mem accept strings of memory sizes as inputs
 
 Testing
 -------

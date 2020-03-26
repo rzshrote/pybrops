@@ -1,9 +1,8 @@
 # append paths
 import sys
 import os
-popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/test/popgen
-test_dir = os.path.dirname(popgen_dir)                      # get pybropt/test
-pybropt_dir = os.path.dirname(test_dir)                     # get pybropt
+popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
+pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
 sys.path.append(pybropt_dir)                                # append pybropt
 
 # import 3rd party modules we'll need
