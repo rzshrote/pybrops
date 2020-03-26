@@ -1,3 +1,24 @@
+# append paths
+import sys
+import os
+popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
+pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# 3rd party libraries
+import numpy
+
+from util.error_subroutines import check_is_matrix
+from util.error_subroutines import check_matrix_ndim
+from util.error_subroutines import check_matrix_size
+from util.error_subroutines import check_matrix_dtype_is_string_
+from util.error_subroutines import check_matrix_dtype_is_integer
+from util.error_subroutines import cond_check_is_matrix
+from util.error_subroutines import cond_check_matrix_ndim
+from util.error_subroutines import cond_check_matrix_size
+from util.error_subroutines import cond_check_matrix_dtype_is_string_
+
+
 class MarkerSet:
     """docstring for MarkerSet."""
 
@@ -7,7 +28,6 @@ class MarkerSet:
     @classmethod
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
             auto_sort = True, auto_mkr_name = True):
-        self.arg = arg
         # check for matrices
         check_is_matrix(chr_grp, "chr_grp")
         check_is_matrix(chr_start, "chr_start")
@@ -42,7 +62,7 @@ class MarkerSet:
         self._chr_grp_spix = None
 
         # give default marker names if needed
-        if (self._mkr_name is None) and auto_mkr_name:
+        if auto_mkr_name:
             self.mkr_rename()
 
         # sort if needed
@@ -160,8 +180,8 @@ class MarkerSet:
             for i,k in enumerate(keys):
                 check_matrix_size(k, "key"+i, self.__len__())
 
-        # build tuple
-        keys = tuple(filter(None, keys))
+        # filter out None; build tuple
+        keys = tuple(k for k in keys if k is not None)
 
         # get indices
         indices = numpy.lexsort(keys)
@@ -248,17 +268,17 @@ class MarkerSet:
             masks[2] = numpy.in1d(chr_stop, self._chr_stop)
         # test whether mkr_name is in self._mkr_name
         if mkr_name is not None:
-            masks[4] = numpy.in1d(mkr_name, self._mkr_name)
+            masks[3] = numpy.in1d(mkr_name, self._mkr_name)
 
-        # filter out Nones
-        masks = tuple(filter(None, masks))
+        # filter out None
+        masks = tuple(m for m in masks if m is not None)
 
         # default value of None (for cases where len(masks) == 0)
         mask = None
 
         # if the len(masks) > 0, logical_and merge them together
         if len(masks) > 0:
-            mask = numpy.logical_and.reduce(tuple(filter(None, masks)))
+            mask = numpy.logical_and.reduce(masks)
 
         # return mask
         return mask

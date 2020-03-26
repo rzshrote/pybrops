@@ -8,7 +8,6 @@ sys.path.append(pybropt_dir)                                # append pybropt
 
 # import 3rd party modules we'll need
 import unittest
-import numpy
 
 # import our libraries
 from popgen.Population import Population
