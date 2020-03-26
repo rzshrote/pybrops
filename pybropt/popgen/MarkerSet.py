@@ -27,7 +27,7 @@ class MarkerSet:
     ############################################################################
     @classmethod
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
-            auto_sort = True, auto_mkr_rename = True):
+            auto_sort = True, auto_mkr_rename = False):
         # check for matrices
         check_is_matrix(chr_grp, "chr_grp")
         check_is_matrix(chr_start, "chr_start")

@@ -1,4 +1,18 @@
+# append paths
+import sys
+import os
+util_dir = os.path.dirname(os.path.realpath(__file__))      # get pybropt/util
+pybropt_dir = os.path.dirname(util_dir)                     # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# import 3rd party modules
 import numpy
+
+# import our libraries
+#from popgen.Cross import Cross
+from popgen.MarkerSet import MarkerSet
+from popgen.GeneticMap import GeneticMap
+from popgen.Population import Population
 
 def check_is_matrix(mat, varname):
     if not isinstance(mat, numpy.ndarray):
@@ -150,6 +164,10 @@ def check_is_not_none(var, varname):
     if var is None:
         raise ValueError("'%s' cannot be None." % varname)
 
+def check_is_MarkerSet(mkrset, varname):
+    if not isinstance(mkrset, MarkerSet):
+        raise TypeError("'%s' must be a MarkerSet object." % varname)
+
 def check_is_GeneticMap(gmap, varname):
     if not isinstance(gmap, GeneticMap):
         raise TypeError("'%s' must be a GeneticMap object." % varname)
@@ -196,6 +214,10 @@ def cond_check_is_matrix(mat, varname, cond=(lambda mat: mat is not None)):
 def cond_check_is_string(s, varname, cond=(lambda s: s is not None)):
     if cond(s):
         check_is_string(s, varname)
+
+def cond_check_is_MarkerSet(mkrset, varname, cond=(lambda mkrset: mkrset is not None)):
+    if cond(mkrset):
+        check_is_GeneticMap(mkrset, varname)
 
 def cond_check_is_GeneticMap(gmap, varname, cond=(lambda gmap: gmap is not None)):
     if cond(gmap):

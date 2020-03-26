@@ -8,6 +8,7 @@ sys.path.append(pybropt_dir)                                # append pybropt
 
 # import 3rd party modules we'll need
 import unittest
+import numpy
 
 # import our libraries
 from popgen.Population import Population
@@ -25,4 +26,10 @@ class test_Population(unittest.TestCase):
             population,
             Population,
             "type(population) = %s" % type(population)
+        )
+
+        true_chr_grp = numpy.array(['20','20','20','20','20'])
+
+        self.assertTrue(
+            numpy.all(population.marker_set.chr_grp == true_chrom)
         )

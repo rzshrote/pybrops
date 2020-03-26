@@ -9,63 +9,201 @@ sys.path.append(pybropt_dir)                                # append pybropt
 # import 3rd party modules we'll need
 import cyvcf2
 import numpy
-from util.error_subroutines import *
-from util.subroutines import *
+
+# import our libraries
+from popgen.MarkerSet import MarkerSet
+from popgen.GeneticMap import GeneticMap
+
+from util.error_subroutines import check_is_matrix
+from util.error_subroutines import check_matrix_all_value
+from util.error_subroutines import check_matrix_axis_len
+from util.error_subroutines import check_matrix_dtype
+from util.error_subroutines import check_matrix_ndim
+from util.error_subroutines import check_matrix_size
+from util.error_subroutines import cond_check_is_GeneticMap
+from util.error_subroutines import cond_check_is_GenomicModel
+from util.error_subroutines import cond_check_is_MarkerSet
+from util.error_subroutines import cond_check_is_matrix
+from util.error_subroutines import cond_check_matrix_dtype_is_string_
+from util.error_subroutines import cond_check_matrix_ndim
+from util.error_subroutines import cond_check_matrix_size
 
 
 class Population:
     """docstring for Population."""
-
     ############################################################################
-    ########################## Special Object Methods ##########################
+    ############################# Static Methods ###############################
     ############################################################################
-
-    def __init__(self, geno, genomic_model = None, genetic_map = None,
-            taxa = None):
+    @staticmethod
+    def from_array(geno, chr_grp, chr_start, chr_stop, mkr_name = None,
+            genomic_model = None, base_GeneticMap = None, taxa = None):
         """
-        Population object constructor.
+        Construct a Population object from arrays.
+
+        Assumes that GenomicModel is ordered.
 
         Parameters
         ----------
         geno : numpy.ndarray
-            A int8 binary genotype matrix of shape (m, n, p).
-            Where:
-                'm' is the number of chromosome phases (2 for diploid, etc.).
-                'n' is the number of individuals.
-                'p' is the number of markers.
-        genomic_model : ParametricGenomicModel
-            A ParametricGenomicModel object with marker estimates for each
-            marker.
-        genetic_map : GeneticMap
-            A GeneticMap object with positions for each marker.
-        taxa : numpy.ndarray, None
-            A taxa name matrix of shape (n,).
-            Where:
-                'n' is the number of individuals.
-        """
-        # check input data types
-        check_is_matrix(geno, "geno")
-        cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        cond_check_is_GeneticMap(genetic_map, "genetic_map")
-        cond_check_is_matrix(taxa, "taxa")
+        chr_grp : numpy.ndarray
+        chr_stop : numpy.ndarray
+        mkr_name : numpy.ndarray
+        genomic_model : GenomicModel
+        base_GeneticMap : GeneticMap
+        taxa : numpy.ndarray
 
+        Returns
+        -------
+        population : Population
+            A Population object.
+        """
         # check data types
-        check_matrix_dtype(geno, "geno", 'int8')
+        check_is_matrix(geno, "geno")
+        check_is_matrix(chr_grp, "chr_grp")
+        check_is_matrix(chr_start, "chr_start")
+        check_is_matrix(chr_stop, "chr_stop")
+        cond_check_is_matrix(mkr_name, "mkr_name")
+        cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
+        cond_check_is_GenomicModel(genomic_model, "genomic_model")
         cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
-        # check matrix number of dimensions
+        # check dimensions
         check_matrix_ndim(geno, "geno", 3)
+        check_matrix_ndim(chr_grp, "chr_grp", 1)
+        check_matrix_ndim(chr_start, "chr_start", 1)
+        check_matrix_ndim(chr_stop, "chr_stop", 1)
+        cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
         cond_check_matrix_ndim(taxa, "taxa", 1)
 
-        # check matrix dimension size alignment
-        if taxa is not None:
-            check_matrix_axis_len(geno, "geno", 1, len(taxa))
+        # check matrix compatiblity lengths
+        nloci = geno.shape[2]
+        check_matrix_size(chr_grp, "chr_grp", nloci)
+        check_matrix_size(chr_start, "chr_start", nloci)
+        check_matrix_size(chr_stop, "chr_stop", nloci)
+        cond_check_matrix_size(mkr_name, "mkr_name", nloci)
+        cond_check_matrix_size(taxa, "taxa", geno.shape[1])
 
-        # set private variables
-        self._geno = geno
-        self._genomic_model = genomic_model
-        self._genetic_map = genetic_map
-        self._taxa = taxa
+
+        # TODO: interpolate
+        # create genomic models
+        marker_set = None
+        if base_GeneticMap is not None:
+            marker_set = base_GeneticMap.interpolate(
+                chr_grp = chr_grp,
+                chr_start = chr_start,
+                chr_stop = chr_stop,
+                mkr_name = mkr_name,
+                map_fncode = None,
+                kind = 'linear',
+                fill_value = 'extrapolate'
+            )
+
+        # make population
+        population = Population(
+            geno = geno,
+            marker_set = marker_set,
+            genomic_model = genomic_model,
+            taxa = taxa
+        )
+
+        return population
+
+        # # check if chr_grp is sorted
+        # if matrix_is_sorted(chr_grp):
+        #     pass
+        # else:
+        #     if isinstance(type(genomic_model), NonparametricGenomicModel):
+        #         raise ValueError(
+        #             "Cannot sort marker data accordingly because of the non-"\
+        #             "parametric nature of 'genomic_model' "\
+        #             "(NonparametricGenomicModel does not have a 'coeff' field "\
+        #             "that can be sorted)."
+        #         )
+
+    @staticmethod
+    def from_vcf(fname, base_GeneticMap = None, genomic_model = None,
+        auto_sort = True, auto_mkr_rename = False,
+        kind = 'linear', fill_value = 'extrapolate'):
+        # make VCF iterator
+        vcf = cyvcf2.VCF(fname)
+
+        # extract taxa names from vcf header
+        taxa = numpy.string_(vcf.samples)
+
+        # make empty lists to store extracted values
+        geno = []
+        chr_grp = []
+        chr_start = []
+        chr_stop = []
+        mkr_name = []
+
+        # iterate through VCF file and accumulate variants
+        for variant in vcf:
+            # append chromosome string
+            chr_grp.append(str(variant.CHROM))
+
+            # append variant position coordinates
+            chr_start.append(variant.POS)
+            chr_stop.append(variant.POS + len(variant.REF) - 1)
+
+            # append marker name
+            mkr_name.append(variant.ID)
+
+            # extract allele states + whether they are phased or not
+            phases = numpy.int8(variant.genotypes)
+
+            # check that they are all phased
+            check_matrix_all_value(phases[:,2], "is_phased", True)
+
+            # TODO: maybe modify shapes here to avoid transpose and copy below?
+            # append genotype states
+            geno.append(phases[:,0:2].copy())
+
+        # convert and transpose genotype matrix
+        geno = numpy.int8(geno).transpose(2,1,0) # may want to copy()?
+
+        # convert to numpy.ndarray
+        chr_grp = numpy.string_(chr_grp)    # convert to string array
+        chr_start = numpy.int64(chr_start)  # convert to int64 array
+        chr_stop = numpy.int64(chr_stop)    # convert to int64 array
+        mkr_name = numpy.string_(mkr_name)  # convert to string array
+
+        # declare output variable
+        population = None
+
+        # if base_GeneticMap is None, we construct a MarkerSet object
+        if base_GeneticMap is None:
+            # make marker set
+            marker_set = MarkerSet(
+                chr_grp = chr_grp,
+                chr_start = chr_start,
+                chr_stop = chr_stop,
+                mkr_name = mkr_name,
+                auto_sort = auto_sort,
+                auto_mkr_rename = auto_mkr_rename
+            )
+
+            # make population
+            population = Population(
+                geno = geno,
+                marker_set = marker_set,
+                genomic_model = genomic_model,
+                taxa = taxa,
+            )
+        else:
+            # make output object
+            population = Population.from_array(
+                geno = geno,
+                chr_grp = chr_grp,
+                chr_start = chr_start,
+                chr_stop = chr_stop,
+                mkr_name = mkr_name,
+                genomic_model = genomic_model,
+                base_GeneticMap = base_GeneticMap,
+                taxa = taxa
+            )
+
+        return population
 
     ############################################################################
     ############################ Object Properties #############################
@@ -93,16 +231,16 @@ class Population:
         return locals()
     taxa = property(**taxa())
 
-    def genetic_map():
-        doc = "The genetic_map property."
+    def marker_set():
+        doc = "The marker_set property."
         def fget(self):
-            return self._genetic_map
+            return self._marker_set
         def fset(self, value):
-            self._genetic_map = value
+            self._marker_set = value
         def fdel(self):
-            del self._genetic_map
+            del self._marker_set
         return locals()
-    genetic_map = property(**genetic_map())
+    marker_set = property(**marker_set())
 
     def genomic_model():
         doc = "The genomic_model property."
@@ -272,153 +410,52 @@ class Population:
         return gebv
 
     ############################################################################
-    ############################# Static Methods ###############################
+    ########################## Special Object Methods ##########################
     ############################################################################
-    @staticmethod
-    def from_vcf(fname, base_GenomicModel = None, base_GeneticMap = None,
-        kind = 'linear', fill_value = 'extrapolate'):
-        # make VCF iterator
-        vcf = cyvcf2.VCF(fname)
 
-        # extract taxa names from vcf header
-        taxa = numpy.string_(vcf.samples)
-
-        # make empty lists to store extracted values
-        geno = []
-        chr_grp = []
-        chr_start = []
-        chr_stop = []
-        mkr_name = []
-
-        # iterate through VCF file and accumulate variants
-        for variant in vcf:
-            # append chromosome string
-            chr_grp.append(str(variant.CHROM))
-
-            # append variant position coordinates
-            chr_start.append(variant.POS)
-            chr_stop.append(variant.POS + len(variant.REF) - 1)
-
-            # append marker name
-            mkr_name.append(variant.ID)
-
-            # extract allele states + whether they are phased or not
-            phases = numpy.int8(variant.genotypes)
-
-            # check that they are all phased
-            check_matrix_all_value(phases[:,2], "is_phased", True)
-
-            # TODO: maybe modify shapes here to avoid transpose and copy below?
-            # append genotype states
-            geno.append(phases[:,0:2].copy())
-
-        # convert and transpose genotype matrix
-        geno = numpy.int8(geno).transpose(2,1,0) # may want to copy()?
-
-        # convert to numpy.ndarray
-        chr_grp = numpy.string_(chr_grp)    # convert to string array
-        chr_start = numpy.int64(chr_start)  # convert to int64 array
-        chr_stop = numpy.int64(chr_stop)    # convert to int64 array
-        mkr_name = numpy.string_(mkr_name)  # convert to string array
-
-        # make output object
-        outpop = Population.from_array(
-            geno = geno,
-            chr_grp = chr_grp,
-            chr_start = chr_start,
-            chr_stop = chr_stop,
-            mkr_name = mkr_name,
-            base_GenomicModel = base_GenomicModel,
-            base_GeneticMap = base_GeneticMap,
-            taxa = taxa
-        )
-
-        return outpop
-
-    @staticmethod
-    def from_array(geno, chr_grp, chr_start, chr_stop, mkr_name = None,
-            base_GenomicModel = None, base_GeneticMap = None, taxa = None):
+    def __init__(self, geno, marker_set = None, genomic_model = None, taxa = None):
         """
-        Construct a Population object from arrays.
-
-        Assumes that GenomicModel is ordered.
+        Population object constructor.
 
         Parameters
         ----------
         geno : numpy.ndarray
-        chr_grp : numpy.ndarray
-        chr_stop : numpy.ndarray
-        mkr_name : numpy.ndarray
-        base_GenomicModel : GenomicModel
-        base_GeneticMap : GeneticMap
-        taxa : numpy.ndarray
-
-        Returns
-        -------
-        population : Population
-            A Population object.
+            A int8 binary genotype matrix of shape (m, n, p).
+            Where:
+                'm' is the number of chromosome phases (2 for diploid, etc.).
+                'n' is the number of individuals.
+                'p' is the number of markers.
+        marker_set : MarkerSet
+            A MarkerSet object with positions for each marker.
+            This can either be an object of the base class, or any of its
+            derived classes (e.g. GeneticMap).
+        genomic_model : GenomicModel
+            A GenomicModel object for the marker_set.
+        taxa : numpy.ndarray, None
+            A taxa name matrix of shape (n,).
+            Where:
+                'n' is the number of individuals.
         """
-        # check data types
+        # check input data types
         check_is_matrix(geno, "geno")
-        check_is_matrix(chr_grp, "chr_grp")
-        check_is_matrix(chr_start, "chr_start")
-        check_is_matrix(chr_stop, "chr_stop")
-        cond_check_is_matrix(mkr_name, "mkr_name")
-        cond_check_is_GenomicModel(base_GenomicModel, "base_GenomicModel")
-        cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
+        cond_check_is_MarkerSet(marker_set, "marker_set")
+        cond_check_is_GenomicModel(genomic_model, "genomic_model")
+        cond_check_is_matrix(taxa, "taxa")
+
+        # check data types
+        check_matrix_dtype(geno, "geno", 'int8')
         cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
-        # check dimensions
+        # check matrix number of dimensions
         check_matrix_ndim(geno, "geno", 3)
-        check_matrix_ndim(chr_grp, "chr_grp", 1)
-        check_matrix_ndim(chr_start, "chr_start", 1)
-        check_matrix_ndim(chr_stop, "chr_stop", 1)
-        cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
         cond_check_matrix_ndim(taxa, "taxa", 1)
 
-        # check matrix compatiblity lengths
-        nloci = geno.shape[2]
-        check_matrix_size(chr_grp, "chr_grp", nloci)
-        check_matrix_size(chr_start, "chr_start", nloci)
-        check_matrix_size(chr_stop, "chr_stop", nloci)
-        cond_check_matrix_size(mkr_name, "mkr_name", nloci)
-        cond_check_matrix_size(taxa, "taxa", geno.shape[1])
+        # check matrix dimension size alignment
+        if taxa is not None:
+            check_matrix_axis_len(geno, "geno", 1, len(taxa))
 
-
-        # TODO: interpolate
-        # create genomic models
-        genetic_map = None
-        if base_GeneticMap is not None:
-            genetic_map = base_GeneticMap.interpolate(
-                chr_grp = chr_grp,
-                chr_start = chr_start,
-                chr_stop = chr_stop,
-                mkr_name = mkr_name,
-                map_fncode = None,
-                kind = 'linear',
-                fill_value = 'extrapolate'
-            )
-
-        genomic_model = base_GenomicModel
-
-        # make population
-        population = Population(
-            geno = geno,
-            genomic_model = genomic_model,
-            genetic_map = genetic_map,
-            taxa = taxa
-        )
-
-        return population
-
-        # # check if chr_grp is sorted
-        # if matrix_is_sorted(chr_grp):
-        #     pass
-        # else:
-        #     if isinstance(type(base_GenomicModel), NonparametricGenomicModel):
-        #         raise ValueError(
-        #             "Cannot sort marker data accordingly because of the non-"\
-        #             "parametric nature of 'base_GenomicModel' "\
-        #             "(NonparametricGenomicModel does not have a 'coeff' field "\
-        #             "that can be sorted)."
-        #         )
+        # set private variables
+        self._geno = geno
+        self._genomic_model = genomic_model
+        self._marker_set = marker_set
+        self._taxa = taxa
