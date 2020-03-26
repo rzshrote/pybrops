@@ -1,11 +1,13 @@
-class SPstdA(GenomicMating):
+import breed
+
+class SPstdA(breed.GenomicMating):
     """
     Sum of Progeny Standard Deviations of Additive effects (SPstdA) objective
     function class.
     """
 
-    def __init__(self, population, cross):
-        super(SPstdA, self).__init__(population, cross)
+    def __init__(self, population, cross, method = "SPstdA"):
+        super(SPstdA, self).__init__(population, cross, method)
 
     ############################################################################
     ############################# Static Methods ###############################

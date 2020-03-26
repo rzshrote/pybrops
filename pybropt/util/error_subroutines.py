@@ -199,7 +199,7 @@ def check_is_NonparametricGenomicModel(gmod, varname):
         raise TypeError("'%s' must be a NonparametricGenomicModel object." % varname)
 
 def check_is_Cross(cross, varname):
-    if not isinstance(cross, Cross):
+    if not isinstance(cross,popgen.Cross):
         raise TypeError("'%s' must be a Cross object." % varname)
 
 ################################################################################

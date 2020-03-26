@@ -1,12 +1,14 @@
-class PAFD(GenomicSelection):
+import breed
+
+class PAFD(breed.GenomicSelection):
     """docstring for PAFD."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross, wcoeff = None, tfreq = None):
-        super(PAFD, self).__init__(population, cross)
+    def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "PAFD"):
+        super(PAFD, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)

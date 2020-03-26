@@ -1,12 +1,14 @@
-class OPV(GenomicSelection):
+import breed
+
+class OPV(breed.GenomicSelection):
     """docstring for OPV."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross, hcoeff = None):
-        super(OPV, self).__init__(population, cross)
+    def __init__(self, population, cross, hcoeff = None, method = "OPV"):
+        super(OPV, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)
@@ -253,7 +255,7 @@ class OPV(GenomicSelection):
                 cycle = i+1,
                 score = score,
                 gebv = gebv,
-                geno = new_population.geno[:,sel,:] is savegeno else None
+                geno = new_population.geno[:,sel,:] if savegeno else None
             )
 
             # generate new population

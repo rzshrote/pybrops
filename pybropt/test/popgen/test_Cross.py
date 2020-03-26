@@ -14,7 +14,7 @@ import numpy
 import popgen
 
 class test_Cross(unittest.TestCase):
-    def test_from_vcf_output_type(self):
+    def test_constructor(self):
         # get test data file path
         data_path = test_dir + "/example.vcf"
 

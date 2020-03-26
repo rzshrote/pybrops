@@ -1,3 +1,15 @@
+# append paths
+import sys
+import os
+breed_dir = os.path.dirname(os.path.realpath(__file__))     # get pybropt/breed
+pybropt_dir = os.path.dirname(breed_dir)                    # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# 3rd party
+
+# our libraries
+import util
+
 class Breeding:
     """
     Base class to represent a breeding strategy.
@@ -6,18 +18,26 @@ class Breeding:
     ############################################################################
     ############################# Reserved methods #############################
     ############################################################################
-    @classmethod
-    def __init__(self, population, cross, method):
+    def __init__(self, population, cross, method = None):
         """
         Constructor for Breeding class.
+
+        Parameters
+        ----------
+        population : Population
+            Breeding population object.
+        cross : Cross
+            Cross structure object.
+        method : str, None
+            Breeding method.
         """
         # initialize history lists, etc.
         self.reset()
 
         # type checking
-        check_is_Population(population, "population")
-        check_is_Cross(cross, "cross")
-        check_is_string(method, "method")
+        util.check_is_Population(population, "population")
+        util.check_is_Cross(cross, "cross")
+        util.cond_check_is_string(method, "method")
 
         # set private variables
         self._population = population
@@ -27,7 +47,6 @@ class Breeding:
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def population():
         doc = "The population property."
         def fget(self):
@@ -218,7 +237,6 @@ class Breeding:
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def history_add_population(self, method, algorithm, seed, cycle, score,
         gebv, geno = None):
         # copy arrays
@@ -252,7 +270,6 @@ class Breeding:
         if geno is not None:
             self._genotype_population.append(geno)
 
-    @classmethod
     def history_add_selection(self, method, algorithm, seed, cycle, score,
         gebv, geno = None):
         # copy arrays
@@ -286,7 +303,6 @@ class Breeding:
         if geno is not None:
             self._genotype_selection.append(geno)
 
-    @classmethod
     def reset(self):
         """
         Reset all internal history lists and arrays.
@@ -304,7 +320,6 @@ class Breeding:
         self._genotype_selection = []
         self._genotype_population = []
 
-    @classmethod
     def concatenate(self):
         """
         Concatenate internal history arrays for future exporting.
@@ -334,7 +349,6 @@ class Breeding:
         if len(self._genotype_population) > 1:
             self._genotype_population = [numpy.concatenate(self._genotype_population, axis=1)]
 
-    @classmethod
     def history_to_df(self, zfill = 6):
         # concatenate all histories
         self.concatenate()
@@ -357,7 +371,7 @@ class Breeding:
             # add keys to population_dict
             population_dict.update(dict(zip(
                 ["score" + e for e in range(shape[1])], # column names
-                self._score_population.[0].T            # iterate through columns
+                self._score_population[0].T             # iterate through columns
             )))
 
         # add GEBVs to population_dict
@@ -369,7 +383,7 @@ class Breeding:
             # add keys to population_dict
             population_dict.update(dict(zip(
                 ["gebv" + e for e in range(shape[1])],  # column names
-                self._gebv_population.[0].T             # iterate through columns
+                self._gebv_population[0].T              # iterate through columns
             )))
 
         # add genotypes to population_dict
@@ -379,13 +393,13 @@ class Breeding:
             # add keys to population_dict
             population_dict.update(dict(zip(
                 ["p1_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
-                self._gebv_population.[0][0].T                          # iterate through columns
+                self._gebv_population[0][0].T                           # iterate through columns
             )))
 
             # add keys to population_dict
             population_dict.update(dict(zip(
                 ["p2_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
-                self._gebv_population.[0][1].T                          # iterate through columns
+                self._gebv_population[0][1].T                           # iterate through columns
             )))
         ####################################################
 
@@ -408,7 +422,7 @@ class Breeding:
             # add keys to selection_dict
             selection_dict.update(dict(zip(
                 ["score" + e for e in range(shape[1])], # column names
-                self._score_selection.[0].T             # iterate through columns
+                self._score_selection[0].T              # iterate through columns
             )))
 
         # add GEBVs to selection_dict
@@ -420,7 +434,7 @@ class Breeding:
             # add keys to selection_dict
             selection_dict.update(dict(zip(
                 ["gebv" + e for e in range(shape[1])],  # column names
-                self._gebv_selection.[0].T              # iterate through columns
+                self._gebv_selection[0].T               # iterate through columns
             )))
 
         # add genotypes to selection_dict
@@ -430,13 +444,13 @@ class Breeding:
             # add keys to population_dict
             selection_dict.update(dict(zip(
                 ["p1_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
-                self._gebv_selection.[0][0].T                           # iterate through columns
+                self._gebv_selection[0][0].T                            # iterate through columns
             )))
 
             # add keys to population_dict
             selection_dict.update(dict(zip(
                 ["p2_"+str(e).zfill(zfill) for e in range(shape[1])],   # column names
-                self._gebv_selection.[0][1].T                           # iterate through columns
+                self._gebv_selection[0][1].T                            # iterate through columns
             )))
         ####################################################
 
@@ -446,7 +460,6 @@ class Breeding:
 
         return population_df, selection_df
 
-    @classmethod
     def history_to_csv(population_fname, selection_fname, zfill = 6, *args, **kwargs):
         population_df, selection_df = self.history_to_df(zfill = zfill)
 
@@ -455,7 +468,6 @@ class Breeding:
 
         return
 
-    @classmethod
     def objfn(self, sel, *args, **kwargs):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -476,7 +488,6 @@ class Breeding:
         """
         raise NotImplementedError("This method is not implemented.")
 
-    @classmethod
     def objfn_vec(self, sel, *args, **kwargs):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -497,13 +508,11 @@ class Breeding:
         """
         raise NotImplementedError("This method is not implemented.")
 
-    @classmethod
     def optimize(self, objfn_varg, algorithm, *args, **kwargs):
         """
         """
         raise NotImplementedError("This method is not implemented.")
 
-    @classmethod
     def simulate(self, objfn_varg, pop_varg, algorithm, *args, **kwargs):
         """
         """

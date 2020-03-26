@@ -1,12 +1,14 @@
-class CGS(GenomicSelection):
+import breed
+
+class CGS(breed.GenomicSelection):
     """docstring for CGS."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross):
-        super(CGS, self).__init__(population, cross)
+    def __init__(self, population, cross, method = "CGS"):
+        super(CGS, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)

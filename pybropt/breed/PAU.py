@@ -1,12 +1,14 @@
-class PAU(GenomicSelection):
+import breed
+
+class PAU(breed.GenomicSelection):
     """docstring for PAU."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross, wcoeff = None, tfreq = None):
-        super(PAU, self).__init__(population, cross)
+    def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "PAU"):
+        super(PAU, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
         check_is_ParametricGenomicModel(self._population.genomic_model)
