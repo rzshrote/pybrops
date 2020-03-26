@@ -59,8 +59,6 @@ class test_GeneticMap(unittest.TestCase):
         # load data
         gmap = popgen.GeneticMap.from_egmap(data_path, "kosambi")
 
-        print(gmap.mkr_name)
-
         # export data
         gmap.to_egmap(export_path)
 

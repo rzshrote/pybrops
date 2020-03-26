@@ -15,11 +15,9 @@ import util
 
 class MarkerSet:
     """docstring for MarkerSet."""
-
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
             auto_sort = True, auto_mkr_rename = False):
         # check for matrices
@@ -63,7 +61,6 @@ class MarkerSet:
         if auto_sort:
             self.sort()
 
-    @classmethod
     def __len__(self):
         """
         Get length of marker set.
@@ -73,7 +70,6 @@ class MarkerSet:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def chr_grp():
         doc = "The chr_grp property."
         def fget(self):
@@ -163,9 +159,8 @@ class MarkerSet:
     chr_grp_len = property(**chr_grp_len())
 
     ############################################################################
-    ############################## Class Methods ###############################
+    ############################## Object Methods ##############################
     ############################################################################
-    @classmethod
     def lexsort(self, keys = None):
         # if no keys were provided, set a default
         if keys is None:
@@ -183,7 +178,6 @@ class MarkerSet:
         # return indices
         return indices
 
-    @classmethod
     def sort(self, keys = None):
         # get indices for sort
         indices = self.lexsort(keys)
@@ -206,8 +200,6 @@ class MarkerSet:
         # calculate chr_grp_spix (stop indices)
         self._chr_grp_spix = self._chr_grp_stix + self._chr_grp_len
 
-
-    @classmethod
     # TODO: accept a pattern
     def mkr_rename(self):
         new_name = numpy.core.defchararray.add(
@@ -217,7 +209,6 @@ class MarkerSet:
 
         self._mkr_name = new_name
 
-    @classmethod
     def has(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None):
         """
         Determine if a genetic map has a specific marker in it.
@@ -277,7 +268,5 @@ class MarkerSet:
         # return mask
         return mask
 
-
-    @classmethod
     def physical_dist(self, rst, rsp, cst, csp):
         raise NotImplementedError("Physical distance not implemented yet.")

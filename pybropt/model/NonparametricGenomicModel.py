@@ -1,6 +1,10 @@
-class NonparametricGenomicModel(GenomicModel):
+import model
+
+class NonparametricGenomicModel(model.GenomicModel):
     """docstring for NonparametricGenomicModel."""
 
-    def __init__(self, arg):
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    def __init__(self):
         super(NonparametricGenomicModel, self).__init__()
-        self.arg = arg

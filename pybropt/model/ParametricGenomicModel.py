@@ -1,12 +1,15 @@
+# 3rd party
 import numpy
 
-class ParametricGenomicModel(GenomicModel):
+# our libraries
+import model
+
+class ParametricGenomicModel(model.GenomicModel):
     """docstring for ParametricGenomicModel."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-
     def __init__(self, trait, coeff, model_name = None):
         """
         Constructor for ParametricGenomicModel class.
@@ -41,7 +44,6 @@ class ParametricGenomicModel(GenomicModel):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def coeff():
         doc = "The coeff property."
         def fget(self):
@@ -65,9 +67,8 @@ class ParametricGenomicModel(GenomicModel):
     nloci = property(**nloci())
 
     ############################################################################
-    ############################## Class Methods ###############################
+    ############################## Object Methods ##############################
     ############################################################################
-
     def predict(self, geno):
         """
         Predict trait values given a genotype matrix.
@@ -102,7 +103,6 @@ class ParametricGenomicModel(GenomicModel):
         # return predictions
         return pred
 
-    @classmethod
     def reorder(self, a):
         """
         Reorder the internals of this model (for matrix operations).

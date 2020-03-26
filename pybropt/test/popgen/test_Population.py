@@ -11,7 +11,7 @@ import unittest
 import numpy
 
 # import our libraries
-from popgen.Population import Population
+import popgen
 
 class test_Population(unittest.TestCase):
     def test_from_vcf_output_type(self):
@@ -19,12 +19,12 @@ class test_Population(unittest.TestCase):
         data_path = test_dir + "/example.vcf"
 
         # load data
-        population = Population.from_vcf(data_path)
+        population = popgen.Population.from_vcf(data_path)
 
         # assert we have a Population type object
         self.assertIsInstance(
             population,
-            Population,
+            popgen.Population,
             "type(population) = %s" % type(population)
         )
 

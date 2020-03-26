@@ -1,18 +1,38 @@
+# append paths
+import sys
+import os
+model_dir = os.path.dirname(os.path.realpath(__file__))     # get pybropt/model
+pybropt_dir = os.path.dirname(model_dir)                    # get pybropt
+sys.path.append(pybropt_dir)                                # append pybropt
+
+# 3rd party
+
+# our libraries
+import util
+
+
 class GenomicModel:
     """docstring for GenomicModel."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-
     def __init__(self, trait, model_name = None):
         """
+        Constructor for the GenomicModel class.
 
+        Parameters
+        ----------
+        trait : numpy.ndarray
+            A vector of strings. Must be of type numpy.string_
+        model_name : str
+            Name of the model type.
         """
         # error check the input
-        check_is_matrix(trait, "trait")
-        check_matrix_dtype_is_string_(trait, "trait")
-        check_matrix_ndim(trait, "trait", 1)
+        util.check_is_matrix(trait, "trait")
+        util.check_matrix_ndim(trait, "trait", 1)
+        util.check_matrix_dtype_is_string_(trait, "trait")
+        util.cond_check_is_string(model_name, "model_name")
 
         # set private variables
         self._trait = trait
@@ -21,7 +41,6 @@ class GenomicModel:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def trait():
         doc = "The trait property."
         def fget(self):
@@ -56,16 +75,13 @@ class GenomicModel:
     model_name = property(**model_name())
 
     ############################################################################
-    ############################## Class Methods ###############################
+    ############################## Object Methods ##############################
     ############################################################################
-    @classmethod
     def train(self, geno, pheno):
-        raise NotImplementedError("The method 'train' is not implemented.")
+        raise NotImplementedError("The method 'train' is abstract.")
 
-    @classmethod
     def predict(self, geno):
-        raise NotImplementedError("The method 'predict' is not implemented.")
+        raise NotImplementedError("The method 'predict' is abstract.")
 
-    @classmethod
     def reorder(self, a):
-        raise NotImplementedError("This method is not implemented yet.")
+        raise NotImplementedError("The method 'reorder' is abstract.")
