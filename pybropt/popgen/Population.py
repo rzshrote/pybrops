@@ -11,22 +11,22 @@ import cyvcf2
 import numpy
 
 # import our libraries
-from popgen.MarkerSet import MarkerSet
-from popgen.GeneticMap import GeneticMap
+import popgen
+import util
 
-from util.error_subroutines import check_is_matrix
-from util.error_subroutines import check_matrix_all_value
-from util.error_subroutines import check_matrix_axis_len
-from util.error_subroutines import check_matrix_dtype
-from util.error_subroutines import check_matrix_ndim
-from util.error_subroutines import check_matrix_size
-from util.error_subroutines import cond_check_is_GeneticMap
-from util.error_subroutines import cond_check_is_GenomicModel
-from util.error_subroutines import cond_check_is_MarkerSet
-from util.error_subroutines import cond_check_is_matrix
-from util.error_subroutines import cond_check_matrix_dtype_is_string_
-from util.error_subroutines import cond_check_matrix_ndim
-from util.error_subroutines import cond_check_matrix_size
+# import util.check_is_matrix
+# import util.check_matrix_all_value
+# import util.check_matrix_axis_len
+# import util.check_matrix_dtype
+# import util.check_matrix_ndim
+# import util.check_matrix_size
+# import util.cond_check_is_GeneticMap
+# import util.cond_check_is_GenomicModel
+# import util.cond_check_is_MarkerSet
+# import util.cond_check_is_matrix
+# import util.cond_check_matrix_dtype_is_string_
+# import util.cond_check_matrix_ndim
+# import util.cond_check_matrix_size
 
 
 class Population:
@@ -58,30 +58,30 @@ class Population:
             A Population object.
         """
         # check data types
-        check_is_matrix(geno, "geno")
-        check_is_matrix(chr_grp, "chr_grp")
-        check_is_matrix(chr_start, "chr_start")
-        check_is_matrix(chr_stop, "chr_stop")
-        cond_check_is_matrix(mkr_name, "mkr_name")
-        cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
-        cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        cond_check_matrix_dtype_is_string_(taxa, "taxa")
+        util.check_is_matrix(geno, "geno")
+        util.check_is_matrix(chr_grp, "chr_grp")
+        util.check_is_matrix(chr_start, "chr_start")
+        util.check_is_matrix(chr_stop, "chr_stop")
+        util.cond_check_is_matrix(mkr_name, "mkr_name")
+        util.cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
+        util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
+        util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
         # check dimensions
-        check_matrix_ndim(geno, "geno", 3)
-        check_matrix_ndim(chr_grp, "chr_grp", 1)
-        check_matrix_ndim(chr_start, "chr_start", 1)
-        check_matrix_ndim(chr_stop, "chr_stop", 1)
-        cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
-        cond_check_matrix_ndim(taxa, "taxa", 1)
+        util.check_matrix_ndim(geno, "geno", 3)
+        util.check_matrix_ndim(chr_grp, "chr_grp", 1)
+        util.check_matrix_ndim(chr_start, "chr_start", 1)
+        util.check_matrix_ndim(chr_stop, "chr_stop", 1)
+        util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        util.cond_check_matrix_ndim(taxa, "taxa", 1)
 
         # check matrix compatiblity lengths
         nloci = geno.shape[2]
-        check_matrix_size(chr_grp, "chr_grp", nloci)
-        check_matrix_size(chr_start, "chr_start", nloci)
-        check_matrix_size(chr_stop, "chr_stop", nloci)
-        cond_check_matrix_size(mkr_name, "mkr_name", nloci)
-        cond_check_matrix_size(taxa, "taxa", geno.shape[1])
+        util.check_matrix_size(chr_grp, "chr_grp", nloci)
+        util.check_matrix_size(chr_start, "chr_start", nloci)
+        util.check_matrix_size(chr_stop, "chr_stop", nloci)
+        util.cond_check_matrix_size(mkr_name, "mkr_name", nloci)
+        util.cond_check_matrix_size(taxa, "taxa", geno.shape[1])
 
 
         # TODO: interpolate
@@ -153,7 +153,7 @@ class Population:
             phases = numpy.int8(variant.genotypes)
 
             # check that they are all phased
-            check_matrix_all_value(phases[:,2], "is_phased", True)
+            util.check_matrix_all_value(phases[:,2], "is_phased", True)
 
             # TODO: maybe modify shapes here to avoid transpose and copy below?
             # append genotype states
@@ -174,7 +174,7 @@ class Population:
         # if base_GeneticMap is None, we construct a MarkerSet object
         if base_GeneticMap is None:
             # make marker set
-            marker_set = MarkerSet(
+            marker_set = popgen.MarkerSet(
                 chr_grp = chr_grp,
                 chr_start = chr_start,
                 chr_stop = chr_stop,
@@ -437,22 +437,22 @@ class Population:
                 'n' is the number of individuals.
         """
         # check input data types
-        check_is_matrix(geno, "geno")
-        cond_check_is_MarkerSet(marker_set, "marker_set")
-        cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        cond_check_is_matrix(taxa, "taxa")
+        util.check_is_matrix(geno, "geno")
+        util.cond_check_is_MarkerSet(marker_set, "marker_set")
+        util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
+        util.cond_check_is_matrix(taxa, "taxa")
 
         # check data types
-        check_matrix_dtype(geno, "geno", 'int8')
-        cond_check_matrix_dtype_is_string_(taxa, "taxa")
+        util.check_matrix_dtype(geno, "geno", 'int8')
+        util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
         # check matrix number of dimensions
-        check_matrix_ndim(geno, "geno", 3)
-        cond_check_matrix_ndim(taxa, "taxa", 1)
+        util.check_matrix_ndim(geno, "geno", 3)
+        util.cond_check_matrix_ndim(taxa, "taxa", 1)
 
         # check matrix dimension size alignment
         if taxa is not None:
-            check_matrix_axis_len(geno, "geno", 1, len(taxa))
+            util.check_matrix_axis_len(geno, "geno", 1, len(taxa))
 
         # set private variables
         self._geno = geno

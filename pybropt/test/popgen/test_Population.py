@@ -28,8 +28,8 @@ class test_Population(unittest.TestCase):
             "type(population) = %s" % type(population)
         )
 
-        true_chr_grp = numpy.array(['20','20','20','20','20'])
+        true_chr_grp = numpy.string_(['20','20','20','20','20'])
 
         self.assertTrue(
-            numpy.all(population.marker_set.chr_grp == true_chrom)
+            numpy.all(population.marker_set.chr_grp == true_chr_grp)
         )

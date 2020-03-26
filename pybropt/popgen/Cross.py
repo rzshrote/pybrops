@@ -1432,7 +1432,7 @@ class Cross:
         raise NotImplementedError("Method not implemented.")
 
     @classmethod
-    def varA_dihybridDH_sparse(self, self):
+    def varA_dihybridDH_sparse(self, sel):
         raise NotImplementedError("Method not implemented.")
 
     @classmethod
@@ -1448,7 +1448,7 @@ class Cross:
         raise NotImplementedError("Method not implemented.")
 
     @classmethod
-    def varA_dihybridDH_sparse_vec(self, self):
+    def varA_dihybridDH_sparse_vec(self, sel):
         raise NotImplementedError("Method not implemented.")
     ##############################################
     ############################################################################
@@ -2198,11 +2198,11 @@ class Cross:
         raise NotImplementedError()
 
     @classmethod
-    def mate_4way_erand(self, sel, c = None, n = None, exact, seed = None):
+    def mate_4way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         raise NotImplementedError()
 
     @classmethod
-    def mate_4wayDH_erand(self, sel, c = None, n = None, exact, s = None, t = None, seed = None):
+    def mate_4wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
     ############################################################################
