@@ -10,6 +10,8 @@ class Cross:
     ############################################################################
     ############################# Class Constants ##############################
     ############################################################################
+    # NOTE: these dictionary can stay here because they do not reference
+    #       internal methods; they only have strings.
     # dictionary of varAfn keys
     KEY_TO_VARAFN = {
         '2way' : {
@@ -196,7 +198,6 @@ class Cross:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, varAfn = None, sparse = False,
         crossfn = None, matefn = None, rallocfn = None,
         c = 1, n = 1, s = 0, t = 0, mem = None):
@@ -267,7 +268,6 @@ class Cross:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def population():
         doc = "The population property."
         def fget(self):
@@ -580,9 +580,8 @@ class Cross:
     varA_dihybridDH_sparse_mat = property(**varA_dihybridDH_sparse_mat())
 
     ############################################################################
-    ############################## Class Methods ###############################
+    ############################## Object Methods ##############################
     ############################################################################
-    @classmethod
     def reset(self):
         """
         Remove all calculated matrices.
@@ -606,12 +605,10 @@ class Cross:
             del self._varA_dihybridDH_sparse_mat
 
     ############################################################################
-    ###################### Variance Related Class Methods ######################
-    @classmethod
+    ##################### Variance Related Object Methods ######################
     def calc_varA_2way_mat(self):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_2wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -670,11 +667,9 @@ class Cross:
 
         return varA_mat
 
-    @classmethod
     def calc_varA_3way_mat(self):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_3wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -768,11 +763,9 @@ class Cross:
 
         return varA_mat
 
-    @classmethod
     def calc_varA_4way_mat(self):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_4wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -891,11 +884,9 @@ class Cross:
 
         return varA_mat
 
-    @classmethod
     def calc_varA_dihybrid_mat(self):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_dihybridDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -995,40 +986,31 @@ class Cross:
 
         return varA_mat
 
-    @classmethod
     def calc_varA_2way_sparse_mat(self, sel):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_2wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def calc_varA_3way_sparse_mat(self, sel):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_3wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def calc_varA_4way_sparse_mat(self, sel):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_4wayDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def calc_varA_dihybrid_sparse_mat(self, sel):
         raise NotImplementedError
 
-    @classmethod
     def calc_varA_dihybridDH_sparse_mat(self, sel):
         raise NotImplementedError("Method not implemented.")
 
     ##############################################
-    @classmethod
     def set_varAfn(self, varAfn = None, sparse = False):
         """
         Set the varA() and varA_vec() attributes. Calling these will result in
@@ -1053,15 +1035,12 @@ class Cross:
         self._varAfn = varAfn
         self._sparse = sparse
 
-    @classmethod
     def varA(self, sel, *args, **kwargs):
         raise RuntimeError("varA function not set.")
 
-    @classmethod
     def varA_vec(self, sel, *args, **kwargs):
         raise RuntimeError("varA function not set.")
 
-    @classmethod
     def varA_default(self, sel, *args, **kwargs):
         """
         Default method for varA method. Raises a RuntimeError.
@@ -1071,11 +1050,9 @@ class Cross:
 
     ##############################################
     ########### Non-sparse matrix ops ############
-    @classmethod
     def varA_2way(self, sel):
         raise NotImplementedError()
 
-    @classmethod
     def varA_2wayDH(self, sel):
         """
         Retrieve additive variance components for a 2-way DH cross.
@@ -1113,11 +1090,9 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_3way(self, sel):
         raise NotImplementedError()
 
-    @classmethod
     def varA_3wayDH(self, sel):
         """
         Retrieve additive variance components for a 3-way DH cross.
@@ -1158,11 +1133,9 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_4way(self, sel):
         raise NotImplementedError()
 
-    @classmethod
     def varA_4wayDH(self, sel):
         """
         Retrieve additive variance components for a 4-way DH cross.
@@ -1206,11 +1179,9 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_dihybrid(self, sel):
         raise NotImplementedError()
 
-    @classmethod
     def varA_dihybridDH(self, sel):
         """
         Retrieve additive variance components for a dihybrid DH cross.
@@ -1247,7 +1218,6 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_2wayDH_vec(self, sel):
         """
         Retrieve additive variance components for a 2-way DH cross.
@@ -1287,7 +1257,6 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_3wayDH_vec(self, sel):
         """
         Retrieve additive variance components for a 3-way DH cross.
@@ -1330,7 +1299,6 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_4wayDH_vec(self, sel):
         """
         Retrieve additive variance components for a 4-way DH cross.
@@ -1376,7 +1344,6 @@ class Cross:
         # return variance terms
         return varA_val
 
-    @classmethod
     def varA_dihybridDH_vec(self, sel):
         """
         Retrieve additive variance components for a dihybrid DH cross.
@@ -1419,35 +1386,27 @@ class Cross:
 
     ##############################################
     ############# Sparse matrix ops ##############
-    @classmethod
     def varA_2wayDH_sparse(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_3wayDH_sparse(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_4wayDH_sparse(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_dihybridDH_sparse(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_2wayDH_sparse_vec(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_3wayDH_sparse_vec(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_4wayDH_sparse_vec(self, sel):
         raise NotImplementedError("Method not implemented.")
 
-    @classmethod
     def varA_dihybridDH_sparse_vec(self, sel):
         raise NotImplementedError("Method not implemented.")
     ##############################################
@@ -1456,7 +1415,6 @@ class Cross:
 
     ############################################################################
     ####################### Mating Related Class Methods #######################
-    @classmethod
     def meiosis(self, sel, seed = None):
         """
         Simulate meiosis. Generate gametes from a genotype matrix.
@@ -1482,7 +1440,6 @@ class Cross:
 
         return gamete
 
-    @classmethod
     def set_matefn(self, crossfn = None, matefn = None):
         # lookup matefn in lookup table
         attribute_string = Cross.KEY_TO_VARAFN[crossfn][matefn]
@@ -1494,11 +1451,9 @@ class Cross:
         self._crossfn = crossfn
         self._matefn = matefn
 
-    @classmethod
     def mate(self, sel, seed = None, *args, **kwargs):
         raise RuntimeError("mate function not set.")
 
-    @classmethod
     def mate_default(self, sel, seed = None, *args, **kwargs):
         """
         Default method for mate method. Raises a RuntimeError.
@@ -1507,7 +1462,6 @@ class Cross:
 
     ##############################################
     ############# Controlled mating ##############
-    @classmethod
     def mate_2way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 2-way cross.
@@ -1579,7 +1533,6 @@ class Cross:
 
         return population
 
-    @classmethod
     def mate_2wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 2-way cross with double haploiding.
@@ -1675,7 +1628,6 @@ class Cross:
 
         return population
 
-    @classmethod
     def mate_3way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 3-way cross.
@@ -1769,7 +1721,6 @@ class Cross:
 
         return population
 
-    @classmethod
     def mate_3wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 3-way cross with double haploiding.
@@ -1880,7 +1831,6 @@ class Cross:
 
         return population
 
-    @classmethod
     def mate_4way_ctrl(self, sel, c = None, n = None, seed = None):
         """
         Perform a 4-way cross.
@@ -1921,7 +1871,6 @@ class Cross:
         """
         raise NotImplementedError()
 
-    @classmethod
     def mate_4wayDH_ctrl(self, sel, c = None, n = None, s = None, t = None, seed = None):
         """
         Perform a 4-way cross with double haploiding.
@@ -1975,7 +1924,6 @@ class Cross:
 
     ##############################################
     ########### Weighted random mating ###########
-    @classmethod
     def mate_2way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         """
         Perform a 2-way cross with weighted random mating.
@@ -2044,7 +1992,6 @@ class Cross:
 
         return progeny
 
-    @classmethod
     def mate_2wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
         # if all required variables are None, use ralloc to select them
         if all(v is None for v in [c, n, weight, s, t]):
@@ -2069,26 +2016,21 @@ class Cross:
 
         return progeny
 
-    @classmethod
     def mate_3way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_3wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_4way_wrand(self, sel, c = None, n = None, weight = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_4wayDH_wrand(self, sel, c = None, n = None, weight = None, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
 
     ##############################################
     ############ Exact random mating #############
-    @classmethod
     def mate_2way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         """
         Perform a 2-way cross with exact random mating.
@@ -2160,7 +2102,6 @@ class Cross:
 
         return progeny
 
-    @classmethod
     def mate_2wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
         # if all required variables are None, use ralloc to select them
         if all(v is None for v in [c, n, exact, s, t]):
@@ -2189,19 +2130,15 @@ class Cross:
 
         return progeny
 
-    @classmethod
     def mate_3way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_3wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_4way_erand(self, sel, c = None, n = None, exact = None, seed = None):
         raise NotImplementedError()
 
-    @classmethod
     def mate_4wayDH_erand(self, sel, c = None, n = None, exact = None, s = None, t = None, seed = None):
         raise NotImplementedError()
     ##############################################
@@ -2210,7 +2147,6 @@ class Cross:
 
     ############################################################################
     ################# Mating Resource Allocation Class Methods #################
-    @classmethod
     def set_rallocfn(self, crossfn, matefn, rallocfn):
         # get attribute string
         attribute_string = self.KEY_TO_RALLOCFN[crossfn][matefn][rallocfn]
@@ -2223,44 +2159,35 @@ class Cross:
         self._matefn = matefn
         self._rallocfn = rallocfn
 
-    @classmethod
     def ralloc(self, sel):
         raise RuntimeError("Resource allocation function not set.")
 
-    @classmethod
     def ralloc_default(self, sel):
         raise RuntimeError("Resource allocation function not set.")
 
     ##############################################
     ############# Controlled mating ##############
-    @classmethod
     def ralloc_2way_ctrl_equal(self, sel):
         return self._c, self._n
 
-    @classmethod
     def ralloc_2wayDH_ctrl_equal(self, sel):
         return self._c, self._n, self._s, self._t
 
-    @classmethod
     def ralloc_3way_ctrl_equal(self, sel):
         return self._c, self._n
 
-    @classmethod
     def ralloc_3wayDH_ctrl_equal(self, sel):
         return self._c, self._n, self._s, self._t
 
-    @classmethod
     def ralloc_4way_ctrl_equal(self, sel):
         return self._c, self._n
 
-    @classmethod
     def ralloc_4wayDH_ctrl_equal(self, sel):
         return self._c, self._n, self._s, self._t
     ##############################################
 
     ##############################################
     ########### Weighted random mating ###########
-    @classmethod
     def ralloc_2way_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2271,7 +2198,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, weight
 
-    @classmethod
     def ralloc_2wayDH_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2282,7 +2208,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, weight, self._s, self._t
 
-    @classmethod
     def ralloc_3way_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2293,7 +2218,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, weight
 
-    @classmethod
     def ralloc_3wayDH_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2304,7 +2228,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, weight, self._s, self._t
 
-    @classmethod
     def ralloc_4way_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2315,7 +2238,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, weight
 
-    @classmethod
     def ralloc_4wayDH_wrand_equal(self, sel):
         # make a ones matrix
         weight = numpy.ones(len(sel), dtype = 'float64')
@@ -2329,7 +2251,6 @@ class Cross:
 
     ##############################################
     ########### Weighted random mating ###########
-    @classmethod
     def ralloc_2way_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')
@@ -2337,7 +2258,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, exact
 
-    @classmethod
     def ralloc_2wayDH_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')
@@ -2345,7 +2265,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, exact, self._s, self._t
 
-    @classmethod
     def ralloc_3way_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')
@@ -2353,7 +2272,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, exact
 
-    @classmethod
     def ralloc_3wayDH_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')
@@ -2361,7 +2279,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, exact, self._s, self._t
 
-    @classmethod
     def ralloc_4way_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')
@@ -2369,7 +2286,6 @@ class Cross:
         # return tuple of resource allocations
         return self._c, self._n, exact
 
-    @classmethod
     def ralloc_4wayDH_erand_equal(self, sel):
         # make an exact matrix
         exact = numpy.ones(len(sel), dtype = 'int64')

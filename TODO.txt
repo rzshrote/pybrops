@@ -20,6 +20,9 @@ Feature Additions
 [ ] calc_D_prime in Population class.
 [ ] calc_r in Population class.
 [ ] logger functionality like what Scott uses
+[ ] add MarkerEffect class/file import
+[ ] convert 'from_vcf', 'from_egmap', etc. to @classmethod that accept cls
+    instead of self as arguments... maybe if not too many bugs are caused.
 
 Testing
 -------
@@ -27,4 +30,3 @@ Testing
 [ ] Unit testing for Population
     [ ] Unit testing for 'from_vcf'
     [ ] Unit testing for constructor
-    
