@@ -15,6 +15,36 @@ from popgen.MarkerSet import MarkerSet
 class test_MarkerSet(unittest.TestCase):
     """docstring for test_MarkerSet."""
     def test_constructor(self):
+        # make fake data
+        m1 = test_MarkerSet._create_fake_data()
+
+        sort_chr_grp = numpy.string_(["1","1","1","2","2","2","3","3","3"])
+        sort_chr_start = numpy.array([1,2,3,4,5,6,7,8,9])
+        sort_chr_stop = numpy.array([1,2,3,4,5,6,7,8,9])
+        sort_mkr_name = numpy.string_(['a','b','c','f','e','d','h','i','g'])
+        sort_chr_grp_stix = numpy.array([0,3,6])
+        sort_chr_grp_spix = numpy.array([3,6,9])
+        sort_chr_grp_len = numpy.array([3,3,3])
+
+        # make sure we have a MarkerSet object
+        self.assertIsInstance(m1, MarkerSet)
+
+        # make sure it is sorted
+        self.assertTrue(numpy.all(m1.chr_grp == sort_chr_grp))
+        self.assertTrue(numpy.all(m1.chr_start == sort_chr_start))
+        self.assertTrue(numpy.all(m1.chr_stop == sort_chr_stop))
+        self.assertTrue(numpy.all(m1.mkr_name == sort_mkr_name))
+        self.assertTrue(numpy.all(m1.chr_grp_stix == sort_chr_grp_stix))
+        self.assertTrue(numpy.all(m1.chr_grp_spix == sort_chr_grp_spix))
+        self.assertTrue(numpy.all(m1.chr_grp_len == sort_chr_grp_len))
+
+    def test_len(self):
+        # make fake data
+        m1 = test_MarkerSet._create_fake_data()
+
+        self.assertEqual(len(m1), 9)
+
+    def _create_fake_data():
         # make some fake data
         chr_grp = numpy.string_(["1","1","2","2","2","3","3","1","3"])
         chr_start = numpy.array([1,3,6,5,4,9,7,2,8])
@@ -39,14 +69,4 @@ class test_MarkerSet(unittest.TestCase):
             auto_mkr_name = False
         )
 
-        # make sure we have a MarkerSet object
-        self.assertIsInstance(m1, MarkerSet)
-
-        # make sure it is sorted
-        self.assertTrue(numpy.all(m1.chr_grp == sort_chr_grp))
-        self.assertTrue(numpy.all(m1.chr_start == sort_chr_start))
-        self.assertTrue(numpy.all(m1.chr_stop == sort_chr_stop))
-        self.assertTrue(numpy.all(m1.mkr_name == sort_mkr_name))
-        self.assertTrue(numpy.all(m1.chr_grp_stix == sort_chr_grp_stix))
-        self.assertTrue(numpy.all(m1.chr_grp_spix == sort_chr_grp_spix))
-        self.assertTrue(numpy.all(m1.chr_grp_len == sort_chr_grp_len))
+        return m1
