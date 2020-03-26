@@ -9,14 +9,14 @@ sys.path.append(pybropt_dir)                                # append pybropt
 import numpy
 
 from util.error_subroutines import check_is_matrix
+from util.error_subroutines import check_matrix_dtype_is_integer
+from util.error_subroutines import check_matrix_dtype_is_string_
 from util.error_subroutines import check_matrix_ndim
 from util.error_subroutines import check_matrix_size
-from util.error_subroutines import check_matrix_dtype_is_string_
-from util.error_subroutines import check_matrix_dtype_is_integer
 from util.error_subroutines import cond_check_is_matrix
+from util.error_subroutines import cond_check_matrix_dtype_is_string_
 from util.error_subroutines import cond_check_matrix_ndim
 from util.error_subroutines import cond_check_matrix_size
-from util.error_subroutines import cond_check_matrix_dtype_is_string_
 
 
 class MarkerSet:
@@ -27,7 +27,7 @@ class MarkerSet:
     ############################################################################
     @classmethod
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
-            auto_sort = True, auto_mkr_name = True):
+            auto_sort = True, auto_mkr_rename = True):
         # check for matrices
         check_is_matrix(chr_grp, "chr_grp")
         check_is_matrix(chr_start, "chr_start")
@@ -62,7 +62,7 @@ class MarkerSet:
         self._chr_grp_spix = None
 
         # give default marker names if needed
-        if auto_mkr_name:
+        if auto_mkr_rename:
             self.mkr_rename()
 
         # sort if needed
