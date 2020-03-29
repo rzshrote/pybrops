@@ -1,6 +1,6 @@
-import breed
+from . import GenomicMating
 
-class SPstd(breed.GenomicMating):
+class SPstd(GenomicMating):
     """
     Sum of Progeny STandard Deviations (SPstd) objective function class.
     """

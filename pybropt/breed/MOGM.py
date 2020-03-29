@@ -1,13 +1,13 @@
-import breed
+from . import GenomicMating
 
-class MOGM(breed.GenomicMating):
+class MOGM(GenomicMating):
     """docstring for MOGM."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
     @classmethod
-    def __init__(self, population, cross, method = "MOGM"):
+    def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "MOGM"):
         super(MOGM, self).__init__(population, cross, method)
 
         # check that we have marker coefficients

@@ -1,16 +1,5 @@
-# append paths
-import sys
-import os
-util_dir = os.path.dirname(os.path.realpath(__file__))      # get pybropt/util
-pybropt_dir = os.path.dirname(util_dir)                     # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # import 3rd party modules
 import numpy
-
-# import our libraries
-import popgen
-import model
 
 def check_is_matrix(mat, varname):
     if not isinstance(mat, numpy.ndarray):
@@ -163,15 +152,21 @@ def check_is_not_none(var, varname):
         raise ValueError("'%s' cannot be None." % varname)
 
 def check_is_MarkerSet(mkrset, varname):
-    if not isinstance(mkrset, popgen.MarkerSet):
+    # HACK: elminates circular dependency issues
+    import pybropt.popgen.MarkerSet
+    if not isinstance(mkrset, pybropt.popgen.MarkerSet):
         raise TypeError("'%s' must be a MarkerSet object." % varname)
 
 def check_is_GeneticMap(gmap, varname):
-    if not isinstance(gmap, popgen.GeneticMap):
+    # HACK: elminates circular dependency issues
+    import pybropt.popgen.GeneticMap
+    if not isinstance(gmap, pybropt.popgen.GeneticMap):
         raise TypeError("'%s' must be a GeneticMap object." % varname)
 
 def check_is_GenomicModel(gmod, varname):
-    if not isinstance(gmod, model.GenomicModel):
+    # HACK: elminates circular dependency issues
+    import pybropt.model.GenomicModel
+    if not isinstance(gmod, pybropt.model.GenomicModel):
         raise TypeError("'%s' must be a GenomicModel object." % varname)
 
 def check_is_SearchSpace(sspace, varname):
@@ -187,19 +182,27 @@ def check_is_SetSearchSpace(sspace, varname):
         raise TypeError("'%s' must be a SetSearchSpace object." % varname)
 
 def check_is_Population(pop, varname):
-    if not isinstance(pop, popgen.Population):
+    # HACK: elminates circular dependency issues
+    import pybropt.popgen.Population
+    if not isinstance(pop, pybropt.popgen.Population):
         raise TypeError("'%s' must be a Population object." % varname)
 
 def check_is_ParametricGenomicModel(gmod, varname):
-    if not isinstance(gmod, model.ParametricGenomicModel):
+    # HACK: elminates circular dependency issues
+    import pybropt.model.ParametricGenomicModel
+    if not isinstance(gmod, pybropt.model.ParametricGenomicModel):
         raise TypeError("'%s' must be a ParametricGenomicModel object." % varname)
 
 def check_is_NonparametricGenomicModel(gmod, varname):
-    if not isinstance(gmod, model.NonparametricGenomicModel):
+    # HACK: elminates circular dependency issues
+    import pybropt.model.NonparametricGenomicModel
+    if not isinstance(gmod, pybropt.model.NonparametricGenomicModel):
         raise TypeError("'%s' must be a NonparametricGenomicModel object." % varname)
 
 def check_is_Cross(cross, varname):
-    if not isinstance(cross,popgen.Cross):
+    # HACK: elminates circular dependency issues
+    import pybropt.popgen.Cross
+    if not isinstance(cross,pybropt.popgen.Cross):
         raise TypeError("'%s' must be a Cross object." % varname)
 
 ################################################################################

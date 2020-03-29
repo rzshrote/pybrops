@@ -1,6 +1,6 @@
-import breed
+from . import GenomicMating
 
-class SPstdA(breed.GenomicMating):
+class SPstdA(GenomicMating):
     """
     Sum of Progeny Standard Deviations of Additive effects (SPstdA) objective
     function class.

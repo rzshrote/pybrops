@@ -2,16 +2,17 @@
 import numpy
 
 # our libraries
-import model
-import util
+from . import GenomicModel
+# import pybropt.model
+import pybropt.util
 
-class ParametricGenomicModel(model.GenomicModel):
+class ParametricGenomicModel(GenomicModel):
     """docstring for ParametricGenomicModel."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, trait, coeff, model_name = "Parametric"):
+    def __init__(self, trait, coeff, mkr_name = None, model_name = "Parametric"):
         """
         Constructor for ParametricGenomicModel class.
 
@@ -29,15 +30,15 @@ class ParametricGenomicModel(model.GenomicModel):
             Name of the prediction method of this model. Optional.
         """
         # call super constructor
-        super(ParametricGenomicModel, self).__init__(trait, model_name)
+        super(ParametricGenomicModel, self).__init__(trait, mkr_name, model_name)
 
         # error check the input
-        util.check_is_matrix(coeff, "coeff")
-        util.check_matrix_dtype_is_numeric(coeff, "coeff")
+        pybropt.util.check_is_matrix(coeff, "coeff")
+        pybropt.util.check_matrix_dtype_is_numeric(coeff, "coeff")
         if coeff.ndim == 1:         # if coeff is a vector,
             coeff = coeff[:,None]   # add new axis so shape=(len(coeff),1)
-        util.check_matrix_ndim(coeff, "coeff", 2)
-        util.check_matrix_axis_len(coeff, "coeff", 1, self.ntrait)
+        pybropt.util.check_matrix_ndim(coeff, "coeff", 2)
+        pybropt.util.check_matrix_axis_len(coeff, "coeff", 1, self.ntrait)
 
         # set private variable
         self._coeff = coeff
@@ -104,7 +105,7 @@ class ParametricGenomicModel(model.GenomicModel):
         # return predictions
         return pred
 
-    def reorder(self, a):
+    def reorder(self, indices):
         """
         Reorder the internals of this model (for matrix operations).
 
@@ -113,4 +114,44 @@ class ParametricGenomicModel(model.GenomicModel):
         a : numpy.ndarray
             An array of indices specifying reordering of self.coeff.
         """
-        self._coeff = self._coeff[a]
+        self._coeff = self._coeff[indices]
+
+    ############################################################################
+    ############################# Static Methods ###############################
+    ############################################################################
+    @staticmethod
+    def from_csv(fpath, sep = ',', header = 0, mkr_name_ix = 0, coeff_ix = None):
+        """
+        Extract data from a csv. Needs a header
+
+        coeff_ix : int, list
+            Columns to extract for coefficients.
+        """
+        # check args
+        if coeff_ix is None:
+            raise ValueError("coeff_ix cannot be None")
+
+        # read the file using pandas.read_csv
+        df = pandas.read_csv(
+            fpath,
+            sep = sep,
+            header = header
+        )
+
+        #extract marker names
+        mkr_name = numpy.string_(df.iloc[:,mkr_name_ix].values)
+
+        # extract coefficients
+        coeff = df.iloc[:,coeff_ix].values
+
+        # extract trait names
+        trait = None
+        if df.columns.dtype != 'object':
+            trait = numpy.string_([str(e) for e in df.columns])
+        else:
+            trait = numpy.string(df.columns)
+
+        # make genomic model
+        genomic_model = ParametricGenomicModel(trait, coeff, mkr_name)
+
+        return genomic_model

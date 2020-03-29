@@ -1,6 +1,6 @@
-import breed
+from . import GenomicSelection
 
-class MOGS(breed.GenomicSelection):
+class MOGS(GenomicSelection):
     """docstring for MOGS."""
 
     ############################################################################

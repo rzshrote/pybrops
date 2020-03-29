@@ -1,6 +1,6 @@
-import breed
+from . import GenomicSelection
 
-class CGS(breed.GenomicSelection):
+class CGS(GenomicSelection):
     """docstring for CGS."""
 
     ############################################################################

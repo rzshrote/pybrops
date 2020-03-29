@@ -1,17 +1,8 @@
-# append paths
-import sys
-import os
-popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
-pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # 3rd party libraries
 import numpy
 
 # import out libraries
-import popgen
-import util
-
+import pybropt.util
 
 class MarkerSet:
     """docstring for MarkerSet."""
@@ -19,29 +10,29 @@ class MarkerSet:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, chr_grp, chr_start, chr_stop, mkr_name = None,
-            auto_sort = True, auto_mkr_rename = False):
+            auto_sort = False, auto_mkr_rename = False):
         # check for matrices
-        util.check_is_matrix(chr_grp, "chr_grp")
-        util.check_is_matrix(chr_start, "chr_start")
-        util.check_is_matrix(chr_stop, "chr_stop")
-        util.cond_check_is_matrix(mkr_name, "mkr_name")
+        pybropt.util.check_is_matrix(chr_grp, "chr_grp")
+        pybropt.util.check_is_matrix(chr_start, "chr_start")
+        pybropt.util.check_is_matrix(chr_stop, "chr_stop")
+        pybropt.util.cond_check_is_matrix(mkr_name, "mkr_name")
 
         # check number of dimensions == 1
-        util.check_matrix_ndim(chr_grp, "chr_grp", 1)
-        util.check_matrix_ndim(chr_start, "chr_start", 1)
-        util.check_matrix_ndim(chr_stop, "chr_stop", 1)
-        util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        pybropt.util.check_matrix_ndim(chr_grp, "chr_grp", 1)
+        pybropt.util.check_matrix_ndim(chr_start, "chr_start", 1)
+        pybropt.util.check_matrix_ndim(chr_stop, "chr_stop", 1)
+        pybropt.util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
 
         # check length of matrix == chr_grp.size
-        util.check_matrix_size(chr_start, "chr_start", chr_grp.size)
-        util.check_matrix_size(chr_stop, "chr_stop", chr_grp.size)
-        util.cond_check_matrix_size(mkr_name, "mkr_name", chr_grp.size)
+        pybropt.util.check_matrix_size(chr_start, "chr_start", chr_grp.size)
+        pybropt.util.check_matrix_size(chr_stop, "chr_stop", chr_grp.size)
+        pybropt.util.cond_check_matrix_size(mkr_name, "mkr_name", chr_grp.size)
 
         # check matrix dtypes
-        util.check_matrix_dtype_is_string_(chr_grp, "chr_grp")
-        util.check_matrix_dtype_is_integer(chr_start, "chr_start")
-        util.check_matrix_dtype_is_integer(chr_stop, "chr_stop")
-        util.cond_check_matrix_dtype_is_string_(mkr_name, "mkr_name")
+        pybropt.util.check_matrix_dtype_is_string_(chr_grp, "chr_grp")
+        pybropt.util.check_matrix_dtype_is_integer(chr_start, "chr_start")
+        pybropt.util.check_matrix_dtype_is_integer(chr_stop, "chr_stop")
+        pybropt.util.cond_check_matrix_dtype_is_string_(mkr_name, "mkr_name")
 
         # set private variables
         self._chr_grp = chr_grp
@@ -158,6 +149,17 @@ class MarkerSet:
         return locals()
     chr_grp_len = property(**chr_grp_len())
 
+    def sorted():
+        doc = "The sorted property."
+        def fget(self):
+            return self._sorted
+        def fset(self, value):
+            self._sorted = value
+        def fdel(self):
+            del self._sorted
+        return locals()
+    sorted = property(**sorted())
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
@@ -167,7 +169,7 @@ class MarkerSet:
             keys = (self._mkr_name, self._chr_stop, self._chr_start, self._chr_grp)
         else:
             for i,k in enumerate(keys):
-                util.check_matrix_size(k, "key"+i, self.__len__())
+                pybropt.util.check_matrix_size(k, "key"+i, self.__len__())
 
         # filter out None; build tuple
         keys = tuple(k for k in keys if k is not None)
@@ -178,10 +180,15 @@ class MarkerSet:
         # return indices
         return indices
 
-    def sort(self, keys = None):
-        # get indices for sort
-        indices = self.lexsort(keys)
+    def reorder(self, indices):
+        """
+        Reorder the marker set.
 
+        Parameters
+        ----------
+        indices : numpy.ndarray
+            Indices of where to place elements.
+        """
         # sort internal self
         self._chr_grp = self._chr_grp[indices]
         self._chr_start = self._chr_start[indices]
@@ -189,16 +196,41 @@ class MarkerSet:
         if self._mkr_name is not None:
             self._mkr_name = self._mkr_name[indices]
 
-        (self._chr_grp_name,
-         self._chr_grp_stix,
-         self._chr_grp_len) = numpy.unique(
+    def group(self):
+        """
+        Calculate grouping indices.
+        """
+        if not self._sorted:
+            raise RuntimeError("cannot group unsorted marker set")
+
+        # get unique group names, start indices, group lengths
+        uniq = numpy.unique(
             self._chr_grp,
             return_index = True,
             return_counts = True
         )
 
+        # make assignments
+        self._chr_grp_name, self._chr_grp_stix, self._chr_grp_len = uniq
+
         # calculate chr_grp_spix (stop indices)
         self._chr_grp_spix = self._chr_grp_stix + self._chr_grp_len
+
+    def sort(self, keys = None):
+        """
+        Sort marker set.
+        """
+        # get indices for sort
+        indices = self.lexsort(keys)
+
+        # reorder internals
+        self.reorder(indices)
+
+        # indicate that we've sorted
+        self._sorted = True
+
+        # calculate grouping indices
+        self.group()
 
     # TODO: accept a pattern
     def mkr_rename(self):

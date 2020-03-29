@@ -1,17 +1,10 @@
-# append paths
-import sys
-import os
-popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
-pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # import 3rd party modules we'll need
 import cyvcf2
 import numpy
 
 # import our libraries
-import popgen
-import util
+import pybropt.popgen
+import pybropt.util
 
 class Population:
     """
@@ -44,28 +37,29 @@ class Population:
                 'n' is the number of individuals.
         """
         # check input data types
-        util.check_is_matrix(geno, "geno")
-        util.cond_check_is_MarkerSet(marker_set, "marker_set")
-        util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        util.cond_check_is_matrix(taxa, "taxa")
+        pybropt.util.check_is_matrix(geno, "geno")
+        pybropt.util.cond_check_is_MarkerSet(marker_set, "marker_set")
+        pybropt.util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
+        pybropt.util.cond_check_is_matrix(taxa, "taxa")
 
         # check data types
-        util.check_matrix_dtype(geno, "geno", 'int8')
-        util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
+        pybropt.util.check_matrix_dtype(geno, "geno", 'int8')
+        pybropt.util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
         # check matrix number of dimensions
-        util.check_matrix_ndim(geno, "geno", 3)
-        util.cond_check_matrix_ndim(taxa, "taxa", 1)
+        pybropt.util.check_matrix_ndim(geno, "geno", 3)
+        pybropt.util.cond_check_matrix_ndim(taxa, "taxa", 1)
 
         # check matrix dimension size alignment
         if taxa is not None:
-            util.check_matrix_axis_len(geno, "geno", 1, len(taxa))
+            pybropt.util.check_matrix_axis_len(geno, "geno", 1, len(taxa))
 
         # set private variables
         self._geno = geno
         self._genomic_model = genomic_model
         self._marker_set = marker_set
         self._taxa = taxa
+        self._sorted = False
 
     ############################################################################
     ############################ Object Properties #############################
@@ -146,6 +140,17 @@ class Population:
             error_readonly("nloci")
         return locals()
     nloci = property(**nloci())
+
+    def sorted():
+        doc = "The sorted property."
+        def fget(self):
+            return self._sorted
+        def fset(self, value):
+            self._sorted = value
+        def fdel(self):
+            del self._sorted
+        return locals()
+    sorted = property(**sorted())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -259,12 +264,82 @@ class Population:
 
         return gebv
 
+    def lexsort(self, keys = None):
+        """
+        Get sorting indices using the marker set.
+        """
+        if not isinstance(self._marker_set, pybropt.popgen.MarkerSet):
+            raise RuntimeError("need a MarkerSet")
+
+        # get indices
+        indices = self._marker_set.lexsort(keys)
+
+        # return indices
+        return indices
+
+    def reorder(self, indices):
+        """
+        Reorder the marker set and the genotype data.
+        """
+        # reorder genotypes
+        self._geno = self._geno[:,:,indices]
+
+        # reorder genetic model
+        self._genomic_model.reorder(indices)
+
+        # reorder marker set
+        self._marker_set.reorder(indices)
+
+    def group(self):
+        """
+        Calculate grouping indices in the marker_set
+        """
+        # group marker set
+        self._marker_set.group()
+
+    def sort(self, keys = None):
+        # get indices for sort
+        indices = self.lexsort(keys)
+
+        # reorder internals
+        self.reorder(indices)
+
+        # indicate that we've sorted
+        self._sorted = True
+
+        # calculate grouping indices
+        self.group()
+
+    def interpolate_genetic_map(self, base_genetic_map, kind = None, fill_value = None):
+        """
+        Interpolate the internal MarkerSet to a GeneticMap.
+        """
+        # check data types
+        pybropt.util.check_is_GeneticMap(base_genetic_map, "base_genetic_map")
+
+        # interpolate genetic map
+        genetic_map = base_genetic_map.interpolate(
+            self._marker_set.chr_grp,
+            self._marker_set.chr_start,
+            self._marker_set.chr_stop,
+            self._marker_set.mkr_name,
+            map_fncode = None,
+            auto_sort = False,
+            auto_mkr_rename = False,
+            kind = kind,
+            fill_value = fill_value
+        )
+
+        # replace marker set with genetic map
+        self._marker_set = genetic_map
+
     ############################################################################
     ############################# Static Methods ###############################
     ############################################################################
     @staticmethod
-    def from_array(geno, chr_grp, chr_start, chr_stop, mkr_name = None,
-            genomic_model = None, base_GeneticMap = None, taxa = None):
+    def from_array(geno, chr_grp, chr_start, chr_stop, mkr_name = None, taxa = None,
+        base_genetic_map = None, genomic_model = None, auto_sort = False,
+        auto_mkr_rename = False, kind = None, fill_value = None):
         """
         Construct a Population object from arrays.
 
@@ -277,7 +352,7 @@ class Population:
         chr_stop : numpy.ndarray
         mkr_name : numpy.ndarray
         genomic_model : GenomicModel
-        base_GeneticMap : GeneticMap
+        base_genetic_map : GeneticMap
         taxa : numpy.ndarray
 
         Returns
@@ -286,47 +361,43 @@ class Population:
             A Population object.
         """
         # check data types
-        util.check_is_matrix(geno, "geno")
-        util.check_is_matrix(chr_grp, "chr_grp")
-        util.check_is_matrix(chr_start, "chr_start")
-        util.check_is_matrix(chr_stop, "chr_stop")
-        util.cond_check_is_matrix(mkr_name, "mkr_name")
-        util.cond_check_is_GeneticMap(base_GeneticMap, "base_GeneticMap")
-        util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
+        pybropt.util.check_is_matrix(geno, "geno")
+        pybropt.util.check_is_matrix(chr_grp, "chr_grp")
+        pybropt.util.check_is_matrix(chr_start, "chr_start")
+        pybropt.util.check_is_matrix(chr_stop, "chr_stop")
+        pybropt.util.cond_check_is_matrix(mkr_name, "mkr_name")
+        pybropt.util.cond_check_is_GeneticMap(base_genetic_map, "base_genetic_map")
+        pybropt.util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
+        pybropt.util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
 
         # check dimensions
-        util.check_matrix_ndim(geno, "geno", 3)
-        util.check_matrix_ndim(chr_grp, "chr_grp", 1)
-        util.check_matrix_ndim(chr_start, "chr_start", 1)
-        util.check_matrix_ndim(chr_stop, "chr_stop", 1)
-        util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
-        util.cond_check_matrix_ndim(taxa, "taxa", 1)
+        pybropt.util.check_matrix_ndim(geno, "geno", 3)
+        pybropt.util.check_matrix_ndim(chr_grp, "chr_grp", 1)
+        pybropt.util.check_matrix_ndim(chr_start, "chr_start", 1)
+        pybropt.util.check_matrix_ndim(chr_stop, "chr_stop", 1)
+        pybropt.util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        pybropt.util.cond_check_matrix_ndim(taxa, "taxa", 1)
 
         # check matrix compatiblity lengths
         nloci = geno.shape[2]
-        util.check_matrix_size(chr_grp, "chr_grp", nloci)
-        util.check_matrix_size(chr_start, "chr_start", nloci)
-        util.check_matrix_size(chr_stop, "chr_stop", nloci)
-        util.cond_check_matrix_size(mkr_name, "mkr_name", nloci)
-        util.cond_check_matrix_size(taxa, "taxa", geno.shape[1])
+        pybropt.util.check_matrix_size(chr_grp, "chr_grp", nloci)
+        pybropt.util.check_matrix_size(chr_start, "chr_start", nloci)
+        pybropt.util.check_matrix_size(chr_stop, "chr_stop", nloci)
+        pybropt.util.cond_check_matrix_size(mkr_name, "mkr_name", nloci)
+        pybropt.util.cond_check_matrix_size(taxa, "taxa", geno.shape[1])
 
 
-        # TODO: interpolate
-        # create genomic models
-        marker_set = None
-        if base_GeneticMap is not None:
-            marker_set = base_GeneticMap.interpolate(
-                chr_grp = chr_grp,
-                chr_start = chr_start,
-                chr_stop = chr_stop,
-                mkr_name = mkr_name,
-                map_fncode = None,
-                kind = 'linear',
-                fill_value = 'extrapolate'
-            )
+        # make marker set; do not sort or rename
+        marker_set = pybropt.popgen.MarkerSet(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            auto_sort = False,
+            auto_mkr_rename = False
+        )
 
-        # make population
+        # declare output variable
         population = Population(
             geno = geno,
             marker_set = marker_set,
@@ -334,24 +405,26 @@ class Population:
             taxa = taxa
         )
 
+        # interpolate genetic map positions using base_genetic_map
+        population.interpolate_genetic_map(
+            base_genetic_map = base_genetic_map,
+            kind = kind,
+            fill_value = fill_value
+        )
+
+        # sort if needed
+        if auto_sort:
+            population.sort()
+
+        # rename markers if needed
+        if auto_mkr_rename:
+            population.marker_set.mkr_rename()
+
         return population
 
-        # # check if chr_grp is sorted
-        # if matrix_is_sorted(chr_grp):
-        #     pass
-        # else:
-        #     if isinstance(type(genomic_model), NonparametricGenomicModel):
-        #         raise ValueError(
-        #             "Cannot sort marker data accordingly because of the non-"\
-        #             "parametric nature of 'genomic_model' "\
-        #             "(NonparametricGenomicModel does not have a 'coeff' field "\
-        #             "that can be sorted)."
-        #         )
-
     @staticmethod
-    def from_vcf(fname, base_GeneticMap = None, genomic_model = None,
-        auto_sort = True, auto_mkr_rename = False,
-        kind = 'linear', fill_value = 'extrapolate'):
+    def from_vcf(fname, base_genetic_map = None, genomic_model = None,
+        auto_sort = False, auto_mkr_rename = False, kind = None, fill_value = None):
         # make VCF iterator
         vcf = cyvcf2.VCF(fname)
 
@@ -381,7 +454,7 @@ class Population:
             phases = numpy.int8(variant.genotypes)
 
             # check that they are all phased
-            util.check_matrix_all_value(phases[:,2], "is_phased", True)
+            pybropt.util.check_matrix_all_value(phases[:,2], "is_phased", True)
 
             # TODO: maybe modify shapes here to avoid transpose and copy below?
             # append genotype states
@@ -396,39 +469,19 @@ class Population:
         chr_stop = numpy.int64(chr_stop)    # convert to int64 array
         mkr_name = numpy.string_(mkr_name)  # convert to string array
 
-        # declare output variable
-        population = None
-
-        # if base_GeneticMap is None, we construct a MarkerSet object
-        if base_GeneticMap is None:
-            # make marker set
-            marker_set = popgen.MarkerSet(
-                chr_grp = chr_grp,
-                chr_start = chr_start,
-                chr_stop = chr_stop,
-                mkr_name = mkr_name,
-                auto_sort = auto_sort,
-                auto_mkr_rename = auto_mkr_rename
-            )
-
-            # make population
-            population = Population(
-                geno = geno,
-                marker_set = marker_set,
-                genomic_model = genomic_model,
-                taxa = taxa,
-            )
-        else:
-            # make output object
-            population = Population.from_array(
-                geno = geno,
-                chr_grp = chr_grp,
-                chr_start = chr_start,
-                chr_stop = chr_stop,
-                mkr_name = mkr_name,
-                genomic_model = genomic_model,
-                base_GeneticMap = base_GeneticMap,
-                taxa = taxa
-            )
+        population = Population.from_array(
+            geno = geno,
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            taxa = taxa,
+            base_genetic_map = base_genetic_map,
+            genomic_model = genomic_model,
+            auto_sort = auto_sort,
+            auto_mkr_rename = auto_mkr_rename,
+            kind = kind,
+            fill_value = fill_value
+        )
 
         return population

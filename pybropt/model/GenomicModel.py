@@ -1,15 +1,7 @@
-# append paths
-import sys
-import os
-model_dir = os.path.dirname(os.path.realpath(__file__))     # get pybropt/model
-pybropt_dir = os.path.dirname(model_dir)                    # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # 3rd party
 
 # our libraries
-import util
-
+import pybropt.util
 
 class GenomicModel:
     """docstring for GenomicModel."""
@@ -17,7 +9,7 @@ class GenomicModel:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, trait, model_name = None):
+    def __init__(self, trait, mkr_name = None, model_name = None):
         """
         Constructor for the GenomicModel class.
 
@@ -29,10 +21,15 @@ class GenomicModel:
             Name of the model type.
         """
         # error check the input
-        util.check_is_matrix(trait, "trait")
-        util.check_matrix_ndim(trait, "trait", 1)
-        util.check_matrix_dtype_is_string_(trait, "trait")
-        util.cond_check_is_string(model_name, "model_name")
+        pybropt.util.check_is_matrix(trait, "trait")
+        pybropt.util.check_matrix_ndim(trait, "trait", 1)
+        pybropt.util.check_matrix_dtype_is_string_(trait, "trait")
+
+        pybropt.util.cond_check_is_matrix(mkr_name, "mkr_name")
+        pybropt.util.cond_check_matrix_ndim(mkr_name, "mkr_name", 1)
+        pybropt.util.cond_check_matrix_dtype_is_string_(mkr_name, "mkr_name")
+
+        pybropt.util.cond_check_is_string(model_name, "model_name")
 
         # set private variables
         self._trait = trait
@@ -57,11 +54,33 @@ class GenomicModel:
         def fget(self):
             return len(self._trait)
         def fset(self, value):
-            error_readonly("ntrait")
+            pybropt.util.error_readonly("ntrait")
         def fdel(self):
-            error_readonly("ntrait")
+            pybropt.util.error_readonly("ntrait")
         return locals()
     ntrait = property(**ntrait())
+
+    def mkr_name():
+        doc = "The mkr_name property."
+        def fget(self):
+            return self._mkr_name
+        def fset(self, value):
+            self._mkr_name = value
+        def fdel(self):
+            del self._mkr_name
+        return locals()
+    mkr_name = property(**mkr_name())
+
+    def nloci():
+        doc = "The nloci property."
+        def fget(self):
+            return len(self._mkr_name)
+        def fset(self, value):
+            pybropt.util.error_readonly("nloci")
+        def fdel(self):
+            pybropt.util.error_readonly("nloci")
+        return locals()
+    nloci = property(**nloci())
 
     def model_name():
         doc = "The model_name property."
@@ -83,5 +102,5 @@ class GenomicModel:
     def predict(self, geno):
         raise NotImplementedError("The method 'predict' is abstract.")
 
-    def reorder(self, a):
+    def reorder(self, indices):
         raise NotImplementedError("The method 'reorder' is abstract.")

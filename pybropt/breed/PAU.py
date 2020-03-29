@@ -1,6 +1,6 @@
-import breed
+from . import GenomicSelection
 
-class PAU(breed.GenomicSelection):
+class PAU(GenomicSelection):
     """docstring for PAU."""
 
     ############################################################################

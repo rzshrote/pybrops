@@ -1,14 +1,7 @@
-# append paths
-import sys
-import os
-breed_dir = os.path.dirname(os.path.realpath(__file__))     # get pybropt/breed
-pybropt_dir = os.path.dirname(breed_dir)                    # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # 3rd party
 
 # our libraries
-import util
+import pybropt.util
 
 class Breeding:
     """
@@ -35,9 +28,9 @@ class Breeding:
         self.reset()
 
         # type checking
-        util.check_is_Population(population, "population")
-        util.check_is_Cross(cross, "cross")
-        util.cond_check_is_string(method, "method")
+        pybropt.util.check_is_Population(population, "population")
+        pybropt.util.check_is_Cross(cross, "cross")
+        pybropt.util.cond_check_is_string(method, "method")
 
         # set private variables
         self._population = population

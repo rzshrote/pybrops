@@ -1,6 +1,7 @@
 Standardization
 ---------------
 [ ] Default objective functions should be minimizing functions.
+[ ] Figure out code packaging stuff. What a beast!
 
 Code reuse
 ----------
@@ -13,6 +14,7 @@ Performance Improvements
     only precomputed values (e.g. wcoeff must be already calculated)? This
     would reduce flexibility in the accessible static method, but may slightly
     improve performance by eliminating if statements.
+[ ] improve vcf load speeds
 
 Feature Additions
 -----------------
@@ -24,6 +26,7 @@ Feature Additions
 [ ] convert 'from_vcf', 'from_egmap', etc. to @classmethod that accept cls
     instead of self as arguments... maybe if not too many bugs are caused.
 [ ] mem accept strings of memory sizes as inputs
+[✓] GeneticMap: do not require sorted internals to build spline
 
 Testing
 -------

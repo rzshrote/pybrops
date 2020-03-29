@@ -1,16 +1,9 @@
-# append paths
-import sys
-import os
-popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
-pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # import 3rd party libraries
 import numpy
 
 # import our libraries
-import popgen
-import util
+import pybropt.popgen
+import pybropt.util
 
 class Cross:
     """
@@ -258,16 +251,16 @@ class Cross:
 
         """
         # check data types
-        util.check_is_Population(population, "population")
-        util.check_is_string(varAfn, "varAfn")
-        util.check_is_bool(sparse, "sparse")
-        util.check_is_string(crossfn, "crossfn")
-        util.check_is_string(matefn, "matefn")
-        util.check_is_string(rallocfn, "rallocfn")
-        util.check_is_integer(c, "c")
-        util.check_is_integer(n, "n")
-        util.check_is_integer(s, "s")
-        util.check_is_integer(t, "t")
+        pybropt.util.check_is_Population(population, "population")
+        pybropt.util.check_is_string(varAfn, "varAfn")
+        pybropt.util.check_is_bool(sparse, "sparse")
+        pybropt.util.check_is_string(crossfn, "crossfn")
+        pybropt.util.check_is_string(matefn, "matefn")
+        pybropt.util.check_is_string(rallocfn, "rallocfn")
+        pybropt.util.check_is_integer(c, "c")
+        pybropt.util.check_is_integer(n, "n")
+        pybropt.util.check_is_integer(s, "s")
+        pybropt.util.check_is_integer(t, "t")
 
         # set private variables
         self._population = population

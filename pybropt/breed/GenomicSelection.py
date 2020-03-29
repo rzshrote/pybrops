@@ -1,6 +1,6 @@
-import breed
+from . import MolecularBreeding
 
-class GenomicSelection(breed.MolecularBreeding):
+class GenomicSelection(MolecularBreeding):
     """docstring for GenomicSelection."""
 
     def __init__(self, population, cross, method = "GS"):

@@ -1,6 +1,6 @@
-import breed
+from . import MolecularBreeding
 
-class MarkerAssistedSelection(breed.MolecularBreeding):
+class MarkerAssistedSelection(MolecularBreeding):
     """docstring for MarkerAssistedSelection."""
 
     def __init__(self, population, cross, method = "MAS"):

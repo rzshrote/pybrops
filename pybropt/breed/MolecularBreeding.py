@@ -1,6 +1,6 @@
-import breed
+from . import Breeding
 
-class MolecularBreeding(breed.Breeding):
+class MolecularBreeding(Breeding):
     """docstring for MolecularBreeding."""
 
     ############################################################################

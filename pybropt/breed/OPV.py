@@ -1,6 +1,6 @@
-import breed
+from . import GenomicSelection
 
-class OPV(breed.GenomicSelection):
+class OPV(GenomicSelection):
     """docstring for OPV."""
 
     ############################################################################

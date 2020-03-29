@@ -1,6 +1,6 @@
-import breed
+from . import GenomicSelection
 
-class PAFD(breed.GenomicSelection):
+class PAFD(GenomicSelection):
     """docstring for PAFD."""
 
     ############################################################################

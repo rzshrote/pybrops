@@ -1,20 +1,14 @@
-# append paths
-import sys
-import os
-popgen_dir = os.path.dirname(os.path.realpath(__file__))    # get pybropt/popgen
-pybropt_dir = os.path.dirname(popgen_dir)                   # get pybropt
-sys.path.append(pybropt_dir)                                # append pybropt
-
 # import 3rd party
 import numpy
 import pandas
 from scipy.interpolate import interp1d
 
 # import our libraries
-import popgen
-import util
+from . import MarkerSet
+# import pybropt.popgen.MarkerSet # causes problems
+import pybropt.util
 
-class GeneticMap(popgen.MarkerSet):
+class GeneticMap(MarkerSet):
     """
     A class to represent genetic maps and perform associated operations.
     """
@@ -23,8 +17,8 @@ class GeneticMap(popgen.MarkerSet):
     ############################################################################
     def __init__(self, chr_grp, chr_start, chr_stop, map_pos,
             mkr_name = None, map_fncode = None, mapfn = 'haldane',
-            auto_sort = True, auto_mkr_rename = True, auto_fncode = True,
-            auto_spline = True, kind = 'linear', fill_value = 'extrapolate'
+            auto_sort = False, auto_mkr_rename = False, auto_fncode = False,
+            auto_spline = False, kind = 'linear', fill_value = 'extrapolate'
             ):
         # calls super constructor
         super(GeneticMap, self).__init__(
@@ -37,25 +31,25 @@ class GeneticMap(popgen.MarkerSet):
         )
 
         # check for matricies
-        util.check_is_matrix(map_pos, "map_pos")
-        util.cond_check_is_matrix(map_fncode, "map_fncode")
+        pybropt.util.check_is_matrix(map_pos, "map_pos")
+        pybropt.util.cond_check_is_matrix(map_fncode, "map_fncode")
 
         # check number of dimensions == 1
-        util.check_matrix_ndim(map_pos, "map_pos", 1)
-        util.cond_check_matrix_ndim(map_fncode, "map_fncode", 1)
+        pybropt.util.check_matrix_ndim(map_pos, "map_pos", 1)
+        pybropt.util.cond_check_matrix_ndim(map_fncode, "map_fncode", 1)
 
         # check length of matrix == chr_grp.size
-        util.check_matrix_size(map_pos, "map_pos", chr_grp.size)
-        util.cond_check_matrix_size(map_fncode, "map_fncode", chr_grp.size)
+        pybropt.util.check_matrix_size(map_pos, "map_pos", chr_grp.size)
+        pybropt.util.cond_check_matrix_size(map_fncode, "map_fncode", chr_grp.size)
 
         # check matrix dtypes
-        util.check_matrix_dtype_is_numeric(map_pos, "map_pos")
-        util.cond_check_matrix_dtype_is_string_(map_fncode, "map_fncode")
+        pybropt.util.check_matrix_dtype_is_numeric(map_pos, "map_pos")
+        pybropt.util.cond_check_matrix_dtype_is_string_(map_fncode, "map_fncode")
 
         # if mapfn is a string, make it a lowercase
-        mapfn = util.cond_str_lower(mapfn)
+        mapfn = pybropt.util.cond_str_lower(mapfn)
 
-        # set private variables
+        # set private variables or fill with None
         self._map_pos = map_pos
         self._map_fncode = map_fncode
         self._chr_grp_name = None
@@ -63,11 +57,13 @@ class GeneticMap(popgen.MarkerSet):
         self._chr_grp_stix = None
         self._chr_grp_spix = None
         self._map_spline = None
-        self._map_spline_type = None
+        self._map_spline_kind = None
+        self._map_spline_fill_value = None
         self._xo_prob = None
         self._xo_prob_len = None
         self._xo_prob_stix = None
         self._xo_prob_spix = None
+        self._sorted = False
 
         # set mapfn: convert to callable, otherwise set to None
         self._mapfn = GeneticMap.key_to_mapfn(mapfn)
@@ -91,12 +87,12 @@ class GeneticMap(popgen.MarkerSet):
         if auto_sort:
             self.sort() # sort
             self.remove_discrepancies() # remove any discrepancies in map
+            self.calc_xo_prob() # calculate crossover probabilities
 
         # build spline if needed
         if auto_spline:
             self.build_spline(kind, fill_value)
 
-        self.calc_xo_prob()
 
     def __len__(self):
         """
@@ -140,16 +136,27 @@ class GeneticMap(popgen.MarkerSet):
         return locals()
     map_spline = property(**map_spline())
 
-    def map_spline_type():
-        doc = "The map_spline_type property."
+    def map_spline_kind():
+        doc = "The map_spline_kind property."
         def fget(self):
-            return self._map_spline_type
+            return self._map_spline_kind
         def fset(self, value):
-            self._map_spline_type = value
+            self._map_spline_kind = value
         def fdel(self):
-            del self._map_spline_type
+            del self._map_spline_kind
         return locals()
-    map_spline_type = property(**map_spline_type())
+    map_spline_kind = property(**map_spline_kind())
+
+    def map_spline_fill_value():
+        doc = "The map_spline_fill_value property."
+        def fget(self):
+            return self._map_spline_fill_value
+        def fset(self, value):
+            self._map_spline_fill_value = value
+        def fdel(self):
+            del self._map_spline_fill_value
+        return locals()
+    map_spline_fill_value = property(**map_spline_fill_value())
 
     def mapfn():
         doc = "The mapfn property."
@@ -384,6 +391,10 @@ class GeneticMap(popgen.MarkerSet):
             A vector of crossover probabilities between each neighbor. This is
             the same vector as self.xo_prob.
         """
+        # prerequisite of sorted internals
+        if not self._sorted:
+            self.sort()
+
         # convert mapfn to a callable function
         if mapfn is None:
             mapfn = self._mapfn
@@ -466,6 +477,7 @@ class GeneticMap(popgen.MarkerSet):
 
         return r
 
+    # TODO: do not require sorted internals to build spline
     def build_spline(self, kind = 'linear', fill_value = 'extrapolate'):
         """
         Build a spline for estimating genetic map distances. This is built
@@ -495,24 +507,31 @@ class GeneticMap(popgen.MarkerSet):
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
         """
-        # allocate empty object array for splines
-        self._map_spline = numpy.empty(
-            len(self._chr_grp_len),
-            dtype = 'object'
+        # get unique chr_grp and their positions
+        uniq_chr_grp, uniq_inv = numpy.unique(
+            self._chr_grp,
+            return_inverse = True
         )
 
-        # set the spline type
-        self._map_spline_type = kind
+        # make an empty dictionary for map splines
+        self._map_spline = {}
 
-        # for each chromosome, build its spline
-        for i,(st,sp) in enumerate(zip(self._chr_grp_stix, self._chr_grp_spix)):
-            # stash a spline object into self._map_spline
-            self._map_spline[i] = interp1d(
-                x = self._chr_start[st:sp], # chromosome positions
-                y = self._map_pos[st:sp],   # map positions
+        # set the spline type
+        self._map_spline_kind = kind
+        self._map_spline_fill_value = fill_value
+
+        # iterate through unique groups and build spline
+        for i,grp in enumerate(uniq_chr_grp):
+            # get mask of elements in the chr_grp
+            mask = uniq_inv == i
+
+            # build spline and assign to dictionary
+            self._map_spline[grp] = interp1d(
+                x = self._chr_start[mask],  # chromosome positions
+                y = self._map_pos[mask],    # map positions
                 kind = kind,                # type of interpolation
                 fill_value = fill_value,    # default fill value
-                assume_sorted = True        # assume that the array is sorted
+                assume_sorted = False       # arrays are not sorted
             )
 
     def has(self, chr_grp = None, chr_start = None, chr_stop = None,
@@ -579,44 +598,40 @@ class GeneticMap(popgen.MarkerSet):
         return mask
 
     def interpolate(self, chr_grp, chr_start, chr_stop, mkr_name = None,
-            map_fncode = None, kind = 'linear', fill_value = 'extrapolate'):
+            map_fncode = None, auto_sort = False, auto_mkr_rename = False,
+            kind = None, fill_value = None):
+        """
+        Interpolate a genetic map from the current one.
+        """
+        # if kind and fill_value are none, set them to what is internal.
+        if kind is None:
+            kind = self._map_spline_kind
+        if fill_value is None:
+            fill_value = self._map_spline_fill_value
+
+        # test if either kind or fill_value is None
+
         # build spline if we need it
-        if self._map_spline_type != kind:
+        if (kind != self._map_spline_kind) or (fill_value != self._map_spline_fill_value):
             self.build_spline(kind, fill_value)
-
-        # test to make sure chr_grp exists within the map
-        has_mask = self.has(chr_grp = chr_grp)
-
-        # get sum has_mask do determine required length of map_pos
-        map_pos_len = has_mask.sum()
-
-        # if sum(has_mask) != its length, filter out missing chromosome groups
-        if map_pos_len != len(has_mask):
-            # filter out bad values
-            chr_grp     = chr_grp[has_mask]
-            chr_start   = chr_start[has_mask]
-            chr_stop    = chr_stop[has_mask]
-            if mkr_name is not None:
-                mkr_name    = mkr_name[has_mask]
-            if map_fncode is not None:
-                map_fncode  = map_fncode[has_mask]
+        elif (kind is None) or (fill_value is None):
+            raise RuntimeError("'kind' and 'fill_value' cannot be None")
 
         # allocate memory for map_pos vector
-        map_pos = numpy.empty(map_pos_len, dtype = 'float64')
+        map_pos = numpy.empty(len(chr_grp), dtype = 'float64')
 
-        # NOTE: operates under the assumption that self is sorted.
-        # for each chromosome group
-        for i,chr_grp_name in enumerate(self._chr_grp_name):
-            # make a mask based on chr_grp_name
-            mask = chr_grp == chr_grp_name
+        # for each position, interpolate
+        for i,(grp,start) in enumerate(zip(chr_grp, chr_start)):
+            # get spline function, else return lambda that just return NaN
+            splinefn = self._map_spline.get(grp, lambda x: numpy.nan)
 
-            # estimate using correct spline
-            map_pos[mask] = self._map_spline[i](chr_start[mask])
+            # make assignment
+            map_pos[i] = splinefn(start)
 
         # if there is no map_fncode attached, we assign it to
         if map_fncode is None:
             map_fncode = numpy.repeat(
-                numpy.string_([GeneticMap.MAP_FNCODE["interpolate"]]),
+                numpy.string_([GeneticMap.KEY_TO_MAP_FNCODE["interpolate"]]),
                 len(chr_grp)
             )
 
@@ -627,157 +642,22 @@ class GeneticMap(popgen.MarkerSet):
             chr_stop = chr_stop,
             map_pos = map_pos,
             mkr_name = mkr_name,
-            map_fncode = map_fncode
+            map_fncode = map_fncode,
+            mapfn = self._mapfn,
+            auto_sort = auto_sort,
+            auto_mkr_rename = auto_mkr_rename,
+            auto_fncode = False,
+            auto_spline = False,
+            kind = kind,
+            fill_value = fill_value
         )
 
         return genetic_map
 
     # TODO: rewrite me
-    # @classmethod
     # def interpolate_pandas_df(self, pandas_df, chr_grp_ix = 0, chr_start_ix = 1,
     #         chr_stop_ix = 2, mkr_name_ix = None, map_fncode_ix = None,
-    #         kind = 'linear', fill_value = 'extrapolate'
-    #         ):
-    #     """
-    #     Interpolate genetic map positions given vectors of coordinates.
-    #
-    #     Parameters
-    #     ----------
-    #     pandas_df : pandas.DataFrame
-    #         A pandas DataFrame containing columns for 'chrom', 'chr_start',
-    #         'chr_stop', and optionally 'mkr_name' and 'map_fncode'
-    #     chr_grp_ix : int, default = 0
-    #         An index for the pandas_df column containing 'chrom' positions.
-    #     chr_start_ix : int, default = 1
-    #         An index for the pandas_df column containing 'chr_start' positions.
-    #     chr_stop_ix : int, default = 2
-    #         An index for the pandas_df column containing 'chr_stop' positions.
-    #     mkr_name_ix : int, default = None
-    #         An index for the pandas_df column containing names.
-    #     map_fncode_ix : int, default = None
-    #         An index for the pandas_df column containing 'map_fncode' codes.
-    #     kind : str, default = 'linear'
-    #         Specifies the kind of interpolation as a string ('linear',
-    #         'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous',
-    #         'next', where 'zero', 'slinear', 'quadratic' and 'cubic' refer to a
-    #         spline interpolation of zeroth, first, second or third order;
-    #         'previous' and 'next' simply return the previous or next value of
-    #         the point) or as an integer specifying the order of the spline
-    #         interpolator to use.
-    #     fill_value : array-like, {'extrapolate'}, default = 'extrapolate'
-    #         If 'extrapolate', then points outside the data range will be
-    #         extrapolated.
-    #         If a ndarray (or float), this value will be used to fill in for
-    #         requested points outside of the data range. If not provided, then
-    #         the default is NaN. The array-like must broadcast properly to the
-    #         dimensions of the non-interpolation axes.
-    #         If a two-element tuple, then the first element is used as a fill
-    #         value for x_new < x[0] and the second element is used for
-    #         x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list
-    #         or ndarray, regardless of shape) is taken to be a single array-like
-    #         argument meant to be used for both bounds as below,
-    #         above = fill_value, fill_value.
-    #
-    #     Returns
-    #     -------
-    #     genetic_map : gmap
-    #         A genetic map containing interpolated positions
-    #     """
-    #     # check to make sure several indices aren't None.
-    #     util.check_is_not_none(chr_grp_ix, "chr_grp_ix")
-    #     util.check_is_not_none(chr_start_ix, "chr_start_ix")
-    #     util.check_is_not_none(chr_stop_ix, "chr_stop_ix")
-    #
-    #
-    #     # get input indices as tuple
-    #     col_ix = (
-    #         chr_grp_ix,
-    #         chr_start_ix,
-    #         chr_stop_ix,
-    #         True,       # set true because we will be calculating these
-    #         mkr_name_ix,
-    #         map_fncode_ix
-    #     )
-    #
-    #     # determine presence-absence of columns
-    #     col_present = tuple(ix is not None for ix in col_ix)
-    #
-    #     # construct DataFrame subset (put Nones where needed)
-    #     df_dict = {
-    #         0: pandas_df.iloc[:,chr_grp_ix].values if col_present[0] else None,
-    #         1: pandas_df.iloc[:,chr_start_ix].values if col_present[1] else None,
-    #         2: pandas_df.iloc[:,chr_stop_ix].values if col_present[2] else None,
-    #         3: None,
-    #         4: pandas_df.iloc[:,mkr_name_ix].values if col_present[4] else None,
-    #         5: pandas_df.iloc[:,map_fncode_ix].values if col_present[5] else None
-    #     }
-    #
-    #     # create DataFrame
-    #     df = pandas.DataFrame(df_dict)
-    #
-    #     # if our splines are not present/correct, (re)build them
-    #     if self._map_spline_type != kind:
-    #         self.build_spline(kind = kind, fill_value = fill_value)
-    #
-    #     # group the input by first column (chromosome)
-    #     df_groups = df.groupby(0)
-    #
-    #     # declare several variables
-    #     chr_grpls = []  # list to store string variables
-    #     chr_grplen = [] # list to store linkage group sizes
-    #     chr_grp = []    # list to store chr_grp's
-    #     chr_start = []  # list to store chr_start's
-    #     chr_stop = []   # list to store chr_stop's
-    #     map_pos = []    # list to store map_pos's
-    #     mkr_name = []   # list to store mkr_name's
-    #     map_fncode = [] # list to store map_fncode codes
-    #
-    #     # for each chromosome in self,
-    #     for i, chr_name in enumerate(self.chr_grpls):
-    #         # if the input DataFrame has our chromosome group, interpolate
-    #         if chr_name in df_groups.groups:
-    #             # get the group and sort by chr_start and chr_stop
-    #             df_group = df_groups.get_group(chr_name).sort_values([1,2])
-    #
-    #             #####################
-    #             # add data to lists #
-    #             #####################
-    #             chr_grpls.append(str(chr_name))                         # append chrom_name to chrom list
-    #             chr_grplen.append(len(df_group))                        # add linkage group length
-    #             chr_grp.append(numpy.string_(df_group[0].values))       # append chr_grp
-    #             chr_start.append(numpy.int64(df_group[1].values))       # append chr_start
-    #             chr_stop.append(numpy.int64(df_group[2].values))        # append chr_stop
-    #             map_pos.append(numpy.float64(self._map_spline[i](       # append spline approximations
-    #                 df_group[1].values
-    #             )))
-    #             mkr_name.append(numpy.string_(df_group[4].values))      # append mkr_names (even if None)
-    #             map_fncode.append(numpy.string_(df_group[5].values))    # append map_fncode (even if None)
-    #
-    #     ###################################
-    #     # convert lists to numpy.ndarrays #
-    #     ###################################
-    #     chr_grpls = numpy.string_(chr_grpls)
-    #     chr_grplen = numpy.int64(chr_grplen)
-    #     chr_grp = numpy.concatenate(chr_grp)
-    #     chr_start = numpy.concatenate(chr_start)
-    #     chr_stop = numpy.concatenate(chr_stop)
-    #     map_pos = numpy.concatenate(map_pos)
-    #     mkr_name = numpy.concatenate(mkr_name)
-    #     map_fncode = numpy.concatenate(map_fncode)
-    #
-    #     # construct the gmap object
-    #     genetic_map = gmap(
-    #         chr_grpls   = chr_grpls,
-    #         chr_grplen  = chr_grplen,
-    #         chr_grp     = chr_grp if col_present[0] else None,
-    #         chr_start   = chr_start if col_present[1] else None,
-    #         chr_stop    = chr_stop if col_present[2] else None,
-    #         map_pos     = map_pos if col_present[3] else None,
-    #         mkr_name    = mkr_name if col_present[4] else None,
-    #         map_fncode  = map_fncode if col_present[5] else None
-    #     )
-    #
-    #     return genetic_map
+    #         kind = 'linear', fill_value = 'extrapolate'):
 
     def lexsort(self, keys = None):
         # if no keys were provided, set a default
@@ -792,7 +672,7 @@ class GeneticMap(popgen.MarkerSet):
             )
         else:
             for i,k in enumerate(keys):
-                util.check_matrix_size(k, "key"+i, self.__len__())
+                pybropt.util.check_matrix_size(k, "key"+i, self.__len__())
 
         # build tuple
         keys = tuple(k for k in keys if k is not None)
@@ -803,10 +683,15 @@ class GeneticMap(popgen.MarkerSet):
         # return indices
         return indices
 
-    def sort(self, keys = None):
-        # get indices for sort
-        indices = self.lexsort(keys)
+    def reorder(self, indices):
+        """
+        Reorder the genetic map.
 
+        Parameters
+        ----------
+        indices : numpy.ndarray
+            Indices of where to place elements.
+        """
         # sort internal self
         self._chr_grp = self._chr_grp[indices]
         self._chr_start = self._chr_start[indices]
@@ -817,17 +702,8 @@ class GeneticMap(popgen.MarkerSet):
         if self._map_fncode is not None:
             self._map_fncode = self._map_fncode[indices]
 
-        # calculate unique chromosomes, get start indices, get marker group sizes
-        (self._chr_grp_name,
-         self._chr_grp_stix,
-         self._chr_grp_len) = numpy.unique(
-            self._chr_grp,
-            return_index = True,
-            return_counts = True
-        )
-
-        # calculate chr_grp_spix (stop indices)
-        self._chr_grp_spix = self._chr_grp_stix + self._chr_grp_len
+    # group(self) not in need of being overridden
+    # sort(self, keys) not in need of being overridden
 
     ############################################################################
     ############################# Static Methods ###############################
@@ -988,10 +864,10 @@ class GeneticMap(popgen.MarkerSet):
             A gmap object containing all data required for genetic inferences.
         """
         # check to make sure several indices aren't None.
-        util.check_is_not_none(chr_grp_ix, "chr_grp_ix")
-        util.check_is_not_none(chr_start_ix, "chr_start_ix")
-        util.check_is_not_none(chr_stop_ix, "chr_stop_ix")
-        util.check_is_not_none(map_pos_ix, "map_pos_ix")
+        pybropt.util.check_is_not_none(chr_grp_ix, "chr_grp_ix")
+        pybropt.util.check_is_not_none(chr_start_ix, "chr_start_ix")
+        pybropt.util.check_is_not_none(chr_stop_ix, "chr_stop_ix")
+        pybropt.util.check_is_not_none(map_pos_ix, "map_pos_ix")
 
         # get data
         chr_grp     = pandas_df.iloc[:,chr_grp_ix].values
