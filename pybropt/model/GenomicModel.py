@@ -104,3 +104,44 @@ class GenomicModel:
 
     def reorder(self, indices):
         raise NotImplementedError("The method 'reorder' is abstract.")
+
+    def remove(self, indices):
+        raise NotImplementedError("The method 'remove' is abstract.")
+
+    def mkr_where(self, mkr_name = None):
+        """
+        Find indices for where a marker is. Indices match the order of the
+        input.
+        """
+        # if nothing was given return nothing
+        if mkr_name is None:
+            return None
+
+        # build marker name location arrays
+        finds = [numpy.flatnonzero(self._mkr_name == e) for e in mkr_name]
+
+        # check for multi-mapping + build where array
+        where = numpy.empty(len(finds), dtype = 'int64')
+        for i,f in enumerate(finds):
+            # get length of overlap numpy.ndarray
+            l = len(f)
+
+            # if length of array is > 1, we have multi-mapping; raise error
+            if l > 1:
+                # build error message
+                s = ""
+                if chr_grp is not None:
+                    s += " chr_grp = " + str(chr_grp[i])
+                if chr_start is not None:
+                    s += " chr_start = " + str(chr_start[i])
+                if chr_stop is not None:
+                    s += " chr_stop = " + str(chr_stop[i])
+                if mkr_name is not None:
+                    s += " mkr_name = " + str(mkr_name[i])
+                raise ValueError("Multi-mapping detected at:%s" % s)
+
+            # set matrix value
+            where[i] = l if l > 0 else -1
+
+        # return where array
+        return where

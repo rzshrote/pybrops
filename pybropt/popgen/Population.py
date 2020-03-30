@@ -3,7 +3,7 @@ import cyvcf2
 import numpy
 
 # import our libraries
-import pybropt.popgen
+import pybropt.popgen.MarkerSet
 import pybropt.util
 
 class Population:
@@ -38,27 +38,27 @@ class Population:
         """
         # check input data types
         pybropt.util.check_is_matrix(geno, "geno")
-        pybropt.util.cond_check_is_MarkerSet(marker_set, "marker_set")
-        pybropt.util.cond_check_is_GenomicModel(genomic_model, "genomic_model")
-        pybropt.util.cond_check_is_matrix(taxa, "taxa")
-
-        # check data types
         pybropt.util.check_matrix_dtype(geno, "geno", 'int8')
-        pybropt.util.cond_check_matrix_dtype_is_string_(taxa, "taxa")
-
-        # check matrix number of dimensions
         pybropt.util.check_matrix_ndim(geno, "geno", 3)
-        pybropt.util.cond_check_matrix_ndim(taxa, "taxa", 1)
-
-        # check matrix dimension size alignment
-        if taxa is not None:
-            pybropt.util.check_matrix_axis_len(geno, "geno", 1, len(taxa))
 
         # set private variables
         self._geno = geno
-        self._genomic_model = genomic_model
-        self._marker_set = marker_set
-        self._taxa = taxa
+
+        if marker_set is None:
+            self._marker_set = None
+        else:
+            self.set_marker_set(marker_set)
+
+        if genomic_model is None:
+            self._genomic_model = None
+        else:
+            self.set_genomic_model(genomic_model)
+
+        if taxa is None:
+            self._taxa = None
+        else:
+            self.set_taxa(taxa)
+
         self._sorted = False
 
     ############################################################################
@@ -155,6 +155,10 @@ class Population:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+    def _check_self_has_MarkerSet(self):
+        if not isinstance(self._marker_set, pybropt.popgen.MarkerSet):
+            raise RuntimeError("MarkerSet not provided")
+
     def calc_D(self):
         raise NotImplementedError("'D' method is not implemented.")
 
@@ -268,8 +272,7 @@ class Population:
         """
         Get sorting indices using the marker set.
         """
-        if not isinstance(self._marker_set, pybropt.popgen.MarkerSet):
-            raise RuntimeError("need a MarkerSet")
+        self._check_self_has_MarkerSet()
 
         # get indices
         indices = self._marker_set.lexsort(keys)
@@ -297,6 +300,7 @@ class Population:
         # group marker set
         self._marker_set.group()
 
+    # TODO: sort along taxa axis too
     def sort(self, keys = None):
         # get indices for sort
         indices = self.lexsort(keys)
@@ -309,6 +313,22 @@ class Population:
 
         # calculate grouping indices
         self.group()
+
+    def remove(self, indices, axis, auto_sort = False):
+        # if we have nothing, do nothing
+        if indices is None:
+            return
+
+        # remove if we have a marker set
+        if (axis == 2) and (self._marker_set is not None):
+            self._marker_set.remove(indices, False) # do not auto sort
+
+        # delete the keys
+        geno = numpy.delete(geno, indices, axis = axis)
+
+        # auto sort if needed
+        if auto_sort:
+            self.sort()
 
     def interpolate_genetic_map(self, base_genetic_map, kind = None, fill_value = None):
         """
@@ -332,6 +352,134 @@ class Population:
 
         # replace marker set with genetic map
         self._marker_set = genetic_map
+
+    def mkr_rename(self, new_mkr_name = None):
+        self._check_self_has_MarkerSet()
+
+        self._marker_set.mkr_rename(new_mkr_name)
+
+    def mkr_mask(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False):
+        self._check_self_has_MarkerSet()
+
+        # get mask
+        mask = self._marker_set.mkr_mask(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            invert = invert
+        )
+
+        return mask
+
+    def mkr_index(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False):
+        # find markers
+        mask = self.mkr_mask(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            invert = invert
+        )
+
+        # get indices
+        ix = numpy.flatnonzero(mask) if mask is not None else None
+
+        return ix
+
+    def mkr_remove(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False, auto_sort = False):
+        """
+        Remove markers matching a unique signature from the marker set.
+        """
+        # get markers
+        ix = self.mkr_index(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            invert = False
+        )
+
+        self.remove(ix, 2, auto_sort)
+
+    def taxa_rename(self, new_taxa = None):
+        if new_taxa is None:
+            return
+
+        self._taxa = new_taxa
+
+    def taxa_mask(self, taxa = None, invert = False):
+        # NOTE: I set this up as using tuples in case we need to grow
+        masks = (None,)
+
+        # test whether self._taxa is in taxa
+        if taxa is not None:
+            masks[0] = numpy.in1d(self._taxa, taxa)
+
+        # filter out None
+        masks = tuple(m for m in masks if m is not None)
+
+        # default value of None (for cases where len(masks) == 0)
+        mask = None
+
+        # if the len(masks) > 0, logical_and merge them together
+        if len(masks) > 0:
+            mask = numpy.logical_and.reduce(masks)
+
+            if invert:
+                mask = ~mask
+
+        # return mask
+        return mask
+
+    def taxa_index(self, taxa = None, invert = False):
+        # find taxa
+        mask = self.taxa_mask(
+            taxa = taxa,
+            invert = invert
+        )
+
+        # convert to indices
+        ix = numpy.flatnonzero(mask) if mask is not None else None
+
+        return ix
+
+    # TODO: functionality for auto_sort of taxa names
+    def taxa_remove(self, taxa = None, invert = False, auto_sort = False):
+        # find taxa
+        ix = self.taxa_index(
+            taxa = taxa,
+            invert = invert
+        )
+
+        # remove taxa
+        self.remove(ix, 1, False) # no auto_sort yet
+
+    def set_marker_set(self, marker_set = None):
+        # check we were passed a MarkerSet object
+        pybropt.util.check_is_MarkerSet(marker_set, "marker_set")
+        pybropt.util.check_matrix_axis_len(self._geno, "self.geno", 2, len(marker_set))
+
+        self._marker_set = marker_set
+
+    def set_genomic_model(self, genomic_model):
+        # check that we were passed a genomic_model
+        pybropt.util.check_is_GenomicModel(genomic_model, "genomic_model")
+
+        self._genomic_model = genomic_model
+
+    def set_taxa(self, taxa):
+        """
+        Sets taxa names. Checks that shape of taxa and self.geno are compatible.
+        """
+        # check matrix properties
+        pybropt.util.check_is_matrix(taxa, "taxa")
+        pybropt.util.check_matrix_ndim(taxa, "taxa", 1)
+        pybropt.util.check_matrix_dtype_is_string_(taxa, "taxa")
+        pybropt.util.check_matrix_size(taxa, "taxa", self._geno.shape[1])
+
+        # set variable
+        self._taxa = taxa
 
     ############################################################################
     ############################# Static Methods ###############################

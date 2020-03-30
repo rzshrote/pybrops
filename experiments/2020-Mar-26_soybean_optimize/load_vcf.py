@@ -9,14 +9,25 @@ sys.path.append(PyBrOpt_dir)                            # append PyBrOpt
 # 3rd party
 
 # our libraries
-import pybropt.popgen as pg
+import pybropt.popgen
+import pybropt.model
 
 # attempt load of large genetic map
-gmap = pg.GeneticMap.from_egmap("Song_2016.linear.egmap")
+gmap = pybropt.popgen.GeneticMap.from_egmap("Song_2016.linear.egmap")
+print("loaded egmap")
 
-population = pg.Population.from_vcf(
+oil_model = pybropt.model.ParametricGenomicModel.from_csv(
+    "rrBLUP_models.csv",
+    mkr_name_ix = 0,
+    coeff_ix = 1
+)
+quit()
+population = pybropt.popgen.Population.from_vcf(
     fname = "Song_2016_phased_chr.vcf",
     base_genetic_map = gmap,
     kind = "linear",
     fill_value = "extrapolate"
 )
+print("created population")
+
+print(population.geno.shape)

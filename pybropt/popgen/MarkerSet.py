@@ -1,5 +1,6 @@
 # 3rd party libraries
 import numpy
+import functools.reduce
 
 # import out libraries
 import pybropt.util
@@ -232,16 +233,172 @@ class MarkerSet:
         # calculate grouping indices
         self.group()
 
-    # TODO: accept a pattern
-    def mkr_rename(self):
-        new_name = numpy.core.defchararray.add(
-            self._chr_grp,
-            numpy.string_(["_%s" % e for e in self._chr_start])
-        )
+    def remove(self, indices, auto_sort = False):
+        """
+        Remove indices from the MarkerSet.
+        """
+        if indices is not None:
+            self._chr_grp = self._chr_grp[indices]
+            self._chr_start = self._chr_start[indices]
+            self._chr_stop = self._chr_stop[indices]
+            self._mkr_name = self._mkr_name[indices]
 
+        if auto_sort:
+            self.sort()
+
+    # TODO: accept a pattern
+    def mkr_rename(self, new_mkr_name = None):
+        # if new names have not been provided, auto generate them
+        if new_mkr_name is None:
+            new_mkr_name = numpy.core.defchararray.add(
+                self._chr_grp,
+                numpy.string_(["_%s" % e for e in self._chr_start])
+            )
+
+        # check for correct type and dimensions
+        pybropt.util.check_matrix_ndim(new_mkr_name, "new_mkr_name", 1)
+        pybropt.util.check_matrix_size(new_mkr_name, "new_mkr_name", self.__len__())
+        pybropt.util.check_matrix_dtype_is_string_(new_mkr_name, "new_mkr_name")
+
+        # set new marker names
         self._mkr_name = new_name
 
-    def has(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None):
+    def mkr_mask(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False):
+        """
+        Make a mask of entries in the MarkerSet that have the designated markers.
+        """
+        # make a tuple of None values (one for each argument)
+        masks = (None, None, None, None)
+
+        # test whether chr_grp is in self._chr_grp_name
+        if chr_grp is not None:
+            masks[0] = numpy.in1d(self._chr_grp_name, chr_grp)
+        # test whether chr_start is in self._chr_start
+        if chr_start is not None:
+            masks[1] = numpy.in1d(self._chr_start, chr_start)
+        # test whether chr_stop is in self._chr_stop
+        if chr_stop is not None:
+            masks[2] = numpy.in1d(self._chr_stop, chr_stop)
+        # test whether mkr_name is in self._mkr_name
+        if mkr_name is not None:
+            masks[3] = numpy.in1d(self._mkr_name, mkr_name)
+
+        # filter out None
+        masks = tuple(m for m in masks if m is not None)
+
+        # default value of None (for cases where len(masks) == 0)
+        mask = None
+
+        # if the len(masks) > 0, logical_and merge them together
+        if len(masks) > 0:
+            mask = numpy.logical_and.reduce(masks)
+
+            if invert:
+                mask = ~mask
+
+        # return mask
+        return mask
+
+    # TODO: make this so that indices are matched with the arguments?
+    def mkr_index(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False):
+        # find markers
+        mask = self.mkr_mask(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            invert = invert
+        )
+
+        # get indices
+        ix = numpy.flatnonzero(mask) if mask is not None else None
+
+        return ix
+
+    def mkr_remove(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None, invert = False, auto_sort = False):
+        """
+        Remove markers matching a unique signature from the marker set.
+        """
+        # get markers
+        mask = self.mkr_mask(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            invert = False
+        )
+
+        self.remove(mask, auto_sort)
+
+    # TODO: accept chr_grp, chr_start, chr_stop; support for invert
+    def mkr_where(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None):
+        """
+        Find indices for where a marker is. Indices match the order of the
+        input.
+        """
+        # initialize tuple of empty variables
+        # these represent chr_grp_ix, chr_start_ix, chr_stop_ix, mkr_name_ix
+        finds = (None, None, None, None)
+
+        # if chromosome group given, build locations arrays
+        if chr_grp is not None:
+            finds[0] = [numpy.flatnonzero(self._chr_grp == e) for e in chr_grp]
+
+        # if chromosome start given, build start location arrays
+        if chr_start is not None:
+            finds[1] = [numpy.flatnonzero(self._chr_start == e) for e in chr_start]
+
+        # if chromosome stop given, build stop location arrays
+        if chr_stop is not None:
+            finds[2] = [numpy.flatnonzero(self._chr_stop == e) for e in chr_stop]
+
+        # if marker name given, build marker name arrays
+        if mkr_name is not None:
+            finds[3] = [numpy.flatnonzero(self._mkr_name == e) for e in mkr_name]
+
+        # remove None from list of finds
+        finds = (f for f in finds if f is not None)
+
+        # overlap the finds
+        overlap = None
+        if len(finds) > 1:
+            # if we are searchign for overlapping keys, intersect
+            overlap = [functools.reduce(numpy.intersect1d, e) for e in zip(*finds)]
+        elif len(finds) == 1:
+            # if we are just searching for one key, unpack it
+            overlap = *finds
+        else:
+            # otherwise, return None
+            return overlap
+
+        # check for multi-mapping + build where array
+        where = numpy.empty(len(overlap), dtype = 'int64')
+        for i,o in enumerate(overlap):
+            # get length of overlap numpy.ndarray
+            l = len(o)
+
+            # if length of array is > 1, we have multi-mapping; raise error
+            if l > 1:
+                # build error message
+                s = ""
+                if chr_grp is not None:
+                    s += " chr_grp = " + str(chr_grp[i])
+                if chr_start is not None:
+                    s += " chr_start = " + str(chr_start[i])
+                if chr_stop is not None:
+                    s += " chr_stop = " + str(chr_stop[i])
+                if mkr_name is not None:
+                    s += " mkr_name = " + str(mkr_name[i])
+                raise ValueError("Multi-mapping detected at:%s" % s)
+
+            # set matrix value
+            where[i] = l if l > 0 else -1
+
+        # return where array
+        return where
+
+    # TODO: work on this since chr_start could be on multiple chromosomes
+    def mkr_has(self, chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None):
         """
         Determine if a genetic map has a specific marker in it.
         If multiple arguments are specified, a logical and is applied to all

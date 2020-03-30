@@ -2,7 +2,6 @@
 import numpy
 
 # import our libraries
-import pybropt.popgen
 import pybropt.util
 
 class Cross:
@@ -208,8 +207,7 @@ class Cross:
     ########################## Special Object Methods ##########################
     ############################################################################
     # TODO: mem accepts strings in MB, GB, etc.
-    def __init__(self, population, varAfn, sparse, crossfn, matefn, rallocfn,
-        c = 1, n = 1, s = 0, t = 0, mem = None):
+    def __init__(self, population, varAfn, sparse, crossfn, matefn, rallocfn, c = 1, n = 1, s = 0, t = 0, mem = None):
         """
         population : Population
             Population from which to cross.

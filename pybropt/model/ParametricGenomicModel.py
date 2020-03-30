@@ -1,5 +1,6 @@
 # 3rd party
 import numpy
+import pandas
 
 # our libraries
 from . import GenomicModel
@@ -139,19 +140,27 @@ class ParametricGenomicModel(GenomicModel):
         )
 
         #extract marker names
-        mkr_name = numpy.string_(df.iloc[:,mkr_name_ix].values)
+        mkr_name = numpy.string_([str(e) for e in df.iloc[:,mkr_name_ix]])
 
-        # extract coefficients
-        coeff = df.iloc[:,coeff_ix].values
+        # extract coefficients as a pandas.DataFrame and array
+        coeff_df = df.iloc[:,coeff_ix]
+        coeff = coeff_df.values
 
-        # extract trait names
-        trait = None
-        if df.columns.dtype != 'object':
-            trait = numpy.string_([str(e) for e in df.columns])
+        trait = df.columns.values[coeff_ix]
+        if isinstance(trait, numpy.ndarray):
+            trait = numpy.string_([str(e) for e in trait])
         else:
-            trait = numpy.string(df.columns)
+            trait = numpy.string_([trait])
+
+        print(trait)
+        # extract trait names
+        # trait = numpy.string_([str(e) for e in coeff_df.columns])
 
         # make genomic model
-        genomic_model = ParametricGenomicModel(trait, coeff, mkr_name)
+        genomic_model = ParametricGenomicModel(
+            trait = trait,
+            coeff = coeff,
+            mkr_name = mkr_name
+        )
 
         return genomic_model
