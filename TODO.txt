@@ -1,7 +1,7 @@
 Standardization
 ---------------
 [ ] Default objective functions should be minimizing functions.
-[ ] Figure out code packaging stuff. What a beast!
+[✓] Figure out code packaging stuff. What a beast!
 
 Code reuse
 ----------
@@ -27,6 +27,17 @@ Feature Additions
     instead of self as arguments... maybe if not too many bugs are caused.
 [ ] mem accept strings of memory sizes as inputs
 [✓] GeneticMap: do not require sorted internals to build spline
+[ ] MarkerSet.mkr_index: make this so that indices are matched with the arguments?
+[ ] MarkerSet.has: work on this since chr_start could be on multiple chromosomes
+[ ] MarkerSet: remove specific indices
+[ ] MarkerSet: expand mkr_rename to have rename at specific locations
+[ ] Population: expand mkr_rename, taxa_rename to have rename at specific locations
+[ ] Population: auto_sort for taxa
+[ ] Maybe have mkr base class for handling mkr related things?
+
+Documentation
+-------------
+[ ] Documentation for everything
 
 Testing
 -------
