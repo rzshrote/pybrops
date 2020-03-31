@@ -4,9 +4,8 @@ class OPV(GenomicSelection):
     """docstring for OPV."""
 
     ############################################################################
-    ########################## Special Object Methods ##########################
+    ######################### Reserved Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, cross, hcoeff = None, method = "OPV"):
         super(OPV, self).__init__(population, cross, method)
 
@@ -22,7 +21,6 @@ class OPV(GenomicSelection):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def hcoeff():
         doc = "The hcoeff property."
         def fget(self):
@@ -40,7 +38,6 @@ class OPV(GenomicSelection):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def calc_hcoeff(self):
         """
         Calculate haplotype coefficients matrix.
@@ -51,7 +48,6 @@ class OPV(GenomicSelection):
         )
         return hcoeff
 
-    @classmethod
     def objfn(self, sel, objcoeff = None, negate = True):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -98,7 +94,6 @@ class OPV(GenomicSelection):
 
         return opv
 
-    @classmethod
     def objfn_vec(self, sel, objcoeff = None, negate = True):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -154,7 +149,6 @@ class OPV(GenomicSelection):
 
         return opv
 
-    @classmethod
     def optimize(self, objcoeff = None, negate = True, algorithm = None, gbestix = 2, *args, **kwargs):
         """
         objcoeff : numpy.ndarray, None
@@ -199,7 +193,6 @@ class OPV(GenomicSelection):
 
         return sel
 
-    @classmethod
     def simulate(self, objcoeff = None, negate = True, algorithm = None,
         gbestix = 2, bcycle = 0, savegeno = True, seed = None, *args, **kwargs):
         """

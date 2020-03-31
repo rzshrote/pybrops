@@ -4,9 +4,8 @@ class MOGS(GenomicSelection):
     """docstring for MOGS."""
 
     ############################################################################
-    ######################### Reserved object methods ##########################
+    ######################### Reserved Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "MOGS"):
         super(MOGS, self).__init__(population, cross, method)
 
@@ -26,7 +25,6 @@ class MOGS(GenomicSelection):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def wcoeff():
         doc = "The wcoeff property."
         def fget(self):
@@ -52,7 +50,6 @@ class MOGS(GenomicSelection):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def calc_wcoeff(self):
         """
         Calculate weight coefficients.
@@ -61,7 +58,6 @@ class MOGS(GenomicSelection):
         wcoeff = MOGS.wcoeff_mat(self._population.coeff)
         return wcoeff
 
-    @classmethod
     def calc_tfreq(self):
         """
         Calculate target frequencies
@@ -70,7 +66,6 @@ class MOGS(GenomicSelection):
         tfreq = MOGS.tfreq_mat(self._population.coeff)
         return tfreq
 
-    @classmethod
     def objfn(self, sel, objcoeff = None, negate = True):
         # calculate MOGS values
         mogs = MOGS.objfn_mat(
@@ -90,7 +85,6 @@ class MOGS(GenomicSelection):
 
         return mogs
 
-    @classmethod
     def objfn_vec(self, sel, objcoeff = None, negate = True):
         # calculate MOGS values
         mogs = MOGS.objfn_vec_mat(
@@ -110,7 +104,6 @@ class MOGS(GenomicSelection):
 
         return mogs
 
-    @classmethod
     def optimize(self, objcoeff = None, negate = True, algorithm = None,
         gbestix = None, *args, **kwargs):
         # we pass objcoeff onto optimizer. This will handle multiobjective.
@@ -130,10 +123,8 @@ class MOGS(GenomicSelection):
 
         return sel
 
-    @classmethod
     def simulate(self):
         raise NotImplementedError
-
 
     ############################################################################
     ############################# Static Methods ###############################

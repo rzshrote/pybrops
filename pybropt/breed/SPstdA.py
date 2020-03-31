@@ -6,6 +6,9 @@ class SPstdA(GenomicMating):
     function class.
     """
 
+    ############################################################################
+    ######################### Reserved Object Methods ##########################
+    ############################################################################
     def __init__(self, population, cross, method = "SPstdA"):
         super(SPstdA, self).__init__(population, cross, method)
 

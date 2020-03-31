@@ -4,9 +4,8 @@ class MOGM(GenomicMating):
     """docstring for MOGM."""
 
     ############################################################################
-    ######################### Reserved object methods ##########################
+    ######################### Reserved Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "MOGM"):
         super(MOGM, self).__init__(population, cross, method)
 
@@ -27,7 +26,6 @@ class MOGM(GenomicMating):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def wcoeff():
         doc = "The wcoeff property."
         def fget(self):
@@ -53,7 +51,6 @@ class MOGM(GenomicMating):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def calc_wcoeff(self):
         """
         Calculate weight coefficients.
@@ -63,7 +60,6 @@ class MOGM(GenomicMating):
 
         return wcoeff
 
-    @classmethod
     def calc_tfreq(self):
         """
         Calculate target frequencies
@@ -73,7 +69,6 @@ class MOGM(GenomicMating):
 
         return tfreq
 
-    @classmethod
     def objfn(self, sel, objcoeff = None, negate = False):
         """
         MOGM objective function.
@@ -99,7 +94,6 @@ class MOGM(GenomicMating):
 
         return mogm
 
-    @classmethod
     def objfn_vec(self, sel, objcoeff = None, negate = False):
         # calculate MOGM values
         mogm = MOGM.objfn_vec_mat(
@@ -120,7 +114,6 @@ class MOGM(GenomicMating):
 
         return mogm
 
-    @classmethod
     def optimize(self, objcoeff = None, negate = False, algorithm = None,
         gbestix = None, *args, **kwargs):
         # we pass objcoeff onto optimizer. This will handle multiobjective.
@@ -140,7 +133,6 @@ class MOGM(GenomicMating):
 
         return sel
 
-    @classmethod
     def simulate(self):
         raise NotImplementedError
 

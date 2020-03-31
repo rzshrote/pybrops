@@ -4,9 +4,8 @@ class WGS(GenomicSelection):
     """docstring for CGS."""
 
     ############################################################################
-    ########################## Special Object Methods ##########################
+    ######################### Reserved Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, cross, method = "WGS"):
         super(CGS, self).__init__(population, cross, method)
 
@@ -16,7 +15,6 @@ class WGS(GenomicSelection):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def objfn(self, sel, objcoeff = None):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -56,7 +54,6 @@ class WGS(GenomicSelection):
 
         return wgs
 
-    @classmethod
     def objfn_vec(self, sel, objcoeff = None):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -105,7 +102,6 @@ class WGS(GenomicSelection):
 
         return wgs
 
-    @classmethod
     def optimize(self, k, objcoeff = None, algorithm = None):
         """
         k : int
@@ -146,7 +142,6 @@ class WGS(GenomicSelection):
 
         return sel
 
-    @classmethod
     def simulate(self, algorithm):
         """
         """

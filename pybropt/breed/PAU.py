@@ -4,9 +4,8 @@ class PAU(GenomicSelection):
     """docstring for PAU."""
 
     ############################################################################
-    ######################### Reserved object methods ##########################
+    ######################### Reserved Object Methods ##########################
     ############################################################################
-    @classmethod
     def __init__(self, population, cross, wcoeff = None, tfreq = None, method = "PAU"):
         super(PAU, self).__init__(population, cross, method)
 
@@ -26,7 +25,6 @@ class PAU(GenomicSelection):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def wcoeff():
         doc = "The wcoeff property."
         def fget(self):
@@ -52,7 +50,6 @@ class PAU(GenomicSelection):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    @classmethod
     def calc_wcoeff(self):
         """
         Calculate weight coefficients.
@@ -62,7 +59,6 @@ class PAU(GenomicSelection):
 
         return wcoeff
 
-    @classmethod
     def calc_tfreq(self):
         """
         Calculate target frequencies
@@ -72,7 +68,6 @@ class PAU(GenomicSelection):
 
         return tfreq
 
-    @classmethod
     def objfn(self, sel, objcoeff = None, negate = True):
         # calculate PAU values
         pau = PAU.objfn_mat(
@@ -92,7 +87,6 @@ class PAU(GenomicSelection):
 
         return pau
 
-    @classmethod
     def objfn_vec(self, sel, objcoeff = None, negate = True):
         # calculate PAU values
         pau = PAU.objfn_vec_mat(
@@ -112,7 +106,6 @@ class PAU(GenomicSelection):
 
         return pau
 
-    @classmethod
     def optimize(self, objcoeff = None, negate = True, algorithm = None,
         gbestix = None, *args, **kwargs):
         # we pass objcoeff onto optimizer. This will handle multiobjective.
@@ -132,7 +125,6 @@ class PAU(GenomicSelection):
 
         return sel
 
-    @classmethod
     def simulate(self):
         raise NotImplementedError
 
