@@ -1,79 +1,85 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
+from . import SearchSpace
+import pybropt.util
+
 class CategoricalSearchSpace(SearchSpace):
     """docstring for CategoricalSearchSpace."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
-    @classmethod
-    def __init__(self, states = None, dim_sizes = None, *args):
+    def __init__(self, state = None, dim_size = None, name = "Categorical", *args):
         """
         Constructor for ContinuousSearchSpace class.
 
         Parameters
         ----------
-        states : numpy.ndarray
+        state : numpy.ndarray
             An array of search space potential states.
-        dim_sizes : numpy.ndarray
+        dim_size : numpy.ndarray
             An array of array sizes corresponding to the number of states in
             the dimension.
         *args : iterable
             Additional iterable states.
         """
         # call super constructor
-        super(CategoricalSearchSpace, self).__init__()
+        super(CategoricalSearchSpace, self).__init__(name)
 
         # initialize internal variables
         self.reset()
 
         # test if we have states and
-        if (states is not None) and (dim_sizes is not None):
+        if all(a is not None for a in (state, dim_size)):
             # check that data are matrices
-            check_is_matrix(states, "states")
-            check_is_matrix(dim_sizes, "dim_sizes")
-            # loop through states and add them to self.state
-            stop = dim_sizes.cumsum()
-            start = stop - dim_sizes
-            for st,sp in zip(start, stop):
-                self._state.append(list(states[st:sp]))
+            pybropt.util.check_is_matrix(state, "state")
+            pybropt.util.check_is_matrix(dim_size, "dim_size")
 
-        # loop through variable arguments and add them to self.state
+            # matrix start, stop indices
+            stop = dim_size.cumsum()
+            start = stop - dim_size
+
+            # loop through states and add them to self.state
+            for st,sp in zip(start, stop):
+                # convert states to list and add to space
+                self._space.append(list(state[st:sp]))
+        elif any(a is not None for a in (state, dim_size)):
+            raise ValueError("Both 'state' and 'dim_size' needed")
+
+        # loop through variable arguments and add them to self.space
         for i,arg in enumerate(args):
             # check that we can make a list out of the argument
-            check_is_iterable(arg, "arg %d" % (i+1))
-            self._state.append(list(arg))
+            pybropt.util.check_is_iterable(arg, "arg %d" % (i+1))
+            self._space.append(list(arg))
 
-    @classmethod
     def __len__(self):
-        return len(self._state)
+        return len(self._space)
 
-    @classmethod
     def __str__(self):
-        return str(self._state)
+        return str(self._space)
 
-    @classmethod
     def __getitem__(self, key):
         """
         Simple indexing.
         key : int, slice
         """
-        return self._state[key]
+        return self._space[key]
 
-    @classmethod
     def __setitem__(self, key, value):
         """
         Simple indexing.
         key : int, slice
         """
-        self._state[key] = value
+        self._space[key] = value
 
-    @classmethod
     def __delitem__(self, key):
         """
         Simple indexing.
         key : int, slice
         """
-        del self._state[key]
+        del self._space[key]
 
     # TODO: implement me
     # @classmethod
@@ -82,16 +88,16 @@ class CategoricalSearchSpace(SearchSpace):
     #     key : int, slice, tuple, list, numpy.ndarray
     #     """
     #     if isinstance(key, (int, slice)):
-    #         return self._state[key]
+    #         return self._space[key]
     #     elif isinstance(key, tuple):
     #         if len(key) == 0:
     #             raise ValueError("Cannot index using empty tuple.")
     #         elif len(key) == 1:
     #             k = *key
     #             if isinstance(k, (int, slice)):
-    #                 return self._state[k]
+    #                 return self._space[k]
     #             elif isinstance(k, (tuple, list, numpy.ndarray)):
-    #                 return [self._state[e] for e in k]
+    #                 return [self._space[e] for e in k]
     #             else:
     #                 raise ValueError("Indexing type not supported.")
     #         elif len(key) == 2:
@@ -99,9 +105,9 @@ class CategoricalSearchSpace(SearchSpace):
     #             # get subset list
     #             subset = None
     #             if isinstance(a, (int, slice)):
-    #                 subset = self._state[a]
+    #                 subset = self._space[a]
     #             elif isinstance(a, (tuple, list, numpy.ndarray)):
-    #                 subset = [self._state[e] for e in a]
+    #                 subset = [self._space[e] for e in a]
     #             else:
     #                 raise ValueError("Indexing type not supported.")
     #             # get values from subset list
@@ -114,7 +120,7 @@ class CategoricalSearchSpace(SearchSpace):
     #         else:
     #             raise ValueError("tuple length must be 1 or 2.")
     #     elif isinstance(key, (list, numpy.ndarray)):
-    #         return [self._state[e] for e in key]
+    #         return [self._space[e] for e in key]
     #     else:
     #         raise ValueError("Indexing type not supported.")
     # TODO: implement me
@@ -130,27 +136,26 @@ class CategoricalSearchSpace(SearchSpace):
     #     """
     #     key : int, slice, tuple, list, numpy.ndarray
     #     """
-    #     del self._state[key]
+    #     del self._space[key]
 
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
-    def state():
-        doc = "The state property."
+    def space():
+        doc = "The space property."
         def fget(self):
-            return self._state
+            return self._space
         def fset(self, value):
-            self._state = value
+            self._space = value
         def fdel(self):
-            del self._state
+            del self._space
         return locals()
-    state = property(**state())
+    space = property(**space())
 
     def ndim():
         doc = "The ndim property."
         def fget(self):
-            return len(self._state)
+            return len(self._space)
         def fset(self, value):
             error_readonly("ndim")
         def fdel(self):
@@ -161,7 +166,7 @@ class CategoricalSearchSpace(SearchSpace):
     def size():
         doc = "The size property."
         def fget(self):
-            return sum(len(dim) for dim in self._state)
+            return sum(len(dim) for dim in self._space)
         def fset(self, value):
             error_readonly("size")
         def fdel(self):
@@ -169,10 +174,21 @@ class CategoricalSearchSpace(SearchSpace):
         return locals()
     size = property(**size())
 
+    def state():
+        doc = "The state property."
+        def fget(self):
+            return numpy.array([ee for e in self._space for ee in e])
+        def fset(self, value):
+            error_readonly("state")
+        def fdel(self):
+            error_readonly("state")
+        return locals()
+    state = property(**state())
+
     def dim_size():
         doc = "The dim_size property."
         def fget(self):
-            return numpy.array([len(e) for e in self._state])
+            return numpy.array([len(e) for e in self._space])
         def fset(self, value):
             error_readonly("dim_size")
         def fdel(self):
@@ -180,21 +196,22 @@ class CategoricalSearchSpace(SearchSpace):
         return locals()
     dim_size = property(**dim_size())
 
-    def state_flat():
-        doc = "The state_flat property."
-        def fget(self):
-            return numpy.array([ee for ee in e for e in self._state])
-        def fset(self, value):
-            error_readonly("state_flat")
-        def fdel(self):
-            error_readonly("state_flat")
-        return locals()
-    state_flat = property(**state_flat())
-
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
     def reset(self):
-        self._state = []
+        self._space = []
+
+    def feasible(self, pos):
+        """
+        pos : numpy.ndarray
+            A position vector.
+        """
+        if len(pos) != self.__len__():
+            raise ValueError("number of dimensions in 'pos' do not align with search space")
+
+        # iterate over all elements in 'pos' and check if it is the dimension
+        f = all(e in self._space[i] for i,e in enumerate(pos))
+
+        # return if all are in the defined space
+        return f

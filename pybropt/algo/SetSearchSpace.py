@@ -1,10 +1,15 @@
+# 3rd party libraries
+
+# our libraries
+from . import SearchSpace
+
+# NOTE: this class is deprecated
 class SetSearchSpace(SearchSpace):
     """docstring for SetSearchSpace."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
     def __init__(self, states = None, *args):
         """
         Constructor for SetSearchSpace class.
@@ -29,15 +34,12 @@ class SetSearchSpace(SearchSpace):
         for arg in args:
             self._state.append(arg)
 
-    @classmethod
     def __len__(self):
         return len(self._state)
 
-    @classmethod
     def __str__(self):
         return str(self._state)
 
-    @classmethod
     def __getitem__(self, key):
         """
         Simple indexing.
@@ -45,7 +47,6 @@ class SetSearchSpace(SearchSpace):
         """
         return self._state[key]
 
-    @classmethod
     def __setitem__(self, key, value):
         """
         Simple indexing.
@@ -53,7 +54,6 @@ class SetSearchSpace(SearchSpace):
         """
         self._state[key] = value
 
-    @classmethod
     def __delitem__(self, key):
         """
         Simple indexing.
@@ -61,12 +61,9 @@ class SetSearchSpace(SearchSpace):
         """
         del self._state[key]
 
-
-
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def state():
         doc = "The state property."
         def fget(self):
@@ -114,7 +111,5 @@ class SetSearchSpace(SearchSpace):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
     def reset(self):
         self._state = []

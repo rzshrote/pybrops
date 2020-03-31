@@ -1,18 +1,23 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
+from . import ParticleSwarmOptimization
+import pybropt.util
+
 class ICPSO(ParticleSwarmOptimization):
     """docstring for ICPSO."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
-    def __init__(self, ssize, inertia_wt, pbest_comp, gbest_comp, scale_factor,
-            search_space):
+    def __init__(self, ssize, inertia_wt, pbest_comp, gbest_comp, scale_factor, search_space):
         # call super constructor; ...should call self.reset() for us
         super(ICPSO, self).__init__(ssize, inertia_wt, pbest_comp, gbest_comp)
 
         # type checks
-        check_is_numeric(scale_factor, "scale_factor")
-        check_is_CategoricalSearchSpace(search_space, "search_space")
+        pybropt.util.check_is_numeric(scale_factor, "scale_factor")
+        pybropt.util.check_is_CategoricalSearchSpace(search_space, "search_space")
 
         # set private variables
         self._scale_factor = scale_factor
@@ -21,7 +26,6 @@ class ICPSO(ParticleSwarmOptimization):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def scale_factor():
         doc = "The scale_factor property."
         def fget(self):
@@ -47,8 +51,6 @@ class ICPSO(ParticleSwarmOptimization):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
     def reset(self):
         # call super.reset()
         super(ParticleSwarmOptimization, self).reset()
@@ -57,7 +59,6 @@ class ICPSO(ParticleSwarmOptimization):
         self._sample = []
         return
 
-    @classmethod
     def history_add(self, algoiter, score, position, velocity, sample):
         """
         Add algorithm history to this object.
@@ -101,7 +102,6 @@ class ICPSO(ParticleSwarmOptimization):
         self._sample.append(sample)         # append sample
         return
 
-    @classmethod
     def history_to_dict(self):
         """
         Convert history internals to a dictionary.
@@ -123,14 +123,12 @@ class ICPSO(ParticleSwarmOptimization):
 
         return hist_dict
 
-    @classmethod
     def concatenate(self):
         # call super.concatenate()
         super(ParticleSwarmOptimization, self).concatenate()
         if len(self._sample) > 1:
             self._sample = [numpy.concatenate(self._sample, axis=0)]
 
-    @classmethod
     def pbest_ix(self, ptcl = None, maxiter = None, cond = None, minimum = True):
         """
         Get personal best indices.
@@ -184,7 +182,6 @@ class ICPSO(ParticleSwarmOptimization):
 
         return ix
 
-    @classmethod
     def pbest(self, ptcl = None, maxiter = None, cond = None, minimum = True):
         """
         Grab personal best data
@@ -202,7 +199,6 @@ class ICPSO(ParticleSwarmOptimization):
 
         return pbest
 
-    @classmethod
     def gbest(self, maxiter = None, cond = None, minimum = True):
         """
         Get global best iter, score, position as a tuple. If multiple global
@@ -229,7 +225,6 @@ class ICPSO(ParticleSwarmOptimization):
         # return gbest
         return gbest
 
-    @classmethod
     def optimize(self, objfn, stpfn, seed = None, nthreads = None,
             verbose = False, *args, **kwargs):
         """

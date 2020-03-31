@@ -1,10 +1,14 @@
+# 3rd party libraries
+
+# our libraries
+from . import Algorithm
+
 class ParticleSwarmOptimization(Algorithm):
     """docstring for ParticleSwarmOptimization."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
     def __init__(self, ssize, inertia_wt, pbest_comp, gbest_comp):
         """
         Constructor for the ParticleSwarmOptimization class.
@@ -38,7 +42,6 @@ class ParticleSwarmOptimization(Algorithm):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def velocity():
         doc = "The velocity property."
         def fget(self):
@@ -97,8 +100,6 @@ class ParticleSwarmOptimization(Algorithm):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
     def reset(self):
         # call super.reset()
         super(ParticleSwarmOptimization, self).reset()
@@ -106,7 +107,6 @@ class ParticleSwarmOptimization(Algorithm):
         # set to empty list
         self._velocity = []
 
-    @classmethod
     def history_add(self, algoiter, score, position, velocity):
         """
         Add algorithm history to this object.
@@ -147,7 +147,6 @@ class ParticleSwarmOptimization(Algorithm):
         self._velocity.append(velocity)     # append velocity
         return
 
-    @classmethod
     def history_to_dict(self):
         """
         Convert history internals to a dictionary.
@@ -169,14 +168,12 @@ class ParticleSwarmOptimization(Algorithm):
 
         return hist_dict
 
-    @classmethod
     def concatenate(self):
         # call super.concatenate()
         super(ParticleSwarmOptimization, self).concatenate()
         if len(self._velocity) > 1:
             self._velocity = [numpy.concatenate(self._velocity, axis=0)]
 
-    @classmethod
     def pbest_ix(self, ptcl = None, maxiter = None, cond = None, minimum = True):
         """
         Get personal best indices.
@@ -231,7 +228,6 @@ class ParticleSwarmOptimization(Algorithm):
 
         return ix
 
-    @classmethod
     def pbest(self, ptcl = None, maxiter = None, cond = None, minimum = True):
         """
         Grab personal best data
@@ -248,7 +244,6 @@ class ParticleSwarmOptimization(Algorithm):
 
         return pbest
 
-    @classmethod
     def gbest(self, maxiter = None, cond = None, minimum = True):
         """
         Get global best iter, score, position as a tuple. If multiple global

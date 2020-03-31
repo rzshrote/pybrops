@@ -1,3 +1,8 @@
+# 3rd party libraries
+
+# our libraries
+from . import HillClimber
+
 class StateHC(HillClimber):
     """docstring for StateHC."""
 
@@ -5,8 +10,8 @@ class StateHC(HillClimber):
     ######################### Reserved object methods ##########################
     ############################################################################
 
-    def __init__(self, search_space):
-        super(StateHC, self).__init__()
+    def __init__(self, search_space, name = "State Hill-Climber"):
+        super(StateHC, self).__init__(name)
 
         check_is_CategoricalSearchSpace(search_space, "search_space")
         self._search_space = search_space
@@ -30,7 +35,7 @@ class StateHC(HillClimber):
     ############################## Class Methods ###############################
     ############################################################################
 
-    def _state_exchange_matrix(vec, exch)
+    # def _state_exchange_matrix(vec, exch)
 
     def optimize(self, objfn, stpfn, seed = None, nthreads = None,
             verbose = False, *args, **kwargs):

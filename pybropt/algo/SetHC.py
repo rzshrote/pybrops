@@ -1,17 +1,23 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
+from . import HillClimber
+import pybropt.util
+
 class SetHC(HillClimber):
     """docstring for SetHC."""
 
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-    @classmethod
-    def __init__(self, k, search_space):
+    def __init__(self, k, search_space, name = "Set Hill-Climber"):
         # call super constructor
-        super(SetHC, self).__init__()
+        super(SetHC, self).__init__(name)
 
         # check data types
-        check_is_integer(k, "k")
-        check_is_SetSearchSpace(search_space, "search_space")
+        pybropt.util.check_is_integer(k, "k")
+        pybropt.util.check_is_SetSearchSpace(search_space, "search_space")
 
         # set private variables
         self._k = k
@@ -20,7 +26,6 @@ class SetHC(HillClimber):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def k():
         doc = "The k property."
         def fget(self):
@@ -46,23 +51,7 @@ class SetHC(HillClimber):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
-    def _set_exchange_matrix(vec, exch):
-        """
-        Build a matrix of positions
-        """
-        out_vec = numpy.tile(vec, (len(vec)*len(exch),1))
-        for i in range(len(vec)):
-            out_vec[i*len(exch):(i+1)*len(exch),i] = exch
-        out_exch = numpy.tile(exch, (len(vec)*len(exch),1))
-        for i in range(len(exch)):
-            out_exch[i::len(exch),i] = vec
-        return out_vec, out_exch
-
-    @classmethod
-    def optimize(self, objfn, seed = None, nthreads = None, minimize = True,
-            *args, **kwargs):
+    def optimize(self, objfn, seed = None, nthreads = None, minimize = True, *args, **kwargs):
         """
         Perform a hillclimbing using steepest ascent strategy. A set of size
         'k' is used. Single states within the set are iteratively exchanged
@@ -160,7 +149,7 @@ class SetHC(HillClimber):
             iter += 1
 
             # create state exchange matrix (local search positions)
-            pos, exch = _set_exchange_matrix(gbest_pos, gbest_exch)
+            pos, exch = SetHC._set_exchange_matrix(gbest_pos, gbest_exch)
 
             # score positions that have been created (threading applicable)
             if nthreads > 1:
@@ -192,3 +181,19 @@ class SetHC(HillClimber):
 
             if verbose:
                 print("Iteration", iter, "\tscore =", gbest_score)
+
+    ############################################################################
+    ############################# Static Methods ###############################
+    ############################################################################
+    @staticmethod
+    def _set_exchange_matrix(vec, exch):
+        """
+        Build a matrix of positions
+        """
+        out_vec = numpy.tile(vec, (len(vec)*len(exch),1))
+        for i in range(len(vec)):
+            out_vec[i*len(exch):(i+1)*len(exch),i] = exch
+        out_exch = numpy.tile(exch, (len(vec)*len(exch),1))
+        for i in range(len(exch)):
+            out_exch[i::len(exch),i] = vec
+        return out_vec, out_exch

@@ -685,7 +685,6 @@ class Cross:
     def calc_varA_3way_mat(self):
         raise NotImplementedError
 
-    # TODO: reimplement for multi-trait variance components
     def calc_varA_3wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -699,11 +698,14 @@ class Cross:
         gmap = self._population.marker_set
         mem = self._mem
 
+        # get number of traits (t)
+        ntrait = coeff.shape[1]
+
         # get the number of individuals
         ntaxa = geno.shape[1]
 
         # allocate a cube matrix for each 3-way variance
-        varA_mat = numpy.zeros((ntaxa, ntaxa, ntaxa), dtype='float64')
+        varA_mat = numpy.zeros((ntrait, ntaxa, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -711,17 +713,17 @@ class Cross:
             for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                 for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
-                    r = gmap.recomb_prob(rst, rsp, cst, csp)
+                    r = gmap.recomb_prob(rst, rsp, cst, csp) # (rb,cb)
 
                     # calculate a D1 matrix; this is specific to mating scheme
-                    D1_mat = Cross.D1(r, self._s, self._t)
+                    D1_mat = Cross.D1(r, self._s, self._t) # (rb,cb)
 
                     # calculate a D2 matrix; this is specific to mating scheme
-                    D2_mat = Cross.D2(r, self._s, self._t)
+                    D2_mat = Cross.D2(r, self._s, self._t) # (rb,cb)
 
                     # get marker coefficients for rows and columns
-                    rcoeff = coeff[rst:rsp]
-                    ccoeff = coeff[cst:csp]
+                    rcoeff = coeff[rst:rsp].T # (t,rb) # rb = row block
+                    ccoeff = coeff[cst:csp].T # (t,cb) # cb = column block
 
                     # for each 3-way cross (excluding selfs)
                     # subscript codes:
@@ -731,41 +733,45 @@ class Cross:
                     for recurr in range(0,ntaxa):           # varA slice index
                         for female in range(0,ntaxa):       # varA row index
                             # calculate genotype differences for row, col
-                            rdgeno21 = geno[0,female,rst:rsp] - geno[0,recurr,rst:rsp]
-                            cdgeno21 = geno[0,female,cst:csp] - geno[0,recurr,cst:csp]
+                            rdgeno21 = geno[0,female,rst:rsp] - geno[0,recurr,rst:rsp] # (rb,)
+                            cdgeno21 = geno[0,female,cst:csp] - geno[0,recurr,cst:csp] # (cb,)
 
                             # calculate effect differences
-                            reffect21 = rdgeno21 * rcoeff
-                            ceffect21 = cdgeno21 * ccoeff
+                            reffect21 = rdgeno21 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect21 = cdgeno21 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                            # calculate varA part for female-recurrent
-                            varA_part21 = reffect21.dot(D1_mat).dot(ceffect21)
+                            # compute dot product for each trait to get partial variance
+                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,cb)*(t,cb) -> (t,cb)
+                            # (t,cb)[1] -> (t,)
+                            varA_part21 = (reffect21 @ D1_mat * ceffect21).sum(1)
 
                             # only do lower triangle since symmetrical within each slice
                             for male in range(0,female):    # varA col index
                                 # calculate genotype differences for row, col
-                                rdgeno23 = geno[0,female,rst:rsp] - geno[0,male,rst:rsp]
-                                cdgeno23 = geno[0,female,cst:csp] - geno[0,male,cst:csp]
-
-                                rdgeno31 = geno[0,male,rst:rsp] - geno[0,recurr,rst:rsp]
-                                cdgeno31 = geno[0,male,cst:csp] - geno[0,recurr,cst:csp]
+                                rdgeno23 = geno[0,female,rst:rsp] - geno[0,male,rst:rsp] # (rb,)
+                                cdgeno23 = geno[0,female,cst:csp] - geno[0,male,cst:csp] # (cb,)
+                                rdgeno31 = geno[0,male,rst:rsp] - geno[0,recurr,rst:rsp] # (rb,)
+                                cdgeno31 = geno[0,male,cst:csp] - geno[0,recurr,cst:csp] # (cb,)
 
                                 # calculate effect differences
-                                reffect23 = rdgeno23 * rcoeff
-                                ceffect23 = cdgeno23 * ccoeff
+                                reffect23 = rdgeno23 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                ceffect23 = cdgeno23 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                                reffect31 = rdgeno31 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                ceffect31 = cdgeno31 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                                reffect31 = rdgeno31 * rcoeff
-                                ceffect31 = cdgeno31 * ccoeff
-
-                                # calculate varA parts for crosses with male
-                                varA_part23 = reffect23.dot(D2_mat).dot(ceffect23)
-                                varA_part31 = reffect31.dot(D1_mat).dot(ceffect31)
+                                # compute dot product for each trait to get partial variance
+                                # (t,rb)x(rb,cb) -> (t,cb)
+                                # (t,cb)*(t,cb) -> (t,cb)
+                                # (t,cb)[1] -> (t,)
+                                varA_part23 = (reffect23 @ D2_mat * ceffect23).sum(1)
+                                varA_part31 = (reffect31 @ D1_mat * ceffect31).sum(1)
 
                                 # calculate varA part for this matrix chunk
                                 varA_part = (2.0 * (varA_part21 + varA_part31)) + varA_part23
 
                                 # add this partial variance to the lower triangle
-                                varA_mat[recurr,female,male] += varA_part
+                                varA_mat[:,recurr,female,male] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
         varA_mat /= 4.0
@@ -775,14 +781,13 @@ class Cross:
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female in range(1, ntaxa):
             for male in range(0, female):
-                varA_mat[:,male,female] = varA_mat[:,female,male]
+                varA_mat[:,:,male,female] = varA_mat[:,:,female,male]
 
         return varA_mat
 
     def calc_varA_4way_mat(self):
         raise NotImplementedError
 
-    # TODO: reimplement for multi-trait variance components
     def calc_varA_4wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -796,11 +801,14 @@ class Cross:
         gmap = self._population.marker_set
         mem = self._mem
 
+        # get number of traits (t)
+        ntrait = coeff.shape[1]
+
         # get the number of individuals
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        varA_mat = numpy.zeros((ntaxa, ntaxa, ntaxa, ntaxa), dtype='float64')
+        varA_mat = numpy.zeros((ntrait, ntaxa, ntaxa, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
@@ -808,17 +816,17 @@ class Cross:
             for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                 for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
-                    r = gmap.recomb_prob(rst, rsp, cst, csp)
+                    r = gmap.recomb_prob(rst, rsp, cst, csp) # (rb,cb)
 
                     # calculate a D1 matrix; this is specific to mating scheme
-                    D1_mat = Cross.D1(r, self._s, self._t)
+                    D1_mat = Cross.D1(r, self._s, self._t) # (rb,cb)
 
                     # calculate a D2 matrix; this is specific to mating scheme
-                    D2_mat = Cross.D2(r, self._s, self._t)
+                    D2_mat = Cross.D2(r, self._s, self._t) # (rb,cb)
 
                     # get marker coefficients for rows and columns
-                    rcoeff = coeff[rst:rsp]
-                    ccoeff = coeff[cst:csp]
+                    rcoeff = coeff[rst:rsp].T # (t,rb) # rb = row block
+                    ccoeff = coeff[cst:csp].T # (t,cb) # cb = column block
 
                     # for each 4-way cross (excluding selfs)
                     # subscript codes:
@@ -833,61 +841,70 @@ class Cross:
                     for female2 in range(0,ntaxa):              # varA block index (change me for efficiency?)
                         for male2 in range(0,ntaxa):            # varA slice index (change me for efficiency?)
                             # calculate genotype differences for row, col
-                            rdgeno21 = geno[0,male2,rst:rsp] - geno[0,female2,rst:rsp]
-                            cdgeno21 = geno[0,male2,cst:csp] - geno[0,female2,cst:csp]
+                            rdgeno21 = geno[0,male2,rst:rsp] - geno[0,female2,rst:rsp] # (rb,)
+                            cdgeno21 = geno[0,male2,cst:csp] - geno[0,female2,cst:csp] # (cb,)
 
                             # calculate effect differences
-                            reffect21 = rdgeno21 * rcoeff
-                            ceffect21 = cdgeno21 * ccoeff
+                            reffect21 = rdgeno21 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect21 = cdgeno21 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                            # calculate varA part for male2-female2
-                            varA_part21 = reffect21.dot(D2_mat).dot(ceffect21)
+                            # compute dot product for each trait to get partial variance
+                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,cb)*(t,cb) -> (t,cb)
+                            # (t,cb)[1] -> (t,)
+                            varA_part21 = (reffect21 @ D2_mat * ceffect21).sum(1)
 
                             for female1 in range(0,ntaxa):      # varA row index
                                 # calculate genotype differences for row, col
-                                rdgeno31 = geno[0,female1,rst:rsp] - geno[0,female2,rst:rsp]
-                                cdgeno31 = geno[0,female1,cst:csp] - geno[0,female2,cst:csp]
-                                rdgeno32 = geno[0,female1,rst:rsp] - geno[0,male2,rst:rsp]
-                                cdgeno32 = geno[0,female1,cst:csp] - geno[0,male2,cst:csp]
+                                rdgeno31 = geno[0,female1,rst:rsp] - geno[0,female2,rst:rsp] # (rb,)
+                                cdgeno31 = geno[0,female1,cst:csp] - geno[0,female2,cst:csp] # (cb,)
+                                rdgeno32 = geno[0,female1,rst:rsp] - geno[0,male2,rst:rsp] # (rb,)
+                                cdgeno32 = geno[0,female1,cst:csp] - geno[0,male2,cst:csp] # (cb,)
 
                                 # calculate effect differences
-                                reffect31 = rdgeno31 * rcoeff
-                                ceffect31 = cdgeno31 * ccoeff
-                                reffect32 = rdgeno32 * rcoeff
-                                ceffect32 = cdgeno32 * ccoeff
+                                reffect31 = rdgeno31 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                ceffect31 = cdgeno31 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                                reffect32 = rdgeno32 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                ceffect32 = cdgeno32 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                                # calculate varA part for female1
-                                varA_part31 = reffect31.dot(D1_mat).dot(ceffect31)
-                                varA_part32 = reffect32.dot(D1_mat).dot(ceffect32)
+                                # compute dot product for each trait to get partial variance
+                                # (t,rb)x(rb,cb) -> (t,cb)
+                                # (t,cb)*(t,cb) -> (t,cb)
+                                # (t,cb)[1] -> (t,)
+                                varA_part31 = (reffect31 @ D1_mat * ceffect31).sum(1)
+                                varA_part32 = (reffect32 @ D1_mat * ceffect32).sum(1)
 
                                 # only do lower triangle since symmetrical within each slice
                                 for male1 in range(0,female1):  # varA col index
                                     # calculate genotype differences for row, col
-                                    rdgeno41 = geno[0,male1,rst:rsp] - geno[0,female2,rst:rsp]
-                                    cdgeno41 = geno[0,male1,cst:csp] - geno[0,female2,cst:csp]
-                                    rdgeno42 = geno[0,male1,rst:rsp] - geno[0,male2,rst:rsp]
-                                    cdgeno42 = geno[0,male1,cst:csp] - geno[0,male2,cst:csp]
-                                    rdgeno43 = geno[0,male1,rst:rsp] - geno[0,female1,rst:rsp]
-                                    cdgeno43 = geno[0,male1,cst:csp] - geno[0,female1,cst:csp]
+                                    rdgeno41 = geno[0,male1,rst:rsp] - geno[0,female2,rst:rsp] # (rb,)
+                                    cdgeno41 = geno[0,male1,cst:csp] - geno[0,female2,cst:csp] # (cb,)
+                                    rdgeno42 = geno[0,male1,rst:rsp] - geno[0,male2,rst:rsp] # (rb,)
+                                    cdgeno42 = geno[0,male1,cst:csp] - geno[0,male2,cst:csp] # (cb,)
+                                    rdgeno43 = geno[0,male1,rst:rsp] - geno[0,female1,rst:rsp] # (rb,)
+                                    cdgeno43 = geno[0,male1,cst:csp] - geno[0,female1,cst:csp] # (cb,)
 
                                     # calculate effect differences
-                                    reffect41 = rdgeno41 * rcoeff
-                                    ceffect41 = rdgeno41 * ccoeff
-                                    reffect42 = rdgeno42 * rcoeff
-                                    ceffect42 = rdgeno42 * ccoeff
-                                    reffect43 = rdgeno43 * rcoeff
-                                    ceffect43 = rdgeno43 * ccoeff
+                                    reffect41 = rdgeno41 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                    ceffect41 = rdgeno41 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                                    reffect42 = rdgeno42 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                    ceffect42 = rdgeno42 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                                    reffect43 = rdgeno43 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                                    ceffect43 = rdgeno43 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                                    # calculate varA parts for crosses with male
-                                    varA_part41 = reffect41.dot(D1_mat).dot(ceffect41)
-                                    varA_part42 = reffect42.dot(D1_mat).dot(ceffect42)
-                                    varA_part43 = reffect43.dot(D2_mat).dot(ceffect43)
+                                    # compute dot product for each trait to get partial variance
+                                    # (t,rb)x(rb,cb) -> (t,cb)
+                                    # (t,cb)*(t,cb) -> (t,cb)
+                                    # (t,cb)[1] -> (t,)
+                                    varA_part41 = (reffect41 @ D1_mat * ceffect41).sum(1)
+                                    varA_part42 = (reffect42 @ D1_mat * ceffect42).sum(1)
+                                    varA_part43 = (reffect43 @ D2_mat * ceffect43).sum(1)
 
                                     # calculate varA part for this matrix chunk
                                     varA_part = varA_part21 + varA_part31 + varA_part32 + varA_part41 + varA_part42 + varA_part43
 
                                     # add this partial variance to the lower triangle
-                                    varA_mat[female2,male2,female1,male1] += varA_part
+                                    varA_mat[:,female2,male2,female1,male1] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
         varA_mat /= 4.0
@@ -897,7 +914,7 @@ class Cross:
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female1 in range(1, ntaxa):
             for male1 in range(0, female1):
-                varA_mat[:,:,male1,female1] = varA_mat[:,:,female1,male1]
+                varA_mat[:,:,:,male1,female1] = varA_mat[:,:,:,female1,male1]
 
         return varA_mat
 

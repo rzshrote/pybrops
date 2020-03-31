@@ -1,3 +1,8 @@
+# 3rd party libraries
+
+# our libraries
+from . import SearchSpace
+
 class ContinuousSearchSpace(SearchSpace):
     """docstring for ContinuousSearchSpace."""
 
@@ -5,8 +10,8 @@ class ContinuousSearchSpace(SearchSpace):
     ######################### Reserved object methods ##########################
     ############################################################################
 
-    def __init__(self):
-        super(ContinuousSearchSpace, self).__init__()
+    def __init__(self, name = "Continuous"):
+        super(ContinuousSearchSpace, self).__init__(name)
 
     ############################################################################
     ################################ Properties ################################

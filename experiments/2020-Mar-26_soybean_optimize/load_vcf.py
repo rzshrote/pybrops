@@ -20,7 +20,7 @@ print("loaded egmap")
 oil_model = pybropt.model.ParametricGenomicModel.from_csv(
     "rrBLUP_models.csv",
     mkr_name_ix = 0,
-    coeff_ix = 1
+    coeff_ix = [1,2,3]
 )
 print("loaded oil model")
 
@@ -38,17 +38,17 @@ population.sort()
 print("sorted population")
 
 # calculate GEBVs
-gebv = population.gebv(objcoeff = numpy.array([1.0]))
+gebv = population.gebv(objcoeff = numpy.array([0.333,0.333,0.334]))
 # for g,i in zip(gebv, population.taxa):
 #     print(g,i)
 
 # select top 100
 gebv_ix = gebv.argsort()
-top100_names = population.taxa[gebv_ix[-100:]]
-print(top100_names)
+top10_names = population.taxa[gebv_ix[-10:]]
+print(top10_names)
 
 # remove everything except the top 100 individuals
-population.taxa_remove(top100_names, invert = True)
+population.taxa_remove(top10_names, invert = True)
 print(population.taxa)
 print(len(population.taxa))
 print(population.geno.shape)
@@ -65,9 +65,9 @@ print(population.geno.shape)
 
 cross = pybropt.popgen.Cross(
     population = population,
-    varAfn = "2wayDH",
+    varAfn = "dihybridDH",
     sparse = False,
-    crossfn = "2wayDH",
+    crossfn = "dihybridDH",
     matefn = "ctrl",
     rallocfn = "equal",
     c = 1,
@@ -82,4 +82,4 @@ print(cross.varA(numpy.array([0,1])))
 
 print("calculated varA matrix")
 
-print(cross.varA_2wayDH_mat)
+print(cross.varA_dihybridDH_mat)

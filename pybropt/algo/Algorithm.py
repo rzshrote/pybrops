@@ -1,14 +1,12 @@
-class algorithm:
-    """docstring for algorithm."""
+class Algorithm:
+    """docstring for Algorithm."""
     ############################################################################
     ############################# Class Constants ##############################
     ############################################################################
 
     ############################################################################
-    ########################## Special Object Methods ##########################
+    ######################### Reserved object methods ##########################
     ############################################################################
-
-    @classmethod
     def __init__(self, name = None):
         # initialize empty lists
         self.reset()
@@ -16,7 +14,6 @@ class algorithm:
         # set name
         self._name = name
 
-    @classmethod
     def __len__(self):
         """
         Get the length of the score list.
@@ -27,7 +24,6 @@ class algorithm:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def algoiter():
         doc = "The algoiter property."
         def fget(self):
@@ -75,14 +71,11 @@ class algorithm:
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    @classmethod
     def reset(self):
         self._algoiter = []
         self._score = []
         self._position = []
 
-    @classmethod
     def history_add(self, algoiter, score, position):
         """
         Add algorithm history to this object.
@@ -120,7 +113,6 @@ class algorithm:
         self._position.append(position)     # append pos
         return
 
-    @classmethod
     def concatenate(self):
         if len(self._iter) > 1:
             self._iter = [numpy.concatenate(self._iter, axis=0)]
@@ -129,7 +121,6 @@ class algorithm:
         if len(self._pos) > 1:
             self._pos = [numpy.concatenate(self._pos, axis=0)]
 
-    @classmethod
     def history_to_dict(self):
         """
         Convert history internals to a dictionary.
@@ -158,7 +149,6 @@ class algorithm:
 
         return hist_dict
 
-    @classmethod
     def history_to_df(self, zfill = 3):
         """
         Convert internal history to pandas.DataFrame
@@ -181,7 +171,6 @@ class algorithm:
 
         return df
 
-    @classmethod
     def history_to_csv(self, fname, zfill = 3, *args, **kwargs):
         """
         fname : str
@@ -198,7 +187,6 @@ class algorithm:
 
         df.to_csv(fname, *args, **kwargs)
 
-    @classmethod
     def gbest_ix(self, maxiter = None, cond = None, minimum = True):
         """
         Get the index of the global best position. If multiple global best
@@ -247,7 +235,6 @@ class algorithm:
 
         return ix
 
-    @classmethod
     def gbest(self, maxiter = None, cond = None, minimum = True):
         """
         Get global best iter, score, position as a tuple. If multiple global
@@ -272,11 +259,9 @@ class algorithm:
         # return gbest
         return gbest
 
-    @classmethod
     def optimize(self, objfn, seed = None, nthreads = 1, verbose = False,
             *args, **kwargs):
         raise NotImplementedError("This method not implemented.")
-
 
     ############################################################################
     ############################# Static Methods ###############################

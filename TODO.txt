@@ -18,7 +18,7 @@ Performance Improvements
 
 Known bugs
 ----------
-[ ] mkr_mask and similar functions have tuples where assignments are made.
+[✓] mkr_mask and similar functions have tuples where assignments are made.
     These tuples need to be converted to lists since tuples are immutable.
 
 Feature Additions
