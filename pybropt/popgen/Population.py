@@ -257,7 +257,7 @@ class Population:
             sel = slice(None)
 
         # get view of genotype matrix that is the selections
-        sgeno = geno[:,sel,:]
+        sgeno = self._geno[:,sel,:]
 
         # calculate GEBVs
         gebv = self._genomic_model.predict(sgeno)
@@ -310,6 +310,7 @@ class Population:
 
         # indicate that we've sorted
         self._sorted = True
+        self._marker_set.sorted = True
 
         # calculate grouping indices
         self.group()
@@ -319,12 +320,16 @@ class Population:
         if indices is None:
             return
 
+        # remove taxa names if we have them
+        if (axis == 1) and (self._taxa is not None):
+            self._taxa = numpy.delete(self._taxa, indices)
+
         # remove if we have a marker set
         if (axis == 2) and (self._marker_set is not None):
             self._marker_set.remove(indices, False) # do not auto sort
 
         # delete the keys
-        geno = numpy.delete(geno, indices, axis = axis)
+        self._geno = numpy.delete(self._geno, indices, axis = axis)
 
         # auto sort if needed
         if auto_sort:
@@ -410,14 +415,14 @@ class Population:
 
     def taxa_mask(self, taxa = None, invert = False):
         # NOTE: I set this up as using tuples in case we need to grow
-        masks = (None,)
+        masks = [None]
 
         # test whether self._taxa is in taxa
         if taxa is not None:
             masks[0] = numpy.in1d(self._taxa, taxa)
 
         # filter out None
-        masks = tuple(m for m in masks if m is not None)
+        masks = list(m for m in masks if m is not None)
 
         # default value of None (for cases where len(masks) == 0)
         mask = None
@@ -426,6 +431,7 @@ class Population:
         if len(masks) > 0:
             mask = numpy.logical_and.reduce(masks)
 
+            # invert mask if we need to
             if invert:
                 mask = ~mask
 
@@ -452,10 +458,10 @@ class Population:
             invert = invert
         )
 
-        # remove taxa
-        self.remove(ix, 1, False) # no auto_sort yet
+        # remove taxa; no auto_sort yet
+        self.remove(ix, 1, False)
 
-    def set_marker_set(self, marker_set = None):
+    def set_marker_set(self, marker_set):
         # check we were passed a MarkerSet object
         pybropt.util.check_is_MarkerSet(marker_set, "marker_set")
         pybropt.util.check_matrix_axis_len(self._geno, "self.geno", 2, len(marker_set))
@@ -466,6 +472,12 @@ class Population:
         # check that we were passed a genomic_model
         pybropt.util.check_is_GenomicModel(genomic_model, "genomic_model")
 
+        # if we have a marker set, align the genotypes and markers
+        if self._marker_set is not None:
+            indices = genomic_model.mkr_where(self._marker_set.mkr_name)
+            genomic_model.reorder(indices)
+
+        # set self._genomic_model
         self._genomic_model = genomic_model
 
     def set_taxa(self, taxa):

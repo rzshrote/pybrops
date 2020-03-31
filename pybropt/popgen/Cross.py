@@ -257,8 +257,8 @@ class Cross:
         pybropt.util.check_is_string(rallocfn, "rallocfn")
         pybropt.util.check_is_integer(c, "c")
         pybropt.util.check_is_integer(n, "n")
-        pybropt.util.check_is_integer(s, "s")
-        pybropt.util.check_is_integer(t, "t")
+        pybropt.util.check_is_integer_or_inf(s, "s")
+        pybropt.util.check_is_integer_or_inf(t, "t")
 
         # set private variables
         self._population = population
@@ -626,57 +626,66 @@ class Cross:
         # create aliases for several variables
         geno = self._population.geno
         coeff = self._population.genomic_model.coeff
-        gmap = self._population.genetic_map
+        gmap = self._population.marker_set
         mem = self._mem
 
-        # get the number of individuals
+        # get number of traits (t)
+        ntrait = coeff.shape[1]
+
+        # get the number of individuals (n)
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        varA_mat = numpy.zeros((ntaxa, ntaxa), dtype='float64')
+        varA_mat = numpy.zeros((ntrait, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
             # for each computational chunk
-            for rst,rsp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
-                for cst,csp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
+            for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
+                for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
-                    r = gmap.recomb_prob(rst, rsp, cst, csp)
+                    r = gmap.recomb_prob(rst, rsp, cst, csp) # (rb,cb)
 
                     # calculate a D1 matrix; this is specific to mating scheme
-                    D1_mat = Cross.D1(r, self._s, self._t)
+                    D1_mat = Cross.D1(r, self._s, self._t) # (rb,cb)
 
                     # get marker coefficients for rows and columns
-                    rcoeff = coeff[rst:rsp]
-                    ccoeff = coeff[cst:csp]
+                    rcoeff = coeff[rst:rsp].T # (t,rb) # rb = row block
+                    ccoeff = coeff[cst:csp].T # (t,cb) # cb = column block
 
                     # for each mate pair (excluding selfs)
-                    for female in range(1,n_indiv): # varA row index
+                    for female in range(1,ntaxa): # varA row index
                         for male in range(0,female): # varA col index
                             # calculate genotype differences for row, col {-1,0,1}
-                            rdgeno = geno[0,female,rst:rsp] - geno[0,male,rst:rsp]
-                            cdgeno = geno[0,female,cst:csp] - geno[0,male,cst:csp]
+                            rdgeno = geno[0,female,rst:rsp] - geno[0,male,rst:rsp] # (rb,)
+                            cdgeno = geno[0,female,cst:csp] - geno[0,male,cst:csp] # (cb,)
 
                             # calculate effect differences
-                            reffect = rdgeno * rcoeff
-                            ceffect = cdgeno * ccoeff
+                            reffect = rdgeno * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect = cdgeno * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                            # compute the dot products to get a partial variance
-                            varA_part = reffect.dot(D).dot(ceffect)
+                            # compute dot product for each trait to get partial variance
+                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,cb)*(t,cb) -> (t,cb)
+                            # (t,cb)[1] -> (t,)
+                            varA_part = (reffect @ D1_mat * ceffect).sum(1)
 
                             # add this partial variance to the lower triangle
-                            varA_mat[female,male] += varA_part
+                            varA_mat[:,female,male] += varA_part
+
+                            print(lst, lsp, female, male)
 
         # since varA matrix is symmetrical, copy lower triangle to the upper
-        for female in range(1, n_indiv):
+        for female in range(1, ntaxa):
             for male in range(0, female):
-                varA_mat[male,female] = varA_mat[female,male]
+                varA_mat[:,male,female] = varA_mat[:,female,male]
 
         return varA_mat
 
     def calc_varA_3way_mat(self):
         raise NotImplementedError
 
+    # TODO: reimplement for multi-trait variance components
     def calc_varA_3wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -687,7 +696,7 @@ class Cross:
         # create aliases for several variables
         geno = self._population.geno
         coeff = self._population.genomic_model.coeff
-        gmap = self._population.genetic_map
+        gmap = self._population.marker_set
         mem = self._mem
 
         # get the number of individuals
@@ -699,8 +708,8 @@ class Cross:
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
             # for each computational chunk
-            for rst,rsp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
-                for cst,csp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
+            for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
+                for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
                     r = gmap.recomb_prob(rst, rsp, cst, csp)
 
@@ -773,6 +782,7 @@ class Cross:
     def calc_varA_4way_mat(self):
         raise NotImplementedError
 
+    # TODO: reimplement for multi-trait variance components
     def calc_varA_4wayDH_mat(self):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
@@ -783,7 +793,7 @@ class Cross:
         # create aliases for several variables
         geno = self._population.geno
         coeff = self._population.genomic_model.coeff
-        gmap = self._population.genetic_map
+        gmap = self._population.marker_set
         mem = self._mem
 
         # get the number of individuals
@@ -795,8 +805,8 @@ class Cross:
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
             # for each computational chunk
-            for rst,rsp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
-                for cst,csp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
+            for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
+                for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
                     r = gmap.recomb_prob(rst, rsp, cst, csp)
 
@@ -904,32 +914,35 @@ class Cross:
         # create aliases for several variables
         geno = self._population.geno
         coeff = self._population.genomic_model.coeff
-        gmap = self._population.genetic_map
+        gmap = self._population.marker_set
         mem = self._mem
+
+        # get number of traits (t)
+        ntrait = coeff.shape[1]
 
         # get the number of individuals
         ntaxa = geno.shape[1]
 
         # allocate a square matrix for each pairwise variance
-        varA_mat = numpy.zeros((ntaxa, ntaxa), dtype='float64')
+        varA_mat = numpy.zeros((ntrait, ntaxa, ntaxa), dtype='float64')
 
         # for each linkage group
         for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
             # for each computational chunk
-            for rst,rsp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
-                for cst,csp in zip(range(lst,lsp,mem),srange(lst+mem,lsp,mem)):
+            for rst,rsp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
+                for cst,csp in zip(range(lst,lsp,mem),pybropt.util.srange(lst+mem,lsp,mem)):
                     # get recombination probability matrix for chunk
-                    r = gmap.recomb_prob(rst, rsp, cst, csp)
+                    r = gmap.recomb_prob(rst, rsp, cst, csp) # (rb,cb)
 
                     # calculate a D1 matrix; this is specific to mating scheme
-                    D1_mat = Cross.D1(r, self._s, self._t)
+                    D1_mat = Cross.D1(r, self._s, self._t) # (rb,cb)
 
                     # calculate a D2 matrix; this is specific to mating scheme
-                    D2_mat = Cross.D2(r, self._s, self._t)
+                    D2_mat = Cross.D2(r, self._s, self._t) # (rb,cb)
 
                     # get marker coefficients for rows and columns
-                    rcoeff = coeff[rst:rsp]
-                    ccoeff = coeff[cst:csp]
+                    rcoeff = coeff[rst:rsp].T # (t,rb) # rb = row block
+                    ccoeff = coeff[cst:csp].T # (t,cb) # cb = column block
 
                     # for each mate pair (including selfs)
                     # subscript codes:
@@ -937,49 +950,52 @@ class Cross:
                     #   2 = female phase 1
                     #   3 = male phase 2
                     #   4 = male phase 1
-                    for female in range(0,n_indiv):     # varA row index
+                    for female in range(0,ntaxa):     # varA row index
                         for male in range(0,female):    # varA col index
                             # calculate genotype differences for row, col
-                            rdgeno21 = geno[0,female,rst:rsp] - geno[1,female,rst:rsp]
-                            cdgeno21 = geno[0,female,cst:csp] - geno[1,female,cst:csp]
-                            rdgeno31 = geno[1,male,rst:rsp] - geno[1,female,rst:rsp]
-                            cdgeno31 = geno[1,male,cst:csp] - geno[1,female,cst:csp]
-                            rdgeno32 = geno[1,male,rst:rsp] - geno[0,female,rst:rsp]
-                            cdgeno32 = geno[1,male,cst:csp] - geno[0,female,cst:csp]
-                            rdgeno41 = geno[0,male,rst:rsp] - geno[1,female,rst:rsp]
-                            cdgeno41 = geno[0,male,cst:csp] - geno[1,female,cst:csp]
-                            rdgeno42 = geno[0,male,rst:rsp] - geno[0,female,rst:rsp]
-                            cdgeno42 = geno[0,male,cst:csp] - geno[0,female,cst:csp]
-                            rdgeno43 = geno[0,male,rst:rsp] - geno[1,male,rst:rsp]
-                            cdgeno43 = geno[0,male,cst:csp] - geno[1,male,cst:csp]
+                            rdgeno21 = geno[0,female,rst:rsp] - geno[1,female,rst:rsp] # (rb,)
+                            cdgeno21 = geno[0,female,cst:csp] - geno[1,female,cst:csp] # (cb,)
+                            rdgeno31 = geno[1,male,rst:rsp] - geno[1,female,rst:rsp] # (rb,)
+                            cdgeno31 = geno[1,male,cst:csp] - geno[1,female,cst:csp] # (cb,)
+                            rdgeno32 = geno[1,male,rst:rsp] - geno[0,female,rst:rsp] # (rb,)
+                            cdgeno32 = geno[1,male,cst:csp] - geno[0,female,cst:csp] # (cb,)
+                            rdgeno41 = geno[0,male,rst:rsp] - geno[1,female,rst:rsp] # (rb,)
+                            cdgeno41 = geno[0,male,cst:csp] - geno[1,female,cst:csp] # (cb,)
+                            rdgeno42 = geno[0,male,rst:rsp] - geno[0,female,rst:rsp] # (rb,)
+                            cdgeno42 = geno[0,male,cst:csp] - geno[0,female,cst:csp] # (cb,)
+                            rdgeno43 = geno[0,male,rst:rsp] - geno[1,male,rst:rsp] # (rb,)
+                            cdgeno43 = geno[0,male,cst:csp] - geno[1,male,cst:csp] # (cb,)
 
                             # calculate effect differences
-                            reffect21 = rdgeno21 * rcoeff
-                            ceffect21 = cdgeno21 * ccoeff
-                            reffect31 = rdgeno31 * rcoeff
-                            ceffect31 = cdgeno31 * ccoeff
-                            reffect32 = rdgeno32 * rcoeff
-                            ceffect32 = cdgeno32 * ccoeff
-                            reffect41 = rdgeno41 * rcoeff
-                            ceffect41 = rdgeno41 * ccoeff
-                            reffect42 = rdgeno42 * rcoeff
-                            ceffect42 = rdgeno42 * ccoeff
-                            reffect43 = rdgeno43 * rcoeff
-                            ceffect43 = rdgeno43 * ccoeff
+                            reffect21 = rdgeno21 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect21 = cdgeno21 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                            reffect31 = rdgeno31 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect31 = cdgeno31 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                            reffect32 = rdgeno32 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect32 = cdgeno32 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                            reffect41 = rdgeno41 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect41 = rdgeno41 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                            reffect42 = rdgeno42 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect42 = rdgeno42 * ccoeff # (cb,)*(t,cb) -> (t,cb)
+                            reffect43 = rdgeno43 * rcoeff # (rb,)*(t,rb) -> (t,rb)
+                            ceffect43 = rdgeno43 * ccoeff # (cb,)*(t,cb) -> (t,cb)
 
-                            # calculate varA part for female2-male
-                            varA_part21 = reffect21.dot(D2_mat).dot(ceffect21)
-                            varA_part31 = reffect31.dot(D1_mat).dot(ceffect31)
-                            varA_part32 = reffect32.dot(D1_mat).dot(ceffect32)
-                            varA_part41 = reffect41.dot(D1_mat).dot(ceffect41)
-                            varA_part42 = reffect42.dot(D1_mat).dot(ceffect42)
-                            varA_part43 = reffect43.dot(D2_mat).dot(ceffect43)
+                            # compute dot product for each trait to get partial variance
+                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,cb)*(t,cb) -> (t,cb)
+                            # (t,cb)[1] -> (t,)
+                            varA_part21 = (reffect21 @ D2_mat * ceffect21).sum(1)
+                            varA_part31 = (reffect31 @ D1_mat * ceffect31).sum(1)
+                            varA_part32 = (reffect32 @ D1_mat * ceffect32).sum(1)
+                            varA_part41 = (reffect41 @ D1_mat * ceffect41).sum(1)
+                            varA_part42 = (reffect42 @ D1_mat * ceffect42).sum(1)
+                            varA_part43 = (reffect43 @ D2_mat * ceffect43).sum(1)
 
                             # calculate varA part for this matrix chunk
                             varA_part = varA_part21 + varA_part31 + varA_part32 + varA_part41 + varA_part42 + varA_part43
 
                             # add this partial variance to the lower triangle
-                            varA_mat[female,male] += varA_part
+                            varA_mat[:,female,male] += varA_part
 
         # divide entire matrix by 4 to get variance per the equation
         varA_mat /= 4.0
@@ -989,7 +1005,7 @@ class Cross:
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female in range(1, ntaxa):
             for male in range(0, female):
-                varA_mat[male,female] = varA_mat[female,male]
+                varA_mat[:,male,female] = varA_mat[:,female,male]
 
         return varA_mat
 
@@ -1092,7 +1108,7 @@ class Cross:
         male = sel[1::2]
 
         # get variance terms
-        varA_val = self._varA_2wayDH_mat[female,male]
+        varA_val = self._varA_2wayDH_mat[:,female,male]
 
         # return variance terms
         return varA_val
@@ -1135,7 +1151,7 @@ class Cross:
         male = sel[2::3]
 
         # get variance terms
-        varA_val = self._varA_3wayDH_mat[recurr,female,male]
+        varA_val = self._varA_3wayDH_mat[:,recurr,female,male]
 
         # return variance terms
         return varA_val
@@ -1181,7 +1197,7 @@ class Cross:
         male = sel[3::4]
 
         # get variance terms
-        varA_val = self._varA_4wayDH_mat[female2,male2,female1,male1]
+        varA_val = self._varA_4wayDH_mat[:,female2,male2,female1,male1]
 
         # return variance terms
         return varA_val
@@ -1220,7 +1236,7 @@ class Cross:
         male = sel[1::2]
 
         # get variance terms
-        varA_val = self._varA_dihybridDH_mat[female,male]
+        varA_val = self._varA_dihybridDH_mat[:,female,male]
 
         # return variance terms
         return varA_val
@@ -1259,7 +1275,7 @@ class Cross:
         male = sel[:,1::2]
 
         # get variance terms
-        varA_val = self._varA_2wayDH_mat[female,male]
+        varA_val = self._varA_2wayDH_mat[:,female,male]
 
         # return variance terms
         return varA_val
@@ -1301,7 +1317,7 @@ class Cross:
         male = sel[:,2::3]
 
         # get variance terms
-        varA_val = self._varA_3wayDH_mat[recurr,female,male]
+        varA_val = self._varA_3wayDH_mat[:,recurr,female,male]
 
         # return variance terms
         return varA_val
@@ -1346,7 +1362,7 @@ class Cross:
         male = sel[:,3::4]
 
         # get variance terms
-        varA_val = self._varA_4wayDH_mat[female2,male2,female1,male1]
+        varA_val = self._varA_4wayDH_mat[:,female2,male2,female1,male1]
 
         # return variance terms
         return varA_val
@@ -1385,7 +1401,7 @@ class Cross:
         male = sel[:,1::2]
 
         # get variance terms
-        varA_val = self._varA_dihybridDH_mat[female,male]
+        varA_val = self._varA_dihybridDH_mat[:,female,male]
 
         # return variance terms
         return varA_val
@@ -1526,7 +1542,7 @@ class Cross:
         geno = mate_mat(
             matepair,
             self._population.geno,
-            self._population.genetic_map,
+            self._population.marker_set,
             n
         )
 
@@ -1535,7 +1551,7 @@ class Cross:
         population = Population(
             geno,
             self._population.genomic_model,
-            self._population.genetic_map
+            self._population.marker_set
         )
 
         return population
@@ -1611,14 +1627,14 @@ class Cross:
             geno = mate_mat(
                 matepair,
                 self._population.geno,
-                self._population.genetic_map,
+                self._population.marker_set,
             )
 
             # make doubled haploids from the hybrid genotypes
             geno = dh_mat(
                 numpy.arange(geno.shape[1]), # all hybrids
                 geno,
-                self._population.genetic_map,
+                self._population.marker_set,
                 n,
                 s,
             )
@@ -1630,7 +1646,7 @@ class Cross:
         population = Population(
             geno,
             self._population.genomic_model,
-            self._population.genetic_map
+            self._population.marker_set
         )
 
         return population
@@ -1694,7 +1710,7 @@ class Cross:
         geno = mate_mat(
             cross1,
             self._population.geno,
-            self._population.genetic_map,
+            self._population.marker_set,
             1
         )
 
@@ -1714,7 +1730,7 @@ class Cross:
         geno = mate_mat(
             cross2,
             geno,
-            self._population.genetic_map,
+            self._population.marker_set,
             n
         )
 
@@ -1723,7 +1739,7 @@ class Cross:
         population = Population(
             geno,
             self._population.genomic_model,
-            self._population.genetic_map
+            self._population.marker_set
         )
 
         return population
@@ -1801,7 +1817,7 @@ class Cross:
             geno = mate_mat(
                 cross1,
                 self._population.geno,
-                self._population.genetic_map,
+                self._population.marker_set,
                 1
             )
 
@@ -1821,7 +1837,7 @@ class Cross:
             geno = dh_mat(
                 cross2,
                 geno,
-                self._population.genetic_map,
+                self._population.marker_set,
                 n,
                 s
             )
@@ -1833,7 +1849,7 @@ class Cross:
         population = Population(
             geno,
             self._population.genomic_model,
-            self._population.genetic_map
+            self._population.marker_set
         )
 
         return population

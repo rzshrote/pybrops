@@ -16,6 +16,11 @@ Performance Improvements
     improve performance by eliminating if statements.
 [ ] improve vcf load speeds
 
+Known bugs
+----------
+[ ] mkr_mask and similar functions have tuples where assignments are made.
+    These tuples need to be converted to lists since tuples are immutable.
+
 Feature Additions
 -----------------
 [ ] calc_D in Population class.
@@ -34,6 +39,12 @@ Feature Additions
 [ ] Population: expand mkr_rename, taxa_rename to have rename at specific locations
 [ ] Population: auto_sort for taxa
 [ ] Maybe have mkr base class for handling mkr related things?
+[ ] Copy methods for objects.
+[ ] get functools working (3rd party package compile issue)
+    [ ] remove temporary loop fix
+[ ] object print/head statements
+[ ] hapmap import
+[ ] Cross: auto detect progeny variance from simulations or matrix math
 
 Documentation
 -------------

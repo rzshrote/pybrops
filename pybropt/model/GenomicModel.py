@@ -1,4 +1,5 @@
 # 3rd party
+import numpy
 
 # our libraries
 import pybropt.util
@@ -33,6 +34,7 @@ class GenomicModel:
 
         # set private variables
         self._trait = trait
+        self._mkr_name = mkr_name
         self._model_name = model_name
 
     ############################################################################
@@ -108,7 +110,7 @@ class GenomicModel:
     def remove(self, indices):
         raise NotImplementedError("The method 'remove' is abstract.")
 
-    def mkr_where(self, mkr_name = None):
+    def mkr_where(self, mkr_name):
         """
         Find indices for where a marker is. Indices match the order of the
         input.
@@ -116,6 +118,9 @@ class GenomicModel:
         # if nothing was given return nothing
         if mkr_name is None:
             return None
+
+        if self._mkr_name is None:
+            raise RuntimeError("marker names not provided")
 
         # build marker name location arrays
         finds = [numpy.flatnonzero(self._mkr_name == e) for e in mkr_name]
@@ -141,7 +146,7 @@ class GenomicModel:
                 raise ValueError("Multi-mapping detected at:%s" % s)
 
             # set matrix value
-            where[i] = l if l > 0 else -1
+            where[i] = f[0] if l > 0 else -1
 
         # return where array
         return where

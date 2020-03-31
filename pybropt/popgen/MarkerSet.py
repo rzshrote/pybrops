@@ -1,6 +1,6 @@
 # 3rd party libraries
 import numpy
-import functools.reduce
+# import functools.reduce
 
 # import out libraries
 import pybropt.util
@@ -167,13 +167,13 @@ class MarkerSet:
     def lexsort(self, keys = None):
         # if no keys were provided, set a default
         if keys is None:
-            keys = (self._mkr_name, self._chr_stop, self._chr_start, self._chr_grp)
+            keys = [self._mkr_name, self._chr_stop, self._chr_start, self._chr_grp]
         else:
             for i,k in enumerate(keys):
                 pybropt.util.check_matrix_size(k, "key"+i, self.__len__())
 
-        # filter out None; build tuple
-        keys = tuple(k for k in keys if k is not None)
+        # filter out None; build list
+        keys = list(k for k in keys if k is not None)
 
         # get indices
         indices = numpy.lexsort(keys)
@@ -268,7 +268,7 @@ class MarkerSet:
         Make a mask of entries in the MarkerSet that have the designated markers.
         """
         # make a tuple of None values (one for each argument)
-        masks = (None, None, None, None)
+        masks = [None, None, None, None]
 
         # test whether chr_grp is in self._chr_grp_name
         if chr_grp is not None:
@@ -284,7 +284,7 @@ class MarkerSet:
             masks[3] = numpy.in1d(self._mkr_name, mkr_name)
 
         # filter out None
-        masks = tuple(m for m in masks if m is not None)
+        masks = list(m for m in masks if m is not None)
 
         # default value of None (for cases where len(masks) == 0)
         mask = None
@@ -293,6 +293,7 @@ class MarkerSet:
         if len(masks) > 0:
             mask = numpy.logical_and.reduce(masks)
 
+            # invert mask if we need to
             if invert:
                 mask = ~mask
 
@@ -338,7 +339,7 @@ class MarkerSet:
         """
         # initialize tuple of empty variables
         # these represent chr_grp_ix, chr_start_ix, chr_stop_ix, mkr_name_ix
-        finds = (None, None, None, None)
+        finds = [None, None, None, None]
 
         # if chromosome group given, build locations arrays
         if chr_grp is not None:
@@ -357,16 +358,19 @@ class MarkerSet:
             finds[3] = [numpy.flatnonzero(self._mkr_name == e) for e in mkr_name]
 
         # remove None from list of finds
-        finds = (f for f in finds if f is not None)
+        finds = tuple(f for f in finds if f is not None)
 
         # overlap the finds
         overlap = None
         if len(finds) > 1:
+            overlap = finds[0]
+            for i in range(1, len(finds)):
+                overlap = [numpy.intersect1d(overlap[j], e) for j,e in enumerate(finds[i])]
             # if we are searchign for overlapping keys, intersect
-            overlap = [functools.reduce(numpy.intersect1d, e) for e in zip(*finds)]
+            # overlap = [functools.reduce(numpy.intersect1d, e) for e in zip(*finds)]
         elif len(finds) == 1:
-            # if we are just searching for one key, unpack it
-            overlap = *finds
+            # if we are just searching for one key, grab only element
+            overlap = finds[0]
         else:
             # otherwise, return None
             return overlap

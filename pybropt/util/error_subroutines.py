@@ -40,6 +40,10 @@ def check_is_integer_or_floating(var, varname):
         (not numpy.issubdtype(dtype_var, numpy.floating))):
         raise TypeError("'%s' must be an integer or floating dtype." % varname)
 
+def check_is_integer_or_inf(var, varname):
+    if ((not numpy.issubdtype(type(var), numpy.integer)) and (var != numpy.inf)):
+        raise TypeError("'%s' must be an integer dtype or infinity." % varname)
+
 def check_is_string_or_object_dtype(dtype, varname):
     if ((not numpy.issubdtype(dtype, numpy.str_)) and
         (not numpy.issubdtype(dtype, numpy.object_))):

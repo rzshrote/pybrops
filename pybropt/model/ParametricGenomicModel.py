@@ -112,10 +112,12 @@ class ParametricGenomicModel(GenomicModel):
 
         Parameters
         ----------
-        a : numpy.ndarray
+        indices : numpy.ndarray
             An array of indices specifying reordering of self.coeff.
         """
         self._coeff = self._coeff[indices]
+        if self._mkr_name is not None:
+            self._mkr_name = self._mkr_name[indices]
 
     ############################################################################
     ############################# Static Methods ###############################
@@ -151,10 +153,6 @@ class ParametricGenomicModel(GenomicModel):
             trait = numpy.string_([str(e) for e in trait])
         else:
             trait = numpy.string_([trait])
-
-        print(trait)
-        # extract trait names
-        # trait = numpy.string_([str(e) for e in coeff_df.columns])
 
         # make genomic model
         genomic_model = ParametricGenomicModel(
