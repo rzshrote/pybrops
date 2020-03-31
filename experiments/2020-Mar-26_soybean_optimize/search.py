@@ -10,16 +10,17 @@ import numpy
 import pybropt.algo
 
 sspace = pybropt.algo.CategoricalSearchSpace(
-    ["garbage"], ["garbage"], "Categorical Test",
+    None, None, "Categorical Test",
     [1,2,3,4],
-    [3,4,5,6]
+    [3,4,5,6],
+    [4,5,6,7,8,9,0]
 )
 
-print(sspace.space)
-print(type(sspace.space))
-
-print(sspace.state)
-print(type(sspace.state))
-
-print(sspace.dim_size)
-print(type(sspace.dim_size))
+icpso = pybropt.algo.ICPSO(
+    ssize = 10,
+    inertia_wt = 0.33,
+    pbest_comp = 0.33,
+    gbest_comp = 0.34,
+    scale_factor = 0.1,
+    search_space = sspace
+)

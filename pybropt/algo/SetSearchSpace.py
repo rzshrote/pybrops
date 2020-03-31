@@ -3,7 +3,6 @@
 # our libraries
 from . import SearchSpace
 
-# NOTE: this class is deprecated
 class SetSearchSpace(SearchSpace):
     """docstring for SetSearchSpace."""
 

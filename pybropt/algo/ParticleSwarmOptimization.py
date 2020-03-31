@@ -1,7 +1,9 @@
 # 3rd party libraries
+import numpy
 
 # our libraries
 from . import Algorithm
+import pybropt.util
 
 class ParticleSwarmOptimization(Algorithm):
     """docstring for ParticleSwarmOptimization."""
@@ -28,10 +30,10 @@ class ParticleSwarmOptimization(Algorithm):
         super(ParticleSwarmOptimization, self).__init__()
 
         # type checks
-        check_is_integer(ssize, "ssize")
-        check_is_numeric(inertia_wt, "inertia_wt")
-        check_is_numeric(pbest_comp, "pbest_comp")
-        check_is_numeric(gbest_comp, "gbest_comp")
+        pybropt.util.check_is_integer(ssize, "ssize")
+        pybropt.util.check_is_numeric(inertia_wt, "inertia_wt")
+        pybropt.util.check_is_numeric(pbest_comp, "pbest_comp")
+        pybropt.util.check_is_numeric(gbest_comp, "gbest_comp")
 
         # set private variables
         self._ssize = ssize
@@ -121,8 +123,8 @@ class ParticleSwarmOptimization(Algorithm):
             1D or 2D matrix of positions.
         """
         # get lengths if they have them
-        algoiter_len = cond_len(algoiter)
-        score_len = cond_len(score)
+        algoiter_len = pybropt.util.cond_len(algoiter)
+        score_len = pybropt.util.cond_len(score)
         #position_len = cond_len(position)   # not needed
 
         # convert things to arrays
