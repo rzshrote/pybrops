@@ -2,6 +2,7 @@
 import numpy
 
 # import our libraries
+from . import Population
 import pybropt.util
 
 class Cross:
@@ -672,8 +673,6 @@ class Cross:
 
                             # add this partial variance to the lower triangle
                             varA_mat[:,female,male] += varA_part
-
-                            print(lst, lsp, female, male)
 
         # since varA matrix is symmetrical, copy lower triangle to the upper
         for female in range(1, ntaxa):
@@ -1542,7 +1541,7 @@ class Cross:
             c, n = self.ralloc(sel)
 
         # seed rng
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # repeat the female, male parents 'c' times
         fsel = numpy.repeat(sel[0::2], c)
@@ -1556,7 +1555,7 @@ class Cross:
         matepair[1::2] = msel
 
         # make genotypes
-        geno = mate_mat(
+        geno = Cross.mate_mat(
             matepair,
             self._population.geno,
             self._population.marker_set,
@@ -1623,7 +1622,7 @@ class Cross:
             c, n, s, t = self.ralloc(sel)
 
         # seed rng
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # repeat the female, male parents 'c' times
         fsel = numpy.repeat(sel[0::2], c)
@@ -1641,14 +1640,15 @@ class Cross:
 
         if t == 0:
             # make genotypes
-            geno = mate_mat(
+            geno = Cross.mate_mat(
                 matepair,
                 self._population.geno,
                 self._population.marker_set,
+                1
             )
 
             # make doubled haploids from the hybrid genotypes
-            geno = dh_mat(
+            geno = Cross.dh_mat(
                 numpy.arange(geno.shape[1]), # all hybrids
                 geno,
                 self._population.marker_set,
@@ -1662,8 +1662,8 @@ class Cross:
 
         population = Population(
             geno,
-            self._population.genomic_model,
-            self._population.marker_set
+            self._population.marker_set,
+            self._population.genomic_model
         )
 
         return population
@@ -1709,7 +1709,7 @@ class Cross:
             c, n = self.ralloc(sel)
 
         # seed rng
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # repeat the recurrent, female, male parents 'c' times
         rsel = numpy.repeat(sel[0::3], c)
@@ -1724,7 +1724,7 @@ class Cross:
         cross1[1::2] = msel
 
         # make hybrid (female x male) genotypes
-        geno = mate_mat(
+        geno = Cross.mate_mat(
             cross1,
             self._population.geno,
             self._population.marker_set,
@@ -1744,7 +1744,7 @@ class Cross:
         cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
         cross2[1::2] = hsel
 
-        geno = mate_mat(
+        geno = Cross.mate_mat(
             cross2,
             geno,
             self._population.marker_set,
@@ -1812,7 +1812,7 @@ class Cross:
             c, n, s, t = self.ralloc(sel)
 
         # seed rng
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # repeat the recurrent, female, male parents 'c' times
         rsel = numpy.repeat(sel[0::3], c)
@@ -1831,7 +1831,7 @@ class Cross:
             cross1[1::2] = msel
 
             # make hybrid (female x male) genotypes
-            geno = mate_mat(
+            geno = Cross.mate_mat(
                 cross1,
                 self._population.geno,
                 self._population.marker_set,
@@ -1851,7 +1851,7 @@ class Cross:
             cross2[0::2] = (rsel + len(fsel)) # offset rsel indices by hybrid number
             cross2[1::2] = hsel
 
-            geno = dh_mat(
+            geno = Cross.dh_mat(
                 cross2,
                 geno,
                 self._population.marker_set,
@@ -2014,7 +2014,7 @@ class Cross:
             c, n, weight = self.ralloc(sel)
 
         # seed rng if needed
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # randomly choose indices for female, male parents
         fsel = numpy.random.choice(sel[0::2], c, True, weight[0::2])
@@ -2038,7 +2038,7 @@ class Cross:
             c, n, weight, s, t = self.ralloc(sel)
 
         # seed rng if needed
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # randomly choose indices for female, male parents
         fsel = numpy.random.choice(sel[0::2], c, True, weight[0::2])
@@ -2120,7 +2120,7 @@ class Cross:
             c, n, exact = self.ralloc(sel)
 
         # seed rng if needed
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # replicate female, male exact number of times
         fsel = numpy.repeat(sel[0::2], c * exact[0::2])
@@ -2148,7 +2148,7 @@ class Cross:
             c, n, exact, s, t = self.ralloc(sel)
 
         # seed rng if needed
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # replicate female, male exact number of times
         fsel = numpy.repeat(sel[0::2], c * exact[0::2])
@@ -2335,9 +2335,63 @@ class Cross:
     ##############################################
     ############################################################################
 
+    def copy(self):
+        """
+        Create copy of self.
+
+        Returns
+        -------
+        cross : Cross
+            A Cross object with identical properties to the originating object.
+        """
+        # create new Cross object
+        cross = Cross(
+            population  = self._population,
+            varAfn      = self._varAfn,
+            sparse      = self._sparse,
+            crossfn     = self._crossfn,
+            matefn      = self._matefn,
+            rallocfn    = self._rallocfn,
+            c           = self._c,
+            n           = self._n,
+            s           = self._s,
+            t           = self._t,
+            mem         = self._mem
+        )
+
+        return cross
+
+    def from_self(self, population = None, varAfn = None, sparse = None,
+        crossfn = None, matefn = None, rallocfn = None, c = None, n = None,
+        s = None, t = None, mem = None):
+        """
+        Create a new Cross object from the current Cross object with options to
+        alter variables (e.g. population).
+
+        Returns
+        -------
+        cross : Cross
+            A Cross object.
+        """
+        # create new Cross object
+        cross = Cross(
+            population  = self._population if population is None else population,
+            varAfn      = self._varAfn if varAfn is None else varAfn,
+            sparse      = self._sparse if sparse is None else sparse,
+            crossfn     = self._crossfn if crossfn is None else crossfn,
+            matefn      = self._matefn if matefn is None else matefn,
+            rallocfn    = self._rallocfn if rallocfn is None else rallocfn,
+            c           = self._c if c is None else c,
+            n           = self._n if n is None else n,
+            s           = self._s if s is None else s,
+            t           = self._t if t is None else t,
+            mem         = self._mem if mem is None else mem
+        )
+
+        return cross
 
     ############################################################################
-    ############################# Static Methods ###############################
+    ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
     def rk(r, k):
@@ -2545,7 +2599,7 @@ class Cross:
             Where:
         """
         # if there is a RNG seed, seed the RNG
-        cond_seed_rng(seed)
+        pybropt.util.cond_seed_rng(seed)
 
         # make aliases for variables
         gstix = genetic_map.chr_grp_stix
@@ -2571,18 +2625,18 @@ class Cross:
         rnd = numpy.random.uniform(
             0,  # minimum of 0 (inclusive)
             1,  # maximum of 1 (exclusive)
-            (len(sel), len(prob))   # num sel x num potential crossover points
+            (len(fsel), len(prob))   # num fsel x num potential crossover points
         )
 
         # make a matrix of random numbers indicating the starting phase
         sphase = numpy.random.binomial(
             1,      # choose phase index 0 or 1
             0.5,    # 50% prob of 0 or 1
-            (len(sel), len(genetic_map.chr_grp_len))    # num sel x num chr
+            (len(fsel), len(genetic_map.chr_grp_len))    # num fsel x num chr
         )
 
-        # for each gamete (i) from a parent (s)
-        for i,s in enumerate(sel):
+        # for each gamete (i) from a female parent (s)
+        for i,s in enumerate(fsel):
             # for each linkage group (j)
             for j,(gst,gsp,pst,psp) in enumerate(zip(gstix,gspix,pstix,pspix)):
                 # determine where crossovers occur (add 1 for exclusive index)
@@ -2594,7 +2648,7 @@ class Cross:
                 # start point offset
                 spt = 0
 
-                # for each crossover position
+                # for each crossover position (end point = ept)
                 for ept in xo:
                     # fill gamete genotype
                     gamete[i,gst+spt:gst+ept] = geno[phase,s,gst+spt:gst+ept]

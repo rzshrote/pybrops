@@ -151,6 +151,10 @@ class OPV(GenomicSelection):
 
     def optimize(self, objcoeff = None, negate = True, algorithm = None, gbestix = 2, *args, **kwargs):
         """
+        Optimize the provided population.
+
+        Parameters
+        ----------
         objcoeff : numpy.ndarray, None
             An objective coefficients matrix of shape (t,).
             Where:

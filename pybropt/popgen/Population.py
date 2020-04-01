@@ -4,6 +4,7 @@ import numpy
 
 # import our libraries
 import pybropt.popgen.MarkerSet
+import pybropt.popgen.GeneticMap
 import pybropt.util
 
 class Population:
@@ -60,6 +61,9 @@ class Population:
             self.set_taxa(taxa)
 
         self._sorted = False
+
+    def __len__(self):
+        return self._geno.shape[1]
 
     ############################################################################
     ############################ Object Properties #############################
@@ -314,6 +318,13 @@ class Population:
 
         # calculate grouping indices
         self.group()
+
+        if isinstance(self._marker_set, pybropt.popgen.GeneticMap):
+            # remove any discrepancies in map
+            self._marker_set.remove_discrepancies()
+
+            # calculate crossover probabilities
+            self._marker_set.calc_xo_prob()
 
     def remove(self, indices, axis, auto_sort = False):
         # if we have nothing, do nothing

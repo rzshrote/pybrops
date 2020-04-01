@@ -703,7 +703,36 @@ class GeneticMap(MarkerSet):
             self._map_fncode = self._map_fncode[indices]
 
     # group(self) not in need of being overridden
-    # sort(self, keys) not in need of being overridden
+
+    def sort(self, keys = None):
+        """
+        Sort marker set.
+        """
+        # get indices for sort
+        indices = self.lexsort(keys)
+
+        # reorder internals
+        self.reorder(indices)
+
+        # indicate that we've sorted
+        self._sorted = True
+
+        # calculate grouping indices
+        self.group()
+
+        # remove any discrepancies in map
+        self.remove_discrepancies()
+
+        # calculate crossover probabilities
+        self.calc_xo_prob()
+
+        print(len(self))
+        for i in range(100):
+            print(self._map_pos[i], self._xo_prob[i])
+
+
+
+
 
     ############################################################################
     ############################# Static Methods ###############################
