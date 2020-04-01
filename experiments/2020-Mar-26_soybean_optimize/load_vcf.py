@@ -10,6 +10,7 @@ numpy.set_printoptions(threshold=sys.maxsize)
 # our libraries
 import pybropt.popgen
 import pybropt.model
+import pybropt.breed
 
 # attempt load of large genetic map
 gmap = pybropt.popgen.GeneticMap.from_egmap("Song_2016.linear.M.egmap")
@@ -46,6 +47,7 @@ top10_names = population.taxa[gebv_ix[-10:]]
 
 # remove everything except the top 10 individuals
 population.taxa_remove(top10_names, invert = True)
+
 # l = 0
 # for t in zip(population.marker_set.mkr_name,
 #              population.marker_set.map_pos,
@@ -73,12 +75,12 @@ cross = pybropt.popgen.Cross(
 print("created cross")
 
 # print(population.marker_set.map_pos)
-
 # population.geno[:,[1,3],:] += 4
-
-new_population = cross.mate(
-    numpy.array([1,2,3,4])
-)
-
-print(len(new_population))
+# new_population = cross.mate(
+#     numpy.array([1,2,3,4])
+# )
+#
+# print(len(new_population))
 # print(new_population.geno)
+
+cgs = pybropt.breed.CGS(population, cross)

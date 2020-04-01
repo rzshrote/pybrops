@@ -1,4 +1,9 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
 from . import GenomicSelection
+import pybropt.util
 
 class OPV(GenomicSelection):
     """docstring for OPV."""
@@ -10,10 +15,13 @@ class OPV(GenomicSelection):
         super(OPV, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
-        check_is_ParametricGenomicModel(self._population.genomic_model)
+        pybropt.util.check_is_ParametricGenomicModel(
+            self._population.genomic_model,
+            "population.genomic_model"
+        )
 
         # calculate hcoeff if needed
-        if coeff is None:
+        if hcoeff is None:
             hcoeff = self.calc_hcoeff()
 
         self._hcoeff = hcoeff
@@ -48,7 +56,7 @@ class OPV(GenomicSelection):
         )
         return hcoeff
 
-    def objfn(self, sel, objcoeff = None, negate = True):
+    def objfn(self, sel, objcoeff = None, minimize = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -85,7 +93,7 @@ class OPV(GenomicSelection):
         )
 
         # negate OPV scores if necessary
-        if negate:
+        if minimize:
             opv = -opv
 
         # take the dot product if necessary
@@ -149,7 +157,7 @@ class OPV(GenomicSelection):
 
         return opv
 
-    def optimize(self, objcoeff = None, negate = True, algorithm = None, gbestix = 2, *args, **kwargs):
+    def optimize(self, *args, objcoeff = None, minimize = True, algorithm = None, **kwargs):
         """
         Optimize the provided population.
 
@@ -180,20 +188,20 @@ class OPV(GenomicSelection):
                 'k' is the number of individuals to select.
                 't' is the number of objectives.
         """
+        # ALWAYS begin with reseting the optimizing algorithm to remove history
+        algorithm.reset()
+
         # we pass objcoeff onto optimizer. This will handle multiobjective.
         algorithm.optimize(
             self.objfn,
             *args,
             **kwargs,
             objcoeff = objcoeff,
-            negate = negate
+            minimize = minimize
         )
 
-        # get global best
-        gbest = algorithm.gbest()
-
-        # get selection indices or whole tuple
-        sel = gbest[gbestix] if gbestix is not None else gbest
+        # get global best configuration within the search space
+        sel = algorithm.gbest_config()
 
         return sel
 

@@ -726,14 +726,6 @@ class GeneticMap(MarkerSet):
         # calculate crossover probabilities
         self.calc_xo_prob()
 
-        print(len(self))
-        for i in range(100):
-            print(self._map_pos[i], self._xo_prob[i])
-
-
-
-
-
     ############################################################################
     ############################# Static Methods ###############################
     ############################################################################

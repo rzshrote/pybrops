@@ -1,4 +1,9 @@
+# 3rd party
+import numpy
+
+# our libraries
 from . import GenomicSelection
+import pybropt.util
 
 class CGS(GenomicSelection):
     """docstring for CGS."""
@@ -10,7 +15,10 @@ class CGS(GenomicSelection):
         super(CGS, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
-        check_is_ParametricGenomicModel(self._population.genomic_model)
+        pybropt.util.check_is_ParametricGenomicModel(
+            self._population.genomic_model,
+            "population.genomic_model"
+        )
 
     ############################################################################
     ############################## Class Methods ###############################

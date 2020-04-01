@@ -51,7 +51,7 @@ class SetHC(HillClimber):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    def optimize(self, objfn, seed = None, nthreads = None, minimize = True, *args, **kwargs):
+    def optimize(self, objfn, seed = None, nthreads = 0, minimize = True, verbose = False, *args, **kwargs):
         """
         Perform a hillclimbing using steepest ascent strategy. A set of size
         'k' is used. Single states within the set are iteratively exchanged
@@ -117,7 +117,7 @@ class SetHC(HillClimber):
         states = self._search_space.state_ndarray
 
         # iteration counter
-        iter = 0
+        algoiter = 0
 
         tmp = states.copy()         # copy state list
         numpy.random.shuffle(tmp)   # shuffle the copy
@@ -128,7 +128,7 @@ class SetHC(HillClimber):
         gbest_score = objfn(gbest_pos, *args, **kwargs)
 
         # add history to self
-        self.history_add(iter, [gbest_score], gbest_pos)
+        self.history_add(algoiter, [gbest_score], gbest_pos)
 
         # variables for position, exchange, score matrices
         pos = None
@@ -137,7 +137,7 @@ class SetHC(HillClimber):
 
         # print verbose statements
         if verbose:
-            print("Iteration", iter, "\tscore =", score)
+            print("Iteration", algoiter, "\tscore =", score)
 
         # OPTIMIZE: flip this test variable to not need 'not' in front
         # make exit variable
@@ -146,7 +146,7 @@ class SetHC(HillClimber):
         # begin exchange process
         while not found_local_optima:
             # increment iteration
-            iter += 1
+            algoiter += 1
 
             # create state exchange matrix (local search positions)
             pos, exch = SetHC._set_exchange_matrix(gbest_pos, gbest_exch)
@@ -177,10 +177,10 @@ class SetHC(HillClimber):
                 found_local_optima = True
 
             # add history
-            self.history_add(iter, score, pos)
+            self.history_add(algoiter, score, pos)
 
             if verbose:
-                print("Iteration", iter, "\tscore =", gbest_score)
+                print("Iteration", algoiter, "\tscore =", gbest_score)
 
     ############################################################################
     ############################# Static Methods ###############################

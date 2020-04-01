@@ -11,7 +11,7 @@ class CategoricalSearchSpace(SearchSpace):
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-    def __init__(self, state = None, dim_size = None, name = "Categorical", *args):
+    def __init__(self, *args, state = None, dim_size = None, name = "Categorical"):
         """
         Constructor for ContinuousSearchSpace class.
 

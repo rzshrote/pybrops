@@ -1,3 +1,10 @@
+# 3rd party libraries
+import numpy
+import pandas
+
+# our libraries
+import pybropt.util
+
 class Algorithm:
     """docstring for Algorithm."""
     ############################################################################
@@ -90,8 +97,8 @@ class Algorithm:
             1D or 2D matrix of positions.
         """
         # get lengths if they have them
-        algoiter_len = cond_len(algoiter)
-        score_len = cond_len(score)
+        algoiter_len = pybropt.util.cond_len(algoiter)
+        score_len = pybropt.util.cond_len(score)
         #position_len = cond_len(position)   # not needed
 
         # convert things to arrays
@@ -114,14 +121,14 @@ class Algorithm:
         return
 
     def concatenate(self):
-        if len(self._iter) > 1:
-            self._iter = [numpy.concatenate(self._iter, axis=0)]
+        if len(self._algoiter) > 1:
+            self._algoiter = [numpy.concatenate(self._algoiter, axis=0)]
         if len(self._score) > 1:
             self._score = [numpy.concatenate(self._score, axis=0)]
-        if len(self._pos) > 1:
-            self._pos = [numpy.concatenate(self._pos, axis=0)]
+        if len(self._position) > 1:
+            self._position = [numpy.concatenate(self._position, axis=0)]
 
-    def history_to_dict(self):
+    def history_to_dict(self, zfill = 3):
         """
         Convert history internals to a dictionary.
 
@@ -164,7 +171,7 @@ class Algorithm:
             A pandas DataFrame of the results.
         """
         # get history as dict
-        df_dict = self.history_to_dict()
+        df_dict = self.history_to_dict(zfill)
 
         # make DataFrame
         df = pandas.DataFrame(df_dict)
@@ -258,6 +265,25 @@ class Algorithm:
 
         # return gbest
         return gbest
+
+    def gbest_algoiter(self, maxiter = None, cond = None, minimum = True):
+        gbest = self.gbest(maxiter, cond, minimum)
+        return gbest[0]
+
+    def gbest_score(self, maxiter = None, cond = None, minimum = True):
+        gbest = self.gbest(maxiter, cond, minimum)
+        return gbest[1]
+
+    def gbest_position(self, maxiter = None, cond = None, minimum = True):
+        gbest = self.gbest(maxiter, cond, minimum)
+        return gbest[2]
+
+    def gbest_config(self, maxiter = None, cond = None, minimum = True):
+        """
+        This function may seem redundant, but it is meant to guarantee that the
+        returned value is within the search space.
+        """
+        return self.gbest_position(maxiter, cond, minimum)
 
     def optimize(self, objfn, seed = None, nthreads = 1, verbose = False,
             *args, **kwargs):
