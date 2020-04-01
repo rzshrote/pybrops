@@ -1,20 +1,76 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
 from . import GenomicSelection
+import pybropt.util
 
 class WGS(GenomicSelection):
-    """docstring for CGS."""
+    """docstring for WGS."""
 
     ############################################################################
     ######################### Reserved Object Methods ##########################
     ############################################################################
     def __init__(self, population, cross, method = "WGS"):
-        super(CGS, self).__init__(population, cross, method)
+        super(WGS, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
-        check_is_ParametricGenomicModel(self._population.genomic_model)
+        pybropt.util.check_is_ParametricGenomicModel(
+            self._population.genomic_model,
+            "population.genomic_model"
+        )
+
+    ############################################################################
+    ################################ Properties ################################
+    ############################################################################
+    def weight():
+        doc = "The weight property."
+        def fget(self):
+            return self._weight
+        def fset(self, value):
+            self._weight = value
+        def fdel(self):
+            del self._weight
+        return locals()
+    weight = property(**weight())
+
+    def wcoeff():
+        doc = "The wcoeff property."
+        def fget(self):
+            return self._wcoeff
+        def fset(self, value):
+            self._wcoeff = value
+        def fdel(self):
+            del self._wcoeff
+        return locals()
+    wcoeff = property(**wcoeff())
 
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
+    def calc_weight(self):
+        """
+        Calculate marker weights based on allele frequencies.
+        """
+        weight = WGS.weight_mat(
+            self._population.genomic_model.coeff,
+            self._population.geno
+        )
+
+        return weight
+
+    def calc_wcoeff(self):
+        """
+        Calculate weight coefficients.
+        """
+        # calculate wcoeff
+        wcoeff = WGS.wcoeff_mat(
+            self._population.genomic_model.coeff,
+            self.calc_weight() if self._weight is None else self._weight
+        )
+
+        return wcoeff
+
     def objfn(self, sel, objcoeff = None):
         """
         Breeding method objective function. Implement this in derived classes.
@@ -216,13 +272,13 @@ class WGS(GenomicSelection):
         if wcoeff is None:
             # if no weight matrix is given, calculate it
             if weight is None:
-                weight = WGS.weight(coeff, geno)
+                weight = WGS.weight_mat(coeff, geno)
             # calculate wcoeff
-            wcoeff = WGS.wcoeff(coeff, weight)
+            wcoeff = WGS.wcoeff_mat(coeff, weight)
 
-        # CGS calculation explanation
+        # WGS calculation explanation
         # Step 1: get sum of alleles for each individual: shape=(len(sel),L)
-        # Step 2: take dot product to get CGS values
+        # Step 2: take dot product to get WGS values
         wgs = geno[:,sel].sum(0).dot(wcoeff)
 
         return wgs
@@ -286,17 +342,21 @@ class WGS(GenomicSelection):
 
         # if no wcoeff matrix, calculate it
         if wcoeff is None:
-            wcoeff = WGS.wcoeff(coeff, weight)
+            # if no weight matrix is given, calculate it
+            if weight is None:
+                weight = WGS.weight_mat(coeff, geno)
+            # calculate wcoeff
+            wcoeff = WGS.wcoeff_mat(coeff, weight)
 
-        # CGS calculation explanation
+        # WGS calculation explanation
         # Step 1: get sum of alleles for each individual: shape=(len(sel),L)
-        # Step 2: take dot product to get CGS values
+        # Step 2: take dot product to get WGS values
         wgs = geno[:,sel].sum(0).dot(wcoeff)
 
         return wgs
 
     @staticmethod
-    def weight(coeff, geno):
+    def weight_mat(coeff, geno):
         """
         Parameters
         ----------
@@ -305,6 +365,15 @@ class WGS(GenomicSelection):
             Where:
                 'p' is the number of markers.
                 't' is the number of traits.
+        geno : numpy.ndarray, None
+            A int8 binary genotype matrix of shape (m, n, p).
+            Where:
+                'm' is the number of chromosome phases (2 for diploid, etc.).
+                'n' is the number of individuals.
+                'p' is the number of markers.
+            Remarks:
+                Shape of the matrix is most critical. Underlying matrix
+                operations will support other numeric data types.
         """
         # get the allele frequencies within the population.
         wght = geno.sum((0,1)) / (geno.shape[0] * geno.shape[1])
@@ -324,7 +393,7 @@ class WGS(GenomicSelection):
         return wght
 
     @staticmethod
-    def wcoeff(coeff, weight):
+    def wcoeff_mat(coeff, weight):
         """
         Parameters
         ----------

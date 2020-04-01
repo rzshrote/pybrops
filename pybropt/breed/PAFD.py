@@ -1,4 +1,9 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
 from . import GenomicSelection
+import pybropt.util
 
 class PAFD(GenomicSelection):
     """docstring for PAFD."""
@@ -10,7 +15,10 @@ class PAFD(GenomicSelection):
         super(PAFD, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
-        check_is_ParametricGenomicModel(self._population.genomic_model)
+        pybropt.util.check_is_ParametricGenomicModel(
+            self._population.genomic_model,
+            "population.genomic_model"
+        )
 
         # set wcoeff if needed
         if wcoeff is None:
@@ -55,7 +63,7 @@ class PAFD(GenomicSelection):
         Calculate weight coefficients.
         """
         # calculate wcoeff
-        wcoeff = PAFD.wcoeff_mat(self._population.coeff)
+        wcoeff = PAFD.wcoeff_mat(self._population.genomic_model.coeff)
 
         return wcoeff
 
@@ -64,7 +72,7 @@ class PAFD(GenomicSelection):
         Calculate target frequencies
         """
         # calculate tfreq
-        tfreq = PAFD.tfreq_mat(self._population.coeff)
+        tfreq = PAFD.tfreq_mat(self._population.genomic_model.coeff)
 
         return tfreq
 
@@ -106,24 +114,7 @@ class PAFD(GenomicSelection):
 
         return pafd
 
-    def optimize(self, objcoeff = None, negate = True, algorithm = None,
-        gbestix = None, *args, **kwargs):
-        # we pass objcoeff onto optimizer. This will handle multiobjective.
-        algorithm.optimize(
-            self.objfn,
-            *args,
-            **kwargs,
-            objcoeff = objcoeff,
-            negate = negate
-        )
-
-        # get global best
-        gbest = algorithm.gbest()
-
-        # get selection indices or whole tuple
-        sel = gbest[gbestix] if gbestix is not None else gbest
-
-        return sel
+    # optimize() function does not need to be overridden
 
     def simulate(self):
         raise NotImplementedError

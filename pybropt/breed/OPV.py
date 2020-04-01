@@ -56,7 +56,7 @@ class OPV(GenomicSelection):
         )
         return hcoeff
 
-    def objfn(self, sel, objcoeff = None, minimize = True):
+    def objfn(self, sel, objcoeff = None, minimizing = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -75,10 +75,12 @@ class OPV(GenomicSelection):
                 't' is the number of objectives.
             These are used to weigh objectives in the weight sum method.
             If None, do not multiply GEBVs by a weight sum vector.
-        negate : bool, default = True
-            If True, negate OPV scores before taking dot product with
-            'objcoeff'.
-            Use True for minimizing optimizer, False for maximizing optimizer.
+        minimizing : bool, default = True
+            If True, OPV scores are adjusted such that OPV becomes a minimizing
+            function: lower is better.
+            If False, OPV scores are adjusted such that OPV becomes a maximizing
+            function: higher is better.
+            Adjusted OPV scores are used in the dot product with 'objcoeff'.
 
         Returns
         -------
@@ -93,7 +95,7 @@ class OPV(GenomicSelection):
         )
 
         # negate OPV scores if necessary
-        if minimize:
+        if minimizing:
             opv = -opv
 
         # take the dot product if necessary
@@ -102,7 +104,7 @@ class OPV(GenomicSelection):
 
         return opv
 
-    def objfn_vec(self, sel, objcoeff = None, negate = True):
+    def objfn_vec(self, sel, objcoeff = None, negative = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -123,8 +125,8 @@ class OPV(GenomicSelection):
                 'j' is the number of selection configurations.
             These are used to weigh objectives in the weight sum method.
             If None, do not multiply GEBVs by a weight sum vector.
-        negate : bool, default = True
-            If True, negate OPV scores before taking dot product with
+        negative : bool, default = True
+            If True, OPV scores are made negative before taking dot product with
             'objcoeff'.
             Use True for minimizing optimizer, False for maximizing optimizer.
 
@@ -148,7 +150,7 @@ class OPV(GenomicSelection):
         )
 
         # negate OPV scores if necessary.
-        if negate:
+        if negative:
             opv = -opv
 
         # if we have objective weights, take dot product for weight sum method
@@ -157,55 +159,9 @@ class OPV(GenomicSelection):
 
         return opv
 
-    def optimize(self, *args, objcoeff = None, minimize = True, algorithm = None, **kwargs):
-        """
-        Optimize the provided population.
-
-        Parameters
-        ----------
-        objcoeff : numpy.ndarray, None
-            An objective coefficients matrix of shape (t,).
-            Where:
-                't' is the number of objectives.
-            These are used to weigh objectives in the weight sum method.
-            If None, do not multiply scores by a weight sum vector.
-        algorithm : Algorithm
-            An optimizing algorithm
-        *args:
-            Additional algorithm arguments.
-        **kwargs:
-            Additional algorithm keyword arguments.
-
-        Returns
-        -------
-        gbest : numpy.ndarray
-            A selection indices matrix.
-             of shape (k,)
-            Shape rules are as follows:
-                (k,)    if objcoeff shape is (t,)
-                (t,k)   if objcoeff is None
-            Where:
-                'k' is the number of individuals to select.
-                't' is the number of objectives.
-        """
-        # ALWAYS begin with reseting the optimizing algorithm to remove history
-        algorithm.reset()
-
-        # we pass objcoeff onto optimizer. This will handle multiobjective.
-        algorithm.optimize(
-            self.objfn,
-            *args,
-            **kwargs,
-            objcoeff = objcoeff,
-            minimize = minimize
-        )
-
-        # get global best configuration within the search space
-        sel = algorithm.gbest_config()
-
-        return sel
-
-    def simulate(self, objcoeff = None, negate = True, algorithm = None,
+    # optimize() function does not need to be overridden
+    
+    def simulate(self, objcoeff = None, negative = True, algorithm = None,
         gbestix = 2, bcycle = 0, savegeno = True, seed = None, *args, **kwargs):
         """
         """
@@ -213,7 +169,7 @@ class OPV(GenomicSelection):
         cond_seed_rng(seed)
 
         # get initial conditions
-        score = self.objfn(None, objcoeff, negate)
+        score = self.objfn(None, objcoeff, negative)
         gebv = self._population.gebv(None, objcoeff)
 
         # record history
@@ -233,7 +189,7 @@ class OPV(GenomicSelection):
             *args,
             **kwargs,
             objcoeff = objcoeff,
-            negate = negate
+            negative = negative
         )
 
         # get global best
@@ -249,7 +205,7 @@ class OPV(GenomicSelection):
         # simulate the breeding cycles
         for i in range(bcycle):
             # get selection stats
-            score = self.objfn(sel, objcoeff, negate)
+            score = self.objfn(sel, objcoeff, negative)
             gebv = self._population.gebv(sel, objcoeff)
 
             # add history selection
@@ -267,7 +223,7 @@ class OPV(GenomicSelection):
             new_population = new_cross.mate(sel)
 
             # get population stats
-            score = self.objfn(None, objcoeff, negate)
+            score = self.objfn(None, objcoeff, negative)
             gebv = self._population.gebv(None, objcoeff)
 
             # record history

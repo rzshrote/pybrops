@@ -50,24 +50,38 @@ cross = pybropt.popgen.Cross(
 )
 print("created cross")
 
-opv = pybropt.breed.OPV(
-    population,
-    cross
-)
+cgs = pybropt.breed.CGS(population, cross)
 print("created CGS")
 
-ss = [i for i in range(100)]
+mogm = pybropt.breed.MOGM(population, cross)
+print("created MOGM")
+
+mogs = pybropt.breed.MOGS(population, cross)
+print("created MOGS")
+
+opv = pybropt.breed.OPV(population, cross)
+print("created OPV")
+
+pafd = pybropt.breed.PAFD(population, cross)
+print("created PAFD")
+
+pau = pybropt.breed.PAU(population, cross)
+print("created PAU")
+
+spstd = pybropt.breed.SPstd(population, cross)
+print("created SPstd")
+
+spstda = pybropt.breed.SPstdA(population, cross)
+print("created SPstdA")
+
+wgs = pybropt.breed.WGS(population, cross)
+print("created WGS")
+
+quit()
+
+ss = [i for i in range(50)]
 sspace = pybropt.algo.CategoricalSearchSpace(
-    ss,
-    ss,
-    ss,
-    ss,
-    ss,
-    ss,
-    ss,
-    ss,
-    ss,
-    ss
+    ss, ss, ss, ss, ss, ss, ss, ss, ss, ss
 )
 print("created search space")
 

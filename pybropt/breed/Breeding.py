@@ -461,7 +461,7 @@ class Breeding:
 
         return
 
-    def objfn(self, sel, *args, **kwargs):
+    def objfn(self, sel, objcoeff = None, minimizing = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -479,9 +479,9 @@ class Breeding:
         error : NotImplementedError
             This function raises an error on execution.
         """
-        raise NotImplementedError("This method is not implemented.")
+        raise NotImplementedError("The method 'objfn' is abstract.")
 
-    def objfn_vec(self, sel, *args, **kwargs):
+    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -499,12 +499,53 @@ class Breeding:
         error : NotImplementedError
             This function raises an error on execution.
         """
-        raise NotImplementedError("This method is not implemented.")
+        raise NotImplementedError("The method 'objfn_vec' is abstract.")
 
-    def optimize(self, objfn_varg, algorithm, *args, **kwargs):
+    def optimize(self, algorithm, objcoeff = None, minimizing = True, **kwargs):
         """
+        Optimize the breeding objective function provided an algorithm.
+
+        Parameters
+        ----------
+        algorithm : Algorithm
+            An optimizing algorithm.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply score by a weight sum vector.
+        minimizing : bool, default = True
+            If True, scores are adjusted such that the objective function
+            becomes a minimizing function: lower is better.
+            If False, scores are adjusted such that the objective function
+            becomes a maximizing function: higher is better.
+            Adjusted scores are used in the dot product with 'objcoeff'.
+
+        Returns
+        -------
+        sel : numpy.ndarray
+            An array of selection decisions identified by the algorithm.
+
+        Remarks
+        -------
+        Standard optimizing protocols. Override if necessary.
         """
-        raise NotImplementedError("This method is not implemented.")
+        # ALWAYS begin with reseting the optimizing algorithm to remove history
+        algorithm.reset()
+
+        # we pass objcoeff onto optimizer. This will handle multiobjective.
+        algorithm.optimize(
+            self.objfn,
+            **kwargs,
+            objcoeff = objcoeff,
+            minimizing = minimizing
+        )
+
+        # get global best selection configuration
+        sel = algorithm.gbest_config()
+
+        return sel
 
     def simulate(self, objfn_varg, pop_varg, algorithm, *args, **kwargs):
         """

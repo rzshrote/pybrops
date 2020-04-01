@@ -12,7 +12,6 @@ class StateHC(HillClimber):
     ############################################################################
     ######################### Reserved object methods ##########################
     ############################################################################
-
     def __init__(self, search_space, name = "State Hill-Climber"):
         super(StateHC, self).__init__(name)
 
@@ -22,7 +21,6 @@ class StateHC(HillClimber):
     ############################################################################
     ################################ Properties ################################
     ############################################################################
-
     def search_space():
         doc = "The search_space property."
         def fget(self):
@@ -37,9 +35,6 @@ class StateHC(HillClimber):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-
-    # def _state_exchange_matrix(vec, exch)
-
     def optimize(self, objfn, seed = None, nthreads = 0, minimize = True,
             verbose = False, *args, **kwargs):
         """

@@ -1,4 +1,9 @@
+# 3rd party libraries
+import numpy
+
+# our libraries
 from . import GenomicMating
+import pybropt.util
 
 class MOGM(GenomicMating):
     """docstring for MOGM."""
@@ -10,7 +15,10 @@ class MOGM(GenomicMating):
         super(MOGM, self).__init__(population, cross, method)
 
         # check that we have marker coefficients
-        check_is_ParametricGenomicModel(self._population.genomic_model)
+        pybropt.util.check_is_ParametricGenomicModel(
+            self._population.genomic_model,
+            "population.genomic_model"
+        )
 
         # set wcoeff if needed
         if wcoeff is None:
@@ -21,7 +29,6 @@ class MOGM(GenomicMating):
         if tfreq is None:
             tfreq = self.calc_tfreq()
         self._tfreq = tfreq
-
 
     ############################################################################
     ################################ Properties ################################
@@ -56,7 +63,7 @@ class MOGM(GenomicMating):
         Calculate weight coefficients.
         """
         # calculate wcoeff
-        wcoeff = MOGM.wcoeff_mat(self._population.coeff)
+        wcoeff = MOGM.wcoeff_mat(self._population.genomic_model.coeff)
 
         return wcoeff
 
@@ -65,15 +72,41 @@ class MOGM(GenomicMating):
         Calculate target frequencies
         """
         # calculate tfreq
-        tfreq = MOGM.tfreq_mat(self._population.coeff)
+        tfreq = MOGM.tfreq_mat(self._population.genomic_model.coeff)
 
         return tfreq
 
-    def objfn(self, sel, objcoeff = None, negate = False):
+    def objfn(self, sel, objcoeff = None, minimizing = True):
         """
         MOGM objective function.
 
-        The goal is to minimize this function.
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply score by a weight sum vector.
+        minimizing : bool, default = True
+            If True, MOGM scores are adjusted such that OPV becomes a
+            minimizing function: lower is better.
+            If False, MOGM scores are adjusted such that OPV becomes a
+            maximizing function: higher is better.
+            Adjusted MOGM scores are used in the dot product with 'objcoeff'.
+
+        Returns
+        -------
+        mogm : numpy.ndarray
+            An MOGM score matrix of shape (k,) or (k,t) depending on whether
+            'objcoeff' was specified or not, respectively.
         """
         # calculate MOGM values
         mogm = MOGM.objfn_mat(
@@ -84,8 +117,8 @@ class MOGM(GenomicMating):
             tfreq = self._tfreq
         )
 
-        # negate MOGM scores if necessary.
-        if negate:
+        # MOGM is vanilla minimizing, but if we want pos
+        if not minimizing:
             mogm = -mogm
 
         # if we have objective weights, take dot product for weight sum method
@@ -94,7 +127,7 @@ class MOGM(GenomicMating):
 
         return mogm
 
-    def objfn_vec(self, sel, objcoeff = None, negate = False):
+    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
         # calculate MOGM values
         mogm = MOGM.objfn_vec_mat(
             sel,
@@ -105,7 +138,7 @@ class MOGM(GenomicMating):
         )
 
         # negate MOGM scores if necessary.
-        if negate:
+        if not minimizing:
             mogm = -mogm
 
         # if we have objective weights, take dot product for weight sum method
@@ -114,24 +147,7 @@ class MOGM(GenomicMating):
 
         return mogm
 
-    def optimize(self, objcoeff = None, negate = False, algorithm = None,
-        gbestix = None, *args, **kwargs):
-        # we pass objcoeff onto optimizer. This will handle multiobjective.
-        algorithm.optimize(
-            self.objfn,
-            *args,
-            **kwargs,
-            objcoeff = objcoeff,
-            negate = negate
-        )
-
-        # get global best
-        gbest = algorithm.gbest()
-
-        # get selection indices or whole tuple
-        sel = gbest[gbestix] if gbestix is not None else gbest
-
-        return sel
+    # optimize() function does not need to be overridden
 
     def simulate(self):
         raise NotImplementedError
