@@ -148,8 +148,9 @@ class MOGM(GenomicMating):
 
         return mogm
 
-    def optimize(self, objcoeff = None, axissum = None, minimizing = True, **kwargs):
+    def optimize(self, algorithm, objcoeff = None, axissum = None, minimizing = True, **kwargs):
         sel = super(MOGM, self).optimize(
+            algorithm = algorithm,
             objcoeff = objcoeff,
             axissum = axissum,
             minimizing = minimizing,

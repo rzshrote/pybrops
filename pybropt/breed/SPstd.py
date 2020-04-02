@@ -14,8 +14,9 @@ class SPstd(GenomicMating):
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
-    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+    def optimize(self, algorithm, objcoeff = None, minimizing = True, **kwargs):
         sel = super(SPstd, self).optimize(
+            algorithm = algorithm,
             objcoeff = objcoeff,
             minimizing = minimizing,
             **kwargs

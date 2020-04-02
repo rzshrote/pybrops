@@ -143,8 +143,9 @@ class MOGS(GenomicSelection):
 
         return mogs
 
-    def optimize(self, objcoeff = None, axissum = None, minimizing = True, **kwargs):
+    def optimize(self, algorithm, objcoeff = None, axissum = None, minimizing = True, **kwargs):
         sel = super(MOGS, self).optimize(
+            algorithm = algorithm,
             axissum = axissum,
             objcoeff = objcoeff,
             minimizing = minimizing,

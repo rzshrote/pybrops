@@ -159,7 +159,7 @@ class OPV(GenomicSelection):
 
         return opv
 
-    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+    def optimize(self, algorithm, objcoeff = None, minimizing = True, **kwargs):
         """
 
         objcoeff : numpy.ndarray, None
@@ -176,6 +176,7 @@ class OPV(GenomicSelection):
             Adjusted scores are used in the dot product with 'objcoeff'.
         """
         sel = super(OPV, self).optimize(
+            algorithm = algorithm,
             objcoeff = objcoeff,
             minimizing = minimizing,
             **kwargs
