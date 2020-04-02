@@ -69,11 +69,8 @@ class StateHC(HillClimber):
         # Process arguments #
         #####################
 
-        # if no seed is provided, use time as random seed
-        if seed is None:
-            seed = numpy.uint32(time.time())
-        # seed random number generator
-        numpy.random.seed(seed)
+        # seed RNG if a seed is provided, otherwise use previous internal state.
+        pybropt.util.cond_seed_rng(seed)
 
         # print engine state before beginning.
         if verbose:
