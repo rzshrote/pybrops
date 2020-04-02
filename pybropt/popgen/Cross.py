@@ -270,8 +270,7 @@ class Cross:
         self._n = n
         self._s = s
         self._t = t
-        if mem is None:
-            self._mem = len(self._population.marker_set)
+        self._mem = len(self._population.marker_set) if mem is None else mem
 
     ############################################################################
     ############################ Object Properties #############################
@@ -2344,8 +2343,8 @@ class Cross:
         cross : Cross
             A Cross object with identical properties to the originating object.
         """
-        # create new Cross object
-        cross = Cross(
+        # create new Cross object (we use self.__class__ in case of inheritance)
+        cross = self.__class__(
             population  = self._population,
             varAfn      = self._varAfn,
             sparse      = self._sparse,
@@ -2373,8 +2372,8 @@ class Cross:
         cross : Cross
             A Cross object.
         """
-        # create new Cross object
-        cross = Cross(
+        # create new Cross object (we use self.__class__ in case of inheritance)
+        cross = self.__class__(
             population  = self._population if population is None else population,
             varAfn      = self._varAfn if varAfn is None else varAfn,
             sparse      = self._sparse if sparse is None else sparse,

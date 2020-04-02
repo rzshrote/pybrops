@@ -1,4 +1,6 @@
 # 3rd party
+import numpy
+import pandas
 
 # our libraries
 import pybropt.util
@@ -300,18 +302,26 @@ class Breeding:
         """
         Reset all internal history lists and arrays.
         """
-        self._method_selection = []
+        self.reset_population()
+        self.reset_selection()
+
+    def reset_population(self):
         self._method_population = []
-        self._algorithm_selection = []
         self._algorithm_population = []
-        self._seed_selection = []
         self._seed_population = []
-        self._cycle_selection = []
         self._cycle_population = []
-        self._score_selection = []
         self._score_population = []
-        self._genotype_selection = []
         self._genotype_population = []
+        self._gebv_population = []
+
+    def reset_selection(self):
+        self._method_selection = []
+        self._algorithm_selection = []
+        self._seed_selection = []
+        self._cycle_selection = []
+        self._score_selection = []
+        self._genotype_selection = []
+        self._gebv_selection = []
 
     def concatenate(self):
         """
@@ -501,6 +511,26 @@ class Breeding:
         """
         raise NotImplementedError("The method 'objfn_vec' is abstract.")
 
+    def copy(self):
+        """
+        Copy the object.
+        """
+        cp = self.__class__(
+            population = self._population,
+            cross = self._cross,
+            method = self._method
+        )
+        return cp
+
+    def from_self(self, population = None, cross = None, method = None, **kwargs):
+        deriv = self.__class__(
+            population = self._population if population is None else population,
+            cross = self._cross if cross is None else cross,
+            method = self._method if method is None else method,
+            **kwargs
+        )
+        return deriv
+
     def optimize(self, algorithm, **kwargs):
         """
         Optimize the breeding objective function provided an algorithm.
@@ -536,7 +566,88 @@ class Breeding:
 
         return sel
 
-    def simulate(self, objfn_varg, pop_varg, algorithm, *args, **kwargs):
+    def simulate(self, algorithm, bcycle = 0, objfn_kwargs = None, algo_kwargs = None, savegeno = False, seed = None):
         """
+        Run breeding simulations.
         """
-        raise NotImplementedError("This method is not implemented.")
+        # set seed if needed
+        pybropt.util.cond_seed_rng(seed)
+
+        # duplicate population and cross pointers
+        population = self._population
+        cross = self._cross
+
+        # get initial population score
+        pop_score = self.objfn(None, **objfn_kwargs)
+
+        # get initial population GEBVs
+        pop_gebv = population.gebv(None)
+
+        # record history
+        self.history_add_population(
+            method = self._method,
+            algorithm = algorithm.name,
+            seed = seed,
+            cycle = 0,
+            score = pop_score,
+            gebv = pop_gebv,
+            geno = population.geno if savegeno else None
+        )
+
+        # simulate the breeding cycles
+        for cycle in range(1, bcycle+1):
+            # create a new Breeding object from self
+            breeding = self.from_self(
+                population = population,
+                cross = cross
+            )
+
+            # make selections
+            sel = breeding.optimize(
+                algorithm = algorithm,
+                **algo_kwargs,
+                **objfn_kwargs
+            )
+
+            print("Selected:", sel)
+            # get score of the selection
+            sel_score = algorithm.gbest_score()
+
+            # get selection GEBVs
+            sel_gebv = self._population.gebv(sel)
+
+            # add history selection
+            self.history_add_selection(
+                method = self._method,
+                algorithm = algorithm.name,
+                seed = seed,
+                cycle = cycle,
+                score = sel_score,
+                gebv = sel_gebv,
+                geno = population.geno[:,sel,:] if savegeno else None
+            )
+
+            # mate and generate new population
+            population = cross.mate(sel)
+
+            # get score of the entire population
+            pop_score = self.objfn(None, **objfn_kwargs)
+
+            # get entire population GEBVs
+            pop_gebv = self._population.gebv(None)
+
+            # record history
+            self.history_add_population(
+                method = self._method,
+                algorithm = algorithm.name,
+                seed = seed,
+                cycle = cycle,
+                score = pop_score,
+                gebv = pop_gebv,
+                geno = population.geno if savegeno else None
+            )
+
+            # make new cross object
+            cross = cross.from_self(
+                population = population,
+            )

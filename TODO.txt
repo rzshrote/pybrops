@@ -14,12 +14,18 @@ Performance Improvements
     only precomputed values (e.g. wcoeff must be already calculated)? This
     would reduce flexibility in the accessible static method, but may slightly
     improve performance by eliminating if statements.
-[ ] improve vcf load speeds
+[ ] improve vcf load speeds if possible
 
-Known bugs
-----------
+Known bugs (✓ = fixed)
+----------------------
 [✓] mkr_mask and similar functions have tuples where assignments are made.
     These tuples need to be converted to lists since tuples are immutable.
+[ ] SSD simulations are wrong; original calculations used recombination
+    probabilities observed across entire population at selfing generation s.
+    These probabilities are across and infinite number of progeny, but for
+    finite sample sizes, the probability of where recombination points land with
+    respect to each other is dependent on previous recombination events.
+    Ultra critical to fix this error.
 
 Feature Additions
 -----------------
@@ -45,6 +51,7 @@ Feature Additions
 [ ] object print/head statements
 [ ] hapmap import
 [ ] Cross: auto detect progeny variance from simulations or matrix math
+[ ] breed module: migrate simulate functions to new BreedingProgram class?
 
 Documentation
 -------------
