@@ -13,6 +13,17 @@ class SPstdA(GenomicMating):
         super(SPstdA, self).__init__(population, cross, method)
 
     ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+        sel = super(SPstdA, self).optimize(
+            objcoeff = objcoeff,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
+
+    ############################################################################
     ############################# Static Methods ###############################
     ############################################################################
     @staticmethod

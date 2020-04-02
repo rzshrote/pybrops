@@ -104,7 +104,7 @@ class OPV(GenomicSelection):
 
         return opv
 
-    def objfn_vec(self, sel, objcoeff = None, negative = True):
+    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
         """
         Breeding method objective function. Implement this in derived classes.
 
@@ -150,7 +150,7 @@ class OPV(GenomicSelection):
         )
 
         # negate OPV scores if necessary.
-        if negative:
+        if minimizing:
             opv = -opv
 
         # if we have objective weights, take dot product for weight sum method
@@ -159,8 +159,29 @@ class OPV(GenomicSelection):
 
         return opv
 
-    # optimize() function does not need to be overridden
-    
+    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+        """
+
+        objcoeff : numpy.ndarray, None
+            An objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply score by a weight sum vector.
+        minimizing : bool, default = True
+            If True, scores are adjusted such that the objective function
+            becomes a minimizing function: lower is better.
+            If False, scores are adjusted such that the objective function
+            becomes a maximizing function: higher is better.
+            Adjusted scores are used in the dot product with 'objcoeff'.
+        """
+        sel = super(OPV, self).optimize(
+            objcoeff = objcoeff,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
+
     def simulate(self, objcoeff = None, negative = True, algorithm = None,
         gbestix = 2, bcycle = 0, savegeno = True, seed = None, *args, **kwargs):
         """

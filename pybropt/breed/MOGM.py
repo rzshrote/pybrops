@@ -76,7 +76,7 @@ class MOGM(GenomicMating):
 
         return tfreq
 
-    def objfn(self, sel, objcoeff = None, minimizing = True):
+    def objfn(self, sel, objcoeff = None, axissum = None, minimizing = True):
         """
         MOGM objective function.
 
@@ -124,28 +124,11 @@ class MOGM(GenomicMating):
 
         # if we have objective weights, take dot product for weight sum method
         if objcoeff is not None:
-            if objcoeff.ndim == 1:
-                mogm = mogm.dot(objcoeff)
-            elif objcoeff.ndim == 2:
-                # get dimensions
-                ma, mb = mogm.shape
-                oa, ob = objcoeff.shape
-
-                # get dot products
-                if (oa, ob) == (ma, mb):
-                    mogm = (mogm * objcoeff).sum()
-                elif (oa, ob) == (1, mb):
-                    mogm = (mogm * objcoeff).sum(0)
-                elif (oa, ob) == (ma, 1):
-                    mogm = (mogm * objcoeff).sum(1)
-                else:
-                    raise ValueError("'mogm' and 'objcoeff' shapes not aligned")
-            else:
-                raise ValueError("'mogm' and 'objcoeff' shapes not aligned")
+            mogm = (mogm * objcoeff).sum(axissum)
 
         return mogm
 
-    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
+    def objfn_vec(self, sel, objcoeff = None, axissum = None, minimizing = True):
         # calculate MOGM values
         mogm = MOGM.objfn_vec_mat(
             sel,
@@ -161,11 +144,18 @@ class MOGM(GenomicMating):
 
         # if we have objective weights, take dot product for weight sum method
         if objcoeff is not None:
-            mogm = mogm.dot(objcoeff)
+            mogm = (mogm * objcoeff).sum(axissum)
 
         return mogm
 
-    # optimize() function does not need to be overridden
+    def optimize(self, objcoeff = None, axissum = None, minimizing = True, **kwargs):
+        sel = super(MOGM, self).optimize(
+            objcoeff = objcoeff,
+            axissum = axissum,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
 
     def simulate(self):
         raise NotImplementedError

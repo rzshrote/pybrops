@@ -74,7 +74,7 @@ class MOGS(GenomicSelection):
         tfreq = MOGS.tfreq_mat(self._population.genomic_model.coeff)
         return tfreq
 
-    def objfn(self, sel, objcoeff = None, minimizing = True):
+    def objfn(self, sel, objcoeff = None, axissum = None, minimizing = True):
         """
         MOGS objective function.
 
@@ -120,11 +120,11 @@ class MOGS(GenomicSelection):
 
         # if we have objective weights, take dot product for weight sum method
         if objcoeff is not None:
-            mogs = mogs.dot(objcoeff)
+            mogs = (mogs * objcoeff).sum(axissum)
 
         return mogs
 
-    def objfn_vec(self, sel, objcoeff = None, negate = True):
+    def objfn_vec(self, sel, objcoeff = None, axissum = None, minimizing = True):
         # calculate MOGS values
         mogs = MOGS.objfn_vec_mat(
             sel,
@@ -134,16 +134,23 @@ class MOGS(GenomicSelection):
         )
 
         # negate MOGS scores if necessary
-        if negate:
+        if not minimizing:
             mogs = -mogs
 
         # take the dot product if necessary
         if objcoeff is not None:
-            mogs = mogs.dot(objcoeff)
+            mogm = (mogm * objcoeff).sum(axissum)
 
         return mogs
 
-    # optimize() function does not need to be overridden
+    def optimize(self, objcoeff = None, axissum = None, minimizing = True, **kwargs):
+        sel = super(MOGS, self).optimize(
+            axissum = axissum,
+            objcoeff = objcoeff,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
 
     def simulate(self):
         raise NotImplementedError
@@ -152,7 +159,7 @@ class MOGS(GenomicSelection):
     ############################# Static Methods ###############################
     ############################################################################
     @staticmethod
-    def objfn(sel, geno, coeff = None, wcoeff = None, tfreq = None):
+    def objfn_mat(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Multi-objective genomic selection objective function.
             The goal is to minimize this function. Lower is better.
@@ -276,7 +283,7 @@ class MOGS(GenomicSelection):
         return mogs
 
     @staticmethod
-    def objfn_vec(sel, geno, coeff = None, wcoeff = None, tfreq = None):
+    def objfn_vec_mat(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Multi-objective genomic selection objective function.
             The goal is to minimize this function. Lower is better.

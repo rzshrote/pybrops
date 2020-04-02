@@ -76,7 +76,7 @@ class PAU(GenomicSelection):
 
         return tfreq
 
-    def objfn(self, sel, objcoeff = None, negate = True):
+    def objfn(self, sel, objcoeff = None, minimizing = True):
         # calculate PAU values
         pau = PAU.objfn_mat(
             sel,
@@ -86,7 +86,7 @@ class PAU(GenomicSelection):
         )
 
         # negate PAU scores if necessary.
-        if negate:
+        if not minimizing:
             pau = -pau
 
         # if we have objective weights, take dot product for weight sum method
@@ -95,7 +95,7 @@ class PAU(GenomicSelection):
 
         return pau
 
-    def objfn_vec(self, sel, objcoeff = None, negate = True):
+    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
         # calculate PAU values
         pau = PAU.objfn_vec_mat(
             sel,
@@ -105,7 +105,7 @@ class PAU(GenomicSelection):
         )
 
         # negate OPV scores if necessary
-        if negate:
+        if not minimizing:
             pau = -pau
 
         # take the dot product if necessary
@@ -114,7 +114,13 @@ class PAU(GenomicSelection):
 
         return pau
 
-    # optimize() function does not need to be overridden
+    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+        sel = super(PAU, self).optimize(
+            objcoeff = objcoeff,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
 
     def simulate(self):
         raise NotImplementedError
@@ -123,7 +129,7 @@ class PAU(GenomicSelection):
     ############################# Static Methods ###############################
     ############################################################################
     @staticmethod
-    def objfn(sel, geno, coeff = None, wcoeff = None, tfreq = None):
+    def objfn_mat(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Population Allele Unvailability (PAU) objective function.
             The goal is to minimize this function. Lower is better.
@@ -224,7 +230,7 @@ class PAU(GenomicSelection):
         return pau
 
     @staticmethod
-    def objfn_vec(sel, geno, coeff = None, wcoeff = None, tfreq = None):
+    def objfn_vec_mat(sel, geno, coeff = None, wcoeff = None, tfreq = None):
         """
         Population Allele Unvailability (PAU) objective function.
             The goal is to minimize this function. Lower is better.

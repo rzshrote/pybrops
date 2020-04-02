@@ -76,7 +76,7 @@ class PAFD(GenomicSelection):
 
         return tfreq
 
-    def objfn(self, sel, objcoeff = None, negate = True):
+    def objfn(self, sel, objcoeff = None, minimizing = True):
         # calculate PAFD values
         pafd = PAFD.objfn_mat(
             sel,
@@ -86,7 +86,7 @@ class PAFD(GenomicSelection):
         )
 
         # negate PAFD scores if necessary.
-        if negate:
+        if not minimizing:
             pafd = -pafd
 
         # if we have objective weights, take dot product for weight sum method
@@ -95,7 +95,7 @@ class PAFD(GenomicSelection):
 
         return pafd
 
-    def objfn_vec(self, sel, objcoeff = None, negate = True):
+    def objfn_vec(self, sel, objcoeff = None, minimizing = True):
         # calculate PAFD values
         pafd = PAFD.objfn_vec_mat(
             sel,
@@ -104,8 +104,8 @@ class PAFD(GenomicSelection):
             tfreq = self._tfreq
         )
 
-        # negate OPV scores if necessary
-        if negate:
+        # negate PAFD scores if necessary
+        if not minimizing:
             pafd = -pafd
 
         # take the dot product if necessary
@@ -114,7 +114,13 @@ class PAFD(GenomicSelection):
 
         return pafd
 
-    # optimize() function does not need to be overridden
+    def optimize(self, objcoeff = None, minimizing = True, **kwargs):
+        sel = super(PAFD, self).optimize(
+            objcoeff = objcoeff,
+            minimizing = minimizing,
+            **kwargs
+        )
+        return sel
 
     def simulate(self):
         raise NotImplementedError

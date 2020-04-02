@@ -36,7 +36,7 @@ class StateHC(HillClimber):
     ############################## Class Methods ###############################
     ############################################################################
     def optimize(self, objfn, seed = None, nthreads = 0, minimize = True,
-            verbose = False, *args, **kwargs):
+            verbose = False, **kwargs):
         """
         Perform a hillclimbing using steepest ascent strategy. Variables are
         represented by dimensions with possible states. States are iteratively
@@ -120,7 +120,7 @@ class StateHC(HillClimber):
 
         # score the initial configuration
         # get an array view of only our first indices for each dimension.
-        gbest_score = objfn(gbest_pos[dst], *args, **kwargs)
+        gbest_score = objfn(gbest_pos[dst], **kwargs)
 
         # stash the initialization result into the history list.
         self.history_add(algoiter, [gbest_score], [gbest_pos[dst]])
@@ -146,7 +146,7 @@ class StateHC(HillClimber):
                 pos = StateHC._state_exchange_matrix(gbest_pos, dim_size)
 
                 # calculate scores
-                score = numpy.apply_along_axis(objfn, 1, pos[:,dst], *args, **kwargs)
+                score = numpy.apply_along_axis(objfn, 1, pos[:,dst], **kwargs)
 
                 # OPTIMIZE: see if any optimizations can be made in this logic chain
                 # determine if any improvement has been made

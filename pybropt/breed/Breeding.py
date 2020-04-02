@@ -501,7 +501,7 @@ class Breeding:
         """
         raise NotImplementedError("The method 'objfn_vec' is abstract.")
 
-    def optimize(self, algorithm, objcoeff = None, minimizing = True, **kwargs):
+    def optimize(self, algorithm, **kwargs):
         """
         Optimize the breeding objective function provided an algorithm.
 
@@ -509,18 +509,9 @@ class Breeding:
         ----------
         algorithm : Algorithm
             An optimizing algorithm.
-        objcoeff : numpy.ndarray, None
-            An objective coefficients matrix of shape (t,).
-            Where:
-                't' is the number of objectives.
-            These are used to weigh objectives in the weight sum method.
-            If None, do not multiply score by a weight sum vector.
-        minimizing : bool, default = True
-            If True, scores are adjusted such that the objective function
-            becomes a minimizing function: lower is better.
-            If False, scores are adjusted such that the objective function
-            becomes a maximizing function: higher is better.
-            Adjusted scores are used in the dot product with 'objcoeff'.
+        **kwargs
+            Additional key word arguments for either the opimizer or the
+            objective function.
 
         Returns
         -------
@@ -537,9 +528,7 @@ class Breeding:
         # we pass objcoeff onto optimizer. This will handle multiobjective.
         algorithm.optimize(
             self.objfn,
-            **kwargs,
-            objcoeff = objcoeff,
-            minimizing = minimizing
+            **kwargs
         )
 
         # get global best selection configuration
