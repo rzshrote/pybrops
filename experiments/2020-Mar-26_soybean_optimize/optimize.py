@@ -13,6 +13,8 @@ import pybropt.model
 import pybropt.breed
 import pybropt.algo
 
+nindiv = 50
+
 # attempt load of large genetic map
 gmap = pybropt.popgen.GeneticMap.from_egmap("Song_2016.linear.M.egmap")
 print("loaded egmap")
@@ -33,6 +35,12 @@ population = pybropt.popgen.Population.from_vcf(
     auto_sort = True
 )
 print("loaded + created population")
+
+gebv = population.gebv(objcoeff = numpy.array([1.0]))
+gebv_ix = gebv.argsort()
+top_names = population.taxa[gebv_ix[-nindiv:]]
+population.taxa_remove(top_names, invert = True)
+print("selected top %s" % nindiv)
 
 # build cross structure
 cross = pybropt.popgen.Cross(
@@ -77,26 +85,26 @@ print("created SPstdA")
 wgs = pybropt.breed.WGS(population, cross)
 print("created WGS")
 
-quit()
-
-ss = [i for i in range(50)]
-sspace = pybropt.algo.CategoricalSearchSpace(
-    ss, ss, ss, ss, ss, ss, ss, ss, ss, ss
-)
+ss = [i for i in range(nindiv)]
+sspace = pybropt.algo.CategoricalSearchSpace(ss,ss,ss,ss,ss,ss,ss,ss,ss,ss)
 print("created search space")
 
-algo = pybropt.algo.StateHC(
-    sspace
-)
+algo = pybropt.algo.StateHC(sspace)
 print("created algorithm")
 
-sel = opv.optimize(
-    objcoeff = numpy.array([1.0]),
-    algorithm = algo
-)
+cgs_sel = cgs.optimize(k = 10, objcoeff = numpy.array([1.0]), algorithm = None)
+mogm_sel = mogm.optimize(objcoeff = numpy.array([[1.0],[1.0],[1.0]]), algorithm = algo)
+# mogs_sel = mogs.optimize(objcoeff = numpy.array([1.0]), algorithm = algo)
+opv_sel = opv.optimize(objcoeff = numpy.array([1.0]), algorithm = algo)
+# pafd_sel = pafd.optimize(objcoeff = numpy.array([1.0]), algorithm = algo)
+# pau_sel = pau.optimize(objcoeff = numpy.array([1.0]), algorithm = algo)
+# wgs_sel = wgs.optimize(k = 10, objcoeff = numpy.array([1.0]), algorithm = None)
 print("made selections")
 
-algo.history_to_csv("test_algo_history.csv", index = None)
-
-print(sel)
-print(population.taxa[sel])
+print(cgs_sel)
+print(mogm_sel)
+# print(mogs_sel)
+print(opv_sel)
+# print(pafd_sel)
+# print(pau_sel)
+# print(wgs_sel)

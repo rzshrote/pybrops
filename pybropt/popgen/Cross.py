@@ -1113,7 +1113,7 @@ class Cross:
         Returns
         -------
         varA_val : numpy.ndarray
-            A 1D array of variance components of shape (k/2,)
+            A 1D array of variance components of shape (t,k/2)
         """
         # if the matrix has not been calculated, calculate it.
         if not hasattr(self, "_varA_2wayDH_mat"):

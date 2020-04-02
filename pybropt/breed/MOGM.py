@@ -113,6 +113,7 @@ class MOGM(GenomicMating):
             sel,
             self._population.geno,
             self._population.genomic_model.coeff,
+            self._cross.varA,
             wcoeff = self._wcoeff,
             tfreq = self._tfreq
         )
@@ -123,7 +124,24 @@ class MOGM(GenomicMating):
 
         # if we have objective weights, take dot product for weight sum method
         if objcoeff is not None:
-            mogm = mogm.dot(objcoeff)
+            if objcoeff.ndim == 1:
+                mogm = mogm.dot(objcoeff)
+            elif objcoeff.ndim == 2:
+                # get dimensions
+                ma, mb = mogm.shape
+                oa, ob = objcoeff.shape
+
+                # get dot products
+                if (oa, ob) == (ma, mb):
+                    mogm = (mogm * objcoeff).sum()
+                elif (oa, ob) == (1, mb):
+                    mogm = (mogm * objcoeff).sum(0)
+                elif (oa, ob) == (ma, 1):
+                    mogm = (mogm * objcoeff).sum(1)
+                else:
+                    raise ValueError("'mogm' and 'objcoeff' shapes not aligned")
+            else:
+                raise ValueError("'mogm' and 'objcoeff' shapes not aligned")
 
         return mogm
 
@@ -306,7 +324,7 @@ class MOGM(GenomicMating):
         pafd = (wcoeff * dist).sum(0) # (p,t)[0] -> (t,)
 
         # compute f_SPstdA(x)
-        spstda = numpy.sqrt(varAfn(sel, geno, coeff)).sum(0) # (a,t)[0] -> (t,)
+        spstda = numpy.sqrt(varAfn(sel)).sum(1) # (t,a)[0] -> (t,)
 
         # allocate an empty vector of float64 to hold pau, pafd, stdA
         mogm = numpy.empty((3, wcoeff.shape[1]), dtype='float64')
