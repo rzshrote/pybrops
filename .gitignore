@@ -2,3 +2,5 @@
 *.csv
 *.png
 *.7z
+experiments/2020-Mar-26_soybean_optimize/Song_2016.linear.egmap
+experiments/2020-Mar-26_soybean_optimize/Song_2016_phased_chr.vcf
