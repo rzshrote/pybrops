@@ -105,7 +105,9 @@ opv.simulate(
 # pau_sel = pau.simulate(objcoeff = numpy.array([1.0]), algorithm = algo)
 # wgs_sel = wgs.simulate(k = 10, objcoeff = numpy.array([1.0]), algorithm = None)
 print("ran simulations")
-#
+
+opv.population_history_to_csv("test_population.csv", index = None)
+
 # print("CGS", cgs_sel)
 # print("MOGM", mogm_sel)
 # print("MOGS", mogs_sel)
