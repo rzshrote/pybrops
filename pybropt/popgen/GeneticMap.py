@@ -284,6 +284,193 @@ class GeneticMap(MarkerSet):
         # calculate crossover probabilities
         self.calc_xo_prob()
 
+    ################ Insert/Delete Methods #################
+    def remove(self, indices, auto_sort = False):
+        """
+        Remove indices from the MarkerSet.
+
+        Parameters
+        ----------
+        indices : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after removing indices.
+        """
+        # delete indices from self
+        self._chr_grp = numpy.delete(self._chr_grp, indices)
+        self._chr_start = numpy.delete(self._chr_start, indices)
+        self._chr_stop = numpy.delete(self._chr_stop, indices)
+        self._map_pos = numpy.delete(self._map_pos, indices)
+        if self._mkr_name is not None:
+            self._mkr_name = numpy.delete(self._mkr_name, indices)
+        if self._map_fncode is not None:
+            self._map_fncode = numpy.delete(self._map_fncode, indices)
+
+        # sort if needed
+        if auto_sort:
+            self.sort()
+
+    def select(self, indices, auto_sort = False):
+        """
+        Keep only selected markers, removing all others from the MarkerSet.
+
+        Parameters
+        ----------
+        indices : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after selecting indices.
+        """
+        # keep only selected markers.
+        self._chr_grp = self._chr_grp[indices]
+        self._chr_start = self._chr_start[indices]
+        self._chr_stop = self._chr_stop[indices]
+        self._map_pos = self._map_pos[indices]
+        if self._mkr_name is not None:
+            self._mkr_name = self._mkr_name[indices]
+        if self._map_fncode is not None:
+            self._map_fncode = self._map_fncode[indices]
+
+        # sort if needed
+        if auto_sort:
+            self.sort()
+
+    def prune(self, nt = None, M = None, auto_sort = False):
+        """
+        Prune markers evenly across all chromosomes.
+
+        Parameters
+        ----------
+        nt : int
+            Target distance between each selected marker in nucleotides.
+        M : float
+            Target distance between each selected marker in Morgans.
+            If this option is specified, selection based on Morgans takes first
+            priority. If the physical distance between two markers selected
+            based on their genetic distance exceeds 'nt' (if provided), the
+            additional markers are sought between those regions.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after selecting indices.
+        """
+        # check if we have acceptible inputs
+        if (nt is None) and (M is None):
+            raise ValueError("'nt' and 'M' cannot both be None")
+
+        # if not sorted, sort
+        if not self._sorted:
+            self.sort()
+
+        # make empty index list to store selected marker indices
+        indices = []
+
+        # make a generic array pointer to a position; this position can be a
+        # physical position (self._chr_start) or a genetic position
+        # (self._map_pos); this is used in initial marker selection below.
+        # genetic position takes dominance
+        position = self._map_pos if M is not None else self._chr_start
+
+        # generic spacing variable
+        spacing = M if M is not None else nt
+
+        # for each chromosome
+        for st,sp in zip(self._chr_grp_stix, self._chr_grp_spix):
+            # calculate chromosome length given start, end marker positions
+            dist = position[sp-1] - position[st]
+
+            # calculate the target distance between each marker (float)
+            step = dist / int(math.ceil(dist / spacing))
+
+            # force addition of the first marker on the chromosome
+            indices.append(st)
+
+            # target site; we want markers as close to this value (float)
+            target = position[st] + step
+
+            # for each locus index in the chromosome
+            for i in range(st+1, sp):
+                # if position exceeds target, determine which marker to add
+                if position[i] >= target:
+                    # get distance between target and previous marker
+                    downstream = target - position[i-1]
+
+                    # get distance between target and current marker
+                    upstream = position[i] - target
+
+                    # determine which index to add
+                    ix = i-1 if downstream < upstream else i
+
+                    # if we haven't added this index previously, add it
+                    if ix != indices[-1]:
+                        indices.append(ix)
+
+                    # increment target site position
+                    target += step
+
+            # final check to make sure we've added last marker on chromosome
+            if (sp-1) != indices[-1]:
+                indices.append(sp-1)
+
+        # secondary marker selection based on 'nt' if both 'M' and 'nt' provided
+        if (M is not None) and (nt is not None):
+            # make new indices list to store M indices + nt indices
+            new_indices = []
+
+            # for each neighbor marker pair
+            for up,down in zip(indices[:-1], indices[1:]):
+                # append the upstream index
+                new_indices.append(up)
+
+                # if they are on the same chromosome
+                if self._chr_grp[up] == self._chr_grp[down]:
+                    # calculate physical distance between two selected markers
+                    dist = self._chr_start[down] - self._chr_start[up]
+
+                    # if we exceed 'nt' distance
+                    if dist > nt:
+                        # calculate the target distance between each marker (float)
+                        step = dist / int(math.ceil(dist / nt))
+
+                        # target site; we want markers as close to this value (float)
+                        target = self._chr_start[up] + step
+
+                        # for each locus between upstream and downstream markers
+                        for i in range(up+1, down):
+                            # if position exceeds target, determine which marker to add
+                            if self._chr_start[i] >= target:
+                                # get distance between target and previous marker
+                                downstream = target - self._chr_start[i-1]
+
+                                # get distance between target and current marker
+                                upstream = self._chr_start[i] - target
+
+                                # determine which index to add
+                                ix = i-1 if downstream < upstream else i
+
+                                # if we haven't added this index previously, add it
+                                if ix != indices[-1]:
+                                    new_indices.append(ix)
+
+                                # increment target site position
+                                target += step
+
+            # append the last index of 'indices' to 'new_indices' since we skipped it
+            new_indices.append(indices[-1])
+
+            # replace indices with new_indices
+            indices = new_indices
+
+        # convert indices into an array
+        indices = numpy.array(indices)
+
+        # select the desired marker indices
+        self.select(indices, auto_sort)
+
+    # TODO: def insert(self, ...)
+
     ################## Integrity Methods ###################
     def map_concordancy(self):
         """
@@ -347,6 +534,160 @@ class GeneticMap(MarkerSet):
         self._map_pos       = self._map_pos[concordancy]
         self._mkr_name      = self._mkr_name[concordancy]
         self._map_fncode    = self._map_fncode[concordancy]
+
+    ############# Distance/Probability Methods #############
+    # FIXME: will not work with probabilities that span different chromosomes.
+    def genetic_dist(self, rst, rsp, cst, csp):
+        """
+        Get a Morgan distance matrix chunk given coordinates.
+
+        Parameters
+        ----------
+        rst : int
+            Row start index (inclusive).
+            Must fall within the length of the GeneticMap.
+        rsp : int
+            Row stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+        cst : int
+            Column start position (inclusive).
+            Must fall within the length of the GeneticMap.
+        csp : int
+            Column stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+
+        Returns
+        -------
+        d : numpy.ndarray
+            A ((rst-rsp), (cst-csp)) distance matrix of every pair of markers
+            in the designated GeneticMap regions.
+
+        Example
+        -------
+            [in]  > genetic_map.map_pos
+            [out] > [0,1,2,3,4,5,6]
+            [in]  > genetic_map.dist(0,2,3,5)
+                  # [[abs(0-3), abs(1-3)],
+                  #  [abs(0-4), abs(1-4)]]
+            [out] > [[3, 2],
+                    [4, 3]]
+        """
+        # make an mesh grid for row and column gmap's
+        rowmesh, colmesh = numpy.meshgrid(
+            self._map_pos[rst:rsp],
+            self._map_pos[cst:csp],
+            indexing='ij'
+        )
+
+        # take the difference of the two components in the grid and return abs()
+        d = numpy.absolute(rowmesh - colmesh)
+
+        # return distances
+        return d
+
+    # FIXME: will not work with probabilities that span different chromosomes.
+    def recomb_prob(self, rst, rsp, cst, csp, mapfn = None):
+        """
+        Get a Morgan distance matrix chunk given coordinates.
+
+        Parameters
+        ----------
+        rst : int
+            Row start index (inclusive).
+            Must fall within the length of the GeneticMap.
+        rsp : int
+            Row stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+        cst : int
+            Column start position (inclusive).
+            Must fall within the length of the GeneticMap.
+        csp : int
+            Column stop position (exclusive).
+            Must fall within the length of the GeneticMap.
+        mapfn : str, callable
+            Name of mapping function or custom mapping function.
+
+        Returns
+        -------
+        r : numpy.ndarray
+            A ((rst-rsp), (cst-csp)) recombination probability matrix of every
+            pair of markers in the designated GeneticMap regions.
+        """
+        # convert mapfn to a callable function
+        if mapfn is None:
+            mapfn = self._mapfn
+        elif callable(mapfn):
+            pass
+        else:
+            mapfn = GeneticMap.KEY_TO_MAPFN.get(mapfn, None)
+
+        # check if we have a callable function after the chain above
+        if not callable(mapfn):
+            raise ValueError("Unrecognized type for 'mapfn'")
+
+        # calculate genetic distance
+        d = self.genetic_dist(rst, rsp, cst, csp)
+
+        # convert to recombination probability
+        r = mapfn(d)
+
+        return r
+
+    def calc_xo_prob(self, mapfn = None):
+        """
+        Calculate vector of crossover probabilities for between neighbors.
+        This sets the internal xo_prob, xo_prob_len, xo_prob_stix, and
+        xo_prob_spix variables.
+
+        Parameters
+        ----------
+        mapfn : str, callable
+            String name for the mapping function to use, or a callable mapping
+            function.
+
+        Returns
+        -------
+        xo_prob : numpy.ndarray
+            A vector of crossover probabilities between each neighbor. This is
+            the same vector as self.xo_prob.
+        """
+        # prerequisite of sorted internals
+        if not self._sorted:
+            self.sort()
+
+        # convert mapfn to a callable function
+        if mapfn is None:
+            mapfn = self._mapfn
+        else:
+            mapfn = GeneticMap.key_to_mapfn(mapfn)
+
+        # since probabilities are between elements, we subtract 1 from chr len
+        self._xo_prob_len = self._chr_grp_len - 1
+
+        # get cumsum for stop indices
+        self._xo_prob_spix = self._xo_prob_len.cumsum()
+
+        # subtract lengths to get the start indices
+        self._xo_prob_stix = self._xo_prob_spix - self._xo_prob_len
+
+        # allocate empty vector for our crossover probability vector
+        self._xo_prob = numpy.empty(
+            self._xo_prob_len.sum(),
+            dtype = 'float64'
+        )
+
+        # calculate probabilities for recombination between neighbors
+        for gst, gsp, pst, psp in zip(
+                self._chr_grp_stix, self._chr_grp_spix,
+                self._xo_prob_stix, self._xo_prob_spix
+        ):
+            # Step 1) take n+1 map positions and subtract n map positions
+            # Step 2) then take the probability of the genetic distance.
+            self._xo_prob[pst:psp] = mapfn(
+                self._map_pos[gst+1:gsp] - self._map_pos[gst:gsp-1]
+            )
+
+        return self._xo_prob
 
     ################ Interpolation Methods #################
     # TODO: do not require sorted internals to build spline
@@ -514,158 +855,6 @@ class GeneticMap(MarkerSet):
             header = True,
             index = False
         )
-
-    def genetic_dist(self, rst, rsp, cst, csp):
-        """
-        Get a Morgan distance matrix chunk given coordinates.
-
-        Parameters
-        ----------
-        rst : int
-            Row start index (inclusive).
-            Must fall within the length of the GeneticMap.
-        rsp : int
-            Row stop position (exclusive).
-            Must fall within the length of the GeneticMap.
-        cst : int
-            Column start position (inclusive).
-            Must fall within the length of the GeneticMap.
-        csp : int
-            Column stop position (exclusive).
-            Must fall within the length of the GeneticMap.
-
-        Returns
-        -------
-        d : numpy.ndarray
-            A ((rst-rsp), (cst-csp)) distance matrix of every pair of markers
-            in the designated GeneticMap regions.
-
-        Example
-        -------
-            [in]  > genetic_map.map_pos
-            [out] > [0,1,2,3,4,5,6]
-            [in]  > genetic_map.dist(0,2,3,5)
-                  # [[abs(0-3), abs(1-3)],
-                  #  [abs(0-4), abs(1-4)]]
-            [out] > [[3, 2],
-                    [4, 3]]
-        """
-        # make an mesh grid for row and column gmap's
-        rowmesh, colmesh = numpy.meshgrid(
-            self._map_pos[rst:rsp],
-            self._map_pos[cst:csp],
-            indexing='ij'
-        )
-
-        # take the difference of the two components in the grid and return abs()
-        d = numpy.absolute(rowmesh - colmesh)
-
-        # return distances
-        return d
-
-    def calc_xo_prob(self, mapfn = None):
-        """
-        Calculate vector of crossover probabilities for between neighbors.
-        This sets the internal xo_prob, xo_prob_len, xo_prob_stix, and
-        xo_prob_spix variables.
-
-        Parameters
-        ----------
-        mapfn : str, callable
-            String name for the mapping function to use, or a callable mapping
-            function.
-
-        Returns
-        -------
-        xo_prob : numpy.ndarray
-            A vector of crossover probabilities between each neighbor. This is
-            the same vector as self.xo_prob.
-        """
-        # prerequisite of sorted internals
-        if not self._sorted:
-            self.sort()
-
-        # convert mapfn to a callable function
-        if mapfn is None:
-            mapfn = self._mapfn
-        else:
-            mapfn = GeneticMap.key_to_mapfn(mapfn)
-
-        # since probabilities are between elements, we subtract 1 from chr len
-        self._xo_prob_len = self._chr_grp_len - 1
-
-        # get cumsum for stop indices
-        self._xo_prob_spix = self._xo_prob_len.cumsum()
-
-        # subtract lengths to get the start indices
-        self._xo_prob_stix = self._xo_prob_spix - self._xo_prob_len
-
-        # allocate empty vector for our crossover probability vector
-        self._xo_prob = numpy.empty(
-            self._xo_prob_len.sum(),
-            dtype = 'float64'
-        )
-
-        # calculate probabilities for recombination between neighbors
-        for gst, gsp, pst, psp in zip(
-                self._chr_grp_stix, self._chr_grp_spix,
-                self._xo_prob_stix, self._xo_prob_spix
-        ):
-            # Step 1) take n+1 map positions and subtract n map positions
-            # Step 2) then take the probability of the genetic distance.
-            self._xo_prob[pst:psp] = mapfn(
-                self._map_pos[gst+1:gsp] - self._map_pos[gst:gsp-1]
-            )
-
-        return self._xo_prob
-
-    # FIXME: will not work with probabilities that span different chromosomes.
-    def recomb_prob(self, rst, rsp, cst, csp, mapfn = None):
-        """
-        Get a Morgan distance matrix chunk given coordinates.
-
-        Parameters
-        ----------
-        rst : int
-            Row start index (inclusive).
-            Must fall within the length of the GeneticMap.
-        rsp : int
-            Row stop position (exclusive).
-            Must fall within the length of the GeneticMap.
-        cst : int
-            Column start position (inclusive).
-            Must fall within the length of the GeneticMap.
-        csp : int
-            Column stop position (exclusive).
-            Must fall within the length of the GeneticMap.
-        mapfn : str, callable
-            Name of mapping function or custom mapping function.
-
-        Returns
-        -------
-        r : numpy.ndarray
-            A ((rst-rsp), (cst-csp)) recombination probability matrix of every
-            pair of markers in the designated GeneticMap regions.
-        """
-        # convert mapfn to a callable function
-        if mapfn is None:
-            mapfn = self._mapfn
-        elif callable(mapfn):
-            pass
-        else:
-            mapfn = GeneticMap.KEY_TO_MAPFN.get(mapfn, None)
-
-        # check if we have a callable function after the chain above
-        if not callable(mapfn):
-            raise ValueError("Unrecognized type for 'mapfn'")
-
-        # calculate genetic distance
-        d = self.genetic_dist(rst, rsp, cst, csp)
-
-        # convert to recombination probability
-        r = mapfn(d)
-
-        return r
 
     # TODO: remove me? this has been replaced by mkr_remove
     def has(self, chr_grp = None, chr_start = None, chr_stop = None,

@@ -1,6 +1,6 @@
 # 3rd party libraries
 import numpy
-# import functools.reduce
+import math
 
 # import out libraries
 import pybropt.util
@@ -253,7 +253,8 @@ class MarkerSet:
         self._chr_grp = numpy.delete(self._chr_grp, indices)
         self._chr_start = numpy.delete(self._chr_start, indices)
         self._chr_stop = numpy.delete(self._chr_stop, indices)
-        self._mkr_name = numpy.delete(self._mkr_name, indices)
+        if self._mkr_name is not None:
+            self._mkr_name = numpy.delete(self._mkr_name, indices)
 
         # sort if needed
         if auto_sort:
@@ -270,21 +271,85 @@ class MarkerSet:
             Where:
                 'a' is the number of indices to remove.
         auto_sort : bool, default = False
-            Whether to sort the array or not after removing indices.
+            Whether to sort the array or not after selecting indices.
         """
         # keep only selected markers.
         self._chr_grp = self._chr_grp[indices]
         self._chr_start = self._chr_start[indices]
         self._chr_stop = self._chr_stop[indices]
-        self._mkr_name = self._mkr_name[indices]
+        if self._mkr_name is not None:
+            self._mkr_name = self._mkr_name[indices]
 
         # sort if needed
         if auto_sort:
             self.sort()
 
+    def prune(self, nt, auto_sort = False):
+        """
+        Prune markers evenly across all chromosomes.
+
+        Parameters
+        ----------
+        nt : int
+            Target distance between each selected marker in nucleotides.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after selecting indices.
+        """
+        # if not sorted, sort
+        if not self._sorted:
+            self.sort()
+
+        # make empty index list to store selected marker indices
+        indices = []
+
+        # for each chromosome
+        for st,sp in zip(self._chr_grp_stix, self._chr_grp_spix):
+            # calculate chromosome length given start, end marker
+            chr_len = self._chr_start[sp-1] - self._chr_start[st]
+
+            # calculate the target distance between each marker (float)
+            step = chr_len / int(math.ceil(chr_len / nt))
+
+            # force addition of the first marker on the chromosome
+            indices.append(st)
+
+            # target site; we want markers as close to this value (float)
+            target =  self._chr_start[st] + step
+
+            # for each locus index in the chromosome
+            for i in range(st+1, sp):
+                # if position exceeds target, determine which marker to add
+                if self._chr_start[i] >= target:
+                    # get distance between target and previous marker
+                    downstream = target - self._chr_start[i-1]
+
+                    # get distance between target and current marker
+                    upstream = self._chr_start[i] - target
+
+                    # determine which index to add
+                    ix = i-1 if downstream < upstream else i
+
+                    # if we haven't added this index previously, add it
+                    if ix != indices[-1]:
+                        indices.append(ix)
+
+                    # increment target site position
+                    target += step
+
+            # final check to make sure we've added last marker on chromosome
+            if (sp-1) != indices[-1]:
+                indices.append(sp-1)
+
+        # convert indices into an array
+        indices = numpy.array(indices)
+
+        # select the desired marker indices
+        self.select(indices, auto_sort)
+
     # TODO: def insert(self, ...)
 
     ################### Distance Methods ###################
+    # FIXME: will not work with distances that span different chromosomes.
     def physical_dist(self, rst, rsp, cst, csp):
         raise NotImplementedError
 

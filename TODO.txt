@@ -52,6 +52,8 @@ Feature Additions
 [ ] hapmap import
 [ ] Cross: auto detect progeny variance from simulations or matrix math
 [ ] breed module: migrate simulate functions to new BreedingProgram class?
+[ ] GeneticMap: remove map_fncode because it's a pain to maintain;
+    it would be better to just store as single variable.
 
 Documentation
 -------------
