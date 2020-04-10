@@ -22,3 +22,9 @@ population = pybropt.popgen.Population.from_vcf(
     auto_sort = True
 )
 print("loaded + created population")
+
+# get interpolated GeneticMap object
+igmap = population.marker_set
+
+# export interpolated GeneticMap to file
+igmap.to_egmap("tarspot.McMullen_2009_US_NAM.interpolated.egmap")

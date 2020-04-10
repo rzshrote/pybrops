@@ -1,4 +1,5 @@
 # import 3rd party
+import math
 import numpy
 import pandas
 from scipy.interpolate import interp1d
@@ -989,9 +990,12 @@ class GeneticMap(MarkerSet):
         # read the file using pandas
         df = pandas.read_csv(
             fpath,          # file path
-            sep='\t',       # tab delimited
-            header=1        # there is a header
+            sep = '\t',     # tab delimited
+            header = 0      # there is a header
         )
+
+        print(df.columns)
+        print("mkr_name" in df.columns)
 
         genetic_map = GeneticMap.from_pandas_df(
             pandas_df = df,
@@ -999,8 +1003,8 @@ class GeneticMap(MarkerSet):
             chr_start_ix = 1,
             chr_stop_ix = 2,
             map_pos_ix = 3,
-            mkr_name_ix = 4 if 4 in df else None,
-            map_fncode_ix = 5 if 5 in df else None,
+            mkr_name_ix = 4 if "mkr_name" in df.columns else None,
+            map_fncode_ix = 5 if "map_fncode" in df.columns else None,
             mapfn = mapfn
         )
 

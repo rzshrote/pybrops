@@ -7,6 +7,7 @@ Code reuse
 ----------
 [ ] Alter inheritance structure of MOGS, MOGM, PAFD, PAU such that they inherit
     from a class with wcoeff and tfreq.
+[ ] Make AbstractSortable class for lexsort, reorder, sort?
 
 Performance Improvements
 ------------------------
