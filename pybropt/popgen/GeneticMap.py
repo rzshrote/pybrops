@@ -93,7 +93,6 @@ class GeneticMap(MarkerSet):
         if auto_spline:
             self.build_spline(kind, fill_value)
 
-
     def __len__(self):
         """
         Get the length of the genetic map
@@ -534,6 +533,7 @@ class GeneticMap(MarkerSet):
                 assume_sorted = False       # arrays are not sorted
             )
 
+    # TODO: remove me? this has been replaced by mkr_remove
     def has(self, chr_grp = None, chr_start = None, chr_stop = None,
             map_pos = None, mkr_name = None, map_fncode = None
             ):
@@ -1066,9 +1066,6 @@ class GeneticMap(MarkerSet):
     @staticmethod
     def key_to_mapfn(key):
         return key if callable(key) else GeneticMap.KEY_TO_MAPFN[key]
-
-
-
 
 ################################################################################
 ############################# Bind Class Constants #############################

@@ -236,13 +236,46 @@ class MarkerSet:
     def remove(self, indices, auto_sort = False):
         """
         Remove indices from the MarkerSet.
-        """
-        if indices is not None:
-            self._chr_grp = self._chr_grp[indices]
-            self._chr_start = self._chr_start[indices]
-            self._chr_stop = self._chr_stop[indices]
-            self._mkr_name = self._mkr_name[indices]
 
+        Parameters
+        ----------
+        indices : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after removing indices.
+        """
+        # delete indices from self
+        self._chr_grp = numpy.delete(self._chr_grp, indices)
+        self._chr_start = numpy.delete(self._chr_start, indices)
+        self._chr_stop = numpy.delete(self._chr_stop, indices)
+        self._mkr_name = numpy.delete(self._mkr_name, indices)
+
+        # sort if needed
+        if auto_sort:
+            self.sort()
+
+    def select(self, indices, auto_sort = False):
+        """
+        Keep only selected markers, removing all others from the MarkerSet.
+
+        Parameters
+        ----------
+        indices : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+        auto_sort : bool, default = False
+            Whether to sort the array or not after removing indices.
+        """
+        # keep only selected markers.
+        self._chr_grp = self._chr_grp[indices]
+        self._chr_start = self._chr_start[indices]
+        self._chr_stop = self._chr_stop[indices]
+        self._mkr_name = self._mkr_name[indices]
+
+        # sort if needed
         if auto_sort:
             self.sort()
 
@@ -463,3 +496,94 @@ class MarkerSet:
 
     def physical_dist(self, rst, rsp, cst, csp):
         raise NotImplementedError("Physical distance not implemented yet.")
+
+    def copy(self, deepcopy = True):
+        return self.from_self(deepcopy = True)
+
+    def from_self(self, deepcopy = True,
+        chr_grp = None, chr_start = None, chr_stop = None, mkr_name = None,
+        select_ix = None, remove_ix = None,
+        auto_sort = False, auto_mkr_rename = False):
+        """
+        Create a copy of self and optionally alter select variables.
+
+        Parameters
+        ----------
+        deepcopy : bool, default = True
+            Perform a deep copy of internal arrays if True. If False, only copy
+            pointers (other objects sharing the same array pointer could alter
+            array values in an undesireable manner).
+            If chr_grp, chr_start, chr_stop, mkr_name are provided, elements
+            from these arrays are deep copied.
+        chr_grp : numpy.ndarray
+            Optional chr_grp array to replace in the new MarkerSet.
+        chr_start : numpy.ndarray
+            Optional chr_start array to replace in the new MarkerSet.
+        chr_stop : numpy.ndarray
+            Optional chr_stop array to replace in the new MarkerSet.
+        mkr_name : numpy.ndarray
+            Optional mkr_name array to replace in the new MarkerSet.
+        select_ix : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+            If chr_grp, chr_start, chr_stop, mkr_name are provided, indices from
+            these arrays are selected at the corresponding location(s).
+        remove_ix : numpy.ndarray, slice, int
+            Array of shape (a,), slice or int of item(s) to remove.
+            Where:
+                'a' is the number of indices to remove.
+            If chr_grp, chr_start, chr_stop, mkr_name are provided, indices from
+            these arrays are removed at the corresponding location(s).
+
+        Returns
+        -------
+        marker_set : MarkerSet
+            A MarkerSet object.
+        """
+        if chr_grp is None:
+            chr_grp = self._chr_grp
+        if chr_start is None:
+            chr_start = self._chr_start
+        if chr_stop is None:
+            chr_stop = self._chr_stop
+        if mkr_name is None:
+            mkr_name = self._mkr_name
+
+        # test if we are selecting, removing, and finally deep copying.
+        if select_ix is not None:
+            # if remove_ix has also been provided, raise error
+            if remove_ix is not None:
+                raise ValueError("'select_ix' and 'remove_ix' cannot be provided at the same time")
+
+            # select indices; this copies data leaving the original intact
+            chr_grp = chr_grp[select_ix]
+            chr_start = chr_start[select_ix]
+            chr_stop = chr_stop[select_ix]
+            mkr_name = mkr_name[select_ix]
+
+        elif remove_ix is not None:
+            # remove indices; this copies data leaving the original intact
+            chr_grp = numpy.delete(chr_stop, remove_ix)
+            chr_start = numpy.delete(chr_start, remove_ix)
+            chr_stop = numpy.delete(chr_stop, remove_ix)
+            mkr_name = numpy.delete(mkr_name, remove_ix)
+
+        elif deepcopy:
+            # copy arrays if we are not selecting or removing indices
+            chr_grp = chr_grp.copy()
+            chr_start = chr_start.copy()
+            chr_stop = chr_stop.copy()
+            mkr_name = mkr_name.copy()
+
+        # make a new object instance
+        marker_set = self.__class__(
+            chr_grp = chr_grp,
+            chr_start = chr_start,
+            chr_stop = chr_stop,
+            mkr_name = mkr_name,
+            auto_sort = auto_sort,
+            auto_mkr_rename = auto_mkr_rename
+        )
+
+        return marker_set
