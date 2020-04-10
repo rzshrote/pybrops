@@ -164,6 +164,8 @@ class MarkerSet:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ################### Sorting Methods ####################
     def lexsort(self, keys = None):
         # if no keys were provided, set a default
         if keys is None:
@@ -233,6 +235,7 @@ class MarkerSet:
         # calculate grouping indices
         self.group()
 
+    ################ Insert/Delete Methods #################
     def remove(self, indices, auto_sort = False):
         """
         Remove indices from the MarkerSet.
@@ -279,6 +282,13 @@ class MarkerSet:
         if auto_sort:
             self.sort()
 
+    # TODO: def insert(self, ...)
+
+    ################### Distance Methods ###################
+    def physical_dist(self, rst, rsp, cst, csp):
+        raise NotImplementedError
+
+    #################### Marker Methods ####################
     # TODO: accept a pattern
     def mkr_rename(self, new_mkr_name = None):
         # if new names have not been provided, auto generate them
@@ -494,9 +504,7 @@ class MarkerSet:
         # return mask
         return mask
 
-    def physical_dist(self, rst, rsp, cst, csp):
-        raise NotImplementedError("Physical distance not implemented yet.")
-
+    ################### Copying Methods ####################
     def copy(self, deepcopy = True):
         return self.from_self(deepcopy = True)
 
