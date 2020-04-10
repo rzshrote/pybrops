@@ -452,7 +452,7 @@ class GeneticMap(MarkerSet):
                                 ix = i-1 if downstream < upstream else i
 
                                 # if we haven't added this index previously, add it
-                                if ix != indices[-1]:
+                                if ix != new_indices[-1]:
                                     new_indices.append(ix)
 
                                 # increment target site position
@@ -993,9 +993,6 @@ class GeneticMap(MarkerSet):
             sep = '\t',     # tab delimited
             header = 0      # there is a header
         )
-
-        print(df.columns)
-        print("mkr_name" in df.columns)
 
         genetic_map = GeneticMap.from_pandas_df(
             pandas_df = df,
