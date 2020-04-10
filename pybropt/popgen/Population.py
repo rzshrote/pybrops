@@ -292,10 +292,12 @@ class Population:
         self._geno = self._geno[:,:,indices]
 
         # reorder genetic model
-        self._genomic_model.reorder(indices)
+        if self._genomic_model is not None:
+            self._genomic_model.reorder(indices)
 
         # reorder marker set
-        self._marker_set.reorder(indices)
+        if self._marker_set is not None:
+            self._marker_set.reorder(indices)
 
     def group(self):
         """
