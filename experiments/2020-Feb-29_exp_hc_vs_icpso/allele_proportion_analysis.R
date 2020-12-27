@@ -140,7 +140,7 @@ density_plot <- ggplot() +
         aes(x = effect, color = Distribution, fill = Distribution),
         alpha=0.5
     )
-ggsave(width=6.5, height=6, plot=density_plot, filename="marker_density.png")
+ggsave(width=7, height=5, plot=density_plot, filename="marker_density_2.png")
 
 
 library(qqman)
@@ -151,7 +151,7 @@ cycle5_df[,"pos_int"] <- as.integer(cycle5_df[,"gmap_pos"] * 1000000)
 sig_pval = -log10(max(cycle5_df[cycle5_df$fdr < 0.05,]$pval))
 
 
-png("manhattan.png", units="in", width=6, height=6, res=300)
+png("manhattan_2.png", units="in", width=7, height=5, res=300)
 manhattan(
     cycle5_df,
     main = "Loci Under Differential Selection at Breeding Cycle 5",

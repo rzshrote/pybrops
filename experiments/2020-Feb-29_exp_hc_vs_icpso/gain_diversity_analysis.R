@@ -5,7 +5,7 @@ library(gridExtra)
 
 
 # set working directory
-setwd("C:/Users/rs14/Documents/research/breeding_optimization/PyBrOpt/experiments/2020-Feb-29_exp_hc_vs_icpso/")
+setwd("C:/Users/rs14/Documents/research/PyBrOpt/experiments/2020-Feb-29_exp_hc_vs_icpso")
 
 # read file
 pop_df <- read.csv("pop_summary_uniq.tsv", sep = "\t", header = T)
@@ -99,5 +99,5 @@ div_plot <- ggline(pop_df, x="cycle", y="score", add="mean_se", color="algorithm
 # put plots together
 whole_plot <- grid.arrange(gebv_plot, gain_plot, div_plot, nrow = 1)
 
-ggsave(width=12, height=6, plot=whole_plot, filename="algorithm_effects.png")
+ggsave(width=12, height=4, plot=whole_plot, filename="algorithm_effects_2.png")
 dev.off()
