@@ -4,13 +4,21 @@ import numpy
 
 ################################################################################
 # reliant on language itself
-def check_is_bool(b, varname):
-    if not isinstance(b, bool):
+def check_is_bool(v, varname):
+    if not isinstance(v, bool):
         raise TypeError("'%s' must be a bool." % varname)
+
+def cond_check_is_bool(v, varname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_bool(v, varname)
 
 def check_is_dict(d, varname):
     if not isinstance(d, dict):
         raise TypeError("'%s' must be a dictionary." % varname)
+
+def cond_check_is_dict(d, varname, cond=(lambda s: s is not None)):
+    if cond(d):
+        check_is_dict(d, varname)
 
 def check_is_iterable(i, varname):
     if not hasattr(i, "__iter__"):
@@ -31,6 +39,14 @@ def check_is_string(s, varname):
 def cond_check_is_string(s, varname, cond=(lambda s: s is not None)):
     if cond(s):
         check_is_string(s, varname)
+
+def check_is_string_or_iterable(s, varname):
+    if not (isinstance(s, str) or hasattr(s, "__iter__")):
+        raise TypeError("'%s' must be a string or iterable." % varname)
+
+def cond_check_is_string_or_iterable(s, varname, cond=(lambda s: s is not None)):
+    if cond(s):
+        check_is_string_or_iterable(s, varname)
 
 def check_is_tuple(t, varname):
     if not isinstance(t, tuple):
@@ -218,6 +234,14 @@ def check_is_integer(i, varname):
     if not numpy.issubdtype(type(i), numpy.integer):
         raise TypeError("'%s' must be an integer type." % varname)
 
+def check_is_integer_or_iterable(i, varname):
+    if not (numpy.issubdtype(type(i), numpy.integer) or hasattr(i, "__iter__")):
+        raise TypeError("'%s' must be an integer or iterable." % varname)
+
 def check_is_floating(f, varname):
     if not numpy.issubdtype(type(f), numpy.floating):
         raise TypeError("'%s' must be a floating type." % varname)
+
+def cond_check_is_integer_or_iterable(i, varname, cond=(lambda i: i is not None)):
+    if cond(i):
+        check_is_integer_or_iterable(i, varname)
