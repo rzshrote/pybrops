@@ -1,11 +1,11 @@
-# THESE ARE ORDER DEPENDENT BASED ON INHERITANCE!!!
+# order dependent
+from . import gmap
+# from . import mat
 
-# MarkerSet group
-from .MarkerSet import MarkerSet
-from .GeneticMap import GeneticMap
+from . import gmat
+from . import hmat
+from . import bvmat
 
-# Population group
-from .Population import Population
-
-# Cross group
-from .Cross import Cross
+from . import mate
+from . import ldmat
+from . import cmat

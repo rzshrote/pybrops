@@ -17,6 +17,21 @@ def check_keys_in_dict(d, varname, *argv):
                 err_str += "    %s is missing.\n" % argv[i]
         raise ValueError(err_str)
 
+def check_equal_len(a, aname, b, bname):
+    if len(a) != len(b):
+        raise ValueError("len(%s) != len(%s)" % (aname, bname))
+
+def check_all_equal(v, varname):
+    n = v[0]
+    if any(e != n for e in v):
+        raise ValueError("not all elements in %s are equivalent to %s" % (varname, n))
+
+# def check_equal_len(d):
+#     for key in d.keys():
+#
+#     key = d.keys()
+#     val = d.values()
+#     pass
 
 ################################################################################
 
