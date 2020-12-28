@@ -8,7 +8,7 @@ class LinearGenomicModel(GenomicModel):
 
     A Multivariate Multiple Linear Regression model is defined as:
 
-        Y = 1u' XB + e
+        Y = 1u' + XB + e
 
         Where:
             Y is a matrix of response variables of shape (n, t)
