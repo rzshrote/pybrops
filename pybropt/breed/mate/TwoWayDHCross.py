@@ -1,24 +1,24 @@
 import numpy
 from .util import mat_mate
-from . import Cross
+from . import MatingOperator
 import pybropt.util
 import pybropt.popgen.gmat
 
-class ThreeWayDHCross(Cross):
-    """docstring for ThreeWayDHCross."""
+class TwoWayDHCross(MatingOperator):
+    """docstring for TwoWayDHCross."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(ThreeWayDHCross, self).__init__(**kwargs)
+        super(TwoWayDHCross, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgvmat, sel, ncross, nprogeny, s = 0):
+    def mate(self, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs):
         """
-        Mate individuals according to a 3-way mate selection scheme.
+        Mate individuals according to a 2-way mate selection scheme.
 
         Parameters
         ----------
@@ -29,14 +29,12 @@ class ThreeWayDHCross(Cross):
             Where:
                 'k' is the number of selected individuals.
             Indices are paired as follows:
-                First index is the recurrent parent.
-                Second index is the female parent.
-                Third index is the male parent.
+                Even indices are female.
+                Odd indices are male.
             Example:
                 [1,5,3,8,2,7]
-                recurrent = 1,8
-                female = 5,2
-                male = 3,7
+                female = 1,3,2
+                male = 5,8,7
         ncross : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
@@ -53,23 +51,19 @@ class ThreeWayDHCross(Cross):
         # check data type
         pybropt.popgen.gmat.is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 
-        # get recurrent, female, and male selections; repeat by ncross
-        rsel = numpy.repeat(sel[0::3], ncross)
-        fsel = numpy.repeat(sel[1::3], ncross)
-        msel = numpy.repeat(sel[2::3], ncross)
+        # get female and male selections; repeat by ncross
+        fsel = numpy.repeat(sel[0::2], ncross)
+        msel = numpy.repeat(sel[1::2], ncross)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgvmat.geno
         xoprob = pgvmat.vrnt_xoprob
 
-        # create F1 genotypes
-        f1geno = mat_mate(geno, geno, fsel, msel, xoprob)
+        # create hybrid genotypes
+        hgeno = mat_mate(geno, geno, fsel, msel, xoprob)
 
         # generate selection array for all hybrid lines
-        asel = numpy.arange(f1geno.shape[1])
-
-        # generate three way crosses
-        hgeno = mat_mate(geno, f1geno, rsel, asel, xoprob)
+        asel = numpy.arange(hgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(s):
@@ -114,16 +108,17 @@ class ThreeWayDHCross(Cross):
         return self.mate(**d)
 
 
+
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayDHCross(v):
-    return isinstance(v, ThreeWayDHCross)
+def is_TwoWayDHCross(v):
+    return isinstance(v, TwoWayDHCross)
 
-def check_is_ThreeWayDHCross(v, varname):
-    if not isinstance(v, ThreeWayDHCross):
-        raise TypeError("'%s' must be a ThreeWayDHCross." % varname)
+def check_is_TwoWayDHCross(v, varname):
+    if not isinstance(v, TwoWayDHCross):
+        raise TypeError("'%s' must be a TwoWayDHCross." % varname)
 
-def cond_check_is_ThreeWayDHCross(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_TwoWayDHCross(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_ThreeWayDHCross(v, varname)
+        check_is_TwoWayDHCross(v, varname)

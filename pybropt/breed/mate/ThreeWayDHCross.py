@@ -1,20 +1,24 @@
-from . import Cross
+import numpy
+from .util import mat_mate
+from . import MatingOperator
+import pybropt.util
+import pybropt.popgen.gmat
 
-class FourWayDHCross(Cross):
-    """docstring for FourWayDHCross."""
+class ThreeWayDHCross(MatingOperator):
+    """docstring for ThreeWayDHCross."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(FourWayDHCross, self).__init__(**kwargs)
+        super(ThreeWayDHCross, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     def mate(self, pgvmat, sel, ncross, nprogeny, s = 0):
         """
-        Mate individuals according to a 4-way mate selection scheme.
+        Mate individuals according to a 3-way mate selection scheme.
 
         Parameters
         ----------
@@ -25,16 +29,14 @@ class FourWayDHCross(Cross):
             Where:
                 'k' is the number of selected individuals.
             Indices are paired as follows:
-                First index is the female parent 2.
-                Second index is the male parent 2.
-                Third index is the female parent 1.
-                Fourth index is the male parent 1.
+                First index is the recurrent parent.
+                Second index is the female parent.
+                Third index is the male parent.
             Example:
-                [1,5,3,8]
-                female2 = 1
-                male2 = 5
-                female1 = 3
-                male1 = 8
+                [1,5,3,8,2,7]
+                recurrent = 1,8
+                female = 5,2
+                male = 3,7
         ncross : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
@@ -51,25 +53,23 @@ class FourWayDHCross(Cross):
         # check data type
         pybropt.popgen.gmat.is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 
-        # get female2, male2, female1, and male1 selections; repeat by ncross
-        f2sel = numpy.repeat(sel[0::4], ncross)
-        m2sel = numpy.repeat(sel[1::4], ncross)
-        f1sel = numpy.repeat(sel[2::4], ncross)
-        m1sel = numpy.repeat(sel[3::4], ncross)
+        # get recurrent, female, and male selections; repeat by ncross
+        rsel = numpy.repeat(sel[0::3], ncross)
+        fsel = numpy.repeat(sel[1::3], ncross)
+        msel = numpy.repeat(sel[2::3], ncross)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgvmat.geno
         xoprob = pgvmat.vrnt_xoprob
 
         # create F1 genotypes
-        abgeno = mat_mate(geno, geno, f1sel, m1sel, xoprob)
-        cdgeno = mat_mate(geno, geno, f2sel, m2sel, xoprob)
+        f1geno = mat_mate(geno, geno, fsel, msel, xoprob)
 
         # generate selection array for all hybrid lines
-        asel = numpy.arange(abgeno.shape[1])
+        asel = numpy.arange(f1geno.shape[1])
 
-        # generate dihybrid cross
-        hgeno = mat_mate(abgeno, cdgeno, asel, asel, xoprob)
+        # generate three way crosses
+        hgeno = mat_mate(geno, f1geno, rsel, asel, xoprob)
 
         # self down hybrids if needed
         for i in range(s):
@@ -114,17 +114,16 @@ class FourWayDHCross(Cross):
         return self.mate(**d)
 
 
-
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_FourWayDHCross(v):
-    return isinstance(v, FourWayDHCross)
+def is_ThreeWayDHCross(v):
+    return isinstance(v, ThreeWayDHCross)
 
-def check_is_FourWayDHCross(v, varname):
-    if not isinstance(v, FourWayDHCross):
-        raise TypeError("'%s' must be a FourWayDHCross." % varname)
+def check_is_ThreeWayDHCross(v, varname):
+    if not isinstance(v, ThreeWayDHCross):
+        raise TypeError("'%s' must be a ThreeWayDHCross." % varname)
 
-def cond_check_is_FourWayDHCross(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_ThreeWayDHCross(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_FourWayDHCross(v, varname)
+        check_is_ThreeWayDHCross(v, varname)

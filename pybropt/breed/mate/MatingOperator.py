@@ -1,11 +1,11 @@
-class Cross:
-    """docstring for Cross."""
+class MatingOperator:
+    """docstring for MatingOperator."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(Cross, self).__init__(**kwargs)
+        super(MatingOperator, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -52,13 +52,13 @@ class Cross:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Cross(v):
-    return isinstance(v, Cross)
+def is_MatingOperator(v):
+    return isinstance(v, MatingOperator)
 
-def check_is_Cross(v, varname):
-    if not isinstance(v, Cross):
-        raise TypeError("'%s' must be a Cross." % varname)
+def check_is_MatingOperator(v, varname):
+    if not isinstance(v, MatingOperator):
+        raise TypeError("'%s' must be a MatingOperator." % varname)
 
-def cond_check_is_Cross(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_MatingOperator(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_Cross(v, varname)
+        check_is_MatingOperator(v, varname)
