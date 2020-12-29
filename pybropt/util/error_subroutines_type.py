@@ -3,60 +3,6 @@
 import numpy
 
 ################################################################################
-# reliant on language itself
-def check_is_bool(v, varname):
-    if not isinstance(v, bool):
-        raise TypeError("'%s' must be a bool." % varname)
-
-def cond_check_is_bool(v, varname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_bool(v, varname)
-
-def check_is_dict(d, varname):
-    if not isinstance(d, dict):
-        raise TypeError("'%s' must be a dictionary." % varname)
-
-def cond_check_is_dict(d, varname, cond=(lambda s: s is not None)):
-    if cond(d):
-        check_is_dict(d, varname)
-
-def check_is_iterable(i, varname):
-    if not hasattr(i, "__iter__"):
-        raise TypeError("'%s' must be iterable." % varname)
-
-def check_is_list(l, varname):
-    if not isinstance(l, list):
-        raise TypeError("'%s' must be a list." % varname)
-
-def check_is_not_none(var, varname):
-    if var is None:
-        raise ValueError("'%s' cannot be None." % varname)
-
-def check_is_string(s, varname):
-    if not isinstance(s, str):
-        raise TypeError("'%s' must be a string." % varname)
-
-def cond_check_is_string(s, varname, cond=(lambda s: s is not None)):
-    if cond(s):
-        check_is_string(s, varname)
-
-def check_is_string_or_iterable(s, varname):
-    if not (isinstance(s, str) or hasattr(s, "__iter__")):
-        raise TypeError("'%s' must be a string or iterable." % varname)
-
-def cond_check_is_string_or_iterable(s, varname, cond=(lambda s: s is not None)):
-    if cond(s):
-        check_is_string_or_iterable(s, varname)
-
-def check_is_tuple(t, varname):
-    if not isinstance(t, tuple):
-        raise TypeError("'%s' must be a tuple." % varname)
-
-def check_is_tuple_or_list(v, varname):
-    if not isinstance(v, (tuple,list)):
-        raise TypeError("'%s' must be a tuple or list." % varname)
-
-################################################################################
 # class type check functions
 
 ############################################################
