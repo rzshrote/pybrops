@@ -7,6 +7,7 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_ndarray_axis_len
 
 class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     """docstring for DenseEstimatedBreedingValueMatrix."""
@@ -52,7 +53,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             cond_check_is_ndarray(value, "taxa")
             cond_check_ndarray_dtype(value, "taxa", numpy.string_)
             cond_check_ndarray_ndim(value, "taxa", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa", 0, self._mat.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
             self._taxa = value
         def fdel(self):
             del self._taxa
@@ -67,7 +68,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             cond_check_is_ndarray(value, "taxa_grp")
             cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa_grp", 0, self._gmat.geno.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._gmat.geno.shape[0])
             self._taxa_grp = value
         def fdel(self):
             del self._taxa_grp
@@ -154,7 +155,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             cond_check_is_ndarray(value, "trait")
             cond_check_ndarray_dtype(value, "trait", numpy.string_)
             cond_check_ndarray_ndim(value, "trait", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "trait", 0, self._mat.shape[1])
+            cond_check_ndarray_axis_len(value, "trait", 0, self._mat.shape[1])
             self._trait = value
         def fdel(self):
             del self._trait

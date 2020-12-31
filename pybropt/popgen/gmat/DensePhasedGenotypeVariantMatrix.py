@@ -11,6 +11,7 @@ from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_ndarray_axis_len
 
 
 class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
@@ -114,7 +115,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "vrnt_name")
             cond_check_ndarray_dtype(value, "vrnt_name", numpy.string_)
             cond_check_ndarray_ndim(value, "vrnt_name", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "vrnt_name", 0, self._mat.shape[2])
+            cond_check_ndarray_axis_len(value, "vrnt_name", 0, self._mat.shape[2])
             self._vrnt_name = value
         def fdel(self):
             del self._vrnt_name
@@ -129,7 +130,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "vrnt_genpos")
             cond_check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
             cond_check_ndarray_ndim(value, "vrnt_genpos", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "vrnt_genpos", 0, self._mat.shape[2])
+            cond_check_ndarray_axis_len(value, "vrnt_genpos", 0, self._mat.shape[2])
             self._vrnt_genpos = value
         def fdel(self):
             del self._vrnt_genpos
@@ -144,7 +145,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "vrnt_xoprob")
             cond_check_ndarray_dtype(value, "vrnt_xoprob", numpy.float64)
             cond_check_ndarray_ndim(value, "vrnt_xoprob", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "vrnt_xoprob", 0, self._mat.shape[2])
+            cond_check_ndarray_axis_len(value, "vrnt_xoprob", 0, self._mat.shape[2])
             self._vrnt_xoprob = value
         def fdel(self):
             del self._vrnt_xoprob
@@ -159,7 +160,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "vrnt_hapgrp")
             cond_check_ndarray_dtype(value, "vrnt_hapgrp", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_hapgrp", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "vrnt_hapgrp", 0, self._mat.shape[2])
+            cond_check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self._mat.shape[2])
             self._vrnt_hapgrp = value
         def fdel(self):
             del self._vrnt_hapgrp
@@ -174,7 +175,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "vrnt_mask")
             cond_check_ndarray_dtype(value, "vrnt_mask", numpy.bool_)
             cond_check_ndarray_ndim(value, "vrnt_mask", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "vrnt_mask", 0, self._mat.shape[2])
+            cond_check_ndarray_axis_len(value, "vrnt_mask", 0, self._mat.shape[2])
             self._vrnt_mask = value
         def fdel(self):
             del self._vrnt_mask
@@ -247,7 +248,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "taxa")
             cond_check_ndarray_dtype(value, "taxa", numpy.string_)
             cond_check_ndarray_ndim(value, "taxa", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa", 0, self._mat.shape[1])
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[1])
             self._taxa = value
         def fdel(self):
             del self._taxa
@@ -262,7 +263,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             cond_check_is_ndarray(value, "taxa_grp")
             cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa_grp", 0, self._mat.shape[1])
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[1])
             self._taxa_grp = value
         def fdel(self):
             del self._taxa_grp

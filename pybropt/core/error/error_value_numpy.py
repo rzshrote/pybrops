@@ -48,6 +48,9 @@ def check_ndarray_sum(v, vname, vsum, vaxis):
 def check_ndarray_shape(v, vname, vshape, vaxis = None):
     generic_check_ndarray_shape(v, vname, vshape, vaxis)
 
+def check_ndarray_axis_len(v, vname, vaxis, vlen):
+    generic_check_ndarray_shape(v, vname, vlen, vaxis)
+
 ################################################################################
 ######################### conditional check functions ##########################
 ################################################################################
@@ -84,3 +87,6 @@ def cond_check_ndarray_sum(v, vname, vsum, vaxis, cond=(lambda s: s is not None)
 ############# generic_cond_check_ndarray_shape #############
 def cond_check_ndarray_shape(v, vname, vshape, vaxis = None, cond=(lambda s: s is not None)):
     generic_cond_check_ndarray_shape(v, vname, vshape, vaxis, cond)
+
+def cond_check_ndarray_axis_len(v, vname, vaxis, vlen, cond=(lambda s: s is not None)):
+    generic_cond_check_ndarray_shape(v, vname, vlen, vaxis)

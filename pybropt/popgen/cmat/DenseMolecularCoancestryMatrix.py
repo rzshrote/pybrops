@@ -5,6 +5,7 @@ from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_ndarray_axis_len
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseMolecularCoancestryMatrix."""
@@ -35,7 +36,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             cond_check_is_ndarray(value, "taxa")
             cond_check_ndarray_dtype(value, "taxa", numpy.string_)
             cond_check_ndarray_ndim(value, "taxa", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa", 0, self._gmat.geno.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._gmat.geno.shape[0])
             self._taxa = value
         def fdel(self):
             del self._taxa
@@ -50,7 +51,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             cond_check_is_ndarray(value, "taxa_grp")
             cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
             self._taxa_grp = value
         def fdel(self):
             del self._taxa_grp
