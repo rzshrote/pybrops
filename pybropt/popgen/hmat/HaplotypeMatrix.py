@@ -1,4 +1,4 @@
-from pybropt.base.mat import Matrix
+from pybropt.core.mat import Matrix
 
 class HaplotypeMatrix(Matrix):
     """docstring for HaplotypeMatrix."""

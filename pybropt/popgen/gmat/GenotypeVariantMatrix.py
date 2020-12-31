@@ -1,5 +1,7 @@
 from . import GenotypeMatrix
-from pybropt.popgen.mat import VariantMatrix, TaxaMatrix, SortableMatrix
+from pybropt.core.mat import VariantMatrix
+from pybropt.core.mat import TaxaMatrix
+from pybropt.core.mat import SortableMatrix
 
 class GenotypeVariantMatrix(GenotypeMatrix,VariantMatrix,TaxaMatrix):
     """docstring for VariantMatrix."""

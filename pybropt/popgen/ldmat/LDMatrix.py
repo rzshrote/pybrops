@@ -1,4 +1,4 @@
-from pybropt.popgen.mat import Matrix
+from pybropt.core.mat import Matrix
 
 class LDMatrix(Matrix):
     """docstring for LDMatrix."""

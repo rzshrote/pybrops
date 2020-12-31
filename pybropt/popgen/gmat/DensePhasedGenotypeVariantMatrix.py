@@ -1,15 +1,16 @@
-mat# import 3rd party modules we'll need
+# import 3rd party modules we'll need
 import cyvcf2
 import numpy
 
 # import our libraries
-from . import PhasedGenotypeMatrix, GenotypeVariantMatrix
+from . import GenotypeVariantMatrix
+from . import DensePhasedGenotypeMatrix
 import pybropt.util
 import pybropt.popgen.gmap.GeneticMap
 import pybropt.popgen.gmap.GeneticMapFunction
 
 
-class PhasedGenotypeVariantMatrix(PhasedGenotypeMatrix,GenotypeVariantMatrix):
+class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
     """docstring for PhasedVariantMatrix."""
 
     ############################################################################

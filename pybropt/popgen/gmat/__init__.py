@@ -4,6 +4,7 @@
 from .GenotypeMatrix import *
 from .GenotypeVariantMatrix import *
 
-# implemented classes
-from .PhasedGenotypeMatrix import *
-from .PhasedGenotypeVariantMatrix import *
+# implemented dense classes
+from .DenseGenotypeMatrix import *
+from .DensePhasedGenotypeMatrix import *
+from .DensePhasedGenotypeVariantMatrix import *

@@ -1,4 +1,4 @@
-from pybropt.base.mat import TaxaMatrix
+from pybropt.core.mat import TaxaMatrix
 
 class BreedingValueMatrix(TaxaMatrix):
     """docstring for BreedingValueMatrix."""
