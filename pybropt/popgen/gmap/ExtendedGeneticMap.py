@@ -11,6 +11,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import check_is_not_None
+from pybropt.core.error import cond_check_is_str
 
 class ExtendedGeneticMap(GeneticMap):
     """docstring for ExtendedGeneticMap."""
@@ -199,7 +200,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline_kind
         def fset(self, value):
-            pybropt.util.cond_check_is_string(value, "spline_kind")
+            cond_check_is_str(value, "spline_kind")
             self._spline_kind = value
         def fdel(self):
             del self._spline_kind
