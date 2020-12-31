@@ -10,6 +10,7 @@ from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import cond_check_ndarray_dtype
 
 
 class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
@@ -111,7 +112,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_name
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_name")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_name", numpy.string_)
+            cond_check_ndarray_dtype(value, "vrnt_name", numpy.string_)
             cond_check_ndarray_ndim(value, "vrnt_name", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "vrnt_name", 0, self._mat.shape[2])
             self._vrnt_name = value
@@ -126,7 +127,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_genpos
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_genpos")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_genpos", numpy.float64)
+            cond_check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
             cond_check_ndarray_ndim(value, "vrnt_genpos", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "vrnt_genpos", 0, self._mat.shape[2])
             self._vrnt_genpos = value
@@ -141,7 +142,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_xoprob
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_xoprob")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_xoprob", numpy.float64)
+            cond_check_ndarray_dtype(value, "vrnt_xoprob", numpy.float64)
             cond_check_ndarray_ndim(value, "vrnt_xoprob", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "vrnt_xoprob", 0, self._mat.shape[2])
             self._vrnt_xoprob = value
@@ -156,7 +157,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_hapgrp
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_hapgrp")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_hapgrp", numpy.int64)
+            cond_check_ndarray_dtype(value, "vrnt_hapgrp", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_hapgrp", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "vrnt_hapgrp", 0, self._mat.shape[2])
             self._vrnt_hapgrp = value
@@ -171,7 +172,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_mask
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_mask")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_mask", numpy.bool_)
+            cond_check_ndarray_dtype(value, "vrnt_mask", numpy.bool_)
             cond_check_ndarray_ndim(value, "vrnt_mask", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "vrnt_mask", 0, self._mat.shape[2])
             self._vrnt_mask = value
@@ -187,7 +188,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_chrgrp_name
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_name")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_name", numpy.int64)
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
             self._vrnt_chrgrp_name = value
         def fdel(self):
@@ -201,7 +202,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_chrgrp_stix
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_stix")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
             self._vrnt_chrgrp_stix = value
         def fdel(self):
@@ -215,7 +216,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_chrgrp_spix
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_spix")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
             self._vrnt_chrgrp_spix = value
         def fdel(self):
@@ -229,7 +230,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_chrgrp_len
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_len")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_len", numpy.int64)
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
             cond_check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
             self._vrnt_chrgrp_len = value
         def fdel(self):
@@ -244,7 +245,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa", numpy.string_)
+            cond_check_ndarray_dtype(value, "taxa", numpy.string_)
             cond_check_ndarray_ndim(value, "taxa", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "taxa", 0, self._mat.shape[1])
             self._taxa = value
@@ -259,7 +260,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa_grp
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa_grp")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp", numpy.int64)
+            cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp", 1)
             pybropt.util.cond_check_matrix_axis_len(value, "taxa_grp", 0, self._mat.shape[1])
             self._taxa_grp = value
@@ -275,7 +276,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa_grp_name
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa_grp_name")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_name", numpy.int64)
+            cond_check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
             self._taxa_grp_name = value
         def fdel(self):
@@ -289,7 +290,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa_grp_stix
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa_grp_stix")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_stix", numpy.int64)
+            cond_check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
             self._taxa_grp_stix = value
         def fdel(self):
@@ -303,7 +304,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa_grp_spix
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa_grp_spix")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_spix", numpy.int64)
+            cond_check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
             self._taxa_grp_spix = value
         def fdel(self):
@@ -317,7 +318,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa_grp_len
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa_grp_len")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_len", numpy.int64)
+            cond_check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
             self._taxa_grp_len = value
         def fdel(self):
