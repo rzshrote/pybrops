@@ -1,5 +1,16 @@
 import numpy
 
+from . import generic_check_ndarray_eq
+from . import generic_check_ndarray_sum
+from . import generic_check_ndarray_ndim
+from . import generic_check_ndarray_size
+from . import generic_check_ndarray_shape
+from . import generic_cond_check_ndarray_eq
+from . import generic_cond_check_ndarray_sum
+from . import generic_cond_check_ndarray_ndim
+from . import generic_cond_check_ndarray_size
+from . import generic_cond_check_ndarray_shape
+
 ################################################################################
 ############################### check functions ################################
 ################################################################################

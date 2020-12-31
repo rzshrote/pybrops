@@ -110,6 +110,6 @@ def cond_check_is_tuple(v, vname):
 ########## conditional compound check functions for basic data types ###########
 ################################################################################
 
-def cond_check_is_string_or_iterable(v, vname, cond=(lambda s: s is not None)):
-    if cond(v) and not (isinstance(v, str) or hasattr(v, "__iter__")):
-        raise TypeError("'{0}' must be of type str or have attribute __iter__.".format(vname))
+def cond_check_is_str_or_iterable(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_str_or_iterable(v, vname)

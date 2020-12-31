@@ -1,5 +1,9 @@
 from . import generic_check_is_not
+from . import generic_check_dict_keys
+from . import generic_check_len_eq
 from . import generic_cond_check_is_not
+from . import generic_cond_check_dict_keys
+from . import generic_cond_check_len_eq
 
 ################################################################################
 ############################### check functions ################################

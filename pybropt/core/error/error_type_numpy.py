@@ -1,8 +1,10 @@
 import numpy
 
 from . import generic_check_isinstance
-from . import generic_cond_check_isinstance
+from . import generic_check_dtype_issubdtype
 from . import generic_check_ndarray_dtype_issubdtype
+from . import generic_cond_check_isinstance
+from . import generic_cond_check_dtype_issubdtype
 from . import generic_cond_check_ndarray_dtype_issubdtype
 
 ################################################################################
