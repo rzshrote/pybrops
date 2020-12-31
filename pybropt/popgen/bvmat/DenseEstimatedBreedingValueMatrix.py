@@ -5,6 +5,7 @@ from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import error_readonly
 
 class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     """docstring for DenseEstimatedBreedingValueMatrix."""
@@ -164,9 +165,9 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         def fget(self):
             return self.mat.shape[1]
         def fset(self, value):
-            pybropt.util.error_readonly("ntrait")
+            error_readonly("ntrait")
         def fdel(self):
-            pybropt.util.error_readonly("ntrait")
+            error_readonly("ntrait")
         return locals()
     ntrait = property(**ntrait())
 

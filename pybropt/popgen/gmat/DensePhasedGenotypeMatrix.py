@@ -2,6 +2,7 @@ from . import DenseGenotypeMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
+from pybropt.core.error import error_readonly
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
@@ -81,9 +82,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[0]
         def fset(self, value):
-            pybropt.util.error_readonly("ploidy")
+            error_readonly("ploidy")
         def fdel(self):
-            pybropt.util.error_readonly("ploidy")
+            error_readonly("ploidy")
         return locals()
     ploidy = property(**ploidy())
 
@@ -92,9 +93,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[0]
         def fset(self, value):
-            pybropt.util.error_readonly("nphase")
+            error_readonly("nphase")
         def fdel(self):
-            pybropt.util.error_readonly("nphase")
+            error_readonly("nphase")
         return locals()
     nphase = property(**nphase())
 
@@ -103,9 +104,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[1]
         def fset(self, value):
-            pybropt.util.error_readonly("ntaxa")
+            error_readonly("ntaxa")
         def fdel(self):
-            pybropt.util.error_readonly("ntaxa")
+            error_readonly("ntaxa")
         return locals()
     ntaxa = property(**ntaxa())
 
@@ -114,9 +115,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[2]
         def fset(self, value):
-            pybropt.util.error_readonly("nloci")
+            error_readonly("nloci")
         def fdel(self):
-            pybropt.util.error_readonly("nloci")
+            error_readonly("nloci")
         return locals()
     nloci = property(**nloci())
 
