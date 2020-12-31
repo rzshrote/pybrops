@@ -1,3 +1,10 @@
+from . import generic_check_hasattr
+from . import generic_cond_check_hasattr
+
+### read/write ###
+def error_readonly(vname):
+    raise AttributeError("variable '{0}' is read-only".format(vname))
+
 ################################################################################
 ########################### attribute check functions ##########################
 ################################################################################

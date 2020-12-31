@@ -1,4 +1,3 @@
-# Error subroutines for basic Python data types
 from . import generic_check_isinstance
 from . import generic_cond_check_isinstance
 
