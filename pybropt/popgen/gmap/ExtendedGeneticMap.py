@@ -9,6 +9,7 @@ from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_is_dict
 
 
 class ExtendedGeneticMap(GeneticMap):
@@ -185,7 +186,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline
         def fset(self, value):
-            pybropt.util.cond_check_is_dict(value, "spline")
+            cond_check_is_dict(value, "spline")
             self._spline = value
         def fdel(self):
             del self._spline

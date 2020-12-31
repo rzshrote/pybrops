@@ -5,6 +5,7 @@ from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_is_dict
 
 class GenericLinearGenomicModel(LinearGenomicModel):
     """docstring for GenericLinearGenomicModel."""
@@ -94,7 +95,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         def fget(self):
             return self._params
         def fset(self, value):
-            pybropt.util.cond_check_is_dict(value, "params")
+            cond_check_is_dict(value, "params")
             self._params = value
         def fdel(self):
             del self._params
