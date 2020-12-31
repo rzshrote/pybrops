@@ -7,6 +7,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import check_ndarray_axis_len
 
 class GenericLinearGenomicModel(LinearGenomicModel):
     """docstring for GenericLinearGenomicModel."""
@@ -56,7 +57,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             check_is_ndarray(value, "mu")
             check_ndarray_ndim(value, "mu", 2)
             check_ndarray_dtype(value, "mu", numpy.float64)
-            pybropt.util.check_matrix_axis_len(value, "mu", 1, 1) # shape = (t, 1)
+            check_ndarray_axis_len(value, "mu", 1, 1) # shape = (t, 1)
             self._mu = value
         def fdel(self):
             del self._mu
@@ -71,7 +72,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             check_is_ndarray(value, "beta")
             check_ndarray_ndim(value, "beta", 2)
             check_ndarray_dtype(value, "beta", numpy.float64)
-            pybropt.util.check_matrix_axis_len(value, "beta", 1, self._mu.shape[0]) # shape = (p, t)
+            check_ndarray_axis_len(value, "beta", 1, self._mu.shape[0]) # shape = (p, t)
             self._beta = value
         def fdel(self):
             del self._beta
