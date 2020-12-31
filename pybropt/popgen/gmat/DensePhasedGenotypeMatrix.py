@@ -1,6 +1,7 @@
 from . import DenseGenotypeMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
@@ -63,7 +64,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             """
             # check input data types, then set variable
             check_is_ndarray(value, "mat")
-            pybropt.util.check_matrix_dtype(value, "mat", 'int8')
+            check_ndarray_dtype(value, "mat", 'int8')
             check_ndarray_ndim(value, "mat", 3)
             self._mat = mat
         def fdel(self):

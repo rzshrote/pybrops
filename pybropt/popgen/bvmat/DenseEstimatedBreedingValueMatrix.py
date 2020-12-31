@@ -2,6 +2,7 @@ import numpy
 from . import DenseBreedingValueMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
 
 class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     """docstring for DenseEstimatedBreedingValueMatrix."""
@@ -133,7 +134,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             return self._mat
         def fset(self, value):
             check_is_ndarray(value, "mat")
-            pybropt.util.check_matrix_dtype(value, "mat", numpy.float64)
+            check_ndarray_dtype(value, "mat", numpy.float64)
             check_ndarray_ndim(value, "mat", 2)
             self._mat = value
         def fdel(self):

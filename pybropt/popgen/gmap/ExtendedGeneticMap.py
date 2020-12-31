@@ -4,6 +4,7 @@ from scipy.interpolate import interp1d
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
 
 from . import GeneticMap
 
@@ -40,7 +41,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_chrgrp
         def fset(self, value):
             check_is_ndarray(value, "vrnt_chrgrp")
-            pybropt.util.check_matrix_dtype(value, "vrnt_chrgrp", numpy.int64)
+            check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
             check_ndarray_ndim(value, "vrnt_chrgrp", 1)
             self._vrnt_chrgrp = value
         def fdel(self):
@@ -54,7 +55,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_phypos
         def fset(self, value):
             check_is_ndarray(value, "vrnt_phypos")
-            pybropt.util.check_matrix_dtype(value, "vrnt_phypos", numpy.int64)
+            check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
             check_ndarray_ndim(value, "vrnt_phypos", 1)
             self._vrnt_phypos = value
         def fdel(self):
@@ -68,7 +69,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_genpos
         def fset(self, value):
             check_is_ndarray(value, "vrnt_genpos")
-            pybropt.util.check_matrix_dtype(value, "vrnt_genpos", numpy.float64)
+            check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
             check_ndarray_ndim(value, "vrnt_genpos", 1)
             self._vrnt_genpos = value
         def fdel(self):
@@ -82,7 +83,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_stop
         def fset(self, value):
             check_is_ndarray(value, "vrnt_stop")
-            pybropt.util.check_matrix_dtype(value, "vrnt_stop", numpy.int64)
+            check_ndarray_dtype(value, "vrnt_stop", numpy.int64)
             check_ndarray_ndim(value, "vrnt_stop", 1)
             self._vrnt_stop = value
         def fdel(self):
