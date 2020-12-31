@@ -1,8 +1,8 @@
 import numpy
-from .util import mat_mate
+from . import mat_mate
 from . import MatingOperator
-import pybropt.util
-import pybropt.popgen.gmat
+from pybropt.popgen.gmat import PhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import check_is_PhasedGenotypeVariantMatrix
 
 class TwoWayDHCross(MatingOperator):
     """docstring for TwoWayDHCross."""
@@ -49,7 +49,7 @@ class TwoWayDHCross(MatingOperator):
             A PhasedGenotypeVariantMatrix of progeny.
         """
         # check data type
-        pybropt.popgen.gmat.is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        check_is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 
         # get female and male selections; repeat by ncross
         fsel = numpy.repeat(sel[0::2], ncross)

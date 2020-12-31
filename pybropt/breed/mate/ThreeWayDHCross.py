@@ -1,8 +1,8 @@
 import numpy
-from .util import mat_mate
+from . import mat_mate
 from . import MatingOperator
-import pybropt.util
-import pybropt.popgen.gmat
+from pybropt.popgen.gmat import PhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import check_is_PhasedGenotypeVariantMatrix
 
 class ThreeWayDHCross(MatingOperator):
     """docstring for ThreeWayDHCross."""
@@ -51,7 +51,7 @@ class ThreeWayDHCross(MatingOperator):
             A PhasedGenotypeVariantMatrix of progeny.
         """
         # check data type
-        pybropt.popgen.gmat.is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        check_is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 
         # get recurrent, female, and male selections; repeat by ncross
         rsel = numpy.repeat(sel[0::3], ncross)
