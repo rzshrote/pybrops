@@ -10,7 +10,7 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_is_dict
-
+from pybropt.core.error import check_is_not_None
 
 class ExtendedGeneticMap(GeneticMap):
     """docstring for ExtendedGeneticMap."""
@@ -952,10 +952,10 @@ class ExtendedGeneticMap(GeneticMap):
             genetic inferences.
         """
         # check to make sure several indices aren't None.
-        pybropt.util.check_is_not_none(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
-        pybropt.util.check_is_not_none(vrnt_phypos_ix, "vrnt_phypos_ix")
-        pybropt.util.check_is_not_none(vrnt_stop_ix, "vrnt_stop_ix")
-        pybropt.util.check_is_not_none(vrnt_genpos_ix, "vrnt_genpos_ix")
+        check_is_not_None(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
+        check_is_not_None(vrnt_phypos_ix, "vrnt_phypos_ix")
+        check_is_not_None(vrnt_stop_ix, "vrnt_stop_ix")
+        check_is_not_None(vrnt_genpos_ix, "vrnt_genpos_ix")
 
         # get data
         vrnt_chrgrp = pandas_df.iloc[:,vrnt_chrgrp_ix].values
