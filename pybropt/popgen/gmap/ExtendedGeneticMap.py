@@ -7,6 +7,7 @@ from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_ndim
 
 
 class ExtendedGeneticMap(GeneticMap):
@@ -99,7 +100,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_name")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_name", numpy.string_)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_name", 1)
+            cond_check_ndarray_ndim(value, "vrnt_name", 1)
             self._vrnt_name = value
         def fdel(self):
             del self._vrnt_name
@@ -113,7 +114,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_fncode")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_fncode", numpy.string_)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_fncode", 1)
+            cond_check_ndarray_ndim(value, "vrnt_fncode", 1)
             self._vrnt_fncode = value
         def fdel(self):
             del self._vrnt_fncode
@@ -128,7 +129,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_name")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_name", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_name", 1)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
             self._vrnt_chrgrp_name = value
         def fdel(self):
             del self._vrnt_chrgrp_name
@@ -142,7 +143,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_stix")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_stix", 1)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
             self._vrnt_chrgrp_stix = value
         def fdel(self):
             del self._vrnt_chrgrp_stix
@@ -156,7 +157,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_spix")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_spix", 1)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
             self._vrnt_chrgrp_spix = value
         def fdel(self):
             del self._vrnt_chrgrp_spix
@@ -170,7 +171,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_chrgrp_len")
             pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_len", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_len", 1)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
             self._vrnt_chrgrp_len = value
         def fdel(self):
             del self._vrnt_chrgrp_len

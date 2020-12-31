@@ -1,5 +1,6 @@
 from . import DenseEstimatedBreedingValueMatrix
 from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_ndim
 
 class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatrix):
     """docstring for GenotypicEstimatedBreedingValueMatrix."""
@@ -36,7 +37,7 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
         def fset(self, value):
             cond_check_is_ndarray(value, "se")
             pybropt.util.cond_check_matrix_dtype(value, "se", numpy.float64)
-            pybropt.util.cond_check_matrix_ndim(value, "se", 2)
+            cond_check_ndarray_ndim(value, "se", 2)
             pybropt.util.cond_check_matrix_axis_len(value, "se", 0, self._mat.shape[0])
             pybropt.util.cond_check_matrix_axis_len(value, "se", 1, self._mat.shape[1])
             self._se = value

@@ -3,6 +3,7 @@ from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
 from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_ndim
 
 class GenericLinearGenomicModel(LinearGenomicModel):
     """docstring for GenericLinearGenomicModel."""
@@ -105,7 +106,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             return self._trait
         def fset(self, value):
             cond_check_is_ndarray(value, "trait")
-            pybropt.util.cond_check_matrix_ndim(value, "trait", 1)
+            cond_check_ndarray_ndim(value, "trait", 1)
             pybropt.util.cond_check_matrix_dtype(value, "trait", numpy.string_)
             pybropt.util.cond_check_matrix_axis_len(value, "trait", 0, self._mu.shape[0])
             self._trait = value
