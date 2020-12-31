@@ -2,7 +2,7 @@ import numpy
 import pandas
 from scipy.interpolate import interp1d
 
-import pybropt.util
+from pybropt.core.error import check_is_ndarray
 
 from . import GeneticMap
 
@@ -38,7 +38,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_chrgrp")
+            check_is_ndarray(value, "vrnt_chrgrp")
             pybropt.util.check_matrix_dtype(value, "vrnt_chrgrp", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_chrgrp", 1)
             self._vrnt_chrgrp = value
@@ -52,7 +52,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_phypos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_phypos")
+            check_is_ndarray(value, "vrnt_phypos")
             pybropt.util.check_matrix_dtype(value, "vrnt_phypos", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_phypos", 1)
             self._vrnt_phypos = value
@@ -66,7 +66,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_genpos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_genpos")
+            check_is_ndarray(value, "vrnt_genpos")
             pybropt.util.check_matrix_dtype(value, "vrnt_genpos", numpy.float64)
             pybropt.util.check_matrix_ndim(value, "vrnt_genpos", 1)
             self._vrnt_genpos = value
@@ -80,7 +80,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_stop
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_stop")
+            check_is_ndarray(value, "vrnt_stop")
             pybropt.util.check_matrix_dtype(value, "vrnt_stop", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_stop", 1)
             self._vrnt_stop = value

@@ -1,5 +1,5 @@
-import pybropt.util
 from . import DenseCoancestryMatrix
+from pybropt.core.error import check_is_ndarray
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseMolecularCoancestryMatrix."""
@@ -115,7 +115,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._mat
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "mat")
+            check_is_ndarray(value, "mat")
             pybropt.util.check_all_equal(value.shape, "mat.shape")
             pybropt.util.check_matrix_dtype(value, "mat", numpy.float64)
             pybropt.util.check_matrix_ndim(value, "mat", 2)

@@ -5,9 +5,7 @@ import numpy
 # import our libraries
 from . import GenotypeVariantMatrix
 from . import DensePhasedGenotypeMatrix
-import pybropt.util
-import pybropt.popgen.gmap.GeneticMap
-import pybropt.popgen.gmap.GeneticMapFunction
+from pybropt.core.error import check_is_ndarray
 
 
 class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
@@ -78,7 +76,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         def fget(self):
             return self._vrnt_chrgrp
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_chrgrp")
+            check_is_ndarray(value, "vrnt_chrgrp")
             pybropt.util.check_matrix_dtype(value, "vrnt_chrgrp", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_chrgrp", 1)
             pybropt.util.check_matrix_axis_len(value, "vrnt_chrgrp", 0, self._mat.shape[2])
@@ -93,7 +91,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         def fget(self):
             return self._vrnt_phypos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_phypos")
+            check_is_ndarray(value, "vrnt_phypos")
             pybropt.util.check_matrix_dtype(value, "vrnt_phypos", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_phypos", 1)
             pybropt.util.check_matrix_axis_len(value, "vrnt_phypos", 0, self._mat.shape[2])

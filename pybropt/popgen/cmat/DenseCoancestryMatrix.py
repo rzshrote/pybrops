@@ -1,5 +1,5 @@
-import pybropt.util
 from . import CoancestryMatrix
+from pybropt.core.error import check_is_ndarray
 
 class DenseCoancestryMatrix(CoancestryMatrix):
     """docstring for DenseCoancestryMatrix."""
@@ -184,7 +184,7 @@ class DenseCoancestryMatrix(CoancestryMatrix):
         def fset(self, value):
             # The only assumption is that mat is a numpy.ndarray matrix.
             # Let the user decide whether to overwrite error checks.
-            pybropt.util.check_is_matrix(value, "mat")
+            check_is_ndarray(value, "mat")
             self._mat = value
         def fdel(self):
             del self._mat

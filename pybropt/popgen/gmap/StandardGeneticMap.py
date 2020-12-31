@@ -1,5 +1,5 @@
 from . import GeneticMap
-import pybropt.util
+from pybropt.core.error import check_is_ndarray
 
 class StandardGeneticMap(GeneticMap):
     """docstring for StandardGeneticMap."""
@@ -25,7 +25,7 @@ class StandardGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_chrgrp")
+            check_is_ndarray(value, "vrnt_chrgrp")
             pybropt.util.check_matrix_dtype(value, "vrnt_chrgrp", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_chrgrp", 1)
             self._vrnt_chrgrp = value
@@ -39,7 +39,7 @@ class StandardGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_phypos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_phypos")
+            check_is_ndarray(value, "vrnt_phypos")
             pybropt.util.check_matrix_dtype(value, "vrnt_phypos", numpy.int64)
             pybropt.util.check_matrix_ndim(value, "vrnt_phypos", 1)
             self._vrnt_phypos = value
@@ -53,7 +53,7 @@ class StandardGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_genpos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_genpos")
+            check_is_ndarray(value, "vrnt_genpos")
             pybropt.util.check_matrix_dtype(value, "vrnt_genpos", numpy.float64)
             pybropt.util.check_matrix_ndim(value, "vrnt_genpos", 1)
             self._vrnt_genpos = value
