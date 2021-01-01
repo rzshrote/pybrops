@@ -1,7 +1,7 @@
 import numpy
 import pytest
 
-def generic_test_numpy_operator(op, v, w):
+def generic_test_ndarray_operator(op, v, w):
     """
     Test:
         numpy.all(
@@ -16,7 +16,7 @@ def generic_test_numpy_operator(op, v, w):
     """
     assert numpy.all(op(*v) == op(*w))
 
-def generic_test_numpy_function_eq(vfn, vargs, vkwargs, wfn, wargs, wkwargs):
+def generic_test_ndarray_function_eq(vfn, vargs, vkwargs, wfn, wargs, wkwargs):
     """
     Test:
         numpy.all(

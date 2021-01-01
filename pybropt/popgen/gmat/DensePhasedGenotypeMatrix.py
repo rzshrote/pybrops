@@ -67,7 +67,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             check_is_ndarray(value, "mat")
             check_ndarray_dtype(value, "mat", 'int8')
             check_ndarray_ndim(value, "mat", 3)
-            self._mat = mat
+            self._mat = value
         def fdel(self):
             """
             Remove the genotype matrix (self._mat) from scope.
