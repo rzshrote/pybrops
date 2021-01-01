@@ -37,11 +37,11 @@ class GenotypeMatrix(Matrix):
     def nphase():
         doc = "The number of phases represented by the genotype matrix."
         def fget(self):
-            return self._nphase
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._nphase = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._nphase
+            raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
 

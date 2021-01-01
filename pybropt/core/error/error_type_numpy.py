@@ -1,10 +1,10 @@
 import numpy
 
-from . import generic_check_isinstance
 from . import generic_check_dtype_issubdtype
+from . import generic_check_isinstance
 from . import generic_check_ndarray_dtype_issubdtype
-from . import generic_cond_check_isinstance
 from . import generic_cond_check_dtype_issubdtype
+from . import generic_cond_check_isinstance
 from . import generic_cond_check_ndarray_dtype_issubdtype
 
 ################################################################################
@@ -86,7 +86,7 @@ def check_dtype_is_object_or_string(v, vname):
 ###################### conditional dtype check functions #######################
 ################################################################################
 def cond_check_dtype(v, vname, vdtype, cond=(lambda s: s is not None)):
-    generic_cond_check_dtype(v, vname, vdtype, cond)
+    generic_cond_check_dtype_issubdtype(v, vname, vdtype, cond)
 
 def cond_check_dtype_is_bool(v, vname, cond=(lambda s: s is not None)):
     generic_cond_check_dtype_issubdtype(v, vname, numpy.bool_, cond)
@@ -215,7 +215,7 @@ def check_ndarray_dtype_is_object_or_string(v, vname):
 ################## conditional ndarray dtype check functions ###################
 ################################################################################
 def cond_check_ndarray_dtype(v, vname, vdtype, cond=(lambda s: s is not None)):
-    generic_cond_check_ndarray_dtype(v, vname, vdtype, cond)
+    generic_cond_check_ndarray_dtype_issubdtype(v, vname, vdtype, cond)
 
 def cond_check_ndarray_dtype_is_bool(v, vname, cond=(lambda s: s is not None)):
     generic_cond_check_ndarray_dtype_issubdtype(v, vname, numpy.bool_, cond)

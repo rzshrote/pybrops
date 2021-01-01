@@ -21,7 +21,9 @@ INSTALL_REQUIRES = [
     "numpy",
     "pandas",
     "cyvcf2",
-    "igraph"
+    "igraph",
+    "pytest",
+    "pytest-datadir"
 ]
 
 setup(
