@@ -14,7 +14,7 @@ class Matrix:
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(Matrix, self).__init__(**kwargs)
+        super(Matrix, self).__init__()
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
