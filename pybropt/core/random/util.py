@@ -1,6 +1,6 @@
 import random
-from numpy import PCG64
-from numpy import Generator
+from numpy.random import PCG64
+from numpy.random import Generator
 
 # default BitGenerator to use for random number generation
 default_BitGenerator = PCG64
