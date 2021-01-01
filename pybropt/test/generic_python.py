@@ -1,6 +1,22 @@
 import inspect
 import pytest
 
+# def generic_test_function(fn, vargs, vkwargs, wargs, wkwargs):
+#     pass
+
+def generic_test_operator(op, v, w):
+    """
+    Generic test an operator.
+    Tests:
+        op(*v) == op(*w)
+
+    Parameters
+    ----------
+    op : callable
+        Operator function to call.
+    """
+    assert op(*v) == op(*w)
+
 def helper_test_abstract_methods(obj, met):
     for m in met:
         with pytest.raises(NotImplementedError):
