@@ -12,6 +12,7 @@ from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import check_is_not_None
 from pybropt.core.error import cond_check_is_str
+from pybropt.core.error import check_ndarray_size
 
 class ExtendedGeneticMap(GeneticMap):
     """docstring for ExtendedGeneticMap."""
@@ -237,7 +238,7 @@ class ExtendedGeneticMap(GeneticMap):
         else:
             # check that matrix lengths are the same
             for i,k in enumerate(keys):
-                pybropt.util.check_matrix_size(k, "key"+i, self.__len__())
+                check_ndarray_size(k, "key"+i, len(self))
 
         # build tuple
         keys = tuple(k for k in keys if k is not None)

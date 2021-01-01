@@ -6,6 +6,7 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import check_all_equal
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseMolecularCoancestryMatrix."""
@@ -122,7 +123,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             return self._mat
         def fset(self, value):
             check_is_ndarray(value, "mat")
-            pybropt.util.check_all_equal(value.shape, "mat.shape")
+            check_all_equal(value.shape, "mat.shape")
             check_ndarray_dtype(value, "mat", numpy.float64)
             check_ndarray_ndim(value, "mat", 2)
             self._mat = value
