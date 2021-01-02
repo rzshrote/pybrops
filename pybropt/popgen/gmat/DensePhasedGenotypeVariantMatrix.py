@@ -624,7 +624,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
             # append marker name
             vrnt_name.append(variant.ID)
-            print(variant.genotypes)
+
             # extract allele states + whether they are phased or not
             phases = numpy.int8(variant.genotypes)
 

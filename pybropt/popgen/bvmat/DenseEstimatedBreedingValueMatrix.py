@@ -68,7 +68,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             cond_check_is_ndarray(value, "taxa_grp")
             cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
             cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._gmat.geno.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
             self._taxa_grp = value
         def fdel(self):
             del self._taxa_grp

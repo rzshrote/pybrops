@@ -1,8 +1,8 @@
 from . import DenseEstimatedBreedingValueMatrix
 from pybropt.core.error import cond_check_is_ndarray
-from pybropt.core.error import cond_check_ndarray_ndim
-from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype_is_float64
+from pybropt.core.error import cond_check_ndarray_ndim
 
 class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatrix):
     """docstring for GenotypicEstimatedBreedingValueMatrix."""
@@ -11,7 +11,7 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, se = None, **kwargs):
-        super(GenotypicEstimatedBreedingValueMatrix, self).__init__(
+        super(DenseGenotypicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -38,7 +38,7 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
             return self._se
         def fset(self, value):
             cond_check_is_ndarray(value, "se")
-            cond_check_ndarray_dtype(value, "se", numpy.float64)
+            cond_check_ndarray_dtype_is_float64(value, "se")
             cond_check_ndarray_ndim(value, "se", 2)
             cond_check_ndarray_axis_len(value, "se", 0, self._mat.shape[0])
             cond_check_ndarray_axis_len(value, "se", 1, self._mat.shape[1])
@@ -84,3 +84,19 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
                 self._trait = self._trait[indices]              # reorder trait array
             if self._se is not None:
                 self._se = self._se[:,indices]                  # reorder standard error
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_DenseGenotypicEstimatedBreedingValueMatrix(v):
+    return isinstance(v, DenseGenotypicEstimatedBreedingValueMatrix)
+
+def check_is_DenseGenotypicEstimatedBreedingValueMatrix(v, varname):
+    if not isinstance(v, DenseGenotypicEstimatedBreedingValueMatrix):
+        raise TypeError("'%s' must be a DenseGenotypicEstimatedBreedingValueMatrix." % varname)
+
+def cond_check_is_DenseGenotypicEstimatedBreedingValueMatrix(v, varname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_DenseGenotypicEstimatedBreedingValueMatrix(v, varname)

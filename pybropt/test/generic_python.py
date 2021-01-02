@@ -17,7 +17,7 @@ def generic_test_operator(op, v, w):
     """
     assert op(*v) == op(*w)
 
-def helper_test_abstract_methods(obj, met):
+def generic_test_abstract_methods(obj, met):
     for m in met:
         with pytest.raises(NotImplementedError):
             fn = getattr(obj, m)
