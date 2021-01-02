@@ -50,7 +50,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             arguments to the parent class constructor.
         """
         # call all parent constructors (some arguments not used)
-        super(PhasedVariantMatrix, self).__init__(
+        super(DensePhasedGenotypeVariantMatrix, self).__init__(
             mat = mat,
             vrnt_chrgrp = vrnt_chrgrp,
             vrnt_phypos = vrnt_phypos,
@@ -624,7 +624,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
             # append marker name
             vrnt_name.append(variant.ID)
-
+            print(variant.genotypes)
             # extract allele states + whether they are phased or not
             phases = numpy.int8(variant.genotypes)
 
@@ -639,11 +639,11 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         mat = numpy.int8(mat).transpose(2,1,0) # may want to copy()?
 
         # convert to numpy.ndarray
-        vrnt_chrgrp = numpy.int64(chr_grp)    # convert to int64 array
-        vrnt_phypos = numpy.int64(chr_start)  # convert to int64 array
-        vrnt_name = numpy.string_(vrnt_name)  # convert to string array
+        vrnt_chrgrp = numpy.int64(vrnt_chrgrp)  # convert to int64 array
+        vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
+        vrnt_name = numpy.string_(vrnt_name)    # convert to string array
 
-        pvm = PhasedGenotypeVariantMatrix(
+        pvm = DensePhasedGenotypeVariantMatrix(
             mat = mat,
             vrnt_chrgrp = vrnt_chrgrp,
             vrnt_phypos = vrnt_phypos,
@@ -658,13 +658,13 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedGenotypeVariantMatrix(v):
-    return isinstance(v, PhasedGenotypeVariantMatrix)
+def is_DensePhasedGenotypeVariantMatrix(v):
+    return isinstance(v, DensePhasedGenotypeVariantMatrix)
 
-def check_is_PhasedGenotypeVariantMatrix(v, varname):
-    if not isinstance(v, PhasedGenotypeVariantMatrix):
-        raise TypeError("'%s' must be a PhasedGenotypeVariantMatrix." % varname)
+def check_is_DensePhasedGenotypeVariantMatrix(v, varname):
+    if not isinstance(v, DensePhasedGenotypeVariantMatrix):
+        raise TypeError("'%s' must be a DensePhasedGenotypeVariantMatrix." % varname)
 
-def cond_check_is_PhasedGenotypeVariantMatrix(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_DensePhasedGenotypeVariantMatrix(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_PhasedGenotypeVariantMatrix(v, varname)
+        check_is_DensePhasedGenotypeVariantMatrix(v, varname)
