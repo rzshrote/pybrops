@@ -22,5 +22,6 @@ def generic_test_abstract_methods(obj, met):
         with pytest.raises(NotImplementedError):
             fn = getattr(obj, m)
             p = inspect.signature(fn).parameters
-            kwargs = dict.fromkeys(list(p), [None] * len(p))
+            l = list(m for m,n in p.items() if str(n)[0] != '*')
+            kwargs = dict.fromkeys(l, [None] * len(l))
             fn(**kwargs)
