@@ -69,3 +69,19 @@ class LinearGenomicModel(GenomicModel):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_LinearGenomicModel(v):
+    return isinstance(v, LinearGenomicModel)
+
+def check_is_LinearGenomicModel(v, vname):
+    if not isinstance(v, LinearGenomicModel):
+        raise TypeError("variable '{0}' must be a LinearGenomicModel".format(vname))
+
+def cond_check_is_LinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_LinearGenomicModel(v, vname)

@@ -2,7 +2,9 @@ import inspect
 import pytest
 
 from pybropt.test import generic_test_abstract_methods
+
 from pybropt.popgen.gmat import GenotypeMatrix
+from pybropt.popgen.gmat import is_GenotypeMatrix
 
 @pytest.fixture
 def gmat():
@@ -14,3 +16,6 @@ def vmethods(gmat):
 
 def test_abstract_methods(gmat, vmethods):
     generic_test_abstract_methods(gmat, vmethods)
+
+def test_is_GenotypeMatrix(gmat):
+    assert is_GenotypeMatrix(gmat)

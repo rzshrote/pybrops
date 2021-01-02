@@ -35,11 +35,11 @@ class GenomicModel:
     def params():
         doc = "The params property."
         def fget(self):
-            return self._params
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._params = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._params
+            raise NotImplementedError("method is abstract")
         return locals()
     params = property(**params())
 
@@ -92,3 +92,19 @@ class GenomicModel:
         bvmat : BreedingValueMatrix
         """
         raise NotImplementedError("method is abstract")
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_GenomicModel(v):
+    return isinstance(v, GenomicModel)
+
+def check_is_GenomicModel(v, vname):
+    if not isinstance(v, GenomicModel):
+        raise TypeError("variable '{0}' must be a GenomicModel".format(vname))
+
+def cond_check_is_GenomicModel(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_GenomicModel(v, vname)
