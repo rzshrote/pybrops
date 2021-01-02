@@ -13,7 +13,7 @@ prng = Generator(default_BitGenerator())
 
 def spawn(n = None):
     """
-    Spawn new PRNG streams.
+    Spawn new numpy PRNG streams.
 
     Parameters
     ----------
@@ -38,6 +38,7 @@ def spawn(n = None):
         out = [Generator(default_BitGenerator(s)) for s in ss]
     else:
         raise TypeError("'{0}' must be of type int".format("n"))
+    return out
 
 def seed(s = None):
     """
