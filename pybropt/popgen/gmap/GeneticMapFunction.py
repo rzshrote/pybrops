@@ -5,7 +5,7 @@ class GeneticMapFunction:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(GeneticMapFunction, self).__init__(**kwargs)
+        super(GeneticMapFunction, self).__init__()
 
     ############################################################################
     ############################ Object Properties #############################
@@ -120,10 +120,10 @@ class GeneticMapFunction:
 def is_GeneticMapFunction(v):
     return isinstance(v, GeneticMapFunction)
 
-def check_is_GeneticMapFunction(v, varname):
+def check_is_GeneticMapFunction(v, vname):
     if not isinstance(v, GeneticMapFunction):
-        raise TypeError("'%s' must be an GeneticMapFunction." % varname)
+        raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))
 
-def cond_check_is_GeneticMapFunction(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_GeneticMapFunction(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_GeneticMapFunction(v, varname)
+        check_is_GeneticMapFunction(v, vname)
