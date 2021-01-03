@@ -15,9 +15,9 @@ from .AdditiveGeneticVarianceMatrix import *
 from .AdditiveGenicVarianceMatrix import *
 
 # level 1 implementation
-from .TwoWayAdditiveGeneticVarianceMatrix import *
-from .ThreeWayAdditiveGeneticVarianceMatrix import *
-from .FourWayAdditiveGeneticVarianceMatrix import *
-from .DihybridAdditiveGeneticVarianceMatrix import *
+from .TwoWayDHAdditiveGeneticVarianceMatrix import *
+from .ThreeWayDHAdditiveGeneticVarianceMatrix import *
+from .FourWayDHAdditiveGeneticVarianceMatrix import *
+from .DihybridDHAdditiveGeneticVarianceMatrix import *
 
 from .TwoWayAdditiveGenicVarianceMatrix import *

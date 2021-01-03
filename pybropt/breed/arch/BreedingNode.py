@@ -106,10 +106,10 @@ class BreedingNode:
 def is_BreedingNode(v):
     return isinstance(v, BreedingNode)
 
-def check_is_BreedingNode(v, varname):
+def check_is_BreedingNode(v, vname):
     if not isinstance(v, BreedingNode):
-        raise TypeError("'%s' must be a BreedingNode." % varname)
+        raise TypeError("variable '{0}' must be a BreedingNode".format(vname))
 
-def cond_check_is_BreedingNode(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_BreedingNode(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_BreedingNode(v, varname)
+        check_is_BreedingNode(v, vname)

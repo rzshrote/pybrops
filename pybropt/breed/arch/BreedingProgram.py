@@ -40,7 +40,7 @@ class BreedingProgram(BreedingNode):
 
     ######### Breeding program operator properties #########
     def pselop():
-        doc = "The pselop property."
+        doc = "Parental selection operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -51,7 +51,7 @@ class BreedingProgram(BreedingNode):
     pselop = property(**pselop())
 
     def mateop():
-        doc = "The mateop property."
+        doc = "Mating operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -62,7 +62,7 @@ class BreedingProgram(BreedingNode):
     mateop = property(**mateop())
 
     def evalop():
-        doc = "The evalop property."
+        doc = "Evaluation operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -73,7 +73,7 @@ class BreedingProgram(BreedingNode):
     evalop = property(**evalop())
 
     def calop():
-        doc = "The calop property."
+        doc = "Genomic model calibration operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -84,7 +84,7 @@ class BreedingProgram(BreedingNode):
     calop = property(**calop())
 
     def sselop():
-        doc = "The sselop property."
+        doc = "Survivor selection operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -106,10 +106,10 @@ class BreedingProgram(BreedingNode):
 def is_BreedingProgram(v):
     return isinstance(v, BreedingProgram)
 
-def check_is_BreedingProgram(v, varname):
+def check_is_BreedingProgram(v, vname):
     if not isinstance(v, BreedingProgram):
-        raise TypeError("'%s' must be a BreedingProgram." % varname)
+        raise TypeError("variable '{0}' must be a BreedingProgram".format(vname))
 
-def cond_check_is_BreedingProgram(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_BreedingProgram(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_BreedingProgram(v, varname)
+        check_is_BreedingProgram(v, vname)

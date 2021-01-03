@@ -23,10 +23,10 @@ class BreedingEdge:
 def is_BreedingEdge(v):
     return isinstance(v, BreedingEdge)
 
-def check_is_BreedingEdge(v, varname):
+def check_is_BreedingEdge(v, vname):
     if not isinstance(v, BreedingEdge):
-        raise TypeError("'%s' must be a BreedingEdge." % varname)
+        raise TypeError("variable '{0}' must be a BreedingEdge".format(vname))
 
-def cond_check_is_BreedingEdge(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_BreedingEdge(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_BreedingEdge(v, varname)
+        check_is_BreedingEdge(v, vname)

@@ -37,10 +37,10 @@ class BreedingGraph:
 def is_BreedingGraph(v):
     return isinstance(v, BreedingGraph)
 
-def check_is_BreedingGraph(v, varname):
+def check_is_BreedingGraph(v, vname):
     if not isinstance(v, BreedingGraph):
-        raise TypeError("'%s' must be a BreedingGraph." % varname)
+        raise TypeError("variable '{0}' must be a BreedingGraph".format(vname))
 
-def cond_check_is_BreedingGraph(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_BreedingGraph(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_BreedingGraph(v, varname)
+        check_is_BreedingGraph(v, vname)

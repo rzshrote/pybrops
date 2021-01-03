@@ -39,10 +39,10 @@ class EmigrationOperator(BreedingEdge):
 def is_EmigrationOperator(v):
     return isinstance(v, EmigrationOperator)
 
-def check_is_EmigrationOperator(v, varname):
+def check_is_EmigrationOperator(v, vname):
     if not isinstance(v, EmigrationOperator):
-        raise TypeError("'%s' must be a EmigrationOperator." % varname)
+        raise TypeError("variable '{0}' must be a EmigrationOperator".format(vname))
 
-def cond_check_is_EmigrationOperator(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_EmigrationOperator(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_EmigrationOperator(v, varname)
+        check_is_EmigrationOperator(v, vname)

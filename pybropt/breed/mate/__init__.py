@@ -1,7 +1,7 @@
 # import libraries; order dependent
 
 # import helper functions
-from .util import *
+from .mate_util import *
 
 # import classes
 from .Cross import *

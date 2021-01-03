@@ -42,10 +42,10 @@ class ImmigrationOperator(BreedingEdge):
 def is_ImmigrationOperator(v):
     return isinstance(v, ImmigrationOperator)
 
-def check_is_ImmigrationOperator(v, varname):
+def check_is_ImmigrationOperator(v, vname):
     if not isinstance(v, ImmigrationOperator):
-        raise TypeError("'%s' must be a ImmigrationOperator." % varname)
+        raise TypeError("variable '{0}' must be a ImmigrationOperator".format(vname))
 
-def cond_check_is_ImmigrationOperator(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_ImmigrationOperator(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_ImmigrationOperator(v, varname)
+        check_is_ImmigrationOperator(v, vname)

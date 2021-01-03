@@ -25,10 +25,10 @@ class GermplasmBank(BreedingNode):
 def is_GermplasmBank(v):
     return isinstance(v, GermplasmBank)
 
-def check_is_GermplasmBank(v, varname):
+def check_is_GermplasmBank(v, vname):
     if not isinstance(v, GermplasmBank):
-        raise TypeError("'%s' must be a GermplasmBank." % varname)
+        raise TypeError("variable '{0}' must be a GermplasmBank".format(vname))
 
-def cond_check_is_GermplasmBank(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_GermplasmBank(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_GermplasmBank(v, varname)
+        check_is_GermplasmBank(v, vname)
