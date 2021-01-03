@@ -83,10 +83,10 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         def fget(self):
             return self._vrnt_chrgrp
         def fset(self, value):
-            check_is_ndarray(value, "vrnt_chrgrp")
-            check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_chrgrp", 1)
-            check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self._mat.shape[2])
+            cond_check_is_ndarray(value, "vrnt_chrgrp")
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp", 1)
+            cond_check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self._mat.shape[2])
             self._vrnt_chrgrp = value
         def fdel(self):
             del self._vrnt_chrgrp
@@ -98,10 +98,10 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         def fget(self):
             return self._vrnt_phypos
         def fset(self, value):
-            check_is_ndarray(value, "vrnt_phypos")
-            check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_phypos", 1)
-            check_ndarray_axis_len(value, "vrnt_phypos", 0, self._mat.shape[2])
+            cond_check_is_ndarray(value, "vrnt_phypos")
+            cond_check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_phypos", 1)
+            cond_check_ndarray_axis_len(value, "vrnt_phypos", 0, self._mat.shape[2])
             self._vrnt_phypos = value
         def fdel(self):
             del self._vrnt_phypos
@@ -352,8 +352,8 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         naxes = self._mat.ndim
 
         # handle axis argument
-        if (axis >= naxes) or (axis <= -naxes):
-            raise numpy.AxisError("axis %s is out of bounds for array of dimension %s" % (axis, naxes))
+        if (axis >= naxes) or (axis < -naxes):
+            raise IndexError("axis {0} is out of bounds for array of dimension {1}".format(axis, naxes))
 
         # modulo the axis number to get the axis (in the case of negative axis)
         axis %= naxes
@@ -378,25 +378,23 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         indices : numpy.ndarray
             Array of indices that sort the keys.
         """
-        # transform axis number to an index
-        axis = self.axis_index(axis)
+        axis = self.axis_index(axis)                            # transform axis number to an index
+        emess = None                                            # error message
 
-        # if no keys were provided, set a default
-        if keys is None:
-            # assign default keys
-            if axis == 0:
-                keys = (None,)
-            elif axis == 1:
-                keys = (self._taxa, self._taxa_grp)
-            elif axis == 2:
-                keys = (self._vrnt_phypos, self._vrnt_chrgrp)
+        if keys is None:                                        # if no keys were provided, set a default
+            if axis == 0:                                       # phase axis
+                keys = (None,)                                  # phase default keys
+                emess = "axis unsortable by default"            # phase error message
+            elif axis == 1:                                     # taxa axis
+                keys = (self._taxa, self._taxa_grp)             # taxa default keys
+                emess = "taxa, taxa_grp are None"               # taxa error message
+            elif axis == 2:                                     # loci axis
+                keys = (self._vrnt_phypos, self._vrnt_chrgrp)   # loci default keys
+                emess = "vrnt_phypos, vrnt_chrgrp are None"     # loci error message
 
-            # remove keys that are None
-            keys = tuple(k for k in keys if k is not None)
-
-            # check for errors
-            if len(keys) == 0:
-                raise RuntimeError("cannot lexsort on axis %s: no default keys" % axis)
+            keys = tuple(k for k in keys if k is not None)      # remove None keys
+            if len(keys) == 0:                                  # raise error if needed
+                raise RuntimeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
         else:
             l = self._mat.shape[axis]
             for i,k in enumerate(keys):
