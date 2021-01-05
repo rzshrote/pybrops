@@ -5,6 +5,7 @@ from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
 
 from pybropt.popgen.gmap import ExtendedGeneticMap
+from pybropt.popgen.gmap import HaldaneMapFunction
 
 @pytest.fixture
 def dpgvmat(shared_datadir):
@@ -34,8 +35,18 @@ def mat_phypos():
     yield a
 
 @pytest.fixture
+def mat_genpos():
+    a = numpy.array([0.5275, 0.53, 0.60925, 0.68325, 0.70265, 0.73255, 0.7338, 0.5])
+    yield a
+
+@pytest.fixture
 def mat_taxa():
     a = numpy.string_(["NA00001", "NA00002", "NA00003"])
+    yield a
+
+@pytest.fixture
+def mat_xoprob():
+    a = numpy.array([0.5, 0.00249376, 0.5, 0.06878444, 0.01902846, 0.02902355, 0.00124844, 0.5])
     yield a
 
 @pytest.fixture
@@ -44,6 +55,10 @@ def egmap(shared_datadir):
     e.group()
     e.build_spline(kind = 'linear', fill_value = 'extrapolate')
     yield e
+
+@pytest.fixture
+def gmapfn():
+    return HaldaneMapFunction()
 
 def test_is_DensePhasedGenotypeVariantMatrix(dpgvmat):
     assert is_DensePhasedGenotypeVariantMatrix(dpgvmat)
@@ -160,8 +175,15 @@ def test_is_grouped_axis_2(dpgvmat):
     dpgvmat.group(axis = 2)
     assert dpgvmat.is_grouped(axis = 2)
 
-def test_interp_genpos(dpgvmat, egmap):
+def test_interp_genpos(dpgvmat, egmap, mat_genpos):
     dpgvmat.interp_genpos(egmap)
-    print(dpgvmat.vrnt_phypos)
-    print(dpgvmat.vrnt_genpos)
-    raise NotImplementedError()
+    assert numpy.all(dpgvmat.vrnt_genpos == mat_genpos)
+
+def test_interp_xoprob_ungrouped(dpgvmat, egmap, gmapfn):
+    with pytest.raises(RuntimeError):
+        dpgvmat.interp_xoprob(egmap, gmapfn)
+
+def test_interp_xoprob_grouped(dpgvmat, egmap, gmapfn, mat_xoprob):
+    dpgvmat.group()
+    dpgvmat.interp_xoprob(egmap, gmapfn)
+    assert numpy.allclose(dpgvmat.vrnt_xoprob, mat_xoprob)

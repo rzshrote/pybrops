@@ -16,6 +16,7 @@ from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
 
 from pybropt.popgen.gmap import check_is_GeneticMap
+from pybropt.popgen.gmap import check_is_GeneticMapFunction
 
 class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
     """docstring for PhasedVariantMatrix."""
@@ -65,6 +66,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             taxa_grp = taxa_grp
         )
 
+        # set variables
         self.vrnt_chrgrp = vrnt_chrgrp
         self.vrnt_phypos = vrnt_phypos
         self.vrnt_name = vrnt_name
@@ -74,6 +76,16 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         self.vrnt_mask = vrnt_mask
         self.taxa = taxa
         self.taxa_grp = taxa_grp
+
+        # set sort metadata to None
+        self.taxa_grp_name = None
+        self.taxa_grp_stix = None
+        self.taxa_grp_spix = None
+        self.taxa_grp_len = None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len = None
 
     ############################################################################
     ############################ Object Properties #############################
@@ -581,8 +593,8 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             probabilities for loci within the VariantMatrix.
         """
         # check data types
-        pybropt.popgen.gmap.check_is_GeneticMap(gmap)
-        pybropt.popgen.gmap.check_is_GeneticMapFunction(gmapfn)
+        check_is_GeneticMap(gmap, "gmap")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
 
         # check if self has been sorted and grouped
         if not self.is_grouped():
@@ -592,7 +604,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
 
         # interpolate crossover probabilities
-        self.vrnt_xoprob = gmapfn.gdist1g(gmap, self._vrnt_chrgrp, self._vrnt_genpos)
+        self.vrnt_xoprob = gmapfn.rprob1g(gmap, self._vrnt_chrgrp, self._vrnt_genpos)
 
     ############################################################################
     ############################## Static Methods ##############################

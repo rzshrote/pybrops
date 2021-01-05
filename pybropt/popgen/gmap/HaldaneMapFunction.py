@@ -1,3 +1,5 @@
+import numpy
+
 from . import GeneticMapFunction
 
 class HaldaneMapFunction(GeneticMapFunction):
