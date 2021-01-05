@@ -649,7 +649,7 @@ class ExtendedGeneticMap(GeneticMap):
         # for each chromosome-position pair
         for i,(chrgrp,phypos) in enumerate(zip(vrnt_chrgrp, vrnt_phypos)):
             try:                                # try to index dict
-                model = self._spline[chr_grp]   # try to get model
+                model = self._spline[chrgrp]    # try to get model
                 out[i] = model(phypos)          # interpolate genetic position
             except KeyError:                    # if dict key not found
                 out[i] = numpy.nan              # set to NaN
