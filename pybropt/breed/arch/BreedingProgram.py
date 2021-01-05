@@ -38,6 +38,29 @@ class BreedingProgram(BreedingNode):
         return locals()
     pop_kw = property(**pop_kw())
 
+    ############## Breeding value properties ###############
+    def bval_queue():
+        doc = "The bval_queue property."
+        def fget(self):
+            return self._bval_queue
+        def fset(self, value):
+            self._bval_queue = value
+        def fdel(self):
+            del self._bval_queue
+        return locals()
+    bval_queue = property(**bval_queue())
+
+    def bval_kw():
+        doc = "The bval_kw property."
+        def fget(self):
+            return self._bval_kw
+        def fset(self, value):
+            self._bval_kw = value
+        def fdel(self):
+            del self._bval_kw
+        return locals()
+    bval_kw = property(**bval_kw())
+
     ######### Breeding program operator properties #########
     def pselop():
         doc = "Parental selection operator."
@@ -97,7 +120,8 @@ class BreedingProgram(BreedingNode):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-
+    def pselect(gen_cur, gen_max, pop, bval, bval_true, gmod, gmod_true,):
+        pass
 
 
 ################################################################################

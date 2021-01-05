@@ -6,9 +6,10 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, arg):
-        super(RecurrentSelectionBreedingProgram, self).__init__()
-        self.arg = arg
+    def __init__(self, **kwargs):
+        super(RecurrentSelectionBreedingProgram, self).__init__(
+            **kwargs
+        )
 
     ############################################################################
     ############################ Object Properties #############################
