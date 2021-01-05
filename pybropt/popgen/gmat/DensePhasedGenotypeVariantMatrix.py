@@ -5,6 +5,7 @@ import numpy
 # import our libraries
 from . import GenotypeVariantMatrix
 from . import DensePhasedGenotypeMatrix
+
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -14,6 +15,7 @@ from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
 
+from pybropt.popgen.gmap import check_is_GeneticMap
 
 class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariantMatrix):
     """docstring for PhasedVariantMatrix."""
@@ -559,7 +561,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             loci within the VariantMatrix.
         """
         # check if gmap is a GeneticMap
-        pybropt.popgen.gmap.check_is_GeneticMap(gmap)
+        check_is_GeneticMap(gmap, "gmap")
 
         # interpolate postions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)

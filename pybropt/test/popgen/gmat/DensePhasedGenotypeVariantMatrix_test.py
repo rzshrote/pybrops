@@ -4,6 +4,8 @@ import pytest
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
 
+from pybropt.popgen.gmap import ExtendedGeneticMap
+
 @pytest.fixture
 def dpgvmat(shared_datadir):
     data_path = shared_datadir / "sample.vcf"
@@ -23,18 +25,25 @@ def mat_int8():
 
 @pytest.fixture
 def mat_chrgrp():
-    a = numpy.int64([19, 19, 20, 20, 20, 20, 20, 21])
+    a = numpy.int64([1, 1, 2, 2, 2, 2, 2, 3])
     yield a
 
 @pytest.fixture
 def mat_phypos():
-    a = numpy.int64([111, 112, 14370, 17330, 1110696, 1230237, 1235237, 10])
+    a = numpy.int64([111, 112, 14370, 17330, 18106, 19302, 19352, 100])
     yield a
 
 @pytest.fixture
 def mat_taxa():
     a = numpy.string_(["NA00001", "NA00002", "NA00003"])
     yield a
+
+@pytest.fixture
+def egmap(shared_datadir):
+    e = ExtendedGeneticMap.from_egmap(shared_datadir / "sample.egmap")
+    e.group()
+    e.build_spline(kind = 'linear', fill_value = 'extrapolate')
+    yield e
 
 def test_is_DensePhasedGenotypeVariantMatrix(dpgvmat):
     assert is_DensePhasedGenotypeVariantMatrix(dpgvmat)
@@ -150,3 +159,9 @@ def test_is_grouped_axis_1(dpgvmat):
 def test_is_grouped_axis_2(dpgvmat):
     dpgvmat.group(axis = 2)
     assert dpgvmat.is_grouped(axis = 2)
+
+def test_interp_genpos(dpgvmat, egmap):
+    dpgvmat.interp_genpos(egmap)
+    print(dpgvmat.vrnt_phypos)
+    print(dpgvmat.vrnt_genpos)
+    raise NotImplementedError()
