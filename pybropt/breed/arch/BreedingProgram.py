@@ -15,9 +15,9 @@ class BreedingProgram(BreedingNode):
     ############################ Object Properties #############################
     ############################################################################
 
-    ################ Population properties #################
-    def pop_queue():
-        doc = "Queue breeding population of the BreedingProgram."
+    ############### Selection age properties ###############
+    def a_max():
+        doc = "The a_max property."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -25,41 +25,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    pop_queue = property(**pop_queue())
-
-    def pop_kw():
-        doc = "Keyword breeding population of the BreedingProgram."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    pop_kw = property(**pop_kw())
-
-    ############## Breeding value properties ###############
-    def bval_queue():
-        doc = "The bval_queue property."
-        def fget(self):
-            return self._bval_queue
-        def fset(self, value):
-            self._bval_queue = value
-        def fdel(self):
-            del self._bval_queue
-        return locals()
-    bval_queue = property(**bval_queue())
-
-    def bval_kw():
-        doc = "The bval_kw property."
-        def fget(self):
-            return self._bval_kw
-        def fset(self, value):
-            self._bval_kw = value
-        def fdel(self):
-            del self._bval_kw
-        return locals()
-    bval_kw = property(**bval_kw())
+    a_max = property(**a_max())
 
     ######### Breeding program operator properties #########
     def pselop():
@@ -120,9 +86,29 @@ class BreedingProgram(BreedingNode):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(gen_cur, gen_max, pop, bval, bval_true, gmod, gmod_true,):
-        pass
 
+    ############ Breeding program instructions #############
+    def pselect(self, **kwargs):
+        """
+        Select parents
+        """
+        raise NotImplementedError("method is abstract")
+
+    def mate(self, **kwargs):
+        raise NotImplementedError("method is abstract")
+
+    def evaluate(self, **kwargs):
+        raise NotImplementedError("method is abstract")
+
+    def calibrate(self, **kwargs):
+        raise NotImplementedError("method is abstract")
+
+    def sselect(self, **kwargs):
+        raise NotImplementedError("method is abstract")
+
+    ################ Whole breeding program ################
+    def evolve(self, **kwargs):
+        raise NotImplementedError("method is abstract")
 
 ################################################################################
 ################################## Utilities ###################################

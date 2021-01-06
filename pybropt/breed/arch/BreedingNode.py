@@ -1,5 +1,3 @@
-
-
 class BreedingNode:
     """docstring for BreedingNode."""
 
@@ -14,7 +12,7 @@ class BreedingNode:
     ############################################################################
 
     ############# Generation number properties #############
-    def gen_cur():
+    def t_cur():
         doc = "Current generation number of the BreedingNode."
         def fget(self):
             raise NotImplementedError("method is abstract")
@@ -23,9 +21,9 @@ class BreedingNode:
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    gen_cur = property(**gen_cur())
+    t_cur = property(**t_cur())
 
-    def gen_max():
+    def t_max():
         doc = "Maximum generation number of the BreedingNode."
         def fget(self):
             raise NotImplementedError("method is abstract")
@@ -34,7 +32,7 @@ class BreedingNode:
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    gen_max = property(**gen_max())
+    t_max = property(**t_max())
 
     ################ Population properties #################
     def pop():
@@ -50,7 +48,7 @@ class BreedingNode:
 
     ############## Breeding value properties ###############
     def bval():
-        doc = "Estimated breeding values for the main breeding population of the BreedingNode."
+        doc = "Dictionary of breeding values for the BreedingNode."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -60,20 +58,9 @@ class BreedingNode:
         return locals()
     bval = property(**bval())
 
-    def bval_true():
-        doc = "True breeding values for the main breeding population of the BreedingNode."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    bval_true = property(**bval_true())
-
     ############### Genomic model properties ###############
     def gmod():
-        doc = "Estimated genomic model for the main breeding population of the BreedingNode."
+        doc = "Dictionary of genomic models for the BreedingNode."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -82,17 +69,6 @@ class BreedingNode:
             raise NotImplementedError("method is abstract")
         return locals()
     gmod = property(**gmod())
-
-    def gmod_true():
-        doc = "True genomic model for the main breeding population of the BreedingNode."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    gmod_true = property(**gmod_true())
 
     ############################################################################
     ############################## Object Methods ##############################
