@@ -15,9 +15,9 @@ class BreedingProgram(BreedingNode):
     ############################ Object Properties #############################
     ############################################################################
 
-    ############### Selection age properties ###############
-    def a_max():
-        doc = "The a_max property."
+    ######### Breeding program operator properties #########
+    def initop():
+        doc = "Initialization operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -25,9 +25,8 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    a_max = property(**a_max())
+    initop = property(**initop())
 
-    ######### Breeding program operator properties #########
     def pselop():
         doc = "Parental selection operator."
         def fget(self):
@@ -98,8 +97,26 @@ class BreedingProgram(BreedingNode):
     ############################## Object Methods ##############################
     ############################################################################
 
+    ############# Initialize breeding program ##############
+    def initialize(self, **kwargs):
+        """
+        Initialize the breeding program with genotypes, phenotypes, and genomic
+        models.
+        """
+        raise NotImplementedError("method is abstract")
+
     ################ Whole breeding program ################
-    def evolve(self, **kwargs):
+    def evolve(self, ngen, lbook, **kwargs):
+        """
+        Evolve the breeding program for a number of generations.
+
+        Parameters
+        ----------
+        ngen : int
+            Number of generations to evolve the population.
+        lbook : LogBook
+            LogBook into which to write statistics.
+        """
         raise NotImplementedError("method is abstract")
 
 ################################################################################

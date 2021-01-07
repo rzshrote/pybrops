@@ -91,3 +91,19 @@ class SurvivorSelectionOperator:
                 Miscellaneous output (user defined).
         """
         raise NotImplementedError("method is abstract")
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_SurvivorSelectionOperator(v):
+    return isinstance(v, SurvivorSelectionOperator)
+
+def check_is_SurvivorSelectionOperator(v, vname):
+    if not isinstance(v, SurvivorSelectionOperator):
+        raise TypeError("variable '{0}' must be a SurvivorSelectionOperator".format(vname))
+
+def cond_check_is_SurvivorSelectionOperator(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_SurvivorSelectionOperator(v, vname)

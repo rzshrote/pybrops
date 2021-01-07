@@ -10,7 +10,7 @@ class MatingOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgvmat, sel, ncross, nprogeny, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, **kwargs):
         """
         Mate individuals according to a mate selection scheme.
 
@@ -46,10 +46,10 @@ class MatingOperator:
 def is_MatingOperator(v):
     return isinstance(v, MatingOperator)
 
-def check_is_MatingOperator(v, varname):
+def check_is_MatingOperator(v, vname):
     if not isinstance(v, MatingOperator):
-        raise TypeError("'%s' must be a MatingOperator." % varname)
+        raise TypeError("variable '{0}' must be a MatingOperator".format(vname))
 
-def cond_check_is_MatingOperator(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_MatingOperator(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_MatingOperator(v, varname)
+        check_is_MatingOperator(v, vname)

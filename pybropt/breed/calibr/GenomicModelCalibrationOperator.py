@@ -14,7 +14,20 @@ class GenomicModelCalibrationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def calibrate(self, **kwargs):
+    def calibrate(self, t_cur, t_max, geno, bval, **kwargs):
+        """
+        Calibrate genomic models using genotype and phenotype data.
+
+        Parameters
+        ----------
+        geno : dict
+        bval : dict
+
+        Returns
+        -------
+        out : tuple
+            (gmod_new, misc)
+        """
         raise NotImplementedError("method is abstract")
 
 
@@ -25,10 +38,10 @@ class GenomicModelCalibrationOperator:
 def is_GenomicModelCalibrationOperator(v):
     return isinstance(v, GenomicModelCalibrationOperator)
 
-def check_is_GenomicModelCalibrationOperator(v, varname):
+def check_is_GenomicModelCalibrationOperator(v, vname):
     if not isinstance(v, GenomicModelCalibrationOperator):
-        raise TypeError("'%s' must be a GenomicModelCalibrationOperator." % varname)
+        raise TypeError("variable '{0}' must be a GenomicModelCalibrationOperator".format(vname))
 
-def cond_check_is_GenomicModelCalibrationOperator(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_GenomicModelCalibrationOperator(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_GenomicModelCalibrationOperator(v, varname)
+        check_is_GenomicModelCalibrationOperator(v, vname)

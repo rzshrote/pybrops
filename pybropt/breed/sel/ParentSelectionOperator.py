@@ -74,3 +74,19 @@ class ParentSelectionOperator:
                 Miscellaneous output (user defined).
         """
         raise NotImplementedError("method is abstract")
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_ParentSelectionOperator(v):
+    return isinstance(v, ParentSelectionOperator)
+
+def check_is_ParentSelectionOperator(v, vname):
+    if not isinstance(v, ParentSelectionOperator):
+        raise TypeError("variable '{0}' must be a ParentSelectionOperator".format(vname))
+
+def cond_check_is_ParentSelectionOperator(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_ParentSelectionOperator(v, vname)
