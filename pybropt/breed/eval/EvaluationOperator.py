@@ -14,7 +14,22 @@ class EvaluationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def evaluate(self, **kwargs):
+    def evaluate(self, pgvmat, gmod, **kwargs):
+        """
+        Parameters
+        ----------
+        pgvmat : PhasedGenotypeVariantMatrix
+        gmod : dict
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing two elements: (bvmat, misc)
+            bvmat : BreedingValueMatrix
+                A matrix of breeding values
+            misc : dict
+                Miscellaneous output (user defined).
+        """
         raise NotImplementedError("method is abstract")
 
 

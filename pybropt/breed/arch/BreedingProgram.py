@@ -61,6 +61,17 @@ class BreedingProgram(BreedingNode):
         return locals()
     evalop = property(**evalop())
 
+    def intgop():
+        doc = "Integration operator."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    intgop = property(**intgop())
+
     def calop():
         doc = "Genomic model calibration operator."
         def fget(self):
@@ -86,25 +97,6 @@ class BreedingProgram(BreedingNode):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-
-    ############ Breeding program instructions #############
-    def pselect(self, **kwargs):
-        """
-        Select parents
-        """
-        raise NotImplementedError("method is abstract")
-
-    def mate(self, **kwargs):
-        raise NotImplementedError("method is abstract")
-
-    def evaluate(self, **kwargs):
-        raise NotImplementedError("method is abstract")
-
-    def calibrate(self, **kwargs):
-        raise NotImplementedError("method is abstract")
-
-    def sselect(self, **kwargs):
-        raise NotImplementedError("method is abstract")
 
     ################ Whole breeding program ################
     def evolve(self, **kwargs):

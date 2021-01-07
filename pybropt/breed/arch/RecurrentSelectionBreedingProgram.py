@@ -16,30 +16,30 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
 
     ############# Generation number properties #############
-    def gen_cur():
+    def t_cur():
         doc = "Current generation number of the BreedingNode."
         def fget(self):
-            return self._gen_cur
+            return self._t_cur
         def fset(self, value):
-            self._gen_cur = value
+            self._t_cur = value
         def fdel(self):
-            del self._gen_cur
+            del self._t_cur
         return locals()
-    gen_cur = property(**gen_cur())
+    t_cur = property(**t_cur())
 
-    def gen_max():
+    def t_max():
         doc = "Maximum generation number of the BreedingNode."
         def fget(self):
-            return self._gen_max
+            return self._t_max
         def fset(self, value):
-            self._gen_max = value
+            self._t_max = value
         def fdel(self):
-            del self._gen_max
+            del self._t_max
         return locals()
-    gen_max = property(**gen_max())
+    t_max = property(**t_max())
 
     ################ Population properties #################
-    def pop():
+    def geno():
         doc = "Main breeding population of the BreedingNode."
         def fget(self):
             return self._pop
@@ -48,29 +48,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             del self._pop
         return locals()
-    pop = property(**pop())
-
-    def pop_queue():
-        doc = "Queue breeding population of the BreedingProgram."
-        def fget(self):
-            return self._pop_queue
-        def fset(self, value):
-            self._pop_queue = value
-        def fdel(self):
-            del self._pop_queue
-        return locals()
-    pop_queue = property(**pop_queue())
-
-    def pop_kw():
-        doc = "Keyword breeding population of the BreedingProgram."
-        def fget(self):
-            return self._pop_kw
-        def fset(self, value):
-            self._pop_kw = value
-        def fdel(self):
-            del self._pop_kw
-        return locals()
-    pop_kw = property(**pop_kw())
+    geno = property(**geno())
 
     ############## Breeding value properties ###############
     def bval():
@@ -84,17 +62,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         return locals()
     bval = property(**bval())
 
-    def bval_true():
-        doc = "True breeding values for the main breeding population of the BreedingNode."
-        def fget(self):
-            return self._bval_true
-        def fset(self, value):
-            self._bval_true = value
-        def fdel(self):
-            del self._bval_true
-        return locals()
-    bval_true = property(**bval_true())
-
     ############### Genomic model properties ###############
     def gmod():
         doc = "Estimated genomic model for the main breeding population of the BreedingNode."
@@ -106,17 +73,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             del self._gmod
         return locals()
     gmod = property(**gmod())
-
-    def gmod_true():
-        doc = "True genomic model for the main breeding population of the BreedingNode."
-        def fget(self):
-            return self._gmod_true
-        def fset(self, value):
-            self._gmod_true = value
-        def fdel(self):
-            del self._gmod_true
-        return locals()
-    gmod_true = property(**gmod_true())
 
     ######### Breeding program operator properties #########
     def pselop():
@@ -151,6 +107,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             del self._evalop
         return locals()
     evalop = property(**evalop())
+
+    def intgop():
+        doc = "Integration operator."
+        def fget(self):
+            return self._intgop
+        def fset(self, value):
+            self._intgop = value
+        def fdel(self):
+            del self._intgop
+        return locals()
+    intgop = property(**intgop())
 
     def calop():
         doc = "Genomic model calibration operator."

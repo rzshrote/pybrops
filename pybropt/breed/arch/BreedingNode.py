@@ -35,7 +35,7 @@ class BreedingNode:
     t_max = property(**t_max())
 
     ################ Population properties #################
-    def pop():
+    def geno():
         doc = "Main breeding population of the BreedingNode."
         def fget(self):
             raise NotImplementedError("method is abstract")
@@ -44,7 +44,7 @@ class BreedingNode:
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    pop = property(**pop())
+    geno = property(**geno())
 
     ############## Breeding value properties ###############
     def bval():

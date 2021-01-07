@@ -17,34 +17,25 @@ class MatingOperator:
         Parameters
         ----------
         pgvmat : PhasedGenotypeVariantMatrix
-            A GenotypeVariantMatrix from which to mate.
+            A PhasedGenotypeVariantMatrix of parental candidates.
         sel : numpy.ndarray
-            Cross pattern.
-        ncross : int, numpy.ndarray
-            Number of cross patterns to perform.
-        nprogeny : int, numpy.ndarray
+            Array of indices specifying a cross pattern. Each index corresponds
+            to an individual in 'pgvmat'.
+        ncross : numpy.ndarray
+            Number of crosses to perform per cross pattern.
+        nprogeny : numpy.ndarray
             Number of progeny to generate per cross.
+        **kwargs
+            Additional keyword arguments.
 
         Returns
         -------
-        progeny : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of progeny.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def mate_cfg(self, mcfg):
-        """
-        Mate individuals according to a MatingConfiguration.
-
-        Parameters
-        ----------
-        mcfg : MatingConfiguration
-            A MatingConfiguration from which to implement matings.
-
-        Returns
-        -------
-        progeny : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of progeny.
+        out : tuple
+            A tuple containing two elements: (progeny, misc)
+            progeny : PhasedGenotypeVariantMatrix
+                A PhasedGenotypeVariantMatrix of progeny.
+            misc : dict
+                Miscellaneous output (user defined).
         """
         raise NotImplementedError("method is abstract")
 
