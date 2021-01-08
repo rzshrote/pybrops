@@ -31,14 +31,9 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(GenericLinearGenomicModel, self).__init__(
-            mu = mu,
-            beta = beta,
-            trait = trait,
-            model_name = model_name,
-            params = params,
-            **kwargs
-        )
+        super(GenericLinearGenomicModel, self).__init__(**kwargs)
+
+        # set variables
         self.mu = mu
         self.beta = beta
         self.trait = trait

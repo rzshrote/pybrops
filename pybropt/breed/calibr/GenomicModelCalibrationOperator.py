@@ -14,14 +14,17 @@ class GenomicModelCalibrationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def calibrate(self, t_cur, t_max, geno, bval, **kwargs):
+    def calibrate(self, t_cur, t_max, geno, bval, gmod, **kwargs):
         """
         Calibrate genomic models using genotype and phenotype data.
 
         Parameters
         ----------
+        t_cur : int
+        t_max : int
         geno : dict
         bval : dict
+        gmod : dict
 
         Returns
         -------

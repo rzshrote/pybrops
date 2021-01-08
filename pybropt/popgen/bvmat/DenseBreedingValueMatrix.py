@@ -194,6 +194,21 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
+    ################## Raw Phenotype Data ##################
+    def raw():
+        doc = "The raw property."
+        def fget(self):
+            return self._raw
+        def fset(self, value):
+            # The only assumption is that mat is a numpy.ndarray matrix.
+            # Let the user decide whether to overwrite error checks.
+            check_is_ndarray(value, "raw")
+            self._raw = value
+        def fdel(self):
+            del self._raw
+        return locals()
+    raw = property(**raw())
+
     ################# Breeding Value Data ##################
     def mat():
         doc = "The mat property."

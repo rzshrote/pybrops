@@ -324,7 +324,8 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 t_cur = self._t_cur,
                 t_max = self._t_max,
                 geno = geno_tmp,
-                bval = bval_tmp
+                bval = bval_tmp,
+                gmod = self._gmod
             )
             lbook.log_calibrate(
                 t_cur = self._t_cur,

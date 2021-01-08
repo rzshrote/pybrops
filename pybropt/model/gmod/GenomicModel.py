@@ -78,7 +78,7 @@ class GenomicModel:
 
         Returns
         -------
-        gebvmat : GenotypicEstimatedBreedingValueMatrix
+        bvmat : BreedingValueMatrix
         """
         raise NotImplementedError("method is abstract")
 
