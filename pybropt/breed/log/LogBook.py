@@ -13,11 +13,11 @@ class LogBook:
     def book():
         doc = "The book property."
         def fget(self):
-            return self._book
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._book = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._book
+            raise NotImplementedError("method is abstract")
         return locals()
     book = property(**book())
 
