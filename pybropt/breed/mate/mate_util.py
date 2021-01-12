@@ -1,4 +1,4 @@
-def mat_meiosis(geno, sel, xoprob, seed = None):
+def mat_meiosis(geno, sel, xoprob, rng):
     """
     Perform meiosis on matrix inputs.
 
@@ -7,22 +7,19 @@ def mat_meiosis(geno, sel, xoprob, seed = None):
     geno : numpy.ndarray
     sel : numpy.ndarray
     xoprob : numpy.ndarray
-    seed : int
+    rng : random number generator instance
 
     Returns
     -------
     gamete : numpy.ndarray
     """
-    # if there is a RNG seed, seed the RNG
-    pybropt.util.cond_seed_rng(seed)
-
     # calculate shape of the retured gamete matrix
     # number of rows is the number of elements in sel
     gshape = (len(xoprob), len(sel))
 
     # generate random numbers to determine crossover points:
     # generate in interval [0,1)
-    rnd = numpy.random.uniform(0, 1, gshape)
+    rnd = rng.uniform(0, 1, gshape)
 
     # allocate gamete array
     gamete = numpy.empty(gshape, dtype = geno.dtype)
@@ -52,7 +49,7 @@ def mat_meiosis(geno, sel, xoprob, seed = None):
 
     return gamete
 
-def mat_mate(fgeno, mgeno, fsel, msel, xoprob, seed = None):
+def mat_mate(fgeno, mgeno, fsel, msel, xoprob, rng):
     """
     Perform mating on matrix inputs.
 
@@ -68,12 +65,9 @@ def mat_mate(fgeno, mgeno, fsel, msel, xoprob, seed = None):
     -------
     progeny : numpy.ndarray
     """
-    # if there is a RNG seed, seed the RNG
-    pybropt.util.cond_seed_rng(seed)
-
     # generate gametes
-    fgamete = mat_meiosis(fgeno, fsel, xoprob)
-    mgamete = mat_meiosis(mgeno, msel, xoprob)
+    fgamete = mat_meiosis(fgeno, fsel, xoprob, rng)
+    mgamete = mat_meiosis(mgeno, msel, xoprob, rng)
 
     # generate offspring genotypes by stacking matrices to make 3d matrix
     progeny = numpy.stack([fgamete, mgamete])
@@ -95,11 +89,8 @@ def mat_dh(geno, sel, xoprob, seed = None):
     -------
     progeny : numpy.ndarray
     """
-    # if there is a RNG seed, seed the RNG
-    pybropt.util.cond_seed_rng(seed)
-
     # generate gametes
-    gamete = mat_meiosis(geno, sel, xoprob)
+    gamete = mat_meiosis(geno, sel, xoprob, rng)
 
     # generate offspring genotypes by stacking matrices to make 3d matrix
     progeny = numpy.stack([gamete, gamete])

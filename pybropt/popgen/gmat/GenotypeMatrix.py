@@ -70,6 +70,8 @@ class GenotypeMatrix(Matrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ############## Matrix summary statistics ###############
     def tacount(self, dtype):
         """
         Allele count of the non-zero allele within each taxon.
@@ -88,9 +90,15 @@ class GenotypeMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def tafreq(self):
+    def tafreq(self, dtype):
         """
         Allele frequency of the non-zero allele within each taxon.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------

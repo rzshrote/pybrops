@@ -16,7 +16,7 @@ class TwoWayDHCross(MatingOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, rng, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme.
 
@@ -60,18 +60,18 @@ class TwoWayDHCross(MatingOperator):
         xoprob = pgvmat.vrnt_xoprob
 
         # create hybrid genotypes
-        hgeno = mat_mate(geno, geno, fsel, msel, xoprob)
+        hgeno = mat_mate(geno, geno, fsel, msel, xoprob, rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.arange(hgeno.shape[1])
+        asel = numpy.repeat(numpy.arange(hgeno.shape[1]), nprogeny)
 
         # self down hybrids if needed
         for i in range(s):
             # self hybrids
-            hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob)
+            hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, rng)
 
         # generate doubled haploids
-        dhgeno = mat_dh(hgeno, asel, xoprob)
+        dhgeno = mat_dh(hgeno, asel, xoprob, rng)
 
         # create new PhasedGenotypeVariantMatrix
         progeny = PhasedGenotypeVariantMatrix(
@@ -86,26 +86,6 @@ class TwoWayDHCross(MatingOperator):
         )
 
         return progeny
-
-    def mate_cfg(self, mcfg):
-        """
-        Mate individuals according to a MatingConfiguration.
-
-        Parameters
-        ----------
-        mcfg : MatingConfiguration
-            A MatingConfiguration from which to implement matings.
-
-        Returns
-        -------
-        progeny : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of progeny.
-        """
-        # extract the mating configuration as a dictionary
-        d = mcfg.config()
-
-        # unpack and return results
-        return self.mate(**d)
 
 
 

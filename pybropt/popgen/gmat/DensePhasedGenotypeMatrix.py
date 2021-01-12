@@ -143,9 +143,15 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         # take sum across the phase axis (0)
         return self._mat.sum(0, dtype=dtype)
 
-    def tafreq(self):
+    def tafreq(self, dtype = None):
         """
         Allele frequency within each taxon.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------
@@ -156,7 +162,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         # take the reciprocal of the number of phases 1 / nphase
         rnphase = 1.0 / self._mat.shape[0]
         # take sum across the phase axis (0) and divide by nphase
-        return rnphase * self._mat.sum(0)
+        return rnphase * self._mat.sum(0, dtype=dtype)
 
     def acount(self):
         """

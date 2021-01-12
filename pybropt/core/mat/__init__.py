@@ -1,5 +1,8 @@
 # order dependent!
 
+# Utilities
+from .mat_util import *
+
 # level: 0
 from .Matrix import *
 

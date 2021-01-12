@@ -6,6 +6,7 @@ import numpy
 from . import GenotypeVariantMatrix
 from . import DensePhasedGenotypeMatrix
 
+from pybropt.core.mat import get_axis
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -346,34 +347,154 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
     ############################## Object Methods ##############################
     ############################################################################
 
-    ################### Sorting Methods ####################
-    def axis_index(self, axis):
+    ############# Matrix element manipulation ##############
+    def append(self, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, taxa = None, taxa_grp = None, **kwargs):
         """
-        Return an index (unsigned) from a provided axis integer (signed)
+        Append values to the matrix.
 
         Parameters
         ----------
+        values : numpy.ndarray
+            Values are appended to append to the matrix.
         axis : int
-            Integer representation of the axis. Can be in range (-ndim,ndim).
-            If outside this range, will raise an AxisError.
-
-        Returns
-        -------
-        index : int
-            Index representation of the axis. In range [0,ndim).
+            The axis along which values are appended.
         """
-        # get the number of axis
-        naxes = self._mat.ndim
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
 
-        # handle axis argument
-        if (axis >= naxes) or (axis < -naxes):
-            raise IndexError("axis {0} is out of bounds for array of dimension {1}".format(axis, naxes))
+        # error check before additions are made to the matrix
+        # taxa axis
+        if axis == 1:
+            if (self._taxa is not None) and (taxa is None):
+                raise RuntimeError("cannot append: taxa argument is required")
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot append: taxa_grp argument is required")
+        # loci axis
+        if axis == 2:
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
+                raise RuntimeError("cannot append: vrnt_chrgrp argument is required")
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
+                raise RuntimeError("cannot append: vrnt_phypos argument is required")
+            if (self._vrnt_name is not None) and (vrnt_name is None):
+                raise RuntimeError("cannot append: vrnt_name argument is required")
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
+                raise RuntimeError("cannot append: vrnt_genpos argument is required")
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
+                raise RuntimeError("cannot append: vrnt_xoprob argument is required")
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
+                raise RuntimeError("cannot append: vrnt_hapgrp argument is required")
+            if (self._vrnt_mask is not None) and (vrnt_mask is None):
+                raise RuntimeError("cannot append: vrnt_mask argument is required")
 
-        # modulo the axis number to get the axis (in the case of negative axis)
-        axis %= naxes
+        # append values
+        self._mat = numpy.append(self._mat, values, axis = axis)
+        if axis == 1:
+            if taxa is not None:
+                self._taxa = numpy.append(self._taxa, taxa, axis = 0)
+            if taxa_grp is not None:
+                self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
+        # loci axis
+        if axis == 2:
+            if vrnt_chrgrp is not None:
+                self._vrnt_chrgrp = numpy.append(self._vrnt_chrgrp, vrnt_chrgrp, axis = 0)
+            if vrnt_phypos is not None:
+                self._vrnt_phypos = numpy.append(self._vrnt_phypos, vrnt_phypos, axis = 0)
+            if vrnt_name is not None:
+                self._vrnt_name = numpy.append(self._vrnt_name, vrnt_name, axis = 0)
+            if vrnt_genpos is not None:
+                self._vrnt_genpos = numpy.append(self._vrnt_genpos, vrnt_genpos, axis = 0)
+            if vrnt_xoprob is not None:
+                self._vrnt_xoprob = numpy.append(self._vrnt_xoprob, vrnt_xoprob, axis = 0)
+            if vrnt_hapgrp is not None:
+                self._vrnt_hapgrp = numpy.append(self._vrnt_hapgrp, vrnt_hapgrp, axis = 0)
+            if vrnt_mask is not None:
+                self._vrnt_mask = numpy.append(self._vrnt_mask, vrnt_mask, axis = 0)
 
-        return axis
+    def delete(self, obj, axis = -1, **kwargs):
+        """
+        Delete sub-arrays along an axis.
 
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        axis: int
+            The axis along which to delete the subarray defined by obj.
+        **kwargs
+            Additional keyword arguments.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+        # delete values
+        self._mat = numpy.delete(self._mat, obj, axis)
+
+    def insert(self, obj, values, axis, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Insert values along the given axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : array_like
+            Values to insert into the matrix.
+        axis : int
+            The axis along which values are inserted.
+        **kwargs
+            Additional keyword arguments.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # error check before additions are made to the matrix
+        # taxa axis
+        if axis == 1:
+            if (self._taxa is not None) and (taxa is None):
+                raise RuntimeError("cannot insert: taxa argument is required")
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot insert: taxa_grp argument is required")
+        # loci axis
+        if axis == 2:
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
+                raise RuntimeError("cannot insert: vrnt_chrgrp argument is required")
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
+                raise RuntimeError("cannot insert: vrnt_phypos argument is required")
+            if (self._vrnt_name is not None) and (vrnt_name is None):
+                raise RuntimeError("cannot insert: vrnt_name argument is required")
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
+                raise RuntimeError("cannot insert: vrnt_genpos argument is required")
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
+                raise RuntimeError("cannot insert: vrnt_xoprob argument is required")
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
+                raise RuntimeError("cannot insert: vrnt_hapgrp argument is required")
+            if (self._vrnt_mask is not None) and (vrnt_mask is None):
+                raise RuntimeError("cannot insert: vrnt_mask argument is required")
+
+        # append values
+        self._mat = numpy.insert(self._mat, obj, values, axis = axis)
+        if axis == 1:
+            if taxa is not None:
+                self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
+            if taxa_grp is not None:
+                self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+        if axis == 2:
+            if vrnt_chrgrp is not None:
+                self._vrnt_chrgrp = numpy.insert(self._vrnt_chrgrp, obj, vrnt_chrgrp, axis = 0)
+            if vrnt_phypos is not None:
+                self._vrnt_phypos = numpy.insert(self._vrnt_phypos, obj, vrnt_phypos, axis = 0)
+            if vrnt_name is not None:
+                self._vrnt_name = numpy.insert(self._vrnt_name, obj, vrnt_name, axis = 0)
+            if vrnt_genpos is not None:
+                self._vrnt_genpos = numpy.insert(self._vrnt_genpos, obj, vrnt_genpos, axis = 0)
+            if vrnt_xoprob is not None:
+                self._vrnt_xoprob = numpy.insert(self._vrnt_xoprob, obj, vrnt_xoprob, axis = 0)
+            if vrnt_hapgrp is not None:
+                self._vrnt_hapgrp = numpy.insert(self._vrnt_hapgrp, obj, vrnt_hapgrp, axis = 0)
+            if vrnt_mask is not None:
+                self._vrnt_mask = numpy.insert(self._vrnt_mask, obj, vrnt_mask, axis = 0)
+
+    ################### Sorting Methods ####################
     def lexsort(self, keys = None, axis = -1):
         """
         Perform an indirect stable sort using a tuple of keys.
@@ -392,7 +513,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         indices : numpy.ndarray
             Array of indices that sort the keys.
         """
-        axis = self.axis_index(axis)                            # transform axis number to an index
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
         emess = None                                            # error message
 
         if keys is None:                                        # if no keys were provided, set a default
@@ -433,8 +554,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             The axis over which to reorder values.
 
         """
-        # transform axis number to an index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
 
         ########################################################################
         if axis == 0:                                           ### PHASE AXIS
@@ -476,8 +596,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         axis : int
             The axis over which to sort values.
         """
-        # get axis
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
 
         if axis == 0:
             pass
@@ -506,8 +625,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
         """
-        # get axis index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
 
         # sort along taxa axis
         self.sort(axis = axis)
@@ -540,8 +658,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             True or False indicating whether the GeneticMap has been sorted and
             grouped.
         """
-        # convert axis to index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
 
         if axis == 0:
             pass    # not grouped because it cannot be grouped

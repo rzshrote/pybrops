@@ -66,7 +66,7 @@ class ThreeWayDHCross(MatingOperator):
         f1geno = mat_mate(geno, geno, fsel, msel, xoprob)
 
         # generate selection array for all hybrid lines
-        asel = numpy.arange(f1geno.shape[1])
+        asel = numpy.repeat(numpy.arange(f1geno.shape[1]), nprogeny)
 
         # generate three way crosses
         hgeno = mat_mate(geno, f1geno, rsel, asel, xoprob)

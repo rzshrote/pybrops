@@ -66,7 +66,7 @@ class FourWayDHCross(MatingOperator):
         cdgeno = mat_mate(geno, geno, f2sel, m2sel, xoprob)
 
         # generate selection array for all hybrid lines
-        asel = numpy.arange(abgeno.shape[1])
+        asel = numpy.repeat(numpy.arange(abgeno.shape[1]), nprogeny)
 
         # generate dihybrid cross
         hgeno = mat_mate(abgeno, cdgeno, asel, asel, xoprob)
