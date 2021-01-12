@@ -1,8 +1,9 @@
 import numpy
 from . import mat_mate
+from . import mat_dh
 from . import MatingOperator
-from pybropt.popgen.gmat import PhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import check_is_PhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
 
 class TwoWayDHCross(MatingOperator):
     """docstring for TwoWayDHCross."""
@@ -22,7 +23,7 @@ class TwoWayDHCross(MatingOperator):
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
+        pgvmat : DensePhasedGenotypeVariantMatrix
             A GenotypeVariantMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
@@ -45,18 +46,18 @@ class TwoWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeVariantMatrix
+            A DensePhasedGenotypeVariantMatrix of progeny.
         """
         # check data type
-        check_is_PhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        check_is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 
         # get female and male selections; repeat by ncross
         fsel = numpy.repeat(sel[0::2], ncross)
         msel = numpy.repeat(sel[1::2], ncross)
 
         # get pointers to genotypes and crossover probabilities, respectively
-        geno = pgvmat.geno
+        geno = pgvmat.mat
         xoprob = pgvmat.vrnt_xoprob
 
         # create hybrid genotypes
@@ -73,9 +74,9 @@ class TwoWayDHCross(MatingOperator):
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob, rng)
 
-        # create new PhasedGenotypeVariantMatrix
-        progeny = PhasedGenotypeVariantMatrix(
-            geno = dhgeno,
+        # create new DensePhasedGenotypeVariantMatrix
+        progeny = DensePhasedGenotypeVariantMatrix(
+            mat = dhgeno,
             vrnt_chrgrp = pgvmat.vrnt_chrgrp,
             vrnt_phypos = pgvmat.vrnt_phypos,
             vrnt_name = pgvmat.vrnt_name,
@@ -85,7 +86,14 @@ class TwoWayDHCross(MatingOperator):
             vrnt_mask = pgvmat.vrnt_mask
         )
 
-        return progeny
+        progeny.vrnt_chrgrp_name = pgvmat.vrnt_chrgrp_name
+        progeny.vrnt_chrgrp_stix = pgvmat.vrnt_chrgrp_stix
+        progeny.vrnt_chrgrp_spix = pgvmat.vrnt_chrgrp_spix
+        progeny.vrnt_chrgrp_len = pgvmat.vrnt_chrgrp_len
+
+        misc = {}
+
+        return progeny, misc
 
 
 

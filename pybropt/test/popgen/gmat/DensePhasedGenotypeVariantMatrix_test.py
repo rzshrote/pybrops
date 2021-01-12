@@ -75,22 +75,6 @@ def test_vrnt_phypos_fget(dpgvmat, mat_phypos):
 def test_vrnt_taxa_fget(dpgvmat, mat_taxa):
     assert numpy.all(dpgvmat.taxa == mat_taxa)
 
-def test_axis_index(dpgvmat):
-    assert dpgvmat.axis_index(-3) == 0
-    assert dpgvmat.axis_index(-2) == 1
-    assert dpgvmat.axis_index(-1) == 2
-    assert dpgvmat.axis_index(0) == 0
-    assert dpgvmat.axis_index(1) == 1
-    assert dpgvmat.axis_index(2) == 2
-
-def test_axis_index_error_low(dpgvmat):
-    with pytest.raises(IndexError):
-        dpgvmat.axis_index(-4)
-
-def test_axis_index_error_high(dpgvmat):
-    with pytest.raises(IndexError):
-        dpgvmat.axis_index(3)
-
 def test_lexsort_axis_0_error(dpgvmat):
     with pytest.raises(RuntimeError):
         dpgvmat.lexsort(axis = 0)

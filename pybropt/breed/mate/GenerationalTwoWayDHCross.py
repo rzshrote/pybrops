@@ -1,3 +1,5 @@
+import numpy
+
 from . import TwoWayDHCross
 
 class GenerationalTwoWayDHCross(TwoWayDHCross):
@@ -45,7 +47,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         progeny : PhasedGenotypeVariantMatrix
             A PhasedGenotypeVariantMatrix of progeny.
         """
-        progeny = super(GenerationalTwoWayDHCross, self).mate(
+        progeny, misc = super(GenerationalTwoWayDHCross, self).mate(
             t_cur = t_cur,
             t_max = t_max,
             pgvmat = pgvmat,
@@ -57,8 +59,11 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         )
 
         # add taxa_grp to progeny
-        taxa_grp = numpy.repeat(numpy.arange(numpy.sum(ncross, dtype='int64')), nprogeny)
+        taxa_grp = numpy.repeat(numpy.repeat(numpy.arange(len(sel) // 2, dtype = 'int64'), ncross), nprogeny)
         taxa_grp += t_cur * self.gmult
         progeny.taxa_grp = taxa_grp
 
-        return progeny
+        # group along axis
+        progeny.group(axis=1)
+
+        return progeny, misc

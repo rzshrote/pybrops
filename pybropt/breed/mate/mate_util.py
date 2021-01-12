@@ -1,3 +1,28 @@
+import numpy
+
+def mat_dh(geno, sel, xoprob, rng):
+    """
+    Perform doubled haploid production on matrix inputs.
+
+    Parameters
+    ----------
+    geno : numpy.ndarray
+    sel : numpy.ndarray
+    xoprob : numpy.ndarray
+    seed : int
+
+    Returns
+    -------
+    progeny : numpy.ndarray
+    """
+    # generate gametes
+    gamete = mat_meiosis(geno, sel, xoprob, rng)
+
+    # generate offspring genotypes by stacking matrices to make 3d matrix
+    progeny = numpy.stack([gamete, gamete])
+
+    return progeny
+
 def mat_meiosis(geno, sel, xoprob, rng):
     """
     Perform meiosis on matrix inputs.
@@ -15,7 +40,7 @@ def mat_meiosis(geno, sel, xoprob, rng):
     """
     # calculate shape of the retured gamete matrix
     # number of rows is the number of elements in sel
-    gshape = (len(xoprob), len(sel))
+    gshape = (len(sel), len(xoprob))
 
     # generate random numbers to determine crossover points:
     # generate in interval [0,1)
@@ -71,28 +96,5 @@ def mat_mate(fgeno, mgeno, fsel, msel, xoprob, rng):
 
     # generate offspring genotypes by stacking matrices to make 3d matrix
     progeny = numpy.stack([fgamete, mgamete])
-
-    return progeny
-
-def mat_dh(geno, sel, xoprob, seed = None):
-    """
-    Perform doubled haploid production on matrix inputs.
-
-    Parameters
-    ----------
-    geno : numpy.ndarray
-    sel : numpy.ndarray
-    xoprob : numpy.ndarray
-    seed : int
-
-    Returns
-    -------
-    progeny : numpy.ndarray
-    """
-    # generate gametes
-    gamete = mat_meiosis(geno, sel, xoprob, rng)
-
-    # generate offspring genotypes by stacking matrices to make 3d matrix
-    progeny = numpy.stack([gamete, gamete])
 
     return progeny
