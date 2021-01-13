@@ -45,7 +45,7 @@ def sel():
 
 def test_mate(twoway, dpgvmat, sel, rng):
     progeny, misc = twoway.mate(1, 10, dpgvmat, sel, 1, 2, rng, s = 0)
-    print(progeny.taxa_grp)
+    # print(progeny.taxa_grp)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")

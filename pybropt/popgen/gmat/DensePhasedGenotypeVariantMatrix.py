@@ -348,7 +348,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
     ############################################################################
 
     ############# Matrix element manipulation ##############
-    def append(self, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, taxa = None, taxa_grp = None, **kwargs):
+    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
         """
         Append values to the matrix.
 
@@ -363,14 +363,12 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         axis = get_axis(axis, self._mat.ndim)
 
         # error check before additions are made to the matrix
-        # taxa axis
         if axis == 1:
             if (self._taxa is not None) and (taxa is None):
                 raise RuntimeError("cannot append: taxa argument is required")
             if (self._taxa_grp is not None) and (taxa_grp is None):
                 raise RuntimeError("cannot append: taxa_grp argument is required")
-        # loci axis
-        if axis == 2:
+        elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
                 raise RuntimeError("cannot append: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
@@ -389,25 +387,24 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # append values
         self._mat = numpy.append(self._mat, values, axis = axis)
         if axis == 1:
-            if taxa is not None:
+            if (self._taxa is not None) and (taxa is not None):
                 self._taxa = numpy.append(self._taxa, taxa, axis = 0)
-            if taxa_grp is not None:
+            if (self._taxa_grp is not None) and (taxa_grp is not None):
                 self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
-        # loci axis
-        if axis == 2:
-            if vrnt_chrgrp is not None:
+        elif axis == 2:
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is not None):
                 self._vrnt_chrgrp = numpy.append(self._vrnt_chrgrp, vrnt_chrgrp, axis = 0)
-            if vrnt_phypos is not None:
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is not None):
                 self._vrnt_phypos = numpy.append(self._vrnt_phypos, vrnt_phypos, axis = 0)
-            if vrnt_name is not None:
+            if (self._vrnt_name is not None) and (vrnt_name is not None):
                 self._vrnt_name = numpy.append(self._vrnt_name, vrnt_name, axis = 0)
-            if vrnt_genpos is not None:
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is not None):
                 self._vrnt_genpos = numpy.append(self._vrnt_genpos, vrnt_genpos, axis = 0)
-            if vrnt_xoprob is not None:
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is not None):
                 self._vrnt_xoprob = numpy.append(self._vrnt_xoprob, vrnt_xoprob, axis = 0)
-            if vrnt_hapgrp is not None:
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is not None):
                 self._vrnt_hapgrp = numpy.append(self._vrnt_hapgrp, vrnt_hapgrp, axis = 0)
-            if vrnt_mask is not None:
+            if (self._vrnt_mask is not None) and (vrnt_mask is not None):
                 self._vrnt_mask = numpy.append(self._vrnt_mask, vrnt_mask, axis = 0)
 
     def delete(self, obj, axis = -1, **kwargs):
@@ -425,10 +422,31 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
-        # delete values
-        self._mat = numpy.delete(self._mat, obj, axis)
 
-    def insert(self, obj, values, axis, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, taxa = None, taxa_grp = None, **kwargs):
+        # delete values
+        self._mat = numpy.delete(self._mat, obj, axis = axis)
+        if axis == 1:
+            if self._taxa is not None:
+                self._taxa = numpy.delete(self._taxa, obj, axis = 0)
+            if self._taxa_grp is not None:
+                self._taxa_grp = numpy.delete(self._taxa_grp, obj, axis = 0)
+        elif axis == 2:
+            if self._vrnt_chrgrp is not None:
+                self._vrnt_chrgrp = numpy.delete(self._vrnt_chrgrp, obj, axis = 0)
+            if self._vrnt_phypos is not None:
+                self._vrnt_phypos = numpy.delete(self._vrnt_phypos, obj, axis = 0)
+            if self._vrnt_name is not None:
+                self._vrnt_name = numpy.delete(self._vrnt_name, obj, axis = 0)
+            if self._vrnt_genpos is not None:
+                self._vrnt_genpos = numpy.delete(self._vrnt_genpos, obj, axis = 0)
+            if self._vrnt_xoprob is not None:
+                self._vrnt_xoprob = numpy.delete(self._vrnt_xoprob, obj, axis = 0)
+            if self._vrnt_hapgrp is not None:
+                self._vrnt_hapgrp = numpy.delete(self._vrnt_hapgrp, obj, axis = 0)
+            if self._vrnt_mask is not None:
+                self._vrnt_mask = numpy.delete(self._vrnt_mask, obj, axis = 0)
+
+    def insert(self, obj, values, axis, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
         """
         Insert values along the given axis before the given indices.
 
@@ -448,14 +466,12 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         axis = get_axis(axis, self._mat.ndim)
 
         # error check before additions are made to the matrix
-        # taxa axis
         if axis == 1:
             if (self._taxa is not None) and (taxa is None):
                 raise RuntimeError("cannot insert: taxa argument is required")
             if (self._taxa_grp is not None) and (taxa_grp is None):
                 raise RuntimeError("cannot insert: taxa_grp argument is required")
-        # loci axis
-        if axis == 2:
+        elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
                 raise RuntimeError("cannot insert: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
@@ -474,24 +490,24 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # append values
         self._mat = numpy.insert(self._mat, obj, values, axis = axis)
         if axis == 1:
-            if taxa is not None:
+            if (self._taxa is not None) and (taxa is not None):
                 self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
-            if taxa_grp is not None:
+            if (self._taxa_grp is not None) and (taxa_grp is not None):
                 self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
-        if axis == 2:
-            if vrnt_chrgrp is not None:
+        elif axis == 2:
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is not None):
                 self._vrnt_chrgrp = numpy.insert(self._vrnt_chrgrp, obj, vrnt_chrgrp, axis = 0)
-            if vrnt_phypos is not None:
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is not None):
                 self._vrnt_phypos = numpy.insert(self._vrnt_phypos, obj, vrnt_phypos, axis = 0)
-            if vrnt_name is not None:
+            if (self._vrnt_name is not None) and (vrnt_name is not None):
                 self._vrnt_name = numpy.insert(self._vrnt_name, obj, vrnt_name, axis = 0)
-            if vrnt_genpos is not None:
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is not None):
                 self._vrnt_genpos = numpy.insert(self._vrnt_genpos, obj, vrnt_genpos, axis = 0)
-            if vrnt_xoprob is not None:
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is not None):
                 self._vrnt_xoprob = numpy.insert(self._vrnt_xoprob, obj, vrnt_xoprob, axis = 0)
-            if vrnt_hapgrp is not None:
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is not None):
                 self._vrnt_hapgrp = numpy.insert(self._vrnt_hapgrp, obj, vrnt_hapgrp, axis = 0)
-            if vrnt_mask is not None:
+            if (self._vrnt_mask is not None) and (vrnt_mask is not None):
                 self._vrnt_mask = numpy.insert(self._vrnt_mask, obj, vrnt_mask, axis = 0)
 
     ################### Sorting Methods ####################
