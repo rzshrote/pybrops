@@ -510,6 +510,65 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if (self._vrnt_mask is not None) and (vrnt_mask is not None):
                 self._vrnt_mask = numpy.insert(self._vrnt_mask, obj, vrnt_mask, axis = 0)
 
+    def select(self, obj, axis, **kwargs):
+        """
+        Select certain values from the GenotypeMatrix.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices where values are selected.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+        """
+        ndim = self._mat.ndim           # get number of dimensions
+        axis = get_axis(axis, ndim)     # get axis
+
+        # construct selection tuple
+        sel = tuple(slice(None) if e != axis else obj for e in range(ndim))
+
+        # select values
+        sel_mat = self._mat[sel]
+
+        if axis == 1:
+            sel_vrnt_chrgrp = self._vrnt_chrgrp
+            sel_vrnt_phypos = self._vrnt_phypos
+            sel_vrnt_name   = self._vrnt_name     if self._vrnt_name is not None else None
+            sel_vrnt_genpos = self._vrnt_genpos   if self._vrnt_genpos is not None else None
+            sel_vrnt_xoprob = self._vrnt_xoprob   if self._vrnt_xoprob is not None else None
+            sel_vrnt_hapgrp = self._vrnt_hapgrp   if self._vrnt_hapgrp is not None else None
+            sel_vrnt_mask   = self._vrnt_mask     if self._vrnt_mask is not None else None
+            sel_taxa        = self._taxa[obj]     if self._taxa is not None else None
+            sel_taxa_grp    = self._taxa_grp[obj] if self._taxa_grp is not None else None
+        elif axis == 2:
+            sel_vrnt_chrgrp = self._vrnt_chrgrp[obj]
+            sel_vrnt_phypos = self._vrnt_phypos[obj]
+            sel_vrnt_name   = self._vrnt_name[obj]   if self._vrnt_name is not None else None
+            sel_vrnt_genpos = self._vrnt_genpos[obj] if self._vrnt_genpos is not None else None
+            sel_vrnt_xoprob = None  # set to None since loci sequential pairs have been altered
+            sel_vrnt_hapgrp = self._vrnt_hapgrp[obj] if self._vrnt_hapgrp is not None else None
+            sel_vrnt_mask   = self._vrnt_mask[obj]   if self._vrnt_mask is not None else None
+            sel_taxa        = self._taxa             if self._taxa is not None else None
+            sel_taxa_grp    = self._taxa_grp         if self._taxa_grp is not None else None
+
+        # create selection matrix
+        sdpgvmat = DensePhasedGenotypeVariantMatrix(
+            mat         = sel_mat,
+            vrnt_chrgrp = sel_vrnt_chrgrp,
+            vrnt_phypos = sel_vrnt_phypos,
+            vrnt_name   = sel_vrnt_name,
+            vrnt_genpos = sel_vrnt_genpos,
+            vrnt_xoprob = sel_vrnt_xoprob,
+            vrnt_hapgrp = sel_vrnt_hapgrp,
+            vrnt_mask   = sel_vrnt_mask,
+            taxa        = sel_taxa,
+            taxa_grp    = sel_taxa_grp
+        )
+
+        return sdpgvmat
+
     ################### Sorting Methods ####################
     def lexsort(self, keys = None, axis = -1):
         """

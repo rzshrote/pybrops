@@ -54,4 +54,6 @@ def seed(s = None):
         functionality of random.seed().
     """
     random.seed(s)      # seed random module
+    # seed default numpy.random with 4 bytes of entropy
+    numpy.random.seed(int.from_bytes(random.randbytes(4), byteorder = 'big'))
     prng = spawn(None)  # replace prng

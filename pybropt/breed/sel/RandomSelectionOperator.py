@@ -7,11 +7,16 @@ from . import SurvivorSelectionOperator
 class RandomSelectionOperator(ParentSelectionOperator,SurvivorSelectionOperator):
     """docstring for RandomSelectionOperator."""
 
-    def __init__(self, k, ncross, nprogeny, **kwargs):
+    def __init__(self, k_p, ncross, nprogeny, k_s, **kwargs):
+        """
+        k_p : int
+            Number of individuals to select.
+        """
         super(RandomSelectionOperator, self).__init__(**kwargs)
-        self.k = k
+        self.k_p = k_p
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.k_s = k_s
 
     def pselect(self, t_cur, t_max, geno, bval, gmod, **kwargs):
         """
@@ -73,12 +78,11 @@ class RandomSelectionOperator(ParentSelectionOperator,SurvivorSelectionOperator)
         # calculate maximum index
         maxix = geno["cand"].ntaxa - 1
         # construct selection array
-        sel = numpy.array([random.randint(0,maxix) for _ in range(self.k)])
+        sel = numpy.array([random.randint(0,maxix) for _ in range(self.k_p)])
 
         misc = {}
 
         return geno["cand"], sel, ncross, nprogeny, misc
-        raise NotImplementedError("method is abstract")
 
     def sselect(self, t_cur, t_max, geno, bval, gmod, **kwargs):
         """
@@ -156,4 +160,27 @@ class RandomSelectionOperator(ParentSelectionOperator,SurvivorSelectionOperator)
             misc : dict
                 Miscellaneous output (user defined).
         """
-        raise NotImplementedError("method is abstract")
+        # get number of parents in main breeding pool
+        ntaxa = geno["main"].ntaxa
+
+        # sample indices
+        sel = numpy.random.choice(geno["main"].ntaxa, self.k_s, replace = False)
+
+        # sort selections
+        sel.sort()
+
+        # extract candidates
+        sel = numpy.array(random.sample([i for i in range(ntaxa)], self.k_s))
+
+        # copy/make dictionaries
+        geno_new = dict(geno)
+        bval_new = dict(bval)
+        gmod_new = dict(gmod)
+        misc = {}
+
+        # assign new candidates
+        geno_new["cand"] = geno["main"].select(sel, axis = 1)
+        bval_new["cand"] = bval["main"].select(sel, axis = 1)
+        gmod_new["cand"] = gmod["main"]
+
+        return geno_new, bval_new, gmod_new, misc

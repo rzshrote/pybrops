@@ -12,7 +12,6 @@ class DenseGenotypeMatrix(GenotypeMatrix):
     ############################################################################
     def __init__(self, mat, **kwargs):
         super(DenseGenotypeMatrix, self).__init__(
-            mat = mat,
             **kwargs
         )
         self.mat = mat
@@ -253,6 +252,35 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         axis = get_axis(axis, self._mat.ndim)
         # insert values
         self._mat = numpy.insert(self._mat, obj, values, axis)
+
+    def select(self, obj, axis, **kwargs):
+        """
+        Select certain values from the GenotypeMatrix.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices where values are selected.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+        """
+        ndim = self._mat.ndim           # get number of dimensions
+        axis = get_axis(axis, ndim)     # get axis
+
+        # construct selection tuple
+        sel = tuple(slice(None) if e != axis else obj for e in range(ndim))
+
+        # select values
+        smat = self._mat[sel]
+
+        # create selection matrix
+        sdgmat = DenseGenotypeMatrix(
+            mat = mat,
+        )
+
+        return sdgmat
 
 
 
