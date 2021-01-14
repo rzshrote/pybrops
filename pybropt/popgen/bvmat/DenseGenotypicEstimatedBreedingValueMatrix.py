@@ -10,21 +10,15 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, se = None, **kwargs):
+    def __init__(self, mat, raw = None, se = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
         super(DenseGenotypicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
+            raw = raw,
+            trait = trait,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            trait = trait,
-            se = se,
             **kwargs
         )
-
-        # make error checks and assignments
-        # self.mat = mat            # already checked in super constructor
-        # self.taxa = taxa          # already checked in super constructor
-        # self.taxa_grp = taxa_grp  # already checked in super constructor
-        # self.trait = trait        # already checked in super constructor
         self.se = se
 
     ############################################################################
@@ -71,6 +65,8 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
         ########################################################################
         if axis == 0:                                           ### TAXA AXIS
             self._mat = self._mat[indices,:]                    # reorder mat array
+            if self._raw is not None:
+                self._raw = self._raw[:,indices,:]
             if self._taxa is not None:
                 self._taxa = self._taxa[indices]                # reorder taxa array
             if self._taxa_grp is not None:
@@ -80,6 +76,8 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
         ########################################################################
         elif axis == 1:                                         ### LOCUS AXIS
             self._mat = self._mat[:,indices]                    # reorder mat array
+            if self._raw is not None:
+                self._raw = self._raw[:,:,indices]
             if self._trait is not None:
                 self._trait = self._trait[indices]              # reorder trait array
             if self._se is not None:

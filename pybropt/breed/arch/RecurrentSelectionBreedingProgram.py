@@ -285,7 +285,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ######################### evaluate progeny #########################
             ####################################################################
-            bvmat, misc = self.evalop.evaluate(
+            bvmat, bvmat_true, misc = self.evalop.evaluate(
                 t_cur = self._t_cur,
                 t_max = self._t_max,
                 pgvmat = pgvmat,
@@ -295,6 +295,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 t_cur = self._t_cur,
                 t_max = self._t_max,
                 bvmat = bvmat,
+                bvmat_true = bvmat_true,
                 misc = misc
             )
 
@@ -306,6 +307,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 t_max = self._t_max,
                 pgvmat = pgvmat,
                 bvmat = bvmat,
+                bvmat_true = bvmat_true,
                 geno = self._geno,
                 bval = self._bval
             )

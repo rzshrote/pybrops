@@ -15,7 +15,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
         """
         Parameters
         ----------
@@ -30,12 +30,9 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         """
         super(DenseEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
-            trait = trait,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
             **kwargs
         )
-        # self.mat = mat            # already checked in super constructor
+        self.raw = raw
         self.trait = trait
         self.taxa = taxa
         self.taxa_grp = taxa_grp
@@ -147,6 +144,24 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         return locals()
     mat = property(**mat())
 
+    ################## Raw Phenotype Data ##################
+    def raw():
+        doc = "Raw phenotype matrix of shape (r, n, t). r = rep, n = indiv, t = trait"
+        def fget(self):
+            return self._raw
+        def fset(self, value):
+            cond_check_is_ndarray(value, "raw")
+            check_ndarray_dtype(value, "raw", numpy.float64)
+            check_ndarray_ndim(value, "raw", 3)
+            cond_check_ndarray_axis_len(value, "raw", 1, self._mat.shape[0])
+            cond_check_ndarray_axis_len(value, "raw", 2, self._mat.shape[1])
+            self._raw = value
+        def fdel(self):
+            del self._raw
+        return locals()
+    raw = property(**raw())
+
+    ###################### Trait Data ######################
     def trait():
         doc = "The trait property."
         def fget(self):
@@ -270,6 +285,8 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         ########################################################################
         if axis == 0:                                           ### TAXA AXIS
             self._mat = self._mat[indices,:]                  # reorder mat array
+            if self._raw is not None:
+                self._raw = self._raw[:,indices,:]
             if self._taxa is not None:
                 self._taxa = self._taxa[indices]                # reorder taxa array
             if self._taxa_grp is not None:
@@ -277,6 +294,8 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         ########################################################################
         elif axis == 1:                                         ### LOCUS AXIS
             self._mat = self._mat[:,indices]                  # reorder mat array
+            if self._raw is not None:
+                self._raw = self._raw[:,:,indices]
             if self._trait is not None:
                 self._trait = self._trait[indices]              # reorder trait array
 

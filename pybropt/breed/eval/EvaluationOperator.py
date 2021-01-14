@@ -27,6 +27,8 @@ class EvaluationOperator:
             A tuple containing two elements: (bvmat, misc)
             bvmat : BreedingValueMatrix
                 A matrix of breeding values
+            bvmat_true : BreedingValueMatrix
+                A matrix of true breeding values
             misc : dict
                 Miscellaneous output (user defined).
         """

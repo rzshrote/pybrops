@@ -31,7 +31,7 @@ class GenerationalIntegrationOperator(IntegrationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def integrate(self, t_cur, t_max, pgvmat, bvmat, geno, bval):
+    def integrate(self, t_cur, t_max, pgvmat, bvmat, bvmat_true, geno, bval):
         """
         Integrate genotype and phenotype data into geno and bval dictionaries.
 
@@ -59,6 +59,8 @@ class GenerationalIntegrationOperator(IntegrationOperator):
         bval["queue"].append(bvmat)             # add bvmat to end of queue
         new_bval = bval["queue"].pop(0)         # pop new breeding values from queue
 
+        # TODO: queue_true
+
         # calculate the taxa_grp minimum threshold
         taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
 
@@ -68,12 +70,23 @@ class GenerationalIntegrationOperator(IntegrationOperator):
         geno["main"].append(                        # add new taxa
             values = new_geno.mat,
             axis = 1,
-            taxa = None,
-            taxa_grp = None,
+            taxa = new_geno.taxa,
+            taxa_grp = new_geno.taxa_grp,
         )
 
+        # process breeding value matrix
+        mask = bval["main"].taxa_grp < taxa_min     # create breeding value mask
+        bval["main"].delete(mask, axis = 1)         # delete old taxa
+        bval["main"].append(                        # add new taxa
+            values = new_bval.mat,
+            axis = 1,
+            taxa = new_bval.taxa,
+            taxa_grp = new_bval.taxa_grp
+        )
 
-        raise NotImplementedError("method is abstract")
+        misc = {}
+
+        return geno, bval, misc
 
 
 

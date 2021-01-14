@@ -3,6 +3,7 @@ import numpy
 from . import BreedingValueMatrix
 from pybropt.core.mat import get_axis
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_ndarray
 
 class DenseBreedingValueMatrix(BreedingValueMatrix):
     """
@@ -15,7 +16,7 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, raw = None, **kwargs):
         """
         BreedingValueMatrix constructor
 
@@ -29,7 +30,6 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
 
         """
         super(DenseBreedingValueMatrix, self).__init__(
-            mat = mat,
             **kwargs
         )
         self.mat = mat
@@ -195,21 +195,6 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
-    ################## Raw Phenotype Data ##################
-    def raw():
-        doc = "The raw property."
-        def fget(self):
-            return self._raw
-        def fset(self, value):
-            # The only assumption is that mat is a numpy.ndarray matrix.
-            # Let the user decide whether to overwrite error checks.
-            check_is_ndarray(value, "raw")
-            self._raw = value
-        def fdel(self):
-            del self._raw
-        return locals()
-    raw = property(**raw())
 
     ################# Breeding Value Data ##################
     def mat():

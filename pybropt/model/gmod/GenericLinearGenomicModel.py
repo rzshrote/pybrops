@@ -1,4 +1,5 @@
 from . import LinearGenomicModel
+
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -9,6 +10,8 @@ from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
 from pybropt.core.error import cond_check_is_str
+
+from pybropt.popgen.bvmat import DenseGenotypicEstimatedBreedingValueMatrix
 
 class GenericLinearGenomicModel(LinearGenomicModel):
     """docstring for GenericLinearGenomicModel."""
@@ -130,7 +133,23 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         -------
         gebvmat : GenotypicEstimatedBreedingValueMatrix
         """
-        raise NotImplementedError("method needs to be implemented")
+        # get genotypes as 0,1,2
+        geno = gmat.tacount()
+
+        # calculate GEBVs
+        gebv = self.mu.T + (geno @ self.beta)
+
+        # create DenseGenotypicEstimatedBreedingValueMatrix
+        gebvmat = DenseGenotypicEstimatedBreedingValueMatrix(
+            mat = gebv,
+            raw = None,
+            se = None,
+            trait = self.trait,
+            taxa = gmat.taxa,
+            taxa_grp = gmat.taxa_grp
+        )
+
+        return gebvmat
 
     def score(self, gmat, bvmat):
         """

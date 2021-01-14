@@ -22,18 +22,6 @@ class BreedingValueMatrix(TaxaMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    ################## Raw Phenotype Data ##################
-    def raw():
-        doc = "The raw property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    raw = property(**raw())
-
     ################# Breeding Value Data ##################
     def trait():
         doc = "The trait property."
