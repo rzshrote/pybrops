@@ -1,6 +1,6 @@
-from pybropt.core.mat import Matrix
+from pybropt.core.mat import MutableMatrix
 
-class GenotypeMatrix(Matrix):
+class GenotypeMatrix(MutableMatrix):
     """docstring for GenotypeMatrix."""
 
     ############################################################################

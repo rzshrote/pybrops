@@ -151,8 +151,8 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             return self._raw
         def fset(self, value):
             cond_check_is_ndarray(value, "raw")
-            check_ndarray_dtype(value, "raw", numpy.float64)
-            check_ndarray_ndim(value, "raw", 3)
+            cond_check_ndarray_dtype(value, "raw", numpy.float64)
+            cond_check_ndarray_ndim(value, "raw", 3)
             cond_check_ndarray_axis_len(value, "raw", 1, self._mat.shape[0])
             cond_check_ndarray_axis_len(value, "raw", 2, self._mat.shape[1])
             self._raw = value

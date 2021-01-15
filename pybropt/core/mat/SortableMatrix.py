@@ -1,12 +1,13 @@
-from . import Matrix
+from . import MutableMatrix
+from . import SortableMatrixInterface
 
-class SortableMatrix(Matrix):
+class SortableMatrix(MutableMatrix,SortableMatrixInterface):
     """docstring for SortableMatrix."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **vargs):
+    def __init__(self, **kwargs):
         """
         SortableMatrix constructor
 
@@ -16,21 +17,7 @@ class SortableMatrix(Matrix):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(SortableMatrix, self).__init__(**vargs)
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-
-    ################### Sorting Methods ####################
-    def lexsort(self, keys, axis):
-        raise NotImplementedError("method is abstract")
-
-    def reorder(self, indices, axis):
-        raise NotImplementedError("method is abstract")
-
-    def sort(self, keys, axis):
-        raise NotImplementedError("method is abstract")
+        super(SortableMatrix, self).__init__(**kwargs)
 
 
 

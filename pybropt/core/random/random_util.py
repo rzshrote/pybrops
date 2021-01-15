@@ -1,4 +1,5 @@
 import random
+import numpy
 from numpy.random import PCG64
 from numpy.random import Generator
 

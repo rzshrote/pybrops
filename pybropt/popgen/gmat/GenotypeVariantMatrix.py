@@ -1,9 +1,8 @@
 from . import GenotypeMatrix
 from pybropt.core.mat import VariantMatrix
-from pybropt.core.mat import TaxaMatrix
 from pybropt.core.mat import SortableMatrix
 
-class GenotypeVariantMatrix(GenotypeMatrix,VariantMatrix,TaxaMatrix):
+class GenotypeVariantMatrix(GenotypeMatrix,VariantMatrix):
     """docstring for VariantMatrix."""
 
     ############################################################################
