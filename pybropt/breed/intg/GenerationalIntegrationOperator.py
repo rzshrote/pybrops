@@ -47,27 +47,39 @@ class GenerationalIntegrationOperator(IntegrationOperator):
         out : tuple
             (geno_new, bval_new, misc)
         """
+        # copy dictionaries
+        geno_new = dict(geno)
+        bval_new = dict(bval)
+
+        # duplicate queue lists to avoid pointer problems
+        geno_new["queue"] = list(geno["queue"])
+        bval_new["queue"] = list(bval["queue"])
+
         # process genotype queue
-        while len(geno["queue"]) < self.gqlen:  # while queue is too short
-            geno["queue"].append(None)          # append None to length
-        geno["queue"].append(pgvmat)            # add pgvmat to end of queue
-        new_geno = geno["queue"].pop(0)         # pop new genotypes from queue
+        while len(geno_new["queue"]) < self.gqlen:  # while queue is too short
+            geno_new["queue"].append(None)          # append None to length
+        geno_new["queue"].append(pgvmat)            # add pgvmat to end of queue
+        new_geno = geno_new["queue"].pop(0)         # pop new genotypes from queue
 
         # process breeding value queue
-        while len(bval["queue"]) < self.gqlen:  # while queue is too short
-            bval["queue"].append(None)          # append None to length
-        bval["queue"].append(bvmat)             # add bvmat to end of queue
-        new_bval = bval["queue"].pop(0)         # pop new breeding values from queue
+        while len(bval_new["queue"]) < self.gqlen:  # while queue is too short
+            bval_new["queue"].append(None)          # append None to length
+        bval_new["queue"].append(bvmat)             # add bvmat to end of queue
+        new_bval = bval_new["queue"].pop(0)         # pop new breeding values from queue
 
-        # TODO: queue_true
+        # process breeding value queue_true
+        while len(bval_new["queue_true"]) < self.gqlen:  # while queue is too short
+            bval_new["queue_true"].append(None)          # append None to length
+        bval_new["queue_true"].append(bvmat)             # add bvmat to end of queue
+        new_bval_true = bval_new["queue_true"].pop(0)    # pop new breeding values from queue
 
         # calculate the taxa_grp minimum threshold
         taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
 
         # process genotype main
-        mask = geno["main"].taxa_grp < taxa_min     # create genotype mask
-        geno["main"].delete(mask, axis = 1)         # delete old taxa
-        geno["main"].append(                        # add new taxa
+        mask = geno_new["main"].taxa_grp < taxa_min     # create genotype mask
+        geno_new["main"].delete(mask, axis = 1)         # delete old taxa
+        geno_new["main"].append(                        # add new taxa
             values = new_geno.mat,
             axis = 1,
             taxa = new_geno.taxa,
@@ -75,9 +87,19 @@ class GenerationalIntegrationOperator(IntegrationOperator):
         )
 
         # process breeding value matrix
-        mask = bval["main"].taxa_grp < taxa_min     # create breeding value mask
-        bval["main"].delete(mask, axis = 1)         # delete old taxa
-        bval["main"].append(                        # add new taxa
+        mask = bval_new["main"].taxa_grp < taxa_min     # create breeding value mask
+        bval_new["main"].delete(mask, axis = 1)         # delete old taxa
+        bval_new["main"].append(                        # add new taxa
+            values = new_bval.mat,
+            axis = 1,
+            taxa = new_bval.taxa,
+            taxa_grp = new_bval.taxa_grp
+        )
+
+        # process breeding value matrix
+        mask = bval_new["main_true"].taxa_grp < taxa_min     # create breeding value mask
+        bval_new["main_true"].delete(mask, axis = 1)         # delete old taxa
+        bval_new["main_true"].append(                        # add new taxa
             values = new_bval.mat,
             axis = 1,
             taxa = new_bval.taxa,
@@ -86,7 +108,7 @@ class GenerationalIntegrationOperator(IntegrationOperator):
 
         misc = {}
 
-        return geno, bval, misc
+        return geno_new, bval_new, misc
 
 
 

@@ -5,3 +5,5 @@ from .PerformanceTrial import *
 
 # EvaluationOperator family
 from .EvaluationOperator import *
+
+from .TrueEvaluationOperator import *
