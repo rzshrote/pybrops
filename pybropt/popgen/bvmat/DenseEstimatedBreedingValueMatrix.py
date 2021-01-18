@@ -1,5 +1,9 @@
 import numpy
+
 from . import DenseBreedingValueMatrix
+
+from pybropt.core.mat import get_axis
+
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -21,6 +25,8 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         ----------
         mat : numpy.ndarray
             A float64 matrix of breeding values of shape (n, t).
+        raw : numpy.ndarray
+            A float64 matrix of raw phenotypic values of shape (r, n, t).
         trait : numpy.ndarray
             A string matrix of trait names of shape (t,).
         taxa : numpy.ndarray
@@ -32,10 +38,18 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             mat = mat,
             **kwargs
         )
+
+        # set instance data
         self.raw = raw
         self.trait = trait
         self.taxa = taxa
         self.taxa_grp = taxa_grp
+
+        # set metadata
+        self.taxa_grp_name = None
+        self.taxa_grp_stix = None
+        self.taxa_grp_spix = None
+        self.taxa_grp_len = None
 
     ############################################################################
     ############################ Object Properties #############################
@@ -193,33 +207,6 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def axis_index(self, axis):
-        """
-        Return an index (unsigned) from a provided axis integer (signed)
-
-        Parameters
-        ----------
-        axis : int
-            Integer representation of the axis. Can be in range (-ndim,ndim).
-            If outside this range, will raise an AxisError.
-
-        Returns
-        -------
-        index : int
-            Index representation of the axis. In range [0,ndim).
-        """
-        # get the number of axis
-        naxes = self._mat.ndim
-
-        # handle axis argument
-        if (axis >= naxes) or (axis <= -naxes):
-            raise numpy.AxisError("axis %s is out of bounds for array of dimension %s" % (axis, naxes))
-
-        # modulo the axis number to get the axis (in the case of negative axis)
-        axis %= naxes
-
-        return axis
-
     def lexsort(self, keys = None, axis = -1):
         """
         Perform an indirect stable sort using a tuple of keys.
@@ -239,7 +226,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             Array of indices that sort the keys.
         """
         # transform axis number to an index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)
 
         # if no keys were provided, set a default
         if keys is None:
@@ -280,7 +267,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         """
         # transform axis number to an index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)
 
         ########################################################################
         if axis == 0:                                           ### TAXA AXIS
@@ -314,7 +301,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             The axis over which to sort values.
         """
         # get axis
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)
 
         if axis == 0:
             # reset taxa group metadata
@@ -336,7 +323,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
         """
         # get axis index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)
 
         # sort along taxa axis
         self.sort(axis = axis)
@@ -361,7 +348,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             grouped.
         """
         # convert axis to index
-        axis = self.axis_index(axis)
+        axis = get_axis(axis, self._mat.ndim)
 
         if axis == 1:
             return (

@@ -48,3 +48,19 @@ class BreedingValueMatrix(TaxaMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_BreedingValueMatrix(v):
+    return isinstance(v, BreedingValueMatrix)
+
+def check_is_BreedingValueMatrix(v, vname):
+    if not isinstance(v, BreedingValueMatrix):
+        raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
+
+def cond_check_is_BreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_BreedingValueMatrix(v, vname)

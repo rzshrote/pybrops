@@ -1,15 +1,16 @@
 from . import LinearGenomicModel
 
 from pybropt.core.error import check_is_ndarray
-from pybropt.core.error import check_ndarray_ndim
-from pybropt.core.error import check_ndarray_dtype
-from pybropt.core.error import cond_check_is_ndarray
-from pybropt.core.error import cond_check_ndarray_ndim
-from pybropt.core.error import cond_check_ndarray_dtype
-from pybropt.core.error import cond_check_is_dict
-from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
+from pybropt.core.error import check_ndarray_dtype_is_float64
+from pybropt.core.error import check_ndarray_ndim
+
+from pybropt.core.error import cond_check_is_dict
+from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_is_str
+from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype_is_string
+from pybropt.core.error import cond_check_ndarray_ndim
 
 from pybropt.popgen.bvmat import DenseGenotypicEstimatedBreedingValueMatrix
 
@@ -26,8 +27,18 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         Parameters
         ----------
         mu : numpy.ndarray
+            A numpy.float64 array of shape (t, 1).
+            Where:
+                t : is the number of traits.
         beta : numpy.ndarray
+            A numpy.float64 array of shape (p, t).
+            Where:
+                p : is the number of genomic loci.
+                t : is the number of traits.
         trait : numpy.ndarray, None
+            A numpy.string_ array of shape (t,).
+            Where:
+                t : is the number of traits.
         model_name : str, None
         params : dict, None
         **kwargs : dict
@@ -55,7 +66,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         def fset(self, value):
             check_is_ndarray(value, "mu")
             check_ndarray_ndim(value, "mu", 2)
-            check_ndarray_dtype(value, "mu", numpy.float64)
+            check_ndarray_dtype_is_float64(value, "mu")
             check_ndarray_axis_len(value, "mu", 1, 1) # shape = (t, 1)
             self._mu = value
         def fdel(self):
@@ -70,7 +81,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         def fset(self, value):
             check_is_ndarray(value, "beta")
             check_ndarray_ndim(value, "beta", 2)
-            check_ndarray_dtype(value, "beta", numpy.float64)
+            check_ndarray_dtype_is_float64(value, "beta")
             check_ndarray_axis_len(value, "beta", 1, self._mu.shape[0]) # shape = (p, t)
             self._beta = value
         def fdel(self):
@@ -110,7 +121,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         def fset(self, value):
             cond_check_is_ndarray(value, "trait")
             cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_dtype(value, "trait", numpy.string_)
+            cond_check_ndarray_dtype_is_string(value, "trait")
             cond_check_ndarray_axis_len(value, "trait", 0, self._mu.shape[0])
             self._trait = value
         def fdel(self):
@@ -161,3 +172,19 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         bvmat : BreedingValueMatrix
         """
         raise NotImplementedError("method needs to be implemented")
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_GenericLinearGenomicModel(v):
+    return isinstance(v, GenericLinearGenomicModel)
+
+def check_is_GenericLinearGenomicModel(v, vname):
+    if not isinstance(v, GenericLinearGenomicModel):
+        raise TypeError("variable '{0}' must be a GenericLinearGenomicModel".format(vname))
+
+def cond_check_is_GenericLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_GenericLinearGenomicModel(v, vname)

@@ -9,8 +9,14 @@ class RandomInitializationOperator(InitializationOperator):
 
     def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng, **kwargs):
         """
-        ntaxa : int
+        ntaxa : dict
             Number of taxa.
+            Field | Type        | Description
+            ------+-------------+------------
+            cand  | int         |
+            main  | int         |
+            queue | list of int |
+
         nloci : int
             Number of loci.
         ntrait : int
@@ -19,6 +25,7 @@ class RandomInitializationOperator(InitializationOperator):
             Number of burnin generations.
         """
         super(RandomInitializationOperator, self).__init__(**kwargs)
+        self.gqlen = gqlen
         self.ntaxa = ntaxa
         self.nloci = nloci
         self.nchr = nchr
