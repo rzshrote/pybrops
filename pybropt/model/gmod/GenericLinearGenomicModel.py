@@ -132,7 +132,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pred(self, gmat):
+    def predict(self, gmat):
         """
         Predict breeding values.
 
@@ -164,14 +164,38 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 
     def score(self, gmat, bvmat):
         """
-        Score the model's accuracy.
+        Return the coefficient of determination R**2 of the prediction.
 
         Parameters
         ----------
         gmat : GenotypeMatrix
+            Genotypes from which to predict breeding values.
         bvmat : BreedingValueMatrix
+            True breeding values from which to score prediction accuracy.
+
+        Returns
+        -------
+        Rsq : numpy.ndarray
+            A coefficient of determination array of shape (t,).
+            Where:
+                t : is the number of traits.
         """
-        raise NotImplementedError("method needs to be implemented")
+        # calculate prediction matrix
+        y_pred = self.mu.T + ((gmat.tacount()) @ self.beta)
+
+        # get pointer to true breeding values
+        y_true = bvmat.mat
+
+        # calculate sum of squares error
+        SSE = ((y_true - y_pred)**2).sum()
+
+        # calculate sum of squares total
+        SST = ((y_true - y_true.mean())**2).sum()
+
+        # calculate R**2
+        Rsq = (1.0 - SSE/SST)
+
+        return Rsq
 
 
 

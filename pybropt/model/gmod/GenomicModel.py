@@ -68,7 +68,7 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
-    def pred(self, gmat):
+    def predict(self, gmat):
         """
         Predict breeding values.
 
@@ -84,12 +84,21 @@ class GenomicModel:
 
     def score(self, gmat, bvmat):
         """
-        Score the model's accuracy.
+        Return the coefficient of determination R**2 of the prediction.
 
         Parameters
         ----------
         gmat : GenotypeMatrix
+            Genotypes from which to predict breeding values.
         bvmat : BreedingValueMatrix
+            True breeding values from which to score prediction accuracy.
+
+        Returns
+        -------
+        Rsq : numpy.ndarray
+            A coefficient of determination array of shape (t,).
+            Where:
+                t : is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 

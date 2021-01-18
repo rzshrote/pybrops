@@ -121,9 +121,13 @@ def test_model_name_fget(glgmod, model_name):
 def test_params_fget(glgmod, params):
     assert glgmod.params == params
 
-def test_pred_type(glgmod, dpgvmat):
-    assert is_BreedingValueMatrix(glgmod.pred(dpgvmat))
+def test_predict_type(glgmod, dpgvmat):
+    assert is_BreedingValueMatrix(glgmod.predict(dpgvmat))
 
-def test_pred_value(glgmod, dpgvmat, mu, beta):
+def test_predict_value(glgmod, dpgvmat, mu, beta):
     ghat = mu.T + (dpgvmat.tacount() @ beta)
-    assert numpy.all(glgmod.pred(dpgvmat) == ghat)
+    assert numpy.all(glgmod.predict(dpgvmat) == ghat)
+
+def test_score_value(glgmod, dpgvmat):
+    bvmat = glgmod.predict(dpgvmat)
+    assert glgmod.score(dpgvmat, bvmat) == 1.0
