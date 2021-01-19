@@ -289,7 +289,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 t_cur = self._t_cur,
                 t_max = self._t_max,
                 pgvmat = pgvmat,
-                gmod = self._gmod
+                gmod_true = self._gmod["true"]
             )
             lbook.log_evaluate(
                 t_cur = self._t_cur,

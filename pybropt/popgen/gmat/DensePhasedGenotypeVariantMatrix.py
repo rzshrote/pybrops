@@ -520,6 +520,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             Object that defines the index or indices where values are selected.
         axis : int
             The axis along which values are selected.
+            0 = nothing; 1 = taxa, 2 = loci
         **kwargs
             Additional keyword arguments.
         """

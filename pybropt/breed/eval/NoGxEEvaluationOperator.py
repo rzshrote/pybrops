@@ -36,8 +36,14 @@ class NoGxEEvaluationOperator(EvaluationOperator):
         """
         Parameters
         ----------
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
         pgvmat : PhasedGenotypeVariantMatrix
-        gmod : dict
+            Genotypes to evaluate.
+        gmod_true : GenomicModel
+            True genomic model.
 
         Returns
         -------
@@ -51,7 +57,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
                 Miscellaneous output (user defined).
         """
         # get true breeding values
-        bvmat_true = gmod["true"].pred(pgvmat)
+        bvmat_true = gmod_true.pred(pgvmat)
 
         # generate raw phenotypes: (n,t) + (r,n,t) -> (r,n,t)
         raw = bvmat_true.mat + self.rng.normal(

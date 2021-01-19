@@ -14,12 +14,18 @@ class EvaluationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def evaluate(self, t_cur, t_max, pgvmat, gmod, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
         """
         Parameters
         ----------
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
         pgvmat : PhasedGenotypeVariantMatrix
-        gmod : dict
+            Genotypes to evaluate.
+        gmod_true : GenomicModel
+            True genomic model.
 
         Returns
         -------
