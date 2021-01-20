@@ -70,9 +70,16 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_vcf(fname, size, rng, evalop, gmod_true, replace = True, initsel = False):
+    def from_vcf(fname, size, rng, gmult, evalop, gmod_true, replace = True):
         """
         Create a GenerationalInitializationOperator from a VCF file.
+
+        Initializes a "main" population with genotypes, and queue populations
+        of various lengths. Uses the individuals in "main" to select a set of
+        parental candidates using a provided SurvivorSelectionOperator. Then,
+        a provided ParentSelectionOperator, and Mating operator is used to
+        select and mate parents to create one additional generation that is
+        added to the queue.
 
         Parameters
         ----------
@@ -93,8 +100,9 @@ class GenerationalInitializationOperator(InitializationOperator):
                 the sum of the required initial number of genotypes
                 (main + sum(queue)), then sample all genotypes and fill
                 remaining genotypes with genotypes sampled without replacement.
-        initsel : bool, default = False
-            Perform an initial round of survivor and selection from
+        initprogeny : int, default = 0
+            Number of times progeny should be selected from the main population.
+            If
         """
         # perform error checks
         check_is_dict(size, "size")
@@ -117,10 +125,6 @@ class GenerationalInitializationOperator(InitializationOperator):
             ])
             rng.shuffle(ix) # shuffle everything
 
-        # step 4: randomly partition into cohorts
-        stix = 0            # start pointer
-        spix = size["main"] # stop pointer
-
         # define seed_geno
         seed_geno = {
             "cand" : None,
@@ -128,8 +132,15 @@ class GenerationalInitializationOperator(InitializationOperator):
             "queue" : []
         }
 
+        # step 4: randomly partition into cohorts
+        stix = 0            # start pointer
+        spix = size["main"] # stop pointer
+
         # populate fields with genotypes
+        tmp = dpgvmat.select(ix[stix:spix], axix = 1)
+        tmp.taxa_grp = -(numpy.arange(stix,spix) + gmult)
         seed_geno["main"] = dpgvmat.select(ix[stix:spix], axis = 1)
+        seed_geno["main"].taxa_grp = -(numpy.arange(stix, spix) + gmult)
         for l in size["queue"]:         # for each length in queue
             stix = spix                 # advance start pointer
             spix += l                   # advance stop pointer
@@ -140,13 +151,15 @@ class GenerationalInitializationOperator(InitializationOperator):
                 )
             )
 
-        #
+        # add taxa groups
+        seed_geno["main"] =
 
         # define seed_bval
         seed_bval = {
             "cand" : None,
+            "cand_true" : None,
             "main" : None,
-            "queue" : []
+            "main_true" : None,
         }
 
         # populate fields with breeding values

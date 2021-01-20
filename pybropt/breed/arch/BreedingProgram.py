@@ -49,6 +49,17 @@ class BreedingProgram(BreedingNode):
         return locals()
     mateop = property(**mateop())
 
+    def gintgop():
+        doc = "Genotype integration operator."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    gintgop = property(**gintgop())
+
     def evalop():
         doc = "Evaluation operator."
         def fget(self):
@@ -60,8 +71,8 @@ class BreedingProgram(BreedingNode):
         return locals()
     evalop = property(**evalop())
 
-    def intgop():
-        doc = "Integration operator."
+    def bvintgop():
+        doc = "Breeding value integration operator."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -69,7 +80,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    intgop = property(**intgop())
+    bvintgop = property(**bvintgop())
 
     def calop():
         doc = "Genomic model calibration operator."

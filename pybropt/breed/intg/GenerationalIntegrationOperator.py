@@ -31,47 +31,31 @@ class GenerationalIntegrationOperator(IntegrationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def integrate(self, t_cur, t_max, pgvmat, bvmat, bvmat_true, geno, bval):
+    def integrate_geno(self, t_cur, t_max, pgvmat, geno):
         """
-        Integrate genotype and phenotype data into geno and bval dictionaries.
+        Integrate genotype into geno dictionary.
 
         Parameters
         ----------
         pgvmat : PhasedGenotypeVariantMatrix
-        bvmat : BreedingValueMatrix
         geno : dict
-        bval : dict
 
         Returns
         -------
         out : tuple
-            (geno_new, bval_new, misc)
+            (geno_new, misc)
         """
         # copy dictionaries
         geno_new = dict(geno)
-        bval_new = dict(bval)
 
         # duplicate queue lists to avoid pointer problems
         geno_new["queue"] = list(geno["queue"])
-        bval_new["queue"] = list(bval["queue"])
 
         # process genotype queue
         while len(geno_new["queue"]) < self.gqlen:  # while queue is too short
             geno_new["queue"].append(None)          # append None to length
         geno_new["queue"].append(pgvmat)            # add pgvmat to end of queue
         new_geno = geno_new["queue"].pop(0)         # pop new genotypes from queue
-
-        # process breeding value queue
-        while len(bval_new["queue"]) < self.gqlen:  # while queue is too short
-            bval_new["queue"].append(None)          # append None to length
-        bval_new["queue"].append(bvmat)             # add bvmat to end of queue
-        new_bval = bval_new["queue"].pop(0)         # pop new breeding values from queue
-
-        # process breeding value queue_true
-        while len(bval_new["queue_true"]) < self.gqlen:  # while queue is too short
-            bval_new["queue_true"].append(None)          # append None to length
-        bval_new["queue_true"].append(bvmat)             # add bvmat to end of queue
-        new_bval_true = bval_new["queue_true"].pop(0)    # pop new breeding values from queue
 
         # calculate the taxa_grp minimum threshold
         taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
@@ -85,6 +69,32 @@ class GenerationalIntegrationOperator(IntegrationOperator):
             taxa = new_geno.taxa,
             taxa_grp = new_geno.taxa_grp,
         )
+
+        # empty dictionary
+        misc = {}
+
+        return geno_new, misc
+
+    def integrate_bval(self, t_cur, t_max, bvmat, bvmat_true, bval):
+        """
+        Integrate breeding values into bval dictionary.
+
+        Parameters
+        ----------
+        bvmat : BreedingValueMatrix
+        bvmat_true : BreedingValueMatrix
+        bval : dict
+
+        Returns
+        -------
+        out : tuple
+            (bval_new, misc)
+        """
+        # copy dictionaries
+        bval_new = dict(bval)
+
+        # calculate the taxa_grp minimum threshold
+        taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
 
         # process breeding value matrix
         mask = bval_new["main"].taxa_grp < taxa_min     # create breeding value mask
@@ -108,7 +118,7 @@ class GenerationalIntegrationOperator(IntegrationOperator):
 
         misc = {}
 
-        return geno_new, bval_new, misc
+        return bval_new, misc
 
 
 

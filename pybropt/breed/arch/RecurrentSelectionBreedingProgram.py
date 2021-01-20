@@ -4,12 +4,13 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
 from pybropt.breed.init import check_is_InitializationOperator
-from pybropt.breed.init import check_is_ParentSelectionOperator
-from pybropt.breed.init import check_is_MatingOperator
-from pybropt.breed.init import check_is_EvaluationOperator
-from pybropt.breed.init import check_is_IntegrationOperator
-from pybropt.breed.init import check_is_GenomicModelCalibrationOperator
-from pybropt.breed.init import check_is_SurvivorSelectionOperator
+from pybropt.breed.sel import check_is_ParentSelectionOperator
+from pybropt.breed.mate import check_is_MatingOperator
+from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
+from pybropt.breed.eval import check_is_EvaluationOperator
+from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
+from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
+from pybropt.breed.sel import check_is_SurvivorSelectionOperator
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
@@ -17,7 +18,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, t_max, initop, pselop, mateop, evalop, intgop, calop, sselop, **kwargs):
+    def __init__(self, t_max, initop, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
         super(RecurrentSelectionBreedingProgram, self).__init__(
             t_max = t_max,
             initop = initop,
@@ -30,14 +31,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             **kwargs
         )
 
-        # set variables
+        # set time variables
         self.t_cur = 0
         self.t_max = t_max
+
+        # save operators
         self.initop = initop
         self.pselop = pselop
         self.mateop = mateop
+        self.gintgop = gintgop
         self.evalop = evalop
-        self.intgop = intgop
+        self.bvintgop = bvintgop
         self.calop = calop
         self.sselop = sselop
 
@@ -154,6 +158,18 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         return locals()
     mateop = property(**mateop())
 
+    def gintgop():
+        doc = "Genotype integration operator."
+        def fget(self):
+            return self._gintgop
+        def fset(self, value):
+            check_is_GenotypeIntegrationOperator(value, "gintgop")
+            self._gintgop = value
+        def fdel(self):
+            del self._gintgop
+        return locals()
+    gintgop = property(**gintgop())
+
     def evalop():
         doc = "Evaluation operator."
         def fget(self):
@@ -166,17 +182,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         return locals()
     evalop = property(**evalop())
 
-    def intgop():
-        doc = "Integration operator."
+    def bvintgop():
+        doc = "Breeding value integration operator."
         def fget(self):
-            return self._intgop
+            return self._bvintgop
         def fset(self, value):
-            check_is_IntegrationOperator(value, "intgop")
-            self._intgop = value
+            check_is_BreedingValueIntegrationOperator(value, "bvintgop")
+            self._bvintgop = value
         def fdel(self):
-            del self._intgop
+            del self._bvintgop
         return locals()
-    intgop = property(**intgop())
+    bvintgop = property(**bvintgop())
 
     def calop():
         doc = "Genomic model calibration operator."
@@ -283,12 +299,29 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             )
 
             ####################################################################
-            ######################### evaluate progeny #########################
+            ####################### integrate genotypes ########################
+            ####################################################################
+            geno_tmp, misc = self.gintgop.gintegrate(
+                t_cur = self._t_cur,
+                t_max = self._t_max,
+                pgvmat = pgvmat,
+                geno = self._geno,
+            )
+            lbook.log_gintegrate(
+                t_cur = self._t_cur,
+                t_max = self._t_max,
+                geno = geno_tmp,
+                bval = bval_tmp,
+                misc = misc
+            )
+
+            ####################################################################
+            ######################## evaluate genotypes ########################
             ####################################################################
             bvmat, bvmat_true, misc = self.evalop.evaluate(
                 t_cur = self._t_cur,
                 t_max = self._t_max,
-                pgvmat = pgvmat,
+                pgvmat = geno_tmp["main"],
                 gmod_true = self._gmod["true"]
             )
             lbook.log_evaluate(
@@ -300,21 +333,18 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             )
 
             ####################################################################
-            ######################## integrate progeny #########################
+            #################### integrate breeding values #####################
             ####################################################################
-            geno_tmp, bval_tmp, misc = self.intgop.integrate(
+            bval_tmp, misc = self.bvintgop.bvintegrate(
                 t_cur = self._t_cur,
                 t_max = self._t_max,
-                pgvmat = pgvmat,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
-                geno = self._geno,
-                bval = self._bval
+                bval = self._geno,
             )
-            lbook.log_integrate(
+            lbook.log_bvintegrate(
                 t_cur = self._t_cur,
                 t_max = self._t_max,
-                geno = geno_tmp,
                 bval = bval_tmp,
                 misc = misc
             )

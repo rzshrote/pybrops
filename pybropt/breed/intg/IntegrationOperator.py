@@ -14,23 +14,56 @@ class IntegrationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def integrate(self, t_cur, t_max, pgvmat, bvmat, geno, bval):
+    def integrate_geno(self, t_cur, t_max, pgvmat, geno):
         """
-        Integrate genotype and phenotype data into geno and bval dictionaries.
+        Integrate genotype into geno dictionary.
 
         Parameters
         ----------
         pgvmat : PhasedGenotypeVariantMatrix
-        bvmat : BreedingValueMatrix
         geno : dict
+
+        Returns
+        -------
+        out : tuple
+            (geno_new, misc)
+        """
+        raise NotImplementedError("method is abstract")
+
+    def integrate_bval(self, t_cur, t_max, bvmat, bvmat_true, bval):
+        """
+        Integrate breeding values into bval dictionary.
+
+        Parameters
+        ----------
+        bvmat : BreedingValueMatrix
+        bvmat_true : BreedingValueMatrix
         bval : dict
 
         Returns
         -------
         out : tuple
-            (geno_new, bval_new, misc)
+            (bval_new, misc)
         """
         raise NotImplementedError("method is abstract")
+    
+    # def integrate(self, t_cur, t_max, pgvmat, bvmat, geno, bval):
+    #     """
+    #     Integrate genotype and phenotype data into geno and bval dictionaries.
+    #
+    #     Parameters
+    #     ----------
+    #     pgvmat : PhasedGenotypeVariantMatrix
+    #     bvmat : BreedingValueMatrix
+    #     geno : dict
+    #     bval : dict
+    #
+    #     Returns
+    #     -------
+    #     out : tuple
+    #         (geno_new, bval_new, misc)
+    #     """
+    #     raise NotImplementedError("method is abstract")
 
 
 
