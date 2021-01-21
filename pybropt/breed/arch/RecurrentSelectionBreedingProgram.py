@@ -340,7 +340,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 t_max = self._t_max,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
-                bval = self._geno,
+                bval = self._bval,
             )
             lbook.log_bvintegrate(
                 t_cur = self._t_cur,

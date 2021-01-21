@@ -75,6 +75,18 @@ class ParentSelectionOperator:
         """
         raise NotImplementedError("method is abstract")
 
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+        """
+        Return an objective function.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+        """
+        Return a vectorized objective function.
+        """
+        raise NotImplementedError("method is abstract")
+
 
 
 ################################################################################

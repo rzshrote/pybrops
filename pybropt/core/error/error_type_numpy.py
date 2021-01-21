@@ -13,11 +13,17 @@ from . import generic_cond_check_ndarray_dtype_issubdtype
 def check_is_ndarray(v, vname):
     generic_check_isinstance(v, vname, numpy.ndarray)
 
+def check_is_Generator(v, vname):
+    generic_check_isinstance(v, vname, numpy.random.Generator)
+
 ################################################################################
 #################### conditional isinstance check functions ####################
 ################################################################################
 def cond_check_is_ndarray(v, vname, cond=(lambda s: s is not None)):
     generic_cond_check_isinstance(v, vname, numpy.ndarray, cond)
+
+def check_is_Generator(v, vname, cond=(lambda s: s is not None)):
+    generic_cond_check_isinstance(v, vname, numpy.random.Generator, cond)
 
 ################################################################################
 ############################ dtype check functions #############################

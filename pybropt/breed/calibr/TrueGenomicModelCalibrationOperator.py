@@ -39,7 +39,6 @@ class TrueGenomicModelCalibrationOperator(GenomicModelCalibrationOperator):
         # copy pointers to true genomic model to mandatory keys
         gmod_new["cand"] = gmod_new["true"]
         gmod_new["main"] = gmod_new["true"]
-        gmod_new["queue"] = [gmod_new["true"] for i in range(len(gmod_new["queue"]))]
 
         # nothing in misc
         misc = {}
