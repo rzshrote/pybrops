@@ -216,37 +216,7 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_vcf(fname, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
-        """
-        Create a GenerationalInitializationOperator from a VCF file.
-
-        Initializes a "main" population with genotypes, and queue populations
-        of various lengths. Uses the individuals in "main" to select a set of
-        parental candidates using a provided SurvivorSelectionOperator. Then,
-        a provided ParentSelectionOperator, and Mating operator is used to
-        select and mate parents to create one additional generation that is
-        added to the queue.
-
-        Parameters
-        ----------
-        fname : str
-            VCF file name.
-        size : dict
-            Field | Type        | Description
-            ------+-------------+-----------------------------------------------
-            cand  | None        | None
-            main  | int         | Number of taxa in main breeding population.
-            queue | list of int | Number of taxa in breeding populations on queue.
-        rng : numpy.random.Generator
-            A random number generator object.
-        replace : bool, default = True
-            Whether genotype sampling is with or without replacement.
-            If replace == False:
-                If the number of genotypes in the provided file is less than
-                the sum of the required initial number of genotypes
-                (main + sum(queue)), then sample all genotypes and fill
-                remaining genotypes with genotypes sampled without replacement.
-        """
+    def from_dpgvmat(dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
         # perform error checks
         check_is_dict(size, "size")
         check_keys_in_dict(size, "size", "cand", "main", "queue")
@@ -265,19 +235,14 @@ class GenerationalInitializationOperator(InitializationOperator):
         check_is_GenomicModelCalibrationOperator(calop, "calop")
         check_is_SurvivorSelectionOperator(sselop, "sselop")
 
-        ####################################
-        ### step 1: load genotype matrix ###
-        ####################################
-        dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
-
         ####################################################
-        ### step 2: count individuals and available taxa ###
+        ### step 1: count individuals and available taxa ###
         ####################################################
         nindiv = size["main"] + sum(size["queue"])
         ntaxa = dpgvmat.ntaxa
 
         ##################################
-        ### step 3: sample individuals ###
+        ### step 2: sample individuals ###
         ##################################
         if replace:
             ix = rng.choice(ntaxa, nindiv, replace = True)          # sample with replacement
@@ -289,7 +254,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             rng.shuffle(ix) # shuffle everything
 
         ###################################################################
-        ### step 4: define and populate seed_geno, seed_bval, seed_gmod ###
+        ### step 3: define and populate seed_geno, seed_bval, seed_gmod ###
         ###################################################################
         # define seed_geno
         seed_geno = {
@@ -360,6 +325,61 @@ class GenerationalInitializationOperator(InitializationOperator):
             bvintgop = bvintgop,
             calop = calop,
             sselop = sselop,
+        )
+
+        return geninitop
+
+    @staticmethod
+    def from_vcf(fname, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
+        """
+        Create a GenerationalInitializationOperator from a VCF file.
+
+        Initializes a "main" population with genotypes, and queue populations
+        of various lengths. Uses the individuals in "main" to select a set of
+        parental candidates using a provided SurvivorSelectionOperator. Then,
+        a provided ParentSelectionOperator, and Mating operator is used to
+        select and mate parents to create one additional generation that is
+        added to the queue.
+
+        Parameters
+        ----------
+        fname : str
+            VCF file name.
+        size : dict
+            Field | Type        | Description
+            ------+-------------+-----------------------------------------------
+            cand  | None        | None
+            main  | int         | Number of taxa in main breeding population.
+            queue | list of int | Number of taxa in breeding populations on queue.
+        rng : numpy.random.Generator
+            A random number generator object.
+        replace : bool, default = True
+            Whether genotype sampling is with or without replacement.
+            If replace == False:
+                If the number of genotypes in the provided file is less than
+                the sum of the required initial number of genotypes
+                (main + sum(queue)), then sample all genotypes and fill
+                remaining genotypes with genotypes sampled without replacement.
+        """
+        # step 1: load genotype matrix
+        dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
+
+        # step 2: create from genotype matrix
+        geninitop = GenerationalInitializationOperator.from_dpgvmat(
+            size = size,
+            rng = rng,
+            gmult = gmult,
+            gmod_true = gmod_true,
+            burnin = burnin,
+            t_max = t_max,
+            pselop = pselop,
+            mateop = mateop,
+            gintgop = gintgop,
+            evalop = evalop,
+            bvintgop = bvintgop,
+            calop = calop,
+            sselop = sselop,
+            replace = replace
         )
 
         return geninitop

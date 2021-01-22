@@ -206,6 +206,161 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
+    ############# Matrix element manipulation ##############
+    def append(self, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Append values to the matrix. Cannot add additional locations to 'raw'.
+
+        Parameters
+        ----------
+        values : numpy.ndarray
+            Values are appended to append to the matrix.
+        axis : int
+            The axis along which values are appended.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 0:
+            if (self._raw is not None) and (raw is None):
+                raise RuntimeError("cannot append: raw argument is required")
+            if (self._taxa is not None) and (taxa is None):
+                raise RuntimeError("cannot append: taxa argument is required")
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot append: taxa_grp argument is required")
+        elif axis == 1:
+            if (self._raw is not None) and (raw is None):
+                raise RuntimeError("cannot append: raw argument is required")
+            if (self._trait is not None) and (trait is None):
+                raise RuntimeError("cannto append: trait argument is required")
+
+        # append values
+        self._mat = numpy.append(self._mat, values, axis = axis)
+        if axis == 0:   # taxa axis
+            if (self._raw is not None) and (raw is not None):
+                self._raw = numpy.append(self._raw, raw, axis = 1)
+            if (self._taxa is not None) and (taxa is not None):
+                self._taxa = numpy.append(self._taxa, taxa, axis = 0)
+            if (self._taxa_grp is not None) and (taxa_grp is not None):
+                self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
+        elif axis == 1:
+            if (self._raw is not None) and (raw is not None):
+                self._raw = numpy.append(self._raw, raw, axis = 2)
+            if (self._trait is not None) and (trait is not None):
+                self._trait = numpy.append(self._trait, trait, axis = 0)
+
+    def delete(self, obj, axis, **kwargs):
+        """
+        Delete sub-arrays along an axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        axis: int
+            The axis along which to delete the subarray defined by obj.
+        **kwargs
+            Additional keyword arguments.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # delete values
+        self._mat = numpy.delete(self._mat, obj, axis = axis)
+        if axis == 0:   # taxa axis
+            if self._raw is not None:
+                self._raw = numpy.delete(self._raw, obj, axis = 1)
+            if self._taxa is not None:
+                self._taxa = numpy.delete(self._taxa, obj, axis = 0)
+            if self._taxa_grp is not None:
+                self._taxa_grp = numpy.delete(self._taxa_grp, obj, axis = 0)
+        if axis == 2:   # trait axis
+            if self._raw is not None:
+                self._raw = numpy.delete(self._raw, obj, axis = 2)
+            if self._trait is not None:
+                self._trait = numpy.delete(self._trait, obj, axis = 0)
+
+    def insert(self, obj, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Insert values along the given axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : array_like
+            Values to insert into the matrix.
+        axis : int
+            The axis along which values are inserted.
+        **kwargs
+            Additional keyword arguments.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 0:
+            if (self._raw is not None) and (raw is None):
+                raise RuntimeError("cannot append: raw argument is required")
+            if (self._taxa is not None) and (taxa is None):
+                raise RuntimeError("cannot append: taxa argument is required")
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot append: taxa_grp argument is required")
+        elif axis == 1:
+            if (self._raw is not None) and (raw is None):
+                raise RuntimeError("cannot append: raw argument is required")
+            if (self._trait is not None) and (trait is None):
+                raise RuntimeError("cannto append: trait argument is required")
+
+        # insert values
+        self._mat = numpy.insert(self._mat, obj, values, axis = axis)
+        if axis == 0:   # taxa axis
+            if (self._raw is not None) and (raw is not None):
+                self._raw = numpy.insert(self._raw, obj, raw, axis = 1)
+            if (self._taxa is not None) and (taxa is not None):
+                self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
+            if (self._taxa_grp is not None) and (taxa_grp is not None):
+                self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+        elif axis == 1: # trait axis
+            if (self._raw is not None) and (raw is not None):
+                self._raw = numpy.insert(self._raw, obj, raw, axis = 2)
+            if (self._trait is not None) and (trait is not None):
+                self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
+
+    def select(self, obj, axis, **kwargs):
+        """
+        Select certain values from the GenotypeMatrix.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices where values are selected.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+        """
+        ndim = self._mat.ndim           # get number of dimensions
+        rndim = 0 if self._raw is None else self._raw.ndim
+        axis = get_axis(axis, ndim)     # get axis
+
+        # construct slicing tuples
+        sel0 = slice(None) if axis != 0 else obj    # taxa axis
+        sel1 = slice(None) if axis != 1 else obj    # trait axis
+        selm = tuple(slice(None) if e != axis else obj for e in range(ndim))
+        selr = tuple(slice(None) if e != axis else obj for e in range(rndim))
+
+        # select elements
+        dbvmat = DenseEstimatedBreedingValueMatrix(
+            mat = self._mat[selm],
+            raw = None if self._raw is None else self._raw[selr],
+            trait = None if self._trait is None else self._trait[sel1],
+            taxa = None if self._taxa is None else self._taxa[sel0],
+            taxa_grp = None if self._taxa_grp is None else self._taxa_grp[sel0]
+        )
+
+        return dbvmat
+
     ################### Sorting Methods ####################
     def lexsort(self, keys = None, axis = -1):
         """

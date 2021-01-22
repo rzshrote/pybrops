@@ -16,7 +16,7 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, raw = None, **kwargs):
+    def __init__(self, mat, **kwargs):
         """
         BreedingValueMatrix constructor
 
@@ -29,9 +29,7 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
             arguments to the parent class constructor.
 
         """
-        super(DenseBreedingValueMatrix, self).__init__(
-            **kwargs
-        )
+        super(DenseBreedingValueMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
@@ -214,62 +212,6 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-
-    ############# Matrix element manipulation ##############
-    def append(self, values, axis = -1, **kwargs):
-        """
-        Append values to the matrix.
-
-        Parameters
-        ----------
-        values : numpy.ndarray
-            Values are appended to append to the matrix.
-        axis : int
-            The axis along which values are appended.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-        # append values
-        self._mat = numpy.append(self._mat, values, axis)
-
-    def delete(self, obj, axis = -1, **kwargs):
-        """
-        Delete sub-arrays along an axis.
-
-        Parameters
-        ----------
-        obj : slice, int, or array of ints
-            Indicate indices of sub-arrays to remove along the specified axis.
-        axis: int
-            The axis along which to delete the subarray defined by obj.
-        **kwargs
-            Additional keyword arguments.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-        # delete values
-        self._mat = numpy.delete(self._mat, obj, axis)
-
-    def insert(self, obj, values, axis, **kwargs):
-        """
-        Insert values along the given axis before the given indices.
-
-        Parameters
-        ----------
-        obj: int, slice, or sequence of ints
-            Object that defines the index or indices before which values is
-            inserted.
-        values : array_like
-            Values to insert into the matrix.
-        axis : int
-            The axis along which values are inserted.
-        **kwargs
-            Additional keyword arguments.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-        # insert values
-        self._mat = numpy.insert(self._mat, obj, values, axis)
 
 
 

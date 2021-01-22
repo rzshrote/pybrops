@@ -10,7 +10,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
         self.k_s = k_s
         self.traitwt_s = traitwt_s
         self.rng = rng
-        
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
@@ -134,7 +134,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
         Return a parent selection objective function.
         """
         mat = geno["cand"].mat      # genotype matrix
-        mu = geno["cand"].mu        # trait means
+        mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
 
         def objfn(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
@@ -209,7 +209,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
         Return a vectorized objective function.
         """
         mat = geno["cand"].mat      # genotype matrix
-        mu = geno["cand"].mu        # trait means
+        mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
 
         def objfn_vec(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):

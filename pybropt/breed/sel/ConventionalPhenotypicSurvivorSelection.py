@@ -114,7 +114,7 @@ class ConventionalPhenotypicSurvivorSelection(SurvivorSelectionOperator):
 
         misc = {}   # empty dictionary
 
-        return geno["cand"], sel, self.ncross, self.nprogeny, misc
+        return geno_new, bval_new, gmod_new, misc
 
     def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
         """

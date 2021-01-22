@@ -533,6 +533,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # select values
         sel_mat = self._mat[sel]
 
+        # TODO: simplify logic (see DenseEstimatedBreedingValueMatrix)
         if axis == 1:
             sel_vrnt_chrgrp = self._vrnt_chrgrp
             sel_vrnt_phypos = self._vrnt_phypos

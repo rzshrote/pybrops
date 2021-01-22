@@ -108,7 +108,9 @@ class ConventionalGenomicParentSelection(ParentSelectionOperator):
         elif gebv.ndim == 2:                # TODO: ND-selection
             raise RuntimeError("non-dominated genomic selection not implemented")
 
-        misc = {}   # empty dictionary
+        misc = {
+            "gebv" : gebv
+        }
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
@@ -117,7 +119,7 @@ class ConventionalGenomicParentSelection(ParentSelectionOperator):
         Return a parent selection objective function.
         """
         mat = geno["cand"].mat      # genotype matrix
-        mu = geno["cand"].mu        # trait means
+        mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
 
         def objfn(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
@@ -192,7 +194,7 @@ class ConventionalGenomicParentSelection(ParentSelectionOperator):
         Return a vectorized objective function.
         """
         mat = geno["cand"].mat      # genotype matrix
-        mu = geno["cand"].mu        # trait means
+        mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
 
         def objfn_vec(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
