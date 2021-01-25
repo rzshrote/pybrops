@@ -4,130 +4,74 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.sel import ConventionalGenomicParentSelection
-from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.gmap import ExtendedGeneticMap
+from pybropt.popgen.gmap import HaldaneMapFunction
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.model.gmod import GenericLinearGenomicModel
+from pybropt.breed.sel import ConventionalPhenotypicParentSelection
+from pybropt.breed.mate import GenerationalTwoWayDHCross
+from pybropt.breed.intg import GenerationalGenotypeIntegrationOperator
+from pybropt.breed.eval import NoGxEEvaluationOperator
+from pybropt.breed.intg import GenerationalBreedingValueIntegrationOperator
+from pybropt.breed.calibr import TrueGenomicModelCalibrationOperator
+from pybropt.breed.sel import FamilyPhenotypicSurvivorSelection
+from pybropt.breed.init import GenerationalInitializationOperator
 
 ################################################################################
-################################## Genotypes ###################################
+################# GenerationalInitializationOperator fixtures ##################
 ################################################################################
 @pytest.fixture
-def mat_int8():
-    yield numpy.int8([
-       [[0, 0, 1, 1, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-        [0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-        [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-        [0, 1, 0, 0, 0, 0, 1, 1, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1, 1, 0, 0, 0, 1],
-        [1, 1, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 1, 0, 0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
-       [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 1, 1, 1, 0, 1, 0, 0],
-        [0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 0, 0, 1, 1, 0, 1, 1],
-        [1, 0, 0, 1, 0, 0, 1, 0, 1, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 1, 0, 1, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-        [0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-    ])
+def gmap(shared_datadir):
+    data_path = shared_datadir / "Song_2016.linear.M.egmap"
+    result = ExtendedGeneticMap.from_egmap(data_path)
+    result.group()
+    result.build_spline()
+    yield result
 
 @pytest.fixture
-def mat_chrgrp():
-    yield numpy.int64([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
+def gmapfn():
+    yield HaldaneMapFunction()
 
 @pytest.fixture
-def mat_phypos():
-    yield numpy.int64([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+def dpgvmat(shared_datadir, gmap, gmapfn):
+    data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
+    result = DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+    result.group()
+    result.interp_xoprob(gmap, gmapfn)
+    yield result
 
 @pytest.fixture
-def mat_genpos():
-    yield numpy.float64([0.5, 1.0, 0.5, 1.0, 0.5, 1.0, 0.5, 1.0, 0.5, 1.0])
+def gqlen():
+    yield 3
 
 @pytest.fixture
-def mat_taxa():
-    yield numpy.string_(["Line"+str(i) for i in range(1,21)])
+def gwind():
+    yield 3
 
 @pytest.fixture
-def mat_taxa_grp():
-    yield numpy.int64([1, 1, 2, 2, 2])
+def gmult():
+    yield 10000
 
 @pytest.fixture
-def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
-    yield DensePhasedGenotypeVariantMatrix(
-        mat = mat_int8,
-        vrnt_chrgrp = mat_chrgrp,
-        vrnt_phypos = mat_phypos,
-        taxa = mat_taxa,
-        taxa_grp = mat_taxa_grp,
-        vrnt_genpos = mat_genpos
-    )
-
-################################################################################
-################################ Genomic model #################################
-################################################################################
-@pytest.fixture
-def mu():
-    yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
-    ])
+def size(gqlen):
+    d = {
+        "cand" : 80,
+        "main" : 80,
+        "queue" : [80]*gqlen
+    }
+    yield d
 
 @pytest.fixture
-def beta():
-    yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87, -1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
-    ])
+def rng():
+    yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def trait():
-    yield numpy.string_(["protein", "yield", "quality"])
-
-@pytest.fixture
-def model_name():
-    yield "test_glgmod"
-
-@pytest.fixture
-def params():
-    yield {"a" : 0, "b" : 1}
-
-@pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def gmod_true(rng):
+    mu = rng.uniform(100, 200, (3,1))
+    beta = rng.normal(0.0, 1.0, (1000,3))
+    trait = numpy.string_(["yield", "protein", "oil"])
+    model_name = "test_true"
+    params = {}
     yield GenericLinearGenomicModel(
         mu = mu,
         beta = beta,
@@ -136,99 +80,90 @@ def glgmod(mu, beta, trait, model_name, params):
         params = params
     )
 
-################################################################################
-############################ Breeding values model #############################
-################################################################################
-@pytest.fixture
-def bvmat(glgmod, dpgvmat):
-    yield glgmod.predict(dpgvmat)
-
-################################################################################
-###################### ConventionalPhenotypicParentSelection ######################
-################################################################################
-@pytest.fixture
-def k_p():
-    yield 10
-
-@pytest.fixture
-def traitwt_p():
-    yield numpy.float64([1.0, 1.0, 1.0])
-
-@pytest.fixture
-def ncross():
-    yield 1
-
-@pytest.fixture
-def nprogeny():
-    yield 10
-
-@pytest.fixture
-def rng():
-    yield Generator(PCG64(192837465))
-
-@pytest.fixture
-def cpps(k_p, traitwt_p, ncross, nprogeny, rng):
-    yield ConventionalPhenotypicParentSelection(
-        k_p = k_p,
-        traitwt_p = traitwt_p,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        rng = rng
-    )
-
-################################################################################
-###################### ConventionalPhenotypicSurvivorSelection ######################
-################################################################################
-@pytest.fixture
-def k_s():
-    yield 20
-
-@pytest.fixture
-def traitwt_s():
-    yield numpy.float64([1.0, 1.0, 1.0])
-
-@pytest.fixture
-def cpss(k_s, traitwt_s, ncross, nprogeny, rng):
-    yield ConventionalPhenotypicSurvivorSelection(
-        k_s = k_s,
-        traitwt_s = traitwt_s,
-        rng = rng
-    )
-
-################################################################################
-###################### GenerationalInitializationOperator ######################
-################################################################################
-dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop,
-evalop, bvintgop, calop, sselop, replace = True
-
-@pytest.fixture
-def size():
-    yield
-
 @pytest.fixture
 def burnin():
-    yield 5
+    yield 10
 
 @pytest.fixture
 def t_max():
     yield 20
 
 @pytest.fixture
-def seed_geno(dpgvmat):
-    yield {
-        "cand" : None,
-        "main" : dpgvmat,
-        "queue" : []
-    }
+def pselop(rng):
+    yield ConventionalPhenotypicParentSelection(
+        k_p = 20,
+        traitwt_p = numpy.float64([1.0, 1.0, 1.0]),
+        ncross = 1,
+        nprogeny = 20,
+        rng = rng
+    )
 
 @pytest.fixture
-def seed_bval(bvmat):
-    yield {
-        "cand" : None,
-        "main" : None,
-    }
+def mateop(rng, gmult):
+    yield GenerationalTwoWayDHCross(
+        rng = rng,
+        gmult = gmult
+    )
+
+@pytest.fixture
+def gintgop(gqlen, gwind, gmult):
+    yield GenerationalGenotypeIntegrationOperator(
+        gqlen = gqlen,
+        gwind = gwind,
+        gmult = gmult
+    )
+
+@pytest.fixture
+def evalop(rng):
+    yield NoGxEEvaluationOperator(
+        nenv = 4,
+        var_E = 1.0,
+        rng = rng
+    )
+
+@pytest.fixture
+def bvintgop(gqlen, gwind, gmult):
+    yield GenerationalBreedingValueIntegrationOperator(
+        gqlen = gqlen,
+        gwind = gwind,
+        gmult = gmult
+    )
+
+@pytest.fixture
+def calop():
+    yield TrueGenomicModelCalibrationOperator()
+
+@pytest.fixture
+def sselop(rng):
+    yield FamilyPhenotypicSurvivorSelection(
+        k_f = 4,
+        traitwt_f = numpy.float64([1.0, 1.0, 1.0]),
+        rng = rng,
+    )
+
+@pytest.fixture
+def initop(dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    result = GenerationalInitializationOperator.from_dpgvmat(
+        dpgvmat = dpgvmat,
+        size = size,
+        rng = rng,
+        gmult = gmult,
+        gmod_true = gmod_true,
+        burnin = burnin,
+        t_max = t_max,
+        pselop = pselop,
+        mateop = mateop,
+        gintgop = gintgop,
+        evalop = evalop,
+        bvintgop = bvintgop,
+        calop = calop,
+        sselop = sselop,
+        replace = False
+    )
+    yield result
 
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_init()
+def test_initialize(initop):
+    initop.initialize()

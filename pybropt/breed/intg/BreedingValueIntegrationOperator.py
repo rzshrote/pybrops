@@ -5,7 +5,7 @@ class BreedingValueIntegrationOperator:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(BreedingValueIntegrationOperator, self).__init__(**kwargs)
+        super(BreedingValueIntegrationOperator, self).__init__()
 
     ############################################################################
     ############################ Object Properties #############################

@@ -10,6 +10,7 @@ from .ConventionalGenomicParentSelection import *
 from .ConventionalGenomicSurvivorSelection import *
 from .ConventionalPhenotypicParentSelection import *
 from .ConventionalPhenotypicSurvivorSelection import *
+from .FamilyPhenotypicSurvivorSelection import *
 
 # level 2:
 from .ConventionalGenomicSelection import *

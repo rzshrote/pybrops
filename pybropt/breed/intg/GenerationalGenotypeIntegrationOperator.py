@@ -6,8 +6,11 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, gqlen, gwind, gmult, **kwargs):
         super(GenerationalGenotypeIntegrationOperator, self).__init__(**kwargs)
+        self.gqlen = gqlen
+        self.gwind = gwind
+        self.gmult = gmult
 
     ############################################################################
     ############################ Object Properties #############################
@@ -49,17 +52,20 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         new_geno = geno_new["queue"].pop(0)         # pop new genotypes from queue
 
         # calculate the taxa_grp minimum threshold
-        taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
+        taxa_min = (t_cur - (self.gqlen + self.gwind)) * self.gmult
 
         # process genotype main
         mask = geno_new["main"].taxa_grp < taxa_min     # create genotype mask
+        print("1:",geno_new["main"].mat.shape)
         geno_new["main"].delete(mask, axis = 1)         # delete old taxa
+        print("2:",geno_new["main"].mat.shape)
         geno_new["main"].append(                        # add new taxa
             values = new_geno.mat,
             axis = 1,
             taxa = new_geno.taxa,
             taxa_grp = new_geno.taxa_grp,
         )
+        print("3:",geno_new["main"].mat.shape)
 
         # empty dictionary
         misc = {}

@@ -16,7 +16,6 @@ class ConventionalPhenotypicParentSelection(ParentSelectionOperator):
         self.nprogeny = nprogeny
         self.rng = rng
 
-
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################

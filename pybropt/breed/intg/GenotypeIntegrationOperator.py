@@ -5,7 +5,7 @@ class GenotypeIntegrationOperator:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(GenotypeIntegrationOperator, self).__init__(**kwargs)
+        super(GenotypeIntegrationOperator, self).__init__()
 
     ############################################################################
     ############################ Object Properties #############################

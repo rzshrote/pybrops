@@ -32,7 +32,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def evaluate(self, t_cur, t_max, pgvmat, gmod, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
         """
         Parameters
         ----------
@@ -57,7 +57,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
                 Miscellaneous output (user defined).
         """
         # get true breeding values
-        bvmat_true = gmod_true.pred(pgvmat)
+        bvmat_true = gmod_true.predict(pgvmat)
 
         # generate raw phenotypes: (n,t) + (r,n,t) -> (r,n,t)
         raw = bvmat_true.mat + self.rng.normal(

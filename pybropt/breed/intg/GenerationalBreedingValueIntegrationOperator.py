@@ -1,13 +1,16 @@
-from . import GenotypeIntegrationOperator
+from . import BreedingValueIntegrationOperator
 
-class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
-    """docstring for GenerationalGenotypeIntegrationOperator."""
+class GenerationalBreedingValueIntegrationOperator(BreedingValueIntegrationOperator):
+    """docstring for GenerationalBreedingValueIntegrationOperator."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
-        super(GenerationalGenotypeIntegrationOperator, self).__init__(**kwargs)
+    def __init__(self, gqlen, gwind, gmult, **kwargs):
+        super(GenerationalBreedingValueIntegrationOperator, self).__init__(**kwargs)
+        self.gqlen = gqlen
+        self.gwind = gwind
+        self.gmult = gmult
 
     ############################################################################
     ############################ Object Properties #############################
@@ -42,27 +45,30 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         bval_new = dict(bval)
 
         # calculate the taxa_grp minimum threshold
-        taxa_min = (t_cur - (self.gqlen + self.gwind)) * gmult
+        taxa_min = (t_cur - (self.gqlen + self.gwind)) * self.gmult
 
         # process breeding value matrix
-        mask = bval_new["main"].taxa_grp < taxa_min     # create breeding value mask
-        bval_new["main"].delete(mask, axis = 1)         # delete old taxa
-        bval_new["main"].append(                        # add new taxa
-            values = new_bval.mat,
-            axis = 1,
-            taxa = new_bval.taxa,
-            taxa_grp = new_bval.taxa_grp
-        )
+        bval_new["main"] = bvmat
+        # mask = bval_new["main"].taxa_grp < taxa_min     # create breeding value mask
+        # bval_new["main"].delete(mask, axis = 0)         # delete old taxa
+        # bval_new["main"].append(                        # add new taxa
+        #     values = bvmat.mat,
+        #     axis = 0,
+        #     raw = bvmat.raw,    # FIXME: will raise attribute error if not a DenseEstimatedBreedingValueMatrix
+        #     taxa = bvmat.taxa,
+        #     taxa_grp = bvmat.taxa_grp
+        # )
 
-        # process breeding value matrix
-        mask = bval_new["main_true"].taxa_grp < taxa_min     # create breeding value mask
-        bval_new["main_true"].delete(mask, axis = 1)         # delete old taxa
-        bval_new["main_true"].append(                        # add new taxa
-            values = new_bval.mat,
-            axis = 1,
-            taxa = new_bval.taxa,
-            taxa_grp = new_bval.taxa_grp
-        )
+        # process true breeding value matrix
+        bval_new["main_true"] = bvmat_true
+        # mask = bval_new["main_true"].taxa_grp < taxa_min     # create breeding value mask
+        # bval_new["main_true"].delete(mask, axis = 0)         # delete old taxa
+        # bval_new["main_true"].append(                        # add new taxa
+        #     values = bvmat_true.mat,
+        #     axis = 0,
+        #     taxa = bvmat_true.taxa,
+        #     taxa_grp = bvmat_true.taxa_grp
+        # )
 
         misc = {}
 

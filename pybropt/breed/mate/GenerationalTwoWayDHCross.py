@@ -5,17 +5,20 @@ from . import TwoWayDHCross
 class GenerationalTwoWayDHCross(TwoWayDHCross):
     """docstring for GenerationalTwoWayDHCross."""
 
-    def __init__(self, gmult, **kwargs):
+    def __init__(self, rng, gmult, **kwargs):
         """
         Parameters
         ----------
         gmult : int
             Generation multiplier to apply to group labels
         """
-        super(GenerationalTwoWayDHCross, self).__init__()
+        super(GenerationalTwoWayDHCross, self).__init__(
+            rng = rng,
+            **kwargs
+        )
         self.gmult = gmult
 
-    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, rng, s = 0, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme.
 
@@ -54,12 +57,17 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
             sel = sel,
             ncross = ncross,
             nprogeny = nprogeny,
-            rng = rng,
             s = s
         )
 
         # add taxa_grp to progeny
-        taxa_grp = numpy.repeat(numpy.repeat(numpy.arange(len(sel) // 2, dtype = 'int64'), ncross), nprogeny)
+        taxa_grp = numpy.repeat(
+            numpy.repeat(
+                numpy.arange(len(sel) // 2, dtype = 'int64'),
+                ncross
+            ),
+            nprogeny
+        )
         taxa_grp += t_cur * self.gmult
         progeny.taxa_grp = taxa_grp
 

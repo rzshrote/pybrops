@@ -1,3 +1,5 @@
+from . import EvaluationOperator
+
 class TrueEvaluationOperator(EvaluationOperator):
     """docstring for TrueEvaluationOperator."""
 
@@ -14,12 +16,18 @@ class TrueEvaluationOperator(EvaluationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def evaluate(self, t_cur, t_max, pgvmat, gmod, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
         """
         Parameters
         ----------
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
         pgvmat : PhasedGenotypeVariantMatrix
-        gmod : dict
+            Genotypes to evaluate.
+        gmod_true : GenomicModel
+            True genomic model.
 
         Returns
         -------
@@ -32,7 +40,7 @@ class TrueEvaluationOperator(EvaluationOperator):
             misc : dict
                 Miscellaneous output (user defined).
         """
-        bvmat = gmod["true"].pred(pgvmat)   # make predictions using true model
+        bvmat = gmod_true.predict(pgvmat)   # make predictions using true model
         misc = {}                           # declare an empty dict
 
         return bvmat, bvmat, misc

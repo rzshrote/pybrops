@@ -1,3 +1,5 @@
+import numpy
+
 from . import InitializationOperator
 
 from pybropt.core.error import check_is_int
@@ -125,6 +127,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         gmod = self.seed_gmod
 
         for t in range(self.burnin):
+            print(t)
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
@@ -142,7 +145,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             pgvmat, misc = self.mateop.mate(
                 t_cur = t,
                 t_max = self.t_max,
-                pgvmat = pgvmat,gmod
+                pgvmat = pgvmat,
                 sel = sel,
                 ncross = ncross,
                 nprogeny = nprogeny
@@ -155,9 +158,9 @@ class GenerationalInitializationOperator(InitializationOperator):
                 t_cur = t,
                 t_max = self.t_max,
                 pgvmat = pgvmat,
-                geno = self._geno,
+                geno = geno,
             )
-
+            print("4:",geno_tmp["main"].mat.shape)
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
@@ -167,7 +170,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 pgvmat = geno_tmp["main"],
                 gmod_true = gmod["true"]
             )
-
+            print("5:",geno_tmp["main"].mat.shape)
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
@@ -178,7 +181,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 bvmat_true = bvmat_true,
                 bval = bval,
             )
-
+            print("6:",bval_tmp["main"].mat.shape)
             ####################################################################
             ######################### calibrate models #########################gmod
             ####################################################################
@@ -210,7 +213,6 @@ class GenerationalInitializationOperator(InitializationOperator):
             gmod = gmod_new
 
         return geno, bval, gmod
-
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -285,6 +287,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         ##### populate "main" fields in seed_geno, seed_bval #####
         tmp = dpgvmat.select(ix[stix:spix], axis = 1)   # subset genotypes (new object)
         tmp.taxa_grp = numpy.arange(stix, spix) - gmult # add family/gen lables; should be < 0 for founder
+        seed_geno["cand"] = tmp
         seed_geno["main"] = tmp                         # add subset to dict
         m, mt, misc = evalop.evaluate(                  # initial evaluation of main population
             t_cur = -1,
@@ -292,6 +295,8 @@ class GenerationalInitializationOperator(InitializationOperator):
             pgvmat = seed_geno["main"],
             gmod_true = seed_gmod["true"]
         )
+        seed_bval["cand"] = m
+        seed_bval["cand_true"] = mt
         seed_bval["main"] = m                           # assign breeding values
         seed_bval["main_true"] = mt                     # assign true breeding values
 
@@ -304,7 +309,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             seed_geno["queue"].append(tmp)                  # append subset to queue
 
         ### populate "main" field in seed_gmod ###
-        seed_gmod = calop.calibrate(
+        seed_gmod, misc = calop.calibrate(
             t_cur = -1,
             t_max = t_max,
             geno = seed_geno,

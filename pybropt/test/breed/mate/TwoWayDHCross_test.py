@@ -32,19 +32,21 @@ def dpgvmat(shared_datadir, egmap, gmapfn):
     yield dpgvmat
 
 @pytest.fixture
-def twoway():
-    yield TwoWayDHCross()
-
-@pytest.fixture
 def rng():
     yield Generator(PCG64(543212345))
+
+@pytest.fixture
+def twoway(rng):
+    yield TwoWayDHCross(
+        rng = rng
+    )
 
 @pytest.fixture
 def sel():
     yield numpy.int64([0,1,0,2,1,2])
 
 def test_mate(twoway, dpgvmat, sel, rng):
-    progeny, misc = twoway.mate(0, 10, dpgvmat, sel, 1, 2, rng, s = 0)
+    progeny, misc = twoway.mate(0, 10, dpgvmat, sel, 1, 2, s = 0)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")

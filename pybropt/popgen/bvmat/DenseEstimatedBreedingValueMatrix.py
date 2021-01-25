@@ -71,6 +71,17 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         return locals()
     taxa = property(**taxa())
 
+    def ntaxa():
+        doc = "The ntaxa property."
+        def fget(self):
+            return self._mat.shape[0]
+        def fset(self, value):
+            error_readonly("ntaxa")
+        def fdel(self):
+            error_readonly("ntaxa")
+        return locals()
+    ntaxa = property(**ntaxa())
+
     def taxa_grp():
         doc = "The taxa_grp property."
         def fget(self):
@@ -340,23 +351,42 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         **kwargs
             Additional keyword arguments.
         """
-        ndim = self._mat.ndim           # get number of dimensions
-        rndim = 0 if self._raw is None else self._raw.ndim
-        axis = get_axis(axis, ndim)     # get axis
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
 
-        # construct slicing tuples
-        sel0 = slice(None) if axis != 0 else obj    # taxa axis
-        sel1 = slice(None) if axis != 1 else obj    # trait axis
-        selm = tuple(slice(None) if e != axis else obj for e in range(ndim))
-        selr = tuple(slice(None) if e != axis else obj for e in range(rndim))
+        # initialize to null pointers
+        mat_sel = None
+        raw_sel = None
+        taxa_sel = None
+        taxa_grp_sel = None
+        trait_sel = None
+
+        # custom selections along each axis
+        if axis == 0:   # taxa axis
+            mat_sel = self._mat[obj,:]
+            if self._raw is not None:
+                raw_sel = self._raw[:,obj,:]
+            if self._taxa is not None:
+                taxa_sel = self._taxa[obj]
+            if self._taxa_grp is not None:
+                taxa_grp_sel = self._taxa_grp[obj]
+            trait_sel = self._trait
+        elif axis == 1: # trait axis
+            mat_sel = self._mat[:,obj]
+            if self._raw is not None:
+                raw_sel = self._raw[:,:,obj]
+            taxa_sel = self._taxa
+            taxa_grp_sel = self._taxa_grp
+            if self._trait is not None:
+                trait_sel = self._trait[obj]
 
         # select elements
         dbvmat = DenseEstimatedBreedingValueMatrix(
-            mat = self._mat[selm],
-            raw = None if self._raw is None else self._raw[selr],
-            trait = None if self._trait is None else self._trait[sel1],
-            taxa = None if self._taxa is None else self._taxa[sel0],
-            taxa_grp = None if self._taxa_grp is None else self._taxa_grp[sel0]
+            mat = mat_sel,
+            raw = raw_sel,
+            trait = trait_sel,
+            taxa = taxa_sel,
+            taxa_grp = taxa_grp_sel
         )
 
         return dbvmat

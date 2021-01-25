@@ -356,6 +356,8 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         ----------
         values : numpy.ndarray
             Values are appended to append to the matrix.
+            Must be of type int8.
+            Must be of shape (m, n, p)
         axis : int
             The axis along which values are appended.
         """
@@ -365,7 +367,9 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # error check before additions are made to the matrix
         if axis == 1:
             if (self._taxa is not None) and (taxa is None):
-                raise RuntimeError("cannot append: taxa argument is required")
+                # in the special case of no taxa names, fill with empty strings
+                taxa = ["" for _ in range(values.shape[1])]
+                # raise RuntimeError("cannot append: taxa argument is required")
             if (self._taxa_grp is not None) and (taxa_grp is None):
                 raise RuntimeError("cannot append: taxa_grp argument is required")
         elif axis == 2:
