@@ -116,7 +116,7 @@ class FamilyPhenotypicSurvivorSelection(SurvivorSelectionOperator):
         # update cand fields
         # print(geno["main"].mat.shape)
         # print(bval["main"].mat.shape)
-        # print(len(sel))
+        # print("sel:", sel)
         geno_new["cand"] = geno["main"].select(sel, axis = 1)
         bval_new["cand"] = bval["main"].select(sel, axis = 0)
         bval_new["cand_true"] = bval["main_true"].select(sel, axis = 0)
@@ -130,7 +130,7 @@ class FamilyPhenotypicSurvivorSelection(SurvivorSelectionOperator):
         """
         Return a parent selection objective function.
         """
-        mat = bval["cand"].mat      # breeding value matrix
+        mat = bval["main"].mat      # breeding value matrix
 
         def objfn(sel, mat = mat, traitwt = traitwt):
             """
@@ -184,7 +184,7 @@ class FamilyPhenotypicSurvivorSelection(SurvivorSelectionOperator):
         """
         Return a vectorized objective function.
         """
-        mat = bval["cand"].mat      # breeding value matrix
+        mat = bval["main"].mat      # breeding value matrix
 
         def objfn_vec(sel, mat = mat, traitwt = traitwt):
             """

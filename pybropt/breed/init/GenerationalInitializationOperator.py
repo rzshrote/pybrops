@@ -125,12 +125,16 @@ class GenerationalInitializationOperator(InitializationOperator):
         geno = self.seed_geno
         bval = self.seed_bval
         gmod = self.seed_gmod
+        print("cand:", geno["cand"].taxa_grp)
 
         for t in range(self.burnin):
-            print(t)
+            print("################################################################################")
+            print("iteration:", t)
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
+            # print("main:", geno["main"].taxa_grp)
+            # print("cand:", geno["cand"].taxa_grp)
             pgvmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
                 t_cur = t,
                 t_max = self.t_max,
@@ -138,7 +142,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 bval = bval,
                 gmod = gmod
             )
-
+            # print("pgvmat:", pgvmat.taxa_grp)
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
@@ -160,7 +164,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 pgvmat = pgvmat,
                 geno = geno,
             )
-            print("4:",geno_tmp["main"].mat.shape)
+            print("gintegrate:",geno_tmp["main"].mat.shape)
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
@@ -170,7 +174,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 pgvmat = geno_tmp["main"],
                 gmod_true = gmod["true"]
             )
-            print("5:",geno_tmp["main"].mat.shape)
+            # print("evaluate:",geno_tmp["main"].mat.shape)
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
@@ -181,7 +185,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 bvmat_true = bvmat_true,
                 bval = bval,
             )
-            print("6:",bval_tmp["main"].mat.shape)
+            # print("bvintegrate:",bval_tmp["main"].mat.shape)
             ####################################################################
             ######################### calibrate models #########################gmod
             ####################################################################
@@ -211,6 +215,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             geno = geno_new
             bval = bval_new
             gmod = gmod_new
+            print("cand:", geno["cand"].taxa_grp)
 
         return geno, bval, gmod
 

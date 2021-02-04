@@ -50,7 +50,7 @@ def gwind():
 
 @pytest.fixture
 def gmult():
-    yield 10000
+    yield 1000
 
 @pytest.fixture
 def size(gqlen):
@@ -82,7 +82,7 @@ def gmod_true(rng):
 
 @pytest.fixture
 def burnin():
-    yield 10
+    yield 20
 
 @pytest.fixture
 def t_max():
@@ -167,3 +167,4 @@ def initop(dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, 
 ################################################################################
 def test_initialize(initop):
     initop.initialize()
+    raise RuntimeError

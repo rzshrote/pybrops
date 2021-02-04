@@ -50,22 +50,24 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
             geno_new["queue"].append(None)          # append None to length
         geno_new["queue"].append(pgvmat)            # add pgvmat to end of queue
         new_geno = geno_new["queue"].pop(0)         # pop new genotypes from queue
-
-        # calculate the taxa_grp minimum threshold
-        taxa_min = (t_cur - (self.gqlen + self.gwind)) * self.gmult
+        # print("0:", new_geno.taxa_grp)
+        # calculate the taxa_grp minimum threshold ('+ 1' is necessary!)
+        taxa_min = (t_cur - (self.gqlen + self.gwind) + 1) * self.gmult
 
         # process genotype main
-        mask = geno_new["main"].taxa_grp < taxa_min     # create genotype mask
-        print("1:",geno_new["main"].mat.shape)
+        # print("taxa_min:", taxa_min)
+        # print("taxa_grp:", geno_new["main"].taxa_grp)
+        mask = geno_new["main"].taxa_grp < taxa_min    # create genotype mask
+        # print("1:",geno_new["main"].mat.shape)
         geno_new["main"].delete(mask, axis = 1)         # delete old taxa
-        print("2:",geno_new["main"].mat.shape)
+        # print("2:",geno_new["main"].mat.shape)
         geno_new["main"].append(                        # add new taxa
             values = new_geno.mat,
             axis = 1,
             taxa = new_geno.taxa,
             taxa_grp = new_geno.taxa_grp,
         )
-        print("3:",geno_new["main"].mat.shape)
+        # print("3:",geno_new["main"].mat.shape)
 
         # empty dictionary
         misc = {}
