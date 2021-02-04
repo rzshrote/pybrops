@@ -15,6 +15,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 from pybropt.popgen.gmap import check_is_GeneticMap
 from pybropt.popgen.gmap import check_is_GeneticMapFunction
@@ -129,7 +130,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._vrnt_name
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_name")
-            cond_check_ndarray_dtype(value, "vrnt_name", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "vrnt_name")
             cond_check_ndarray_ndim(value, "vrnt_name", 1)
             cond_check_ndarray_axis_len(value, "vrnt_name", 0, self._mat.shape[2])
             self._vrnt_name = value
@@ -262,7 +263,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             return self._taxa
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype(value, "taxa", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "taxa")
             cond_check_ndarray_ndim(value, "taxa", 1)
             cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[1])
             self._taxa = value
@@ -816,7 +817,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         vcf = cyvcf2.VCF(fname)
 
         # extract taxa names from vcf header
-        taxa = numpy.string_(vcf.samples)
+        taxa = numpy.object_(vcf.samples)
 
         # make empty lists to store extracted values
         mat = []
@@ -833,7 +834,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             vrnt_phypos.append(variant.POS)
 
             # append marker name
-            vrnt_name.append(variant.ID)
+            vrnt_name.append(str(variant.ID))
 
             # extract allele states + whether they are phased or not
             phases = numpy.int8(variant.genotypes)
@@ -851,7 +852,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # convert to numpy.ndarray
         vrnt_chrgrp = numpy.int64(vrnt_chrgrp)  # convert to int64 array
         vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
-        vrnt_name = numpy.string_(vrnt_name)    # convert to string array
+        vrnt_name = numpy.object_(vrnt_name)    # convert to object array
 
         pvm = DensePhasedGenotypeVariantMatrix(
             mat = mat,

@@ -9,7 +9,7 @@ from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_is_str
 from pybropt.core.error import cond_check_ndarray_axis_len
-from pybropt.core.error import cond_check_ndarray_dtype_is_string
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
 
 from pybropt.popgen.bvmat import DenseGenotypicEstimatedBreedingValueMatrix
@@ -36,7 +36,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
                 p : is the number of genomic loci.
                 t : is the number of traits.
         trait : numpy.ndarray, None
-            A numpy.string_ array of shape (t,).
+            A numpy.object_ array of shape (t,).
             Where:
                 t : is the number of traits.
         model_name : str, None
@@ -121,7 +121,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         def fset(self, value):
             cond_check_is_ndarray(value, "trait")
             cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_dtype_is_string(value, "trait")
+            cond_check_ndarray_dtype_is_object(value, "trait")
             cond_check_ndarray_axis_len(value, "trait", 0, self._mu.shape[0])
             self._trait = value
         def fdel(self):

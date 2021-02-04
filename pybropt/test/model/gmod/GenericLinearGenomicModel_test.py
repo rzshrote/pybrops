@@ -34,7 +34,7 @@ def beta():
 
 @pytest.fixture
 def trait():
-    yield numpy.string_(["protein", "yield", "quality"])
+    yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
 def model_name():
@@ -79,7 +79,7 @@ def mat_phypos():
 
 @pytest.fixture
 def mat_taxa():
-    yield numpy.string_(["Line1", "Line2", "Line3", "Line4", "Line5"])
+    yield numpy.object_(["Line1", "Line2", "Line3", "Line4", "Line5"])
 
 @pytest.fixture
 def mat_taxa_grp():

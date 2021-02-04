@@ -13,6 +13,7 @@ from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import check_is_not_None
 from pybropt.core.error import cond_check_is_str
 from pybropt.core.error import check_ndarray_size
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 class ExtendedGeneticMap(GeneticMap):
     """docstring for ExtendedGeneticMap."""
@@ -103,7 +104,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_name
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_name")
-            cond_check_ndarray_dtype(value, "vrnt_name", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "vrnt_name")
             cond_check_ndarray_ndim(value, "vrnt_name", 1)
             self._vrnt_name = value
         def fdel(self):
@@ -117,7 +118,7 @@ class ExtendedGeneticMap(GeneticMap):
             return self._vrnt_fncode
         def fset(self, value):
             cond_check_is_ndarray(value, "vrnt_fncode")
-            cond_check_ndarray_dtype(value, "vrnt_fncode", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "vrnt_fncode")
             cond_check_ndarray_ndim(value, "vrnt_fncode", 1)
             self._vrnt_fncode = value
         def fdel(self):
@@ -972,8 +973,8 @@ class ExtendedGeneticMap(GeneticMap):
         vrnt_phypos = numpy.int64(vrnt_phypos)
         vrnt_stop = numpy.int64(vrnt_stop)
         vrnt_genpos = numpy.float64(vrnt_genpos)
-        vrnt_name = numpy.string_([str(e) for e in vrnt_name]) if vrnt_name is not None else None
-        vrnt_fncode = numpy.string_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
+        vrnt_name = numpy.object_([str(e) for e in vrnt_name]) if vrnt_name is not None else None
+        vrnt_fncode = numpy.object_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
 
         # construct the gmap object
         genetic_map = ExtendedGeneticMap(

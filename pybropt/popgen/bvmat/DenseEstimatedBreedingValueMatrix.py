@@ -12,6 +12,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     """docstring for DenseEstimatedBreedingValueMatrix."""
@@ -62,7 +63,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             return self._taxa
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype(value, "taxa", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "taxa")
             cond_check_ndarray_ndim(value, "taxa", 1)
             cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
             self._taxa = value
@@ -193,7 +194,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             return self._trait
         def fset(self, value):
             cond_check_is_ndarray(value, "trait")
-            cond_check_ndarray_dtype(value, "trait", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "trait")
             cond_check_ndarray_ndim(value, "trait", 1)
             cond_check_ndarray_axis_len(value, "trait", 0, self._mat.shape[1])
             self._trait = value

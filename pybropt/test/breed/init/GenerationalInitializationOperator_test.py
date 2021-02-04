@@ -69,7 +69,7 @@ def rng():
 def gmod_true(rng):
     mu = rng.uniform(100, 200, (3,1))
     beta = rng.normal(0.0, 1.0, (1000,3))
-    trait = numpy.string_(["yield", "protein", "oil"])
+    trait = numpy.object_(["yield", "protein", "oil"])
     model_name = "test_true"
     params = {}
     yield GenericLinearGenomicModel(

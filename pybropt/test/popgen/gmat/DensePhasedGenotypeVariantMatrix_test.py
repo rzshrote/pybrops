@@ -41,7 +41,7 @@ def mat_genpos():
 
 @pytest.fixture
 def mat_taxa():
-    a = numpy.string_(["NA00001", "NA00002", "NA00003"])
+    a = numpy.object_(["NA00001", "NA00002", "NA00003"])
     yield a
 
 @pytest.fixture

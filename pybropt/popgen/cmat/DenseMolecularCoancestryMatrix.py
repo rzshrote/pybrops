@@ -7,6 +7,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_all_equal
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseMolecularCoancestryMatrix."""
@@ -35,7 +36,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             return self._taxa
         def fset(self, value):
             cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype(value, "taxa", numpy.string_)
+            cond_check_ndarray_dtype_is_object(value, "taxa")
             cond_check_ndarray_ndim(value, "taxa", 1)
             cond_check_ndarray_axis_len(value, "taxa", 0, self._gmat.geno.shape[0])
             self._taxa = value
@@ -274,7 +275,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         ####################################################
         ### Construct DenseMolecularCoancestryMatrix
         # copy taxa data if available
-        taxa = numpy.string_(gmat.taxa) if gmat.taxa is not None else None
+        taxa = numpy.object_(gmat.taxa) if gmat.taxa is not None else None
         taxa_grp = numpy.int64(gmat.taxa_grp) if gmat.taxa_grp is not None else None
 
         # construct basic object
