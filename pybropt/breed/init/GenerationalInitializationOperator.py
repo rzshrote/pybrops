@@ -125,7 +125,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         geno = self.seed_geno
         bval = self.seed_bval
         gmod = self.seed_gmod
-        print("cand:", geno["cand"].taxa_grp)
+        # print("cand:", geno["cand"].taxa_grp)
 
         for t in range(self.burnin):
             print("################################################################################")
@@ -215,7 +215,9 @@ class GenerationalInitializationOperator(InitializationOperator):
             geno = geno_new
             bval = bval_new
             gmod = gmod_new
-            print("cand:", geno["cand"].taxa_grp)
+            # print("cand:", geno["cand"].taxa_grp)
+            print("cand:", geno["cand"].mat.shape)
+            print("cand mean:", bval["cand"].mat.mean(0))
 
         return geno, bval, gmod
 
@@ -223,12 +225,9 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
+    def from_dpgvmat(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = False):
         # perform error checks
-        check_is_dict(size, "size")
-        check_keys_in_dict(size, "size", "cand", "main", "queue")
         check_is_Generator(rng, "rng")
-        check_is_int(gmult, "gmult")
         check_is_GenomicModel(gmod_true, "gmod_true")
 
         check_is_int(burnin, "burnin")
@@ -243,25 +242,12 @@ class GenerationalInitializationOperator(InitializationOperator):
         check_is_SurvivorSelectionOperator(sselop, "sselop")
 
         ####################################################
-        ### step 1: count individuals and available taxa ###
+        ### step 1: count available taxa ###
         ####################################################
-        nindiv = size["main"] + sum(size["queue"])
         ntaxa = dpgvmat.ntaxa
 
-        ##################################
-        ### step 2: sample individuals ###
-        ##################################
-        if replace:
-            ix = rng.choice(ntaxa, nindiv, replace = True)          # sample with replacement
-        else:
-            ix = numpy.concatenate([
-                numpy.repeat(numpy.arange(ntaxa), nindiv//ntaxa),   # sample all
-                rng.choice(ntaxa, nindiv, replace = False)          # sample remaining
-            ])
-            rng.shuffle(ix) # shuffle everything
-
         ###################################################################
-        ### step 3: define and populate seed_geno, seed_bval, seed_gmod ###
+        ### step 2: define and populate seed_geno, seed_bval, seed_gmod ###
         ###################################################################
         # define seed_geno
         seed_geno = {
@@ -280,38 +266,69 @@ class GenerationalInitializationOperator(InitializationOperator):
 
         # define seed_gmod
         seed_gmod = {
-            "cand" : None,
-            "main" : None,
+            "cand" : gmod_true,
+            "main" : gmod_true,
             "true" : gmod_true
         }
 
-        # step 4: randomly partition into cohorts
-        stix = 0            # start pointer
-        spix = size["main"] # stop pointer
+        # populate main population
+        for i in range(gwind):
+            # get random selections
+            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
+            # mate random selections
+            pgvmat, misc = mateop.mate(
+                t_cur = i - (gwind + gqlen),
+                t_max = t_max,
+                pgvmat = dpgvmat,
+                sel = sel,
+                ncross = seed_ncross,
+                nprogeny = seed_nprogeny
+            )
+            # print(pgvmat.taxa_grp)
+            # append genotypes
+            if seed_geno["main"] is not None:
+                seed_geno["main"].append(
+                    pgvmat.mat,
+                    axis = 1,
+                    taxa = pgvmat.taxa,
+                    taxa_grp = pgvmat.taxa_grp
+                )
+            else:
+                seed_geno["main"] = pgvmat
 
-        ##### populate "main" fields in seed_geno, seed_bval #####
-        tmp = dpgvmat.select(ix[stix:spix], axis = 1)   # subset genotypes (new object)
-        tmp.taxa_grp = numpy.arange(stix, spix) - gmult # add family/gen lables; should be < 0 for founder
-        seed_geno["cand"] = tmp
-        seed_geno["main"] = tmp                         # add subset to dict
-        m, mt, misc = evalop.evaluate(                  # initial evaluation of main population
-            t_cur = -1,
+        for i in range(gqlen):
+            # get random selections
+            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
+            # mate random selections
+            pgvmat, misc = mateop.mate(
+                t_cur = i - gqlen,
+                t_max = t_max,
+                pgvmat = dpgvmat,
+                sel = sel,
+                ncross = seed_ncross,
+                nprogeny = seed_nprogeny
+            )
+            # append genotypes to list
+            seed_geno["queue"].append(pgvmat)
+
+        # phenotype main population
+        bvmat, bvmat_true, misc = evalop.evaluate(
+            t_cur = -gqlen - 1,
             t_max = t_max,
             pgvmat = seed_geno["main"],
             gmod_true = seed_gmod["true"]
         )
-        seed_bval["cand"] = m
-        seed_bval["cand_true"] = mt
-        seed_bval["main"] = m                           # assign breeding values
-        seed_bval["main_true"] = mt                     # assign true breeding values
+        seed_bval["main"] = bvmat
+        seed_bval["main_true"] = bvmat_true
 
-        ##### populate "queue" field in seed_geno with genotypes #####
-        for l in size["queue"]:                             # for each length in queue
-            stix = spix                                     # advance start pointer
-            spix += l                                       # advance stop pointer
-            tmp = dpgvmat.select(ix[stix:spix], axis = 1)   # subset genotypes (new object)
-            tmp.taxa_grp = numpy.arange(stix, spix) - gmult # add family/gen lables; should be < 0 for founder
-            seed_geno["queue"].append(tmp)                  # append subset to queue
+        # select survivors to fill breeding candidates
+        seed_geno, seed_bval, seed_gmod, misc = sselop.sselect(
+            t_cur = -gqlen - 1,
+            t_max = t_max,
+            geno = seed_geno,
+            bval = seed_bval,
+            gmod = seed_gmod
+        )
 
         ### populate "main" field in seed_gmod ###
         seed_gmod, misc = calop.calibrate(
@@ -340,7 +357,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
+    def from_vcf(fname, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
         """
         Create a GenerationalInitializationOperator from a VCF file.
 
@@ -376,9 +393,13 @@ class GenerationalInitializationOperator(InitializationOperator):
 
         # step 2: create from genotype matrix
         geninitop = GenerationalInitializationOperator.from_dpgvmat(
-            size = size,
+            dpgvmat = dpgvmat,
             rng = rng,
-            gmult = gmult,
+            seed_nsel = seed_nsel,
+            seed_ncross = seed_ncross,
+            seed_nprogeny = seed_nprogeny,
+            gqlen = gqlen,
+            gwind = gwind,
             gmod_true = gmod_true,
             burnin = burnin,
             t_max = t_max,

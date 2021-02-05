@@ -41,6 +41,18 @@ def dpgvmat(shared_datadir, gmap, gmapfn):
     yield result
 
 @pytest.fixture
+def k_p():
+    yield 40
+
+@pytest.fixture
+def ncross():
+    yield 1
+
+@pytest.fixture
+def nprogeny():
+    yield 80
+
+@pytest.fixture
 def gqlen():
     yield 3
 
@@ -89,12 +101,12 @@ def t_max():
     yield 20
 
 @pytest.fixture
-def pselop(rng):
+def pselop(k_p, ncross, nprogeny, rng):
     yield ConventionalPhenotypicParentSelection(
-        k_p = 20,
+        k_p = k_p,
         traitwt_p = numpy.float64([1.0, 1.0, 1.0]),
-        ncross = 1,
-        nprogeny = 20,
+        ncross = ncross,
+        nprogeny = nprogeny,
         rng = rng
     )
 
@@ -142,12 +154,31 @@ def sselop(rng):
     )
 
 @pytest.fixture
-def initop(dpgvmat, size, rng, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+def seed_nsel(k_p):
+    yield k_p
+
+@pytest.fixture
+def seed_ncross(ncross):
+    yield ncross
+
+@pytest.fixture
+def seed_nprogeny(nprogeny):
+    yield nprogeny
+
+@pytest.fixture
+def seed_ncross():
+    yield 1
+
+@pytest.fixture
+def initop(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
     result = GenerationalInitializationOperator.from_dpgvmat(
         dpgvmat = dpgvmat,
-        size = size,
         rng = rng,
-        gmult = gmult,
+        seed_nsel = seed_nsel,
+        seed_ncross = seed_ncross,
+        seed_nprogeny = seed_nprogeny,
+        gqlen = gqlen,
+        gwind = gwind,
         gmod_true = gmod_true,
         burnin = burnin,
         t_max = t_max,
