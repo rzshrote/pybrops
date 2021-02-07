@@ -256,7 +256,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 
         # check if we have subroutines to calculate coancestry
         if ploidy not in [1,2]:
-            raise RuntimeError("Genotype ploidy level %s not supported." % ploidy)
+            raise RuntimeError("Genotype ploidy level {0} not supported".format(ploidy))
 
         # get genotype matrix
         X = gmat.tacount()
@@ -269,6 +269,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             Y = 1 - X                                   # calculate complement to X
             mat = rnloci * ((X @ X.T) + (Y @ Y.T))      # (1/m)(XX' + YY')
         elif ploidy == 2:
+            X -= 1                                      # {-1,0,1} format
             mat = 0.5 * (1.0 + (rnloci * (X @ X.T)))    # (1/2)(1+((1/m)XX'))
         ####################################################
 

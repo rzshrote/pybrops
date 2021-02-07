@@ -1,10 +1,20 @@
-from . import SurvivorSelectionOperator
+from . import ParentSelectionOperator
 
-class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
-    """docstring for ConventionalGenomicSurvivorSelection."""
+from pybropt.core.error import check_is_int
+from pybropt.core.error import check_is_ndarray
 
+class WeightedGenomicSurvivorSelection(ParentSelectionOperator):
+    """docstring for WeightedGenomicSurvivorSelection."""
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, k_s, traitwt_s, rng, **kwargs):
-        super(ConventionalGenomicSurvivorSelection, self).__init__(**kwargs)
+        super(WeightedGenomicSurvivorSelection, self).__init__(**kwargs)
+
+        # error checks
+        check_is_int(k_s, "k_s")
+        cond_check_is_ndarray(traitwt_s, "traitwt_s")
 
         # variable assignment
         self.k_s = k_s
@@ -133,8 +143,16 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
         mat = geno["cand"].mat      # genotype matrix
         mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
+        afreq = gmod["cand"].afreq()    # get allele frequencies
+        fafreq = numpy.where(           # get favorable allele frequencies
+            beta > 0.0,                 # if dominant (1) allele is beneficial
+            afreq,                      # get dominant allele frequency
+            1.0 - afreq                 # else get recessive allele frequency
+        )
+        fafreq[fafreq <= 0.0] = 1.0     # avoid division by zero/imaginary
+        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
-        def objfn(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
+        def objfn(sel, mat = mat, mu = mu, beta = beta, betawt = betawt, traitwt = traitwt):
             """
             Score a population of individuals based on Conventional Genomic Selection
             (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -166,6 +184,14 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
                 Where:
                     'p' is the number of markers.
                     't' is the number of traits.
+            betawt : numpy.ndarray
+                Multiplicative marker weights matrix to apply to the trait
+                prediction coefficients provided of shape (p, t).
+                Where:
+                    'p' is the number of markers.
+                    't' is the number of traits.
+                Trait prediction coefficients (beta) are transformed as follows:
+                    beta_new = beta ⊙ betawt (Hadamard product)
             traitwt : numpy.ndarray, None
                 A trait objective coefficients matrix of shape (t,).
                 Where:
@@ -190,7 +216,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
             # Step 1: (m,k,p) -> (k,p)
             # Step 2: (k,p) . (p,t) -> (k,t)
             # Step 3: (k,t) + (1,t) -> (k,t)
-            cgs = mat[:,sel,:].sum(0).dot(beta) + mu.T
+            cgs = mat[:,sel,:].sum(0).dot(beta*betawt) + mu.T
 
             # apply objective weights
             # (k,t) . (t,) -> (k,)
@@ -208,8 +234,16 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
         mat = geno["cand"].mat      # genotype matrix
         mu = gmod["cand"].mu        # trait means
         beta = gmod["cand"].beta    # regression coefficients
+        afreq = gmod["cand"].afreq()    # get allele frequencies
+        fafreq = numpy.where(           # get favorable allele frequencies
+            beta > 0.0,                 # if dominant (1) allele is beneficial
+            afreq,                      # get dominant allele frequency
+            1.0 - afreq                 # else get recessive allele frequency
+        )
+        fafreq[fafreq <= 0.0] = 1.0     # avoid division by zero/imaginary
+        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
-        def objfn_vec(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
+        def objfn(sel, mat = mat, mu = mu, beta = beta, betawt = betawt, traitwt = traitwt):
             """
             Score a population of individuals based on Conventional Genomic Selection
             (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -240,6 +274,14 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
                 Where:
                     'p' is the number of markers.
                     't' is the number of traits.
+            betawt : numpy.ndarray
+                Multiplicative marker weights matrix to apply to the trait
+                prediction coefficients provided of shape (p, t).
+                Where:
+                    'p' is the number of markers.
+                    't' is the number of traits.
+                Trait prediction coefficients (beta) are transformed as follows:
+                    beta_new = beta ⊙ betawt (Hadamard product)
             traitwt : numpy.ndarray, None
                 A trait objective coefficients matrix of shape (t,).
                 Where:
@@ -262,7 +304,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
             # (m,j,k,p) -> (j,k,p)
             # (j,k,p) . (p,t) -> (j,k,t)
             # (j,k,t) + (1,t) -> (j,k,t)
-            cgs = mat[:,sel,:].sum(0).dot(beta) + mu.T
+            cgs = mat[:,sel,:].sum(0).dot(beta*betawt) + mu.T
 
             # (j,k,t) . (t,) -> (j,k)
             if traitwt is not None:
