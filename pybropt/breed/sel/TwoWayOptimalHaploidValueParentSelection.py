@@ -1,3 +1,6 @@
+import numpy
+from sklearn.cluster import KMeans
+
 from . import ParentSelectionOperator
 
 from pybropt.core.error import check_is_int
@@ -31,7 +34,7 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def calc_nmkr(self, genpos, chrgrp_stix, chrgrp_spix):
+    def calc_nblk(self, genpos, chrgrp_stix, chrgrp_spix):
         """
         Determine the number of markers to give per chromosome
         """
@@ -39,58 +42,90 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         genlen = genpos[chrgrp_spix-1] - genpos[chrgrp_stix]
 
         # calculate ideal number of markers per chromosome
-        nmkr_ideal = (self.b_p / genlen.sum()) * genlen
+        nblk_ideal = (self.b_p / genlen.sum()) * genlen
 
         # calculate number of chromosome markers, assuming at least one per chromosome
-        nmkr_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
+        nblk_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
 
         for i in range(self.b_p - nchr):    # forces conformance to self.b_p
-            diff = nmkr_int - nmkr_ideal    # take actual - ideal
+            diff = nblk_int - nblk_ideal    # take actual - ideal
             ix = diff.argmin()              # get index of lowest difference
-            nmkr_int[ix] += 1               # increment at lowest index
+            nblk_int[ix] += 1               # increment at lowest index
 
-        return nmkr_int
+        return nblk_int
 
-    def calc_hbin(self, nmkr, genpos, chrgrp_stix, chrgrp_spix):
-        # calculate genetic lengths of each chromosome
-        genpos_st = genpos[chrgrp_stix]
-        genpos_sp = genpos[chrgrp_spix-1]
-        genlen = genpos_sp - genpos_st
+    def calc_hbin(self, nblk, genpos, chrgrp_stix, chrgrp_spix):
+        # initialize
+        hbin = numpy.empty(     # create empty array
+            len(genpos),        # same length as number of markers
+            dtype = "int64"     # force integer
+        )
 
-        # create empty array
-        hbin = numpy.empty(len(genpos), dtype = "int64")
+        # for each chromosome
+        k = 0                                   # group counter
+        for ixst,ixsp,m in zip(chrgrp_stix,chrgrp_spix,nblk):
+            if m == 1:                          # if only one group in chromosome
+                hbin[ixst:ixsp] = k             # set to k
+                k += m                          # increment k
+                continue                        # skip to next iteration
+            km = KMeans(                        # fit kmeans model
+                n_clusters = m                  # m clusters
+            ).fit(genpos[ixst:ixsp,None])       # reshape to (n,1)
+            hbin[ixst:ixsp] = k + km.labels_    # add k to groups and copy to haplotype bins
+            k += m                              # increment k
 
-        # TODO: use k-means algorithm to solve marker dispersion
-        for ixst,ixsp,gest,gesp,l in zip(chrgrp_stix,chrgrp_spix,genpos_st,genpos_sp,genlen):
-            # create linspace
-            pos_ideal = numpy.linspace(gest, gesp, num=l+1)
+        # sanitize output
+        k = 0                           # group counter
+        prev = hbin[0]                  # get previous group label
+        hbin[0] = k                     # set element to k
+        for i in range(1,len(hbin)):    # for each element
+            if hbin[i] != prev:         # if there is a label switch
+                k += 1                  # increment k
+                prev = hbin[i]          # overwrite the previous group label
+            hbin[i] = k                 # set element to k
 
-
-        pass
+        return hbin
 
     def calc_hmat(self, geno, gmod):
-        geno        = geno["cand"].mat              # get genotypes
+        gmat        = geno["cand"].mat              # get genotypes
         genpos      = geno["cand"].vrnt_genpos      # get genetic positions
         chrgrp_stix = geno["cand"].vrnt_chrgrp_stix # get chromosome start indices
         chrgrp_spix = geno["cand"].vrnt_chrgrp_spix # get chromosome stop indices
         chrgrp_len  = geno["cand"].vrnt_chrgrp_len  # get chromosome marker lengths
+        beta        = gmod["cand"].beta             # get regression coefficients
 
-        if (vrnt_chrgrp_stix is None) or (vrnt_chrgrp_spix is None):
+        if (chrgrp_stix is None) or (chrgrp_spix is None):
             raise RuntimeError("markers are not sorted by chromosome position")
 
         # get number of chromosomes
-        nchr = len(vrnt_chrgrp_stix)
+        nchr = len(chrgrp_stix)
 
         if self.b_p < nchr:
             raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
 
-        # calculate number of markers to assign to each chromosome
-        nmkr = self.calc_nmkr(genpos, chrgrp_stix, chrgrp_spix)
+        # calculate number of marker blocks to assign to each chromosome
+        nblk = self.calc_nblk(genpos, chrgrp_stix, chrgrp_spix)
 
-        if numpy.any(nmkr > chrgrp_len):
-            raise RuntimeError("number of markers assigned to chromosome greater than number of available markers")
+        # ensure there are enough markers per chromosome
+        if numpy.any(nblk > chrgrp_len):
+            raise RuntimeError(
+                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
+            )
 
+        # calculate haplotype bins
+        hbin = self.calc_hbin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
+        # define shape
+        s = list(gmat.shape)    # copy (m, n, p)
+        s[-1] = self.b_p        # change p
+
+        # calculate haplotype matrix
+        hmat = numpy.empty(s, dtype = beta.dtype)
+
+        # fill haplotype matrix
+        for i in range(s[0]):
+            for j in range(s[1]):
+                hmat[i,j,:] = numpy.bincount(hbin, gmat[i,j,:] * beta)
         pass
 
     def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
@@ -324,11 +359,3 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
             return cgs
 
         return objfn_vec
-
-numpy.random.seed(42)
-genlen = numpy.random.uniform(0,2,5)
-mkrlen = 20*genlen/genlen.sum()
-out = numpy.ones(5, dtype="int")
-for i in range(20 - 5):
-    ix = (out - mkrlen).argmin()
-    out[ix] += 1
