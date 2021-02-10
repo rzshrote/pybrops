@@ -5,17 +5,17 @@ from . import ParentSelectionOperator
 
 from pybropt.core.error import check_is_int
 
-class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
-    """docstring for TwoWayOptimalHaploidValueParentSelection."""
+class OptimalPopulationValueParentSelection(ParentSelectionOperator):
+    """docstring for OptimalPopulationValueParentSelection."""
 
     def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng, **kwargs):
         """
         k_p : int
-            Number of crosses to select (1/2 number of parents).
+            Number of individuals to select (1/2 number of parents).
         b_p : int
             Number of haplotype blocks.
         """
-        super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
+        super(OptimalPopulationValueParentSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
@@ -256,18 +256,12 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
         def objfn(sel, mat = mat, traitwt = traitwt):
             """
-            Score a population of individuals based on Conventional Genomic Selection
-            (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-            Genomic Estimated Breeding Values (GEBV) for a population.
-
-            CGS selects the 'q' individuals with the largest GEBVs.
-
             Parameters
             ----------
             sel : numpy.ndarray, None
                 A selection indices matrix of shape (k,)
                 Where:
-                    'k' is the number of individuals to select. (k/2 pairs)
+                    'k' is the number of individuals to select.
                 Each index indicates which individuals to select.
                 Each index in 'sel' represents a single individual's row.
                 If 'sel' is None, use all individuals.
