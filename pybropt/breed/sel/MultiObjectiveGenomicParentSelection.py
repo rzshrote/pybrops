@@ -1,21 +1,32 @@
 import numpy
-from sklearn.cluster import KMeans
 
 from . import ParentSelectionOperator
 
 from pybropt.core.error import check_is_int
 
-class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
-    """docstring for TwoWayOptimalHaploidValueParentSelection."""
+class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
+    """docstring for MultiObjectiveGenomicParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, target, weight, rng, **kwargs):
         """
         k_p : int
-            Number of crosses to select (1/2 number of parents).
-        b_p : int
-            Number of haplotype blocks.
+            Number of parents to select.
+        target : str or numpy.ndarray
+            If target is a string, check value and follow these rules:
+                Value         | Description
+                --------------+-------------------------------------------------
+                "positive"    | Select alleles with the most positive effect.
+                "negative"    | Select alleles with the most negate effect.
+                "stabilizing" | Set target allele frequency to 0.5.
+            If target is a numpy.ndarray, use values as is.
+        weight : str or numpy.ndarray
+            If weight is a string, check value and follow these rules:
+                Value       | Description
+                ------------+---------------------------------------------------
+                "magnitude" | Assign weights using the magnitudes of regression coefficients.
+                "equal"     | Assign weights equally.
         """
-        super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
+        super(MultiObjectiveGenomicParentSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
@@ -24,9 +35,10 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
-        self.b_p = b_p
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.target = target
+        self.weight = weight
         self.rng = rng
 
     ############################################################################
@@ -36,118 +48,34 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def calc_nblk(self, genpos, chrgrp_stix, chrgrp_spix):
-        """
-        Determine the number of markers to give per chromosome
-        """
-        # calculate genetic lengths of each chromosome
-        genlen = genpos[chrgrp_spix-1] - genpos[chrgrp_stix]
+    def calc_mkrwt(self, weight, beta):
+        if isinstance(weight, str):
+            if weight == "magnitude":           # return abs(beta)
+                return numpy.absolute(beta)
+            elif weight == "equal":             # return 1s matrix
+                return numpy.full(beta.shape, 1.0, dtype='float64')
+            else:
+                raise ValueError("string value for 'weight' not recognized")
+        elif isinstance(weight, numpy.ndarray):
+            return weight
+        else:
+            raise TypeError("variable 'weight' must be a string or numpy.ndarray")
 
-        # calculate ideal number of markers per chromosome
-        nblk_ideal = (self.b_p / genlen.sum()) * genlen
-
-        # calculate number of chromosome markers, assuming at least one per chromosome
-        nblk_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
-
-        for i in range(self.b_p - nchr):    # forces conformance to self.b_p
-            diff = nblk_int - nblk_ideal    # take actual - ideal
-            ix = diff.argmin()              # get index of lowest difference
-            nblk_int[ix] += 1               # increment at lowest index
-
-        return nblk_int
-
-    def calc_hbin(self, nblk, genpos, chrgrp_stix, chrgrp_spix):
-        # initialize
-        hbin = numpy.empty(     # create empty array
-            len(genpos),        # same length as number of markers
-            dtype = "int64"     # force integer
-        )
-
-        # for each chromosome
-        k = 0                                   # group counter
-        for ixst,ixsp,m in zip(chrgrp_stix,chrgrp_spix,nblk):
-            if m == 1:                          # if only one group in chromosome
-                hbin[ixst:ixsp] = k             # set to k
-                k += m                          # increment k
-                continue                        # skip to next iteration
-            km = KMeans(                        # fit kmeans model
-                n_clusters = m                  # m clusters
-            ).fit(genpos[ixst:ixsp,None])       # reshape to (n,1)
-            hbin[ixst:ixsp] = k + km.labels_    # add k to groups and copy to haplotype bins
-            k += m                              # increment k
-
-        # sanitize output
-        k = 0                           # group counter
-        prev = hbin[0]                  # get previous group label
-        hbin[0] = k                     # set element to k
-        for i in range(1,len(hbin)):    # for each element
-            if hbin[i] != prev:         # if there is a label switch
-                k += 1                  # increment k
-                prev = hbin[i]          # overwrite the previous group label
-            hbin[i] = k                 # set element to k
-
-        return hbin
-
-    def calc_hbin_bounds(self, hbin):
-        hstix = [0]                     # starting indices
-        hspix = []                      # stopping indices
-        prev = hbin[0]                  # get first group label
-        for i in range(1,len(hbin)):    # for each group label
-            if hbin[i] != prev:         # if the label is different
-                hspix.append(i)         # add the stop index for prev
-                prev = hbin[i]          # get next label
-                hstix.append(i)         # add the start index for next prev
-        hspix.append(len(hbin))         # append last stop index
-        hstix = numpy.int64(hstix)      # convert to ndarray
-        hspix = numpy.int64(hspix)      # convert to ndarray
-        hlen = hspix - hstix            # get lengths of each haplotype group
-        return hstix, hspix, hlen
-
-    def calc_hmat(self, gmat, mod):
-        mat         = gmat.mat              # get genotypes
-        genpos      = gmat.vrnt_genpos      # get genetic positions
-        chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
-        chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
-        chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        beta        = mod.beta              # get regression coefficients
-
-        if (chrgrp_stix is None) or (chrgrp_spix is None):
-            raise RuntimeError("markers are not sorted by chromosome position")
-
-        # get number of chromosomes
-        nchr = len(chrgrp_stix)
-
-        if self.b_p < nchr:
-            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
-
-        # calculate number of marker blocks to assign to each chromosome
-        nblk = self.calc_nblk(genpos, chrgrp_stix, chrgrp_spix)
-
-        # ensure there are enough markers per chromosome
-        if numpy.any(nblk > chrgrp_len):
-            raise RuntimeError(
-                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
-            )
-
-        # calculate haplotype bins
-        hbin = self.calc_hbin(nblk, genpos, chrgrp_stix, chrgrp_spix)
-
-        # define shape
-        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[0]) # (m,n,b,t)
-
-        # allocate haplotype matrix
-        hmat = numpy.empty(s, dtype = beta.dtype)   # (m,n,b,t)
-
-        # get boundary indices
-        hstix, hspix, hlen = self.calc_hbin_bounds(hbin)
-
-        # OPTIMIZE: perhaps eliminate one loop using dot function
-        # fill haplotype matrix
-        for i in range(s[0]):                               # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):   # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[i,st:sp])   # take dot product and fill
-
-        return hmat
+    def calc_tfreq(self, target, beta):
+        if isinstance(target, str):
+            if target == "positive":
+                return numpy.float64(beta >= 0.0)   # positive alleles are desired
+            elif target == "negative":
+                return numpy.float64(beta <= 0.0)   # negative alleles are desired
+            elif target == "stabilizing":
+                return 0.5                          # both alleles desired
+                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
+            else:
+                raise ValueError("string value for 'target' not recognized")
+        elif isinstance(target, numpy.ndarray):
+            return target
+        else:
+            raise TypeError("variable 'target' must be a string or numpy.ndarray")
 
     def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
         """
@@ -247,72 +175,166 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitobjwt, traitsum, objsum, **kwargs):
         """
         Return a parent selection objective function.
         """
-        # get haplotype matrix
-        mat = self.calc_hmat(geno["cand"], gmod["cand"])    # (t,m,n,h)
+        mat = geno["cand"].mat                      # (m,n,p) get genotype matrix
+        beta = gmod["cand"].beta                    # (p,t) get regression coefficients
+        mkrwt = self.calc_mkrwt(self.weight, beta)  # (p,t) get marker weights
+        tfreq = self.calc_tfreq(self.target, beta)  # (p,t) get target allele frequencies
 
-        def objfn(sel, mat = mat, traitwt = traitwt):
+        def objfn(sel, mat = mat, tfreq = tfreq, mkrwt = mkrwt, traitobjwt = traitobjwt, traitsum = traitsum, objsum = objsum):
             """
-            Score a population of individuals based on Conventional Genomic Selection
-            (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-            Genomic Estimated Breeding Values (GEBV) for a population.
+            Multi-objective genomic selection objective function.
+                The goal is to minimize this function. Lower is better.
+                This is a bare bones function. Minimal error checking is done.
 
-            CGS selects the 'q' individuals with the largest GEBVs.
+            Given a 2D weight vector 'dcoeff', calculate the Euclidian distance from the
+            origin according to:
+                dist = dot( dcoeff, F(x) )
+                Where:
+                    F(x) is a vector of objective functions:
+                        F(x) = < f_PAU(x), f_PAFD(x) >
+
+            f_PAU(x):
+
+            Given the provided genotype matrix 'geno' and row selections from it 'sel',
+            calculate the selection allele freq. From the selection allele frequencies
+            and the target allele frequencies, determine if the target frequencies
+            cannot be attained after unlimited generations and selection rounds.
+            Multiply this vector by a weight coefficients vector 'wcoeff'.
+
+            f_PAFD(x):
+
+            Given a genotype matrix, a target allele frequency vector, and a vector of
+            weights, calculate the distance between the selection frequency and the
+            target frequency.
 
             Parameters
-            ----------
+            ==========
             sel : numpy.ndarray, None
                 A selection indices matrix of shape (k,)
                 Where:
-                    'k' is the number of individuals to select. (k/2 pairs)
+                    'k' is the number of individuals to select.
                 Each index indicates which individuals to select.
                 Each index in 'sel' represents a single individual's row.
                 If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A haplotype effect matrix of shape (t, m, n, b).
+            mat : numpy.ndarray, None
+                A int8 binary genotype matrix of shape (m, n, p).
                 Where:
-                    't' is the number of traits.
                     'm' is the number of chromosome phases (2 for diploid, etc.).
                     'n' is the number of individuals.
-                    'b' is the number of haplotype blocks.
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
+                    'p' is the number of markers.
+                Remarks:
+                    Shape of the matrix is most critical. Underlying matrix
+                    operations will support other numeric data types.
+            tfreq : floating, numpy.ndarray
+                A target allele frequency matrix of shape (p, t).
                 Where:
-                    't' is the number of trait objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
+                    'p' is the number of markers.
+                    't' is the number of traits.
+                Example:
+                    tfreq = numpy.array([0.2, 0.6, 0.7])
+            mkrwt : numpy.ndarray
+                A marker weight coefficients matrix of shape (p, t).
+                Where:
+                    'p' is the number of markers.
+                    't' is the number of traits.
+                Remarks: Values in 'wcoeff' have an assumption:
+                    All values must be non-negative.
+            traitobjwt : numpy.ndarray, None
+                Combined trait weights and objective weights matrix.
+                This matrix must be compatible with shape (2,t).
+                Specifying:
+                    Only trait weights: (1,t)
+                    Only objective weights: (2,1)
+                    Trait and objective weights: (2,t)
+            traitsum : bool
+                Sum across traits.
+                If True:
+                    (2,t) -> (2,)
+                Else:
+                    (2,t)
+            objsum : bool
+                Sum across objectives.
+                If True:
+                    (2,t) -> (t,)
+                Else:
+                    (2,t)
 
             Returns
-            -------
-            cgs : numpy.ndarray
-                A GEBV matrix of shape (k, t) if objwt is None.
-                A GEBV matrix of shape (k,) if objwt shape is (t,)
-                Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
+            =======
+            mogs : numpy.ndarray
+                A MOGS score matrix of shape (2,t) or other.
             """
-            # get female and male selections
-            fsel = sel[0::2]
-            msel = sel[1::2]
+            # if no selection, select all
+            if sel is None:
+                sel = slice(None)
 
-            # construct selection tuple
-            s = tuple(zip(fsel,msel))
+            # generate a view of the geno matrix that only contains 'sel' rows.
+            # (m,(k,),p) -> (m,k,p)
+            sgeno = geno[:,sel,:]
 
-            # get max haplotype value
-            # (m,n,h,t)[:,(k/2,2),:,:] -> (m,k/2,2,h,t)
-            # (m,k/2,2,h,t).max((0,2)) -> (k/2,h,t)
-            # (k/2,h,t).sum(1) -> (k/2,t)
-            ohv = mat[:,s,:,:].max((0,2)).sum(1)
+            # calculate reciprocal number of phases
+            rphase = 1.0 / (sgeno.shape[0] * sgeno.shape[1])
 
-            # apply objective weights
-            # (k/2,t) dot (t,) -> (k/2,)
-            if traitwt is not None:
-                ohv = ohv.dot(traitwt)
+            # calculate population frequencies; add axis for correct broadcast
+            # (m,k,p).sum[0,1] -> (p,)
+            # (p,) * scalar -> (p,)
+            # (p,None) -> (p,1) # need (p,1) for broadcasting with (p,t) arrays
+            pfreq = (sgeno.sum((0,1)) * rphase)[:,None]
 
-            return ohv
+            # calculate some inequalities for use multiple times
+            pfreq_lteq_0 = (pfreq <= 0.0)   # is population freq <= 0.0
+            pfreq_gteq_1 = (pfreq >= 1.0)   # is population freq >= 1.0
+
+            # calculate allele unavailability
+            allele_unavail = numpy.where(
+                tfreq >= 1.0,           # if target freq >= 1.0 (should always be 1.0)
+                pfreq_lteq_0,           # then set True if sel has allele freq == 0
+                numpy.where(            # else
+                    tfreq > 0.0,        # if 0.0 < target freq < 1.0
+                    numpy.logical_or(   # then set True if pop freq is outside (0.0,1.0)
+                        pfreq_lteq_0,
+                        pfreq_gteq_1
+                    ),
+                    pfreq_gteq_1        # else set True if pop freq is >= 1.0
+                )
+            )
+
+            # calculate distance between target and population
+            # (p,t)-(p,1) -> (p,t)
+            dist = numpy.absolute(tfreq - pfreq)
+
+            # compute f_PAU(x)
+            # (p,t) * (p,t) -> (p,t)
+            # (p,t).sum[0] -> (t,)
+            pau = (wcoeff * allele_unavail).sum(0)
+
+            # compute f_PAFD(x)
+            # (p,t) * (p,t) -> (p,t)
+            # (p,t).sum[0] -> (t,)
+            pafd = (wcoeff * dist).sum(0)
+
+            # stack to make MOGS matrix
+            # (2,t)
+            mogs = numpy.stack([pau, pafd])
+
+            # weight traits
+            if traitobjwt is not None:
+                mogs *= traitobjwt
+
+            # sum across any axes as needed.
+            if objsum or traitsum:
+                axistuple = tuple()
+                if objsum:
+                    axistuple += (0,)
+                if traitsum:
+                    axistuple += (1,)
+                mogs = mogs.sum(axistuple)
+
+            return mogs
 
         return objfn
 

@@ -8,7 +8,7 @@ from pybropt.core.error import check_is_int
 class OptimalPopulationValueParentSelection(ParentSelectionOperator):
     """docstring for OptimalPopulationValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng, **kwargs):
         """
         k_p : int
             Number of individuals to select (1/2 number of parents).
@@ -27,6 +27,7 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         self.b_p = b_p
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.algorithm = algorithm
         self.rng = rng
 
     ############################################################################
@@ -231,17 +232,11 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
             traitwt = traitwt
         )
 
-        gebv = objfn(a)                         # get all GEBVs
-        if gebv.ndim == 1:                      # if there is one trait objective
-            pairs = gebv.argsort()[::-1][:k]    # get indices of top k GEBVs
-            self.rng.shuffle(pairs)             # shuffle indices
-            sel = []
-            for i in pairs:
-                sel.append(a[2*i])      # female index
-                sel.append(a[2*i+1])    # male index
-            sel = numpy.int64(sel)
-        elif gebv.ndim == 2:                    # TODO: ND-selection
-            raise RuntimeError("non-dominated genomic selection not implemented")
+        # optimize solution using algorithm
+        soln_dict = self.algorithm.optimize(objfn)
+
+        # extract solution
+        sel = soln_dict["soln"]
 
         misc = {}
 
@@ -266,12 +261,12 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
                 Each index in 'sel' represents a single individual's row.
                 If 'sel' is None, use all individuals.
             mat : numpy.ndarray
-                A haplotype effect matrix of shape (t, m, n, b).
+                A haplotype effect matrix of shape (m, n, b, t).
                 Where:
-                    't' is the number of traits.
                     'm' is the number of chromosome phases (2 for diploid, etc.).
                     'n' is the number of individuals.
                     'b' is the number of haplotype blocks.
+                    't' is the number of traits.
             traitwt : numpy.ndarray, None
                 A trait objective coefficients matrix of shape (t,).
                 Where:
@@ -288,96 +283,74 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
                     'k' is the number of individuals selected.
                     't' is the number of traits.
             """
-            # get female and male selections
-            fsel = sel[0::2]
-            msel = sel[1::2]
-
-            # construct selection tuple
-            s = tuple(zip(fsel,msel))
-
             # get max haplotype value
-            # (m,n,h,t)[:,(k/2,2),:,:] -> (m,k/2,2,h,t)
-            # (m,k/2,2,h,t).max((0,2)) -> (k/2,h,t)
-            # (k/2,h,t).sum(1) -> (k/2,t)
-            ohv = mat[:,s,:,:].max(0,2).sum(1)
+            # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+            # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+            # (h,t).sum(0) -> (t,)
+            opv = mat[:,sel,:,:].max((0,1)).sum(0)
 
             # apply objective weights
-            # (k/2,t) dot (t,) -> (k/2,)
+            # (t,) dot (t,) -> scalar
             if traitwt is not None:
-                ohv = ohv.dot(traitwt)
+                opv = opv.dot(traitwt)
 
-            return ohv
+            return opv
 
         return objfn
 
-    # TODO: implementation of this function
-    # def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
-    #     """
-    #     Return a vectorized objective function.
-    #     """
-    #     mat = geno["cand"].mat      # genotype matrix
-    #     mu = gmod["cand"].mu        # trait means
-    #     beta = gmod["cand"].beta    # regression coefficients
-    #
-    #     def objfn_vec(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
-    #         """
-    #         Score a population of individuals based on Conventional Genomic Selection
-    #         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-    #         Genomic Estimated Breeding Values (GEBV) for a population.
-    #
-    #         Parameters
-    #         ----------
-    #         sel : numpy.ndarray
-    #             A selection indices matrix of shape (j,k)
-    #             Where:
-    #                 'j' is the number of selection configurations.
-    #                 'k' is the number of individuals to select.
-    #             Each index indicates which individuals to select.
-    #             Each index in 'sel' represents a single individual's row.
-    #             If 'sel' is None, use all individuals.
-    #         mat : numpy.ndarray
-    #             A int8 binary genotype matrix of shape (m, n, p).
-    #             Where:
-    #                 'm' is the number of chromosome phases (2 for diploid, etc.).
-    #                 'n' is the number of individuals.
-    #                 'p' is the number of markers.
-    #         mu : numpy.ndarray
-    #             A trait mean matrix of shape (t, 1)
-    #             Where:
-    #                 't' is the number of traits.
-    #         beta : numpy.ndarray
-    #             A trait prediction coefficients matrix of shape (p, t).
-    #             Where:
-    #                 'p' is the number of markers.
-    #                 't' is the number of traits.
-    #         traitwt : numpy.ndarray, None
-    #             A trait objective coefficients matrix of shape (t,).
-    #             Where:
-    #                 't' is the number of objectives.
-    #             These are used to weigh objectives in the weight sum method.
-    #             If None, do not multiply GEBVs by a weight sum vector.
-    #
-    #         Returns
-    #         -------
-    #         cgs : numpy.ndarray
-    #             A trait GEBV matrix of shape (j,k,t) if objwt is None.
-    #             A trait GEBV matrix of shape (j,k) if objwt shape is (t,)
-    #             OR
-    #             A weighted GEBV matrix of shape (t,).
-    #             Where:
-    #                 'k' is the number of individuals selected.
-    #                 't' is the number of traits.
-    #         """
-    #         # (m,n,p)[:,(j,k),:] -> (m,j,k,p)
-    #         # (m,j,k,p) -> (j,k,p)
-    #         # (j,k,p) . (p,t) -> (j,k,t)
-    #         # (j,k,t) + (1,t) -> (j,k,t)
-    #         cgs = mat[:,sel,:].sum(0).dot(beta) + mu.T
-    #
-    #         # (j,k,t) . (t,) -> (j,k)
-    #         if traitwt is not None:
-    #             cgs = cgs.dot(traitwt)
-    #
-    #         return cgs
-    #
-    #     return objfn_vec
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+        """
+        Return a parent selection objective function.
+        """
+        # get haplotype matrix
+        mat = self.calc_hmat(geno["cand"], gmod["cand"])    # (t,m,n,h)
+
+        def objfn(sel, mat = mat, traitwt = traitwt):
+            """
+            Parameters
+            ----------
+            sel : numpy.ndarray, None
+                A selection indices matrix of shape (j,k)
+                Where:
+                    'j' is the number of configurations to score.
+                    'k' is the number of individuals to select.
+                Each index indicates which individuals to select.
+                Each index in 'sel' represents a single individual's row.
+                If 'sel' is None, use all individuals.
+            mat : numpy.ndarray
+                A haplotype effect matrix of shape (t, m, n, b).
+                Where:
+                    't' is the number of traits.
+                    'm' is the number of chromosome phases (2 for diploid, etc.).
+                    'n' is the number of individuals.
+                    'b' is the number of haplotype blocks.
+            traitwt : numpy.ndarray, None
+                A trait objective coefficients matrix of shape (t,).
+                Where:
+                    't' is the number of trait objectives.
+                These are used to weigh objectives in the weight sum method.
+                If None, do not multiply GEBVs by a weight sum vector.
+
+            Returns
+            -------
+            cgs : numpy.ndarray
+                A GEBV matrix of shape (j, t) if traitwt is None.
+                A GEBV matrix of shape (j,) if traitwt shape is (t,)
+                Where:
+                    'j' is the number of configurations to score.
+                    't' is the number of traits.
+            """
+            # get max haplotype value
+            # (m,n,h,t)[:,(j,k),:,:] -> (m,j,k,h,t)
+            # (m,j,k,h,t).max((0,2)) -> (j,h,t)
+            # (j,h,t).sum(1) -> (j,t)
+            opv = mat[:,sel,:,:].max((0,2)).sum(1)
+
+            # apply objective weights
+            # (j,t) dot (t,) -> scalar
+            if traitwt is not None:
+                opv = opv.dot(traitwt)
+
+            return opv
+
+        return objfn
