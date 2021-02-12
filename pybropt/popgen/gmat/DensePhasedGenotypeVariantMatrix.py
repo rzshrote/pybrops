@@ -1,4 +1,5 @@
 # import 3rd party modules we'll need
+import copy
 import cyvcf2
 import numpy
 
@@ -88,6 +89,78 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         self.vrnt_chrgrp_stix = None
         self.vrnt_chrgrp_spix = None
         self.vrnt_chrgrp_len = None
+
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # construct new object
+        out = self.__class__(
+            mat = copy.copy(self.mat),
+            vrnt_chrgrp = copy.copy(self.vrnt_chrgrp),
+            vrnt_phypos = copy.copy(self.vrnt_phypos),
+            vrnt_name = copy.copy(self.vrnt_name),
+            vrnt_genpos = copy.copy(self.vrnt_genpos),
+            vrnt_xoprob = copy.copy(self.vrnt_xoprob),
+            vrnt_hapgrp = copy.copy(self.vrnt_hapgrp),
+            vrnt_mask = copy.copy(self.vrnt_mask),
+            taxa = copy.copy(self.taxa),
+            taxa_grp = copy.copy(self.taxa_grp),
+        )
+
+        # copy metadata
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.copy(self.vrnt_chrgrp_len)
+        out.taxa_grp_name = copy.copy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.copy(self.taxa_grp_len)
+
+        return out
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # construct new object
+        out = self.__class__(
+            mat = copy.deepcopy(self.mat),
+            vrnt_chrgrp = copy.deepcopy(self.vrnt_chrgrp),
+            vrnt_phypos = copy.deepcopy(self.vrnt_phypos),
+            vrnt_name = copy.deepcopy(self.vrnt_name),
+            vrnt_genpos = copy.deepcopy(self.vrnt_genpos),
+            vrnt_xoprob = copy.deepcopy(self.vrnt_xoprob),
+            vrnt_hapgrp = copy.deepcopy(self.vrnt_hapgrp),
+            vrnt_mask = copy.deepcopy(self.vrnt_mask),
+            taxa = copy.deepcopy(self.taxa),
+            taxa_grp = copy.deepcopy(self.taxa_grp),
+        )
+
+        # copy metadata
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.deepcopy(self.vrnt_chrgrp_len)
+        out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len)
+
+        return out
 
     ############################################################################
     ############################ Object Properties #############################

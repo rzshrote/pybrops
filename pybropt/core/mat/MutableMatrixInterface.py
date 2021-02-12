@@ -7,9 +7,44 @@ class MutableMatrixInterface:
     def __init__(self, **kwargs):
         super(MutableMatrixInterface, self).__init__(**kwargs)
 
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        raise NotImplementedError("method is abstract")
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        raise NotImplementedError("method is abstract")
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    #################### Matrix copying ####################
+    def copy(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        raise NotImplementedError("method is abstract")
 
     ############# Matrix element manipulation ##############
     def append(self, values, axis, **kwargs):

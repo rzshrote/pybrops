@@ -1,3 +1,4 @@
+import copy
 import numpy
 
 from . import GenotypeMatrix
@@ -15,6 +16,34 @@ class DenseGenotypeMatrix(GenotypeMatrix):
             **kwargs
         )
         self.mat = mat
+
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.copy(self.mat)
+        )
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.deepcopy(self.mat)
+        )
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
@@ -196,6 +225,17 @@ class DenseGenotypeMatrix(GenotypeMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    #################### Matrix copying ####################
+    def copy(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__copy__()
 
     ############# Matrix element manipulation ##############
     def append(self, values, axis = -1, **kwargs):

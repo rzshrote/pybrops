@@ -1,9 +1,14 @@
+import copy
+import numpy
+
 from . import DenseEstimatedBreedingValueMatrix
+
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import cond_check_ndarray_dtype_is_float64
 from pybropt.core.error import cond_check_ndarray_ndim
 
+# WARNING: under construction!!!
 class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatrix):
     """docstring for GenotypicEstimatedBreedingValueMatrix."""
 
@@ -20,6 +25,62 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
             **kwargs
         )
         self.se = se
+
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # construct new object
+        out = self.__class__(
+            mat = copy.copy(self.mat),
+            raw = copy.copy(self.raw),
+            se = copy.copy(self.se),
+            trait = copy.copy(self.trait),
+            taxa = copy.copy(self.taxa),
+            taxa_grp = copy.copy(self.taxa_grp),
+        )
+
+        # copy metadata
+        out.taxa_grp_name = copy.copy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.copy(self.taxa_grp_len)
+
+        return out
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # construct new object
+        out = self.__class__(
+            mat = copy.deepcopy(self.mat),
+            raw = copy.deepcopy(self.raw),
+            se = copy.deepcopy(self.se),
+            trait = copy.deepcopy(self.trait),
+            taxa = copy.deepcopy(self.taxa),
+            taxa_grp = copy.deepcopy(self.taxa_grp),
+        )
+
+        # copy metadata
+        out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len)
+
+        return out
 
     ############################################################################
     ############################ Object Properties #############################

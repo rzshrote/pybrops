@@ -1,3 +1,4 @@
+import copy
 import numpy
 
 from . import BreedingValueMatrix
@@ -31,6 +32,34 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
         """
         super(DenseBreedingValueMatrix, self).__init__(**kwargs)
         self.mat = mat
+
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.copy(self.mat)
+        )
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.deepcopy(self.mat)
+        )
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
@@ -213,6 +242,18 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
+    #################### Matrix copying ####################
+    def copy(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__copy__()
+
+    # TODO: append, delete, insert, select
 
 
 ################################################################################
