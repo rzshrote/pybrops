@@ -46,6 +46,9 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         # calculate ideal number of markers per chromosome
         nblk_ideal = (self.b_p / genlen.sum()) * genlen
 
+        # get number of chromosomes
+        nchr = len(chrgrp_stix)
+
         # calculate number of chromosome markers, assuming at least one per chromosome
         nblk_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
 
@@ -133,7 +136,7 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         hbin = self.calc_hbin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # define shape
-        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[0]) # (m,n,b,t)
+        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[1]) # (m,n,b,t)
 
         # allocate haplotype matrix
         hmat = numpy.empty(s, dtype = beta.dtype)   # (m,n,b,t)
@@ -143,9 +146,9 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
         # OPTIMIZE: perhaps eliminate one loop using dot function
         # fill haplotype matrix
-        for i in range(s[0]):                               # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):   # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[i,st:sp])   # take dot product and fill
+        for i in range(hmat.shape[3]):                              # for each trait
+            for j,(st,sp) in enumerate(zip(hstix,hspix)):           # for each haplotype block
+                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[st:sp,i])   # take dot product and fill
 
         return hmat
 

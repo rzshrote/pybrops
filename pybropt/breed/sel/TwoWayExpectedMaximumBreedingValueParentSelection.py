@@ -6,32 +6,29 @@ from pybropt.core.error import check_is_int
 
 from pybropt.breed.mate import TwoWayDHCross
 
-class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
-    """docstring for TwoWayOptimalHaploidValueParentSelection."""
+class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator):
+    """docstring for TwoWayExpectedMaximumBreedingValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, nrep, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, rng, selfing = False, **kwargs):
         """
         k_p : int
             Number of crosses to select (1/2 number of parents).
-        b_p : int
-            Number of haplotype blocks.
         nrep : int
             Number of simulation replicates
         """
-        super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
+        super(TwoWayExpectedMaximumBreedingValueParentSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
-        check_is_int(b_p, "b_p")
 
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
-        self.b_p = b_p
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.nrep = nrep
         self.rng = rng
+        self.selfing = selfing
 
     ############################################################################
     ############################ Object Properties #############################
@@ -105,11 +102,11 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
         # construct parent pairs
         ntaxa = geno["cand"].ntaxa
-        a = []
-        for i in range(ntaxa):
-            for j in range(i+1,ntaxa):
-                a.append([i,j])
-        a = numpy.int64(a)
+        a = None
+        if self.selfing:
+            a = numpy.int64([[i,j] for i in range(ntaxa) for j in range(i,ntaxa)])
+        else:
+            a = numpy.int64([[i,j] for i in range(ntaxa) for j in range(i+1,ntaxa)])
 
         # get objective function
         objfn_vec = self.pobjfn_vec(
@@ -121,7 +118,7 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
             traitwt = traitwt
         )
 
-        gebv = objfn(a)                         # get all GEBVs
+        gebv = objfn_vec(a)                     # get all GEBVs
         if gebv.ndim == 1:                      # if there is one trait objective
             pairs = gebv.argsort()[::-1][:k]    # get indices of top k GEBVs
             self.rng.shuffle(pairs)             # shuffle indices
@@ -233,7 +230,7 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         nprogeny = self.nprogeny
         nrep = self.nrep
 
-        def objfn(sel, pgvmat = gmat, model = model, mateop = mateop, t_cur = t_cur, t_max = t_max, ncross = ncross, nprogeny = nprogeny, nrep = nrep, traitwt = traitwt):
+        def objfn_vec(sel, pgvmat = pgvmat, model = model, mateop = mateop, t_cur = t_cur, t_max = t_max, ncross = ncross, nprogeny = nprogeny, nrep = nrep, traitwt = traitwt):
             """
             Parameters
             ----------
@@ -267,13 +264,13 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
                 avg = 0
 
                 # run progeny simulations
-                for i in range(nrep):
+                for j in range(nrep):
                     # create progeny
-                    progeny = mateop.mate(
+                    progeny, misc = mateop.mate(
                         t_cur = t_cur,
                         t_max = t_max,
                         pgvmat = pgvmat,
-                        sel = sel,
+                        sel = sel[i],
                         ncross = ncross,
                         nprogeny = nprogeny
                     )
@@ -308,4 +305,4 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
             return out
 
-        return objfn
+        return objfn_vec

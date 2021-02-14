@@ -1,4 +1,7 @@
+import numpy
+
 from . import DenseCoancestryMatrix
+
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -18,12 +21,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
         super(DenseMolecularCoancestryMatrix, self).__init__(
             mat = mat,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
             **kwargs
         )
-        self.taxa = gmat.taxa
-        self.taxa_grp = gmat.taxa_grp
+        self.taxa = taxa
+        self.taxa_grp = taxa_grp
 
     ############################################################################
     ############################ Object Properties #############################
@@ -38,7 +39,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             cond_check_is_ndarray(value, "taxa")
             cond_check_ndarray_dtype_is_object(value, "taxa")
             cond_check_ndarray_ndim(value, "taxa", 1)
-            cond_check_ndarray_axis_len(value, "taxa", 0, self._gmat.geno.shape[0])
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
             self._taxa = value
         def fdel(self):
             del self._taxa

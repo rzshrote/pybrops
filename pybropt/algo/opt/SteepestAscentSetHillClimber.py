@@ -18,7 +18,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         self.rng = rng
         self.objwt = objwt
 
-    def optimize(objfn, k = None, setspace = None, objwt = None, **kwargs):
+    def optimize(self, objfn, k = None, setspace = None, objwt = None, **kwargs):
         # get parameters for optimization
         if k is None:
             k = self.k

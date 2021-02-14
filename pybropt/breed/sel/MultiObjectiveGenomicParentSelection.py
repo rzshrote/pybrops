@@ -1,4 +1,10 @@
 import numpy
+import random
+
+from deap import algorithms
+from deap import base
+from deap import creator
+from deap import tools
 
 from . import ParentSelectionOperator
 
@@ -7,7 +13,7 @@ from pybropt.core.error import check_is_int
 class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
     """docstring for MultiObjectiveGenomicParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, target, weight, rng, **kwargs):
+    def __init__(self, k_p, traitobjwt_p, traitsum_p, objsum_p, algorithm_p, ncross, nprogeny, rng, target = "positive", weight = "magnitude", **kwargs):
         """
         k_p : int
             Number of parents to select.
@@ -30,16 +36,18 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
         # error checks
         check_is_int(k_p, "k_p")
-        check_is_int(b_p, "b_p")
 
         # variable assignment
         self.k_p = k_p
-        self.traitwt_p = traitwt_p
+        self.traitobjwt_p = traitobjwt_p
+        self.traitsum_p = traitsum_p
+        self.objsum_p = objsum_p
+        self.algorithm_p = algorithm_p
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.rng = rng
         self.target = target
         self.weight = weight
-        self.rng = rng
 
     ############################################################################
     ############################ Object Properties #############################
@@ -77,7 +85,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         else:
             raise TypeError("variable 'target' must be a string or numpy.ndarray")
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitobjwt = None, traitsum = None, objsum = None, algorithm = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -114,7 +122,28 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
                 main  | GenomicModel         | Main breeding population genomic model
                 true  | GenomicModel         | True genomic model for trait(s)
         k : int
-        traitwt : numpy.ndarray
+        traitobjwt : None, numpy.ndarray
+            Combined trait weights and objective weights matrix.
+            This matrix must be compatible with shape (2,t).
+            If None, default to settings established at object construction.
+            Specifying:
+                Only trait weights: (1,t)
+                Only objective weights: (2,1)
+                Trait and objective weights: (2,t)
+        traitsum : None, bool
+            Sum across traits.
+            If None, default to settings established at object construction.
+            If True:
+                (2,t) -> (2,)
+            Else:
+                (2,t)
+        objsum : None, bool
+            Sum across objectives.
+            If None, default to settings established at object construction.
+            If True:
+                (2,t) -> (t,)
+            Else:
+                (2,t)
         **kwargs
             Additional keyword arguments.
 
@@ -137,17 +166,14 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         # get parameters
         if k is None:
             k = self.k_p
-        if traitwt is None:
-            traitwt = self.traitwt_p
-
-        # construct pairs
-        ntaxa = geno["cand"].ntaxa
-        a = []
-        for i in range(ntaxa):
-            for j in range(i+1,ntaxa):
-                a.append(i)
-                a.append(j)
-        a = numpy.int64(a)
+        if traitobjwt is None:
+            traitobjwt = self.traitobjwt_p
+        if traitsum is None:
+            traitsum = self.traitsum_p
+        if objsum is None:
+            objsum = self.objsum_p
+        if algorithm is None:
+            algorithm = self.algorithm_p
 
         # get objective function
         objfn = self.pobjfn(
@@ -156,28 +182,50 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             geno = geno,
             bval = bval,
             gmod = gmod,
-            traitwt = traitwt
+            traitobjwt = traitobjwt,
+            traitsum = traitsum,
+            objsum = objsum
         )
 
-        gebv = objfn(a)                         # get all GEBVs
-        if gebv.ndim == 1:                      # if there is one trait objective
-            pairs = gebv.argsort()[::-1][:k]    # get indices of top k GEBVs
-            self.rng.shuffle(pairs)             # shuffle indices
-            sel = []
-            for i in pairs:
-                sel.append(a[2*i])      # female index
-                sel.append(a[2*i+1])    # male index
-            sel = numpy.int64(sel)
-        elif gebv.ndim == 2:                    # TODO: ND-selection
-            raise RuntimeError("non-dominated genomic selection not implemented")
+        soln_dict = algorithm.optimize(
+            objfn,
+            k = k,
+            setspace = numpy.arange(geno["cand"].ntaxa),
+            objwt = 1.0
+        )
 
-        misc = {}
+        # extract solution
+        sel = soln_dict["soln"]
+
+        misc = soln_dict
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
     def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitobjwt, traitsum, objsum, **kwargs):
         """
         Return a parent selection objective function.
+
+        Parameters
+        ----------
+        traitobjwt : numpy.ndarray, None
+            Combined trait weights and objective weights matrix.
+            This matrix must be compatible with shape (2,t).
+            Specifying:
+                Only trait weights: (1,t)
+                Only objective weights: (2,1)
+                Trait and objective weights: (2,t)
+        traitsum : bool
+            Sum across traits.
+            If True:
+                (2,t) -> (2,)
+            Else:
+                (2,t)
+        objsum : bool
+            Sum across objectives.
+            If True:
+                (2,t) -> (t,)
+            Else:
+                (2,t)
         """
         mat = geno["cand"].mat                      # (m,n,p) get genotype matrix
         beta = gmod["cand"].beta                    # (p,t) get regression coefficients
@@ -241,7 +289,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
                 Where:
                     'p' is the number of markers.
                     't' is the number of traits.
-                Remarks: Values in 'wcoeff' have an assumption:
+                Remarks: Values in 'mkrwt' have an assumption:
                     All values must be non-negative.
             traitobjwt : numpy.ndarray, None
                 Combined trait weights and objective weights matrix.
@@ -272,9 +320,9 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             if sel is None:
                 sel = slice(None)
 
-            # generate a view of the geno matrix that only contains 'sel' rows.
+            # generate a view of the genotype matrix that only contains 'sel' rows.
             # (m,(k,),p) -> (m,k,p)
-            sgeno = geno[:,sel,:]
+            sgeno = mat[:,sel,:]
 
             # calculate reciprocal number of phases
             rphase = 1.0 / (sgeno.shape[0] * sgeno.shape[1])
@@ -310,12 +358,12 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             # compute f_PAU(x)
             # (p,t) * (p,t) -> (p,t)
             # (p,t).sum[0] -> (t,)
-            pau = (wcoeff * allele_unavail).sum(0)
+            pau = (mkrwt * allele_unavail).sum(0)
 
             # compute f_PAFD(x)
             # (p,t) * (p,t) -> (p,t)
             # (p,t).sum[0] -> (t,)
-            pafd = (wcoeff * dist).sum(0)
+            pafd = (mkrwt * dist).sum(0)
 
             # stack to make MOGS matrix
             # (2,t)
@@ -409,3 +457,114 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
     #         return cgs
     #
     #     return objfn_vec
+
+    # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
+    def is_pareto_efficient(self, fitnesses, return_mask = True):
+        """
+        Find the pareto-efficient points (maximizing function)
+        :param fitnesses: An (n_points, n_fitnesses) array
+        :param return_mask: True to return a mask
+        :return: An array of indices of pareto-efficient points.
+            If return_mask is True, this will be an (n_points, ) boolean array
+            Otherwise it will be a (n_efficient_points, ) integer array of indices.
+        """
+        is_efficient = numpy.arange(fitnesses.shape[0])
+        n_points = fitnesses.shape[0]
+        next_point_index = 0  # Next index in the is_efficient array to search for
+        while next_point_index<len(fitnesses):
+            nondominated_point_mask = numpy.any(fitnesses>fitnesses[next_point_index], axis=1)
+            nondominated_point_mask[next_point_index] = True
+            is_efficient = is_efficient[nondominated_point_mask]  # Remove dominated points
+            fitnesses = fitnesses[nondominated_point_mask]
+            next_point_index = numpy.sum(nondominated_point_mask[:next_point_index])+1
+        if return_mask:
+            is_efficient_mask = numpy.zeros(n_points, dtype = bool)
+            is_efficient_mask[is_efficient] = True
+            return is_efficient_mask
+        else:
+            return is_efficient
+
+    def ppareto(self, t_cur, t_max, geno, bval, gmod, k = None, traitobjwt = None, traitsum = None, **kwargs):
+        # get parameters
+        if k is None:
+            k = self.k_p
+        if traitobjwt is None:
+            traitobjwt = self.traitobjwt_p
+        if traitsum is None:
+            traitsum = self.traitsum_p
+
+        # get number of taxa
+        ntaxa = geno["cand"].ntaxa
+
+        # get objective function
+        objfn = self.pobjfn(
+            t_cur = t_cur,
+            t_max = t_max,
+            geno = geno,
+            bval = bval,
+            gmod = gmod,
+            traitobjwt = traitobjwt,
+            traitsum = traitsum,
+            objsum = objsum
+        )
+
+        # MOGS objectives are minimizing (DEAP uses larger fitness as better)
+        creator.create("FitnessMin", base.Fitness, weights=(-1.0,-1.0))
+
+        # create an individual, which is a list representation
+        creator.create("Individual", list, fitness=creator.FitnessMin)
+
+        # create a toolbox
+        toolbox = base.Toolbox()
+
+        # since this is a subset problem, represent individual as a permutation
+        toolbox.register(
+            "permutation",  # create a permutation protocol
+            random.sample,  # randomly sample
+            range(ntaxa),   # from 0:ntaxa
+            k               # select k from 0:ntaxa (no replacement)
+        )
+
+#Structure initializers
+#An individual is a list that represents the position of each queen.
+#Only the line is stored, the column is the index of the number in the list.
+
+        # register individual creation protocol
+        toolbox.register(
+            "individual",
+            tools.initIterate,
+            creator.Individual,
+            toolbox.permutation
+        )
+
+        # register population creation protocol
+        toolbox.register(
+            "population",
+            tools.initRepeat,
+            list,
+            toolbox.individual
+        )
+
+toolbox.register("evaluate", evalNQueens)
+toolbox.register("mate", tools.cxPartialyMatched)
+toolbox.register("mutate", tools.mutShuffleIndexes, indpb=2.0/NB_QUEENS)
+toolbox.register("select", tools.selTournament, tournsize=3)
+
+def main(seed=0):
+    random.seed(seed)
+
+    pop = toolbox.population(n=300)
+    hof = tools.HallOfFame(1)
+    stats = tools.Statistics(lambda ind: ind.fitness.values)
+    stats.register("Avg", numpy.mean)
+    stats.register("Std", numpy.std)
+    stats.register("Min", numpy.min)
+    stats.register("Max", numpy.max)
+
+    algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, stats=stats,
+                        halloffame=hof, verbose=True)
+
+    return pop, stats, hof
+
+if __name__ == "__main__":
+    main()

@@ -47,6 +47,9 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         # calculate ideal number of markers per chromosome
         nblk_ideal = (self.b_p / genlen.sum()) * genlen
 
+        # get number of chromosomes
+        nchr = len(chrgrp_stix)
+
         # calculate number of chromosome markers, assuming at least one per chromosome
         nblk_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
 
@@ -134,7 +137,7 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         hbin = self.calc_hbin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # define shape
-        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[0]) # (m,n,b,t)
+        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[1]) # (m,n,b,t)
 
         # allocate haplotype matrix
         hmat = numpy.empty(s, dtype = beta.dtype)   # (m,n,b,t)
@@ -144,9 +147,9 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
 
         # OPTIMIZE: perhaps eliminate one loop using dot function
         # fill haplotype matrix
-        for i in range(s[0]):                               # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):   # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[i,st:sp])   # take dot product and fill
+        for i in range(hmat.shape[3]):                              # for each trait
+            for j,(st,sp) in enumerate(zip(hstix,hspix)):           # for each haplotype block
+                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[st:sp,i])   # take dot product and fill
 
         return hmat
 
@@ -213,15 +216,6 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         if traitwt is None:
             traitwt = self.traitwt_p
 
-        # construct pairs
-        ntaxa = geno["cand"].ntaxa
-        a = []
-        for i in range(ntaxa):
-            for j in range(i+1,ntaxa):
-                a.append(i)
-                a.append(j)
-        a = numpy.int64(a)
-
         # get objective function
         objfn = self.pobjfn(
             t_cur = t_cur,
@@ -233,7 +227,12 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         )
 
         # optimize solution using algorithm
-        soln_dict = self.algorithm.optimize(objfn)
+        soln_dict = self.algorithm.optimize(
+            objfn,
+            k = k,
+            setspace = numpy.arange(geno["cand"].ntaxa),
+            objwt = 1.0
+        )
 
         # extract solution
         sel = soln_dict["soln"]

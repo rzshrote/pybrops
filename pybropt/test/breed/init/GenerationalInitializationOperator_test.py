@@ -197,5 +197,6 @@ def initop(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gm
 #################################### Tests #####################################
 ################################################################################
 def test_initialize(initop):
+    # potential problem with diversity for this test set
     initop.initialize()
-    raise RuntimeError
+    # raise RuntimeError

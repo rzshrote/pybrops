@@ -1,10 +1,12 @@
 import cvxpy
 import math
+import numpy
 
 from . import ParentSelectionOperator
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_ndarray
 
 class OptimalContributionParentSelection(ParentSelectionOperator):
     """docstring for OptimalContributionParentSelection."""
@@ -58,7 +60,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
             raise RuntimeError("unknown bvtype")
 
     def calc_K(self, gmat, **kwargs):
-        kmat = cmatcls.from_gmat(gmat)  # get coancestry (kinship) matrix
+        kmat = self.cmatcls.from_gmat(gmat)  # get coancestry (kinship) matrix
         return kmat
 
     def sus(self, k, contrib):
@@ -77,7 +79,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
         ptr_dist = tot_fit / k                          # calculate the distance between pointers
         indices = contrib.argsort()[::-1]               # get indices for sorted individuals
         cumsum = contrib[indices].cumsum()              # get cumulative sum of elements
-        offset = random.uniform(0.,ptr_dist)            # get random start point
+        offset = self.rng.uniform(0.0, ptr_dist)        # get random start point
         sel = []                                        # declare output list
         ix = 0                                          # index for cumsum
         ptrs = numpy.arange(offset, tot_fit, ptr_dist)  # create pointers
@@ -88,7 +90,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
         sel = numpy.array(sel)                          # convert to ndarray
         return sel
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
         """
         Select parents individuals for breeding.
 

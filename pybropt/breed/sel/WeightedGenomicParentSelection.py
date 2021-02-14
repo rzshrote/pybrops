@@ -1,7 +1,10 @@
+import numpy
+
 from . import ParentSelectionOperator
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_ndarray
 
 class WeightedGenomicParentSelection(ParentSelectionOperator):
     """docstring for WeightedGenomicParentSelection."""
@@ -121,17 +124,17 @@ class WeightedGenomicParentSelection(ParentSelectionOperator):
         Return a parent selection objective function.
         """
         # OPTIMIZE: use geno["cand"].tacount()??? # unphased genotype matrix
-        mat = geno["cand"].mat          # genotype matrix
-        mu = gmod["cand"].mu            # trait means
-        beta = gmod["cand"].beta        # regression coefficients
-        afreq = gmod["cand"].afreq()    # get allele frequencies
-        fafreq = numpy.where(           # get favorable allele frequencies
-            beta > 0.0,                 # if dominant (1) allele is beneficial
-            afreq,                      # get dominant allele frequency
-            1.0 - afreq                 # else get recessive allele frequency
+        mat = geno["cand"].mat                  # genotype matrix
+        mu = gmod["cand"].mu                    # trait means
+        beta = gmod["cand"].beta                # (p,t) regression coefficients
+        afreq = geno["cand"].afreq()[:,None]    # (p,1) allele frequencies
+        fafreq = numpy.where(                   # (p,t) calculate favorable allele frequencies
+            beta > 0.0,                         # if dominant (1) allele is beneficial
+            afreq,                              # get dominant allele frequency
+            1.0 - afreq                         # else get recessive allele frequency
         )
-        fafreq[fafreq <= 0.0] = 1.0     # avoid division by zero/imaginary
-        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
+        fafreq[fafreq <= 0.0] = 1.0             # avoid division by zero/imaginary
+        betawt = numpy.power(fafreq, -0.5)      # calculate weights: 1/sqrt(p)
 
         def objfn(sel, mat = mat, mu = mu, beta = beta, betawt = betawt, traitwt = traitwt):
             """
@@ -203,6 +206,8 @@ class WeightedGenomicParentSelection(ParentSelectionOperator):
             # (k,t) . (t,) -> (k,)
             if traitwt is not None:
                 cgs = cgs.dot(traitwt)
+
+            print(cgs)
 
             return cgs
 
