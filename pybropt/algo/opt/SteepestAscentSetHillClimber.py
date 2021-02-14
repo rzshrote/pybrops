@@ -1,5 +1,9 @@
-class SetSteepestAscentHillClimber:
-    """docstring for SetSteepestAscentHillClimber."""
+import numpy
+
+from . import OptimizationAlgorithm
+
+class SteepestAscentSetHillClimber(OptimizationAlgorithm):
+    """docstring for SteepestAscentSetHillClimber."""
 
     def __init__(self, k, setspace, rng, objwt = 1.0, **kwargs):
         """
@@ -8,7 +12,7 @@ class SetSteepestAscentHillClimber:
             If the function is a maximizing function, provide a positive weight.
             If the function is a minimizing function, provide a negative weight.
         """
-        super(SetSteepestAscentHillClimber, self).__init__(**kwargs)
+        super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
         self.k = k
         self.setspace = setspace
         self.rng = rng
