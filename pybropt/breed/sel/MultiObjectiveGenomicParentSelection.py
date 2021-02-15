@@ -1,10 +1,13 @@
 import numpy
 import random
+import math
 
 from deap import algorithms
 from deap import base
 from deap import creator
 from deap import tools
+from deap import benchmarks
+
 
 from . import ParentSelectionOperator
 
@@ -484,7 +487,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         else:
             return is_efficient
 
-    def ppareto(self, t_cur, t_max, geno, bval, gmod, k = None, traitobjwt = None, traitsum = None, **kwargs):
+    def ppareto(self, t_cur, t_max, geno, bval, gmod, k = None, traitobjwt = None, traitsum = None, ngen = 250, mu = 100, lamb = 100, M = 1.5, **kwargs):
         # get parameters
         if k is None:
             k = self.k_p
@@ -505,7 +508,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             gmod = gmod,
             traitobjwt = traitobjwt,
             traitsum = traitsum,
-            objsum = objsum
+            objsum = False
         )
 
         # MOGS objectives are minimizing (DEAP uses larger fitness as better)
@@ -519,19 +522,15 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
         # since this is a subset problem, represent individual as a permutation
         toolbox.register(
-            "permutation",  # create a permutation protocol
-            random.sample,  # randomly sample
-            range(ntaxa),   # from 0:ntaxa
-            k               # select k from 0:ntaxa (no replacement)
+            "permutation",          # create a permutation protocol
+            random.sample,          # randomly sample
+            range(ntaxa),           # from 0:ntaxa
+            k                       # select k from 0:ntaxa (no replacement)
         )
-
-#Structure initializers
-#An individual is a list that represents the position of each queen.
-#Only the line is stored, the column is the index of the number in the list.
 
         # register individual creation protocol
         toolbox.register(
-            "individual",
+            "individual",           # name of function in toolbox
             tools.initIterate,
             creator.Individual,
             toolbox.permutation
@@ -539,32 +538,127 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
         # register population creation protocol
         toolbox.register(
-            "population",
-            tools.initRepeat,
-            list,
-            toolbox.individual
+            "population",           # name of function in toolbox
+            tools.initRepeat,       # list of toolbox.individual objects
+            list,                   # containter type
+            toolbox.individual      # function to execute
         )
 
-toolbox.register("evaluate", evalNQueens)
-toolbox.register("mate", tools.cxPartialyMatched)
-toolbox.register("mutate", tools.mutShuffleIndexes, indpb=2.0/NB_QUEENS)
-toolbox.register("select", tools.selTournament, tournsize=3)
+        # register the objective function
+        toolbox.register(
+            "evaluate",             # name of function in toolbox
+            objfn                   # function to execute
+        )
 
-def main(seed=0):
-    random.seed(seed)
+        def cxSet(ind1, ind2, indpb):
+            a = numpy.array(ind1)           # convert ind1 to numpy.ndarray
+            b = numpy.array(ind2)           # convert ind2 to numpy.ndarray
+            mab = ~numpy.isin(a,b)          # get mask for ind1 not in ind2
+            mba = ~numpy.isin(b,a)          # get mask for ind2 not in ind1
+            ap = a[mab]                     # get reduced ind1 chromosome
+            bp = b[mba]                     # get reduced ind2 chromosome
+            clen = min(len(ap), len(bp))    # get minimum chromosome length
+            # crossover algorithm
+            p = 0                               # get starting individual phase index
+            for i in range(clen):               # for each point in the chromosome
+                if random.random() < indpb:     # if a crossover has occured
+                    p = 1 - p                   # switch parent
+                if p == 1:                      # if using second parent
+                    ap[i], bp[i] = bp[i], ap[i] # exchange alleles
+            a[mab] = ap                         # copy over exchanges
+            b[mba] = bp                         # copy over exchanges
+            # copy to original arrays
+            for i in range(len(ind1)):
+                ind1[i] = a[i]
+            for i in range(len(ind2)):
+                ind2[i] = b[i]
+            return ind1, ind2
 
-    pop = toolbox.population(n=300)
-    hof = tools.HallOfFame(1)
-    stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("Avg", numpy.mean)
-    stats.register("Std", numpy.std)
-    stats.register("Min", numpy.min)
-    stats.register("Max", numpy.max)
+        ### register the crossover operator
+        indpb = 0.5 * (1.0 - math.exp(-2.0 * M / k))
+        toolbox.register(
+            "mate",                 # name of function
+            cxSet,                  # function to execute
+            indpb = indpb           # average of M crossovers
+        )
 
-    algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=100, stats=stats,
-                        halloffame=hof, verbose=True)
+        # register the mutation operator
+        toolbox.register(
+            "mutate",               # name of function
+            tools.mutUniformInt,    # give all values equal mutation probability
+            low = 0,                # lowest is zero
+            up = ntaxa-1,           # highest is one less than ntaxa
+            indpb = 2.0 / k         # probability of mutation
+        )
 
-    return pop, stats, hof
+        # register the selection operator
+        toolbox.register(
+            "select",
+            tools.selNSGA2
+        )
 
-if __name__ == "__main__":
-    main()
+        # seed random number for reproducibility
+        # random.seed(int(self.rng.integers(0, 4294967295)))
+
+        # register logbook statistics to take
+        stats = tools.Statistics(lambda ind: ind.fitness.values)
+        stats.register("min", numpy.min, axis=0)
+        stats.register("max", numpy.max, axis=0)
+        stats.register("avg", numpy.mean, axis=0)
+        stats.register("std", numpy.std, axis=0)
+
+        # create logbook
+        logbook = tools.Logbook()
+        logbook.header = "gen", "evals", "min", "max", "avg", "std"
+
+        # create population
+        pop = toolbox.population(n = mu)
+
+        # evaluate individuals with an invalid fitness
+        invalid_ind = [ind for ind in pop if not ind.fitness.valid]
+        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit
+
+        # assign crowding distances (no actual selection is done)
+        pop = toolbox.select(pop, len(pop))
+
+        # compile population statistics
+        record = stats.compile(pop)
+
+        # record statistics in logbook
+        logbook.record(gen=0, evals=len(invalid_ind), **record)
+
+        # main genetic algorithm loop
+        for gen in range(1, ngen):
+            # create lambda progeny using distance crowding tournament selection
+            offspring = tools.selTournamentDCD(pop, lamb)
+
+            # clone individuals for modification
+            offspring = [toolbox.clone(ind) for ind in offspring]
+
+            # for each offspring pair
+            for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
+                toolbox.mate(ind1, ind2)    # mating is guaranteed
+                toolbox.mutate(ind1)        # mutate ind1
+                toolbox.mutate(ind2)        # mutate ind2
+                del ind1.fitness.values     # delete fitness value since ind1 is modified
+                del ind2.fitness.values     # delete fitness value since ind1 is modified
+
+            # Evaluate the individuals with an invalid fitness
+            invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+            fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+            for ind, fit in zip(invalid_ind, fitnesses):
+                ind.fitness.values = fit
+
+            # Select the next generation population
+            pop = toolbox.select(pop + offspring, mu)
+
+            # save logs
+            record = stats.compile(pop)
+            logbook.record(gen = gen, evals = len(invalid_ind), **record)
+
+        # extract frontier points
+        frontier = numpy.array([ind.fitness.values for ind in pop])
+
+        return frontier, pop, logbook

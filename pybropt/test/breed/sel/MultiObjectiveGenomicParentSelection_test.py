@@ -30,6 +30,71 @@ def mat_int8():
     ])
 
 @pytest.fixture
+def mat_int8_big():
+    yield numpy.int8([
+       [[0, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0, 0, 0, 1, 1, 1],
+        [0, 1, 1, 0, 0, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 1, 0, 0, 1, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
+        [0, 1, 1, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 1, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0]],
+       [[1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
+        [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+        [1, 1, 1, 0, 0, 1, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 1, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1, 1, 0, 1, 1, 0],
+        [0, 1, 0, 1, 0, 0, 0, 0, 1, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 1, 0, 0, 0]]
+    ])
+
+@pytest.fixture
 def mat_chrgrp():
     yield numpy.int64([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
 
@@ -40,6 +105,10 @@ def mat_phypos():
 @pytest.fixture
 def mat_taxa():
     yield numpy.object_(["Line1", "Line2", "Line3", "Line4", "Line5"])
+
+@pytest.fixture
+def mat_taxa_big():
+    yield numpy.object_(["Line"+str(i).zfill(2) for i in range(30)])
 
 @pytest.fixture
 def mat_taxa_grp():
@@ -53,6 +122,15 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
         vrnt_phypos = mat_phypos,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
+    )
+
+@pytest.fixture
+def dpgvmat_big(mat_int8_big, mat_chrgrp, mat_phypos, mat_taxa_big):
+    yield DensePhasedGenotypeVariantMatrix(
+        mat = mat_int8_big,
+        vrnt_chrgrp = mat_chrgrp,
+        vrnt_phypos = mat_phypos,
+        taxa = mat_taxa_big
     )
 
 ################################################################################
@@ -109,6 +187,10 @@ def glgmod(mu, beta, trait, model_name, params):
 @pytest.fixture
 def bvmat(glgmod, dpgvmat):
     yield glgmod.predict(dpgvmat)
+
+@pytest.fixture
+def bvmat_big(glgmod, dpgvmat_big):
+    yield glgmod.predict(dpgvmat_big)
 
 ################################################################################
 ###################### MultiObjectiveGenomicParentSelection ######################
@@ -201,3 +283,39 @@ def test_pselect(mogps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
     assert numpy.all(out_sel == [1,2]) or numpy.all(out_sel == [2,1])
     assert out_ncross == ncross
     assert out_nprogeny == nprogeny
+
+def test_ppareto(mogps, dpgvmat_big, bvmat_big, glgmod, ncross, nprogeny):
+    geno = {
+        "cand" : dpgvmat_big,
+        "main" : dpgvmat_big,
+        "queue" : [dpgvmat_big]
+    }
+    bval = {
+        "cand" : bvmat_big,
+        "cand_true" : bvmat_big,
+        "main" : bvmat_big,
+        "main_true" : bvmat_big
+    }
+    gmod = {
+        "cand" : glgmod,
+        "main" : glgmod,
+        "true" : glgmod
+    }
+
+    frontier, pop, logbook = mogps.ppareto(
+        t_cur = 0,
+        t_max = 20,
+        geno = geno,
+        bval = bval,
+        gmod = gmod,
+        k = 5
+    )
+
+    from matplotlib import pyplot
+
+    pyplot.scatter(frontier[:,0], frontier[:,1], c="b")
+    pyplot.axis("tight")
+    pyplot.savefig("frontier.png")
+
+    print(frontier)
+    raise RuntimeError
