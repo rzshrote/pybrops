@@ -1,5 +1,4 @@
 import numpy
-import random
 import math
 
 from deap import algorithms
@@ -523,9 +522,10 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         # since this is a subset problem, represent individual as a permutation
         toolbox.register(
             "permutation",          # create a permutation protocol
-            random.sample,          # randomly sample
-            range(ntaxa),           # from 0:ntaxa
-            k                       # select k from 0:ntaxa (no replacement)
+            self.rng.choice,        # randomly sample
+            ntaxa,                  # from 0:ntaxa
+            size = k,               # select k from 0:ntaxa
+            replace = False         # no replacement
         )
 
         # register individual creation protocol
@@ -550,6 +550,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             objfn                   # function to execute
         )
 
+        # define set crossover operator
         def cxSet(ind1, ind2, indpb):
             a = numpy.array(ind1)           # convert ind1 to numpy.ndarray
             b = numpy.array(ind2)           # convert ind2 to numpy.ndarray
@@ -561,7 +562,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             # crossover algorithm
             p = 0                               # get starting individual phase index
             for i in range(clen):               # for each point in the chromosome
-                if random.random() < indpb:     # if a crossover has occured
+                if self.rng.random() < indpb:   # if a crossover has occured
                     p = 1 - p                   # switch parent
                 if p == 1:                      # if using second parent
                     ap[i], bp[i] = bp[i], ap[i] # exchange alleles
@@ -582,13 +583,21 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             indpb = indpb           # average of M crossovers
         )
 
+        # define set mutation operator
+        def mutSet(ind, setspace, indpb):
+            a = numpy.array(setspace)
+            for i in range(len(ind)):
+                if self.rng.random() < indpb:
+                    mab = ~numpy.isin(a,ind)
+                    ind[i] = self.rng.choice(a[mab], 1, False)[0]
+            return ind
+
         # register the mutation operator
         toolbox.register(
-            "mutate",               # name of function
-            tools.mutUniformInt,    # give all values equal mutation probability
-            low = 0,                # lowest is zero
-            up = ntaxa-1,           # highest is one less than ntaxa
-            indpb = 2.0 / k         # probability of mutation
+            "mutate",                               # name of function
+            mutSet,                                 # custom mutation operator
+            setspace = [i for i in range(ntaxa)],   # set space
+            indpb = 2.0 / k                         # probability of mutation
         )
 
         # register the selection operator
@@ -596,9 +605,6 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
             "select",
             tools.selNSGA2
         )
-
-        # seed random number for reproducibility
-        # random.seed(int(self.rng.integers(0, 4294967295)))
 
         # register logbook statistics to take
         stats = tools.Statistics(lambda ind: ind.fitness.values)
@@ -622,6 +628,9 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
         # assign crowding distances (no actual selection is done)
         pop = toolbox.select(pop, len(pop))
+
+        # for i,ind in enumerate(pop):
+        #     print("ind", i, ":", ind)
 
         # compile population statistics
         record = stats.compile(pop)

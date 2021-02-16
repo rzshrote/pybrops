@@ -57,6 +57,8 @@ class GenomicModel:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ################# methods for model fitting and prediction #################
     def fit(self, gmat, bvmat):
         """
         Fit the model
@@ -102,7 +104,91 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
+    ################ methods for population variance prediction ################
+    def var_G(self, gmat):
+        """
+        Calculate the population genetic variance.
 
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def var_A(self, gmat):
+        """
+        Calculate the population additive genetic variance
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def var_a(self, gmat):
+        """
+        Calculate the population additive genic variance
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def bulmer(self, gmat):
+        """
+        Calculate the Bulmer effect.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    ####################### methods for selection limits #######################
+    def usl(self, gmat):
+        """
+        Calculate the upper selection limit for a population.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def lsl(self, gmat):
+        """
+        Calculate the lower selection limit for a population.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
 
 ################################################################################
 ################################## Utilities ###################################

@@ -128,8 +128,8 @@ class GenerationalInitializationOperator(InitializationOperator):
         # print("cand:", geno["cand"].taxa_grp)
 
         for t in range(self.burnin):
-            print("################################################################################")
-            print("iteration:", t)
+            # print("################################################################################")
+            # print("iteration:", t)
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
@@ -164,7 +164,7 @@ class GenerationalInitializationOperator(InitializationOperator):
                 pgvmat = pgvmat,
                 geno = geno,
             )
-            print("gintegrate:",geno_tmp["main"].mat.shape)
+            # print("gintegrate:",geno_tmp["main"].mat.shape)
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
@@ -216,8 +216,10 @@ class GenerationalInitializationOperator(InitializationOperator):
             bval = bval_new
             gmod = gmod_new
             # print("cand:", geno["cand"].taxa_grp)
-            print("cand:", geno["cand"].mat.shape)
-            print("cand mean:", bval["cand"].mat.mean(0))
+            # print("cand:", geno["cand"].mat.shape)
+            # cand_mean = bval["cand"].mat.mean(0)
+            # print("cand mean:", cand_mean)
+            # print("cand mean sum:", cand_mean.sum())
 
         return geno, bval, gmod
 

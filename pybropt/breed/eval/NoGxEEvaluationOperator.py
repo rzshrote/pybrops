@@ -28,6 +28,33 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def var_E():
+        doc = "The var_E property."
+        def fget(self):
+            return self._var_E
+        def fset(self, value):
+            # TODO: check value is positive
+            self._var_E = value
+            self._std_E = numpy.sqrt(self._var_E)
+        def fdel(self):
+            del self._var_E
+            del self._std_E
+        return locals()
+    var_E = property(**var_E())
+
+    def std_E():
+        doc = "The std_E property."
+        def fget(self):
+            return self._std_E
+        def fset(self, value):
+            # TODO: check value is positive
+            self._std_E = value
+            self._var_E = numpy.square(self._std_E)
+        def fdel(self):
+            del self._std_E
+            del self._var_E
+        return locals()
+    std_E = property(**std_E())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -89,6 +116,49 @@ class NoGxEEvaluationOperator(EvaluationOperator):
 
         return bvmat, bvmat_true, misc
 
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    # TODO: H^2 calculations
+    @staticmethod
+    def from_h2(gmat, lgmod, nenv, h2, rng, **kwargs):
+        """
+        h2 : float or numpy.ndarray
+            Narrow sense heritability of trait for single rep evaluation.
+
+        Returns
+        -------
+        out : NoGxEEvaluationOperator
+        """
+        # get allele frequencies
+        # (p,) -> (p,1)
+        p = gmat.afreq()[:,None]    # (p,1)
+        q = 1.0 - p                 # (p,1)
+
+        # get marker effects
+        alpha = lgmod.beta          # (p,t)
+
+        # calculate additive variance: sum(2*p*q*alpha)
+        # (p,1)*(p,1)*(p,t) -> (p,t)
+        # (p,t).sum[0] -> (t,)
+        var_A = 2.0 * (p*q*(alpha**2)).sum(0)
+
+        # calculate environmental variance
+        # var_E = (1 - h2)/h2 * var_A - var_G
+        # we assume var_G is zero, so var_E = (1 - h2)/h2 * var_A
+        # scalar - (t,) -> (t,)
+        # (t,) / (t,) -> (t,)
+        # (t,) * (t,) -> (t,)
+        var_E = (1.0 - h2) / h2 * var_A
+        # print(var_E)
+        out = NoGxEEvaluationOperator(
+            nenv = nenv,
+            var_E = var_E,
+            rng = rng,
+            **kwargs
+        )
+
+        return out
 
 
 ################################################################################

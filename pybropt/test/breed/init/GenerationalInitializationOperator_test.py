@@ -126,10 +126,12 @@ def gintgop(gqlen, gwind, gmult):
     )
 
 @pytest.fixture
-def evalop(rng):
-    yield NoGxEEvaluationOperator(
+def evalop(dpgvmat, gmod_true, rng):
+    yield NoGxEEvaluationOperator.from_h2(
+        gmat = dpgvmat,
+        lgmod = gmod_true,
         nenv = 4,
-        var_E = 1.0,
+        h2 = 0.4,
         rng = rng
     )
 
@@ -199,4 +201,4 @@ def initop(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gm
 def test_initialize(initop):
     # potential problem with diversity for this test set
     initop.initialize()
-    # raise RuntimeError
+    raise RuntimeError

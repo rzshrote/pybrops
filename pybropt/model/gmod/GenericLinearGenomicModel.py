@@ -132,6 +132,19 @@ class GenericLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ################# methods for model fitting and prediction #################
+    def fit(self, gmat, bvmat):
+        """
+        Fit the model
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+        bvmat : BreedingValueMatrix
+        """
+        raise RuntimeError("GenericLinearGenomicModel is read-only")
+
     def predict(self, gmat):
         """
         Predict breeding values.
@@ -196,6 +209,121 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         Rsq = (1.0 - SSE/SST)
 
         return Rsq
+
+    ################ methods for population variance prediction ################
+    def var_G(self, gmat):
+        """
+        Calculate the population genetic variance.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        bvmat = self.predict(gmat)  # make genotype predictions
+        out = bvmat.mat.var(0)      # get variance for each trait
+        return out
+
+    def var_A(self, gmat):
+        """
+        Calculate the population additive genetic variance
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        # identical to var_G since this model is completely additive
+        bvmat = self.predict(gmat)  # make genotype predictions
+        out = bvmat.mat.var(0)      # get variance for each trait
+        return out
+
+    def var_a(self, gmat):
+        """
+        Calculate the population additive genic variance
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        p = gmat.afreq()[:,None]    # (p,1) get allele frequencies
+        # (p,t)**2 * (p,1) * (p,1) -> (p,t)
+        # (p,t).sum[0] -> (t,)
+        out = 4.0 * ((self.beta**2) * p * (1.0 - p)).sum(0)
+        return out
+
+    def bulmer(self, gmat):
+        """
+        Calculate the Bulmer effect.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        sigma_A = self.var_A(gmat)
+        sigma_a = self.var_a(gmat)
+        return sigma_A / sigma_a
+
+    ####################### methods for selection limits #######################
+    def usl(self, gmat):
+        """
+        Calculate the upper selection limit for a population.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        p = gmat.afreq()[:,None]    # (p,1) get allele frequencies
+        maxgeno = numpy.where(      # (p,t) get maximum attainable genotype
+            self.beta > 0.0,
+            p > 0.0,
+            p == 1.0
+        )
+        # (p,t) * (p,t) -> (p,t)
+        # (p,t).sum[0] -> (t,)
+        out = (self.beta * maxgeno).sum(0)
+        return out
+
+    def lsl(self, gmat):
+        """
+        Calculate the lower selection limit for a population.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        p = gmat.afreq()[:,None]    # (p,1) get allele frequencies
+        mingeno = numpy.where(      # (p,t) get minimum attainable genotype
+            self.beta > 0.0,
+            p == 1.0,
+            p > 0.0
+        )
+        # (p,t) * (p,t) -> (p,t)
+        # (p,t).sum[0] -> (t,)
+        out = (self.beta * mingeno).sum(0)
+        return out
 
 
 
