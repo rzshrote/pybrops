@@ -50,6 +50,7 @@ class TwoWayDHCross(MatingOperator):
         progeny : DensePhasedGenotypeVariantMatrix
             A DensePhasedGenotypeVariantMatrix of progeny.
         """
+        # print(id(pgvmat))
         # check data type
         check_is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 

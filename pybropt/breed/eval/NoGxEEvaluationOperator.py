@@ -120,6 +120,45 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################## Static Methods ##############################
     ############################################################################
     # TODO: H^2 calculations
+    # @staticmethod
+    # def from_h2(gmat, lgmod, nenv, h2, rng, **kwargs):
+    #     """
+    #     h2 : float or numpy.ndarray
+    #         Narrow sense heritability of trait for single rep evaluation.
+    #
+    #     Returns
+    #     -------
+    #     out : NoGxEEvaluationOperator
+    #     """
+    #     # get allele frequencies
+    #     # (p,) -> (p,1)
+    #     p = gmat.afreq()[:,None]    # (p,1)
+    #     q = 1.0 - p                 # (p,1)
+    #
+    #     # get marker effects
+    #     alpha = lgmod.beta          # (p,t)
+    #
+    #     # calculate additive variance: sum(2*p*q*alpha)
+    #     # (p,1)*(p,1)*(p,t) -> (p,t)
+    #     # (p,t).sum[0] -> (t,)
+    #     var_A = 2.0 * (p*q*(alpha**2)).sum(0)
+    #
+    #     # calculate environmental variance
+    #     # var_E = (1 - h2)/h2 * var_A - var_G
+    #     # we assume var_G is zero, so var_E = (1 - h2)/h2 * var_A
+    #     # scalar - (t,) -> (t,)
+    #     # (t,) / (t,) -> (t,)
+    #     # (t,) * (t,) -> (t,)
+    #     var_E = (1.0 - h2) / h2 * var_A
+    #     # print(var_E)
+    #     out = NoGxEEvaluationOperator(
+    #         nenv = nenv,
+    #         var_E = var_E,
+    #         rng = rng,
+    #         **kwargs
+    #     )
+    #
+    #     return out
     @staticmethod
     def from_h2(gmat, lgmod, nenv, h2, rng, **kwargs):
         """
@@ -130,18 +169,10 @@ class NoGxEEvaluationOperator(EvaluationOperator):
         -------
         out : NoGxEEvaluationOperator
         """
-        # get allele frequencies
-        # (p,) -> (p,1)
-        p = gmat.afreq()[:,None]    # (p,1)
-        q = 1.0 - p                 # (p,1)
-
-        # get marker effects
-        alpha = lgmod.beta          # (p,t)
-
-        # calculate additive variance: sum(2*p*q*alpha)
-        # (p,1)*(p,1)*(p,t) -> (p,t)
-        # (p,t).sum[0] -> (t,)
-        var_A = 2.0 * (p*q*(alpha**2)).sum(0)
+        x = gmat.tacount()      # (n,p)
+        b = lgmod.beta          # (p,t)
+        y = x @ b               # (n,t)
+        var_A = y.var(0)        # (n,t) -> (t,)
 
         # calculate environmental variance
         # var_E = (1 - h2)/h2 * var_A - var_G

@@ -1,5 +1,6 @@
 import numpy
 import pandas
+import warnings
 from scipy.interpolate import interp1d
 
 from . import GeneticMap
@@ -643,6 +644,10 @@ class ExtendedGeneticMap(GeneticMap):
         # raise error if no spline is found
         if not self.has_spline():
             raise RuntimeError("interpolation spline not built")
+
+        # raise warning if map is not congruent
+        if not self.is_congruent():
+            warnings.warn("genetic map is not congruent: markers are out of order", RuntimeWarning)
 
         # allocate empty memory
         out = numpy.empty(vrnt_phypos.shape, dtype='float64')

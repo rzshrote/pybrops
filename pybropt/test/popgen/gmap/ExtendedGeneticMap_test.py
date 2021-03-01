@@ -7,6 +7,10 @@ from pybropt.popgen.gmap import is_ExtendedGeneticMap
 from pybropt.popgen.gmap import check_is_ExtendedGeneticMap
 from pybropt.popgen.gmap import cond_check_is_ExtendedGeneticMap
 
+################################################################################
+################################### Fixtures ###################################
+################################################################################
+
 @pytest.fixture
 def egmap(shared_datadir):
     yield ExtendedGeneticMap.from_egmap(shared_datadir / "McMullen_2009_US_NAM.M.egmap")
@@ -14,6 +18,10 @@ def egmap(shared_datadir):
 @pytest.fixture
 def egmap_sample(shared_datadir):
     yield ExtendedGeneticMap.from_egmap(shared_datadir / "sample.egmap")
+
+################################################################################
+#################################### Tests #####################################
+################################################################################
 
 def test_is_ExtendedGeneticMap(egmap):
     assert is_ExtendedGeneticMap(egmap)
@@ -79,3 +87,9 @@ def test_interp_genpos(egmap_sample):
     out = numpy.repeat(0.75, 5)
     a = egmap_sample.interp_genpos(chrgrp, phypos)
     assert numpy.all(a == out)
+
+# TODO: test for raises warning on interpolation
+# def test_gmap_inversion(shared_datadir):
+#     data_path = shared_datadir / "McMullen_2009_US_NAM.M.egmap"
+#     with pytest.raises(ValueError):
+#         m = ExtendedGeneticMap.from_egmap(data_path)

@@ -207,7 +207,7 @@ class WeightedGenomicParentSelection(ParentSelectionOperator):
             if traitwt is not None:
                 cgs = cgs.dot(traitwt)
 
-            print(cgs)
+            # print(cgs)
 
             return cgs
 

@@ -7,6 +7,10 @@ from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
 
+################################################################################
+############################ Sample Test Variables #############################
+################################################################################
+
 @pytest.fixture
 def dpgvmat(shared_datadir):
     data_path = shared_datadir / "sample.vcf"
@@ -59,6 +63,10 @@ def egmap(shared_datadir):
 @pytest.fixture
 def gmapfn():
     return HaldaneMapFunction()
+
+################################################################################
+################################# Sample Tests #################################
+################################################################################
 
 def test_is_DensePhasedGenotypeVariantMatrix(dpgvmat):
     assert is_DensePhasedGenotypeVariantMatrix(dpgvmat)
@@ -171,3 +179,38 @@ def test_interp_xoprob_grouped(dpgvmat, egmap, gmapfn, mat_xoprob):
     dpgvmat.group()
     dpgvmat.interp_xoprob(egmap, gmapfn)
     assert numpy.allclose(dpgvmat.vrnt_xoprob, mat_xoprob)
+
+################################################################################
+############################# Song Test Variables ##############################
+################################################################################
+
+@pytest.fixture
+def song_gmap(shared_datadir):
+    data_path = shared_datadir / "Song_2016.linear.M.egmap"
+    gmap = ExtendedGeneticMap.from_egmap(data_path)
+    gmap.group()
+    gmap.build_spline(kind = 'linear', fill_value = 'extrapolate')
+    yield gmap
+
+@pytest.fixture
+def song_gmapfn():
+    yield HaldaneMapFunction()
+
+@pytest.fixture
+def song_dpgvmat(shared_datadir, song_gmap, song_gmapfn):
+    data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
+    mat = DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+    mat.group()
+    mat.interp_xoprob(song_gmap, song_gmapfn)
+    yield mat
+
+################################################################################
+################################# Song Tests ###################################
+################################################################################
+
+def test_xoprob(song_gmap, song_dpgvmat):
+    print(song_gmap.spline)
+    print(dir(song_dpgvmat))
+    print(song_dpgvmat.vrnt_chrgrp)
+    print(song_dpgvmat.vrnt_xoprob)
+    raise RuntimeError

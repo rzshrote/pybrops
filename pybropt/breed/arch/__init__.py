@@ -12,3 +12,6 @@ from .EmigrationOperator import *
 
 # full graph
 from .BreedingGraph import *
+
+# objects
+from .RecurrentSelectionBreedingProgram import *

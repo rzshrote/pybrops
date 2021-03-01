@@ -58,6 +58,30 @@ class GenomicModel:
     ############################## Object Methods ##############################
     ############################################################################
 
+    def __copy__(self):
+        """
+        Make a shallow copy of the GenomicModel.
+
+        Returns
+        -------
+        out : GenomicModel
+        """
+        raise NotImplementedError("method is abstract")
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the GenomicModel.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : GenomicModel
+        """
+        raise NotImplementedError("method is abstract")
+
     ################# methods for model fitting and prediction #################
     def fit(self, gmat, bvmat):
         """

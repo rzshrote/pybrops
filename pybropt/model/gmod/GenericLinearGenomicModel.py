@@ -1,3 +1,6 @@
+import copy
+import numpy
+
 from . import LinearGenomicModel
 
 from pybropt.core.error import check_is_ndarray
@@ -132,6 +135,46 @@ class GenericLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    def __copy__(self):
+        """
+        Make a shallow copy of the GenomicModel.
+
+        Returns
+        -------
+        out : GenomicModel
+        """
+        out = self.__class__(
+            mu = copy.copy(self.mu),
+            beta = copy.copy(self.beta),
+            trait = copy.copy(self.trait),
+            model_name = copy.copy(self.model_name),
+            params = copy.copy(self.params)
+        )
+
+        return out
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the GenomicModel.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : GenomicModel
+        """
+        out = self.__class__(
+            mu = copy.deepcopy(self.mu),
+            beta = copy.deepcopy(self.beta),
+            trait = copy.deepcopy(self.trait),
+            model_name = copy.deepcopy(self.model_name),
+            params = copy.deepcopy(self.params)
+        )
+
+        return out
 
     ################# methods for model fitting and prediction #################
     def fit(self, gmat, bvmat):
@@ -297,9 +340,16 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             p > 0.0,
             p == 1.0
         )
-        # (p,t) * (p,t) -> (p,t)
+
+        ploidy = float(gmat.ploidy) # get ploidy
+
+        # scalar * (p,t) * (p,t) -> (p,t)
         # (p,t).sum[0] -> (t,)
-        out = (self.beta * maxgeno).sum(0)
+        out = (ploidy * self.beta * maxgeno).sum(0)
+
+        # (t,) + (t,1).flatten -> (t,)
+        out += self.mu.flatten()
+
         return out
 
     def lsl(self, gmat):
@@ -320,9 +370,16 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             p == 1.0,
             p > 0.0
         )
-        # (p,t) * (p,t) -> (p,t)
+
+        ploidy = float(gmat.ploidy) # get ploidy
+
+        # scalar * (p,t) * (p,t) -> (p,t)
         # (p,t).sum[0] -> (t,)
-        out = (self.beta * mingeno).sum(0)
+        out = (ploidy * self.beta * mingeno).sum(0)
+
+        # (t,) + (t,1).flatten -> (t,)
+        out += self.mu.flatten()
+
         return out
 
 

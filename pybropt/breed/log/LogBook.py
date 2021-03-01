@@ -33,7 +33,13 @@ class LogBook:
     def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs):
         raise NotImplementedError("method is abstract")
 
+    def log_gintegrate(self, t_cur, t_max, geno, misc, **kwargs):
+        raise NotImplementedError("method is abstract")
+
     def log_evaluate(self, t_cur, t_max, bvmat, bvmat_true, misc, **kwargs):
+        raise NotImplementedError("method is abstract")
+
+    def log_bvintegrate(self, t_cur, t_max, bval, misc, **kwargs):
         raise NotImplementedError("method is abstract")
 
     def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs):

@@ -65,15 +65,6 @@ def gmult():
     yield 1000
 
 @pytest.fixture
-def size(gqlen):
-    d = {
-        "cand" : 80,
-        "main" : 80,
-        "queue" : [80]*gqlen
-    }
-    yield d
-
-@pytest.fixture
 def rng():
     yield Generator(PCG64(192837465))
 

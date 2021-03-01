@@ -20,8 +20,8 @@ from pybropt.model.gmod import check_is_GenomicModel
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.breed.eval import NoGxEEvaluationOperator
 
-class GenerationalInitializationOperator(InitializationOperator):
-    """docstring for GenerationalInitializationOperator."""
+class SimpleInitializationOperator(InitializationOperator):
+    """docstring for SimpleInitializationOperator."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -37,7 +37,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         seed_gmod : dict
 
         """
-        super(GenerationalInitializationOperator, self).__init__(**kwargs)
+        super(SimpleInitializationOperator, self).__init__(**kwargs)
 
         # error checks
         check_is_int(burnin, "burnin")
@@ -285,45 +285,40 @@ class GenerationalInitializationOperator(InitializationOperator):
             "true" : gmod_true
         }
 
-        # populate main population
-        for i in range(gwind):
-            # get random selections
-            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-            # mate random selections
-            pgvmat, misc = mateop.mate(
-                t_cur = i - (gwind + gqlen),
-                t_max = t_max,
-                pgvmat = dpgvmat,
-                sel = sel,
-                ncross = seed_ncross,
-                nprogeny = seed_nprogeny
-            )
-            # print(pgvmat.taxa_grp)
-            # append genotypes
-            if seed_geno["main"] is not None:
-                seed_geno["main"].append(
-                    pgvmat.mat,
-                    axis = 1,
-                    taxa = pgvmat.taxa,
-                    taxa_grp = pgvmat.taxa_grp
-                )
-            else:
-                seed_geno["main"] = pgvmat
+        #######################################
+        ### Main populataion initialization ###
+        #######################################
+        # get random selections
+        sel = rng.choice(ntaxa, seed_nsel, replace = replace)
+        # mate random selections
+        pgvmat, misc = mateop.mate(
+            t_cur = -(gwind + gqlen),
+            t_max = t_max,
+            pgvmat = dpgvmat,
+            sel = sel,
+            ncross = seed_ncross,
+            nprogeny = seed_nprogeny
+        )
 
-        for i in range(gqlen):
-            # get random selections
-            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-            # mate random selections
-            pgvmat, misc = mateop.mate(
-                t_cur = i - gqlen,
-                t_max = t_max,
-                pgvmat = dpgvmat,
-                sel = sel,
-                ncross = seed_ncross,
-                nprogeny = seed_nprogeny
-            )
-            # append genotypes to list
-            seed_geno["queue"].append(pgvmat)
+        # assign genotypes
+        seed_geno["main"] = pgvmat
+
+        ########################################
+        ### Queue populataion initialization ###
+        ########################################
+        # get random selections
+        sel = rng.choice(ntaxa, seed_nsel, replace = replace)
+        # mate random selections
+        pgvmat, misc = mateop.mate(
+            t_cur = -gqlen,
+            t_max = t_max,
+            pgvmat = dpgvmat,
+            sel = sel,
+            ncross = seed_ncross,
+            nprogeny = seed_nprogeny
+        )
+        # append genotypes to list
+        seed_geno["queue"].append(pgvmat)
 
         # phenotype main population
         bvmat, bvmat_true, misc = evalop.evaluate(
@@ -353,7 +348,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             gmod = seed_gmod
         )
 
-        geninitop = GenerationalInitializationOperator(
+        geninitop = SimpleInitializationOperator(
             burnin = burnin,
             t_max = t_max,
             seed_geno = seed_geno,
@@ -374,7 +369,7 @@ class GenerationalInitializationOperator(InitializationOperator):
     @staticmethod
     def from_vcf(fname, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
         """
-        Create a GenerationalInitializationOperator from a VCF file.
+        Create a SimpleInitializationOperator from a VCF file.
 
         Initializes a "main" population with genotypes, and queue populations
         of various lengths. Uses the individuals in "main" to select a set of
@@ -407,7 +402,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
 
         # step 2: create from genotype matrix
-        geninitop = GenerationalInitializationOperator.from_dpgvmat(
+        geninitop = SimpleInitializationOperator.from_dpgvmat(
             dpgvmat = dpgvmat,
             rng = rng,
             seed_nsel = seed_nsel,
@@ -435,13 +430,13 @@ class GenerationalInitializationOperator(InitializationOperator):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenerationalInitializationOperator(v):
-    return isinstance(v, GenerationalInitializationOperator)
+def is_SimpleInitializationOperator(v):
+    return isinstance(v, SimpleInitializationOperator)
 
-def check_is_GenerationalInitializationOperator(v, varname):
-    if not isinstance(v, GenerationalInitializationOperator):
-        raise TypeError("'%s' must be a GenerationalInitializationOperator." % varname)
+def check_is_SimpleInitializationOperator(v, varname):
+    if not isinstance(v, SimpleInitializationOperator):
+        raise TypeError("'%s' must be a SimpleInitializationOperator." % varname)
 
-def cond_check_is_GenerationalInitializationOperator(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_SimpleInitializationOperator(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_GenerationalInitializationOperator(v, varname)
+        check_is_SimpleInitializationOperator(v, varname)

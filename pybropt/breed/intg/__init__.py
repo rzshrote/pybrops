@@ -7,3 +7,6 @@ from .BreedingValueIntegrationOperator import *
 # level 2
 from .GenerationalGenotypeIntegrationOperator import *
 from .GenerationalBreedingValueIntegrationOperator import *
+
+from .SimpleGenotypeIntegrationOperator import *
+from .SimpleBreedingValueIntegrationOperator import *

@@ -167,6 +167,18 @@ class VariantMatrixInterface:
         """
         raise NotImplementedError("method is abstract")
 
+    ################## Clustering Methods ##################
+    def assign_hapgrp(self, k):
+        """
+        Assign haplotype groups using k-means clustering.
+
+        Parameters
+        ----------
+        k : int, numpy.ndarray
+            Number of haplotype groups to assign to each
+        """
+        raise NotImplementedError("method is abstract")
+
 
 
 ################################################################################

@@ -1,3 +1,5 @@
+import numpy
+
 from . import BreedingProgram
 
 from pybropt.core.error import check_is_int
@@ -19,17 +21,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, t_max, initop, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
-        super(RecurrentSelectionBreedingProgram, self).__init__(
-            t_max = t_max,
-            initop = initop,
-            pselop = pselop,
-            mateop = mateop,
-            evalop = evalop,
-            intgop = intgop,
-            calop = calop,
-            sselop = sselop
-            **kwargs
-        )
+        super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
 
         # set time variables
         self.t_cur = 0
@@ -83,13 +75,14 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     def geno():
         doc = "Main breeding population of the BreedingNode."
         def fget(self):
-            return self._pop
+            return self._geno
         def fset(self, value):
             check_is_dict(value, "geno")
-            check_keys_in_dict(value, "geno", "cand", "main", "queue")
-            self._pop = value
+            # TODO:
+            # check_keys_in_dict(value, "geno", "cand", "main", "queue")
+            self._geno = value
         def fdel(self):
-            del self._pop
+            del self._geno
         return locals()
     geno = property(**geno())
 
@@ -100,7 +93,8 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             return self._bval
         def fset(self, value):
             check_is_dict(value, "bval")
-            check_keys_in_dict(value, "bval", "cand", "cand_true", "main", "main_true", "queue", "queue_true")
+            # TODO:
+            # check_keys_in_dict(value, "bval", "cand", "cand_true", "main", "main_true", "queue", "queue_true")
             self._bval = value
         def fdel(self):
             del self._bval
@@ -114,7 +108,8 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             return self._gmod
         def fset(self, value):
             check_is_dict(value, "gmod")
-            check_keys_in_dict(value, "gmod", "cand", "main", "queue", "true")
+            # TODO:
+            # check_keys_in_dict(value, "gmod", "cand", "main", "queue", "true")
             self._gmod = value
         def fdel(self):
             del self._gmod
@@ -127,7 +122,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fget(self):
             return self._initop
         def fset(self, value):
-            check_is_InitializationOperator(value, "initop")
+            # check_is_InitializationOperator(value, "initop")
             self._initop = value
         def fdel(self):
             del self._initop
@@ -246,9 +241,36 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         loginit : bool
             Whether to log the initial state before main loop.
         """
+        # print(self.geno)
+        # print(self.bval)
+        # print(self.gmod)
+        # print(self.geno is None, self._geno is None)
+        # print(self.bval is None, self._bval is None)
+        # print(self.gmod is None, self._gmod is None)
+
         # initialize if needed
         if any(e is None for e in (self._geno, self._bval, self._gmod)):
             self.initialize()
+
+        cand_bvmat, cand_bvmat_true, misc = self.evalop.evaluate(
+            t_cur = 0,
+            t_max = self._t_max,
+            pgvmat = self._geno["cand"],
+            gmod_true = self._gmod["true"]
+        )
+
+        self._bval["cand"] = cand_bvmat
+        self._bval["cand_true"] = cand_bvmat_true
+
+        main_bvmat, main_bvmat_true, misc = self.evalop.evaluate(
+            t_cur = 0,
+            t_max = self._t_max,
+            pgvmat = self._geno["main"],
+            gmod_true = self._gmod["true"]
+        )
+
+        self._bval["main"] = main_bvmat
+        self._bval["main_true"] = main_bvmat_true
 
         # log initial conditions if needed
         if loginit:
@@ -260,58 +282,66 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 gmod = self._gmod
             )
 
+        geno = self._geno
+        bval = self._bval
+        gmod = self._gmod
+
         # main breeding loop
-        for _ in range(ngen):
+        for t in range(1, ngen+1):
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
-            pgvmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
-                t_cur = self._t_cur,
+            parent_gmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
+                t_cur = t,
                 t_max = self._t_max,
-                geno = self._geno,
-                bval = self._bval,
-                gmod = self._gmod
+                geno = geno,
+                bval = bval,
+                gmod = gmod
             )
             lbook.log_pselect(
-                pgvmat = pgvmat,
+                t_cur = t,
+                t_max = self._t_max,
+                pgvmat = parent_gmat,
                 sel = sel,
                 ncross = ncross,
                 nprogeny = nprogeny,
                 misc = misc
             )
 
+            print("parents:", gmod["true"].usl(parent_gmat))
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
-            pgvmat, misc = self.mateop.mate(
-                t_cur = self._t_cur,
+            progeny_gmat, misc = self.mateop.mate(
+                t_cur = t,
                 t_max = self._t_max,
-                pgvmat = pgvmat,
+                pgvmat = parent_gmat,
                 sel = sel,
                 ncross = ncross,
                 nprogeny = nprogeny
             )
             lbook.log_mate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                pgvmat = pgvmat,
+                pgvmat = progeny_gmat,
                 misc = misc
             )
+            print("progeny:", gmod["true"].usl(progeny_gmat))
 
             ####################################################################
             ####################### integrate genotypes ########################
             ####################################################################
-            geno_tmp, misc = self.gintgop.gintegrate(
-                t_cur = self._t_cur,
+            # print(geno)
+            geno, misc = self.gintgop.gintegrate(
+                t_cur = t,
                 t_max = self._t_max,
-                pgvmat = pgvmat,
-                geno = self._geno,
+                pgvmat = progeny_gmat,
+                geno = geno,
             )
             lbook.log_gintegrate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
+                geno = geno,
                 misc = misc
             )
 
@@ -319,13 +349,13 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ######################## evaluate genotypes ########################
             ####################################################################
             bvmat, bvmat_true, misc = self.evalop.evaluate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                pgvmat = geno_tmp["main"],
-                gmod_true = self._gmod["true"]
+                pgvmat = geno["main"],
+                gmod_true = gmod["true"]
             )
             lbook.log_evaluate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
@@ -335,63 +365,63 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
-            bval_tmp, misc = self.bvintgop.bvintegrate(
-                t_cur = self._t_cur,
+            bval, misc = self.bvintgop.bvintegrate(
+                t_cur = t,
                 t_max = self._t_max,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
-                bval = self._bval,
+                bval = bval,
             )
             lbook.log_bvintegrate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                bval = bval_tmp,
+                bval = bval,
                 misc = misc
             )
 
             ####################################################################
             ######################### calibrate models #########################
             ####################################################################
-            gmod_tmp, misc = self.calop.calibrate(
-                t_cur = self._t_cur,
+            gmod, misc = self.calop.calibrate(
+                t_cur = t,
                 t_max = self._t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
-                gmod = self._gmod
+                geno = geno,
+                bval = bval,
+                gmod = gmod
             )
             lbook.log_calibrate(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                gmod = gmod_tmp,
+                gmod = gmod,
                 misc = misc
             )
 
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            geno_new, bval_new, gmod_new, misc = self.sselop.sselect(
-                t_cur = self._t_cur,
+            geno, bval, gmod, misc = self.sselop.sselect(
+                t_cur = t,
                 t_max = self._t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
-                gmod = gmod_tmp
+                geno = geno,
+                bval = bval,
+                gmod = gmod
             )
             lbook.log_sselect(
-                t_cur = self._t_cur,
+                t_cur = t,
                 t_max = self._t_max,
-                geno = geno_new,
-                bval = bval_new,
-                gmod = gmod_new,
+                geno = geno,
+                bval = bval,
+                gmod = gmod,
                 misc = misc
             )
 
             ####################################################################
             ######################### variable updates #########################
             ####################################################################
-            # update population variables
-            self.geno = geno_new
-            self.bval = bval_new
-            self.gmod = gmod_new
+            # # update population variables
+            # self.geno = geno_new
+            # self.bval = bval_new
+            # self.gmod = gmod_new
 
             # increment time variables
             self._t_cur += 1

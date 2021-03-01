@@ -230,7 +230,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         out = (p * (1.0 - p)).sum()
 
         # multiply summation by (ploidy/nloci)
-        out *= (self._mat.shape[0] / self._mat.shape[2])
+        out *= (self.ploidy / self.nloci)
 
         return out
 
