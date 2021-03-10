@@ -59,7 +59,7 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         # print("taxa_grp:", geno_new["main"].taxa_grp)
         mask = geno_new["main"].taxa_grp < taxa_min    # create genotype mask
         # print("1:",geno_new["main"].mat.shape)
-        geno_new["main"].delete(mask, axis = 1)         # delete old taxa
+        geno_new["main"].remove(mask, axis = 1)         # delete old taxa
         # print("2:",geno_new["main"].mat.shape)
         geno_new["main"].append(                        # add new taxa
             values = new_geno.mat,

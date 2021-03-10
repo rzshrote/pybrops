@@ -124,6 +124,8 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ############## Matrix summary statistics ###############
     def tacount(self, dtype = None):
         """
         Allele count within each taxon.

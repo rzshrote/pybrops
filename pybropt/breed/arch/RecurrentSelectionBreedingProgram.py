@@ -14,6 +14,19 @@ from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
 from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
 from pybropt.breed.sel import check_is_SurvivorSelectionOperator
 
+def dprint(t, lab, d, mod, ID = True, USL = True):
+    if ID:
+        x = "cand:" + str(id(d["cand"]))
+        y = "main:" + str(id(d["main"]))
+        z = "queue:" + str([id(a) for a in d["queue"]])
+        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "ID", lab, x, y, z))
+    if USL:
+        x = "cand:" + str(mod.usl(d["cand"]))
+        y = "main:" + str(mod.usl(d["main"]))
+        z = "queue:" + str([mod.usl(a) for a in d["queue"]])
+        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "USL", lab, x, y, z))
+
+
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
 
@@ -291,6 +304,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
+            dprint(t, "pre-pselect", geno, gmod["true"])
             parent_gmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
                 t_cur = t,
                 t_max = self._t_max,
@@ -307,11 +321,13 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 nprogeny = nprogeny,
                 misc = misc
             )
+            dprint(t, "post-pselect", geno, gmod["true"])
 
-            print("parents:", gmod["true"].usl(parent_gmat))
+
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
+            dprint(t, "pre-mate", geno, gmod["true"])
             progeny_gmat, misc = self.mateop.mate(
                 t_cur = t,
                 t_max = self._t_max,
@@ -326,12 +342,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 pgvmat = progeny_gmat,
                 misc = misc
             )
-            print("progeny:", gmod["true"].usl(progeny_gmat))
+            dprint(t, "post-mate", geno, gmod["true"])
 
             ####################################################################
             ####################### integrate genotypes ########################
             ####################################################################
-            # print(geno)
+            dprint(t, "pre-gintegrate", geno, gmod["true"])
             geno, misc = self.gintgop.gintegrate(
                 t_cur = t,
                 t_max = self._t_max,
@@ -344,10 +360,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 geno = geno,
                 misc = misc
             )
+            dprint(t, "post-gintegrate", geno, gmod["true"])
 
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
+            dprint(t, "pre-evaluate", geno, gmod["true"])
             bvmat, bvmat_true, misc = self.evalop.evaluate(
                 t_cur = t,
                 t_max = self._t_max,
@@ -361,10 +379,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 bvmat_true = bvmat_true,
                 misc = misc
             )
+            dprint(t, "post-evaluate", geno, gmod["true"])
 
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
+            dprint(t, "pre-bvintegrate", geno, gmod["true"])
             bval, misc = self.bvintgop.bvintegrate(
                 t_cur = t,
                 t_max = self._t_max,
@@ -378,10 +398,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 bval = bval,
                 misc = misc
             )
+            dprint(t, "post-bvintegrate", geno, gmod["true"])
 
             ####################################################################
             ######################### calibrate models #########################
             ####################################################################
+            dprint(t, "pre-calibrate", geno, gmod["true"])
             gmod, misc = self.calop.calibrate(
                 t_cur = t,
                 t_max = self._t_max,
@@ -395,10 +417,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 gmod = gmod,
                 misc = misc
             )
+            dprint(t, "post-calibrate", geno, gmod["true"])
 
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
+            dprint(t, "pre-sselect", geno, gmod["true"])
             geno, bval, gmod, misc = self.sselop.sselect(
                 t_cur = t,
                 t_max = self._t_max,
@@ -414,6 +438,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 gmod = gmod,
                 misc = misc
             )
+            dprint(t, "post-sselect", geno, gmod["true"])
 
             ####################################################################
             ######################### variable updates #########################

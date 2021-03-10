@@ -347,19 +347,19 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def insert(self, obj, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    def incorp(self, obj, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
         """
-        Insert values along the given axis before the given indices.
+        Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
         obj: int, slice, or sequence of ints
             Object that defines the index or indices before which values is
-            inserted.
+            incorporated.
         values : array_like
-            Values to insert into the matrix.
+            Values to incorporate into the matrix.
         axis : int
-            The axis along which values are inserted.
+            The axis along which values are incorporated.
         **kwargs
             Additional keyword arguments.
         """

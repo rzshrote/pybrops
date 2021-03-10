@@ -1,7 +1,6 @@
 from . import SortableMatrix
-from . import GroupableMatrixInterface
 
-class GroupableMatrix(SortableMatrix,GroupableMatrixInterface):
+class GroupableMatrix(SortableMatrix):
     """docstring for GroupableMatrix."""
 
     ############################################################################
@@ -10,6 +9,43 @@ class GroupableMatrix(SortableMatrix,GroupableMatrixInterface):
     def __init__(self, **kwargs):
         super(GroupableMatrix, self).__init__()
 
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    ################### Grouping Methods ###################
+    def group(self, axis, **kwargs):
+        """
+        Sort the Matrix, then populate grouping indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        **kwargs
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def is_grouped(self, axis, **kwargs):
+        """
+        Determine whether the Matrix has been sorted and grouped.
+
+        Parameters
+        ----------
+        axis: int
+            Axis along which to determine whether elements have been sorted and
+            grouped.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        grouped : bool
+            True or False indicating whether the Matrix has been sorted and
+            grouped.
+        """
+        raise NotImplementedError("method is abstract")
 
 
 

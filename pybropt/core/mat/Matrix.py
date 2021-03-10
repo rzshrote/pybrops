@@ -1,5 +1,16 @@
 class Matrix:
-    """An abstract class for matrix wrapper objects."""
+    """
+    An abstract class for matrix wrapper objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Matrix mathematical operators
+        2) Matrix logical & bitwise operators
+        3) Matrix container operators
+        4) Matrix copy operators
+        5) Matrix read-only matrix shape changing routines.
+
+    The shape of a Matrix should be immutable.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -183,6 +194,34 @@ class Matrix:
     def __iter__(self):
         raise NotImplementedError("method is abstract")
 
+    #################### Matrix copying ####################
+    def __copy__(self):
+        """
+        Make a shallow copy of the Matrix.
+
+        Returns
+        -------
+        out : Matrix
+            A shallow copy of the original Matrix.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the Matrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : Matrix
+            A deep copy of the original Matrix.
+        """
+        raise NotImplementedError("method is abstract")
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
@@ -201,21 +240,55 @@ class Matrix:
     ############################## Object Methods ##############################
     ############################################################################
 
-    ############# Matrix element manipulation ##############
-    def append(self, values, axis, **kwargs):
+    #################### Matrix copying ####################
+    def copy(self):
         """
-        Append values to the matrix.
+        Make a shallow copy of the Matrix.
+
+        Returns
+        -------
+        out : Matrix
+            A shallow copy of the original Matrix.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def deepcopy(self, memo):
+        """
+        Make a deep copy of the Matrix.
 
         Parameters
         ----------
-        values : array_like
-            Values are appended to append to the matrix.
-        axis : int
-            The axis along which values are appended.
-        **kwargs
-            Additional keyword arguments.
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : Matrix
+            A deep copy of the original Matrix.
         """
         raise NotImplementedError("method is abstract")
+
+    ######### Matrix element copy-on-manipulation ##########
+    def adjoin(self, values, axis, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along an axis.
+
+        Parameters
+        ----------
+        values : Matrix or numpy.ndarray
+            Values are appended to append to the Matrix.
+        axis : int
+            The axis along which values are adjoined.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        raise NotImplementedError("static method is abstract")
 
     def delete(self, obj, axis, **kwargs):
         """
@@ -229,8 +302,14 @@ class Matrix:
             The axis along which to delete the subarray defined by obj.
         **kwargs
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
         """
-        raise NotImplementedError("method is abstract")
+        raise NotImplementedError("static method is abstract")
 
     def insert(self, obj, values, axis, **kwargs):
         """
@@ -247,9 +326,58 @@ class Matrix:
             The axis along which values are inserted.
         **kwargs
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        raise NotImplementedError("static method is abstract")
+
+    def select(self, indices, axis, **kwargs):
+        """
+        Select certain values from the matrix.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
         """
         raise NotImplementedError("method is abstract")
 
+    @staticmethod
+    def concat(mats, axis, **kwargs):
+        """
+        Concatenate matrices together along an axis.
+
+        Parameters
+        ----------
+        mats : array_like of matrices
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        axis : int
+            The axis along which the arrays will be joined.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        raise NotImplementedError("static method is abstract")
 
 
 ################################################################################

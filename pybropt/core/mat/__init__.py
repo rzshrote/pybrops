@@ -3,13 +3,6 @@
 # Utilities
 from .mat_util import *
 
-# basal interfaces
-from .MutableMatrixInterface import *
-from .SortableMatrixInterface import *
-from .GroupableMatrixInterface import *
-from .TaxaMatrixInterface import *
-from .VariantMatrixInterface import *
-
 # level: 0
 from .Matrix import *
 
@@ -24,6 +17,4 @@ from .GroupableMatrix import *
 
 # level: 4
 from .TaxaMatrix import *
-
-# level: 5
 from .VariantMatrix import *

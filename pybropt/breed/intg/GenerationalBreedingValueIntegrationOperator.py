@@ -50,7 +50,7 @@ class GenerationalBreedingValueIntegrationOperator(BreedingValueIntegrationOpera
         # process breeding value matrix
         bval_new["main"] = bvmat
         # mask = bval_new["main"].taxa_grp < taxa_min     # create breeding value mask
-        # bval_new["main"].delete(mask, axis = 0)         # delete old taxa
+        # bval_new["main"].remove(mask, axis = 0)         # remove old taxa
         # bval_new["main"].append(                        # add new taxa
         #     values = bvmat.mat,
         #     axis = 0,
@@ -62,7 +62,7 @@ class GenerationalBreedingValueIntegrationOperator(BreedingValueIntegrationOpera
         # process true breeding value matrix
         bval_new["main_true"] = bvmat_true
         # mask = bval_new["main_true"].taxa_grp < taxa_min     # create breeding value mask
-        # bval_new["main_true"].delete(mask, axis = 0)         # delete old taxa
+        # bval_new["main_true"].remove(mask, axis = 0)         # remove old taxa
         # bval_new["main_true"].append(                        # add new taxa
         #     values = bvmat_true.mat,
         #     axis = 0,

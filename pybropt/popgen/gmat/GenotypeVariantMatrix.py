@@ -1,16 +1,16 @@
 from . import GenotypeMatrix
+from pybropt.core.mat import TaxaMatrix
 from pybropt.core.mat import VariantMatrix
-from pybropt.core.mat import SortableMatrix
 
-class GenotypeVariantMatrix(GenotypeMatrix,VariantMatrix):
-    """docstring for VariantMatrix."""
+class GenotypeVariantMatrix(GenotypeMatrix,TaxaMatrix,VariantMatrix):
+    """docstring for GenotypeVariantMatrix."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
         """
-        VariantMatrix constructor
+        GenotypeVariantMatrix constructor
 
         Parameters
         ----------
@@ -18,15 +18,7 @@ class GenotypeVariantMatrix(GenotypeMatrix,VariantMatrix):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(VariantMatrix, self).__init__(**kwargs)
-
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
+        super(GenotypeVariantMatrix, self).__init__(**kwargs)
 
 
 

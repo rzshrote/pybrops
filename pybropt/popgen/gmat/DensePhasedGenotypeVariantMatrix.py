@@ -27,7 +27,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, vrnt_chrgrp, vrnt_phypos, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, vrnt_chrgrp, vrnt_phypos, taxa = None, taxa_grp = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
         """
         PhasedGenotypeVariantMatrix object constructor.
 
@@ -57,19 +57,12 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         """
         # call all parent constructors (some arguments not used)
         super(DensePhasedGenotypeVariantMatrix, self).__init__(
-            mat = mat,
-            vrnt_chrgrp = vrnt_chrgrp,
-            vrnt_phypos = vrnt_phypos,
-            vrnt_name = vrnt_name,
-            vrnt_genpos = vrnt_genpos,
-            vrnt_xoprob = vrnt_xoprob,
-            vrnt_hapgrp = vrnt_hapgrp,
-            vrnt_mask = vrnt_mask,
-            taxa = taxa,
-            taxa_grp = taxa_grp
+            mat = mat
         )
 
         # set variables
+        self.taxa = taxa
+        self.taxa_grp = taxa_grp
         self.vrnt_chrgrp = vrnt_chrgrp
         self.vrnt_phypos = vrnt_phypos
         self.vrnt_name = vrnt_name
@@ -77,8 +70,6 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         self.vrnt_xoprob = vrnt_xoprob
         self.vrnt_hapgrp = vrnt_hapgrp
         self.vrnt_mask = vrnt_mask
-        self.taxa = taxa
-        self.taxa_grp = taxa_grp
 
         # set sort metadata to None
         self.taxa_grp_name = None
@@ -90,6 +81,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         self.vrnt_chrgrp_spix = None
         self.vrnt_chrgrp_len = None
 
+    #################### Matrix copying ####################
     def __copy__(self):
         """
         Make a shallow copy of the the matrix.
@@ -101,6 +93,8 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # construct new object
         out = self.__class__(
             mat = copy.copy(self.mat),
+            taxa = copy.copy(self.taxa),
+            taxa_grp = copy.copy(self.taxa_grp),
             vrnt_chrgrp = copy.copy(self.vrnt_chrgrp),
             vrnt_phypos = copy.copy(self.vrnt_phypos),
             vrnt_name = copy.copy(self.vrnt_name),
@@ -108,19 +102,17 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             vrnt_xoprob = copy.copy(self.vrnt_xoprob),
             vrnt_hapgrp = copy.copy(self.vrnt_hapgrp),
             vrnt_mask = copy.copy(self.vrnt_mask),
-            taxa = copy.copy(self.taxa),
-            taxa_grp = copy.copy(self.taxa_grp),
         )
 
         # copy metadata
-        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
-        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
-        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
-        out.vrnt_chrgrp_len = copy.copy(self.vrnt_chrgrp_len)
         out.taxa_grp_name = copy.copy(self.taxa_grp_name)
         out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
         out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
         out.taxa_grp_len = copy.copy(self.taxa_grp_len)
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.copy(self.vrnt_chrgrp_len)
 
         return out
 
@@ -139,6 +131,8 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # construct new object
         out = self.__class__(
             mat = copy.deepcopy(self.mat),
+            taxa = copy.deepcopy(self.taxa),
+            taxa_grp = copy.deepcopy(self.taxa_grp),
             vrnt_chrgrp = copy.deepcopy(self.vrnt_chrgrp),
             vrnt_phypos = copy.deepcopy(self.vrnt_phypos),
             vrnt_name = copy.deepcopy(self.vrnt_name),
@@ -146,25 +140,111 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             vrnt_xoprob = copy.deepcopy(self.vrnt_xoprob),
             vrnt_hapgrp = copy.deepcopy(self.vrnt_hapgrp),
             vrnt_mask = copy.deepcopy(self.vrnt_mask),
-            taxa = copy.deepcopy(self.taxa),
-            taxa_grp = copy.deepcopy(self.taxa_grp),
         )
 
         # copy metadata
-        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name)
-        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix)
-        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix)
-        out.vrnt_chrgrp_len = copy.deepcopy(self.vrnt_chrgrp_len)
         out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name)
         out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix)
         out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix)
         out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len)
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.deepcopy(self.vrnt_chrgrp_len)
 
         return out
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ################# Taxa Data Properites #################
+    def taxa():
+        doc = "The taxa property."
+        def fget(self):
+            return self._taxa
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa")
+            cond_check_ndarray_dtype_is_object(value, "taxa")
+            cond_check_ndarray_ndim(value, "taxa", 1)
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[1])
+            self._taxa = value
+        def fdel(self):
+            del self._taxa
+        return locals()
+    taxa = property(**taxa())
+
+    def taxa_grp():
+        doc = "The taxa_grp property."
+        def fget(self):
+            return self._taxa_grp
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa_grp")
+            cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp", 1)
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[1])
+            self._taxa_grp = value
+        def fdel(self):
+            del self._taxa_grp
+        return locals()
+    taxa_grp = property(**taxa_grp())
+
+    ############### Taxa Metadata Properites ###############
+    def taxa_grp_name():
+        doc = "The taxa_grp_name property."
+        def fget(self):
+            return self._taxa_grp_name
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa_grp_name")
+            cond_check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
+            self._taxa_grp_name = value
+        def fdel(self):
+            del self._taxa_grp_name
+        return locals()
+    taxa_grp_name = property(**taxa_grp_name())
+
+    def taxa_grp_stix():
+        doc = "The taxa_grp_stix property."
+        def fget(self):
+            return self._taxa_grp_stix
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa_grp_stix")
+            cond_check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
+            self._taxa_grp_stix = value
+        def fdel(self):
+            del self._taxa_grp_stix
+        return locals()
+    taxa_grp_stix = property(**taxa_grp_stix())
+
+    def taxa_grp_spix():
+        doc = "The taxa_grp_spix property."
+        def fget(self):
+            return self._taxa_grp_spix
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa_grp_spix")
+            cond_check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
+            self._taxa_grp_spix = value
+        def fdel(self):
+            del self._taxa_grp_spix
+        return locals()
+    taxa_grp_spix = property(**taxa_grp_spix())
+
+    def taxa_grp_len():
+        doc = "The taxa_grp_len property."
+        def fget(self):
+            return self._taxa_grp_len
+        def fset(self, value):
+            cond_check_is_ndarray(value, "taxa_grp_len")
+            cond_check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
+            self._taxa_grp_len = value
+        def fdel(self):
+            del self._taxa_grp_len
+        return locals()
+    taxa_grp_len = property(**taxa_grp_len())
 
     ############### Variant Data Properites ################
     def vrnt_chrgrp():
@@ -329,161 +409,234 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         return locals()
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
-    ################# Taxa Data Properites #################
-    def taxa():
-        doc = "The taxa property."
-        def fget(self):
-            return self._taxa
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype_is_object(value, "taxa")
-            cond_check_ndarray_ndim(value, "taxa", 1)
-            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[1])
-            self._taxa = value
-        def fdel(self):
-            del self._taxa
-        return locals()
-    taxa = property(**taxa())
-
-    def taxa_grp():
-        doc = "The taxa_grp property."
-        def fget(self):
-            return self._taxa_grp
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa_grp")
-            cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
-            cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[1])
-            self._taxa_grp = value
-        def fdel(self):
-            del self._taxa_grp
-        return locals()
-    taxa_grp = property(**taxa_grp())
-
-    ############### Taxa Metadata Properites ###############
-    def taxa_grp_name():
-        doc = "The taxa_grp_name property."
-        def fget(self):
-            return self._taxa_grp_name
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa_grp_name")
-            cond_check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
-            cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            del self._taxa_grp_name
-        return locals()
-    taxa_grp_name = property(**taxa_grp_name())
-
-    def taxa_grp_stix():
-        doc = "The taxa_grp_stix property."
-        def fget(self):
-            return self._taxa_grp_stix
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa_grp_stix")
-            cond_check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
-            cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            del self._taxa_grp_stix
-        return locals()
-    taxa_grp_stix = property(**taxa_grp_stix())
-
-    def taxa_grp_spix():
-        doc = "The taxa_grp_spix property."
-        def fget(self):
-            return self._taxa_grp_spix
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa_grp_spix")
-            cond_check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
-            cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            del self._taxa_grp_spix
-        return locals()
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "The taxa_grp_len property."
-        def fget(self):
-            return self._taxa_grp_len
-        def fset(self, value):
-            cond_check_is_ndarray(value, "taxa_grp_len")
-            cond_check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
-            cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            del self._taxa_grp_len
-        return locals()
-    taxa_grp_len = property(**taxa_grp_len())
-
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
-    ############# Matrix element manipulation ##############
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+    ######### Matrix element copy-on-manipulation ##########
+    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
         """
-        Append values to the matrix.
+        Add additional elements to the end of the Matrix along an axis.
 
         Parameters
         ----------
-        values : numpy.ndarray
-            Values are appended to append to the matrix.
-            Must be of type int8.
-            Must be of shape (m, n, p)
+        values : DensePhasedGenotypeMatrix, numpy.ndarray
+            Values are appended to append to the Matrix.
         axis : int
-            The axis along which values are appended.
+            The axis along which values are adjoined.
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_chrgrp field, providing this argument overwrites the field.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_phypos field, providing this argument overwrites the field.
+        vrnt_name : numpy.ndarray
+            Variant names to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_name field, providing this argument overwrites the field.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_genpos field, providing this argument overwrites the field.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_xoprob field, providing this argument overwrites the field.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_mask : numpy.ndarray
+            Variant mask to adjoin to the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_mask field, providing this argument overwrites the field.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
         """
+        # BUG: need to check that values are compatible in the first place
         # get axis
         axis = get_axis(axis, self._mat.ndim)
 
-        # error check before additions are made to the matrix
-        if axis == 1:
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DensePhasedGenotypeVariantMatrix(values):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if vrnt_chrgrp is None:
+                vrnt_chrgrp = values.vrnt_chrgrp
+            if vrnt_phypos is None:
+                vrnt_phypos = values.vrnt_phypos
+            if vrnt_name is None:
+                vrnt_name = values.vrnt_name
+            if vrnt_genpos is None:
+                vrnt_genpos = values.vrnt_genpos
+            if vrnt_xoprob is None:
+                vrnt_xoprob = values.vrnt_xoprob
+            if vrnt_hapgrp is None:
+                vrnt_hapgrp = values.vrnt_hapgrp
+            if vrnt_mask is None:
+                vrnt_mask = values.vrnt_mask
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DensePhasedGenotypeVariantMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
+        if axis == 0:
+            raise ValueError("adjoin along axis 0 not supported") ## TODO: implement me
+        elif axis == 1:
             if (self._taxa is not None) and (taxa is None):
-                # in the special case of no taxa names, fill with empty strings
-                taxa = ["" for _ in range(values.shape[1])]
-                # raise RuntimeError("cannot append: taxa argument is required")
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot append: taxa_grp argument is required")
+                raise RuntimeError("cannot adjoin: taxa_grp argument is required")
         elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot append: vrnt_chrgrp argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot append: vrnt_phypos argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
-                raise RuntimeError("cannot append: vrnt_name argument is required")
+                vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot append: vrnt_genpos argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot append: vrnt_xoprob argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot append: vrnt_hapgrp argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot append: vrnt_mask argument is required")
+                raise RuntimeError("cannot adjoin: vrnt_mask argument is required")
 
-        # append values
-        self._mat = numpy.append(self._mat, values, axis = axis)
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # adjoin values
+        values = numpy.append(self._mat, values, axis = axis)
         if axis == 1:
-            if (self._taxa is not None) and (taxa is not None):
-                self._taxa = numpy.append(self._taxa, taxa, axis = 0)
-            if (self._taxa_grp is not None) and (taxa_grp is not None):
-                self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
+            if self._taxa is not None:
+                taxa = numpy.append(self._taxa, taxa, axis = 0)
+            if self._taxa_grp is not None:
+                taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
         elif axis == 2:
-            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is not None):
-                self._vrnt_chrgrp = numpy.append(self._vrnt_chrgrp, vrnt_chrgrp, axis = 0)
-            if (self._vrnt_phypos is not None) and (vrnt_phypos is not None):
-                self._vrnt_phypos = numpy.append(self._vrnt_phypos, vrnt_phypos, axis = 0)
-            if (self._vrnt_name is not None) and (vrnt_name is not None):
-                self._vrnt_name = numpy.append(self._vrnt_name, vrnt_name, axis = 0)
-            if (self._vrnt_genpos is not None) and (vrnt_genpos is not None):
-                self._vrnt_genpos = numpy.append(self._vrnt_genpos, vrnt_genpos, axis = 0)
-            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is not None):
-                self._vrnt_xoprob = numpy.append(self._vrnt_xoprob, vrnt_xoprob, axis = 0)
-            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is not None):
-                self._vrnt_hapgrp = numpy.append(self._vrnt_hapgrp, vrnt_hapgrp, axis = 0)
-            if (self._vrnt_mask is not None) and (vrnt_mask is not None):
-                self._vrnt_mask = numpy.append(self._vrnt_mask, vrnt_mask, axis = 0)
+            if self._vrnt_chrgrp is not None:
+                vrnt_chrgrp = numpy.append(self._vrnt_chrgrp, vrnt_chrgrp, axis = 0)
+            if self._vrnt_phypos is not None:
+                vrnt_phypos = numpy.append(self._vrnt_phypos, vrnt_phypos, axis = 0)
+            if self._vrnt_name is not None:
+                vrnt_name = numpy.append(self._vrnt_name, vrnt_name, axis = 0)
+            if self._vrnt_genpos is not None:
+                vrnt_genpos = numpy.append(self._vrnt_genpos, vrnt_genpos, axis = 0)
+            if self._vrnt_xoprob is not None:
+                vrnt_xoprob = numpy.append(self._vrnt_xoprob, vrnt_xoprob, axis = 0)
+            if self._vrnt_hapgrp is not None:
+                vrnt_hapgrp = numpy.append(self._vrnt_hapgrp, vrnt_hapgrp, axis = 0)
+            if self._vrnt_mask is not None:
+                vrnt_mask = numpy.append(self._vrnt_mask, vrnt_mask, axis = 0)
+
+        out = self.__class__(
+            mat = values,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the Matrix.
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.adjoin(
+            values = values,
+            axis = 1,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along the variant axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the Matrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to adjoin to the Matrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to adjoin to the Matrix.
+        vrnt_name : numpy.ndarray
+            Variant names to adjoin to the Matrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to adjoin to the Matrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to adjoin to the Matrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to adjoin to the Matrix.
+        vrnt_mask : numpy.ndarray
+            Variant mask to adjoin to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.adjoin(
+            values = values,
+            axis = 2,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
 
     def delete(self, obj, axis = -1, **kwargs):
         """
@@ -497,9 +650,844 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             The axis along which to delete the subarray defined by obj.
         **kwargs
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 0:
+            raise ValueError("delete along axis 0 not supported") ## TODO: implement me
+
+        # get values
+        mat = self._mat
+        taxa = self._taxa
+        taxa_grp = self._taxa_grp
+        vrnt_chrgrp = self._vrnt_chrgrp
+        vrnt_phypos = self._vrnt_phypos
+        vrnt_name = self._vrnt_name
+        vrnt_genpos = self._vrnt_genpos
+        vrnt_xoprob = self._vrnt_xoprob
+        vrnt_hapgrp = self._vrnt_hapgrp
+        vrnt_mask = self._vrnt_mask
+
+        # delete values
+        mat = numpy.delete(mat, obj, axis = axis)
+        if axis == 1:
+            if taxa is not None:
+                taxa = numpy.delete(taxa, obj, axis = 0)
+            if taxa_grp is not None:
+                taxa_grp = numpy.delete(taxa_grp, obj, axis = 0)
+        elif axis == 2:
+            if vrnt_chrgrp is not None:
+                vrnt_chrgrp = numpy.delete(vrnt_chrgrp, obj, axis = 0)
+            if vrnt_phypos is not None:
+                vrnt_phypos = numpy.delete(vrnt_phypos, obj, axis = 0)
+            if vrnt_name is not None:
+                vrnt_name = numpy.delete(vrnt_name, obj, axis = 0)
+            if vrnt_genpos is not None:
+                vrnt_genpos = numpy.delete(vrnt_genpos, obj, axis = 0)
+            if vrnt_xoprob is not None:
+                vrnt_xoprob = numpy.delete(vrnt_xoprob, obj, axis = 0)
+            if vrnt_hapgrp is not None:
+                vrnt_hapgrp = numpy.delete(vrnt_hapgrp, obj, axis = 0)
+            if vrnt_mask is not None:
+                vrnt_mask = numpy.delete(vrnt_mask, obj, axis = 0)
+
+        out = self.__class__(
+            mat = mat,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def delete_taxa(self, obj, **kwargs):
+        """
+        Delete sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.delete(
+            obj = obj,
+            axis = 1,
+            **kwargs
+        )
+
+    def delete_vrnt(self, obj, **kwargs):
+        """
+        Delete sub-arrays along the variant axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.delete(
+            obj = obj,
+            axis = 2,
+            **kwargs
+        )
+
+    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Insert values along the given axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : DensePhasedGenotypeVariantMatrix, numpy.ndarray
+            Values to insert into the matrix.
+        axis : int
+            The axis along which values are inserted.
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_chrgrp field, providing this argument overwrites the field.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_phypos field, providing this argument overwrites the field.
+        vrnt_name : numpy.ndarray
+            Variant names to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_name field, providing this argument overwrites the field.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_genpos field, providing this argument overwrites the field.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_xoprob field, providing this argument overwrites the field.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_mask : numpy.ndarray
+            Variant mask to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            vrnt_mask field, providing this argument overwrites the field.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeVariantMatrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        # BUG: need to check that values are compatible in the first place
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DensePhasedGenotypeVariantMatrix(values):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if vrnt_chrgrp is None:
+                vrnt_chrgrp = values.vrnt_chrgrp
+            if vrnt_phypos is None:
+                vrnt_phypos = values.vrnt_phypos
+            if vrnt_name is None:
+                vrnt_name = values.vrnt_name
+            if vrnt_genpos is None:
+                vrnt_genpos = values.vrnt_genpos
+            if vrnt_xoprob is None:
+                vrnt_xoprob = values.vrnt_xoprob
+            if vrnt_hapgrp is None:
+                vrnt_hapgrp = values.vrnt_hapgrp
+            if vrnt_mask is None:
+                vrnt_mask = values.vrnt_mask
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DensePhasedGenotypeVariantMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
+        if axis == 0:
+            raise ValueError("insert along axis 0 not supported") ## TODO: implement me
+        elif axis == 1:
+            if (self._taxa is not None) and (taxa is None):
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot insert: taxa_grp argument is required")
+        elif axis == 2:
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
+                raise RuntimeError("cannot insert: vrnt_chrgrp argument is required")
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
+                raise RuntimeError("cannot insert: vrnt_phypos argument is required")
+            if (self._vrnt_name is not None) and (vrnt_name is None):
+                vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
+                raise RuntimeError("cannot insert: vrnt_genpos argument is required")
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
+                raise RuntimeError("cannot insert: vrnt_xoprob argument is required")
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
+                raise RuntimeError("cannot insert: vrnt_hapgrp argument is required")
+            if (self._vrnt_mask is not None) and (vrnt_mask is None):
+                raise RuntimeError("cannot insert: vrnt_mask argument is required")
+
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # insert values
+        values = numpy.insert(self._mat, obj, values, axis = axis)
+        if axis == 1:
+            if self._taxa is not None:
+                taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
+            if self._taxa_grp is not None:
+                taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+        elif axis == 2:
+            if self._vrnt_chrgrp is not None:
+                vrnt_chrgrp = numpy.insert(self._vrnt_chrgrp, obj, vrnt_chrgrp, axis = 0)
+            if self._vrnt_phypos is not None:
+                vrnt_phypos = numpy.insert(self._vrnt_phypos, obj, vrnt_phypos, axis = 0)
+            if self._vrnt_name is not None:
+                vrnt_name = numpy.insert(self._vrnt_name, obj, vrnt_name, axis = 0)
+            if self._vrnt_genpos is not None:
+                vrnt_genpos = numpy.insert(self._vrnt_genpos, obj, vrnt_genpos, axis = 0)
+            if self._vrnt_xoprob is not None:
+                vrnt_xoprob = numpy.insert(self._vrnt_xoprob, obj, vrnt_xoprob, axis = 0)
+            if self._vrnt_hapgrp is not None:
+                vrnt_hapgrp = numpy.insert(self._vrnt_hapgrp, obj, vrnt_hapgrp, axis = 0)
+            if self._vrnt_mask is not None:
+                vrnt_mask = numpy.insert(self._vrnt_mask, obj, vrnt_mask, axis = 0)
+
+        # create output
+        out = self.__class__(
+            mat = values,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Insert values along the taxa axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : Matrix, numpy.ndarray
+            Values to insert into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.insert(
+            obj = obj,
+            values = values,
+            axis = 1,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Insert values along the variant axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : array_like
+            Values to insert into the matrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to insert into the Matrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to insert into the Matrix.
+        vrnt_name : numpy.ndarray
+            Variant names to insert into the Matrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to insert into the Matrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to insert into the Matrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to insert into the Matrix.
+        vrnt_mask : numpy.ndarray
+            Variant mask to insert into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.insert(
+            obj = obj,
+            values = values,
+            axis = 2,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+    def select(self, indices, axis = -1, **kwargs):
+        """
+        Select certain values from the matrix.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 0:
+            raise ValueError("select along axis 0 not supported") ## TODO: implement me
+
+        # get values
+        mat = self._mat
+        taxa = self._taxa
+        taxa_grp = self._taxa_grp
+        vrnt_chrgrp = self._vrnt_chrgrp
+        vrnt_phypos = self._vrnt_phypos
+        vrnt_name = self._vrnt_name
+        vrnt_genpos = self._vrnt_genpos
+        vrnt_xoprob = self._vrnt_xoprob
+        vrnt_hapgrp = self._vrnt_hapgrp
+        vrnt_mask = self._vrnt_mask
+
+        # select values
+        mat = numpy.take(mat, indices, axis = axis)
+        if axis == 1:
+            if taxa is not None:
+                taxa = numpy.take(taxa, indices, axis = 0)
+            if taxa_grp is not None:
+                taxa_grp = numpy.take(taxa_grp, indices, axis = 0)
+        elif axis == 2:
+            if vrnt_chrgrp is not None:
+                vrnt_chrgrp = numpy.take(vrnt_chrgrp, indices, axis = 0)
+            if vrnt_phypos is not None:
+                vrnt_phypos = numpy.take(vrnt_phypos, indices, axis = 0)
+            if vrnt_name is not None:
+                vrnt_name = numpy.take(vrnt_name, indices, axis = 0)
+            if vrnt_genpos is not None:
+                vrnt_genpos = numpy.take(vrnt_genpos, indices, axis = 0)
+            if vrnt_xoprob is not None:
+                vrnt_xoprob = numpy.take(vrnt_xoprob, indices, axis = 0)
+            if vrnt_hapgrp is not None:
+                vrnt_hapgrp = numpy.take(vrnt_hapgrp, indices, axis = 0)
+            if vrnt_mask is not None:
+                vrnt_mask = numpy.take(vrnt_mask, indices, axis = 0)
+
+        out = self.__class__(
+            mat = mat,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def select_taxa(self, indices, **kwargs):
+        """
+        Select certain values from the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output Matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.select(
+            indices = indices,
+            axis = 1,
+            **kwargs
+        )
+
+    def select_vrnt(self, indices, **kwargs):
+        """
+        Select certain values from the Matrix along the variant axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output Matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.select(
+            indices = indices,
+            axis = 2,
+            **kwargs
+        )
+
+    @staticmethod
+    def concat(mats, axis = -1, **kwargs):
+        """
+        Concatenate matrices together along an axis.
+
+        Parameters
+        ----------
+        mats : array_like of matrices
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        axis : int
+            The axis along which the arrays will be joined.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        # ensure that we have an iterable object
+        check_is_iterable(mats, "mats")
+
+        # get length of mats
+        mats_len = len(mats)
+
+        # ensure that we have an array_like of length >= 1
+        if mats_len <= 0:
+            raise ValueError("need at least one Matrix to concatenate")
+
+        # ensure that all items in mats are DensePhasedGenotypeVariantMatrix
+        for i in range(mats_len):
+            check_is_DensePhasedGenotypeVariantMatrix(mats[i], "mats[{0}]".format(i))
+
+        # get first matrix
+        mats0 = mats[0]
+
+        # get axis
+        axis = get_axis(axis, mats0.mat.ndim)
+
+        # extract tuples of shape parameters for Matrix
+        nphase_t, ntaxa_t, nloci_t = zip(*[m.mat.shape for m in mats])
+
+        # extract first Matrix shape parameters
+        nphase, ntaxa, nloci = mats0.mat.shape
+
+        # create matrix lists
+        mat_l = [m.mat for m in mats]
+        taxa_l = None
+        taxa_grp_l = None
+        vrnt_chrgrp_l = None
+        vrnt_phypos_l = None
+        vrnt_name_l = None
+        vrnt_genpos_l = None
+        vrnt_xoprob_l = None
+        vrnt_hapgrp_l = None
+        vrnt_mask_l = None
+
+        # check shapes and add to list
+        if axis == 0:
+            raise ValueError("concat along axis 0 not supported") # TODO: implement me
+        elif axis == 1:                                         # concatenate additional taxa
+            # check matrix shapes
+            if any(e != nphase for e in nphase_t):              # raise error if any have different phase number
+                raise ValueError("Matrix shapes do not all align along axis 0 (phase axis)")
+            if any(e != nloci for e in nloci_t):                # raise error if any have different loci number
+                raise ValueError("Matrix shapes do not all align along axis 2 (loci axis)")
+            # add taxa related attributes to lists
+            if mats0.taxa is not None:                        # populate taxa_l
+                taxa_l = [numpy.object_([None]*m.ntaxa) if m.taxa is None else m.taxa for m in mats]
+            if mats0.taxa_grp is not None:
+                taxa_grp_l = [m.taxa_grp for m in mats]
+                if any(e is None for e in taxa_grp_l):
+                    raise ValueError("cannot concat: taxa_grp needed for all Matrix in list")
+        elif axis == 2:                                         # concatenate additional loci
+            # check matrix shapes
+            if any(e != nphase for e in nphase_t):              # raise error if any have different phase number
+                raise ValueError("Matrix shapes do not all align along axis 0 (phase axis)")
+            if any(e != ntaxa for e in ntaxa_t):                # raise error if any have different taxa number
+                raise ValueError("Matrix shapes do not all align along axis 1 (taxa axis)")
+            # add loci related attributes to lists
+            if mats0.vrnt_chrgrp is not None:
+                vrnt_chrgrp_l = [m.vrnt_chrgrp for m in mats]
+                if any(e is None for e in vrnt_chrgrp_l):
+                    raise ValueError("cannot concat: vrnt_chrgrp needed for all Matrix in list")
+            if mats0.vrnt_phypos is not None:
+                vrnt_phypos_l = [m.vrnt_phypos for m in mats]
+                if any(e is None for e in vrnt_phypos_l):
+                    raise ValueError("cannot concat: vrnt_phypos needed for all Matrix in list")
+            if mats0.vrnt_name is not None:
+                vrnt_name_l = [numpy.object_([None]*m.nloci) if m.vrnt_name is None else m.vrnt_name for m in mats]
+            if mats0.vrnt_genpos is not None:
+                vrnt_genpos_l = [m.vrnt_genpos for m in mats]
+                if any(e is None for e in vrnt_genpos_l):
+                    raise ValueError("cannot concat: vrnt_genpos needed for all Matrix in list")
+            if mats0.vrnt_xoprob is not None:
+                vrnt_xoprob_l = [m.vrnt_xoprob for m in mats]
+                if any(e is None for e in vrnt_xoprob_l):
+                    raise ValueError("cannot concat: vrnt_xoprob needed for all Matrix in list")
+            if mats0.vrnt_hapgrp is not None:
+                vrnt_hapgrp_l = [m.vrnt_hapgrp for m in mats]
+                if any(e is None for e in vrnt_hapgrp_l):
+                    raise ValueError("cannot concat: vrnt_hapgrp needed for all Matrix in list")
+            if mats0.vrnt_mask is not None:
+                vrnt_mask_l = [m.vrnt_mask for m in mats]
+                if any(e is None for e in vrnt_mask_l):
+                    raise ValueError("cannot concat: vrnt_mask needed for all Matrix in list")
+
+        # concatenate everything and put into new Matrix
+        out = self.__class__(
+            mat = numpy.concatenate(mat_l, axis = axis),
+            vrnt_chrgrp = mats0.vrnt_chrgrp if vrnt_chrgrp_l is None else numpy.concatenate(vrnt_chrgrp_l, axis = 0),
+            vrnt_phypos = mats0.vrnt_phypos if vrnt_phypos_l is None else numpy.concatenate(vrnt_phypos_l, axis = 0),
+            taxa = mats0.taxa if taxa_l is None else numpy.concatenate(taxa_l, axis = 0),
+            taxa_grp = mats0.taxa_grp if taxa_grp_l is None else numpy.concatenate(taxa_grp_l, axis = 0),
+            vrnt_name = mats0.vrnt_name if vrnt_name_l is None else numpy.concatenate(vrnt_name_l, axis = 0),
+            vrnt_genpos = mats0.vrnt_genpos if vrnt_genpos_l is None else numpy.concatenate(vrnt_genpos_l, axis = 0),
+            vrnt_xoprob = mats0.vrnt_xoprob if vrnt_xoprob_l is None else numpy.concatenate(vrnt_xoprob_l, axis = 0),
+            vrnt_hapgrp = mats0.vrnt_hapgrp if vrnt_hapgrp_l is None else numpy.concatenate(vrnt_hapgrp_l, axis = 0),
+            vrnt_mask = mats0.vrnt_mask if vrnt_mask_l is None else numpy.concatenate(vrnt_mask_l, axis = 0),
+            **kwargs
+        )
+
+        return out
+
+    @staticmethod
+    def concat_taxa(mats, **kwargs):
+        """
+        Concatenate list of Matrix together along the taxa axis.
+
+        Parameters
+        ----------
+        mats : array_like of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        return self.concat(
+            mats = mats,
+            axis = 1,
+            **kwargs
+        )
+
+    @staticmethod
+    def concat_vrnt(mats, **kwargs):
+        """
+        Concatenate list of Matrix together along the variant axis.
+
+        Parameters
+        ----------
+        mats : array_like of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        return self.concat(
+            mats = mats,
+            axis = 2,
+            **kwargs
+        )
+
+    ######### Matrix element in-place-manipulation #########
+    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Append values to the matrix.
+
+        Parameters
+        ----------
+        values : DensePhasedGenotypeVariantMatrix, numpy.ndarray
+            Values are appended to append to the matrix.
+            Must be of type int8.
+            Must be of shape (m, n, p)
+        axis : int
+            The axis along which values are appended.
+        """
+        # OPTIMIZE: this is a hot mess.
+        # BUG: need to check that values are compatible in the first place
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DensePhasedGenotypeVariantMatrix(values):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if vrnt_chrgrp is None:
+                vrnt_chrgrp = values.vrnt_chrgrp
+            if vrnt_phypos is None:
+                vrnt_phypos = values.vrnt_phypos
+            if vrnt_name is None:
+                vrnt_name = values.vrnt_name
+            if vrnt_genpos is None:
+                vrnt_genpos = values.vrnt_genpos
+            if vrnt_xoprob is None:
+                vrnt_xoprob = values.vrnt_xoprob
+            if vrnt_hapgrp is None:
+                vrnt_hapgrp = values.vrnt_hapgrp
+            if vrnt_mask is None:
+                vrnt_mask = values.vrnt_mask
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DensePhasedGenotypeVariantMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
+        if axis == 0:
+            raise ValueError("adjoin along axis 0 not supported") ## TODO: implement me
+        elif axis == 1:
+            if self._mat.shape[0] != values.shape[0]:
+                raise ValueError("Matrix shapes do not all align along axis 0 (phase axis)")
+            if self._mat.shape[2] != values.shape[2]:
+                raise ValueError("Matrix shapes do not all align along axis 2 (loci axis)")
+            if (self._taxa is not None) and (taxa is None):
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise RuntimeError("cannot append: taxa_grp argument is required")
+        elif axis == 2:
+            if self._mat.shape[0] != values.shape[0]:
+                raise ValueError("Matrix shapes do not all align along axis 0 (phase axis)")
+            if self._mat.shape[1] != values.shape[1]:
+                raise ValueError("Matrix shapes do not all align along axis 1 (taxa axis)")
+            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
+                raise RuntimeError("cannot append: vrnt_chrgrp argument is required")
+            if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
+                raise RuntimeError("cannot append: vrnt_phypos argument is required")
+            if (self._vrnt_name is not None) and (vrnt_name is None):
+                vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
+            if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
+                raise RuntimeError("cannot append: vrnt_genpos argument is required")
+            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
+                raise RuntimeError("cannot append: vrnt_xoprob argument is required")
+            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
+                raise RuntimeError("cannot append: vrnt_hapgrp argument is required")
+            if (self._vrnt_mask is not None) and (vrnt_mask is None):
+                raise RuntimeError("cannot append: vrnt_mask argument is required")
+
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # append values
+        self._mat = numpy.append(self._mat, values, axis = axis)
+        if axis == 1:
+            # set fields
+            if self._taxa is not None:
+                self._taxa = numpy.append(self._taxa, taxa, axis = 0)
+            if self._taxa_grp is not None:
+                self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
+        elif axis == 2:
+            # set fields
+            if self._vrnt_chrgrp is not None:
+                self._vrnt_chrgrp = numpy.append(self._vrnt_chrgrp, vrnt_chrgrp, axis = 0)
+            if self._vrnt_phypos is not None:
+                self._vrnt_phypos = numpy.append(self._vrnt_phypos, vrnt_phypos, axis = 0)
+            if self._vrnt_name is not None:
+                self._vrnt_name = numpy.append(self._vrnt_name, vrnt_name, axis = 0)
+            if self._vrnt_genpos is not None:
+                self._vrnt_genpos = numpy.append(self._vrnt_genpos, vrnt_genpos, axis = 0)
+            if self._vrnt_xoprob is not None:
+                self._vrnt_xoprob = numpy.append(self._vrnt_xoprob, vrnt_xoprob, axis = 0)
+            if self._vrnt_hapgrp is not None:
+                self._vrnt_hapgrp = numpy.append(self._vrnt_hapgrp, vrnt_hapgrp, axis = 0)
+            if self._vrnt_mask is not None:
+                self._vrnt_mask = numpy.append(self._vrnt_mask, vrnt_mask, axis = 0)
+            # reset metadata
+            self._vrnt_chrgrp_len = None
+            self._vrnt_chrgrp_name = None
+            self._vrnt_chrgrp_stix = None
+            self._vrnt_chrgrp_spix = None
+
+    def append_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Append values to the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to append to the matrix.
+        taxa : numpy.ndarray
+            Taxa names to append to the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to append to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.append(
+            values = values,
+            axis = 1,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def append_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Append values to the Matrix along the variant axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to append to the matrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to append to the Matrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to append to the Matrix.
+        vrnt_name : numpy.ndarray
+            Variant names to append to the Matrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to append to the Matrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to append to the Matrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to append to the Matrix.
+        vrnt_mask : numpy.ndarray
+            Variant mask to append to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.append(
+            values = values,
+            axis = 2,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+    def remove(self, obj, axis = -1, **kwargs):
+        """
+        Remove sub-arrays along an axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        axis: int
+            The axis along which to remove the subarray defined by obj.
+        **kwargs
+            Additional keyword arguments.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 0:
+            raise ValueError("delete along axis 0 not supported") ## TODO: implement me
 
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis = axis)
@@ -524,130 +1512,205 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if self._vrnt_mask is not None:
                 self._vrnt_mask = numpy.delete(self._vrnt_mask, obj, axis = 0)
 
-    def insert(self, obj, values, axis, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+    def remove_taxa(self, obj, **kwargs):
         """
-        Insert values along the given axis before the given indices.
+        Remove sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.remove(
+            obj = obj,
+            axis = 1,
+            **kwargs
+        )
+
+    def remove_vrnt(self, obj, **kwargs):
+        """
+        Remove sub-arrays along the variant axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.remove(
+            obj = obj,
+            axis = 2,
+            **kwargs
+        )
+
+    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
         obj: int, slice, or sequence of ints
             Object that defines the index or indices before which values is
-            inserted.
+            incorporated.
         values : array_like
-            Values to insert into the matrix.
+            Values to incorporate into the matrix.
         axis : int
-            The axis along which values are inserted.
+            The axis along which values are incorporated.
         **kwargs
             Additional keyword arguments.
         """
+        # BUG: ensuring correct shape is needed & is currently a hot mess.
+        # BUG: need to check that values are compatible in the first place
         # get axis
         axis = get_axis(axis, self._mat.ndim)
 
-        # error check before additions are made to the matrix
-        if axis == 1:
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DensePhasedGenotypeVariantMatrix(values):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if vrnt_chrgrp is None:
+                vrnt_chrgrp = values.vrnt_chrgrp
+            if vrnt_phypos is None:
+                vrnt_phypos = values.vrnt_phypos
+            if vrnt_name is None:
+                vrnt_name = values.vrnt_name
+            if vrnt_genpos is None:
+                vrnt_genpos = values.vrnt_genpos
+            if vrnt_xoprob is None:
+                vrnt_xoprob = values.vrnt_xoprob
+            if vrnt_hapgrp is None:
+                vrnt_hapgrp = values.vrnt_hapgrp
+            if vrnt_mask is None:
+                vrnt_mask = values.vrnt_mask
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DensePhasedGenotypeVariantMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
+        if axis == 0:
+            raise ValueError("incorp along axis 0 not supported") ## TODO: implement me
+        elif axis == 1:
             if (self._taxa is not None) and (taxa is None):
-                raise RuntimeError("cannot insert: taxa argument is required")
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot insert: taxa_grp argument is required")
+                raise RuntimeError("cannot incorp: taxa_grp argument is required")
         elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot insert: vrnt_chrgrp argument is required")
+                raise RuntimeError("cannot incorp: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot insert: vrnt_phypos argument is required")
+                raise RuntimeError("cannot incorp: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
-                raise RuntimeError("cannot insert: vrnt_name argument is required")
+                vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot insert: vrnt_genpos argument is required")
+                raise RuntimeError("cannot incorp: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot insert: vrnt_xoprob argument is required")
+                raise RuntimeError("cannot incorp: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot insert: vrnt_hapgrp argument is required")
+                raise RuntimeError("cannot incorp: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot insert: vrnt_mask argument is required")
+                raise RuntimeError("cannot incorp: vrnt_mask argument is required")
 
-        # append values
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # insert values
         self._mat = numpy.insert(self._mat, obj, values, axis = axis)
         if axis == 1:
-            if (self._taxa is not None) and (taxa is not None):
+            if self._taxa is not None:
                 self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
-            if (self._taxa_grp is not None) and (taxa_grp is not None):
+            if self._taxa_grp is not None:
                 self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
         elif axis == 2:
-            if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is not None):
+            if self._vrnt_chrgrp is not None:
                 self._vrnt_chrgrp = numpy.insert(self._vrnt_chrgrp, obj, vrnt_chrgrp, axis = 0)
-            if (self._vrnt_phypos is not None) and (vrnt_phypos is not None):
+            if self._vrnt_phypos is not None:
                 self._vrnt_phypos = numpy.insert(self._vrnt_phypos, obj, vrnt_phypos, axis = 0)
-            if (self._vrnt_name is not None) and (vrnt_name is not None):
+            if self._vrnt_name is not None:
                 self._vrnt_name = numpy.insert(self._vrnt_name, obj, vrnt_name, axis = 0)
-            if (self._vrnt_genpos is not None) and (vrnt_genpos is not None):
+            if self._vrnt_genpos is not None:
                 self._vrnt_genpos = numpy.insert(self._vrnt_genpos, obj, vrnt_genpos, axis = 0)
-            if (self._vrnt_xoprob is not None) and (vrnt_xoprob is not None):
+            if self._vrnt_xoprob is not None:
                 self._vrnt_xoprob = numpy.insert(self._vrnt_xoprob, obj, vrnt_xoprob, axis = 0)
-            if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is not None):
+            if self._vrnt_hapgrp is not None:
                 self._vrnt_hapgrp = numpy.insert(self._vrnt_hapgrp, obj, vrnt_hapgrp, axis = 0)
-            if (self._vrnt_mask is not None) and (vrnt_mask is not None):
+            if self._vrnt_mask is not None:
                 self._vrnt_mask = numpy.insert(self._vrnt_mask, obj, vrnt_mask, axis = 0)
 
-    def select(self, obj, axis, **kwargs):
+    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
         """
-        Select certain values from the GenotypeMatrix.
+        Incorporate values along the taxa axis before the given indices.
 
         Parameters
         ----------
         obj: int, slice, or sequence of ints
-            Object that defines the index or indices where values are selected.
-        axis : int
-            The axis along which values are selected.
-            0 = nothing; 1 = taxa, 2 = loci
+            Object that defines the index or indices before which values is
+            incorporated.
+        values : Matrix, numpy.ndarray
+            Values to incorporate into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to incorporate into the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to incorporate into the Matrix.
         **kwargs
             Additional keyword arguments.
         """
-        ndim = self._mat.ndim           # get number of dimensions
-        axis = get_axis(axis, ndim)     # get axis
-
-        # construct selection tuple
-        sel = tuple(slice(None) if e != axis else obj for e in range(ndim))
-
-        # select values
-        sel_mat = self._mat[sel]
-
-        # TODO: simplify logic (see DenseEstimatedBreedingValueMatrix)
-        if axis == 1:
-            sel_vrnt_chrgrp = self._vrnt_chrgrp
-            sel_vrnt_phypos = self._vrnt_phypos
-            sel_vrnt_name   = self._vrnt_name     if self._vrnt_name is not None else None
-            sel_vrnt_genpos = self._vrnt_genpos   if self._vrnt_genpos is not None else None
-            sel_vrnt_xoprob = self._vrnt_xoprob   if self._vrnt_xoprob is not None else None
-            sel_vrnt_hapgrp = self._vrnt_hapgrp   if self._vrnt_hapgrp is not None else None
-            sel_vrnt_mask   = self._vrnt_mask     if self._vrnt_mask is not None else None
-            sel_taxa        = self._taxa[obj]     if self._taxa is not None else None
-            sel_taxa_grp    = self._taxa_grp[obj] if self._taxa_grp is not None else None
-        elif axis == 2:
-            sel_vrnt_chrgrp = self._vrnt_chrgrp[obj]
-            sel_vrnt_phypos = self._vrnt_phypos[obj]
-            sel_vrnt_name   = self._vrnt_name[obj]   if self._vrnt_name is not None else None
-            sel_vrnt_genpos = self._vrnt_genpos[obj] if self._vrnt_genpos is not None else None
-            sel_vrnt_xoprob = None  # set to None since loci sequential pairs have been altered
-            sel_vrnt_hapgrp = self._vrnt_hapgrp[obj] if self._vrnt_hapgrp is not None else None
-            sel_vrnt_mask   = self._vrnt_mask[obj]   if self._vrnt_mask is not None else None
-            sel_taxa        = self._taxa             if self._taxa is not None else None
-            sel_taxa_grp    = self._taxa_grp         if self._taxa_grp is not None else None
-
-        # create selection matrix
-        sdpgvmat = DensePhasedGenotypeVariantMatrix(
-            mat         = sel_mat,
-            vrnt_chrgrp = sel_vrnt_chrgrp,
-            vrnt_phypos = sel_vrnt_phypos,
-            vrnt_name   = sel_vrnt_name,
-            vrnt_genpos = sel_vrnt_genpos,
-            vrnt_xoprob = sel_vrnt_xoprob,
-            vrnt_hapgrp = sel_vrnt_hapgrp,
-            vrnt_mask   = sel_vrnt_mask,
-            taxa        = sel_taxa,
-            taxa_grp    = sel_taxa_grp
+        self.incorp(
+            obj = obj,
+            values = values,
+            axis = 1,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
         )
 
-        return sdpgvmat
+    def incorp_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
+        """
+        Incorporate values along the variant axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            incorporated.
+        values : Matrix, numpy.ndarray
+            Values to incorporate into the matrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to incorporate into the Matrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to incorporate into the Matrix.
+        vrnt_name : numpy.ndarray
+            Variant names to incorporate into the Matrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to incorporate into the Matrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to incorporate into the Matrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to incorporate into the Matrix.
+        vrnt_mask : numpy.ndarray
+            Variant mask to incorporate into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.incorp(
+            obj = obj,
+            values = values,
+            axis = 2,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
 
     ################### Sorting Methods ####################
     def lexsort(self, keys = None, axis = -1):
