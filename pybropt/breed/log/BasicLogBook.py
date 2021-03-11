@@ -192,4 +192,4 @@ class BasicLogBook(LogBook):
             File name to which to write file.
         """
         df = pandas.DataFrame(self.book)
-        df.to_csv(fname, index = False)
+        df.to_csv(fname, na_rep = "NaN", index = False)

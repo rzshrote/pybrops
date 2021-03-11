@@ -26,29 +26,28 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, burnin, t_max, seed_geno, seed_bval, seed_gmod, gmult, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
+    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, gmult, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
         """
         Parameters
         ----------
         burnin : int
             Number of generations to burnin.
-        seed_geno : dict
-        seed_bval : dict
-        seed_gmod : dict
+        founder_geno : dict
+        founder_bval : dict
+        founder_gmod : dict
 
         """
         super(SimpleInitializationOperator, self).__init__(**kwargs)
 
         # error checks
         check_is_int(burnin, "burnin")
-        check_is_int(t_max, "t_max")
 
-        check_is_dict(seed_geno, "seed_geno")
-        check_keys_in_dict(seed_geno, "seed_geno", "cand", "main", "queue")
-        check_is_dict(seed_bval, "seed_bval")
-        check_keys_in_dict(seed_bval, "seed_bval", "cand", "cand_true", "main", "main_true")
-        check_is_dict(seed_gmod, "seed_gmod")
-        check_keys_in_dict(seed_gmod, "seed_gmod", "cand", "main", "true")
+        check_is_dict(founder_geno, "founder_geno")
+        check_keys_in_dict(founder_geno, "founder_geno", "cand", "main", "queue")
+        check_is_dict(founder_bval, "founder_bval")
+        check_keys_in_dict(founder_bval, "founder_bval", "cand", "cand_true", "main", "main_true")
+        check_is_dict(founder_gmod, "founder_gmod")
+        check_keys_in_dict(founder_gmod, "founder_gmod", "cand", "main", "true")
 
         check_is_ParentSelectionOperator(pselop, "pselop")
         check_is_MatingOperator(mateop, "mateop")
@@ -60,11 +59,10 @@ class SimpleInitializationOperator(InitializationOperator):
 
         # variable assign
         self.burnin = burnin
-        self.t_max = t_max
 
-        self.seed_geno = seed_geno
-        self.seed_bval = seed_bval
-        self.seed_gmod = seed_gmod
+        self.founder_geno = founder_geno
+        self.founder_bval = founder_bval
+        self.founder_gmod = founder_gmod
 
         self.gmult = gmult
         self.pselop = pselop
@@ -123,12 +121,12 @@ class SimpleInitializationOperator(InitializationOperator):
                 queue | List of GenomicModel | Genomic models for populations on queue
                 true  | GenomicModel         | True genomic model for trait(s)
         """
-        geno = self.seed_geno
-        bval = self.seed_bval
-        gmod = self.seed_gmod
+        geno = self.founder_geno
+        bval = self.founder_bval
+        gmod = self.founder_gmod
         # print("cand:", geno["cand"].taxa_grp)
 
-        for t in range(self.burnin):
+        for t in range(-(self.burnin-1), 1):
             # print("################################################################################")
             # print("iteration:", t)
             ####################################################################
@@ -138,7 +136,7 @@ class SimpleInitializationOperator(InitializationOperator):
             # print("cand:", geno["cand"].taxa_grp)
             pgvmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 geno = geno,
                 bval = bval,
                 gmod = gmod
@@ -149,7 +147,7 @@ class SimpleInitializationOperator(InitializationOperator):
             ####################################################################
             pgvmat, misc = self.mateop.mate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 pgvmat = pgvmat,
                 sel = sel,
                 ncross = ncross,
@@ -159,42 +157,42 @@ class SimpleInitializationOperator(InitializationOperator):
             ####################################################################
             ####################### integrate genotypes ########################
             ####################################################################
-            geno_tmp, misc = self.gintgop.gintegrate(
+            geno, misc = self.gintgop.gintegrate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 pgvmat = pgvmat,
                 geno = geno,
             )
-            # print("gintegrate:",geno_tmp["main"].mat.shape)
+            # print("gintegrate:",geno["main"].mat.shape)
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
             bvmat, bvmat_true, misc = self.evalop.evaluate(
                 t_cur = t,
-                t_max = self.t_max,
-                pgvmat = geno_tmp["main"],
+                t_max = 0,
+                pgvmat = geno["main"],
                 gmod_true = gmod["true"]
             )
-            # print("evaluate:",geno_tmp["main"].mat.shape)
+            # print("evaluate:",geno["main"].mat.shape)
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
-            bval_tmp, misc = self.bvintgop.bvintegrate(
+            bval, misc = self.bvintgop.bvintegrate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
                 bval = bval,
             )
-            # print("bvintegrate:",bval_tmp["main"].mat.shape)
+            # print("bvintegrate:",bval["main"].mat.shape)
             ####################################################################
             ######################### calibrate models #########################gmod
             ####################################################################
-            gmod_tmp, misc = self.calop.calibrate(
+            gmod, misc = self.calop.calibrate(
                 t_cur = t,
-                t_max = self.t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
+                t_max = 0,
+                geno = geno,
+                bval = bval,
                 gmod = gmod
             )
 
@@ -203,10 +201,10 @@ class SimpleInitializationOperator(InitializationOperator):
             ####################################################################
             geno_new, bval_new, gmod_new, misc = self.sselop.sselect(
                 t_cur = t,
-                t_max = self.t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
-                gmod = gmod_tmp
+                t_max = 0,
+                geno = geno,
+                bval = bval,
+                gmod = gmod
             )
 
             ####################################################################
@@ -239,13 +237,26 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = False):
+    def from_dpgvmat(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gmult, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+        """
+        Create an initialization operator from a DensePhasedGenotypeVariantMatrix.
+
+        Initialization is conducted as follows:
+            1) 'nfounder' lines are selected as founders.
+            2) founders are randomly intermated to create base population.
+
+        Parameters
+        ----------
+        dpgvmat : DensePhasedGenotypeVariantMatrix
+        rng : numpy.Generator
+        nfounder : int
+            Number of founders to select. Sampling is done without replacement.
+        """
         # perform error checks
         check_is_Generator(rng, "rng")
         check_is_GenomicModel(gmod_true, "gmod_true")
 
         check_is_int(burnin, "burnin")
-        check_is_int(t_max, "t_max")
 
         check_is_ParentSelectionOperator(pselop, "pselop")
         check_is_MatingOperator(mateop, "mateop")
@@ -261,99 +272,94 @@ class SimpleInitializationOperator(InitializationOperator):
         ntaxa = dpgvmat.ntaxa
 
         ###################################################################
-        ### step 2: define and populate seed_geno, seed_bval, seed_gmod ###
+        ### step 2: define and populate founder_geno, founder_bval, founder_gmod ###
         ###################################################################
-        # define seed_geno
-        seed_geno = {
+        # define founder_geno
+        founder_geno = {
             "cand" : None,
             "main" : None,
             "queue" : []
         }
 
-        # define seed_bval
-        seed_bval = {
+        # define founder_bval
+        founder_bval = {
             "cand" : None,
             "cand_true" : None,
             "main" : None,
             "main_true" : None
         }
 
-        # define seed_gmod
-        seed_gmod = {
+        # define founder_gmod
+        founder_gmod = {
             "cand" : gmod_true,
             "main" : gmod_true,
             "true" : gmod_true
         }
 
+        # pselect
+        # mate
+        # gintegrate
+        # evaluate
+        # bvintegrate
+        # calibrate
+        # sselect
         #######################################
         ### Main populataion initialization ###
         #######################################
-        # get random selections
-        sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-        # mate random selections
+        # get random selections (pselect)
+        sel = rng.choice(ntaxa, nfounder, replace = False)
+
+        # mate random selections (mate)
         pgvmat, misc = mateop.mate(
-            t_cur = -(gwind + gqlen),
-            t_max = t_max,
+            t_cur = -burnin,
+            t_max = 0,
             pgvmat = dpgvmat,
             sel = sel,
-            ncross = seed_ncross,
-            nprogeny = seed_nprogeny
+            ncross = founder_ncross,
+            nprogeny = founder_nprogeny
         )
 
-        # assign genotypes
-        seed_geno["main"] = pgvmat
+        # assign genotypes (gintegrate)
+        founder_geno["main"] = pgvmat
 
-        ########################################
-        ### Queue populataion initialization ###
-        ########################################
-        # get random selections
-        sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-        # mate random selections
-        pgvmat, misc = mateop.mate(
-            t_cur = -gqlen,
-            t_max = t_max,
-            pgvmat = dpgvmat,
-            sel = sel,
-            ncross = seed_ncross,
-            nprogeny = seed_nprogeny
-        )
-        # append genotypes to list
-        seed_geno["queue"].append(pgvmat)
-
-        # phenotype main population
+        #################################
+        ### Evaluate main populataion ###
+        #################################
+        # phenotype main population (evaluate)
         bvmat, bvmat_true, misc = evalop.evaluate(
-            t_cur = -gqlen - 1,
-            t_max = t_max,
-            pgvmat = seed_geno["main"],
-            gmod_true = seed_gmod["true"]
-        )
-        seed_bval["main"] = bvmat
-        seed_bval["main_true"] = bvmat_true
-
-        # select survivors to fill breeding candidates
-        seed_geno, seed_bval, seed_gmod, misc = sselop.sselect(
-            t_cur = -gqlen - 1,
-            t_max = t_max,
-            geno = seed_geno,
-            bval = seed_bval,
-            gmod = seed_gmod
+            t_cur = -burnin,
+            t_max = 0,
+            pgvmat = founder_geno["main"],
+            gmod_true = founder_gmod["true"]
         )
 
-        ### populate "main" field in seed_gmod ###
-        seed_gmod, misc = calop.calibrate(
-            t_cur = -1,
-            t_max = t_max,
-            geno = seed_geno,
-            bval = seed_bval,
-            gmod = seed_gmod
+        # assign breeding values (bvintegrate)
+        founder_bval["main"] = bvmat
+        founder_bval["main_true"] = bvmat_true
+
+        # calibrate genomic model (calibrate)
+        founder_gmod, misc = calop.calibrate(
+            t_cur = -burnin,
+            t_max = 0,
+            geno = founder_geno,
+            bval = founder_bval,
+            gmod = founder_gmod
+        )
+
+        # select survivors to fill breeding candidates (sselect)
+        founder_geno, founder_bval, founder_gmod, misc = sselop.sselect(
+            t_cur = -burnin,
+            t_max = 0,
+            geno = founder_geno,
+            bval = founder_bval,
+            gmod = founder_gmod
         )
 
         geninitop = SimpleInitializationOperator(
+            founder_geno = founder_geno,
+            founder_bval = founder_bval,
+            founder_gmod = founder_gmod,
             burnin = burnin,
-            t_max = t_max,
-            seed_geno = seed_geno,
-            seed_bval = seed_bval,
-            seed_gmod = seed_gmod,
             gmult = gmult,
             pselop = pselop,
             mateop = mateop,
@@ -367,7 +373,7 @@ class SimpleInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
+    def from_vcf(fname, rng, nfounder, founder_ncross, founder_nprogeny, gmult, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         """
         Create a SimpleInitializationOperator from a VCF file.
 
@@ -405,14 +411,12 @@ class SimpleInitializationOperator(InitializationOperator):
         geninitop = SimpleInitializationOperator.from_dpgvmat(
             dpgvmat = dpgvmat,
             rng = rng,
-            seed_nsel = seed_nsel,
-            seed_ncross = seed_ncross,
-            seed_nprogeny = seed_nprogeny,
-            gqlen = gqlen,
-            gwind = gwind,
+            nfounder = nfounder,
+            founder_ncross = founder_ncross,
+            founder_nprogeny = founder_nprogeny,
+            gmult = gmult,
             gmod_true = gmod_true,
             burnin = burnin,
-            t_max = t_max,
             pselop = pselop,
             mateop = mateop,
             gintgop = gintgop,
@@ -420,7 +424,6 @@ class SimpleInitializationOperator(InitializationOperator):
             bvintgop = bvintgop,
             calop = calop,
             sselop = sselop,
-            replace = replace
         )
 
         return geninitop

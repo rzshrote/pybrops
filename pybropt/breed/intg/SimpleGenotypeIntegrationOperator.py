@@ -20,6 +20,10 @@ class SimpleGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         """
         Integrate genotype into geno dictionary.
 
+        Integration is simple.
+            1) Add genotype matrix to end of queue.
+            2) Pop first genotype matrix off the queue and put into geno["main"].
+
         Parameters
         ----------
         t_cur : int

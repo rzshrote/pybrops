@@ -307,19 +307,27 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 
     def bulmer(self, gmat):
         """
-        Calculate the Bulmer effect.
+        Calculate the Bulmer effect for an entire population.
 
         Parameters
         ----------
         gmat : GenotypeMatrix
+            Input genotype matrix.
 
         Returns
         -------
         out : numpy.ndarray
+            Array of Bulmer effects for each trait. In the event that additive
+            genic variance is zero, NaN's are produced.
         """
-        sigma_A = self.var_A(gmat)
-        sigma_a = self.var_a(gmat)
-        return sigma_A / sigma_a
+        sigma_A = self.var_A(gmat)  # calculate additive genetic variance
+        sigma_a = self.var_a(gmat)  # calculate additive genic variance
+        mask = (sigma_a == 0.0)     # determine where division by zero occurs
+        denom = sigma_a.copy()      # copy array
+        denom[mask] = 1.0           # substitute non-zero value
+        out = sigma_A / denom       # calculate Bulmer effect
+        out[mask] = numpy.nan       # add NaN's (avoids div by zero warning)
+        return out
 
     ####################### methods for selection limits #######################
     def usl(self, gmat):

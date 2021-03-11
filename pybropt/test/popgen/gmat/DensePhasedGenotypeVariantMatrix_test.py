@@ -209,8 +209,5 @@ def song_dpgvmat(shared_datadir, song_gmap, song_gmapfn):
 ################################################################################
 
 def test_xoprob(song_gmap, song_dpgvmat):
-    print(song_gmap.spline)
-    print(dir(song_dpgvmat))
-    print(song_dpgvmat.vrnt_chrgrp)
-    print(song_dpgvmat.vrnt_xoprob)
-    raise RuntimeError
+    assert numpy.all(song_dpgvmat.vrnt_xoprob >= 0.0)
+    assert numpy.all(song_dpgvmat.vrnt_xoprob <= 0.5)

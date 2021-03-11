@@ -1713,7 +1713,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         )
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1):
+    def lexsort(self, keys = None, axis = -1, **kwargs):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -1760,7 +1760,55 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1):
+    def lexsort_taxa(self, keys = None, **kwargs):
+        """
+        Perform an indirect stable sort using a sequence of keys along the taxa
+        axis.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        indices : (N,) ndarray of ints
+            Array of indices that sort the keys along the specified axis.
+        """
+        return self.lexsort(
+            keys = keys,
+            axis = 1,
+            **kwargs
+        )
+
+    def lexsort_vrnt(self, keys = None, **kwargs):
+        """
+        Perform an indirect stable sort using a sequence of keys along the
+        variant axis.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        indices : (N,) ndarray of ints
+            Array of indices that sort the keys along the specified axis.
+        """
+        return self.lexsort(
+            keys = keys,
+            axis = 2,
+            **kwargs
+        )
+
+    def reorder(self, indices, axis = -1, **kwargs):
         """
         Reorder the VariantMatrix.
 
@@ -1800,7 +1848,43 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if self._vrnt_mask is not None:
                 self._vrnt_mask = self._vrnt_mask[indices]      # reorder variant mask array
 
-    def sort(self, keys = None, axis = -1):
+    def reorder_taxa(self, indices, **kwargs):
+        """
+        Reorder elements of the Matrix along the taxa axis using an array of
+        indices. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        indices : (N,) ndarray of ints
+            Array of indices that reorder the matrix along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.reorder(
+            indices = indices,
+            axis = 1,
+            **kwargs
+        )
+
+    def reorder_vrnt(self, indices, **kwargs):
+        """
+        Reorder elements of the Matrix along the variant axis using an array of
+        indices. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        indices : (N,) ndarray of ints
+            Array of indices that reorder the matrix along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.reorder(
+            indices = indices,
+            axis = 2,
+            **kwargs
+        )
+
+    def sort(self, keys = None, axis = -1, **kwargs):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -1837,8 +1921,46 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # reorder internals
         self.reorder(indices, axis)
 
+    def sort_taxa(self, keys = None, **kwargs):
+        """
+        Sort slements of the Matrix along the taxa axis using a sequence of
+        keys. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.sort(
+            keys = keys,
+            axis = 1,
+            **kwargs
+        )
+
+    def sort_vrnt(self, keys = None, **kwargs):
+        """
+        Sort slements of the Matrix along the variant axis using a sequence of
+        keys. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.sort(
+            keys = keys,
+            axis = 2,
+            **kwargs
+        )
+
     ################### Grouping Methods ###################
-    def group(self, axis = -1):
+    def group(self, axis = -1, **kwargs):
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -1866,7 +1988,37 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             # calculate stop indices
             self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
 
-    def is_grouped(self, axis = -1):
+    def group_taxa(self, **kwargs):
+        """
+        Sort the Matrix along the taxa axis, then populate grouping indices for
+        the taxa axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.group(
+            axis = 1,
+            **kwargs
+        )
+
+    def group_vrnt(self, **kwargs):
+        """
+        Sort the Matrix along the variant axis, then populate grouping indices
+        for the variant axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.group(
+            axis = 2,
+            **kwargs
+        )
+
+    def is_grouped(self, axis = -1, **kwargs):
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -1896,8 +2048,50 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             )
         return False
 
+    def is_grouped_taxa(self, **kwargs):
+        """
+        Determine whether the Matrix has been sorted and grouped along the taxa
+        axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        grouped : bool
+            True or False indicating whether the Matrix has been sorted and
+            grouped.
+        """
+        return self.is_grouped(
+            axis = 1,
+            **kwargs
+        )
+
+    def is_grouped_vrnt(self, **kwargs):
+        """
+        Determine whether the Matrix has been sorted and grouped along the
+        variant axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        grouped : bool
+            True or False indicating whether the Matrix has been sorted and
+            grouped.
+        """
+        return self.is_grouped(
+            axis = 2,
+            **kwargs
+        )
+
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap):
+    def interp_genpos(self, gmap, **kwargs):
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -1913,7 +2107,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         # interpolate postions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
 
-    def interp_xoprob(self, gmap, gmapfn):
+    def interp_xoprob(self, gmap, gmapfn, **kwargs):
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.
@@ -1940,6 +2134,21 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
         # interpolate crossover probabilities
         self.vrnt_xoprob = gmapfn.rprob1g(gmap, self._vrnt_chrgrp, self._vrnt_genpos)
+
+    ################## Clustering Methods ##################
+    def assign_hapgrp(self, k, **kwargs):
+        """
+        Assign haplotype groups using k-means clustering.
+
+        Parameters
+        ----------
+        k : int, numpy.ndarray
+            Number of haplotype groups to assign to each
+        **kwargs
+            Additional keyword arguments.
+        """
+        # TODO: implement me
+        raise NotImplementedError("method is abstract")
 
     ############################################################################
     ############################## Static Methods ##############################
