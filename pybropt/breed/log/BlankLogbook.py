@@ -1,13 +1,13 @@
-from . import LogBook
+from . import Logbook
 
-class BlankLogBook(LogBook):
-    """docstring for BlankLogBook."""
+class BlankLogbook(Logbook):
+    """docstring for BlankLogbook."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(BlankLogBook, self).__init__(**kwargs)
+        super(BlankLogbook, self).__init__(**kwargs)
         self.reset()
 
     ############################################################################
@@ -47,13 +47,13 @@ class BlankLogBook(LogBook):
 
     def reset(self):
         """
-        Reset LogBook internals.
+        Reset Logbook internals.
         """
         self.book = None
 
     def write(self, fname):
         """
-        Write LogBook to file
+        Write Logbook to file
 
         Parameters
         ----------

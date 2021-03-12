@@ -1,11 +1,11 @@
-class LogBook:
-    """docstring for LogBook."""
+class Logbook:
+    """docstring for Logbook."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(LogBook, self).__init__()
+        super(Logbook, self).__init__()
 
     ############################################################################
     ############################ Object Properties #############################
@@ -20,6 +20,17 @@ class LogBook:
             raise NotImplementedError("method is abstract")
         return locals()
     book = property(**book())
+
+    def rep():
+        doc = "The rep property."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    rep = property(**rep())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -50,13 +61,13 @@ class LogBook:
 
     def reset(self):
         """
-        Reset LogBook internals.
+        Reset Logbook internals.
         """
         raise NotImplementedError("method is abstract")
 
     def write(self, fname):
         """
-        Write LogBook to file
+        Write Logbook to file
 
         Parameters
         ----------

@@ -1,15 +1,15 @@
 import pandas
 
-from . import LogBook
+from . import Logbook
 
-class BasicLogBook(LogBook):
-    """docstring for BasicLogBook."""
+class BasicLogbook(Logbook):
+    """docstring for BasicLogbook."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(BasicLogBook, self).__init__(**kwargs)
+        super(BasicLogbook, self).__init__(**kwargs)
         self.reset()
 
     ############################################################################
@@ -139,7 +139,7 @@ class BasicLogBook(LogBook):
 
     def reset(self):
         """
-        Reset LogBook internals.
+        Reset Logbook internals.
         """
         self.rep = 1
         self.book = {
@@ -184,7 +184,7 @@ class BasicLogBook(LogBook):
 
     def write(self, fname):
         """
-        Write LogBook to file
+        Write Logbook to file
 
         Parameters
         ----------

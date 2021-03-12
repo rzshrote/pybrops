@@ -1,5 +1,5 @@
 # order dependent imports
-from .LogBook import *
+from .Logbook import *
 
-from .BlankLogBook import *
-from .BasicLogBook import *
+from .BlankLogbook import *
+from .BasicLogbook import *
