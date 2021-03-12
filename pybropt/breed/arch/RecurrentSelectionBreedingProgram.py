@@ -1,3 +1,4 @@
+import copy
 import numpy
 
 from . import BreedingProgram
@@ -14,18 +15,17 @@ from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
 from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
 from pybropt.breed.sel import check_is_SurvivorSelectionOperator
 
-def dprint(t, lab, d, mod, ID = True, USL = True):
-    if ID:
-        x = "cand:" + str(id(d["cand"]))
-        y = "main:" + str(id(d["main"]))
-        z = "queue:" + str([id(a) for a in d["queue"]])
-        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "ID", lab, x, y, z))
-    if USL:
-        x = "cand:" + str(mod.usl(d["cand"]))
-        y = "main:" + str(mod.usl(d["main"]))
-        z = "queue:" + str([mod.usl(a) for a in d["queue"]])
-        print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "USL", lab, x, y, z))
-
+# def dprint(t, lab, d, mod, ID = True, USL = True):
+#     if ID:
+#         x = "cand:" + str(id(d["cand"]))
+#         y = "main:" + str(id(d["main"]))
+#         z = "queue:" + str([id(a) for a in d["queue"]])
+#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "ID", lab, x, y, z))
+#     if USL:
+#         x = "cand:" + str(mod.usl(d["cand"]))
+#         y = "main:" + str(mod.usl(d["main"]))
+#         z = "queue:" + str([mod.usl(a) for a in d["queue"]])
+#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "USL", lab, x, y, z))
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
@@ -51,6 +51,9 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self.sselop = sselop
 
         # TODO: go through set methods properly
+        self._start_geno = None
+        self._start_bval = None
+        self._start_gmod = None
         self._geno = None
         self._bval = None
         self._gmod = None
@@ -85,6 +88,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     t_max = property(**t_max())
 
     ################ Population properties #################
+    def start_geno():
+        doc = "The start_geno property."
+        def fget(self):
+            return self._start_geno
+        def fset(self, value):
+            self._start_geno = value
+        def fdel(self):
+            del self._start_geno
+        return locals()
+    start_geno = property(**start_geno())
+
     def geno():
         doc = "Main breeding population of the BreedingNode."
         def fget(self):
@@ -100,6 +114,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     geno = property(**geno())
 
     ############## Breeding value properties ###############
+    def start_bval():
+        doc = "The start_bval property."
+        def fget(self):
+            return self._start_bval
+        def fset(self, value):
+            self._start_bval = value
+        def fdel(self):
+            del self._start_bval
+        return locals()
+    start_bval = property(**start_bval())
+
     def bval():
         doc = "Estimated breeding values for the main breeding population of the BreedingNode."
         def fget(self):
@@ -115,6 +140,17 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     bval = property(**bval())
 
     ############### Genomic model properties ###############
+    def start_gmod():
+        doc = "The start_gmod property."
+        def fget(self):
+            return self._start_gmod
+        def fset(self, value):
+            self._start_gmod = value
+        def fdel(self):
+            del self._start_gmod
+        return locals()
+    start_gmod = property(**start_gmod())
+
     def gmod():
         doc = "Estimated genomic model for the main breeding population of the BreedingNode."
         def fget(self):
@@ -236,81 +272,35 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
-        self.geno, self.bval, self.gmod = self.initop.initialize(
+        self._start_geno, self._start_bval, self._start_gmod = self._initop.initialize(
             **kwargs
         )
 
     ################ Whole breeding program ################
-    def evolve(self, ngen, lbook, loginit, **kwargs):
+    def advance(self, ngen, lbook, **kwargs):
         """
-        Evolve the breeding program for a number of generations.
+        Advance the breeding program by a specified number of generations.
 
         Parameters
         ----------
         ngen : int
-            Number of generations to evolve the population.
-        lbook : LogBook
-            LogBook into which to write statistics.
-        loginit : bool
-            Whether to log the initial state before main loop.
+            Number of generations to advance the BreedingProgram.
+        lbook : Logbook
+            Logbook into which to write statistics.
+        **kwargs
+            Additional keyword arguments.
         """
-        # print(self.geno)
-        # print(self.bval)
-        # print(self.gmod)
-        # print(self.geno is None, self._geno is None)
-        # print(self.bval is None, self._bval is None)
-        # print(self.gmod is None, self._gmod is None)
-
-        # initialize if needed
-        if any(e is None for e in (self._geno, self._bval, self._gmod)):
-            self.initialize()
-
-        cand_bvmat, cand_bvmat_true, misc = self.evalop.evaluate(
-            t_cur = 0,
-            t_max = self._t_max,
-            pgvmat = self._geno["cand"],
-            gmod_true = self._gmod["true"]
-        )
-
-        self._bval["cand"] = cand_bvmat
-        self._bval["cand_true"] = cand_bvmat_true
-
-        main_bvmat, main_bvmat_true, misc = self.evalop.evaluate(
-            t_cur = 0,
-            t_max = self._t_max,
-            pgvmat = self._geno["main"],
-            gmod_true = self._gmod["true"]
-        )
-
-        self._bval["main"] = main_bvmat
-        self._bval["main_true"] = main_bvmat_true
-
-        # log initial conditions if needed
-        if loginit:
-            lbook.log_initialize(
-                t_cur = self._t_cur,
+        # iterate through main breeding loop for ngen generations
+        for t in range(self._t_cur, self._t_cur + ngen):
+            ####################################################################
+            ########################## select parents ##########################
+            ####################################################################
+            parent_gmat, sel, ncross, nprogeny, misc = self._pselop.pselect(
+                t_cur = t,
                 t_max = self._t_max,
                 geno = self._geno,
                 bval = self._bval,
                 gmod = self._gmod
-            )
-
-        geno = self._geno
-        bval = self._bval
-        gmod = self._gmod
-
-        # main breeding loop
-        for t in range(1, ngen+1):
-            ####################################################################
-            ########################## select parents ##########################
-            ####################################################################
-            dprint(t, "pre-pselect", geno, gmod["true"])
-            parent_gmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
-                t_cur = t,
-                t_max = self._t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod
             )
             lbook.log_pselect(
                 t_cur = t,
@@ -321,14 +311,11 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 nprogeny = nprogeny,
                 misc = misc
             )
-            dprint(t, "post-pselect", geno, gmod["true"])
-
 
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
-            dprint(t, "pre-mate", geno, gmod["true"])
-            progeny_gmat, misc = self.mateop.mate(
+            progeny_gmat, misc = self._mateop.mate(
                 t_cur = t,
                 t_max = self._t_max,
                 pgvmat = parent_gmat,
@@ -342,35 +329,31 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 pgvmat = progeny_gmat,
                 misc = misc
             )
-            dprint(t, "post-mate", geno, gmod["true"])
 
             ####################################################################
             ####################### integrate genotypes ########################
             ####################################################################
-            dprint(t, "pre-gintegrate", geno, gmod["true"])
-            geno, misc = self.gintgop.gintegrate(
+            self._geno, misc = self._gintgop.gintegrate(
                 t_cur = t,
                 t_max = self._t_max,
                 pgvmat = progeny_gmat,
-                geno = geno,
+                geno = self._geno,
             )
             lbook.log_gintegrate(
                 t_cur = t,
                 t_max = self._t_max,
-                geno = geno,
+                geno = self._geno,
                 misc = misc
             )
-            dprint(t, "post-gintegrate", geno, gmod["true"])
 
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
-            dprint(t, "pre-evaluate", geno, gmod["true"])
-            bvmat, bvmat_true, misc = self.evalop.evaluate(
+            bvmat, bvmat_true, misc = self._evalop.evaluate(
                 t_cur = t,
                 t_max = self._t_max,
-                pgvmat = geno["main"],
-                gmod_true = gmod["true"]
+                pgvmat = self._geno["main"],
+                gmod_true = self._gmod["true"]
             )
             lbook.log_evaluate(
                 t_cur = t,
@@ -379,77 +362,149 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 bvmat_true = bvmat_true,
                 misc = misc
             )
-            dprint(t, "post-evaluate", geno, gmod["true"])
 
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
-            dprint(t, "pre-bvintegrate", geno, gmod["true"])
-            bval, misc = self.bvintgop.bvintegrate(
+            self._bval, misc = self._bvintgop.bvintegrate(
                 t_cur = t,
                 t_max = self._t_max,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
-                bval = bval,
+                bval = self._bval,
             )
             lbook.log_bvintegrate(
                 t_cur = t,
                 t_max = self._t_max,
-                bval = bval,
+                bval = self._bval,
                 misc = misc
             )
-            dprint(t, "post-bvintegrate", geno, gmod["true"])
 
             ####################################################################
             ######################### calibrate models #########################
             ####################################################################
-            dprint(t, "pre-calibrate", geno, gmod["true"])
-            gmod, misc = self.calop.calibrate(
+            self._gmod, misc = self._calop.calibrate(
                 t_cur = t,
                 t_max = self._t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod
+                geno = self._geno,
+                bval = self._bval,
+                gmod = self._gmod
             )
             lbook.log_calibrate(
                 t_cur = t,
                 t_max = self._t_max,
-                gmod = gmod,
+                gmod = self._gmod,
                 misc = misc
             )
-            dprint(t, "post-calibrate", geno, gmod["true"])
 
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            dprint(t, "pre-sselect", geno, gmod["true"])
-            geno, bval, gmod, misc = self.sselop.sselect(
+            self._geno, self._bval, self._gmod, misc = self._sselop.sselect(
                 t_cur = t,
                 t_max = self._t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod
+                geno = self._geno,
+                bval = self._bval,
+                gmod = self._gmod
             )
             lbook.log_sselect(
                 t_cur = t,
                 t_max = self._t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod,
+                geno = self._geno,
+                bval = self._bval,
+                gmod = self._gmod,
                 misc = misc
             )
-            dprint(t, "post-sselect", geno, gmod["true"])
 
             ####################################################################
             ######################### variable updates #########################
             ####################################################################
-            # # update population variables
-            # self.geno = geno_new
-            # self.bval = bval_new
-            # self.gmod = gmod_new
-
             # increment time variables
             self._t_cur += 1
+
+    def evolve(self, nrep, ngen, lbook, loginit, verbose = False, **kwargs):
+        """
+        Evolve the breeding program for a set number of replications and
+        generations. The BreedingProgram is restarted using the starting geno,
+        bval, gmod containers.
+
+        Parameters
+        ----------
+        nrep : int
+            Number of evolution replicates.
+        ngen : int, None
+            Number of generations to evolve the population for each replicate.
+            If None, use 't_max'.
+            Note: if specified this does not modify 't_max' which may affect
+            operators that utilize 't_max'.
+        lbook : Logbook
+            Logbook into which to write statistics.
+        loginit : bool
+            Whether to log the initial state before main loop.
+        verbose : bool
+            Whether to print the rep number.
+        """
+        # initialize if needed
+        if any(e is None for e in (self._start_geno, self._start_bval, self._start_gmod)):
+            self.initialize()
+
+        # main replication loop
+        for r in range(1, nrep+1):
+            # verbose messages
+            if verbose:
+                print("Simulating rep {0}".format(r))
+
+            # copy starting pointers (okay since operators replace, not overwrite)
+            self._geno = self._start_geno
+            self._bval = self._start_bval
+            self._gmod = self._start_gmod
+
+            # set t_cur to zero (starting population)
+            self._t_cur = 0
+
+            # set rep in Logbook
+            lbook.rep = r
+
+            # cand_bvmat, cand_bvmat_true, misc = self._evalop.evaluate(
+            #     t_cur = self._t_cur,
+            #     t_max = self._t_max,
+            #     pgvmat = self._geno["cand"],
+            #     gmod_true = self._gmod["true"]
+            # )
+            #
+            # self._bval["cand"] = cand_bvmat
+            # self._bval["cand_true"] = cand_bvmat_true
+
+            # evaluate main population starting genotypes using evalop
+            main_bvmat, main_bvmat_true, misc = self._evalop.evaluate(
+                t_cur = self._t_cur,
+                t_max = self._t_max,
+                pgvmat = self._geno["main"],
+                gmod_true = self._gmod["true"]
+            )
+
+            self._bval["main"] = main_bvmat
+            self._bval["main_true"] = main_bvmat_true
+
+            # log initial conditions if needed
+            if loginit:
+                lbook.log_initialize(
+                    t_cur = self._t_cur,
+                    t_max = self._t_max,
+                    geno = self._geno,
+                    bval = self._bval,
+                    gmod = self._gmod
+                )
+
+            # set t_cur to 1 (first generation)
+            self._t_cur = 1
+
+            # evolve the population
+            self.advance(
+                ngen = ngen,
+                lbook = lbook,
+                **kwargs
+            )
 
 
 

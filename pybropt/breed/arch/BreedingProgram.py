@@ -15,6 +15,40 @@ class BreedingProgram(BreedingNode):
     ############################ Object Properties #############################
     ############################################################################
 
+    ######### Starting geno, bval, gmod containers #########
+    def start_geno():
+        doc = "The start_geno property."
+        def fget(self):
+            return self._start_geno
+        def fset(self, value):
+            self._start_geno = value
+        def fdel(self):
+            del self._start_geno
+        return locals()
+    start_geno = property(**start_geno())
+
+    def start_bval():
+        doc = "The start_bval property."
+        def fget(self):
+            return self._start_bval
+        def fset(self, value):
+            self._start_bval = value
+        def fdel(self):
+            del self._start_bval
+        return locals()
+    start_bval = property(**start_bval())
+
+    def start_gmod():
+        doc = "The start_gmod property."
+        def fget(self):
+            return self._start_gmod
+        def fset(self, value):
+            self._start_gmod = value
+        def fdel(self):
+            del self._start_gmod
+        return locals()
+    start_gmod = property(**start_gmod())
+
     ######### Breeding program operator properties #########
     def initop():
         doc = "Initialization operator."
@@ -116,19 +150,41 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    ################ Whole breeding program ################
-    def evolve(self, ngen, lbook, **kwargs):
+    ############# Population evolution methods #############
+    def advance(self, ngen, lbook, **kwargs):
         """
-        Evolve the breeding program for a number of generations.
+        Advance the breeding program by a specified number of generations.
 
         Parameters
         ----------
         ngen : int
-            Number of generations to evolve the population.
-        lbook : LogBook
-            LogBook into which to write statistics.
+            Number of generations to advance the BreedingProgram.
+        lbook : Logbook
+            Logbook into which to write statistics.
+        **kwargs
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+
+    def evolve(self, nrep, ngen, lbook, **kwargs):
+        """
+        Evolve the breeding program for a set number of replications and
+        generations. The BreedingProgram is restarted using the starting geno,
+        bval, gmod containers.
+
+        Parameters
+        ----------
+        nrep : int
+            Number of evolution replicates.
+        ngen : int
+            Number of generations to evolve the population for each replicate.
+            Note that this does not modify 't_max'.
+        lbook : Logbook
+            Logbook into which to write statistics.
+        """
+        raise NotImplementedError("method is abstract")
+
+
 
 ################################################################################
 ################################## Utilities ###################################
