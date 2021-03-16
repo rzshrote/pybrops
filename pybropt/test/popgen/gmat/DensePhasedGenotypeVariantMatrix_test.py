@@ -1,3 +1,4 @@
+import copy
 import numpy
 import pytest
 
@@ -83,6 +84,499 @@ def test_vrnt_phypos_fget(dpgvmat, mat_phypos):
 def test_vrnt_taxa_fget(dpgvmat, mat_taxa):
     assert numpy.all(dpgvmat.taxa == mat_taxa)
 
+########################################################
+######### Matrix element copy-on-manipulation ##########
+########################################################
+def test_adjoin_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    out = dpgvmat.adjoin(dpgvmat, axis = 1)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_adjoin_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    out = dpgvmat.adjoin(dpgvmat, axis = 2)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_adjoin_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    out = dpgvmat.adjoin_taxa(dpgvmat)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_adjoin_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    out = dpgvmat.adjoin_vrnt(dpgvmat)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_delete_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    out = dpgvmat.delete(ix, axis = 1)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 1)
+    out_taxa = numpy.delete(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.delete(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_delete_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.delete(ix, axis = 2)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.delete(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.delete(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.delete(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_delete_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    out = dpgvmat.delete_taxa(ix)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 1)
+    out_taxa = numpy.delete(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.delete(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_delete_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.delete_vrnt(ix)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.delete(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.delete(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.delete(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_insert_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    out = dpgvmat.insert(ix, dpgvmat, axis = 1)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 1)
+    out_taxa = numpy.insert(mat_taxa, ix, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.insert(mat_taxa_grp, ix, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_insert_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1])
+
+    out = dpgvmat.insert(ix, dpgvmat, axis = 2)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 2)
+    out_chrgrp = numpy.insert(mat_chrgrp, ix, mat_chrgrp, axis = 0)
+    out_phypos = numpy.insert(mat_phypos, ix, mat_phypos, axis = 0)
+    out_genpos = numpy.insert(mat_genpos, ix, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_insert_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    out = dpgvmat.insert_taxa(ix, dpgvmat)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 1)
+    out_taxa = numpy.insert(mat_taxa, ix, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.insert(mat_taxa_grp, ix, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_insert_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1])
+
+    out = dpgvmat.insert_vrnt(ix, dpgvmat)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 2)
+    out_chrgrp = numpy.insert(mat_chrgrp, ix, mat_chrgrp, axis = 0)
+    out_phypos = numpy.insert(mat_phypos, ix, mat_phypos, axis = 0)
+    out_genpos = numpy.insert(mat_genpos, ix, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_select_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.select(ix, axis = 1)
+
+    out_mat = numpy.take(mat_int8, ix, axis = 1)
+    out_taxa = numpy.take(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.take(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_select_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.select(ix, axis = 2)
+
+    out_mat = numpy.take(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.take(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.take(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.take(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_select_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.select_taxa(ix)
+
+    out_mat = numpy.take(mat_int8, ix, axis = 1)
+    out_taxa = numpy.take(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.take(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_select_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    out = dpgvmat.select_vrnt(ix)
+
+    out_mat = numpy.take(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.take(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.take(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.take(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_concat_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    out = dpgvmat.concat([dpgvmat, dpgvmat], axis = 1)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_concat_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    out = dpgvmat.concat([dpgvmat, dpgvmat], axis = 2)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+def test_concat_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    out = dpgvmat.concat_taxa([dpgvmat, dpgvmat])
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.taxa == out_taxa)
+    assert numpy.all(out.taxa_grp == out_taxa_grp)
+
+def test_concat_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    out = dpgvmat.concat_vrnt([dpgvmat, dpgvmat])
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(out.mat == out_mat)
+    assert numpy.all(out.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(out.vrnt_phypos == out_phypos)
+    assert numpy.all(out.vrnt_genpos == out_genpos)
+
+########################################################
+######### Matrix element in-place-manipulation #########
+########################################################
+def test_append_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    dpgvmat.append(dpgvmat, axis = 1)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_append_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    dpgvmat.append(dpgvmat, axis = 2)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+def test_append_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+
+    dpgvmat.append_taxa(dpgvmat)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 1)
+    out_taxa = numpy.append(mat_taxa, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.append(mat_taxa_grp, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_append_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+
+    dpgvmat.append_vrnt(dpgvmat)
+
+    out_mat = numpy.append(mat_int8, mat_int8, axis = 2)
+    out_chrgrp = numpy.append(mat_chrgrp, mat_chrgrp, axis = 0)
+    out_phypos = numpy.append(mat_phypos, mat_phypos, axis = 0)
+    out_genpos = numpy.append(mat_genpos, mat_genpos, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+def test_remove_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    dpgvmat.remove(ix, axis = 1)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 1)
+    out_taxa = numpy.delete(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.delete(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_remove_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    dpgvmat.remove(ix, axis = 2)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.delete(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.delete(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.delete(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+def test_remove_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    dpgvmat.remove_taxa(ix)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 1)
+    out_taxa = numpy.delete(mat_taxa, ix, axis = 0)
+    out_taxa_grp = numpy.delete(mat_taxa_grp, ix, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_remove_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1,2])
+
+    dpgvmat.remove_vrnt(ix)
+
+    out_mat = numpy.delete(mat_int8, ix, axis = 2)
+    out_chrgrp = numpy.delete(mat_chrgrp, ix, axis = 0)
+    out_phypos = numpy.delete(mat_phypos, ix, axis = 0)
+    out_genpos = numpy.delete(mat_genpos, ix, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+def test_incorp_axis_1(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    dpgvmat.incorp(ix, dpgvmat, axis = 1)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 1)
+    out_taxa = numpy.insert(mat_taxa, ix, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.insert(mat_taxa_grp, ix, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_incorp_axis_2(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1])
+
+    dpgvmat.incorp(ix, dpgvmat, axis = 2)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 2)
+    out_chrgrp = numpy.insert(mat_chrgrp, ix, mat_chrgrp, axis = 0)
+    out_phypos = numpy.insert(mat_phypos, ix, mat_phypos, axis = 0)
+    out_genpos = numpy.insert(mat_genpos, ix, mat_genpos, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+def test_incorp_taxa(dpgvmat, mat_int8, mat_taxa):
+    mat_taxa_grp = numpy.arange(len(dpgvmat.taxa))
+    dpgvmat.taxa_grp = mat_taxa_grp
+    ix = numpy.int0([1])
+
+    dpgvmat.incorp_taxa(ix, dpgvmat)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 1)
+    out_taxa = numpy.insert(mat_taxa, ix, mat_taxa, axis = 0)
+    out_taxa_grp = numpy.insert(mat_taxa_grp, ix, mat_taxa_grp, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.taxa == out_taxa)
+    assert numpy.all(dpgvmat.taxa_grp == out_taxa_grp)
+
+def test_incorp_vrnt(dpgvmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
+    dpgvmat.vrnt_genpos = mat_genpos
+    ix = numpy.int0([1])
+
+    dpgvmat.incorp_vrnt(ix, dpgvmat)
+
+    out_mat = numpy.insert(mat_int8, ix, mat_int8, axis = 2)
+    out_chrgrp = numpy.insert(mat_chrgrp, ix, mat_chrgrp, axis = 0)
+    out_phypos = numpy.insert(mat_phypos, ix, mat_phypos, axis = 0)
+    out_genpos = numpy.insert(mat_genpos, ix, mat_genpos, axis = 0)
+
+    assert numpy.all(dpgvmat.mat == out_mat)
+    assert numpy.all(dpgvmat.vrnt_chrgrp == out_chrgrp)
+    assert numpy.all(dpgvmat.vrnt_phypos == out_phypos)
+    assert numpy.all(dpgvmat.vrnt_genpos == out_genpos)
+
+########################################################
+################### Sorting Methods ####################
+########################################################
 def test_lexsort_axis_0_error(dpgvmat):
     with pytest.raises(RuntimeError):
         dpgvmat.lexsort(axis = 0)

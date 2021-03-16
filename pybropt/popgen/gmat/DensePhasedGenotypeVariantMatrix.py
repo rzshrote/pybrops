@@ -17,6 +17,7 @@ from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
 from pybropt.core.error import cond_check_ndarray_dtype_is_object
+from pybropt.core.error import check_is_iterable
 
 from pybropt.popgen.gmap import check_is_GeneticMap
 from pybropt.popgen.gmap import check_is_GeneticMapFunction
@@ -1135,7 +1136,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
         Returns
         -------
-        out : Matrix
+        out : DensePhasedGenotypeVariantMatrix
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
@@ -1227,18 +1228,30 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
                 if any(e is None for e in vrnt_mask_l):
                     raise ValueError("cannot concat: vrnt_mask needed for all Matrix in list")
 
-        # concatenate everything and put into new Matrix
-        out = self.__class__(
-            mat = numpy.concatenate(mat_l, axis = axis),
-            vrnt_chrgrp = mats0.vrnt_chrgrp if vrnt_chrgrp_l is None else numpy.concatenate(vrnt_chrgrp_l, axis = 0),
-            vrnt_phypos = mats0.vrnt_phypos if vrnt_phypos_l is None else numpy.concatenate(vrnt_phypos_l, axis = 0),
-            taxa = mats0.taxa if taxa_l is None else numpy.concatenate(taxa_l, axis = 0),
-            taxa_grp = mats0.taxa_grp if taxa_grp_l is None else numpy.concatenate(taxa_grp_l, axis = 0),
-            vrnt_name = mats0.vrnt_name if vrnt_name_l is None else numpy.concatenate(vrnt_name_l, axis = 0),
-            vrnt_genpos = mats0.vrnt_genpos if vrnt_genpos_l is None else numpy.concatenate(vrnt_genpos_l, axis = 0),
-            vrnt_xoprob = mats0.vrnt_xoprob if vrnt_xoprob_l is None else numpy.concatenate(vrnt_xoprob_l, axis = 0),
-            vrnt_hapgrp = mats0.vrnt_hapgrp if vrnt_hapgrp_l is None else numpy.concatenate(vrnt_hapgrp_l, axis = 0),
-            vrnt_mask = mats0.vrnt_mask if vrnt_mask_l is None else numpy.concatenate(vrnt_mask_l, axis = 0),
+        # concatenate everything
+        mat = numpy.concatenate(mat_l, axis = axis)
+        vrnt_chrgrp = mats0.vrnt_chrgrp if vrnt_chrgrp_l is None else numpy.concatenate(vrnt_chrgrp_l, axis = 0)
+        vrnt_phypos = mats0.vrnt_phypos if vrnt_phypos_l is None else numpy.concatenate(vrnt_phypos_l, axis = 0)
+        taxa = mats0.taxa if taxa_l is None else numpy.concatenate(taxa_l, axis = 0)
+        taxa_grp = mats0.taxa_grp if taxa_grp_l is None else numpy.concatenate(taxa_grp_l, axis = 0)
+        vrnt_name = mats0.vrnt_name if vrnt_name_l is None else numpy.concatenate(vrnt_name_l, axis = 0)
+        vrnt_genpos = mats0.vrnt_genpos if vrnt_genpos_l is None else numpy.concatenate(vrnt_genpos_l, axis = 0)
+        vrnt_xoprob = mats0.vrnt_xoprob if vrnt_xoprob_l is None else numpy.concatenate(vrnt_xoprob_l, axis = 0)
+        vrnt_hapgrp = mats0.vrnt_hapgrp if vrnt_hapgrp_l is None else numpy.concatenate(vrnt_hapgrp_l, axis = 0)
+        vrnt_mask = mats0.vrnt_mask if vrnt_mask_l is None else numpy.concatenate(vrnt_mask_l, axis = 0)
+
+        # concatenate everything and put into new DensePhasedGenotypeVariantMatrix
+        out = DensePhasedGenotypeVariantMatrix(
+            mat = mat,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_mask = vrnt_mask,
             **kwargs
         )
 
@@ -1263,7 +1276,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
-        return self.concat(
+        return DensePhasedGenotypeVariantMatrix.concat(
             mats = mats,
             axis = 1,
             **kwargs
@@ -1288,7 +1301,7 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
-        return self.concat(
+        return DensePhasedGenotypeVariantMatrix.concat(
             mats = mats,
             axis = 2,
             **kwargs
