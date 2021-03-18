@@ -14,7 +14,7 @@ class GenotypeIntegrationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def gintegrate(self, t_cur, t_max, pgvmat, geno):
+    def gintegrate(self, t_cur, t_max, pgvmat, geno, **kwargs):
         """
         Integrate genotype into geno dictionary.
 
@@ -28,6 +28,8 @@ class GenotypeIntegrationOperator:
             Genotype matrix to integrate.
         geno : dict
             Genotype dictionary into which to integrate.
+        **kwargs
+            Additional keyword arguments.
 
         Returns
         -------

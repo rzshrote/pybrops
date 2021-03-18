@@ -6,11 +6,9 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gqlen, gwind, gmult, **kwargs):
+    def __init__(self, gwind, **kwargs):
         super(GenerationalGenotypeIntegrationOperator, self).__init__(**kwargs)
-        self.gqlen = gqlen
         self.gwind = gwind
-        self.gmult = gmult
 
     ############################################################################
     ############################ Object Properties #############################
@@ -19,7 +17,7 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def gintegrate(self, t_cur, t_max, pgvmat, geno):
+    def gintegrate(self, t_cur, t_max, pgvmat, geno, gwind = None):
         """
         Integrate genotype into geno dictionary.
 
@@ -39,35 +37,27 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         out : tuple
             (geno_new, misc)
         """
+        # get genotype window length
+        if gwind is None:
+            gwind = self.gwind
+
         # copy dictionaries
         geno_new = dict(geno)
 
         # duplicate queue lists to avoid pointer problems
         geno_new["queue"] = list(geno["queue"])
 
-        # process genotype queue
-        while len(geno_new["queue"]) < self.gqlen:  # while queue is too short
-            geno_new["queue"].append(None)          # append None to length
-        geno_new["queue"].append(pgvmat)            # add pgvmat to end of queue
-        new_geno = geno_new["queue"].pop(0)         # pop new genotypes from queue
-        # print("0:", new_geno.taxa_grp)
-        # calculate the taxa_grp minimum threshold ('+ 1' is necessary!)
-        taxa_min = (t_cur - (self.gqlen + self.gwind) + 1) * self.gmult
+        # get pointer to queue for future use
+        queue = geno_new["queue"]
 
-        # process genotype main
-        # print("taxa_min:", taxa_min)
-        # print("taxa_grp:", geno_new["main"].taxa_grp)
-        mask = geno_new["main"].taxa_grp < taxa_min    # create genotype mask
-        # print("1:",geno_new["main"].mat.shape)
-        geno_new["main"].remove(mask, axis = 1)         # delete old taxa
-        # print("2:",geno_new["main"].mat.shape)
-        geno_new["main"].append(                        # add new taxa
-            values = new_geno.mat,
-            axis = 1,
-            taxa = new_geno.taxa,
-            taxa_grp = new_geno.taxa_grp,
-        )
-        # print("3:",geno_new["main"].mat.shape)
+        # append new genotype matrix to back of queue
+        queue.append(pgvmat)
+
+        # pop first genotype matrix on queue off and discard
+        queue.pop(0)
+
+        # concatenate genotype matrices together
+        geno_new["main"] = queue[0].concat_taxa(queue[0:gwind])
 
         # empty dictionary
         misc = {}

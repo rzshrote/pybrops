@@ -26,29 +26,28 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, burnin, t_max, seed_geno, seed_bval, seed_gmod, gmult, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
+    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
         """
         Parameters
         ----------
         burnin : int
             Number of generations to burnin.
-        seed_geno : dict
-        seed_bval : dict
-        seed_gmod : dict
+        founder_geno : dict
+        founder_bval : dict
+        founder_gmod : dict
 
         """
         super(GenerationalInitializationOperator, self).__init__(**kwargs)
 
         # error checks
         check_is_int(burnin, "burnin")
-        check_is_int(t_max, "t_max")
 
-        check_is_dict(seed_geno, "seed_geno")
-        check_keys_in_dict(seed_geno, "seed_geno", "cand", "main", "queue")
-        check_is_dict(seed_bval, "seed_bval")
-        check_keys_in_dict(seed_bval, "seed_bval", "cand", "cand_true", "main", "main_true")
-        check_is_dict(seed_gmod, "seed_gmod")
-        check_keys_in_dict(seed_gmod, "seed_gmod", "cand", "main", "true")
+        check_is_dict(founder_geno, "founder_geno")
+        check_keys_in_dict(founder_geno, "founder_geno", "cand", "main", "queue")
+        check_is_dict(founder_bval, "founder_bval")
+        check_keys_in_dict(founder_bval, "founder_bval", "cand", "cand_true", "main", "main_true")
+        check_is_dict(founder_gmod, "founder_gmod")
+        check_keys_in_dict(founder_gmod, "founder_gmod", "cand", "main", "true")
 
         check_is_ParentSelectionOperator(pselop, "pselop")
         check_is_MatingOperator(mateop, "mateop")
@@ -60,13 +59,11 @@ class GenerationalInitializationOperator(InitializationOperator):
 
         # variable assign
         self.burnin = burnin
-        self.t_max = t_max
 
-        self.seed_geno = seed_geno
-        self.seed_bval = seed_bval
-        self.seed_gmod = seed_gmod
+        self.founder_geno = founder_geno
+        self.founder_bval = founder_bval
+        self.founder_gmod = founder_gmod
 
-        self.gmult = gmult
         self.pselop = pselop
         self.mateop = mateop
         self.gintgop = gintgop
@@ -78,13 +75,17 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def initialize(self, **kwargs):
+    def initialize(self, burnin = None, **kwargs):
         """
         Initialize a breeding program.
 
         Parameters
         ----------
+        burnin : int, None
+            Number of generations to burnin. If None, use default burnin
+            generations.
         **kwargs
+            Additional keyword arguments.
 
         Returns
         -------
@@ -113,8 +114,6 @@ class GenerationalInitializationOperator(InitializationOperator):
                 cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
                 main       | BreedingValueMatrix         | Main breeding population breeding values
                 main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-                queue      | List of BreedingValueMatrix | Breeding values for populations on queue
-                queue_true | List of BreedingValueMatrix | True breeding values for populations on queue
             gmod : dict
                 Field | Type                 | Description
                 ------+----------------------+----------------------------------
@@ -123,33 +122,33 @@ class GenerationalInitializationOperator(InitializationOperator):
                 queue | List of GenomicModel | Genomic models for populations on queue
                 true  | GenomicModel         | True genomic model for trait(s)
         """
-        geno = self.seed_geno
-        bval = self.seed_bval
-        gmod = self.seed_gmod
-        # print("cand:", geno["cand"].taxa_grp)
+        # get number of burnin generations
+        if burnin is None:
+            burnin = self.burnin
 
-        for t in range(self.burnin):
-            # print("################################################################################")
-            # print("iteration:", t)
+        # copy dict's and any list's within dict
+        geno = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_geno.items())
+        bval = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_bval.items())
+        gmod = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_gmod.items())
+
+        for t in range(-(burnin-1), 1):
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
-            # print("main:", geno["main"].taxa_grp)
-            # print("cand:", geno["cand"].taxa_grp)
             pgvmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 geno = geno,
                 bval = bval,
                 gmod = gmod
             )
-            # print("pgvmat:", pgvmat.taxa_grp)
+
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
             pgvmat, misc = self.mateop.mate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 pgvmat = pgvmat,
                 sel = sel,
                 ncross = ncross,
@@ -159,79 +158,60 @@ class GenerationalInitializationOperator(InitializationOperator):
             ####################################################################
             ####################### integrate genotypes ########################
             ####################################################################
-            geno_tmp, misc = self.gintgop.gintegrate(
+            geno, misc = self.gintgop.gintegrate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 pgvmat = pgvmat,
                 geno = geno,
             )
-            # print("gintegrate:",geno_tmp["main"].mat.shape)
+
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
             bvmat, bvmat_true, misc = self.evalop.evaluate(
                 t_cur = t,
-                t_max = self.t_max,
-                pgvmat = geno_tmp["main"],
+                t_max = 0,
+                pgvmat = geno["main"],
                 gmod_true = gmod["true"]
             )
-            # print("evaluate:",geno_tmp["main"].mat.shape)
+
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
-            bval_tmp, misc = self.bvintgop.bvintegrate(
+            bval, misc = self.bvintgop.bvintegrate(
                 t_cur = t,
-                t_max = self.t_max,
+                t_max = 0,
                 bvmat = bvmat,
                 bvmat_true = bvmat_true,
                 bval = bval,
             )
-            # print("bvintegrate:",bval_tmp["main"].mat.shape)
+
             ####################################################################
-            ######################### calibrate models #########################gmod
+            ######################### calibrate models #########################
             ####################################################################
-            gmod_tmp, misc = self.calop.calibrate(
+            gmod, misc = self.calop.calibrate(
                 t_cur = t,
-                t_max = self.t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
+                t_max = 0,
+                geno = geno,
+                bval = bval,
                 gmod = gmod
             )
 
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            geno_new, bval_new, gmod_new, misc = self.sselop.sselect(
+            geno, bval, gmod, misc = self.sselop.sselect(
                 t_cur = t,
-                t_max = self.t_max,
-                geno = geno_tmp,
-                bval = bval_tmp,
-                gmod = gmod_tmp
+                t_max = 0,
+                geno = geno,
+                bval = bval,
+                gmod = gmod
             )
 
             ####################################################################
             ######################### variable updates #########################
             ####################################################################
-            # update population variables
-            geno = geno_new
-            bval = bval_new
-            gmod = gmod_new
-            # print("cand:", geno["cand"].taxa_grp)
-            # print("cand:", geno["cand"].mat.shape)
-            # cand_mean = bval["cand"].mat.mean(0)
-            # print("cand mean:", cand_mean)
-            # print("cand mean sum:", cand_mean.sum())
-
-        # HACK: # FIXME:
-        offset = ((geno["main"].taxa_grp.max() // self.gmult) ) * (self.gmult)
-
-        # adjust generations to zero
-        geno["cand"].taxa_grp = geno["cand"].taxa_grp - offset
-        geno["main"].taxa_grp = geno["main"].taxa_grp - offset
-        for i in range(len(geno["queue"])):
-            geno["queue"][i].taxa_grp = geno["queue"][i].taxa_grp - offset
-        bval["cand"].taxa_grp = bval["cand"].taxa_grp - offset
-        bval["main"].taxa_grp = bval["main"].taxa_grp - offset
+            # nothing to do!
 
         return geno, bval, gmod
 
@@ -239,13 +219,12 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = False):
+    def from_dpgvmat(dpgvmat, rng, nfounder, seed_ncross, seed_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         # perform error checks
         check_is_Generator(rng, "rng")
         check_is_GenomicModel(gmod_true, "gmod_true")
 
         check_is_int(burnin, "burnin")
-        check_is_int(t_max, "t_max")
 
         check_is_ParentSelectionOperator(pselop, "pselop")
         check_is_MatingOperator(mateop, "mateop")
@@ -261,105 +240,112 @@ class GenerationalInitializationOperator(InitializationOperator):
         ntaxa = dpgvmat.ntaxa
 
         ###################################################################
-        ### step 2: define and populate seed_geno, seed_bval, seed_gmod ###
+        ### step 2: define and populate founder_geno, founder_bval, founder_gmod ###
         ###################################################################
-        # define seed_geno
-        seed_geno = {
+        # define founder_geno
+        founder_geno = {
             "cand" : None,
             "main" : None,
             "queue" : []
         }
 
-        # define seed_bval
-        seed_bval = {
+        # define founder_bval
+        founder_bval = {
             "cand" : None,
             "cand_true" : None,
             "main" : None,
             "main_true" : None
         }
 
-        # define seed_gmod
-        seed_gmod = {
+        # define founder_gmod
+        founder_gmod = {
             "cand" : gmod_true,
             "main" : gmod_true,
             "true" : gmod_true
         }
 
-        # populate main population
-        for i in range(gwind):
-            # get random selections
-            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-            # mate random selections
+        #######################################
+        ### Main populataion initialization ###
+        #######################################
+        # get random selections (pselect)
+        sel = rng.choice(ntaxa, nfounder, replace = False)
+
+        # fill queue with random matings of founders
+        for t in range(-(burnin+gqlen), -burnin):
+            # mate random selections (mate)
             pgvmat, misc = mateop.mate(
-                t_cur = i - (gwind + gqlen),
-                t_max = t_max,
+                t_cur = t,
+                t_max = 0,
                 pgvmat = dpgvmat,
                 sel = sel,
-                ncross = seed_ncross,
-                nprogeny = seed_nprogeny
+                ncross = founder_ncross,
+                nprogeny = founder_nprogeny
             )
-            # print(pgvmat.taxa_grp)
-            # append genotypes
-            if seed_geno["main"] is not None:
-                seed_geno["main"].append(
-                    pgvmat.mat,
-                    axis = 1,
-                    taxa = pgvmat.taxa,
-                    taxa_grp = pgvmat.taxa_grp
-                )
-            else:
-                seed_geno["main"] = pgvmat
 
-        for i in range(gqlen):
-            # get random selections
-            sel = rng.choice(ntaxa, seed_nsel, replace = replace)
-            # mate random selections
-            pgvmat, misc = mateop.mate(
-                t_cur = i - gqlen,
-                t_max = t_max,
-                pgvmat = dpgvmat,
-                sel = sel,
-                ncross = seed_ncross,
-                nprogeny = seed_nprogeny
-            )
-            # append genotypes to list
-            seed_geno["queue"].append(pgvmat)
+            # add progeny to queue
+            founder_geno["queue"].append(pgvmat)
 
-        # phenotype main population
+            # randomly shuffle founders again to get new crosses
+            rng.shuffle(sel)
+
+        # mate random selections (mate)
+        pgvmat, misc = mateop.mate(
+            t_cur = -burnin,
+            t_max = 0,
+            pgvmat = dpgvmat,
+            sel = sel,
+            ncross = founder_ncross,
+            nprogeny = founder_nprogeny
+        )
+
+        # integrate genotypes (gintegrate)
+        founder_geno, misc = gintgop.gintegrate(
+            t_cur = -burnin,
+            t_max = 0,
+            pgvmat = pgvmat,
+            geno = founder_geno,
+        )
+
+        # phenotype main population (evaluate)
         bvmat, bvmat_true, misc = evalop.evaluate(
-            t_cur = -gqlen - 1,
-            t_max = t_max,
-            pgvmat = seed_geno["main"],
-            gmod_true = seed_gmod["true"]
-        )
-        seed_bval["main"] = bvmat
-        seed_bval["main_true"] = bvmat_true
-
-        # select survivors to fill breeding candidates
-        seed_geno, seed_bval, seed_gmod, misc = sselop.sselect(
-            t_cur = -gqlen - 1,
-            t_max = t_max,
-            geno = seed_geno,
-            bval = seed_bval,
-            gmod = seed_gmod
+            t_cur = -burnin,
+            t_max = 0,
+            pgvmat = founder_geno["main"],
+            gmod_true = founder_gmod["true"]
         )
 
-        ### populate "main" field in seed_gmod ###
-        seed_gmod, misc = calop.calibrate(
-            t_cur = -1,
-            t_max = t_max,
-            geno = seed_geno,
-            bval = seed_bval,
-            gmod = seed_gmod
+        # assign breeding values (bvintegrate)
+        founder_bval, misc = self.bvintgop.bvintegrate(
+            t_cur = -burnin,
+            t_max = 0,
+            bvmat = bvmat,
+            bvmat_true = bvmat_true,
+            bval = founder_bval,
+        )
+
+        # calibrate genomic model (calibrate)
+        founder_gmod, misc = calop.calibrate(
+            t_cur = -burnin,
+            t_max = 0,
+            geno = founder_geno,
+            bval = founder_bval,
+            gmod = founder_gmod
+        )
+
+        # select survivors to fill breeding candidates (sselect)
+        founder_geno, founder_bval, founder_gmod, misc = sselop.sselect(
+            t_cur = -burnin,
+            t_max = 0,
+            geno = founder_geno,
+            bval = founder_bval,
+            gmod = founder_gmod
         )
 
         geninitop = GenerationalInitializationOperator(
             burnin = burnin,
-            t_max = t_max,
-            seed_geno = seed_geno,
-            seed_bval = seed_bval,
-            seed_gmod = seed_gmod,
-            gmult = gmult,
+            founder_geno = founder_geno,
+            founder_bval = founder_bval,
+            founder_gmod = founder_gmod,
             pselop = pselop,
             mateop = mateop,
             gintgop = gintgop,
@@ -372,7 +358,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, rng, seed_nsel, seed_ncross, seed_nprogeny, gqlen, gwind, gmult, gmod_true, burnin, t_max, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, replace = True):
+    def from_vcf(fname, rng, nfounder, seed_ncross, seed_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         """
         Create a GenerationalInitializationOperator from a VCF file.
 
@@ -395,13 +381,6 @@ class GenerationalInitializationOperator(InitializationOperator):
             queue | list of int | Number of taxa in breeding populations on queue.
         rng : numpy.random.Generator
             A random number generator object.
-        replace : bool, default = True
-            Whether genotype sampling is with or without replacement.
-            If replace == False:
-                If the number of genotypes in the provided file is less than
-                the sum of the required initial number of genotypes
-                (main + sum(queue)), then sample all genotypes and fill
-                remaining genotypes with genotypes sampled without replacement.
         """
         # step 1: load genotype matrix
         dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
@@ -410,14 +389,12 @@ class GenerationalInitializationOperator(InitializationOperator):
         geninitop = GenerationalInitializationOperator.from_dpgvmat(
             dpgvmat = dpgvmat,
             rng = rng,
-            seed_nsel = seed_nsel,
+            nfounder = nfounder,
             seed_ncross = seed_ncross,
             seed_nprogeny = seed_nprogeny,
             gqlen = gqlen,
-            gwind = gwind,
             gmod_true = gmod_true,
             burnin = burnin,
-            t_max = t_max,
             pselop = pselop,
             mateop = mateop,
             gintgop = gintgop,
@@ -425,7 +402,6 @@ class GenerationalInitializationOperator(InitializationOperator):
             bvintgop = bvintgop,
             calop = calop,
             sselop = sselop,
-            replace = replace
         )
 
         return geninitop

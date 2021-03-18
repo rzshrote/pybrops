@@ -26,7 +26,7 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, gmult, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
+    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
         """
         Parameters
         ----------
@@ -64,7 +64,6 @@ class SimpleInitializationOperator(InitializationOperator):
         self.founder_bval = founder_bval
         self.founder_gmod = founder_gmod
 
-        self.gmult = gmult
         self.pselop = pselop
         self.mateop = mateop
         self.gintgop = gintgop
@@ -76,13 +75,17 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def initialize(self, **kwargs):
+    def initialize(self, burnin = None, **kwargs):
         """
         Initialize a breeding program.
 
         Parameters
         ----------
+        burnin : int, None
+            Number of generations to burnin. If None, use default burnin
+            generations.
         **kwargs
+            Additional keyword arguments.
 
         Returns
         -------
@@ -111,8 +114,6 @@ class SimpleInitializationOperator(InitializationOperator):
                 cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
                 main       | BreedingValueMatrix         | Main breeding population breeding values
                 main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-                queue      | List of BreedingValueMatrix | Breeding values for populations on queue
-                queue_true | List of BreedingValueMatrix | True breeding values for populations on queue
             gmod : dict
                 Field | Type                 | Description
                 ------+----------------------+----------------------------------
@@ -121,19 +122,19 @@ class SimpleInitializationOperator(InitializationOperator):
                 queue | List of GenomicModel | Genomic models for populations on queue
                 true  | GenomicModel         | True genomic model for trait(s)
         """
-        geno = self.founder_geno
-        bval = self.founder_bval
-        gmod = self.founder_gmod
-        # print("cand:", geno["cand"].taxa_grp)
+        # get number of burnin generations
+        if burnin is None:
+            burnin = self.burnin
+
+        # copy dict's and any list's within dict
+        geno = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_geno.items())
+        bval = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_bval.items())
+        gmod = dict((p[0],list(p[1])) if isinstance(p[1],list) else p for p in self.founder_gmod.items())
 
         for t in range(-(self.burnin-1), 1):
-            # print("################################################################################")
-            # print("iteration:", t)
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
-            # print("main:", geno["main"].taxa_grp)
-            # print("cand:", geno["cand"].taxa_grp)
             pgvmat, sel, ncross, nprogeny, misc = self.pselop.pselect(
                 t_cur = t,
                 t_max = 0,
@@ -141,7 +142,7 @@ class SimpleInitializationOperator(InitializationOperator):
                 bval = bval,
                 gmod = gmod
             )
-            # print("pgvmat:", pgvmat.taxa_grp)
+
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
@@ -163,7 +164,7 @@ class SimpleInitializationOperator(InitializationOperator):
                 pgvmat = pgvmat,
                 geno = geno,
             )
-            # print("gintegrate:",geno["main"].mat.shape)
+
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
@@ -173,7 +174,7 @@ class SimpleInitializationOperator(InitializationOperator):
                 pgvmat = geno["main"],
                 gmod_true = gmod["true"]
             )
-            # print("evaluate:",geno["main"].mat.shape)
+
             ####################################################################
             #################### integrate breeding values #####################
             ####################################################################
@@ -184,9 +185,9 @@ class SimpleInitializationOperator(InitializationOperator):
                 bvmat_true = bvmat_true,
                 bval = bval,
             )
-            # print("bvintegrate:",bval["main"].mat.shape)
+
             ####################################################################
-            ######################### calibrate models #########################gmod
+            ######################### calibrate models #########################
             ####################################################################
             gmod, misc = self.calop.calibrate(
                 t_cur = t,
@@ -199,7 +200,7 @@ class SimpleInitializationOperator(InitializationOperator):
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            geno_new, bval_new, gmod_new, misc = self.sselop.sselect(
+            geno, bval, gmod, misc = self.sselop.sselect(
                 t_cur = t,
                 t_max = 0,
                 geno = geno,
@@ -210,26 +211,7 @@ class SimpleInitializationOperator(InitializationOperator):
             ####################################################################
             ######################### variable updates #########################
             ####################################################################
-            # update population variables
-            geno = geno_new
-            bval = bval_new
-            gmod = gmod_new
-            # print("cand:", geno["cand"].taxa_grp)
-            # print("cand:", geno["cand"].mat.shape)
-            # cand_mean = bval["cand"].mat.mean(0)
-            # print("cand mean:", cand_mean)
-            # print("cand mean sum:", cand_mean.sum())
-
-        # HACK: # FIXME:
-        offset = ((geno["main"].taxa_grp.max() // self.gmult) ) * (self.gmult)
-
-        # adjust generations to zero
-        geno["cand"].taxa_grp = geno["cand"].taxa_grp - offset
-        geno["main"].taxa_grp = geno["main"].taxa_grp - offset
-        for i in range(len(geno["queue"])):
-            geno["queue"][i].taxa_grp = geno["queue"][i].taxa_grp - offset
-        bval["cand"].taxa_grp = bval["cand"].taxa_grp - offset
-        bval["main"].taxa_grp = bval["main"].taxa_grp - offset
+            # nothing to do!
 
         return geno, bval, gmod
 
@@ -237,7 +219,7 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gmult, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_dpgvmat(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         """
         Create an initialization operator from a DensePhasedGenotypeVariantMatrix.
 
@@ -360,7 +342,6 @@ class SimpleInitializationOperator(InitializationOperator):
             founder_bval = founder_bval,
             founder_gmod = founder_gmod,
             burnin = burnin,
-            gmult = gmult,
             pselop = pselop,
             mateop = mateop,
             gintgop = gintgop,
@@ -373,7 +354,7 @@ class SimpleInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, rng, nfounder, founder_ncross, founder_nprogeny, gmult, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_vcf(fname, rng, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         """
         Create a SimpleInitializationOperator from a VCF file.
 
@@ -414,7 +395,6 @@ class SimpleInitializationOperator(InitializationOperator):
             nfounder = nfounder,
             founder_ncross = founder_ncross,
             founder_nprogeny = founder_nprogeny,
-            gmult = gmult,
             gmod_true = gmod_true,
             burnin = burnin,
             pselop = pselop,
