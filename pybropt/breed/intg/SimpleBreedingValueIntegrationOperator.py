@@ -47,6 +47,7 @@ class SimpleBreedingValueIntegrationOperator(BreedingValueIntegrationOperator):
         # process true breeding value matrix
         bval_new["main_true"] = bvmat_true
 
+        # empty dict
         misc = {}
 
         return bval_new, misc

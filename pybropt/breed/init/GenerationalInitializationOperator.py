@@ -219,7 +219,7 @@ class GenerationalInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, rng, nfounder, seed_ncross, seed_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_dpgvmat(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         # perform error checks
         check_is_Generator(rng, "rng")
         check_is_GenomicModel(gmod_true, "gmod_true")
@@ -315,7 +315,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         )
 
         # assign breeding values (bvintegrate)
-        founder_bval, misc = self.bvintgop.bvintegrate(
+        founder_bval, misc = bvintgop.bvintegrate(
             t_cur = -burnin,
             t_max = 0,
             bvmat = bvmat,
@@ -358,7 +358,7 @@ class GenerationalInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, rng, nfounder, seed_ncross, seed_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_vcf(fname, rng, nfounder, founder_ncross, founder_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
         """
         Create a GenerationalInitializationOperator from a VCF file.
 
@@ -390,8 +390,8 @@ class GenerationalInitializationOperator(InitializationOperator):
             dpgvmat = dpgvmat,
             rng = rng,
             nfounder = nfounder,
-            seed_ncross = seed_ncross,
-            seed_nprogeny = seed_nprogeny,
+            founder_ncross = founder_ncross,
+            founder_nprogeny = founder_nprogeny,
             gqlen = gqlen,
             gmod_true = gmod_true,
             burnin = burnin,

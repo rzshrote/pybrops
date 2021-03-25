@@ -50,11 +50,14 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
         # get pointer to queue for future use
         queue = geno_new["queue"]
 
+        # remove old genotypes
+        try:
+            queue.pop(0)        # discard first genotype matrix on queue
+        except IndexError:      # if the list is of length 0
+            pass                # continue without error
+
         # append new genotype matrix to back of queue
         queue.append(pgvmat)
-
-        # pop first genotype matrix on queue off and discard
-        queue.pop(0)
 
         # concatenate genotype matrices together
         geno_new["main"] = queue[0].concat_taxa(queue[0:gwind])

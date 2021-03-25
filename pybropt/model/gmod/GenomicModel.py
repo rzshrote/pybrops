@@ -83,41 +83,90 @@ class GenomicModel:
         raise NotImplementedError("method is abstract")
 
     ################# methods for model fitting and prediction #################
-    def fit(self, gmat, bvmat):
+    def fit_raw(self, Y, Z, **kwargs):
+        """
+        Fit the model.
+
+        Parameters
+        ----------
+        Y : numpy.ndarray
+            A matrix of phenotypes.
+        Z : numpy.ndarray
+            A matrix of genotypes.
+        **kwargs
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def fit(self, bvmat, gmat, **kwargs):
         """
         Fit the model
 
         Parameters
         ----------
-        gmat : GenotypeMatrix
         bvmat : BreedingValueMatrix
+            A matrix of breeding values.
+        gmat : GenotypeMatrix
+            A matrix of genotype values.
+        **kwargs
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
-    def predict(self, gmat):
+    def predict_raw(self, Z, **kwargs):
         """
         Predict breeding values.
 
+        Remark: The difference between 'predict_raw' and 'gebv_raw' is that
+        'predict_raw' can incorporate other factors (e.g., fixed effects) to
+        provide prediction estimates.
+
         Parameters
         ----------
-        gmat : GenotypeMatrix
+        Z : numpy.ndarray
+            A matrix of genotype values.
+        **kwargs
+            Additional keyword arguments.
 
         Returns
         -------
-        bvmat : BreedingValueMatrix
+        Y_hat : numpy.ndarray
+            A matrix of predicted breeding values.
         """
         raise NotImplementedError("method is abstract")
 
-    def score(self, gmat, bvmat):
+    def predict(self, gmat, **kwargs):
         """
-        Return the coefficient of determination R**2 of the prediction.
+        Predict breeding values.
+
+        Remark: The difference between 'predict' and 'gebv' is that 'predict'
+        can incorporate other factors (e.g., fixed effects) to provide
+        prediction estimates.
 
         Parameters
         ----------
         gmat : GenotypeMatrix
             Genotypes from which to predict breeding values.
-        bvmat : BreedingValueMatrix
-            True breeding values from which to score prediction accuracy.
+
+        Returns
+        -------
+        bvmat_hat : BreedingValueMatrix
+            Estimated breeding values.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def score_raw(self, Y, Z, **kwargs):
+        """
+        Return the coefficient of determination R**2 of the prediction.
+
+        Parameters
+        ----------
+        Y : numpy.ndarray
+            A matrix of true phenotypes.
+        Z : numpy.ndarray
+            A matrix of genotypes.
+        **kwargs
+            Additional keyword arguments.
 
         Returns
         -------
@@ -128,7 +177,85 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
+    def score(self, bvmat, gmat, **kwargs):
+        """
+        Return the coefficient of determination R**2 of the prediction.
+
+        Parameters
+        ----------
+        bvmat : BreedingValueMatrix
+            True breeding values from which to score prediction accuracy.
+        gmat : GenotypeMatrix
+            Genotypes from which to predict breeding values.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        Rsq : numpy.ndarray
+            A coefficient of determination array of shape (t,).
+            Where:
+                t : is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ################## methods for estimated breeding values ###################
+    def gebv_raw(self, Z):
+        """
+        Calculate genomic estimated breeding values.
+
+        Remark: The difference between 'predict_raw' and 'gebv_raw' is that
+        'predict_raw' can incorporate other factors (e.g., fixed effects) to
+        provide prediction estimates.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotype values.
+
+        Returns
+        -------
+        gebv_hat : numpy.ndarray
+            A matrix of genomic estimated breeding values.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def gebv(self, gmat):
+        """
+        Calculate genomic estimated breeding values.
+
+        Remark: The difference between 'predict' and 'gebv' is that 'predict'
+        can incorporate other factors (e.g., fixed effects) to provide
+        prediction estimates.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotypes from which to predict genomic estimated breeding values.
+
+        Returns
+        -------
+        gebvmat_hat : BreedingValueMatrix
+            Genomic estimated breeding values.
+        """
+        raise NotImplementedError("method is abstract")
+
     ################ methods for population variance prediction ################
+    def var_G_raw(self, Z):
+        """
+        Calculate the population genetic variance.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotypes.
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
     def var_G(self, gmat):
         """
         Calculate the population genetic variance.
@@ -136,6 +263,20 @@ class GenomicModel:
         Parameters
         ----------
         gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def var_A_raw(self, Z):
+        """
+        Calculate the population additive genetic variance
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
 
         Returns
         -------
@@ -157,6 +298,20 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
+    def var_a_raw(self, Z):
+        """
+        Calculate the population additive genic variance
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
     def var_a(self, gmat):
         """
         Calculate the population additive genic variance
@@ -164,6 +319,20 @@ class GenomicModel:
         Parameters
         ----------
         gmat : GenotypeMatrix
+
+        Returns
+        -------
+        out : numpy.ndarray
+        """
+        raise NotImplementedError("method is abstract")
+
+    def bulmer_raw(self, Z):
+        """
+        Calculate the Bulmer effect.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
 
         Returns
         -------

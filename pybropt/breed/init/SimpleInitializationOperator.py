@@ -316,8 +316,13 @@ class SimpleInitializationOperator(InitializationOperator):
         )
 
         # assign breeding values (bvintegrate)
-        founder_bval["main"] = bvmat
-        founder_bval["main_true"] = bvmat_true
+        founder_bval, misc = bvintgop.bvintegrate(
+            t_cur = -burnin,
+            t_max = 0,
+            bvmat = bvmat,
+            bvmat_true = bvmat_true,
+            bval = founder_bval,
+        )
 
         # calibrate genomic model (calibrate)
         founder_gmod, misc = calop.calibrate(
