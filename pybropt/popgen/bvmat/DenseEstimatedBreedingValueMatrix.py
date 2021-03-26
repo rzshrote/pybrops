@@ -21,7 +21,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         Parameters
         ----------
@@ -43,9 +43,9 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         # set instance data
         self.raw = raw
-        self.trait = trait
         self.taxa = taxa
         self.taxa_grp = taxa_grp
+        self.trait = trait
 
         # set metadata
         self.taxa_grp_name = None
@@ -273,8 +273,699 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
-    ############# Matrix element manipulation ##############
-    def append(self, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    ######### Matrix element copy-on-manipulation ##########
+    def adjoin(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along an axis.
+
+        Parameters
+        ----------
+        values : Matrix or numpy.ndarray
+            Values are appended to append to the Matrix.
+        axis : int
+            The axis along which values are appended.
+        raw : numpy.ndarray
+            A float64 matrix of raw phenotypic values of shape (r, n, t).
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+            If values is a DenseEstimatedBreedingValueMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the Matrix.
+            If values is a DenseEstimatedBreedingValueMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        trait : numpy.ndarray
+            Trait breeding values to adjoin to the Matrix.
+            If values is a DenseEstimatedBreedingValueMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # if given a Matrix extract Matrix.mat values
+        if is_DenseEstimatedBreedingValueMatrix(values):
+            if raw is None:
+                raw = values.raw
+            if trait is None:
+                trait = values.trait
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DenseEstimatedBreedingValueMatrix or numpy.ndarray")
+
+        # perform error checks
+        if axis == 0:
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot adjoin: raw argument is required")
+            if (self._taxa is not None) and (taxa is None):
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise TypeError("cannot adjoin: taxa_grp argument is required")
+        elif axis == 1:
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot adjoin: raw argument is required")
+            if (self._trait is not None) and (trait is None):
+                raise TypeError("cannot adjoin: trait argument is required")
+
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # adjoin values
+        values = numpy.append(self._mat, values, axis = axis)
+        if axis == 0:
+            if self._raw is not None:
+                raw = numpy.append(self._raw, raw, axis = 1)
+            if self._taxa is not None:
+                taxa = numpy.append(self._taxa, taxa, axis = 0)
+            if self._taxa_grp is not None:
+                taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
+        elif axis == 1:
+            if self._raw is not None:
+                raw = numpy.append(self._raw, raw, axis = 1)
+            if self._trait is not None:
+                trait = numpy.append(self._trait, trait, axis = 0)
+
+        # create new output
+        out = self.__class__(
+            mat = values,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait
+        )
+
+        return out
+
+    def adjoin_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the Matrix.
+        raw : numpy.ndarray
+            A float64 matrix of raw phenotypic values of shape (r, n, t).
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.adjoin(
+            values = values,
+            axis = 0,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def adjoin_trait(self, values, raw = None, trait = None, **kwargs):
+        """
+        Add additional elements to the end of the Matrix along the trait axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the Matrix.
+        raw : numpy.ndarray
+            A float64 matrix of raw phenotypic values of shape (r, n, t).
+        trait : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.adjoin(
+            values = values,
+            axis = 1,
+            raw = raw,
+            trait = trait,
+            **kwargs
+        )
+
+    def delete(self, obj, axis = -1, **kwargs):
+        """
+        Delete sub-arrays along an axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        axis: int
+            The axis along which to delete the subarray defined by obj.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # get values
+        mat = self._mat
+        raw = self._raw
+        taxa = self._taxa
+        taxa_grp = self._taxa_grp
+        trait = self._trait
+
+        # delete values
+        mat = numpy.delete(mat, obj, axis = axis)
+        if axis == 0:
+            if raw is not None:
+                raw = numpy.delete(raw, obj, axis = 1)
+            if taxa is not None:
+                taxa = numpy.delete(taxa, obj, axis = 0)
+            if taxa_grp is not None:
+                taxa_grp = numpy.delete(taxa_grp, obj, axis = 0)
+        elif axis == 1:
+            if raw is not None:
+                raw = numpy.delete(raw, obj, axis = 2)
+            if trait is not None:
+                trait = numpy.delete(trait, obj, axis = 0)
+
+        # create new output
+        out = self.__class__(
+            mat = mat,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+    def delete_taxa(self, obj, **kwargs):
+        """
+        Delete sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.delete(
+            obj = obj,
+            axis = 0,
+            **kwargs
+        )
+
+    def delete_trait(self, obj, **kwargs):
+        """
+        Delete sub-arrays along the trait axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with deleted elements. Note that concat does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.delete(
+            obj = obj,
+            axis = 1,
+            **kwargs
+        )
+
+    def insert(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+        """
+        Insert values along the given axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : Matrix, numpy.ndarray
+            Values to insert into the matrix.
+        axis : int
+            The axis along which values are inserted.
+        raw : numpy.ndarray
+            A float64 matrix of raw phenotypic values of shape (r, n, t).
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+            If values is a DensePhasedGenotypeVariantMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        trait : numpy.ndarray
+            Trait breeding values to insert to the Matrix.
+            If values is a DenseEstimatedBreedingValueMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DenseEstimatedBreedingValueMatrix(values):
+            if raw is None:
+                raw = values.raw
+            if trait is None:
+                trait = values.trait
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DenseEstimatedBreedingValueMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
+        if axis == 0:
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot insert: raw argument is required")
+            if (self._taxa is not None) and (taxa is None):
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise TypeError("cannot insert: taxa_grp argument is required")
+        elif axis == 1:
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot insert: raw argument is required")
+            if (self._trait is not None) and (trait is None):
+                raise TypeError("cannot insert: trait argument is required")
+
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
+        # insert values
+        values = numpy.insert(self._mat, obj, values, axis = axis)
+        if axis == 0:
+            if self._raw is not None:
+                raw = numpy.insert(self._raw, obj, raw, axis = 1)
+            if self._taxa is not None:
+                taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
+            if self._taxa_grp is not None:
+                taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+        elif axis == 1:
+            if self._raw is not None:
+                raw = numpy.insert(self._raw, obj, raw, axis = 2)
+            if self._trait is not None:
+                trait = numpy.insert(self._trait, obj, trait, axis = 0)
+
+        # create output
+        out = self.__class__(
+            mat = values,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+        # if given a Matrix extract Matrix.mat values
+        if is_Matrix(values):
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type Matrix or numpy.ndarray")
+
+        # append values
+        mat = numpy.insert(self._mat, obj, values, axis)
+
+        # create new output
+        out = self.__class__(mat = mat)
+
+        return out
+
+    def insert_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Insert values along the taxa axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : Matrix, numpy.ndarray
+            Values to insert into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.insert(
+            obj = obj,
+            values = values,
+            axis = 0,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def insert_trait(self, obj, values, raw = None, trait = None, **kwargs):
+        """
+        Insert values along the trait axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : Matrix, numpy.ndarray
+            Values to insert into the matrix.
+        trait : numpy.ndarray
+            Taxa names to insert into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A Matrix with values inserted. Note that insert does not occur
+            in-place: a new Matrix is allocated and filled.
+        """
+        return self.insert(
+            obj = obj,
+            values = values,
+            raw = raw,
+            trait = trait,
+            **kwargs
+        )
+
+    def select(self, indices, axis = -1, **kwargs):
+        """
+        Select certain values from the matrix.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        axis : int
+            The axis along which values are selected.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # get values
+        mat = self._mat
+        raw = self._raw
+        taxa = self._taxa
+        taxa_grp = self._taxa_grp
+        trait = self._trait
+
+        # select values
+        mat = numpy.take(self._mat, indices, axis)
+        if axis == 0:
+            if raw is not None:
+                raw = numpy.take(raw, indices, axis = 1)
+            if taxa is not None:
+                taxa = numpy.take(taxa, indices, axis = 0)
+            if taxa_grp is not None:
+                taxa_grp = numpy.take(taxa_grp, indices, axis = 0)
+        elif axis == 1:
+            if raw is not None:
+                raw = numpy.take(raw, indices, axis = 2)
+            if trait is not None:
+                trait = numpy.take(trait, indices, axis = 0)
+
+        # create new output
+        out = self.__class__(
+            mat = mat,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+    def select_taxa(self, indices, **kwargs):
+        """
+        Select certain values from the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output Matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.select(
+            indices = indices,
+            axis = 0,
+            **kwargs
+        )
+
+    def select_trait(self, indices, **kwargs):
+        """
+        Select certain values from the Matrix along the trait axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output Matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        return self.select(
+            indices = indices,
+            axis = 1,
+            **kwargs
+        )
+
+    @staticmethod
+    def concat(mats, axis = -1, **kwargs):
+        """
+        Concatenate matrices together along an axis.
+
+        Parameters
+        ----------
+        mats : array_like of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        axis : int
+            The axis along which the arrays will be joined.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        # ensure that we have an iterable object
+        check_is_iterable(mats, "mats")
+
+        # get length of mats
+        mats_len = len(mats)
+
+        # ensure that we have an array_like of length >= 1
+        if mats_len <= 0:
+            raise ValueError("need at least one Matrix to concatenate")
+
+        # ensure that all items in mats are DenseEstimatedBreedingValueMatrix
+        for i in range(mats_len):
+            check_is_DenseEstimatedBreedingValueMatrix(mats[i], "mats[{0}]".format(i))
+
+        # get first matrix
+        mats0 = mats[0]
+
+        # get axis
+        axis = get_axis(axis, mats0.mat.ndim)
+
+        # extract tuples of shape parameters for Matrix
+        ntaxa_t, ntrait_t = zip(*[m.mat.shape for m in mats])
+
+        # extract first Matrix shape parameters
+        ntaxa, ntrait = mats0.mat.shape
+
+        # create matrix lists
+        mat_l = [m.mat for m in mats]
+        raw_l = None
+        taxa_l = None
+        taxa_grp_l = None
+        trait_l = None
+
+        # check shapes and add to list
+        if axis == 0:                                           # concatenate additional taxa
+            # check matrix shapes
+            if any(e != ntrait for e in ntrait_t):              # raise error if any have different trait number
+                raise ValueError("Matrix shapes do not all align along axis 2 (trait axis)")
+            # add taxa related attributes to lists
+            if mats0.raw is not None:
+                raw_l = [m.raw for m in mats]
+                if any(e is None for e in raw_l):
+                    raise ValueError("cannot concat: raw needed for all Matrix in list")
+            if mats0.taxa is not None:                          # populate taxa_l
+                taxa_l = [numpy.object_([None]*m.ntaxa) if m.taxa is None else m.taxa for m in mats]
+            if mats0.taxa_grp is not None:
+                taxa_grp_l = [m.taxa_grp for m in mats]
+                if any(e is None for e in taxa_grp_l):
+                    raise ValueError("cannot concat: taxa_grp needed for all Matrix in list")
+        elif axis == 1:                                         # concatenate additional traits
+            # check matrix shapes
+            if any(e != ntaxa for e in ntaxa_t):                # raise error if any have different taxa number
+                raise ValueError("Matrix shapes do not all align along axis 1 (taxa axis)")
+            # add loci related attributes to lists
+            if mats0.raw is not None:
+                raw_l = [m.raw for m in mats]
+                if any(e is None for e in raw_l):
+                    raise ValueError("cannot concat: raw needed for all Matrix in list")
+            if mats0.trait is not None:
+                trait_l = [m.trait for m in mats]
+                if any(e is None for e in trait_l):
+                    raise ValueError("cannot concat: trait needed for all Matrix in list")
+
+        # concatenate everything
+        mat = numpy.concatenate(mat_l, axis = axis)
+        raw = mats0.raw if raw_l is None else numpy.concatenate(raw_l, axis = axis+1)
+        taxa = mats0.taxa if taxa_l is None else numpy.concatenate(taxa_l, axis = 0)
+        taxa_grp = mats0.taxa_grp if taxa_grp_l is None else numpy.concatenate(taxa_grp_l, axis = 0)
+        trait = mats0.trait if trait_l is None else numpy.concatenate(trait_l, axis = 0)
+
+        # concatenate everything and put into new DensePhasedGenotypeVariantMatrix
+        out = DenseEstimatedBreedingValueMatrix(
+            mat = mat,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+    @staticmethod
+    def concat_taxa(mats, **kwargs):
+        """
+        Concatenate list of Matrix together along the taxa axis.
+
+        Parameters
+        ----------
+        mats : array_like of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        return self.concat(
+            mats = mats,
+            axis = 0,
+            **kwargs
+        )
+
+    @staticmethod
+    def concat_trait(mats, **kwargs):
+        """
+        Concatenate list of Matrix together along the trait axis.
+
+        Parameters
+        ----------
+        mats : array_like of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        **kwargs
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : Matrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new Matrix is allocated and filled.
+        """
+        return self.concat(
+            mats = mats,
+            axis = 1,
+            **kwargs
+        )
+
+    ######### Matrix element in-place-manipulation #########
+    def append(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         Append values to the matrix. Cannot add additional locations to 'raw'.
 
@@ -288,37 +979,113 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # get axis
         axis = get_axis(axis, self._mat.ndim)
 
-        if axis == 0:
-            if (self._raw is not None) and (raw is None):
-                raise RuntimeError("cannot append: raw argument is required")
-            if (self._taxa is not None) and (taxa is None):
-                raise RuntimeError("cannot append: taxa argument is required")
-            if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot append: taxa_grp argument is required")
-        elif axis == 1:
-            if (self._raw is not None) and (raw is None):
-                raise RuntimeError("cannot append: raw argument is required")
-            if (self._trait is not None) and (trait is None):
-                raise RuntimeError("cannto append: trait argument is required")
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DenseEstimatedBreedingValueMatrix(values):
+            if raw is None:
+                raw = values.raw
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if trait is None:
+                trait = values.trait
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DenseEstimatedBreedingValueMatrix or numpy.ndarray")
 
+        # perform error checks before allocating memory
+        if axis == 0:
+            if self._mat.shape[1] != values.shape[1]:
+                raise ValueError("Matrix shapes do not all align along axis 1 (trait axis)")
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot append: raw argument is required")
+            if (self._taxa is not None) and (taxa is None):
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
+            if (self._taxa_grp is not None) and (taxa_grp is None):
+                raise TypeError("cannot append: taxa_grp argument is required")
+        elif axis == 1:
+            if self._mat.shape[0] != values.shape[0]:
+                raise ValueError("Matrix shapes do not all align along axis 0 (taxa axis)")
+            if (self._raw is not None) and (raw is None):
+                raise TypeError("cannot append: raw argument is required")
+            if (self._trait is not None) and (trait is None):
+                raise TypeError("cannot append: trait argument is required")
+
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
         # append values
         self._mat = numpy.append(self._mat, values, axis = axis)
-        if axis == 0:   # taxa axis
-            if (self._raw is not None) and (raw is not None):
+        if axis == 0:
+            # set fields
+            if self._raw is not None:
                 self._raw = numpy.append(self._raw, raw, axis = 1)
-            if (self._taxa is not None) and (taxa is not None):
+            if self._taxa is not None:
                 self._taxa = numpy.append(self._taxa, taxa, axis = 0)
-            if (self._taxa_grp is not None) and (taxa_grp is not None):
+            if self._taxa_grp is not None:
                 self._taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
-        elif axis == 1:
-            if (self._raw is not None) and (raw is not None):
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
+        elif axis == 0:
+            # set fields
+            if self._raw is not None:
                 self._raw = numpy.append(self._raw, raw, axis = 2)
-            if (self._trait is not None) and (trait is not None):
+            if self._trait is not None:
                 self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def delete(self, obj, axis, **kwargs):
+    def append_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
         """
-        Delete sub-arrays along an axis.
+        Append values to the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to append to the matrix.
+        taxa : numpy.ndarray
+            Taxa names to append to the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to append to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.append(
+            values = values,
+            axis = 0,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+    def append_trait(self, values, raw = None, trait = None, **kwargs):
+        """
+        Append values to the Matrix along the trait axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to append to the matrix.
+        trait : numpy.ndarray
+            Taxa names to append to the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.append(
+            values = values,
+            axis = 0,
+            raw = raw,
+            trait = trait,
+            **kwargs
+        )
+
+    def remove(self, obj, axis, **kwargs):
+        """
+        Remove sub-arrays along an axis.
 
         Parameters
         ----------
@@ -341,13 +1108,52 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
                 self._taxa = numpy.delete(self._taxa, obj, axis = 0)
             if self._taxa_grp is not None:
                 self._taxa_grp = numpy.delete(self._taxa_grp, obj, axis = 0)
-        if axis == 2:   # trait axis
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
+        if axis == 1:   # trait axis
             if self._raw is not None:
                 self._raw = numpy.delete(self._raw, obj, axis = 2)
             if self._trait is not None:
                 self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def incorp(self, obj, values, axis, raw = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    def remove_taxa(self, obj, **kwargs):
+        """
+        Remove sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.remove(
+            obj = obj,
+            axis = 0,
+            **kwargs
+        )
+
+    def remove_trait(self, obj, **kwargs):
+        """
+        Remove sub-arrays along the trait axis.
+
+        Parameters
+        ----------
+        obj : slice, int, or array of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.remove(
+            obj = obj,
+            axis = 1,
+            **kwargs
+        )
+
+    def incorp(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -366,86 +1172,111 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # get axis
         axis = get_axis(axis, self._mat.ndim)
 
+        # if given a DensePhasedGenotypeMatrix extract *.mat values
+        if is_DenseEstimatedBreedingValueMatrix(values):
+            if raw is None:
+                raw = values.raw
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            if trait is None:
+                trait = values.trait
+            values = values.mat
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type DensePhasedGenotypeVariantMatrix or numpy.ndarray")
+
+        # perform error checks before allocating memory
         if axis == 0:
             if (self._raw is not None) and (raw is None):
-                raise RuntimeError("cannot append: raw argument is required")
+                raise TypeError("cannot incorp: raw argument is required")
             if (self._taxa is not None) and (taxa is None):
-                raise RuntimeError("cannot append: taxa argument is required")
+                taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot append: taxa_grp argument is required")
+                raise TypeError("cannot incorp: taxa_grp argument is required")
         elif axis == 1:
             if (self._raw is not None) and (raw is None):
-                raise RuntimeError("cannot append: raw argument is required")
+                raise TypeError("cannot incorp: raw argument is required")
             if (self._trait is not None) and (trait is None):
-                raise RuntimeError("cannto append: trait argument is required")
+                raise TypeError("cannot incorp: trait argument is required")
 
+        # Remark:
+        # Only test if self.field is not None.
+        # Error check above guarantees that field is not None
+
+        # OPTIMIZE: Consider merging the if statements above and below.
         # insert values
         self._mat = numpy.insert(self._mat, obj, values, axis = axis)
-        if axis == 0:   # taxa axis
-            if (self._raw is not None) and (raw is not None):
+        if axis == 0:
+            if self._raw is not None:
                 self._raw = numpy.insert(self._raw, obj, raw, axis = 1)
-            if (self._taxa is not None) and (taxa is not None):
+            if self._taxa is not None:
                 self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
-            if (self._taxa_grp is not None) and (taxa_grp is not None):
+            if self._taxa_grp is not None:
                 self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
-        elif axis == 1: # trait axis
-            if (self._raw is not None) and (raw is not None):
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
+        elif axis == 1:
+            if self._raw is not None:
                 self._raw = numpy.insert(self._raw, obj, raw, axis = 2)
-            if (self._trait is not None) and (trait is not None):
+            if self._trait is not None:
                 self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
-    def select(self, obj, axis, **kwargs):
+    def incorp_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
         """
-        Select certain values from the GenotypeMatrix.
+        Incorporate values along the taxa axis before the given indices.
 
         Parameters
         ----------
         obj: int, slice, or sequence of ints
-            Object that defines the index or indices where values are selected.
-        axis : int
-            The axis along which values are selected.
+            Object that defines the index or indices before which values is
+            incorporated.
+        values : Matrix, numpy.ndarray
+            Values to incorporate into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to incorporate into the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to incorporate into the Matrix.
         **kwargs
             Additional keyword arguments.
         """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-
-        # initialize to null pointers
-        mat_sel = None
-        raw_sel = None
-        taxa_sel = None
-        taxa_grp_sel = None
-        trait_sel = None
-
-        # custom selections along each axis
-        if axis == 0:   # taxa axis
-            mat_sel = self._mat[obj,:]
-            if self._raw is not None:
-                raw_sel = self._raw[:,obj,:]
-            if self._taxa is not None:
-                taxa_sel = self._taxa[obj]
-            if self._taxa_grp is not None:
-                taxa_grp_sel = self._taxa_grp[obj]
-            trait_sel = self._trait
-        elif axis == 1: # trait axis
-            mat_sel = self._mat[:,obj]
-            if self._raw is not None:
-                raw_sel = self._raw[:,:,obj]
-            taxa_sel = self._taxa
-            taxa_grp_sel = self._taxa_grp
-            if self._trait is not None:
-                trait_sel = self._trait[obj]
-
-        # select elements
-        dbvmat = DenseEstimatedBreedingValueMatrix(
-            mat = mat_sel,
-            raw = raw_sel,
-            trait = trait_sel,
-            taxa = taxa_sel,
-            taxa_grp = taxa_grp_sel
+        self.incorp(
+            obj = obj,
+            values = values,
+            axis = 0,
+            raw = raw,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
         )
 
-        return dbvmat
+    def incorp_trait(self, obj, values, raw = None, trait = None, **kwargs):
+        """
+        Incorporate values along the trait axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or sequence of ints
+            Object that defines the index or indices before which values is
+            incorporated.
+        values : Matrix, numpy.ndarray
+            Values to incorporate into the matrix.
+        trait : numpy.ndarray
+            Taxa names to incorporate into the Matrix.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.incorp(
+            obj = obj,
+            values = values,
+            axis = 1,
+            raw = raw,
+            trait = trait,
+            **kwargs
+        )
 
     ################### Sorting Methods ####################
     def lexsort(self, keys = None, axis = -1):
@@ -466,34 +1297,78 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         indices : numpy.ndarray
             Array of indices that sort the keys.
         """
-        # transform axis number to an index
-        axis = get_axis(axis, self._mat.ndim)
+        axis = get_axis(axis, self._mat.ndim)                   # transform axis number to an index
+        emess = None                                            # error message
 
-        # if no keys were provided, set a default
-        if keys is None:
-            # assign default keys
-            if axis == 0:
-                keys = (self._taxa, self._taxa_grp)
-            elif axis == 1:
-                keys = (self._trait,)
-
-            # remove keys that are None
-            keys = tuple(k for k in keys if k is not None)
-
-            # check for errors
-            if len(keys) == 0:
-                raise RuntimeError("cannot lexsort on axis %s: no default keys" % axis)
+        if keys is None:                                        # if no keys were provided, set a default
+            if axis == 0:                                       # taxa axis
+                keys = (self._taxa, self._taxa_grp)             # taxa default keys
+                emess = "taxa, taxa_grp are None"               # taxa error message
+            elif axis == 1:                                     # trait axis
+                keys = (self._trait)                            # trait default keys
+                emess = "trait is None"                         # loci error message
+            keys = tuple(k for k in keys if k is not None)      # remove None keys
+            if len(keys) == 0:                                  # raise error if needed
+                raise TypeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
         else:
             l = self._mat.shape[axis]
             for i,k in enumerate(keys):
                 if len(k) != l:
-                    raise RuntimeError("cannot lexsort on axis %s: key %s is incompatible with axis length %s" % (axis, i, l))
+                    raise TypeError("cannot lexsort on axis %s: key %s is incompatible with axis length %s" % (axis, i, l))
 
         # get indices
         indices = numpy.lexsort(keys)
 
         # return indices
         return indices
+
+    def lexsort_taxa(self, keys = None, **kwargs):
+        """
+        Perform an indirect stable sort using a sequence of keys along the taxa
+        axis.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        indices : (N,) ndarray of ints
+            Array of indices that sort the keys along the specified axis.
+        """
+        return self.lexsort(
+            keys = keys,
+            axis = 0,
+            **kwargs
+        )
+
+    def lexsort_trait(self, keys, **kwargs):
+        """
+        Perform an indirect stable sort using a sequence of keys along the trait
+        axis.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        indices : (N,) ndarray of ints
+            Array of indices that sort the keys along the specified axis.
+        """
+        return self.lexsort(
+            keys = keys,
+            axis = 1,
+            **kwargs
+        )
 
     def reorder(self, indices, axis = -1):
         """
@@ -507,25 +1382,62 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             The axis over which to reorder values.
 
         """
+        # TODO: move reset of sort metadata to here
         # transform axis number to an index
         axis = get_axis(axis, self._mat.ndim)
 
         ########################################################################
         if axis == 0:                                           ### TAXA AXIS
-            self._mat = self._mat[indices,:]                  # reorder mat array
+            self._mat = self._mat[indices,:]                    # reorder mat array
             if self._raw is not None:
-                self._raw = self._raw[:,indices,:]
+                self._raw = self._raw[:,indices,:]              # reorder raw array
             if self._taxa is not None:
                 self._taxa = self._taxa[indices]                # reorder taxa array
             if self._taxa_grp is not None:
                 self._taxa_grp = self._taxa_grp[indices]        # reorder taxa group array
         ########################################################################
         elif axis == 1:                                         ### LOCUS AXIS
-            self._mat = self._mat[:,indices]                  # reorder mat array
+            self._mat = self._mat[:,indices]                    # reorder mat array
             if self._raw is not None:
-                self._raw = self._raw[:,:,indices]
+                self._raw = self._raw[:,:,indices]              # reorder raw array
             if self._trait is not None:
                 self._trait = self._trait[indices]              # reorder trait array
+
+    def reorder_taxa(self, indices, **kwargs):
+        """
+        Reorder elements of the Matrix along the taxa axis using an array of
+        indices. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        indices : (N,) ndarray of ints
+            Array of indices that reorder the matrix along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.reorder(
+            indices = indices,
+            axis = 0,
+            **kwargs
+        )
+
+    def reorder_trait(self, indices, **kwargs):
+        """
+        Reorder elements of the Matrix along the trait axis using an array of
+        indices. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        indices : (N,) ndarray of ints
+            Array of indices that reorder the matrix along the specified axis.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.reorder(
+            indices = indices,
+            axis = 1,
+            **kwargs
+        )
 
     def sort(self, keys = None, axis = -1):
         """
@@ -544,6 +1456,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # get axis
         axis = get_axis(axis, self._mat.ndim)
 
+        # TODO: move this section to reorder function
         if axis == 0:
             # reset taxa group metadata
             self.taxa_grp_name = None
@@ -557,6 +1470,44 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # reorder internals
         self.reorder(indices, axis)
 
+    def sort_taxa(self, keys = None, **kwargs):
+        """
+        Sort slements of the Matrix along the taxa axis using a sequence of
+        keys. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.sort(
+            keys = keys,
+            axis = 0,
+            **kwargs
+        )
+
+    def sort_trait(self, keys, **kwargs):
+        """
+        Sort slements of the Matrix along the trait axis using a sequence of
+        keys. Note this modifies the Matrix in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.sort(
+            keys = keys,
+            axis = 1,
+            **kwargs
+        )
+
     ################### Grouping Methods ###################
     def group(self, axis = -1):
         """
@@ -565,6 +1516,9 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         """
         # get axis index
         axis = get_axis(axis, self._mat.ndim)
+
+        if axis == 1:
+            raise ValueError("cannot group along axis 1 (trait axis): not groupable")
 
         # sort along taxa axis
         self.sort(axis = axis)
@@ -577,6 +1531,21 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
                 self._taxa_grp_name, self._taxa_grp_stix, self._taxa_grp_len = uniq
                 # calculate stop indices
                 self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
+
+    def group_taxa(self, **kwargs):
+        """
+        Sort the Matrix along the taxa axis, then populate grouping indices for
+        the taxa axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+        """
+        self.group(
+            axis = 0,
+            **kwargs
+        )
 
     def is_grouped(self, axis = -1):
         """
@@ -591,7 +1560,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # convert axis to index
         axis = get_axis(axis, self._mat.ndim)
 
-        if axis == 1:
+        if axis == 0:
             return (
                 (self._taxa_grp_name is not None) and
                 (self._taxa_grp_stix is not None) and
@@ -599,6 +1568,27 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
                 (self._taxa_grp_len is not None)
             )
         return False
+
+    def is_grouped_taxa(self, **kwargs):
+        """
+        Determine whether the Matrix has been sorted and grouped along the taxa
+        axis.
+
+        Parameters
+        ----------
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        grouped : bool
+            True or False indicating whether the Matrix has been sorted and
+            grouped.
+        """
+        return self.is_grouped(
+            axis = 0,
+            **kwargs
+        )
 
 
 

@@ -505,22 +505,22 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if (self._taxa is not None) and (taxa is None):
                 taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot adjoin: taxa_grp argument is required")
+                raise TypeError("cannot adjoin: taxa_grp argument is required")
         elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot adjoin: vrnt_chrgrp argument is required")
+                raise TypeError("cannot adjoin: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot adjoin: vrnt_phypos argument is required")
+                raise TypeError("cannot adjoin: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
                 vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot adjoin: vrnt_genpos argument is required")
+                raise TypeError("cannot adjoin: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot adjoin: vrnt_xoprob argument is required")
+                raise TypeError("cannot adjoin: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot adjoin: vrnt_hapgrp argument is required")
+                raise TypeError("cannot adjoin: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot adjoin: vrnt_mask argument is required")
+                raise TypeError("cannot adjoin: vrnt_mask argument is required")
 
         # Remark:
         # Only test if self.field is not None.
@@ -854,22 +854,22 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if (self._taxa is not None) and (taxa is None):
                 taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot insert: taxa_grp argument is required")
+                raise TypeError("cannot insert: taxa_grp argument is required")
         elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot insert: vrnt_chrgrp argument is required")
+                raise TypeError("cannot insert: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot insert: vrnt_phypos argument is required")
+                raise TypeError("cannot insert: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
                 vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot insert: vrnt_genpos argument is required")
+                raise TypeError("cannot insert: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot insert: vrnt_xoprob argument is required")
+                raise TypeError("cannot insert: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot insert: vrnt_hapgrp argument is required")
+                raise TypeError("cannot insert: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot insert: vrnt_mask argument is required")
+                raise TypeError("cannot insert: vrnt_mask argument is required")
 
         # Remark:
         # Only test if self.field is not None.
@@ -1361,26 +1361,26 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if (self._taxa is not None) and (taxa is None):
                 taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot append: taxa_grp argument is required")
+                raise TypeError("cannot append: taxa_grp argument is required")
         elif axis == 2:
             if self._mat.shape[0] != values.shape[0]:
                 raise ValueError("Matrix shapes do not all align along axis 0 (phase axis)")
             if self._mat.shape[1] != values.shape[1]:
                 raise ValueError("Matrix shapes do not all align along axis 1 (taxa axis)")
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot append: vrnt_chrgrp argument is required")
+                raise TypeError("cannot append: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot append: vrnt_phypos argument is required")
+                raise TypeError("cannot append: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
                 vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot append: vrnt_genpos argument is required")
+                raise TypeError("cannot append: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot append: vrnt_xoprob argument is required")
+                raise TypeError("cannot append: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot append: vrnt_hapgrp argument is required")
+                raise TypeError("cannot append: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot append: vrnt_mask argument is required")
+                raise TypeError("cannot append: vrnt_mask argument is required")
 
         # Remark:
         # Only test if self.field is not None.
@@ -1509,6 +1509,11 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
                 self._taxa = numpy.delete(self._taxa, obj, axis = 0)
             if self._taxa_grp is not None:
                 self._taxa_grp = numpy.delete(self._taxa_grp, obj, axis = 0)
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
         elif axis == 2:
             if self._vrnt_chrgrp is not None:
                 self._vrnt_chrgrp = numpy.delete(self._vrnt_chrgrp, obj, axis = 0)
@@ -1611,22 +1616,22 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             if (self._taxa is not None) and (taxa is None):
                 taxa = numpy.object_([None] * values.shape[1])          # fill with None
             if (self._taxa_grp is not None) and (taxa_grp is None):
-                raise RuntimeError("cannot incorp: taxa_grp argument is required")
+                raise TypeError("cannot incorp: taxa_grp argument is required")
         elif axis == 2:
             if (self._vrnt_chrgrp is not None) and (vrnt_chrgrp is None):
-                raise RuntimeError("cannot incorp: vrnt_chrgrp argument is required")
+                raise TypeError("cannot incorp: vrnt_chrgrp argument is required")
             if (self._vrnt_phypos is not None) and (vrnt_phypos is None):
-                raise RuntimeError("cannot incorp: vrnt_phypos argument is required")
+                raise TypeError("cannot incorp: vrnt_phypos argument is required")
             if (self._vrnt_name is not None) and (vrnt_name is None):
                 vrnt_name = numpy.object_([None] * values.shape[2])     # fill with None
             if (self._vrnt_genpos is not None) and (vrnt_genpos is None):
-                raise RuntimeError("cannot incorp: vrnt_genpos argument is required")
+                raise TypeError("cannot incorp: vrnt_genpos argument is required")
             if (self._vrnt_xoprob is not None) and (vrnt_xoprob is None):
-                raise RuntimeError("cannot incorp: vrnt_xoprob argument is required")
+                raise TypeError("cannot incorp: vrnt_xoprob argument is required")
             if (self._vrnt_hapgrp is not None) and (vrnt_hapgrp is None):
-                raise RuntimeError("cannot incorp: vrnt_hapgrp argument is required")
+                raise TypeError("cannot incorp: vrnt_hapgrp argument is required")
             if (self._vrnt_mask is not None) and (vrnt_mask is None):
-                raise RuntimeError("cannot incorp: vrnt_mask argument is required")
+                raise TypeError("cannot incorp: vrnt_mask argument is required")
 
         # Remark:
         # Only test if self.field is not None.
@@ -1640,6 +1645,11 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
                 self._taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
             if self._taxa_grp is not None:
                 self._taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+            # reset metadata
+            self._taxa_grp_len = None
+            self._taxa_grp_name = None
+            self._taxa_grp_stix = None
+            self._taxa_grp_spix = None
         elif axis == 2:
             if self._vrnt_chrgrp is not None:
                 self._vrnt_chrgrp = numpy.insert(self._vrnt_chrgrp, obj, vrnt_chrgrp, axis = 0)
@@ -1760,12 +1770,12 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
             keys = tuple(k for k in keys if k is not None)      # remove None keys
             if len(keys) == 0:                                  # raise error if needed
-                raise RuntimeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
+                raise TypeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
         else:
             l = self._mat.shape[axis]
             for i,k in enumerate(keys):
                 if len(k) != l:
-                    raise RuntimeError("cannot lexsort on axis %s: key %s is incompatible with axis length %s" % (axis, i, l))
+                    raise TypeError("cannot lexsort on axis %s: key %s is incompatible with axis length %s" % (axis, i, l))
 
         # get indices
         indices = numpy.lexsort(keys)
