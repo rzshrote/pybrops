@@ -79,10 +79,17 @@ def generic_check_dict_keys(v, vname, w, wname):
     if any(e not in v for e in w):
         raise ValueError("dict '{0}' must have keys: {1}".format(vname, wname))
 
+def generic_check_gteq(v, vname, w):
+    if v < w:
+        raise ValueError("variable '{0}' is not greater than or equal to {1}".format(vname, w))
+
 ################################################################################
 ######################### conditional check functions ##########################
 ################################################################################
-def generic_cond_check_isinstance(v, vname, vtype, cond=(lambda s: s is not None)):
+def generic_default_cond(s):
+    return s is not None
+
+def generic_cond_check_isinstance(v, vname, vtype, cond = generic_default_cond):
     """
     Generic conditional check type function.
 
@@ -101,7 +108,7 @@ def generic_cond_check_isinstance(v, vname, vtype, cond=(lambda s: s is not None
     if cond(v):
         generic_check_isinstance(v, vname, vtype)
 
-def generic_cond_check_hasattr(v, vname, vattr, cond=(lambda s: s is not None)):
+def generic_cond_check_hasattr(v, vname, vattr, cond = generic_default_cond):
     """
     Generic conditional check has attribute function.
 
@@ -118,18 +125,22 @@ def generic_cond_check_hasattr(v, vname, vattr, cond=(lambda s: s is not None)):
     if cond(v):
         generic_check_hasattr(v, vname, vattr)
 
-def generic_cond_check_is(v, vname, w, wname, cond=(lambda s: s is not None)):
+def generic_cond_check_is(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
         generic_check_is(v, vname, w, wname)
 
-def generic_cond_check_is_not(v, vname, w, wname, cond=(lambda s: s is not None)):
+def generic_cond_check_is_not(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
         generic_check_is_not(v, vname, w, wname)
 
-def generic_cond_check_len_eq(v, vname, w, wname, cond=(lambda s: s is not None)):
+def generic_cond_check_len_eq(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
         generic_check_len_eq(v, vname, w, wname)
 
-def generic_cond_check_dict_keys(v, vname, w, wname, cond=(lambda s: s is not None)):
+def generic_cond_check_dict_keys(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
         generic_check_dict_keys(v, vname, w, wname)
+
+def generic_cond_check_gteq(v, vname, w, cond = generic_default_cond):
+    if cond(v):
+        generic_check_gteq(v, vname, w)

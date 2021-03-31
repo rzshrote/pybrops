@@ -1,5 +1,7 @@
 import numpy
 
+from . import generic_default_cond
+
 def generic_check_dtype_issubdtype(v, vname, vdtype):
     """
     Generic check ndarray subdtype function.
@@ -30,7 +32,7 @@ def generic_check_dtype_issubdtype(v, vname, vdtype):
             mname = str(vdtype)
         raise TypeError("variable '{0}' must be of dtype {1}".format(vname, mname))
 
-def generic_cond_check_dtype_issubdtype(v, vname, vdtype, cond=(lambda s: s is not None)):
+def generic_cond_check_dtype_issubdtype(v, vname, vdtype, cond = generic_default_cond):
     """
     Generic check ndarray subdtype function.
 
@@ -178,7 +180,7 @@ def generic_check_ndarray_shape(v, vname, vshape, vaxis = None):
 ################################################################################
 ##################### conditional ndarray check functions ######################
 ################################################################################
-def generic_cond_check_ndarray_dtype_issubdtype(v, vname, vdtype, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_dtype_issubdtype(v, vname, vdtype, cond = generic_default_cond):
     """
     Generic conditional check ndarray subdtype function.
 
@@ -196,7 +198,7 @@ def generic_cond_check_ndarray_dtype_issubdtype(v, vname, vdtype, cond=(lambda s
     if cond(v):
         generic_check_ndarray_dtype_issubdtype(v, vname, vdtype)
 
-def generic_cond_check_ndarray_eq(v, vname, w, wname, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_eq(v, vname, w, wname, cond = generic_default_cond):
     """
     Generic check ndarray value function.
 
@@ -216,7 +218,7 @@ def generic_cond_check_ndarray_eq(v, vname, w, wname, cond=(lambda s: s is not N
     if cond(v):
         generic_check_ndarray_eq(v, vname, w, wname)
 
-def generic_cond_check_ndarray_ndim(v, vname, vndim, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_ndim(v, vname, vndim, cond = generic_default_cond):
     """
     Generic check ndarray dimension function.
 
@@ -234,7 +236,7 @@ def generic_cond_check_ndarray_ndim(v, vname, vndim, cond=(lambda s: s is not No
     if cond(v):
         generic_check_ndarray_ndim(v, vname, vndim)
 
-def generic_cond_check_ndarray_size(v, vname, vsize, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_size(v, vname, vsize, cond = generic_default_cond):
     """
     Generic check ndarray size function.
 
@@ -252,7 +254,7 @@ def generic_cond_check_ndarray_size(v, vname, vsize, cond=(lambda s: s is not No
     if cond(v):
         generic_check_ndarray_size(v, vname, vsize)
 
-def generic_cond_check_ndarray_sum(v, vname, vsum, vaxis = None, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_sum(v, vname, vsum, vaxis = None, cond = generic_default_cond):
     """
     Generic check ndarray sum function.
 
@@ -271,7 +273,7 @@ def generic_cond_check_ndarray_sum(v, vname, vsum, vaxis = None, cond=(lambda s:
     if cond(v):
         generic_cond_check_ndarray_sum(v, vname, vsum, vaxis)
 
-def generic_cond_check_ndarray_shape(v, vname, vshape, vaxis = None, cond=(lambda s: s is not None)):
+def generic_cond_check_ndarray_shape(v, vname, vshape, vaxis = None, cond = generic_default_cond):
     """
     Generic check ndarray shape function.
 

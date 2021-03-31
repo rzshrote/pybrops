@@ -11,9 +11,62 @@ class EvaluationOperator:
     ############################ Object Properties #############################
     ############################################################################
 
+    ################ environment parameters ################
+    def nenv():
+        doc = "The nenv property."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    nenv = property(**nenv())
+
+    def var_E():
+        doc = "The var_E property."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    var_E = property(**var_E())
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+    def set_h2(self, pgvmat, gmod_true, h2):
+        """
+        Set the narrow sense heritability for environments.
+
+        Parameters
+        ----------
+        pgvmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        gmod_true : GenomicModel
+            True genomic model.
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def set_H2(self, pgvmat, gmod_true, H2):
+        """
+        Set the broad sense heritability for environments.
+
+        Parameters
+        ----------
+        pgvmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        gmod_true : GenomicModel
+            True genomic model.
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        """
+        raise NotImplementedError("method is abstract")
+
     def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
         """
         Parameters

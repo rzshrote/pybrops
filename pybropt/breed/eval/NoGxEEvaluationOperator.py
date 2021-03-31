@@ -1,5 +1,9 @@
 import numpy
 
+from pybropt.core.error import check_is_int
+from pybropt.core.error import check_is_positive
+from pybropt.core.error import check_is_iterable
+
 from . import EvaluationOperator
 
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
@@ -28,37 +32,82 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ################ environment parameters ################
+    def nenv():
+        doc = "The nenv property."
+        def fget(self):
+            return self._nenv
+        def fset(self, value):
+            check_is_int(value, "nenv")         # type check
+            check_is_positive(value, "nenv")    # value check
+            self._nenv = value
+        def fdel(self):
+            del self._nenv
+        return locals()
+    nenv = property(**nenv())
+
     def var_E():
         doc = "The var_E property."
         def fget(self):
             return self._var_E
         def fset(self, value):
-            # TODO: check value is positive
-            self._var_E = value
-            self._std_E = numpy.sqrt(self._var_E)
+            if numpy.issubdtype(type(value), numpy.number):
+                check_is_positive(value, "var_E")   # make sure is positive
+                value = [value]                     # construct list of copies
+            elif not (hasattr(value, "__iter__") and hasattr(value, "__len__")):
+                raise ValueError("variable 'var_E' must be iterable and have a length")
+            self._var_E = numpy.float64(value)      # set values
         def fdel(self):
             del self._var_E
-            del self._std_E
         return locals()
     var_E = property(**var_E())
-
-    def std_E():
-        doc = "The std_E property."
-        def fget(self):
-            return self._std_E
-        def fset(self, value):
-            # TODO: check value is positive
-            self._std_E = value
-            self._var_E = numpy.square(self._std_E)
-        def fdel(self):
-            del self._std_E
-            del self._var_E
-        return locals()
-    std_E = property(**std_E())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+    def set_h2(self, pgvmat, gmod_true, h2):
+        """
+        Set the narrow sense heritability for environments.
+
+        Parameters
+        ----------
+        pgvmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        gmod_true : GenomicModel
+            True genomic model.
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        """
+        x = pgvmat.tacount()    # (n,p)
+        b = gmod_true.beta      # (p,t)
+        y = x @ b               # (n,p) @ (p,t) -> (n,t)
+        var_A = y.var(0)        # (n,t) -> (t,)
+        # TODO: determine if we should use genetic or genic variance for var_E
+
+        # calculate environmental variance
+        # var_E = (1 - h2)/h2 * var_A - var_G
+        # we assume var_G is zero, so var_E = (1 - h2)/h2 * var_A
+        # scalar - (t,) -> (t,)
+        # (t,) / (t,) -> (t,)
+        # (t,) * (t,) -> (t,)
+        self.var_E = (1.0 - h2) / h2 * var_A
+
+    def set_H2(self, pgvmat, gmod_true, H2):
+        """
+        Set the broad sense heritability for environments.
+
+        Parameters
+        ----------
+        pgvmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        gmod_true : GenomicModel
+            True genomic model.
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        """
+        raise NotImplementedError("method is abstract")
+
     def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
         """
         Parameters
@@ -86,14 +135,17 @@ class NoGxEEvaluationOperator(EvaluationOperator):
         # get true breeding values
         bvmat_true = gmod_true.predict(pgvmat)
 
+        # create phenotype matrix shape
+        rawshape = (self.nenv, bvmat_true.ntaxa, bvmat.ntrait)
+
         # generate raw phenotypes: (n,t) + (r,n,t) -> (r,n,t)
         raw = bvmat_true.mat + self.rng.normal(
-            0.0,                                                # no deviation/GxE
-            self.var_E,                                         # float or (t,)
-            (self.nenv, bvmat_true.ntaxa, bvmat_true.ntrait),   # (r, n, t)
+            0.0,                            # no deviation/GxE
+            numpy.sqrt(self._var_E),        # (1,) or (t,)
+            rawshape                        # (r, n, t)
         )
 
-        # calculate mean across all environments: (t,n,t) -> (n,t)
+        # calculate mean across all environments: (r,n,t) -> (n,t)
         mat = raw.mean(0)
 
         # create DenseEstimatedBreedingValueMatrix

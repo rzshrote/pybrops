@@ -1,4 +1,6 @@
 from . import generic_check_isinstance
+
+from . import generic_default_cond
 from . import generic_cond_check_isinstance
 
 ################################################################################
@@ -110,6 +112,6 @@ def cond_check_is_tuple(v, vname):
 ########## conditional compound check functions for basic data types ###########
 ################################################################################
 
-def cond_check_is_str_or_iterable(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_str_or_iterable(v, vname, cond = generic_default_cond):
     if cond(v):
         check_is_str_or_iterable(v, vname)

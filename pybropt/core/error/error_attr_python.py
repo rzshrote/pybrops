@@ -1,4 +1,6 @@
 from . import generic_check_hasattr
+
+from . import generic_default_cond
 from . import generic_cond_check_hasattr
 
 ### read/write ###
@@ -18,8 +20,8 @@ def check_is_iterable(v, vname):
 ################################################################################
 #################### conditional attribute check functions #####################
 ################################################################################
-def cond_check_is_callable(v, vname):
-    generic_cond_check_hasattr(v, vname, "__call__")
+def cond_check_is_callable(v, vname, cond = generic_default_cond):
+    generic_cond_check_hasattr(v, vname, "__call__", cond)
 
-def cond_check_is_iterable(v, vname):
-    generic_cond_check_hasattr(v, vname, "__iter__")
+def cond_check_is_iterable(v, vname, cond = generic_default_cond):
+    generic_cond_check_hasattr(v, vname, "__iter__", cond)

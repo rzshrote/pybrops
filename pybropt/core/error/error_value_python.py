@@ -1,9 +1,13 @@
 from . import generic_check_is_not
 from . import generic_check_dict_keys
 from . import generic_check_len_eq
+from . import generic_check_gteq
+
+from . import generic_default_cond
 from . import generic_cond_check_is_not
 from . import generic_cond_check_dict_keys
 from . import generic_cond_check_len_eq
+from . import generic_cond_check_gteq
 
 ################################################################################
 ############################### check functions ################################
@@ -26,18 +30,24 @@ def check_all_equal(v, vname):
     if any(e0 != e for e in viter):
         raise ValueError("not all elements in {0} are equal to {1}".format(vname, e0))
 
+def check_is_positive(v, vname):
+    generic_check_gteq(v, vname, 0)
+
 ################################################################################
 ######################### conditional check functions ##########################
 ################################################################################
-def cond_check_is_not_None(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_not_None(v, vname, cond = generic_default_cond):
     generic_cond_check_is_not(v, vname, None, "None", cond)
 
-def cond_check_keys_in_dict(v, vname, *args, cond=(lambda s: s is not None)):
+def cond_check_keys_in_dict(v, vname, *args, cond = generic_default_cond):
     generic_cond_check_dict_keys(v, vname, args, [str(e) for e in args], cond)
 
-def cond_check_len_eq(v, vname, w, wname, cond=(lambda s: s is not None)):
+def cond_check_len_eq(v, vname, w, wname, cond = generic_default_cond):
     generic_cond_check_len_eq(v, vname, w, wname, cond)
 
-def cond_check_all_equal(v, vname, cond=(lambda s: s is not None)):
+def cond_check_all_equal(v, vname, cond = generic_default_cond):
     if cond(v):
         check_all_equal(v, vname)
+
+def cond_check_is_positive(v, vname, cond = generic_default_cond):
+    generic_cond_check_gteq(v, vname, 0, cond)
