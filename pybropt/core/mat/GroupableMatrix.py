@@ -7,7 +7,16 @@ class GroupableMatrix(SortableMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(GroupableMatrix, self).__init__()
+        """
+        GroupableMatrix constructor
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
+        """
+        super(GroupableMatrix, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -53,12 +62,49 @@ class GroupableMatrix(SortableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_GroupableMatrix(v):
+    """
+    Determine whether an object is a GroupableMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a GroupableMatrix object instance.
+    """
     return isinstance(v, GroupableMatrix)
 
 def check_is_GroupableMatrix(v, varname):
+    """
+    Check if object is of type GroupableMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, GroupableMatrix):
         raise TypeError("'%s' must be a GroupableMatrix." % varname)
 
 def cond_check_is_GroupableMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type GroupableMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        GroupableMatrix.
+    """
     if cond(v):
         check_is_GroupableMatrix(v, varname)

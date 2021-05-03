@@ -29,148 +29,289 @@ class Matrix:
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
+        """
+        Return self + value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __sub__(self, value):
+        """
+        Return self - value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __mul__(self, value):
+        """
+        Return self * value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __matmul__(self, value):
+        """
+        Return self @ value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __truediv__(self, value):
+        """
+        Return self / value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __floordiv__(self, value):
+        """
+        Return self // value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __mod__(self, value):
+        """
+        Return self % value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __divmod__(self, value):
+        """
+        Return divmod(self, value).
+        """
         raise NotImplementedError("method is abstract")
 
     def __pow__(self, value):
+        """
+        Return self ** value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __lshift__(self, value):
+        """
+        Return self << value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rshift__(self, value):
+        """
+        Return self >> value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __and__(self, value):
+        """
+        Return self & value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __xor__(self, value):
+        """
+        Return self ^ value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __or__(self, value):
+        """
+        Return self | value.
+        """
         raise NotImplementedError("method is abstract")
 
     ############# Backwards numeric operators ##############
     def __radd__(self, value):
+        """
+        Return value + self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rsub__(self, value):
+        """
+        Return value - self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rmul__(self, value):
+        """
+        Return value * self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rmatmul__(self, value):
+        """
+        Return value @ self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rtruediv__(self, value):
+        """
+        Return value / self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rfloordiv__(self, value):
+        """
+        Return value // self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rmod__(self, value):
+        """
+        Return value % self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rdivmod__(self, value):
+        """
+        Return divmod(value, self).
+        """
         raise NotImplementedError("method is abstract")
 
     def __rlshift__(self, value):
+        """
+        Return value << self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rrshift__(self, value):
+        """
+        Return value >> self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rand__(self, value):
+        """
+        Return value & self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __rxor__(self, value):
+        """
+        Return value ^ self.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ror__(self, value):
+        """
+        Return value | self.
+        """
         raise NotImplementedError("method is abstract")
 
     ############# Augmented numeric operators ##############
     def __iadd__(self, value):
+        """
+        Return self += value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __isub__(self, value):
+        """
+        Return self -= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __imul__(self, value):
+        """
+        Return self *= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __imatmul__(self, value):
+        """
+        Return self @= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __itruediv__(self, value):
+        """
+        Return self /= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ifloordiv__(self, value):
+        """
+        Return self //= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __imod__(self, value):
+        """
+        Return self %= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ipow__(self, value):
+        """
+        Return self **= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ilshift__(self, value):
+        """
+        Return self <<= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __irshift__(self, value):
+        """
+        Return self >>= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __iand__(self, value):
+        """
+        Return self &= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ixor__(self, value):
+        """
+        Return self ^= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ior__(self, value):
+        """
+        Return self |= value.
+        """
         raise NotImplementedError("method is abstract")
 
     ################## Logical operators ###################
     def __lt__(self, value):
+        """
+        Return self < value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __le__(self, value):
+        """
+        Return self <= value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __eq__(self, value):
+        """
+        Return self == value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ne__(self, value):
+        """
+        Return self != value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __gt__(self, value):
+        """
+        Return self > value.
+        """
         raise NotImplementedError("method is abstract")
 
     def __ge__(self, value):
+        """
+        Return self >= value.
+        """
         raise NotImplementedError("method is abstract")
 
     ################# Container operators ##################
     def __len__(self):
+        """
+        Get the length of the raw underlying matrix.
+        """
         raise NotImplementedError("method is abstract")
 
     def __getitem__(self, key):
@@ -192,6 +333,9 @@ class Matrix:
         raise NotImplementedError("method is abstract")
 
     def __iter__(self):
+        """
+        Create an iterator of the raw underlying matrix.
+        """
         raise NotImplementedError("method is abstract")
 
     #################### Matrix copying ####################
@@ -228,10 +372,19 @@ class Matrix:
     def mat():
         doc = "Pointer to raw matrix object."
         def fget(self):
+            """
+            Get pointer to raw matrix.
+            """
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """
+            Set pointer to raw matrix.
+            """
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """
+            Delete raw matrix.
+            """
             raise NotImplementedError("method is abstract")
         return locals()
     mat = property(**mat())
@@ -384,12 +537,47 @@ class Matrix:
 ################################## Utilities ###################################
 ################################################################################
 def is_Matrix(v):
+    """
+    Determine whether an object is a Matrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a Matrix object instance.
+    """
     return isinstance(v, Matrix)
 
 def check_is_Matrix(v, varname):
-    if not isinstance(v, Matrix):
-        raise TypeError("'%s' must be a Matrix." % varname)
+    """
+    Check if object is of type Matrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_Matrix(v):
+        raise TypeError("'{0}' must be of type Matrix.".format(varname))
 
 def cond_check_is_Matrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type Matrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a Matrix.
+    """
     if cond(v):
         check_is_Matrix(v, varname)
