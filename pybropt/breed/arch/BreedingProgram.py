@@ -7,9 +7,7 @@ class BreedingProgram(BreedingNode):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
-        super(BreedingProgram, self).__init__(
-            **kwargs
-        )
+        super(BreedingProgram, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################
@@ -19,33 +17,33 @@ class BreedingProgram(BreedingNode):
     def start_geno():
         doc = "The start_geno property."
         def fget(self):
-            return self._start_geno
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_geno = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_geno
+            raise NotImplementedError("method is abstract")
         return locals()
     start_geno = property(**start_geno())
 
     def start_bval():
         doc = "The start_bval property."
         def fget(self):
-            return self._start_bval
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_bval = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_bval
+            raise NotImplementedError("method is abstract")
         return locals()
     start_bval = property(**start_bval())
 
     def start_gmod():
         doc = "The start_gmod property."
         def fget(self):
-            return self._start_gmod
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_gmod = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_gmod
+            raise NotImplementedError("method is abstract")
         return locals()
     start_gmod = property(**start_gmod())
 
