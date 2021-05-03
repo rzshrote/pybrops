@@ -34,6 +34,12 @@ def test_init_is_concrete():
     generic_assert_concrete_method(Matrix, "__init__")
 
 ################################################################################
+########################### Test abstract properties ###########################
+################################################################################
+def test_mat_is_abstract():
+    generic_assert_abstract_property(Matrix, "mat")
+
+################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_add_is_abstract(mat):
@@ -190,9 +196,6 @@ def test_copy_is_abstract(mat):
 def test_deepcopy_is_abstract(mat):
     generic_assert_abstract_method(mat, "__deepcopy__")
     generic_assert_abstract_method(mat, "deepcopy")
-
-def test_mat_is_abstract():
-    generic_assert_abstract_property(Matrix, "mat")
 
 def test_adjoin_is_abstract(mat):
     generic_assert_abstract_method(mat, "adjoin")

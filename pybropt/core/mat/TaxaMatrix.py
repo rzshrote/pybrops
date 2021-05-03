@@ -1,7 +1,13 @@
 from . import GroupableMatrix
 
 class TaxaMatrix(GroupableMatrix):
-    """docstring for TaxaMatrix."""
+    """
+    An abstract class for matrix wrapper objects with taxa metadata.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Matrix taxa metadata.
+        2) Matrix taxa routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -24,79 +30,100 @@ class TaxaMatrix(GroupableMatrix):
 
     ################# Taxa Data Properites #################
     def taxa():
-        doc = "The taxa property."
+        doc = "Taxa label property."
         def fget(self):
+            """Get taxa label array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa label array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa label array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa = property(**taxa())
 
     def ntaxa():
-        doc = "The ntaxa property."
+        doc = "Number of taxa property."
         def fget(self):
+            """Get number of taxa"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of taxa"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of taxa"""
             raise NotImplementedError("method is abstract")
         return locals()
     ntaxa = property(**ntaxa())
 
     def taxa_grp():
-        doc = "The taxa_grp property."
+        doc = "Taxa group label property."
         def fget(self):
+            """Get taxa group label array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa group label array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa group label array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa_grp = property(**taxa_grp())
 
     ############### Taxa Metadata Properites ###############
     def taxa_grp_name():
-        doc = "The taxa_grp_name property."
+        doc = "Taxa group name property."
         def fget(self):
+            """Get taxa group name array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa group name array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa group array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa_grp_name = property(**taxa_grp_name())
 
     def taxa_grp_stix():
-        doc = "The taxa_grp_stix property."
+        doc = "Taxa group start index property."
         def fget(self):
+            """Get taxa group start indices array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa group start indices array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa group start indices array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa_grp_stix = property(**taxa_grp_stix())
 
     def taxa_grp_spix():
-        doc = "The taxa_grp_spix property."
+        doc = "Taxa group stop index property."
         def fget(self):
+            """Get taxa group stop indices array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa group stop indices array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa group stop indices array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa_grp_spix = property(**taxa_grp_spix())
 
     def taxa_grp_len():
-        doc = "The taxa_grp_len property."
+        doc = "Taxa group length property."
         def fget(self):
+            """Get taxa group length array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set taxa group length array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete taxa group length array"""
             raise NotImplementedError("method is abstract")
         return locals()
     taxa_grp_len = property(**taxa_grp_len())
@@ -352,12 +379,49 @@ class TaxaMatrix(GroupableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_TaxaMatrix(v):
+    """
+    Determine whether an object is a TaxaMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a TaxaMatrix object instance.
+    """
     return isinstance(v, TaxaMatrix)
 
 def check_is_TaxaMatrix(v, varname):
-    if not isinstance(v, TaxaMatrix):
-        raise TypeError("'%s' must be a TaxaMatrix." % varname)
+    """
+    Check if object is of type TaxaMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_TaxaMatrix(v):
+        raise TypeError("'{0}' must be a TaxaMatrix".format(varname))
 
 def cond_check_is_TaxaMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type TaxaMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        TaxaMatrix.
+    """
     if cond(v):
         check_is_TaxaMatrix(v, varname)

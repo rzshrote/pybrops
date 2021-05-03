@@ -1,7 +1,12 @@
 from . import SortableMatrix
 
 class GroupableMatrix(SortableMatrix):
-    """docstring for GroupableMatrix."""
+    """
+    An abstract class for groupable matrix wrapper objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Matrix in-place matrix grouping routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -88,8 +93,8 @@ def check_is_GroupableMatrix(v, varname):
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, GroupableMatrix):
-        raise TypeError("'%s' must be a GroupableMatrix." % varname)
+    if not is_GroupableMatrix(v):
+        raise TypeError("'{0}' must be a GroupableMatrix".format(varname))
 
 def cond_check_is_GroupableMatrix(v, varname, cond=(lambda s: s is not None)):
     """

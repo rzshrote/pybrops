@@ -1,7 +1,27 @@
-class TraitMatrix(SortableMatrix):
-    """docstring for TraitMatrix."""
+from . import SortableMatrix
 
+class TraitMatrix(SortableMatrix):
+    """
+    An abstract class for matrix wrapper objects with trait metadata.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) trait metadata manipulation routines.
+        2) trait manipulation routines.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, **kwargs):
+        """
+        TraitMatrix constructor
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
+        """
         super(TraitMatrix, self).__init__(**kwargs)
 
     ############################################################################
@@ -10,23 +30,29 @@ class TraitMatrix(SortableMatrix):
 
     ###################### Trait Data ######################
     def trait():
-        doc = "The trait property."
+        doc = "Trait label property."
         def fget(self):
+            """Get trait label array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set trait label array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete trait label array"""
             raise NotImplementedError("method is abstract")
         return locals()
     trait = property(**trait())
 
     def ntrait():
-        doc = "The ntrait property."
+        doc = "Number of traits property."
         def fget(self):
+            """Get number of traits"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of traits"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of traits"""
             raise NotImplementedError("method is abstract")
         return locals()
     ntrait = property(**ntrait())
@@ -243,12 +269,49 @@ class TraitMatrix(SortableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_TraitMatrix(v):
+    """
+    Determine whether an object is a TraitMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a TraitMatrix object instance.
+    """
     return isinstance(v, TraitMatrix)
 
 def check_is_TraitMatrix(v, varname):
-    if not isinstance(v, TraitMatrix):
-        raise TypeError("'%s' must be a TraitMatrix." % varname)
+    """
+    Check if object is of type TraitMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_TraitMatrix(v):
+        raise TypeError("'{0}' must be a TraitMatrix".format(varname))
 
 def cond_check_is_TraitMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type TraitMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        TraitMatrix.
+    """
     if cond(v):
         check_is_TraitMatrix(v, varname)

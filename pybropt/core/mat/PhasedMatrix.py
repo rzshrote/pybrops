@@ -1,10 +1,26 @@
+from . import MutableMatrix
+
 class PhasedMatrix(MutableMatrix):
-    """docstring for PhasedMatrix."""
+    """
+    An abstract class for phased matrix wrapper objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) phase manipulation routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        PhasedMatrix constructor
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
+        """
         super(PhasedMatrix, self).__init__(**kwargs)
 
     ############################################################################
@@ -13,12 +29,15 @@ class PhasedMatrix(MutableMatrix):
 
     ################ Phase Data Properites ################
     def nphase():
-        doc = "The nphase property."
+        doc = "Number of phases property."
         def fget(self):
+            """Get number of phases"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of phases"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of phases"""
             raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
@@ -177,12 +196,49 @@ class PhasedMatrix(MutableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_PhasedMatrix(v):
+    """
+    Determine whether an object is a PhasedMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a PhasedMatrix object instance.
+    """
     return isinstance(v, PhasedMatrix)
 
 def check_is_PhasedMatrix(v, varname):
-    if not isinstance(v, PhasedMatrix):
-        raise TypeError("'{0}' must be a PhasedMatrix.".format(varname))
+    """
+    Check if object is of type PhasedMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_PhasedMatrix(v):
+        raise TypeError("'{0}' must be a PhasedMatrix".format(varname))
 
 def cond_check_is_PhasedMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type PhasedMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        PhasedMatrix.
+    """
     if cond(v):
         check_is_PhasedMatrix(v, varname)

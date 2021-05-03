@@ -1,7 +1,13 @@
 from . import GroupableMatrix
 
 class VariantMatrix(GroupableMatrix):
-    """docstring for VariantMatrix."""
+    """
+    An abstract class for matrix wrapper objects with variant metadata.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) variant metadata manipulation routines.
+        2) variant manipulation routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -24,123 +30,156 @@ class VariantMatrix(GroupableMatrix):
 
     ############### Variant Data Properites ################
     def vrnt_chrgrp():
-        doc = "The vrnt_chrgrp property."
+        doc = "Variant chromosome group label property."
         def fget(self):
+            """Get variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
-        doc = "The vrnt_phypos property."
+        doc = "Variant physical position property."
         def fget(self):
+            """Get variant physical position array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant physical position array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant physical position array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_name():
-        doc = "The vrnt_name property."
+        doc = "Variant name property."
         def fget(self):
+            """Get variant name array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant name array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant name array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_name = property(**vrnt_name())
 
     def vrnt_genpos():
-        doc = "The vrnt_genpos property."
+        doc = "Variant genetic position property."
         def fget(self):
+            """Get variant genetic position array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant genetic position array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant genetic position array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_genpos = property(**vrnt_genpos())
 
     def vrnt_xoprob():
-        doc = "The vrnt_xoprob property."
+        doc = "Variant crossover sequential probability property."
         def fget(self):
+            """Get variant crossover sequential probability array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant crossover sequential probability array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant crossover sequential probability array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_xoprob = property(**vrnt_xoprob())
 
     def vrnt_hapgrp():
-        doc = "The vrnt_hapgrp property."
+        doc = "Variant haplotype group label property."
         def fget(self):
+            """Get variant haplotype group label array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant haplotype group label array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant haplotype group label array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_hapgrp = property(**vrnt_hapgrp())
 
     def vrnt_mask():
-        doc = "The vrnt_mask property."
+        doc = "Variant mask property."
         def fget(self):
+            """Get variant mask"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant mask"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant mask"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_mask = property(**vrnt_mask())
 
     ############# Variant Metadata Properites ##############
     def vrnt_chrgrp_name():
-        doc = "The vrnt_chrgrp_name property."
+        doc = "Variant chromosome group names property."
         def fget(self):
+            """Get variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
-        doc = "The vrnt_chrgrp_stix property."
+        doc = "Variant chromosome group start indices property."
         def fget(self):
+            """Get variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
-        doc = "The vrnt_chrgrp_spix property."
+        doc = "Variant chromosome group stop indices property."
         def fget(self):
+            """Get variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
-        doc = "The vrnt_chrgrp_len property."
+        doc = "Variant chromosome group length property."
         def fget(self):
+            """Get variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
         return locals()
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
@@ -483,12 +522,49 @@ class VariantMatrix(GroupableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_VariantMatrix(v):
+    """
+    Determine whether an object is a VariantMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a VariantMatrix object instance.
+    """
     return isinstance(v, VariantMatrix)
 
 def check_is_VariantMatrix(v, varname):
-    if not isinstance(v, VariantMatrix):
-        raise TypeError("'%s' must be a VariantMatrix." % varname)
+    """
+    Check if object is of type VariantMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_VariantMatrix(v):
+        raise TypeError("'{0}' must be a VariantMatrix".format(varname))
 
 def cond_check_is_VariantMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type VariantMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        VariantMatrix.
+    """
     if cond(v):
         check_is_VariantMatrix(v, varname)

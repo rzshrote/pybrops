@@ -1,7 +1,12 @@
 from . import MutableMatrix
 
 class SortableMatrix(MutableMatrix):
-    """docstring for SortableMatrix."""
+    """
+    An abstract class for sortable matrix wrapper objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Matrix in-place matrix sorting routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -83,12 +88,49 @@ class SortableMatrix(MutableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_SortableMatrix(v):
+    """
+    Determine whether an object is a SortableMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a SortableMatrix object instance.
+    """
     return isinstance(v, SortableMatrix)
 
 def check_is_SortableMatrix(v, varname):
+    """
+    Check if object is of type SortableMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, SortableMatrix):
         raise TypeError("'%s' must be a SortableMatrix." % varname)
 
 def cond_check_is_SortableMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type SortableMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        SortableMatrix.
+    """
     if cond(v):
         check_is_SortableMatrix(v, varname)

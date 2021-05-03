@@ -372,19 +372,13 @@ class Matrix:
     def mat():
         doc = "Pointer to raw matrix object."
         def fget(self):
-            """
-            Get pointer to raw matrix.
-            """
+            """Get pointer to raw matrix object"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
-            """
-            Set pointer to raw matrix.
-            """
+            """Set pointer to raw matrix object"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
-            """
-            Delete raw matrix.
-            """
+            """Delete raw matrix object"""
             raise NotImplementedError("method is abstract")
         return locals()
     mat = property(**mat())
