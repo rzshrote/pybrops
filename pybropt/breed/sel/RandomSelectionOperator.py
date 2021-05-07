@@ -1,8 +1,8 @@
 import random
 import numpy
 
-from . import ParentSelectionOperator
-from . import SurvivorSelectionOperator
+from pybropt.breed.psel import ParentSelectionOperator
+from pybropt.breed.ssel import SurvivorSelectionOperator
 
 class RandomSelectionOperator(ParentSelectionOperator,SurvivorSelectionOperator):
     """docstring for RandomSelectionOperator."""

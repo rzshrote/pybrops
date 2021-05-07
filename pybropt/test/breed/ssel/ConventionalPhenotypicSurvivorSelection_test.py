@@ -4,7 +4,7 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.sel import ConventionalPhenotypicSurvivorSelection
+from pybropt.breed.ssel import ConventionalPhenotypicSurvivorSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix

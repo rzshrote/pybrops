@@ -4,10 +4,11 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.sel import ConventionalGenomicParentSelection
+from pybropt.breed.psel import OptimalPopulationValueParentSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.algo.opt import SteepestAscentSetHillClimber
 
 ################################################################################
 ################################## Genotypes ###################################
@@ -29,11 +30,18 @@ def mat_int8():
 
 @pytest.fixture
 def mat_chrgrp():
-    yield numpy.int64([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
+    yield numpy.int64([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
 
 @pytest.fixture
 def mat_phypos():
     yield numpy.int64([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+@pytest.fixture
+def mat_genpos():
+    yield numpy.float64([
+        0.31, 0.38, 0.66, 0.67, 0.73,
+        0.3 , 0.44, 0.58, 0.96, 0.99
+    ])
 
 @pytest.fixture
 def mat_taxa():
@@ -44,20 +52,26 @@ def mat_taxa_grp():
     yield numpy.int64([1, 1, 2, 2, 2])
 
 @pytest.fixture
-def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
-    yield DensePhasedGenotypeVariantMatrix(
+def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
+    out = DensePhasedGenotypeVariantMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
         vrnt_phypos = mat_phypos,
+        vrnt_genpos = mat_genpos,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
     )
+    out.group()
+    yield out
 
 ################################################################################
 ################################ Genomic model #################################
 ################################################################################
 @pytest.fixture
 def mu():
+    # yield numpy.float64([
+    #     [1.4]
+    # ])
     yield numpy.float64([
         [1.4],
         [2.5],
@@ -66,6 +80,18 @@ def mu():
 
 @pytest.fixture
 def beta():
+    # yield numpy.float64([
+    #     [-0.33],
+    #     [-0.69],
+    #     [ 1.12],
+    #     [-1.44],
+    #     [ 0.88],
+    #     [ 1.23],
+    #     [ 0.19],
+    #     [-2.12],
+    #     [-0.87],
+    #     [ 0.06]
+    # ])
     yield numpy.float64([
         [-0.33,  2.08, -2.42],
         [-0.69, -1.87, -1.38],
@@ -81,6 +107,7 @@ def beta():
 
 @pytest.fixture
 def trait():
+    # yield numpy.object_(["protein"])
     yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
@@ -109,14 +136,19 @@ def bvmat(glgmod, dpgvmat):
     yield glgmod.predict(dpgvmat)
 
 ################################################################################
-###################### ConventionalGenomicParentSelection ######################
+###################### OptimalPopulationValueParentSelection ######################
 ################################################################################
 @pytest.fixture
 def k_p():
     yield 2
 
 @pytest.fixture
+def b_p():
+    yield 3
+
+@pytest.fixture
 def traitwt_p():
+    # yield numpy.float64([1.0])
     yield numpy.float64([1.0, 1.0, 1.0])
 
 @pytest.fixture
@@ -132,19 +164,30 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def cgps(k_p, traitwt_p, ncross, nprogeny, rng):
-    yield ConventionalGenomicParentSelection(
+def algorithm(k_p, dpgvmat, rng):
+    yield SteepestAscentSetHillClimber(
+        k = k_p,
+        setspace = numpy.arange(dpgvmat.ntaxa),
+        rng = rng,
+        objwt = 1.0,
+    )
+
+@pytest.fixture
+def opvps(k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng):
+    yield OptimalPopulationValueParentSelection(
         k_p = k_p,
         traitwt_p = traitwt_p,
+        b_p = b_p,
         ncross = ncross,
         nprogeny = nprogeny,
+        algorithm = algorithm,
         rng = rng
     )
 
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_pselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
+def test_pselect(opvps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
     geno = {
         "cand" : dpgvmat,
         "main" : dpgvmat,
@@ -162,7 +205,7 @@ def test_pselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         "true" : glgmod
     }
 
-    a,b,c,d,e = cgps.pselect(
+    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = opvps.pselect(
         t_cur = 0,
         t_max = 20,
         geno = geno,
@@ -170,6 +213,6 @@ def test_pselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         gmod = gmod
     )
 
-    assert numpy.all(b == [3,4])
-    assert c == ncross
-    assert d == nprogeny
+    assert numpy.all(out_sel == [1,3])
+    assert out_ncross == ncross
+    assert out_nprogeny == nprogeny

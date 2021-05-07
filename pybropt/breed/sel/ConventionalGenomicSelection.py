@@ -1,5 +1,5 @@
-from . import ConventionalGenomicParentSelection
-from . import ConventionalGenomicSurvivorSelection
+from pybropt.breed.psel import ConventionalGenomicParentSelection
+from pybropt.breed.ssel import ConventionalGenomicSurvivorSelection
 
 class ConventionalGenomicSelection(ConventionalGenomicParentSelection,ConventionalGenomicSurvivorSelection):
     """docstring for ConventionalGenomicSelection."""

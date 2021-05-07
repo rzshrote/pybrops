@@ -1,9 +1,9 @@
-from . import ParentSelectionOperator
+from . import SurvivorSelectionOperator
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
 
-class WeightedGenomicSurvivorSelection(ParentSelectionOperator):
+class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
     """docstring for WeightedGenomicSurvivorSelection."""
 
     ############################################################################
