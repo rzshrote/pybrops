@@ -1,21 +1,14 @@
 import copy
-import numpy
+from . import Matrix
 
-from . import GenotypeMatrix
-from pybropt.core.mat import get_axis
-from pybropt.core.error import check_is_ndarray
-from pybropt.core.mat import is_Matrix
-
-class DenseGenotypeMatrix(GenotypeMatrix):
-    """docstring for DenseGenotypeMatrix."""
+class DenseMatrix(Matrix):
+    """docstring for DenseMatrix."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, **kwargs):
-        super(DenseGenotypeMatrix, self).__init__(
-            **kwargs
-        )
+        super(DenseMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
@@ -202,7 +195,7 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         out : Matrix
         """
         return self.__class__(
-            mat = copy.deepcopy(self.mat)
+            mat = copy.deepcopy(self.mat, memo)
         )
 
     ############################################################################
@@ -263,7 +256,7 @@ class DenseGenotypeMatrix(GenotypeMatrix):
 
         Parameters
         ----------
-        values : Matrix or numpy.ndarray
+        values : DenseMatrix or numpy.ndarray
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are appended.
@@ -272,7 +265,7 @@ class DenseGenotypeMatrix(GenotypeMatrix):
 
         Returns
         -------
-        out : Matrix
+        out : DenseMatrix
             A copy of mat with values appended to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """
@@ -280,16 +273,16 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_Matrix(values):
+        if is_DenseMatrix(values):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type Matrix or numpy.ndarray")
+            raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
 
         # append values
         mat = numpy.append(self._mat, values, axis)
 
         # create new output
-        out = DenseGenotypeMatrix(mat = mat)
+        out = self.__class__(mat = mat, **kwargs)
 
         return out
 
@@ -319,7 +312,7 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         mat = numpy.delete(self._mat, obj, axis)
 
         # create new output
-        out = DenseGenotypeMatrix(mat = mat)
+        out = self.__class__(mat = mat, **kwargs)
 
         return out
 
@@ -349,16 +342,16 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_Matrix(values):
+        if is_DenseMatrix(values):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type Matrix or numpy.ndarray")
+            raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
 
         # append values
         mat = numpy.insert(self._mat, obj, values, axis)
 
         # create new output
-        out = DenseGenotypeMatrix(mat = mat)
+        out = self.__class__(mat = mat, **kwargs)
 
         return out
 
@@ -388,7 +381,7 @@ class DenseGenotypeMatrix(GenotypeMatrix):
         mat = numpy.take(self._mat, indices, axis)
 
         # create new output
-        out = DenseGenotypeMatrix(mat = mat)
+        out = self.__class__(mat = mat, **kwargs)
 
         return out
 
@@ -414,99 +407,28 @@ class DenseGenotypeMatrix(GenotypeMatrix):
             a new Matrix is allocated and filled.
         """
         # gather raw matrices
-        rawmat = tuple(m.mat for m in mats)
+        mat_tp = tuple(m.mat for m in mats)
 
         # concatenate matrices along axis
-        mat = numpy.concatenate(rawmat, axis)
+        mat = numpy.concatenate(mat_tp, axis)
 
         # create new output
-        out = DenseGenotypeMatrix(mat = mat)
+        out = self.__class__(mat = mat, **kwargs)
 
         return out
-
-    ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, **kwargs):
-        """
-        Append values to the matrix.
-
-        Parameters
-        ----------
-        values : Matrix, numpy.ndarray
-            Values are appended to append to the matrix.
-        axis : int
-            The axis along which values are appended.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-
-        # if given a Matrix extract Matrix.mat values
-        if is_Matrix(values):
-            values = values.mat
-        elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type Matrix or numpy.ndarray")
-
-        # append values
-        self._mat = numpy.append(self._mat, values, axis)
-
-    def remove(self, obj, axis = -1, **kwargs):
-        """
-        Remove sub-arrays along an axis.
-
-        Parameters
-        ----------
-        obj : slice, int, or array of ints
-            Indicate indices of sub-arrays to remove along the specified axis.
-        axis: int
-            The axis along which to remove the subarray defined by obj.
-        **kwargs
-            Additional keyword arguments.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-
-        # delete values
-        self._mat = numpy.delete(self._mat, obj, axis)
-
-    def incorp(self, obj, values, axis = -1, **kwargs):
-        """
-        Incorporate values along the given axis before the given indices.
-
-        Parameters
-        ----------
-        obj: int, slice, or sequence of ints
-            Object that defines the index or indices before which values is
-            incorporated.
-        values : array_like
-            Values to incorporate into the matrix.
-        axis : int
-            The axis along which values are incorporated.
-        **kwargs
-            Additional keyword arguments.
-        """
-        # get axis
-        axis = get_axis(axis, self._mat.ndim)
-
-        # if given a Matrix extract Matrix.mat values
-        if is_Matrix(values):
-            values = values.mat
-        elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
-
-        # incorporate values
-        self._mat = numpy.insert(self._mat, obj, values, axis)
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenotypeMatrix(v):
-    return isinstance(v, DenseGenotypeMatrix)
+def is_DenseMatrix(v):
+    return isinstance(v, DenseMatrix)
 
-def check_is_DenseGenotypeMatrix(v, varname):
-    if not isinstance(v, DenseGenotypeMatrix):
-        raise TypeError("'%s' must be a DenseGenotypeMatrix." % varname)
+def check_is_DenseMatrix(v, varname):
+    if not isinstance(v, DenseMatrix):
+        raise TypeError("'%s' must be a DenseMatrix." % varname)
 
-def cond_check_is_DenseGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_DenseGenotypeMatrix(v, varname)
+        check_is_DenseMatrix(v, varname)
