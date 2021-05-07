@@ -3,10 +3,10 @@ import pytest
 
 from pybropt.test import generic_test_abstract_methods
 
-from pybropt.breed.sel import ParentSelectionOperator
-from pybropt.breed.sel import is_ParentSelectionOperator
-from pybropt.breed.sel import check_is_ParentSelectionOperator
-from pybropt.breed.sel import cond_check_is_ParentSelectionOperator
+from pybropt.breed.psel import ParentSelectionOperator
+from pybropt.breed.psel import is_ParentSelectionOperator
+from pybropt.breed.psel import check_is_ParentSelectionOperator
+from pybropt.breed.psel import cond_check_is_ParentSelectionOperator
 
 @pytest.fixture
 def bedge():

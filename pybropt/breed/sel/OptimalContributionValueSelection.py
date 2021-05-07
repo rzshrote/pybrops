@@ -1,5 +1,5 @@
-from . import OptimalContributionParentSelection
-from . import OptimalContributionSurvivorSelection
+from pybropt.breed.psel import OptimalContributionParentSelection
+from pybropt.breed.ssel import OptimalContributionSurvivorSelection
 
 class OptimalContributionSelection(OptimalContributionParentSelection,OptimalContributionSurvivorSelection):
     """docstring for OptimalContributionSelection."""

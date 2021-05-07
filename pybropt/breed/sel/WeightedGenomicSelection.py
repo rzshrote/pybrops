@@ -1,5 +1,5 @@
-from . import WeightedGenomicParentSelection
-from . import WeightedGenomicSurvivorSelection
+from pybropt.breed.psel import WeightedGenomicParentSelection
+from pybropt.breed.ssel import WeightedGenomicSurvivorSelection
 
 class WeightedGenomicSelection(WeightedGenomicParentSelection,WeightedGenomicSurvivorSelection):
     """docstring for WeightedGenomicSelection."""

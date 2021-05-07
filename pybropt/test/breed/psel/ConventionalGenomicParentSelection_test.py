@@ -4,7 +4,7 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.sel import ConventionalGenomicSurvivorSelection
+from pybropt.breed.psel import ConventionalGenomicParentSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
@@ -109,14 +109,14 @@ def bvmat(glgmod, dpgvmat):
     yield glgmod.predict(dpgvmat)
 
 ################################################################################
-###################### ConventionalGenomicSurvivorSelection ######################
+###################### ConventionalGenomicParentSelection ######################
 ################################################################################
 @pytest.fixture
-def k_s():
+def k_p():
     yield 2
 
 @pytest.fixture
-def traitwt_s():
+def traitwt_p():
     yield numpy.float64([1.0, 1.0, 1.0])
 
 @pytest.fixture
@@ -132,17 +132,19 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def cgps(k_s, traitwt_s, ncross, nprogeny, rng):
-    yield ConventionalGenomicSurvivorSelection(
-        k_s = k_s,
-        traitwt_s = traitwt_s,
+def cgps(k_p, traitwt_p, ncross, nprogeny, rng):
+    yield ConventionalGenomicParentSelection(
+        k_p = k_p,
+        traitwt_p = traitwt_p,
+        ncross = ncross,
+        nprogeny = nprogeny,
         rng = rng
     )
 
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_sselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
+def test_pselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
     geno = {
         "cand" : dpgvmat,
         "main" : dpgvmat,
@@ -160,7 +162,7 @@ def test_sselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         "true" : glgmod
     }
 
-    geno_dict, bval_dict, gmod_dict, misc = cgps.sselect(
+    a,b,c,d,e = cgps.pselect(
         t_cur = 0,
         t_max = 20,
         geno = geno,
@@ -168,18 +170,6 @@ def test_sselect(cgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         gmod = gmod
     )
 
-    assert isinstance(geno_dict, dict)
-    assert "cand" in geno_dict
-    assert "main" in geno_dict
-    assert "queue" in geno_dict
-
-    assert isinstance(bval_dict, dict)
-    assert "cand" in bval_dict
-    assert "cand_true" in bval_dict
-    assert "main" in bval_dict
-    assert "main_true" in bval_dict
-
-    assert isinstance(gmod_dict, dict)
-    assert "cand" in gmod_dict
-    assert "main" in gmod_dict
-    assert "true" in gmod_dict
+    assert numpy.all(b == [3,4])
+    assert c == ncross
+    assert d == nprogeny

@@ -4,7 +4,7 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.sel import TwoWayExpectedMaximumBreedingValueParentSelection
+from pybropt.breed.psel import WeightedGenomicParentSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
@@ -29,25 +29,11 @@ def mat_int8():
 
 @pytest.fixture
 def mat_chrgrp():
-    yield numpy.int64([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    yield numpy.int64([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
 
 @pytest.fixture
 def mat_phypos():
     yield numpy.int64([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-
-@pytest.fixture
-def mat_genpos():
-    yield numpy.float64([
-        0.31, 0.38, 0.66, 0.67, 0.73,
-        0.3 , 0.44, 0.58, 0.96, 0.99
-    ])
-
-@pytest.fixture
-def mat_xoprob():
-    yield numpy.float64([
-        0.5 , 0.16, 0.31, 0.17, 0.4 ,
-        0.5 , 0.35, 0.1 , 0.34, 0.44
-    ])
 
 @pytest.fixture
 def mat_taxa():
@@ -58,64 +44,60 @@ def mat_taxa_grp():
     yield numpy.int64([1, 1, 2, 2, 2])
 
 @pytest.fixture
-def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_xoprob, mat_taxa, mat_taxa_grp):
-    out = DensePhasedGenotypeVariantMatrix(
+def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
+    yield DensePhasedGenotypeVariantMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
         vrnt_phypos = mat_phypos,
-        vrnt_genpos = mat_genpos,
-        vrnt_xoprob = mat_xoprob,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
     )
-    out.group()
-    yield out
 
 ################################################################################
 ################################ Genomic model #################################
 ################################################################################
 @pytest.fixture
 def mu():
-    # yield numpy.float64([
-    #     [1.4]
-    # ])
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [1.4]
     ])
+    # yield numpy.float64([
+    #     [1.4],
+    #     [2.5],
+    #     [7.2]
+    # ])
 
 @pytest.fixture
 def beta():
-    # yield numpy.float64([
-    #     [-0.33],
-    #     [-0.69],
-    #     [ 1.12],
-    #     [-1.44],
-    #     [ 0.88],
-    #     [ 1.23],
-    #     [ 0.19],
-    #     [-2.12],
-    #     [-0.87],
-    #     [ 0.06]
-    # ])
     yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87, -1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
+        [-0.33],
+        [-0.69],
+        [ 1.12],
+        [-1.44],
+        [ 0.88],
+        [ 1.23],
+        [ 0.19],
+        [-2.12],
+        [-0.87],
+        [ 0.06]
     ])
+    # yield numpy.float64([
+    #     [-0.33,  2.08, -2.42],
+    #     [-0.69, -1.87, -1.38],
+    #     [ 1.12,  1.38, -5.65],
+    #     [-1.44,  0.20,  4.22],
+    #     [ 0.88, -0.81,  1.55],
+    #     [ 1.23,  0.25,  5.13],
+    #     [ 0.19,  4.35,  0.15],
+    #     [-2.12,  0.73, -0.38],
+    #     [-0.87,  1.25,  2.38],
+    #     [ 0.06, -2.52,  2.48]
+    # ])
 
 @pytest.fixture
 def trait():
-    # yield numpy.object_(["protein"])
-    yield numpy.object_(["protein", "yield", "quality"])
+    yield numpy.object_(["protein"])
+    # yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
 def model_name():
@@ -143,7 +125,7 @@ def bvmat(glgmod, dpgvmat):
     yield glgmod.predict(dpgvmat)
 
 ################################################################################
-###################### TwoWayExpectedMaximumBreedingValueParentSelection ######################
+###################### WeightedGenomicParentSelection ######################
 ################################################################################
 @pytest.fixture
 def k_p():
@@ -151,8 +133,8 @@ def k_p():
 
 @pytest.fixture
 def traitwt_p():
-    # yield numpy.float64([1.0])
-    yield numpy.float64([1.0, 1.0, 1.0])
+    yield numpy.float64([1.0])
+    # yield numpy.float64([1.0, 1.0, 1.0])
 
 @pytest.fixture
 def ncross():
@@ -163,28 +145,23 @@ def nprogeny():
     yield 10
 
 @pytest.fixture
-def nrep():
-    yield 20
-
-@pytest.fixture
 def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def twembvps(k_p, traitwt_p, ncross, nprogeny, nrep, rng):
-    yield TwoWayExpectedMaximumBreedingValueParentSelection(
+def wgps(k_p, traitwt_p, ncross, nprogeny, rng):
+    yield WeightedGenomicParentSelection(
         k_p = k_p,
         traitwt_p = traitwt_p,
         ncross = ncross,
         nprogeny = nprogeny,
-        nrep = nrep,
         rng = rng
     )
 
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_pselect(twembvps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
+def test_pselect(wgps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
     geno = {
         "cand" : dpgvmat,
         "main" : dpgvmat,
@@ -202,7 +179,7 @@ def test_pselect(twembvps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         "true" : glgmod
     }
 
-    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = twembvps.pselect(
+    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = wgps.pselect(
         t_cur = 0,
         t_max = 20,
         geno = geno,
@@ -210,6 +187,6 @@ def test_pselect(twembvps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         gmod = gmod
     )
 
-    # assert numpy.all(out_sel == [1,3,0,3])
+    assert numpy.all(out_sel == [2,0])
     assert out_ncross == ncross
     assert out_nprogeny == nprogeny

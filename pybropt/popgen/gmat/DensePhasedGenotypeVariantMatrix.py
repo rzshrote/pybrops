@@ -1770,12 +1770,12 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
 
             keys = tuple(k for k in keys if k is not None)      # remove None keys
             if len(keys) == 0:                                  # raise error if needed
-                raise TypeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
+                raise RuntimeError("cannot lexsort on axis {0}: {1}".format(axis, emess))
         else:
             l = self._mat.shape[axis]
             for i,k in enumerate(keys):
                 if len(k) != l:
-                    raise TypeError("cannot lexsort on axis %s: key %s is incompatible with axis length %s" % (axis, i, l))
+                    raise ValueError("cannot lexsort on axis {0}: key {1} is incompatible with axis length {2}".format(axis,i,l))
 
         # get indices
         indices = numpy.lexsort(keys)

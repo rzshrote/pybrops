@@ -3,10 +3,10 @@ import pytest
 
 from pybropt.test import generic_test_abstract_methods
 
-from pybropt.breed.sel import SurvivorSelectionOperator
-from pybropt.breed.sel import is_SurvivorSelectionOperator
-from pybropt.breed.sel import check_is_SurvivorSelectionOperator
-from pybropt.breed.sel import cond_check_is_SurvivorSelectionOperator
+from pybropt.breed.ssel import SurvivorSelectionOperator
+from pybropt.breed.ssel import is_SurvivorSelectionOperator
+from pybropt.breed.ssel import check_is_SurvivorSelectionOperator
+from pybropt.breed.ssel import cond_check_is_SurvivorSelectionOperator
 
 @pytest.fixture
 def bedge():

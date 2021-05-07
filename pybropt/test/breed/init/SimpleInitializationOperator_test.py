@@ -8,13 +8,13 @@ from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.breed.sel import ConventionalPhenotypicParentSelection
+from pybropt.breed.psel import ConventionalPhenotypicParentSelection
 from pybropt.breed.mate import GenerationalTwoWayDHCross
 from pybropt.breed.intg import SimpleGenotypeIntegrationOperator
 from pybropt.breed.eval import NoGxEEvaluationOperator
 from pybropt.breed.intg import SimpleBreedingValueIntegrationOperator
 from pybropt.breed.calibr import TrueGenomicModelCalibrationOperator
-from pybropt.breed.sel import FamilyPhenotypicSurvivorSelection
+from pybropt.breed.ssel import FamilyPhenotypicSurvivorSelection
 from pybropt.breed.init import SimpleInitializationOperator
 
 ################################################################################
