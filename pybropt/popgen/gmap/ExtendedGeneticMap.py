@@ -1,10 +1,20 @@
 import numpy
 import pandas
+import warnings
 from scipy.interpolate import interp1d
 
-import pybropt.util
-
 from . import GeneticMap
+from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
+from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_is_dict
+from pybropt.core.error import check_is_not_None
+from pybropt.core.error import cond_check_is_str
+from pybropt.core.error import check_ndarray_size
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 class ExtendedGeneticMap(GeneticMap):
     """docstring for ExtendedGeneticMap."""
@@ -38,9 +48,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_chrgrp")
-            pybropt.util.check_matrix_dtype(value, "vrnt_chrgrp", numpy.int64)
-            pybropt.util.check_matrix_ndim(value, "vrnt_chrgrp", 1)
+            check_is_ndarray(value, "vrnt_chrgrp")
+            check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_chrgrp", 1)
             self._vrnt_chrgrp = value
         def fdel(self):
             del self._vrnt_chrgrp
@@ -52,9 +62,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_phypos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_phypos")
-            pybropt.util.check_matrix_dtype(value, "vrnt_phypos", numpy.int64)
-            pybropt.util.check_matrix_ndim(value, "vrnt_phypos", 1)
+            check_is_ndarray(value, "vrnt_phypos")
+            check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_phypos", 1)
             self._vrnt_phypos = value
         def fdel(self):
             del self._vrnt_phypos
@@ -66,9 +76,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_genpos
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_genpos")
-            pybropt.util.check_matrix_dtype(value, "vrnt_genpos", numpy.float64)
-            pybropt.util.check_matrix_ndim(value, "vrnt_genpos", 1)
+            check_is_ndarray(value, "vrnt_genpos")
+            check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
+            check_ndarray_ndim(value, "vrnt_genpos", 1)
             self._vrnt_genpos = value
         def fdel(self):
             del self._vrnt_genpos
@@ -80,9 +90,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_stop
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "vrnt_stop")
-            pybropt.util.check_matrix_dtype(value, "vrnt_stop", numpy.int64)
-            pybropt.util.check_matrix_ndim(value, "vrnt_stop", 1)
+            check_is_ndarray(value, "vrnt_stop")
+            check_ndarray_dtype(value, "vrnt_stop", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_stop", 1)
             self._vrnt_stop = value
         def fdel(self):
             del self._vrnt_stop
@@ -94,9 +104,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_name
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_name")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_name", numpy.string_)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_name", 1)
+            cond_check_is_ndarray(value, "vrnt_name")
+            cond_check_ndarray_dtype_is_object(value, "vrnt_name")
+            cond_check_ndarray_ndim(value, "vrnt_name", 1)
             self._vrnt_name = value
         def fdel(self):
             del self._vrnt_name
@@ -108,9 +118,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_fncode
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_fncode")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_fncode", numpy.string_)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_fncode", 1)
+            cond_check_is_ndarray(value, "vrnt_fncode")
+            cond_check_ndarray_dtype_is_object(value, "vrnt_fncode")
+            cond_check_ndarray_ndim(value, "vrnt_fncode", 1)
             self._vrnt_fncode = value
         def fdel(self):
             del self._vrnt_fncode
@@ -123,9 +133,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_name
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_chrgrp_name")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_name", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_name", 1)
+            cond_check_is_ndarray(value, "vrnt_chrgrp_name")
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
             self._vrnt_chrgrp_name = value
         def fdel(self):
             del self._vrnt_chrgrp_name
@@ -137,9 +147,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_stix
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_chrgrp_stix")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_stix", 1)
+            cond_check_is_ndarray(value, "vrnt_chrgrp_stix")
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
             self._vrnt_chrgrp_stix = value
         def fdel(self):
             del self._vrnt_chrgrp_stix
@@ -151,9 +161,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_spix
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_chrgrp_spix")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_spix", 1)
+            cond_check_is_ndarray(value, "vrnt_chrgrp_spix")
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
             self._vrnt_chrgrp_spix = value
         def fdel(self):
             del self._vrnt_chrgrp_spix
@@ -165,9 +175,9 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_len
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "vrnt_chrgrp_len")
-            pybropt.util.cond_check_matrix_dtype(value, "vrnt_chrgrp_len", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "vrnt_chrgrp_len", 1)
+            cond_check_is_ndarray(value, "vrnt_chrgrp_len")
+            cond_check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
+            cond_check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
             self._vrnt_chrgrp_len = value
         def fdel(self):
             del self._vrnt_chrgrp_len
@@ -180,7 +190,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline
         def fset(self, value):
-            pybropt.util.cond_check_is_dict(value, "spline")
+            cond_check_is_dict(value, "spline")
             self._spline = value
         def fdel(self):
             del self._spline
@@ -193,7 +203,7 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline_kind
         def fset(self, value):
-            pybropt.util.cond_check_is_string(value, "spline_kind")
+            cond_check_is_str(value, "spline_kind")
             self._spline_kind = value
         def fdel(self):
             del self._spline_kind
@@ -230,7 +240,7 @@ class ExtendedGeneticMap(GeneticMap):
         else:
             # check that matrix lengths are the same
             for i,k in enumerate(keys):
-                pybropt.util.check_matrix_size(k, "key"+i, self.__len__())
+                check_ndarray_size(k, "key"+i, len(self))
 
         # build tuple
         keys = tuple(k for k in keys if k is not None)
@@ -635,13 +645,17 @@ class ExtendedGeneticMap(GeneticMap):
         if not self.has_spline():
             raise RuntimeError("interpolation spline not built")
 
+        # raise warning if map is not congruent
+        if not self.is_congruent():
+            warnings.warn("genetic map is not congruent: markers are out of order", RuntimeWarning)
+
         # allocate empty memory
         out = numpy.empty(vrnt_phypos.shape, dtype='float64')
 
         # for each chromosome-position pair
         for i,(chrgrp,phypos) in enumerate(zip(vrnt_chrgrp, vrnt_phypos)):
             try:                                # try to index dict
-                model = self._spline[chr_grp]   # try to get model
+                model = self._spline[chrgrp]    # try to get model
                 out[i] = model(phypos)          # interpolate genetic position
             except KeyError:                    # if dict key not found
                 out[i] = numpy.nan              # set to NaN
@@ -946,10 +960,10 @@ class ExtendedGeneticMap(GeneticMap):
             genetic inferences.
         """
         # check to make sure several indices aren't None.
-        pybropt.util.check_is_not_none(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
-        pybropt.util.check_is_not_none(vrnt_phypos_ix, "vrnt_phypos_ix")
-        pybropt.util.check_is_not_none(vrnt_stop_ix, "vrnt_stop_ix")
-        pybropt.util.check_is_not_none(vrnt_genpos_ix, "vrnt_genpos_ix")
+        check_is_not_None(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
+        check_is_not_None(vrnt_phypos_ix, "vrnt_phypos_ix")
+        check_is_not_None(vrnt_stop_ix, "vrnt_stop_ix")
+        check_is_not_None(vrnt_genpos_ix, "vrnt_genpos_ix")
 
         # get data
         vrnt_chrgrp = pandas_df.iloc[:,vrnt_chrgrp_ix].values
@@ -964,8 +978,8 @@ class ExtendedGeneticMap(GeneticMap):
         vrnt_phypos = numpy.int64(vrnt_phypos)
         vrnt_stop = numpy.int64(vrnt_stop)
         vrnt_genpos = numpy.float64(vrnt_genpos)
-        vrnt_name = numpy.string_([str(e) for e in vrnt_name]) if vrnt_name is not None else None
-        vrnt_fncode = numpy.string_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
+        vrnt_name = numpy.object_([str(e) for e in vrnt_name]) if vrnt_name is not None else None
+        vrnt_fncode = numpy.object_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
 
         # construct the gmap object
         genetic_map = ExtendedGeneticMap(

@@ -1,11 +1,13 @@
 # order dependent
-from . import gmap
-# from . import mat
 
+# genetic map components
+from . import gmap
+
+# matrix components
 from . import gmat
 from . import hmat
 from . import bvmat
 
-from . import mate
+# other matrix components
 from . import ldmat
 from . import cmat

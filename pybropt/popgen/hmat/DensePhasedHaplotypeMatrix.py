@@ -1,6 +1,6 @@
 # TODO: finish writing this class
-import pybropt.util
 from . import DenseHaplotypeMatrix
+from pybropt.core.error import check_is_ndarray
 
 class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix):
     """docstring for DensePhasedHaplotypeMatrix ."""
@@ -33,7 +33,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix):
             return self._mat
         def fset(self, value):
             # TODO: add more checks
-            pybropt.util.check_is_matrix(value, "mat")
+            check_is_ndarray(value, "mat")
             self._mat = value
         def fdel(self):
             del self._mat

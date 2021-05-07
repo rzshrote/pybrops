@@ -1,6 +1,6 @@
-from pybropt.base.mat import Matrix
+from pybropt.core.mat import MutableMatrix
 
-class GenotypeMatrix(Matrix):
+class GenotypeMatrix(MutableMatrix):
     """docstring for GenotypeMatrix."""
 
     ############################################################################
@@ -37,11 +37,11 @@ class GenotypeMatrix(Matrix):
     def nphase():
         doc = "The number of phases represented by the genotype matrix."
         def fget(self):
-            return self._nphase
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._nphase = value
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._nphase
+            raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
 
@@ -70,6 +70,8 @@ class GenotypeMatrix(Matrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ############## Matrix summary statistics ###############
     def tacount(self, dtype):
         """
         Allele count of the non-zero allele within each taxon.
@@ -88,9 +90,15 @@ class GenotypeMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def tafreq(self):
+    def tafreq(self, dtype):
         """
         Allele frequency of the non-zero allele within each taxon.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------

@@ -1,4 +1,11 @@
+import copy
+import numpy
+
 from . import BreedingValueMatrix
+from pybropt.core.mat import get_axis
+from pybropt.core.mat import is_Matrix
+from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_ndarray
 
 class DenseBreedingValueMatrix(BreedingValueMatrix):
     """
@@ -24,10 +31,7 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
             arguments to the parent class constructor.
 
         """
-        super(DenseBreedingValueMatrix, self).__init__(
-            mat = mat,
-            **kwargs
-        )
+        super(DenseBreedingValueMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
@@ -188,6 +192,35 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     def __iter__(self):
         return iter(self._mat)
 
+    #################### Matrix copying ####################
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.copy(self.mat)
+        )
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        return self.__class__(
+            mat = copy.deepcopy(self.mat)
+        )
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
@@ -200,12 +233,44 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
         def fset(self, value):
             # The only assumption is that mat is a numpy.ndarray matrix.
             # Let the user decide whether to overwrite error checks.
-            pybropt.util.check_is_matrix(value, "mat")
+            check_is_ndarray(value, "mat")
             self._mat = value
         def fdel(self):
             del self._mat
         return locals()
     mat = property(**mat())
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    #################### Matrix copying ####################
+    def copy(self):
+        """
+        Make a shallow copy of the Matrix.
+
+        Returns
+        -------
+        out : Matrix
+            A shallow copy of the original Matrix.
+        """
+        return self.__copy__()
+
+    def deepcopy(self, memo):
+        """
+        Make a deep copy of the Matrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : Matrix
+            A deep copy of the original Matrix.
+        """
+        return self.__deepcopy__(memo)
 
 
 

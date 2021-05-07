@@ -1,5 +1,8 @@
-import pybropt.util
 from . import DenseGenotypeMatrix
+from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
+from pybropt.core.error import error_readonly
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
@@ -61,10 +64,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
                 Cannot be None.
             """
             # check input data types, then set variable
-            pybropt.util.check_is_matrix(value, "mat")
-            pybropt.util.check_matrix_dtype(value, "mat", 'int8')
-            pybropt.util.check_matrix_ndim(value, "mat", 3)
-            self._mat = mat
+            check_is_ndarray(value, "mat")
+            check_ndarray_dtype(value, "mat", 'int8')
+            check_ndarray_ndim(value, "mat", 3)
+            self._mat = value
         def fdel(self):
             """
             Remove the genotype matrix (self._mat) from scope.
@@ -79,9 +82,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[0]
         def fset(self, value):
-            pybropt.util.error_readonly("ploidy")
+            error_readonly("ploidy")
         def fdel(self):
-            pybropt.util.error_readonly("ploidy")
+            error_readonly("ploidy")
         return locals()
     ploidy = property(**ploidy())
 
@@ -90,9 +93,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[0]
         def fset(self, value):
-            pybropt.util.error_readonly("nphase")
+            error_readonly("nphase")
         def fdel(self):
-            pybropt.util.error_readonly("nphase")
+            error_readonly("nphase")
         return locals()
     nphase = property(**nphase())
 
@@ -101,9 +104,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[1]
         def fset(self, value):
-            pybropt.util.error_readonly("ntaxa")
+            error_readonly("ntaxa")
         def fdel(self):
-            pybropt.util.error_readonly("ntaxa")
+            error_readonly("ntaxa")
         return locals()
     ntaxa = property(**ntaxa())
 
@@ -112,15 +115,17 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         def fget(self):
             return self._mat.shape[2]
         def fset(self, value):
-            pybropt.util.error_readonly("nloci")
+            error_readonly("nloci")
         def fdel(self):
-            pybropt.util.error_readonly("nloci")
+            error_readonly("nloci")
         return locals()
     nloci = property(**nloci())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ############## Matrix summary statistics ###############
     def tacount(self, dtype = None):
         """
         Allele count within each taxon.
@@ -140,9 +145,15 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         # take sum across the phase axis (0)
         return self._mat.sum(0, dtype=dtype)
 
-    def tafreq(self):
+    def tafreq(self, dtype = None):
         """
         Allele frequency within each taxon.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------
@@ -153,7 +164,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         # take the reciprocal of the number of phases 1 / nphase
         rnphase = 1.0 / self._mat.shape[0]
         # take sum across the phase axis (0) and divide by nphase
-        return rnphase * self._mat.sum(0)
+        return rnphase * self._mat.sum(0, dtype=dtype)
 
     def acount(self):
         """
@@ -221,7 +232,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         out = (p * (1.0 - p)).sum()
 
         # multiply summation by (ploidy/nloci)
-        out *= (self._mat.shape[0] / self._mat.shape[2])
+        out *= (self.ploidy / self.nloci)
 
         return out
 

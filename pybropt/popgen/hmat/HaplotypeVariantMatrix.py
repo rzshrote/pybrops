@@ -1,5 +1,7 @@
 from . import HaplotypeMatrix
-from pybropt.popgen.mat import VariantMatrix, TaxaMatrix, SortableMatrix
+from pybropt.core.mat import VariantMatrix
+from pybropt.core.mat import TaxaMatrix
+from pybropt.core.mat import SortableMatrix
 
 class HaplotypeVariantMatrix(HaplotypeMatrix,VariantMatrix,TaxaMatrix,SortableMatrix):
     """docstring for HaplotypeVariantMatrix."""

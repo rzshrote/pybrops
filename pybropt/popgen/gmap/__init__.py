@@ -1,5 +1,5 @@
 # order dependent
-from .util import cM2d
+from .gmap_util import cM2d
 
 # from .GeneticMap import GeneticMap
 # from .StandardGeneticMap import StandardGeneticMap

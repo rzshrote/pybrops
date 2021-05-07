@@ -1,4 +1,4 @@
-from pybropt.popgen.mat import TaxaMatrix
+from pybropt.core.mat import TaxaMatrix
 
 class VarianceMatrix(TaxaMatrix):
     """docstring for VarianceMatrix."""

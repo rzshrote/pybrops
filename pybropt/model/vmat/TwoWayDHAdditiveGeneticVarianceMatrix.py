@@ -1,7 +1,7 @@
 from . import AdditiveGeneticVarianceMatrix
 from pybropt.util import srange
 from . import cov_D1s
-import pybropt.util
+from pybropt.core.error import check_is_ndarray
 
 # non-sparse matrix
 class TwoWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
@@ -49,7 +49,7 @@ class TwoWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
         def fget(self):
             return self._var_A
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "var_A")
+            check_is_ndarray(value, "var_A")
             self._var_A = value
         def fdel(self):
             del self._var_A

@@ -120,3 +120,19 @@ class KosambiMapFunction(GeneticMapFunction):
         Calculate pairwise recombination probabilities using physical distances.
         """
         return self.mapfn(gmap.gdist2p(vrnt_chrgrp, vrnt_phypos))
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_KosambiMapFunction(v):
+    return isinstance(v, KosambiMapFunction)
+
+def check_is_KosambiMapFunction(v, vname):
+    if not isinstance(v, KosambiMapFunction):
+        raise TypeError("variable '{0}' must be a KosambiMapFunction".format(vname))
+
+def cond_check_is_KosambiMapFunction(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_KosambiMapFunction(v, vname)

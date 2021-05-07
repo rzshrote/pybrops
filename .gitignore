@@ -1,3 +1,12 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# specific files or file types
 *.tsv
 *.csv
 *.png
@@ -7,3 +16,4 @@ experiments/2020-Mar-26_soybean_optimize/Song_2016.linear.egmap
 *.mp4
 breeding/tarspot/tarspot_geno.vcf.gz
 breeding/height/2019_wisdiv_geno.vcf.gz
+

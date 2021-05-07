@@ -1,5 +1,16 @@
-import pybropt.util
+import numpy
+
 from . import DenseCoancestryMatrix
+
+from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.error import check_ndarray_dtype
+from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import cond_check_ndarray_dtype
+from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import check_all_equal
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseMolecularCoancestryMatrix."""
@@ -10,12 +21,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
         super(DenseMolecularCoancestryMatrix, self).__init__(
             mat = mat,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
             **kwargs
         )
-        self.taxa = gmat.taxa
-        self.taxa_grp = gmat.taxa_grp
+        self.taxa = taxa
+        self.taxa_grp = taxa_grp
 
     ############################################################################
     ############################ Object Properties #############################
@@ -27,10 +36,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa", numpy.string_)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa", 0, self._gmat.geno.shape[0])
+            cond_check_is_ndarray(value, "taxa")
+            cond_check_ndarray_dtype_is_object(value, "taxa")
+            cond_check_ndarray_ndim(value, "taxa", 1)
+            cond_check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
             self._taxa = value
         def fdel(self):
             del self._taxa
@@ -42,10 +51,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa_grp
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa_grp")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa_grp", 1)
-            pybropt.util.cond_check_matrix_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
+            cond_check_is_ndarray(value, "taxa_grp")
+            cond_check_ndarray_dtype(value, "taxa_grp", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp", 1)
+            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
             self._taxa_grp = value
         def fdel(self):
             del self._taxa_grp
@@ -58,9 +67,9 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa_grp_name
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa_grp_name")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_name", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa_grp_name", 1)
+            cond_check_is_ndarray(value, "taxa_grp_name")
+            cond_check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
             self._taxa_grp_name = value
         def fdel(self):
             del self._taxa_grp_name
@@ -72,9 +81,9 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa_grp_stix
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa_grp_stix")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_stix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa_grp_stix", 1)
+            cond_check_is_ndarray(value, "taxa_grp_stix")
+            cond_check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
             self._taxa_grp_stix = value
         def fdel(self):
             del self._taxa_grp_stix
@@ -86,9 +95,9 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa_grp_spix
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa_grp_spix")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_spix", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa_grp_spix", 1)
+            cond_check_is_ndarray(value, "taxa_grp_spix")
+            cond_check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
             self._taxa_grp_spix = value
         def fdel(self):
             del self._taxa_grp_spix
@@ -100,9 +109,9 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._taxa_grp_len
         def fset(self, value):
-            pybropt.util.cond_check_is_matrix(value, "taxa_grp_len")
-            pybropt.util.cond_check_matrix_dtype(value, "taxa_grp_len", numpy.int64)
-            pybropt.util.cond_check_matrix_ndim(value, "taxa_grp_len", 1)
+            cond_check_is_ndarray(value, "taxa_grp_len")
+            cond_check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
+            cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
             self._taxa_grp_len = value
         def fdel(self):
             del self._taxa_grp_len
@@ -115,10 +124,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         def fget(self):
             return self._mat
         def fset(self, value):
-            pybropt.util.check_is_matrix(value, "mat")
-            pybropt.util.check_all_equal(value.shape, "mat.shape")
-            pybropt.util.check_matrix_dtype(value, "mat", numpy.float64)
-            pybropt.util.check_matrix_ndim(value, "mat", 2)
+            check_is_ndarray(value, "mat")
+            check_all_equal(value.shape, "mat.shape")
+            check_ndarray_dtype(value, "mat", numpy.float64)
+            check_ndarray_ndim(value, "mat", 2)
             self._mat = value
         def fdel(self):
             del self._mat
@@ -248,7 +257,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 
         # check if we have subroutines to calculate coancestry
         if ploidy not in [1,2]:
-            raise RuntimeError("Genotype ploidy level %s not supported." % ploidy)
+            raise RuntimeError("Genotype ploidy level {0} not supported".format(ploidy))
 
         # get genotype matrix
         X = gmat.tacount()
@@ -261,13 +270,14 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             Y = 1 - X                                   # calculate complement to X
             mat = rnloci * ((X @ X.T) + (Y @ Y.T))      # (1/m)(XX' + YY')
         elif ploidy == 2:
+            X -= 1                                      # {-1,0,1} format
             mat = 0.5 * (1.0 + (rnloci * (X @ X.T)))    # (1/2)(1+((1/m)XX'))
         ####################################################
 
         ####################################################
         ### Construct DenseMolecularCoancestryMatrix
         # copy taxa data if available
-        taxa = numpy.string_(gmat.taxa) if gmat.taxa is not None else None
+        taxa = numpy.object_(gmat.taxa) if gmat.taxa is not None else None
         taxa_grp = numpy.int64(gmat.taxa_grp) if gmat.taxa_grp is not None else None
 
         # construct basic object

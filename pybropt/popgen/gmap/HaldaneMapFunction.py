@@ -1,3 +1,5 @@
+import numpy
+
 from . import GeneticMapFunction
 
 class HaldaneMapFunction(GeneticMapFunction):
@@ -125,3 +127,19 @@ class HaldaneMapFunction(GeneticMapFunction):
         Calculate pairwise recombination probabilities using physical distances.
         """
         return self.mapfn(gmap.gdist2p(vrnt_chrgrp, vrnt_phypos))
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_HaldaneMapFunction(v):
+    return isinstance(v, HaldaneMapFunction)
+
+def check_is_HaldaneMapFunction(v, vname):
+    if not isinstance(v, HaldaneMapFunction):
+        raise TypeError("variable '{0}' must be a HaldaneMapFunction".format(vname))
+
+def cond_check_is_HaldaneMapFunction(v, vname, cond=(lambda s: s is not None)):
+    if cond(v):
+        check_is_HaldaneMapFunction(v, vname)
