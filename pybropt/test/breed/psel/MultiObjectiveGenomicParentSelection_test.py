@@ -31,7 +31,8 @@ def mat_int8():
 
 @pytest.fixture
 def mat_int8_big():
-    yield numpy.int8([[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    yield numpy.int8([
+       [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -91,7 +92,8 @@ def mat_int8_big():
         [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]])
+        [0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]]
+    ])
 
 @pytest.fixture
 def mat_chrgrp():
@@ -231,23 +233,11 @@ def bvmat_big(glgmod_big, dpgvmat_big):
     yield glgmod_big.predict(dpgvmat_big)
 
 ################################################################################
-###################### MultiObjectiveGenomicParentSelection ######################
+##################### MultiObjectiveGenomicParentSelection #####################
 ################################################################################
 @pytest.fixture
-def k_p():
+def nparent():
     yield 2
-
-@pytest.fixture
-def traitobjwt_p():
-    yield numpy.float64([[1.0, 1.0, 1.0]])
-
-@pytest.fixture
-def traitsum_p():
-    yield True
-
-@pytest.fixture
-def objsum_p():
-    yield True
 
 @pytest.fixture
 def ncross():
@@ -258,41 +248,143 @@ def nprogeny():
     yield 10
 
 @pytest.fixture
+def method():
+    yield "pareto"
+
+@pytest.fixture
+def objfn_trans():
+    yield MultiObjectiveGenomicParentSelection.traitsum_trans
+
+@pytest.fixture
+def objfn_wt():
+    yield numpy.array([-1.0,-1.0])  # all objectives are minimizing
+
+@pytest.fixture
+def ndset_trans():
+    yield MultiObjectiveGenomicParentSelection.vecptdist_trans
+
+@pytest.fixture
+def ndset_trans_kwargs(objfn_wt):
+    yield {
+        "objfn_wt" : numpy.array([0.3,0.7]),
+        "wt" : objfn_wt
+    }
+
+@pytest.fixture
+def ndset_wt():
+    yield -1.0    # function is minimizing (minimize distance)
+
+@pytest.fixture
 def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def algorithm_p(k_p, dpgvmat, rng):
+def algorithm(nparent, dpgvmat, rng):
     yield StochasticAscentSetHillClimber(
-        k = k_p,
+        k = nparent,
         setspace = numpy.arange(dpgvmat.ntaxa),
         rng = rng,
         objwt = 1.0,
     )
-    # yield SteepestAscentSetHillClimber(
-    #     k = k_p,
-    #     setspace = numpy.arange(dpgvmat.ntaxa),
-    #     rng = rng,
-    #     objwt = 1.0,
-    # )
 
 @pytest.fixture
-def mogps(k_p, traitobjwt_p, traitsum_p, objsum_p, algorithm_p, ncross, nprogeny, rng):
+def mogps(nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_wt, ndset_trans, ndset_trans_kwargs, ndset_wt, rng):
     yield MultiObjectiveGenomicParentSelection(
-        k_p = k_p,
-        traitobjwt_p = traitobjwt_p,
-        traitsum_p = traitsum_p,
-        objsum_p = objsum_p,
-        algorithm_p = algorithm_p,
+        nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
+        algorithm = algorithm,
+        method = method,
+        objfn_trans = objfn_trans,
+        objfn_wt = objfn_wt,
+        ndset_trans = ndset_trans,
+        ndset_trans_kwargs = ndset_trans_kwargs,
+        ndset_wt = ndset_wt,
         rng = rng
     )
 
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_pselect(mogps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
+
+########################################
+########### test calc_mkrwt ############
+########################################
+def test_calc_mkrwt_magnitude(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("magnitude", beta_big)
+    b = numpy.absolute(beta_big)
+    assert numpy.all(a == b)
+
+def test_calc_mkrwt_equal(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("equal", beta_big)
+    assert numpy.all(a == 1.0)
+
+def test_calc_mkrwt_str_case(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("mAgNiTuDe", beta_big)
+    b = numpy.absolute(beta_big)
+    assert numpy.all(a == b)
+    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("Equal", beta_big)
+    assert numpy.all(a == 1.0)
+
+def test_calc_mkrwt_str_ValueError(beta_big):
+    with pytest.raises(ValueError):
+        a = MultiObjectiveGenomicParentSelection.calc_mkrwt("unknown", beta_big)
+
+def test_calc_mkrwt_ndarray(beta_big):
+    wt = numpy.random.normal(size = beta_big.shape)
+    a = MultiObjectiveGenomicParentSelection.calc_mkrwt(wt, beta_big)
+    assert numpy.all(a == wt)
+
+def test_calc_mkrwt_type_TypeError(beta_big):
+    with pytest.raises(TypeError):
+        a = MultiObjectiveGenomicParentSelection.calc_mkrwt(None, beta_big)
+
+########################################
+########### test calc_tfreq ############
+########################################
+def test_calc_tfreq_positive(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("positive", beta_big)
+    b = numpy.float64(beta_big >= 0.0)
+    assert numpy.all(a == b)
+
+def test_calc_tfreq_negative(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("negative", beta_big)
+    b = numpy.float64(beta_big <= 0.0)
+    assert numpy.all(a == b)
+
+def test_calc_tfreq_stabilizing(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("stabilizing", beta_big)
+    assert numpy.all(a == 0.5)
+
+def test_calc_tfreq_str_case(beta_big):
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("PoSiTiVe", beta_big)
+    b = numpy.float64(beta_big >= 0.0)
+    assert numpy.all(a == b)
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("NEGATIVE", beta_big)
+    b = numpy.float64(beta_big <= 0.0)
+    assert numpy.all(a == b)
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq("Stabilizing", beta_big)
+    assert numpy.all(a == 0.5)
+
+def test_calc_tfreq_str_ValueError(beta_big):
+    with pytest.raises(ValueError):
+        a = MultiObjectiveGenomicParentSelection.calc_tfreq("unknown", beta_big)
+
+def test_calc_tfreq_ndarray(beta_big):
+    wt = numpy.random.uniform(0, 1, size = beta_big.shape)
+    a = MultiObjectiveGenomicParentSelection.calc_tfreq(wt, beta_big)
+    assert numpy.all(a == wt)
+
+def test_calc_tfreq_type_TypeError(beta_big):
+    with pytest.raises(TypeError):
+        a = MultiObjectiveGenomicParentSelection.calc_tfreq(None, beta_big)
+
+# test constructor
+def test_init(mogps):
+    assert True
+
+# test single objective optimization
+def test_pselect_single(mogps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
     geno = {
         "cand" : dpgvmat,
         "main" : dpgvmat,
@@ -315,10 +407,12 @@ def test_pselect(mogps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
         t_max = 20,
         geno = geno,
         bval = bval,
-        gmod = gmod
+        gmod = gmod,
+        method = "single"
     )
 
-    assert numpy.all(out_sel == [1,2]) or numpy.all(out_sel == [2,1])
+    # should have objfn_eval = [0., 24.085] = [perfect score, min dist]
+    assert numpy.all(out_sel == [0,3]) or numpy.all(out_sel == [3,0])
     assert out_ncross == ncross
     assert out_nprogeny == nprogeny
 
@@ -346,7 +440,7 @@ def test_ppareto(mogps, dpgvmat_big, bvmat_big, glgmod_big, ncross, nprogeny):
         geno = geno,
         bval = bval,
         gmod = gmod,
-        k = 6
+        nparent = 6
     )
 
     assert isinstance(frontier, numpy.ndarray)
@@ -355,8 +449,38 @@ def test_ppareto(mogps, dpgvmat_big, bvmat_big, glgmod_big, ncross, nprogeny):
 
     pyplot.scatter(frontier[:,0], frontier[:,1], c="b")
     pyplot.axis("tight")
-    pyplot.savefig("frontier.png")
+    pyplot.savefig("frontier_new.png")
 
-    # for i in range(len(pop)):
-    #     print(pop[i])
-    # raise RuntimeError
+def test_pselect_pareto(mogps, dpgvmat_big, bvmat_big, glgmod_big, ncross, nprogeny):
+    geno = {
+        "cand" : dpgvmat_big,
+        "main" : dpgvmat_big,
+        "queue" : [dpgvmat_big]
+    }
+    bval = {
+        "cand" : bvmat_big,
+        "cand_true" : bvmat_big,
+        "main" : bvmat_big,
+        "main_true" : bvmat_big
+    }
+    gmod = {
+        "cand" : glgmod_big,
+        "main" : glgmod_big,
+        "true" : glgmod_big
+    }
+
+    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = mogps.pselect(
+        t_cur = 0,
+        t_max = 20,
+        geno = geno,
+        bval = bval,
+        gmod = gmod,
+        nparent = 6,
+        method = "pareto"
+    )
+
+    # true solution = [28 17  0  8 23 29]
+    soln = [28, 17, 0, 8, 23, 29]
+    assert numpy.all(numpy.in1d(soln, out_sel))
+    assert out_ncross == ncross
+    assert out_nprogeny == nprogeny
