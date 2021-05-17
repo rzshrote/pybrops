@@ -1307,6 +1307,142 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
             **kwargs
         )
 
+    #################### Matrix pruning ####################
+    def prune(self, axis = -1, nt = None, M = None, **kwargs):
+        """
+        Prune markers evenly across all chromosomes.
+
+        Parameters
+        ----------
+        nt : int
+            Target distance between each selected marker in nucleotides.
+        M : float
+            Target distance between each selected marker in Morgans.
+            If this option is specified, selection based on Morgans takes first
+            priority. If the physical distance between two markers selected
+            based on their genetic distance exceeds 'nt' (if provided), the
+            additional markers are sought between those regions.
+        """
+        # get axis
+        axis = get_axis(axis, self._mat.ndim)
+
+        # raise error if axis != 2 (variant axis)
+        if axis != 2:
+            raise ValueError("pruning not applicable along axis {0}".format(axis))
+
+        # check if we have acceptible inputs
+        if (nt is None) and (M is None):
+            raise ValueError("'nt' and 'M' cannot both be None")
+
+        # if not sorted and grouped, sort and group
+        if not self.is_grouped_vrnt():
+            self.group_vrnt()
+
+        # make empty index list to store selected marker indices
+        indices = []
+
+        # make a generic array pointer to a position; this position can be a
+        # physical position (self._vrnt_phypos) or a genetic position
+        # (self._vrnt_genpos); this is used in initial marker selection below.
+        # genetic position takes dominance
+        position = self._vrnt_genpos if M is not None else self._vrnt_phypos
+
+        # generic spacing variable
+        spacing = M if M is not None else nt
+
+        # for each chromosome
+        for st,sp in zip(self._vrnt_chrgrp_stix, self._vrnt_chrgrp_spix):
+            # calculate chromosome length given start, end marker positions
+            dist = position[sp-1] - position[st]
+
+            # calculate the target distance between each marker (float)
+            step = dist / int(math.ceil(dist / spacing))
+
+            # force addition of the first marker on the chromosome
+            indices.append(st)
+
+            # target site; we want markers as close to this value (float)
+            target = position[st] + step
+
+            # for each locus index in the chromosome
+            for i in range(st+1, sp):
+                # if position exceeds target, determine which marker to add
+                if position[i] >= target:
+                    # get distance between target and previous marker
+                    downstream = target - position[i-1]
+
+                    # get distance between target and current marker
+                    upstream = position[i] - target
+
+                    # determine which index to add
+                    ix = i-1 if downstream < upstream else i
+
+                    # if we haven't added this index previously, add it
+                    if ix != indices[-1]:
+                        indices.append(ix)
+
+                    # increment target site position
+                    target += step
+
+            # final check to make sure we've added last marker on chromosome
+            if (sp-1) != indices[-1]:
+                indices.append(sp-1)
+
+        # secondary marker selection based on 'nt' if both 'M' and 'nt' provided
+        if (M is not None) and (nt is not None):
+            # make new indices list to store M indices + nt indices
+            new_indices = []
+
+            # for each neighbor marker pair
+            for up,down in zip(indices[:-1], indices[1:]):
+                # append the upstream index
+                new_indices.append(up)
+
+                # if they are on the same chromosome
+                if self._vrnt_chrgrp[up] == self._vrnt_chrgrp[down]:
+                    # calculate physical distance between two selected markers
+                    dist = self._vrnt_phypos[down] - self._vrnt_phypos[up]
+
+                    # if we exceed 'nt' distance
+                    if dist > nt:
+                        # calculate the target distance between each marker (float)
+                        step = dist / int(math.ceil(dist / nt))
+
+                        # target site; we want markers as close to this value (float)
+                        target = self._vrnt_phypos[up] + step
+
+                        # for each locus between upstream and downstream markers
+                        for i in range(up+1, down):
+                            # if position exceeds target, determine which marker to add
+                            if self._vrnt_phypos[i] >= target:
+                                # get distance between target and previous marker
+                                downstream = target - self._vrnt_phypos[i-1]
+
+                                # get distance between target and current marker
+                                upstream = self._vrnt_phypos[i] - target
+
+                                # determine which index to add
+                                ix = i-1 if downstream < upstream else i
+
+                                # if we haven't added this index previously, add it
+                                if ix != new_indices[-1]:
+                                    new_indices.append(ix)
+
+                                # increment target site position
+                                target += step
+
+            # append the last index of 'indices' to 'new_indices' since we skipped it
+            new_indices.append(indices[-1])
+
+            # replace indices with new_indices
+            indices = new_indices
+
+        # convert indices into an array
+        indices = numpy.array(indices)
+
+        # return selected indices
+        return indices
+
     ######### Matrix element in-place-manipulation #########
     def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_mask = None, **kwargs):
         """

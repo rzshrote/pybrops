@@ -8,6 +8,7 @@ from .Matrix import *
 
 # level: 1
 from .MutableMatrix import *
+from .PrunableMatrix import *
 
 # level: 2
 from .SortableMatrix import *
