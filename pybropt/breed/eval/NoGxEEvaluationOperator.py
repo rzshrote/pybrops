@@ -136,7 +136,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
         bvmat_true = gmod_true.predict(pgvmat)
 
         # create phenotype matrix shape
-        rawshape = (self.nenv, bvmat_true.ntaxa, bvmat.ntrait)
+        rawshape = (self.nenv, bvmat_true.ntaxa, bvmat_true.ntrait)
 
         # generate raw phenotypes: (n,t) + (r,n,t) -> (r,n,t)
         raw = bvmat_true.mat + self.rng.normal(
