@@ -1,8 +1,11 @@
 import copy
 import numpy
+import h5py
 
 from . import LinearGenomicModel
 
+from pybropt.core.error import check_file_exists
+from pybropt.core.error import check_group_in_hdf5
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_dtype_is_float64
@@ -14,6 +17,8 @@ from pybropt.core.error import cond_check_is_str
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
+
+from pybropt.core.util import save_dict_to_hdf5
 
 from pybropt.popgen.bvmat import DenseGenotypicEstimatedBreedingValueMatrix
 
@@ -176,7 +181,9 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 
         return out
 
-    ################# methods for model fitting and prediction #################
+    ####### methods for model fitting and prediction #######
+
+    ######## methods for estimated breeding values #########
     def fit(self, gmat, bvmat):
         """
         Fit the model
@@ -253,7 +260,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 
         return Rsq
 
-    ################ methods for population variance prediction ################
+    ###### methods for population variance prediction ######
     def var_G(self, gmat):
         """
         Calculate the population genetic variance.
@@ -329,7 +336,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         out[mask] = numpy.nan       # add NaN's (avoids div by zero warning)
         return out
 
-    ####################### methods for selection limits #######################
+    ############# methods for selection limits #############
     def usl(self, gmat):
         """
         Calculate the upper selection limit for a population.
@@ -390,6 +397,105 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 
         return out
 
+    ################### File I/O methods ###################
+    @staticmethod
+    def from_hdf5(filename, groupname = None):
+        """
+        Read GenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mu", "beta"]                        # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mu": None,
+            "beta": None,
+            "trait": None,
+            "model_name": None,
+            "params": None
+        }
+        data_dict["mu"] = h5file[groupname + "mu"][()]          # read mu array
+        data_dict["beta"] = h5file[groupname + "beta"][()]      # read beta array
+        fieldname = groupname + "trait"                         # construct "groupname/trait"
+        if fieldname in h5file:                                 # if "groupname/trait" in hdf5
+            data_dict["trait"] = h5file[fieldname][()]          # read trait array
+            data_dict["trait"] = numpy.object_(                 # convert trait string from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["trait"]]
+            )
+        fieldname = groupname + "model_name"                    # construct "groupname/model_name"
+        if fieldname in h5file:                                 # if "groupname/model_name" in hdf5
+            data_dict["model_name"] = h5file[fieldname][()]     # read string (as bytes); convert to utf-8
+            data_dict["model_name"] = data_dict["model_name"].decode("utf-8")
+        fieldname = groupname + "params"                        # construct "groupname/params"
+        if fieldname in h5file:                                 # if "groupname/params" in hdf5
+            data_dict["params"] = {}                            # create empty dictionary
+            view = h5file[fieldname]                            # get view of dataset
+            for key in view.keys():                             # for each field
+                data_dict["params"][key] = view[key][()]        # extract data
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        glgmod = GenericLinearGenomicModel(**data_dict)         # create object from read data
+        return glgmod
+
+    def to_hdf5(self, filename, groupname = None):
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mu": self.mu,
+            "beta": self.beta,
+            "trait": self.trait,
+            "model_name": self.model_name,
+            "params": self.params
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # write data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
 
 
 ################################################################################

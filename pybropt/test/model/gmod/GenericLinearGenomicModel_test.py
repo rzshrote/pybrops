@@ -1,5 +1,6 @@
 import numpy
 import pytest
+import os.path
 
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.model.gmod import is_GenericLinearGenomicModel
@@ -195,3 +196,30 @@ def test_usl(glgmod, dpgvmat, mu, beta, mat_int8):
     b_lsl = glgmod.lsl(dpgvmat)
 
     assert numpy.all(a_lsl == b_lsl)
+
+### File I/O tests ###
+def test_to_from_hdf5(glgmod, shared_datadir):
+    glgmod.to_hdf5(shared_datadir / "glgmod.hdf5")
+    glgmod.to_hdf5(shared_datadir / "glgmod.hdf5", "prefix")
+
+    # test whether file was created
+    assert os.path.isfile(shared_datadir / "glgmod.hdf5")
+
+    glgmod1 = GenericLinearGenomicModel.from_hdf5(shared_datadir / "glgmod.hdf5")
+    glgmod2 = GenericLinearGenomicModel.from_hdf5(
+        shared_datadir / "glgmod.hdf5",
+        "prefix"
+    )
+
+    # test whether data was loaded properly
+    assert numpy.all(glgmod.mu == glgmod1.mu)
+    assert numpy.all(glgmod.beta == glgmod1.beta)
+    assert numpy.all(glgmod.trait == glgmod1.trait)
+    assert glgmod.model_name == glgmod1.model_name
+    assert glgmod.params == glgmod1.params
+
+    assert numpy.all(glgmod.mu == glgmod2.mu)
+    assert numpy.all(glgmod.beta == glgmod2.beta)
+    assert numpy.all(glgmod.trait == glgmod2.trait)
+    assert glgmod.model_name == glgmod2.model_name
+    assert glgmod.params == glgmod2.params

@@ -2,22 +2,27 @@
 import copy
 import cyvcf2
 import numpy
+import h5py
 
 # import our libraries
 from . import GenotypeVariantMatrix
 from . import DensePhasedGenotypeMatrix
 
 from pybropt.core.mat import get_axis
+from pybropt.core.error import check_file_exists
+from pybropt.core.error import check_group_in_hdf5
+from pybropt.core.error import check_is_iterable
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import check_is_str
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
-from pybropt.core.error import cond_check_is_ndarray
-from pybropt.core.error import cond_check_ndarray_ndim
-from pybropt.core.error import cond_check_ndarray_dtype
-from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import check_ndarray_axis_len
+from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype
 from pybropt.core.error import cond_check_ndarray_dtype_is_object
-from pybropt.core.error import check_is_iterable
+from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.util import save_dict_to_hdf5
 
 from pybropt.popgen.gmap import check_is_GeneticMap
 from pybropt.popgen.gmap import check_is_GeneticMapFunction
@@ -2308,6 +2313,108 @@ class DensePhasedGenotypeVariantMatrix(DensePhasedGenotypeMatrix,GenotypeVariant
         """
         # TODO: implement me
         raise NotImplementedError("method is abstract")
+
+    ################### Matrix File I/O ####################
+    @staticmethod
+    def from_hdf5(filename, groupname = None):
+        """
+        Read GenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat", "vrnt_chrgrp", "vrnt_phypos"] # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None,
+            "vrnt_chrgrp": None,
+            "vrnt_phypos": None,
+            "taxa": None,
+            "taxa_grp": None,
+            "vrnt_name": None,
+            "vrnt_genpos": None,
+            "vrnt_xoprob": None,
+            "vrnt_hapgrp": None,
+            "vrnt_mask": None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        data_dict["taxa"] = numpy.object_(                      # convert taxa strings from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["taxa"]]
+        )
+        data_dict["vrnt_name"] = numpy.object_(                 # convert vrnt_name string from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["vrnt_name"]]
+        )
+        ######################################################### create object
+        dpgvmat = DensePhasedGenotypeVariantMatrix(**data_dict) # create object from read data
+        return dpgvmat
+
+    def to_hdf5(self, filename, groupname = None):
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat,
+            "vrnt_chrgrp": self.vrnt_chrgrp,
+            "vrnt_phypos": self.vrnt_phypos,
+            "taxa": self.taxa,
+            "taxa_grp": self.taxa_grp,
+            "vrnt_name": self.vrnt_name,
+            "vrnt_genpos": self.vrnt_genpos,
+            "vrnt_xoprob": self.vrnt_xoprob,
+            "vrnt_hapgrp": self.vrnt_hapgrp,
+            "vrnt_mask": self.vrnt_mask
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # write data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
 
     ############################################################################
     ############################## Static Methods ##############################

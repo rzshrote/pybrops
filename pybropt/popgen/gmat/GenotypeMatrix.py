@@ -168,6 +168,40 @@ class GenotypeMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    ################### Matrix File I/O ####################
+    @staticmethod
+    def from_hdf5(filename, groupname):
+        """
+        Read GenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def to_hdf5(self, filename, groupname):
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        raise NotImplementedError("method is abstract")
 
 
 ################################################################################

@@ -1,6 +1,7 @@
 import copy
 import numpy
 import pytest
+import os.path
 
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
@@ -705,3 +706,46 @@ def song_dpgvmat(shared_datadir, song_gmap, song_gmapfn):
 def test_xoprob(song_gmap, song_dpgvmat):
     assert numpy.all(song_dpgvmat.vrnt_xoprob >= 0.0)
     assert numpy.all(song_dpgvmat.vrnt_xoprob <= 0.5)
+
+def test_from_to_hdf5(shared_datadir, song_dpgvmat):
+    # write files
+    song_dpgvmat.to_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5")
+    song_dpgvmat.to_hdf5(
+        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
+        "directoryname"
+    )
+
+    # assert file was written
+    assert os.path.isfile(shared_datadir / "Song_2016_phased_chr_1000.hdf5")
+
+    # read written files
+    song1 = DensePhasedGenotypeVariantMatrix.from_hdf5(
+        shared_datadir / "Song_2016_phased_chr_1000.hdf5"
+    )
+    song2 = DensePhasedGenotypeVariantMatrix.from_hdf5(
+        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
+        "directoryname"
+    )
+
+    # assert file was read correctly
+    assert numpy.all(song_dpgvmat.mat == song1.mat)
+    assert numpy.all(song_dpgvmat.vrnt_chrgrp == song1.vrnt_chrgrp)
+    assert numpy.all(song_dpgvmat.vrnt_phypos == song1.vrnt_phypos)
+    assert numpy.all(song_dpgvmat.taxa == song1.taxa)
+    assert numpy.all(song_dpgvmat.taxa_grp == song1.taxa_grp)
+    assert numpy.all(song_dpgvmat.vrnt_name == song1.vrnt_name)
+    assert numpy.all(song_dpgvmat.vrnt_genpos == song1.vrnt_genpos)
+    assert numpy.all(song_dpgvmat.vrnt_xoprob == song1.vrnt_xoprob)
+    assert numpy.all(song_dpgvmat.vrnt_hapgrp == song1.vrnt_hapgrp)
+    assert numpy.all(song_dpgvmat.vrnt_mask == song1.vrnt_mask)
+
+    assert numpy.all(song_dpgvmat.mat == song2.mat)
+    assert numpy.all(song_dpgvmat.vrnt_chrgrp == song2.vrnt_chrgrp)
+    assert numpy.all(song_dpgvmat.vrnt_phypos == song2.vrnt_phypos)
+    assert numpy.all(song_dpgvmat.taxa == song2.taxa)
+    assert numpy.all(song_dpgvmat.taxa_grp == song2.taxa_grp)
+    assert numpy.all(song_dpgvmat.vrnt_name == song2.vrnt_name)
+    assert numpy.all(song_dpgvmat.vrnt_genpos == song2.vrnt_genpos)
+    assert numpy.all(song_dpgvmat.vrnt_xoprob == song2.vrnt_xoprob)
+    assert numpy.all(song_dpgvmat.vrnt_hapgrp == song2.vrnt_hapgrp)
+    assert numpy.all(song_dpgvmat.vrnt_mask == song2.vrnt_mask)
