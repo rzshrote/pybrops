@@ -82,7 +82,7 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
-    ################# methods for model fitting and prediction #################
+    ####### methods for model fitting and prediction #######
     def fit_raw(self, Y, Z, **kwargs):
         """
         Fit the model.
@@ -199,7 +199,7 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
-    ################## methods for estimated breeding values ###################
+    ######## methods for estimated breeding values #########
     def gebv_raw(self, Z):
         """
         Calculate genomic estimated breeding values.
@@ -240,7 +240,7 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
-    ################ methods for population variance prediction ################
+    ###### methods for population variance prediction ######
     def var_G_raw(self, Z):
         """
         Calculate the population genetic variance.
@@ -354,7 +354,7 @@ class GenomicModel:
         """
         raise NotImplementedError("method is abstract")
 
-    ####################### methods for selection limits #######################
+    ############# methods for selection limits #############
     def usl(self, gmat):
         """
         Calculate the upper selection limit for a population.
@@ -382,6 +382,42 @@ class GenomicModel:
         out : numpy.ndarray
         """
         raise NotImplementedError("method is abstract")
+
+    ################### File I/O methods ###################
+    @staticmethod
+    def from_hdf5(filename, groupname):
+        """
+        Read GenomicModel from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def to_hdf5(self, filename, groupname):
+        """
+        Write GenomicModel to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        raise NotImplementedError("method is abstract")
+
 
 ################################################################################
 ################################## Utilities ###################################

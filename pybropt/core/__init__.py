@@ -3,6 +3,9 @@
 # all error functions must go first!
 from . import error
 
+# utility functions
+from . import util
+
 # random number generator interface
 from . import random
 
