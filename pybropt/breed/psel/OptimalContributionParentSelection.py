@@ -4,9 +4,11 @@ import numpy
 
 from . import ParentSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_is_Generator
 
 class OptimalContributionParentSelection(ParentSelectionOperator):
     """docstring for OptimalContributionParentSelection."""
@@ -14,7 +16,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, inbfn_p, ncross, nprogeny, rng, cmatcls, bvtype = "gebv", **kwargs):
+    def __init__(self, k_p, traitwt_p, inbfn_p, ncross, nprogeny, cmatcls, bvtype = "gebv", rng = None, **kwargs):
         """
         cmatcls : CoancestryMatrix class
         inbfn_p : function
@@ -32,16 +34,22 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
         # error checks
         check_is_int(k_p, "k_p")
         cond_check_is_ndarray(traitwt_p, "traitwt_p")
+        # TODO: check inbfn_p
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        # TODO: check cmatcls
+        # TODO: check bvtype
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.rng = rng
         self.cmatcls = cmatcls
         self.bvtype = bvtype
         self.inbfn_p = inbfn_p
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

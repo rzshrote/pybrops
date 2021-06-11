@@ -2,14 +2,15 @@ import numpy
 
 from . import ParentSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
-
+from pybropt.core.error import cond_check_is_Generator
 from pybropt.breed.mate import TwoWayDHCross
 
 class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator):
     """docstring for TwoWayExpectedMaximumBreedingValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, rng, selfing = False, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs):
         """
         k_p : int
             Number of crosses to select (1/2 number of parents).
@@ -20,6 +21,12 @@ class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator)
 
         # error checks
         check_is_int(k_p, "k_p")
+        # TODO: check traitwt_p
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        check_is_int(nrep, "nrep")
+        # TODO: check selfing
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
@@ -27,8 +34,8 @@ class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator)
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.nrep = nrep
-        self.rng = rng
         self.selfing = selfing
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

@@ -1,6 +1,8 @@
 from . import ParentSelectionOperator
 
+from pybropt.core import random as pbo_rng
 from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_Generator
 
 class ConventionalGenomicParentSelection(ParentSelectionOperator):
     """docstring for ConventionalGenomicParentSelection."""
@@ -8,18 +10,22 @@ class ConventionalGenomicParentSelection(ParentSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs):
         super(ConventionalGenomicParentSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
+        # TODO: check traitwt_p
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.rng = rng
+        self.rng = pbo_rng if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

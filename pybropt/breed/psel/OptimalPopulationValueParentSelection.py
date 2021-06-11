@@ -3,12 +3,14 @@ from sklearn.cluster import KMeans
 
 from . import ParentSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_Generator
 
 class OptimalPopulationValueParentSelection(ParentSelectionOperator):
     """docstring for OptimalPopulationValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng = None, **kwargs):
         """
         k_p : int
             Number of individuals to select (1/2 number of parents).
@@ -19,7 +21,12 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
 
         # error checks
         check_is_int(k_p, "k_p")
+        # TODO: check traitwt_p
         check_is_int(b_p, "b_p")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        # TODO: check algorithm
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
@@ -28,7 +35,7 @@ class OptimalPopulationValueParentSelection(ParentSelectionOperator):
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.algorithm = algorithm
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

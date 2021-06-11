@@ -3,25 +3,31 @@ import math
 
 from . import SurvivorSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_Generator
 
 class OptimalContributionSurvivorSelection(SurvivorSelectionOperator):
     """docstring for OptimalContributionSurvivorSelection."""
 
-    def __init__(self, k_s, traitwt_s, inbfn_s, rng, cmatcls, bvtype = "gebv", **kwargs):
+    def __init__(self, k_s, traitwt_s, inbfn_s, cmatcls, bvtype = "gebv", rng = None, **kwargs):
         super(OptimalContributionSurvivorSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_s, "k_s")
         cond_check_is_ndarray(traitwt_s, "traitwt_s")
+        # TODO: check inbfn_s
+        # TODO: check cmatcls
+        # TODO: check bvtype
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_s = k_s
         self.traitwt_s = traitwt_s
-        self.rng = rng
         self.cmatcls = cmatcls
         self.bvtype = bvtype
+        self.rng = pybropt.core.random if rng is None else rng
         raise NotImplementedError("under construction")
 
     ############################################################################

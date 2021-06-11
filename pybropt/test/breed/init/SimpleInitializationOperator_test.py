@@ -166,7 +166,6 @@ def initop(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gqlen, gwin
         nfounder = nfounder,
         founder_ncross = founder_ncross,
         founder_nprogeny = founder_nprogeny,
-        gmult = gmult,
         gmod_true = gmod_true,
         burnin = burnin,
         pselop = pselop,

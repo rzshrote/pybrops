@@ -1,7 +1,9 @@
 from . import SurvivorSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import cond_check_is_Generator
 
 class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
     """docstring for WeightedGenomicSurvivorSelection."""
@@ -9,17 +11,18 @@ class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_s, traitwt_s, rng, **kwargs):
+    def __init__(self, k_s, traitwt_s, rng = None, **kwargs):
         super(WeightedGenomicSurvivorSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_s, "k_s")
         cond_check_is_ndarray(traitwt_s, "traitwt_s")
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_s = k_s
         self.traitwt_s = traitwt_s
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

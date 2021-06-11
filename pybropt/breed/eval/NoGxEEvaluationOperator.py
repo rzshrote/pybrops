@@ -1,11 +1,12 @@
 import numpy
 
+from . import EvaluationOperator
+
+from pybropt.core import random as pbo_rng
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_positive
 from pybropt.core.error import check_is_iterable
-
-from . import EvaluationOperator
-
+from pybropt.core.error import cond_check_is_Generator
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 
 class NoGxEEvaluationOperator(EvaluationOperator):
@@ -14,7 +15,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nenv, var_E, rng, **kwargs):
+    def __init__(self, nenv, var_E, rng = None, **kwargs):
         """
         nenv : int
             Number of environments.
@@ -25,9 +26,14 @@ class NoGxEEvaluationOperator(EvaluationOperator):
             error.
         """
         super(NoGxEEvaluationOperator, self).__init__(**kwargs)
+        check_is_int(nenv, "nenv")
+        # TODO: check var_E
+        cond_check_is_Generator(rng, "rng")
+
+        # assign variables
         self.nenv = nenv
         self.var_E = var_E
-        self.rng = rng
+        self.rng = pbo_rng if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################
@@ -173,7 +179,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     # TODO: H^2 calculations
     # @staticmethod
-    # def from_h2(gmat, lgmod, nenv, h2, rng, **kwargs):
+    # def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs):
     #     """
     #     h2 : float or numpy.ndarray
     #         Narrow sense heritability of trait for single rep evaluation.
@@ -212,7 +218,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     #
     #     return out
     @staticmethod
-    def from_h2(gmat, lgmod, nenv, h2, rng, **kwargs):
+    def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs):
         """
         h2 : float or numpy.ndarray
             Narrow sense heritability of trait for single rep evaluation.

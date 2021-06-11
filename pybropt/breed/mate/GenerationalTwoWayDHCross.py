@@ -2,10 +2,12 @@ import numpy
 
 from . import TwoWayDHCross
 
+from pybropt.core.error import check_is_int
+
 class GenerationalTwoWayDHCross(TwoWayDHCross):
     """docstring for GenerationalTwoWayDHCross."""
 
-    def __init__(self, rng, gmult, **kwargs):
+    def __init__(self, gmult, rng = None, **kwargs):
         """
         Parameters
         ----------
@@ -16,6 +18,10 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
             rng = rng,
             **kwargs
         )
+        # check data types
+        check_is_int(gmult, "gmult")
+
+        # make assignments
         self.gmult = gmult
 
     def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs):

@@ -2,9 +2,11 @@ import numpy
 
 from . import ParentSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_is_Generator
 
 class WeightedGenomicParentSelection(ParentSelectionOperator):
     """docstring for WeightedGenomicParentSelection."""
@@ -12,19 +14,22 @@ class WeightedGenomicParentSelection(ParentSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs):
         super(WeightedGenomicParentSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
         cond_check_is_ndarray(traitwt_p, "traitwt_p")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

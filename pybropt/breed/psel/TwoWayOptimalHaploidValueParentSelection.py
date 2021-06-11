@@ -3,12 +3,14 @@ from sklearn.cluster import KMeans
 
 from . import ParentSelectionOperator
 
+import pybropt.core.random
 from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_Generator
 
 class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
     """docstring for TwoWayOptimalHaploidValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng, **kwargs):
+    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng = None, **kwargs):
         """
         k_p : int
             Number of crosses to select (1/2 number of parents).
@@ -19,7 +21,11 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
 
         # error checks
         check_is_int(k_p, "k_p")
+        # TODO: check traitwt_p
         check_is_int(b_p, "b_p")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_p = k_p
@@ -27,7 +33,7 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         self.b_p = b_p
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################
