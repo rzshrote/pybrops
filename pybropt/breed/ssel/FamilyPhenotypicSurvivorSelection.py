@@ -1,6 +1,9 @@
 import numpy
 
 from . import SurvivorSelectionOperator
+import pybropt.core.random
+from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_Generator
 
 class FamilyPhenotypicSurvivorSelection(SurvivorSelectionOperator):
     """docstring for FamilyPhenotypicSurvivorSelection."""
@@ -8,11 +11,18 @@ class FamilyPhenotypicSurvivorSelection(SurvivorSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_f, traitwt_f, rng, **kwargs):
+    def __init__(self, k_f, traitwt_f, rng = None, **kwargs):
         super(FamilyPhenotypicSurvivorSelection, self).__init__(**kwargs)
+
+        # check data types
+        check_is_int(k_f, "k_f")
+        # TODO: check traitwt_f
+        cond_check_is_Generator(rng, "rng")
+
+        # make variable assignments
         self.k_f = k_f
         self.traitwt_f = traitwt_f
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

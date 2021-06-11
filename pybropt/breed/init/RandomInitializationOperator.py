@@ -2,12 +2,15 @@ import numpy
 
 from . import InitializationOperator
 
+from pybropt.core import random as pbo_rng
+from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_is_int
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 
 class RandomInitializationOperator(InitializationOperator):
     """docstring for RandomInitializationOperator."""
 
-    def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng, **kwargs):
+    def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng = None, **kwargs):
         """
         ntaxa : dict
             Number of taxa.
@@ -25,13 +28,23 @@ class RandomInitializationOperator(InitializationOperator):
             Number of burnin generations.
         """
         super(RandomInitializationOperator, self).__init__(**kwargs)
+        # check argument types
+        check_is_int(gqlen, "gqlen")
+        check_is_int(ntaxa, "ntaxa")
+        check_is_int(nloci, "nloci")
+        check_is_int(nchr, "nchr")
+        check_is_int(ntrait, "ntrait")
+        check_is_int(nburn, "nburn")
+        cond_check_is_Generator(rng, "rng")
+
+        # make assignments
         self.gqlen = gqlen
         self.ntaxa = ntaxa
         self.nloci = nloci
         self.nchr = nchr
         self.ntrait = ntrait
         self.nburn = nburn
-        self.rng = rng
+        self.rng = pbo_rng if rng is None else rng
 
     def initialize(self, **kwargs):
         """

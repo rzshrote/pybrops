@@ -1,18 +1,27 @@
 from . import SurvivorSelectionOperator
 
+import pybropt.core.random
+from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_Generator
+
 class ConventionalPhenotypicSurvivorSelection(SurvivorSelectionOperator):
     """docstring for ConventionalPhenotypicSurvivorSelection."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_s, traitwt_s, rng, **kwargs):
+    def __init__(self, k_s, traitwt_s, rng = None, **kwargs):
         super(ConventionalPhenotypicSurvivorSelection, self).__init__(**kwargs)
+
+        # check data types
+        check_is_int(k_s, "k_s")
+        # TODO: check traitwt_s
+        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.k_s = k_s
         self.traitwt_s = traitwt_s
-        self.rng = rng
+        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################ Object Properties #############################

@@ -2,6 +2,8 @@ import numpy
 from . import mat_mate
 from . import mat_dh
 from . import MatingOperator
+from pybropt.core import random as pbo_rng
+from pybropt.core.error import cond_check_is_Generator
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
 from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
 
@@ -11,9 +13,13 @@ class TwoWayDHCross(MatingOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng, **kwargs):
+    def __init__(self, rng = None, **kwargs):
         super(TwoWayDHCross, self).__init__(**kwargs)
-        self.rng = rng
+        # check data types
+        cond_check_is_Generator(rng, "rng")
+
+        # make assignments
+        self.rng = pbo_rng if rng is None else rng
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -50,7 +56,6 @@ class TwoWayDHCross(MatingOperator):
         progeny : DensePhasedGenotypeVariantMatrix
             A DensePhasedGenotypeVariantMatrix of progeny.
         """
-        # print(id(pgvmat))
         # check data type
         check_is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
 

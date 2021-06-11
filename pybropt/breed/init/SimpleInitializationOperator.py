@@ -2,23 +2,21 @@ import numpy
 
 from . import InitializationOperator
 
+from pybropt.core import random as pbo_rng
 from pybropt.core.error import check_is_int
-from pybropt.core.error import check_is_Generator
 from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
-
-from pybropt.breed.psel import check_is_ParentSelectionOperator
-from pybropt.breed.mate import check_is_MatingOperator
-from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
-from pybropt.breed.eval import check_is_EvaluationOperator
-from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
+from pybropt.core.error import cond_check_is_Generator
 from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
+from pybropt.breed.eval import check_is_EvaluationOperator
+from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
+from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
+from pybropt.breed.mate import check_is_MatingOperator
+from pybropt.breed.psel import check_is_ParentSelectionOperator
 from pybropt.breed.ssel import check_is_SurvivorSelectionOperator
-
 from pybropt.model.gmod import check_is_GenomicModel
-
 from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.breed.eval import NoGxEEvaluationOperator
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
 
 class SimpleInitializationOperator(InitializationOperator):
     """docstring for SimpleInitializationOperator."""
@@ -219,7 +217,7 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################## Object Methods ##############################
     ############################################################################
     @staticmethod
-    def from_dpgvmat(dpgvmat, rng, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_dpgvmat(dpgvmat, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, rng = None):
         """
         Create an initialization operator from a DensePhasedGenotypeVariantMatrix.
 
@@ -235,11 +233,12 @@ class SimpleInitializationOperator(InitializationOperator):
             Number of founders to select. Sampling is done without replacement.
         """
         # perform error checks
-        check_is_Generator(rng, "rng")
+        check_is_DensePhasedGenotypeVariantMatrix(dpgvmat, "dpgvmat")
+        check_is_int(nfounder, "nfounder")
+        check_is_int(founder_ncross, "founder_ncross")
+        check_is_int(founder_nprogeny, "founder_nprogeny")
         check_is_GenomicModel(gmod_true, "gmod_true")
-
         check_is_int(burnin, "burnin")
-
         check_is_ParentSelectionOperator(pselop, "pselop")
         check_is_MatingOperator(mateop, "mateop")
         check_is_GenotypeIntegrationOperator(gintgop, "gintgop")
@@ -247,6 +246,11 @@ class SimpleInitializationOperator(InitializationOperator):
         check_is_BreedingValueIntegrationOperator(bvintgop, "bvintgop")
         check_is_GenomicModelCalibrationOperator(calop, "calop")
         check_is_SurvivorSelectionOperator(sselop, "sselop")
+        cond_check_is_Generator(rng, "rng")
+
+        # assign default random number generator
+        if rng is None:
+            rng = pbo_rng
 
         ####################################################
         ### step 1: count available taxa ###
@@ -359,7 +363,7 @@ class SimpleInitializationOperator(InitializationOperator):
         return geninitop
 
     @staticmethod
-    def from_vcf(fname, rng, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop):
+    def from_vcf(fname, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, rng = None):
         """
         Create a SimpleInitializationOperator from a VCF file.
 
@@ -396,7 +400,6 @@ class SimpleInitializationOperator(InitializationOperator):
         # step 2: create from genotype matrix
         geninitop = SimpleInitializationOperator.from_dpgvmat(
             dpgvmat = dpgvmat,
-            rng = rng,
             nfounder = nfounder,
             founder_ncross = founder_ncross,
             founder_nprogeny = founder_nprogeny,
@@ -409,6 +412,7 @@ class SimpleInitializationOperator(InitializationOperator):
             bvintgop = bvintgop,
             calop = calop,
             sselop = sselop,
+            rng = rng
         )
 
         return geninitop

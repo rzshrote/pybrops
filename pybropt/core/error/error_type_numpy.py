@@ -3,7 +3,6 @@ import numpy
 from . import generic_check_dtype_issubdtype
 from . import generic_check_isinstance
 from . import generic_check_ndarray_dtype_issubdtype
-
 from . import generic_default_cond
 from . import generic_cond_check_dtype_issubdtype
 from . import generic_cond_check_isinstance
@@ -24,7 +23,7 @@ def check_is_Generator(v, vname):
 def cond_check_is_ndarray(v, vname, cond = generic_default_cond):
     generic_cond_check_isinstance(v, vname, numpy.ndarray, cond)
 
-def check_is_Generator(v, vname, cond = generic_default_cond):
+def cond_check_is_Generator(v, vname, cond = generic_default_cond):
     generic_cond_check_isinstance(v, vname, numpy.random.Generator, cond)
 
 ################################################################################

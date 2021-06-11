@@ -10,7 +10,7 @@ class MatingOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, rng, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, **kwargs):
         """
         Mate individuals according to a mate selection scheme.
 
@@ -25,7 +25,6 @@ class MatingOperator:
             Number of crosses to perform per cross pattern.
         nprogeny : numpy.ndarray
             Number of progeny to generate per cross.
-        rng : random number generator instance
         **kwargs
             Additional keyword arguments.
 
