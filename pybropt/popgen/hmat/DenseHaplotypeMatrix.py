@@ -1,6 +1,7 @@
 from . import HaplotypeMatrix
 from pybropt.core.error import check_is_ndarray
 
+# TODO: inherit from DenseMutableMatrix
 class DenseHaplotypeMatrix(HaplotypeMatrix):
     """docstring for DenseHaplotypeMatrix."""
 

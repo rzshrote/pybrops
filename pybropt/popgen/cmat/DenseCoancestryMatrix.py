@@ -1,6 +1,7 @@
 from . import CoancestryMatrix
 from pybropt.core.error import check_is_ndarray
 
+# TODO: inherit from DenseMutableMatrix
 class DenseCoancestryMatrix(CoancestryMatrix):
     """docstring for DenseCoancestryMatrix."""
 

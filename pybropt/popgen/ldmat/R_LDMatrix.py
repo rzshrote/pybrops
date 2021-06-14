@@ -1,5 +1,6 @@
 from . import LDMatrix
 
+# TODO: implementation
 class R_LDMatrix(LDMatrix):
     """docstring for R_LDMatrix."""
 

@@ -1,5 +1,6 @@
 from . import DenseCoancestryMatrix
 
+# TODO: implement VanRaden methods
 class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     """docstring for DenseVanRadenCoancestryMatrix."""
 
