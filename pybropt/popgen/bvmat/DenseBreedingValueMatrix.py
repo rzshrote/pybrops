@@ -7,6 +7,7 @@ from pybropt.core.mat import is_Matrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import cond_check_is_ndarray
 
+# TODO: inherit from DenseMutableMatrix
 class DenseBreedingValueMatrix(BreedingValueMatrix):
     """
     Partial implementation of the BreedingValueMatrix interface.

@@ -2,6 +2,7 @@
 from . import DenseHaplotypeMatrix
 from pybropt.core.error import check_is_ndarray
 
+# TODO: full implementation
 class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix):
     """docstring for DensePhasedHaplotypeMatrix ."""
 

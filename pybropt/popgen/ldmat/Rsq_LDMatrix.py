@@ -1,5 +1,6 @@
 from . import LDMatrix
 
+# TODO: implementation
 class Rsq_LDMatrix(LDMatrix):
     """docstring for Rsq_LDMatrix."""
 

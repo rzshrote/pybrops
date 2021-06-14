@@ -2,6 +2,7 @@
 
 from . import HaplotypeVariantMatrix, PhasedHaplotypeMatrix
 
+# TODO: full implementation
 class PhasedHaplotypeVariantMatrix(HaplotypeVariantMatrix,PhasedHaplotypeMatrix):
     """docstring for PhasedHaplotypeVariantMatrix."""
 

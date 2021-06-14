@@ -6,6 +6,7 @@ from pybropt.core.mat import get_axis
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.mat import is_Matrix
 
+# TODO: inherit from DenseMutableMatrix in addition to GenotypeMatrix
 class DenseGenotypeMatrix(GenotypeMatrix):
     """docstring for DenseGenotypeMatrix."""
 
