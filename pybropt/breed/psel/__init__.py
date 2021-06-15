@@ -12,3 +12,4 @@ from .OptimalPopulationValueParentSelection import *
 from .TwoWayExpectedMaximumBreedingValueParentSelection import *
 from .TwoWayOptimalHaploidValueParentSelection import *
 from .WeightedGenomicParentSelection import *
+from .RandomParentSelection import *
