@@ -21,3 +21,7 @@ from .TraitMatrix import *
 # level: 4
 from .TaxaMatrix import *
 from .VariantMatrix import *
+
+# implementations
+from .DenseMatrix import *
+from .DenseMutableMatrix import *
