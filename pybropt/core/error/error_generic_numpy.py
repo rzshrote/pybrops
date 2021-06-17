@@ -177,6 +177,21 @@ def generic_check_ndarray_shape(v, vname, vshape, vaxis = None):
     if error:
         raise ValueError("variable '{0}' must have shape equal to {1} along axis {2}".format(vname, vshape, vaxis))
 
+def generic_check_ndarray_is_square(v, vname):
+    """
+    Generic check that an ndarray is square.
+
+    Parameters
+    ----------
+    v : numpy.ndarray
+        Reference to object variable.
+    vname : str
+        Name associated with the object variable.
+    """
+    s = v.shape # get shape
+    if any(s[0] != e for e in s):
+        raise ValueError("variable '{0}' must have equal lengths along all axes".format(vname))
+
 ################################################################################
 ##################### conditional ndarray check functions ######################
 ################################################################################
@@ -290,3 +305,7 @@ def generic_cond_check_ndarray_shape(v, vname, vshape, vaxis = None, cond = gene
     """
     if cond(v):
         generic_check_ndarray_shape(v, vname, vshape, vaxis)
+
+def generic_cond_check_ndarray_is_square(v, vname, cond = generic_default_cond):
+    if cond(v):
+        generic_check_ndarray_is_square(v, vname)
