@@ -102,7 +102,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        afreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (n, p) containing allele frequencies of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
@@ -114,7 +114,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        lacount : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele counts of the allele
             coded as 1 for all 'p' loci.
         """
@@ -126,7 +126,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        afreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele frequencies of the
             allele coded as 1 for all 'p' loci.
         """
@@ -138,7 +138,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        maf : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele frequencies for the
             minor allele.
         """
@@ -150,7 +150,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        mehe : numpy.float64
+        out : numpy.float64
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """

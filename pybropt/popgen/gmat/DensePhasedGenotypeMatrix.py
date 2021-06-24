@@ -133,8 +133,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
@@ -142,8 +141,12 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             A numpy.ndarray of shape (n, p) containing allele counts of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
-        # take sum across the phase axis (0)
-        return self._mat.sum(0, dtype=dtype)
+        out = self._mat.sum(0)              # take sum across the phase axis (0)
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
+        return out
 
     def tafreq(self, dtype = None):
         """
@@ -152,8 +155,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
@@ -161,10 +163,13 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             A numpy.ndarray of shape (n, p) containing allele frequencies of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
-        # take the reciprocal of the number of phases 1 / nphase
-        rnphase = 1.0 / self._mat.shape[0]
-        # take sum across the phase axis (0) and divide by nphase
-        return rnphase * self._mat.sum(0, dtype=dtype)
+        rnphase = 1.0 / self._mat.shape[0]  # take the reciprocal of the number of phases = 1 / nphase
+        out = rnphase * self._mat.sum(0)    # take sum across the phase axis (0) and divide by nphase
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
+        return out
 
     def acount(self):
         """
@@ -225,20 +230,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """
-        # get allele frequency (p)
-        p = self.afreq()
-
-        # take p*(1-p) across all loci and sum the products
-        out = (p * (1.0 - p)).sum()
-
-        # multiply summation by (ploidy/nloci)
-        out *= (self.ploidy / self.nloci)
-
-        return out
+        p = self.afreq()            # get allele frequency (p)
+        out = (p * (1.0 - p)).sum() # take p*(1-p) across all loci and sum the products
+        s = self._mat.shape         # get matrix shape
+        out *= (s[0] / s[2])        # multiply summation by (nphase / nloci)
+        return numpy.float64(out)
 
     def gtcount(self):
         """
-        Gather genotype counts
+        Gather genotype counts across for homozygous major, heterozygous,
+        homozygous minor all individuals.
 
         Returns
         -------
@@ -257,15 +258,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         out = numpy.empty((3,self._mat.shape[2]), dtype='int64')
 
         # get genotype counts
-        out[0] = (gt == 0).sum(0)
-        out[1] = (gt == 1).sum(0)
-        out[2] = (gt == 2).sum(0)
+        out[0] = (gt == 0).sum(0)       # homozygous 0/0
+        out[1] = (gt == 1).sum(0)       # heterozygous 0/1, 1/0
+        out[2] = (gt == 2).sum(0)       # homozygous 1/1
 
         return out
 
     def gtfreq(self):
         """
-        Gather genotype frequencies
+        Gather genotype frequencies for homozygous major, heterozygous,
+        homozygous minor across all individuals.
 
         Returns
         -------
@@ -277,9 +279,8 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
                 out[1] = frequency of '1' genotype across all loci
                 out[2] = frequency of '2' genotype across all loci
         """
-        # calculate genotype frequencies
-        out = self.gtcount() / numpy.float64(self._mat.shape[1])
-
+        recip = 1.0 / self._mat.shape[1]    # get reciprocal of number of taxa
+        out = recip * self.gtcount()        # calculate genotype frequencies
         return out
 
 

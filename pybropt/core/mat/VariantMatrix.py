@@ -113,6 +113,34 @@ class VariantMatrix(GroupableMatrix):
         return locals()
     vrnt_hapgrp = property(**vrnt_hapgrp())
 
+    def vrnt_hapalt():
+        doc = "Variant haplotype sequence property."
+        def fget(self):
+            """Get variant haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set variant haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete variant haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    vrnt_hapalt = property(**vrnt_hapalt())
+
+    def vrnt_hapref():
+        doc = "Variant reference haplotype sequence property."
+        def fget(self):
+            """Get variant reference haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set variant reference haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete variant reference haplotype sequence"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    vrnt_hapref = property(**vrnt_hapref())
+
     def vrnt_mask():
         doc = "Variant mask property."
         def fget(self):
@@ -128,6 +156,34 @@ class VariantMatrix(GroupableMatrix):
     vrnt_mask = property(**vrnt_mask())
 
     ############# Variant Metadata Properites ##############
+    def nvrnt():
+        doc = "Number of variants property."
+        def fget(self):
+            """Get number of variants"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set number of variants"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete number of variants"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    nvrnt = property(**nvrnt())
+
+    def vrnt_axis():
+        doc = "Axis along which variants are stored property."
+        def fget(self):
+            """Get variant axis"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set variant axis"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete variant axis"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    vrnt_axis = property(**vrnt_axis())
+
     def vrnt_chrgrp_name():
         doc = "Variant chromosome group names property."
         def fget(self):

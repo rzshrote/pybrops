@@ -383,6 +383,34 @@ class Matrix:
         return locals()
     mat = property(**mat())
 
+    def mat_ndim():
+        doc = "Number of dimensions of the raw matrix property."
+        def fget(self):
+            """Get number of dimensions of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set number of dimensions of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete number of dimensions of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    mat_ndim = property(**mat_ndim())
+
+    def mat_shape():
+        doc = "Shape of the raw matrix property."
+        def fget(self):
+            """Get the shape of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set the shape of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete the shape of the raw matrix"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    mat_shape = property(**mat_shape())
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################

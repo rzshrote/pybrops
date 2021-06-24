@@ -1,6 +1,8 @@
 import copy
 from . import Matrix
 
+from pybropt.core.error import error_readonly
+
 class DenseMatrix(Matrix):
     """docstring for DenseMatrix."""
 
@@ -216,6 +218,34 @@ class DenseMatrix(Matrix):
             del self._mat
         return locals()
     mat = property(**mat())
+
+    def mat_ndim():
+        doc = "Number of dimensions of the raw matrix property."
+        def fget(self):
+            """Get number of dimensions of the raw matrix"""
+            return self._mat.ndim
+        def fset(self, value):
+            """Set number of dimensions of the raw matrix"""
+            error_readonly("mat_ndim")
+        def fdel(self):
+            """Delete number of dimensions of the raw matrix"""
+            error_readonly("mat_ndim")
+        return locals()
+    mat_ndim = property(**mat_ndim())
+
+    def mat_shape():
+        doc = "Shape of the raw matrix property."
+        def fget(self):
+            """Get the shape of the raw matrix"""
+            return self._mat.shape
+        def fset(self, value):
+            """Set the shape of the raw matrix"""
+            error_readonly("mat_shape")
+        def fdel(self):
+            """Delete the shape of the raw matrix"""
+            error_readonly("mat_shape")
+        return locals()
+    mat_shape = property(**mat_shape())
 
     ############################################################################
     ############################## Object Methods ##############################

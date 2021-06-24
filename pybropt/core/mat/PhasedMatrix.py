@@ -27,9 +27,9 @@ class PhasedMatrix(MutableMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    ################ Phase Data Properites ################
+    ############## Phase Metadata Properites ###############
     def nphase():
-        doc = "Number of phases property."
+        doc = "Number of chromosome phases represented by the matrix."
         def fget(self):
             """Get number of phases"""
             raise NotImplementedError("method is abstract")
@@ -41,6 +41,20 @@ class PhasedMatrix(MutableMatrix):
             raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
+
+    def phase_axis():
+        doc = "Axis along which phases are stored property."
+        def fget(self):
+            """Get phase axis number"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set phase axis number"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete phase axis number"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    phase_axis = property(**phase_axis())
 
     ############################################################################
     ############################## Object Methods ##############################
