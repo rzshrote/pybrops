@@ -3,6 +3,7 @@ import numpy
 import cyvcf2
 
 from . import PhasedGenotypeMatrix
+from . import DenseGenotypeMatrix
 from pybropt.core.mat import DensePhasedTaxaVariantMatrix
 from pybropt.core.mat import get_axis
 
@@ -22,7 +23,7 @@ from pybropt.core.error import error_readonly
 from pybropt.popgen.gmap import check_is_GeneticMap
 from pybropt.popgen.gmap import check_is_GeneticMapFunction
 
-class DensePhasedGenotypeMatrix(DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
+class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
 
     ############################################################################
@@ -187,6 +188,22 @@ class DensePhasedGenotypeMatrix(DensePhasedTaxaVariantMatrix,PhasedGenotypeMatri
     mat_format = property(**mat_format())
 
     ############## Phase Metadata Properites ###############
+    # this property must be overwritten to what is in DensePhasedMatrix since
+    # DenseGenotypeMatrix overwrites it.
+    def nphase():
+        doc = "Number of chromosome phases represented by the matrix."
+        def fget(self):
+            """Get number of phases"""
+            return self._mat.shape[self.phase_axis]
+        def fset(self, value):
+            """Set number of phases"""
+            error_readonly("nphase")
+        def fdel(self):
+            """Delete number of phases"""
+            error_readonly("nphase")
+        return locals()
+    nphase = property(**nphase())
+
     def phase_axis():
         doc = "Axis along which phases are stored property."
         def fget(self):
@@ -234,51 +251,6 @@ class DensePhasedGenotypeMatrix(DensePhasedTaxaVariantMatrix,PhasedGenotypeMatri
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-
-    ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
-        """
-        Interpolate genetic map postions for variants using a GeneticMap
-
-        Parameters
-        ----------
-        gmap : GeneticMap
-            A genetic map from which to interopolate genetic map postions for
-            loci within the VariantMatrix.
-        """
-        # check if gmap is a GeneticMap
-        check_is_GeneticMap(gmap, "gmap")
-
-        # interpolate postions
-        self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
-
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
-        """
-        Interpolate genetic map positions AND crossover probabilities between
-        sequential markers using a GeneticMap and a GeneticMapFunction.
-
-        Parameters
-        ----------
-        gmap : GeneticMap
-            A genetic map from which to interopolate genetic map postions for
-            loci within the VariantMatrix.
-        gmapfn : GeneticMapFunction
-            A genetic map function from which to interpolate crossover
-            probabilities for loci within the VariantMatrix.
-        """
-        # check data types
-        check_is_GeneticMap(gmap, "gmap")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-
-        # check if self has been sorted and grouped
-        if not self.is_grouped_vrnt():
-            raise RuntimeError("must be grouped first before interpolation of crossover probabilities")
-
-        # interpolate genetic positions
-        self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
-
-        # interpolate crossover probabilities
-        self.vrnt_xoprob = gmapfn.rprob1g(gmap, self._vrnt_chrgrp, self._vrnt_genpos)
 
     ############## Matrix summary statistics ###############
     def tacount(self, dtype = None):
