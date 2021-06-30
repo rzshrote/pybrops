@@ -140,8 +140,8 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    @staticmethod
-    def concat_phase(mats, **kwargs):
+    @classmethod
+    def concat_phase(cls, mats, **kwargs):
         """
         Concatenate list of Matrix together along the phase axis.
 

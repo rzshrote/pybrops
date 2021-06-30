@@ -682,10 +682,10 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         )
 
         # copy taxa metadata from source
-        out.taxa_chrgrp_name = mats[0].taxa_chrgrp_name
-        out.taxa_chrgrp_stix = mats[0].taxa_chrgrp_stix
-        out.taxa_chrgrp_spix = mats[0].taxa_chrgrp_spix
-        out.taxa_chrgrp_len = mats[0].taxa_chrgrp_len
+        out.taxa_grp_name = mats[0].taxa_grp_name
+        out.taxa_grp_stix = mats[0].taxa_grp_stix
+        out.taxa_grp_spix = mats[0].taxa_grp_spix
+        out.taxa_grp_len = mats[0].taxa_grp_len
 
         # copy variant metadata from source
         out.vrnt_chrgrp_name = mats[0].vrnt_chrgrp_name
@@ -713,7 +713,9 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         # dispatch functions
-        if axis == self.taxa_axis:
+        if axis == self.phase_axis:
+            self.append_phase(values, **kwargs)
+        elif axis == self.taxa_axis:
             self.append_taxa(
                 values = values,
                 taxa = taxa,
@@ -854,7 +856,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_taxa(self, obj, values, **kwargs):
+    def incorp_phase(self, obj, values, **kwargs):
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -882,7 +884,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
                 raise ValueError("cannot incorp: axis lengths incompatible for axis {0}".format(i))
 
         # insert values
-        self._mat = numpy.insert(self._mat, obj, values, axis = self.taxa_axis)
+        self._mat = numpy.insert(self._mat, obj, values, axis = self.phase_axis)
 
     ############## Matrix summary statistics ###############
     def thcount(self, dtype = None):

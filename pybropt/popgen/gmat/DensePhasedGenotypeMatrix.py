@@ -1,139 +1,295 @@
-from . import DenseGenotypeMatrix
+import copy
+import numpy
+import cyvcf2
+
+from . import PhasedGenotypeMatrix
+from pybropt.core.mat import DensePhasedTaxaVariantMatrix
+from pybropt.core.mat import get_axis
+
 from pybropt.core.error import check_is_ndarray
-from pybropt.core.error import check_ndarray_ndim
-from pybropt.core.error import check_ndarray_dtype
+from pybropt.core.error import check_ndarray_dtype_is_int8
+from pybropt.core.error import check_ndarray_is_3d
+from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import cond_check_ndarray_dtype_is_object
+from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import cond_check_ndarray_axis_len
+from pybropt.core.error import cond_check_ndarray_dtype_is_int64
+from pybropt.core.error import cond_check_ndarray_dtype_is_float64
+from pybropt.core.error import cond_check_ndarray_dtype_is_bool
+from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 
-class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
+from pybropt.popgen.gmap import check_is_GeneticMap
+from pybropt.popgen.gmap import check_is_GeneticMapFunction
+
+class DensePhasedGenotypeMatrix(DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
         """
-        DensePhasedGenotypeMatrix object constructor.
-
         Parameters
         ----------
-        mat : numpy.int8
-            A int8 binary genotype matrix of shape (m, n, p).
-            Encoding is: {0, 1}
-            Where:
-                'm' is the number of chromosome phases (2 for diploid, etc.).
-                'n' is the number of individuals.
-                'p' is the number of markers.
-        **kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
+        mat : numpy.ndarray
+            An int8 haplotype matrix. Must be {0,1,2} format.
+        ploidy : int
+            The ploidy represented by the haplotype matrix. This only represents
+            ploidy of the reproductive habit. If the organism represented is an
+            allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
+            reproduces in a diploid manner.
+        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         """
         super(DensePhasedGenotypeMatrix, self).__init__(
             mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_hapalt = vrnt_hapalt,
+            vrnt_hapref = vrnt_hapref,
+            vrnt_mask = vrnt_mask,
             **kwargs
         )
+
+    #################### Matrix copying ####################
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # create new object
+        out = self.__class__(
+            mat = copy.copy(self.mat),
+            taxa = copy.copy(self.taxa),
+            taxa_grp = copy.copy(self.taxa_grp),
+            vrnt_chrgrp = copy.copy(self.vrnt_chrgrp),
+            vrnt_phypos = copy.copy(self.vrnt_phypos),
+            vrnt_name = copy.copy(self.vrnt_name),
+            vrnt_genpos = copy.copy(self.vrnt_genpos),
+            vrnt_xoprob = copy.copy(self.vrnt_xoprob),
+            vrnt_hapgrp = copy.copy(self.vrnt_hapgrp),
+            vrnt_hapalt = copy.copy(self.vrnt_hapalt),
+            vrnt_hapref = copy.copy(self.vrnt_hapref),
+            vrnt_mask = copy.copy(self.vrnt_mask)
+        )
+
+        # copy taxa metadata
+        out.taxa_grp_name = copy.copy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.copy(self.taxa_grp_len)
+
+        # copy variant metadata
+        out.vrnt_grp_name = copy.copy(self.vrnt_grp_name)
+        out.vrnt_grp_stix = copy.copy(self.vrnt_grp_stix)
+        out.vrnt_grp_spix = copy.copy(self.vrnt_grp_spix)
+        out.vrnt_grp_len = copy.copy(self.vrnt_grp_len)
+
+        return out
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # create new object
+        out = self.__class__(
+            mat = copy.deepcopy(self.mat, memo),
+            taxa = copy.deepcopy(self.taxa, memo),
+            taxa_grp = copy.deepcopy(self.taxa_grp, memo),
+            vrnt_chrgrp = copy.deepcopy(self.vrnt_chrgrp, memo),
+            vrnt_phypos = copy.deepcopy(self.vrnt_phypos, memo),
+            vrnt_name = copy.deepcopy(self.vrnt_name, memo),
+            vrnt_genpos = copy.deepcopy(self.vrnt_genpos, memo),
+            vrnt_xoprob = copy.deepcopy(self.vrnt_xoprob, memo),
+            vrnt_hapgrp = copy.deepcopy(self.vrnt_hapgrp, memo),
+            vrnt_hapalt = copy.deepcopy(self.vrnt_hapalt, memo),
+            vrnt_hapref = copy.deepcopy(self.vrnt_hapref, memo),
+            vrnt_mask = copy.deepcopy(self.vrnt_mask, memo)
+        )
+
+        # copy taxa metadata
+        out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name, memo)
+        out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix, memo)
+        out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix, memo)
+        out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
+
+        # copy variant metadata
+        out.vrnt_grp_name = copy.deepcopy(self.vrnt_grp_name, memo)
+        out.vrnt_grp_stix = copy.deepcopy(self.vrnt_grp_stix, memo)
+        out.vrnt_grp_spix = copy.deepcopy(self.vrnt_grp_spix, memo)
+        out.vrnt_grp_len = copy.deepcopy(self.vrnt_grp_len, memo)
+
+        return out
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
 
-    ################### Data Properites ####################
+    ############## Genotype Data Properites ##############
     def mat():
-        doc = "The genotype matrix."
+        doc = "The mat property."
         def fget(self):
-            """
-            Retrieve a pointer to the genotype matrix.
-
-            Returns
-            -------
-            mat : numpy.ndarray
-                Pointer to the genotype matrix.
-            """
             return self._mat
         def fset(self, value):
-            """
-            Set the pointer to the genotype matrix. Perform error checks.
-
-            Parameters
-            ----------
-            mat : numpy.ndarray
-                A int8 binary genotype matrix of shape (m, n, p).
-                Where:
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'p' is the number of markers.
-                Cannot be None.
-            """
-            # check input data types, then set variable
             check_is_ndarray(value, "mat")
-            check_ndarray_dtype(value, "mat", 'int8')
-            check_ndarray_ndim(value, "mat", 3)
+            check_ndarray_dtype_is_int8(value, "mat")
+            check_ndarray_is_3d(value, "mat")
             self._mat = value
         def fdel(self):
-            """
-            Remove the genotype matrix (self._mat) from scope.
-            """
             del self._mat
         return locals()
     mat = property(**mat())
 
-    ################# Metadata Properites ##################
+    ############## General matrix properties ###############
     def ploidy():
-        doc = "The ploidy level represented by the genotype matrix."
+        doc = "Ploidy number represented by matrix property."
         def fget(self):
-            return self._mat.shape[0]
+            """Get matrix ploidy number"""
+            return self._mat.shape[self.phase_axis]
         def fset(self, value):
+            """Set matrix ploidy number"""
             error_readonly("ploidy")
         def fdel(self):
+            """Delete matrix ploidy number"""
             error_readonly("ploidy")
         return locals()
     ploidy = property(**ploidy())
 
-    def nphase():
-        doc = "The nphase property."
+    def mat_format():
+        doc = "Matrix representation format property."
         def fget(self):
-            return self._mat.shape[0]
+            """Get matrix representation format"""
+            return "{0,1,2}"
         def fset(self, value):
-            error_readonly("nphase")
+            """Set matrix representation format"""
+            error_readonly("mat_format")
         def fdel(self):
-            error_readonly("nphase")
+            """Delete matrix representation format"""
+            error_readonly("mat_format")
         return locals()
-    nphase = property(**nphase())
+    mat_format = property(**mat_format())
 
-    def ntaxa():
-        doc = "The number of taxa represented by the genotype matrix."
+    ############## Phase Metadata Properites ###############
+    def phase_axis():
+        doc = "Axis along which phases are stored property."
         def fget(self):
-            return self._mat.shape[1]
+            """Get phase axis number"""
+            return 0
         def fset(self, value):
-            error_readonly("ntaxa")
+            """Set phase axis number"""
+            error_readonly("phase_axis")
         def fdel(self):
-            error_readonly("ntaxa")
+            """Delete phase axis number"""
+            error_readonly("phase_axis")
         return locals()
-    ntaxa = property(**ntaxa())
+    phase_axis = property(**phase_axis())
 
-    def nloci():
-        doc = "The number of marker loci represented by the genotype matrix."
+    ############### Taxa Metadata Properites ###############
+    def taxa_axis():
+        doc = "Axis along which taxa are stored property."
         def fget(self):
-            return self._mat.shape[2]
+            """Get taxa axis number"""
+            return 1
         def fset(self, value):
-            error_readonly("nloci")
+            """Set taxa axis number"""
+            error_readonly("taxa_axis")
         def fdel(self):
-            error_readonly("nloci")
+            """Delete taxa axis number"""
+            error_readonly("taxa_axis")
         return locals()
-    nloci = property(**nloci())
+    taxa_axis = property(**taxa_axis())
+
+    ############# Variant Metadata Properites ##############
+    def vrnt_axis():
+        doc = "Axis along which variants are stored property."
+        def fget(self):
+            """Get variant axis"""
+            return 2
+        def fset(self, value):
+            """Set variant axis"""
+            error_readonly("vrnt_axis")
+        def fdel(self):
+            """Delete variant axis"""
+            error_readonly("vrnt_axis")
+        return locals()
+    vrnt_axis = property(**vrnt_axis())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
+    ################# Interpolation Methods ################
+    def interp_genpos(self, gmap, **kwargs):
+        """
+        Interpolate genetic map postions for variants using a GeneticMap
+
+        Parameters
+        ----------
+        gmap : GeneticMap
+            A genetic map from which to interopolate genetic map postions for
+            loci within the VariantMatrix.
+        """
+        # check if gmap is a GeneticMap
+        check_is_GeneticMap(gmap, "gmap")
+
+        # interpolate postions
+        self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
+
+    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+        """
+        Interpolate genetic map positions AND crossover probabilities between
+        sequential markers using a GeneticMap and a GeneticMapFunction.
+
+        Parameters
+        ----------
+        gmap : GeneticMap
+            A genetic map from which to interopolate genetic map postions for
+            loci within the VariantMatrix.
+        gmapfn : GeneticMapFunction
+            A genetic map function from which to interpolate crossover
+            probabilities for loci within the VariantMatrix.
+        """
+        # check data types
+        check_is_GeneticMap(gmap, "gmap")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+
+        # check if self has been sorted and grouped
+        if not self.is_grouped_vrnt():
+            raise RuntimeError("must be grouped first before interpolation of crossover probabilities")
+
+        # interpolate genetic positions
+        self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
+
+        # interpolate crossover probabilities
+        self.vrnt_xoprob = gmapfn.rprob1g(gmap, self._vrnt_chrgrp, self._vrnt_genpos)
+
     ############## Matrix summary statistics ###############
     def tacount(self, dtype = None):
         """
-        Allele count within each taxon.
+        Allele count of the non-zero allele within each taxon.
 
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array. If None, return native dtype.
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------
@@ -141,83 +297,85 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             A numpy.ndarray of shape (n, p) containing allele counts of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
-        out = self._mat.sum(0)              # take sum across the phase axis (0)
-        if dtype is not None:               # if dtype is specified
-            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
-            if out.dtype != dtype:          # if output dtype and desired are different
-                out = dtype.type(out)       # convert to correct dtype
+        out = self._mat.sum(self.phase_axis)    # take sum across the phase axis
+        if dtype is not None:                   # if dtype is specified
+            dtype = numpy.dtype(dtype)          # ensure conversion to dtype class
+            if out.dtype != dtype:              # if output dtype and desired are different
+                out = dtype.type(out)           # convert to correct dtype
         return out
 
     def tafreq(self, dtype = None):
         """
-        Allele frequency within each taxon.
+        Allele frequency of the non-zero allele within each taxon.
 
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array. If None, return native dtype.
+            The type of the returned array and of the accumulator in which the
+            elements are summed.
 
         Returns
         -------
-        tafreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (n, p) containing allele frequencies of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
-        rnphase = 1.0 / self._mat.shape[0]  # take the reciprocal of the number of phases = 1 / nphase
-        out = rnphase * self._mat.sum(0)    # take sum across the phase axis (0) and divide by nphase
-        if dtype is not None:               # if dtype is specified
-            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
-            if out.dtype != dtype:          # if output dtype and desired are different
-                out = dtype.type(out)       # convert to correct dtype
+        rnphase = 1.0 / self.ploidy                     # take the reciprocal of the ploidy number
+        out = rnphase * self._mat.sum(self.phase_axis)  # take sum across the phase axis (0) and divide by ploidy
+        if dtype is not None:                           # if dtype is specified
+            dtype = numpy.dtype(dtype)                  # ensure conversion to dtype class
+            if out.dtype != dtype:                      # if output dtype and desired are different
+                out = dtype.type(out)                   # convert to correct dtype
         return out
 
-    def acount(self):
+    def acount(self, dtype = None):
         """
-        Allele count across all taxa.
+        Allele count of the non-zero allele across all taxa.
 
         Returns
         -------
-        acount : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele counts of the allele
             coded as 1 for all 'p' loci.
         """
-        # take sum across the phase (0) and taxa (1) axes.
-        return self._mat.sum((0,1))
+        out = self._mat.sum((self.phase_axis,self.taxa_axis))   # take sum across the phase and taxa axis
+        if dtype is not None:                                   # if dtype is specified
+            dtype = numpy.dtype(dtype)                          # ensure conversion to dtype class
+            if out.dtype != dtype:                              # if output dtype and desired are different
+                out = dtype.type(out)                           # convert to correct dtype
+        return out
 
-    def afreq(self):
+    def afreq(self, dtype = None):
         """
-        Allele frequency across all taxa.
+        Allele frequency of the non-zero allele across all taxa.
 
         Returns
         -------
-        afreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele frequencies of the
             allele coded as 1 for all 'p' loci.
         """
-        # take the reciprocal of the number of phases 1 / ploidy*ntaxa
-        rnphase = 1.0 / (self._mat.shape[0] * self._mat.shape[1])
-        # take sum across the phase (0) and taxa (1) axes; divide by ploidy*ntaxa
-        return rnphase * self._mat.sum((0,1))
+        rnphase = 1.0 / (self.ploidy * self.ntaxa)                      # take 1 / (ploidy * ntaxa)
+        out = rnphase * self._mat.sum((self.phase_axis,self.taxa_axis)) # take sum across the taxa axis (0) and divide by nphase
+        if dtype is not None:                                           # if dtype is specified
+            dtype = numpy.dtype(dtype)                                  # ensure conversion to dtype class
+            if out.dtype != dtype:                                      # if output dtype and desired are different
+                out = dtype.type(out)                                   # convert to correct dtype
+        return out
 
-    def maf(self):
+    def maf(self, dtype = None):
         """
         Minor allele frequency across all taxa.
 
         Returns
         -------
-        maf : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele frequencies for the
+        out : numpy.ndarray
+            A numpy.ndarray of shape (p,) containing allele frequencies for the
             minor allele.
         """
-        # get minor allele frequencies
-        out = self.afreq()
-
-        # create mask of allele frequencies greater than 0.5
-        mask = out > 0.5
-
-        # calculate 1.0 - allele frequency for frequencies greater than 0.5
-        out[mask] = 1.0 - out[mask]
-
+        out = self.afreq(dtype)     # get allele frequencies
+        mask = out > 0.5            # create mask of allele frequencies > 0.5
+        out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
     def mehe(self):
@@ -230,37 +388,41 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """
-        p = self.afreq()            # get allele frequency (p)
-        out = (p * (1.0 - p)).sum() # take p*(1-p) across all loci and sum the products
-        s = self._mat.shape         # get matrix shape
-        out *= (s[0] / s[2])        # multiply summation by (nphase / nloci)
+        p = self.afreq()                    # get haplotype frequency (p)
+        out = (p * (1.0 - p)).sum()         # take p*(1-p) across all loci and sum the products
+        out *= (self.ploidy / self.nvrnt)   # multiply summation by (nphase / nvrnt)
         return numpy.float64(out)
 
     def gtcount(self):
         """
-        Gather genotype counts across for homozygous major, heterozygous,
-        homozygous minor all individuals.
+        Gather genotype counts for homozygous major, heterozygous, homozygous
+        minor for all individuals.
 
         Returns
         -------
         out : numpy.ndarray
-            An int64 array of shape (3, p) containing genotype counts across
-            all loci.
+            An int64 array of shape (g, p) containing allele counts across
+            all 'p' loci for each of 'g' genotype combinations.
             Rows are as follows:
                 out[0] = count of '0' genotype across all loci
                 out[1] = count of '1' genotype across all loci
                 out[2] = count of '2' genotype across all loci
+                ...
+                out[g-1] = count of 'g-1' genotype across all loci
         """
-        # get genotypes as {0, 1, 2}
-        gt = self._mat.sum(0)
+        ngt = self.nphase + 1                   # get number of genotype combos
+        mat = self._mat.sum(self.phase_axis)    # get sum of all phases
 
-        # allocate output array
-        out = numpy.empty((3,self._mat.shape[2]), dtype='int64')
+        out = numpy.empty(      # allocate output array
+            (ngt, self.nvrnt),  # shape (g, p)
+            dtype='int64'       # int64 dtype
+        )
 
-        # get genotype counts
-        out[0] = (gt == 0).sum(0)       # homozygous 0/0
-        out[1] = (gt == 1).sum(0)       # heterozygous 0/1, 1/0
-        out[2] = (gt == 2).sum(0)       # homozygous 1/1
+        # get correct axis to sum across
+        axis = (self.taxa_axis - 1) if (self.phase_axis < self.taxa_axis) else self.taxa_axis
+
+        for i in range(ngt):
+            out[i] = (mat == i).sum(axis)   # record counts for genotype 'i'
 
         return out
 
@@ -272,16 +434,75 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An float64 array of shape (3, p) containing genotype counts across
-            all loci.
+            An float64 array of shape (g, p) containing haplotype counts across
+            all 'p' loci for all 'g' genotype combinations.
             Rows are as follows:
                 out[0] = frequency of '0' genotype across all loci
                 out[1] = frequency of '1' genotype across all loci
                 out[2] = frequency of '2' genotype across all loci
+                ...
+                out[g-1] = frequency of 'g-1' genotype across all loci
         """
-        recip = 1.0 / self._mat.shape[1]    # get reciprocal of number of taxa
-        out = recip * self.gtcount()        # calculate genotype frequencies
+        recip = 1.0 / self.ntaxa        # get reciprocal of number of taxa
+        out = recip * self.gtcount()    # calculate genotype frequencies
         return out
+
+    @classmethod
+    def from_vcf(cls, fname):
+        """
+        Does not ensure that data is phased, just reads it as phased.
+        """
+        # make VCF iterator
+        vcf = cyvcf2.VCF(fname)
+
+        # extract taxa names from vcf header
+        taxa = numpy.object_(vcf.samples)
+
+        # make empty lists to store extracted values
+        mat = []
+        vrnt_chrgrp = []
+        vrnt_phypos = []
+        vrnt_name = []
+
+        # iterate through VCF file and accumulate variants
+        for variant in vcf:
+            # append chromosome integer
+            vrnt_chrgrp.append(int(variant.CHROM))
+
+            # append variant position coordinates
+            vrnt_phypos.append(variant.POS)
+
+            # append marker name
+            vrnt_name.append(str(variant.ID))
+
+            # extract allele states + whether they are phased or not
+            phases = numpy.int8(variant.genotypes)
+
+            # check that they are all phased
+            #pybropt.util.check_matrix_all_value(phases[:,2], "is_phased", True)
+
+            # TODO: maybe modify shapes here to avoid transpose and copy below?
+            # append genotype states
+            mat.append(phases[:,0:2].copy())
+
+        # convert and transpose genotype matrix
+        mat = numpy.int8(mat).transpose(2,1,0) # may want to copy()?
+
+        # convert to numpy.ndarray
+        vrnt_chrgrp = numpy.int64(vrnt_chrgrp)  # convert to int64 array
+        vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
+        vrnt_name = numpy.object_(vrnt_name)    # convert to object array
+
+        out = cls(
+            mat = mat,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            taxa = taxa
+        )
+
+        return out
+
 
 
 ################################################################################
@@ -292,7 +513,7 @@ def is_DensePhasedGenotypeMatrix(v):
 
 def check_is_DensePhasedGenotypeMatrix(v, varname):
     if not isinstance(v, DensePhasedGenotypeMatrix):
-        raise TypeError("'%s' must be a DensePhasedGenotypeMatrix." % varname)
+        raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(varname))
 
 def cond_check_is_DensePhasedGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
     if cond(v):

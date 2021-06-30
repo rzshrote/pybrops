@@ -2,10 +2,9 @@
 
 # abstract classes
 from .GenotypeMatrix import *
-from .HaplotypeMatrix import *
-from .PhasedGenotypeMatrix import *
-from .PhasedHaplotypeMatrix import *
+from .GenotypeVariantMatrix import *
 
 # implemented dense classes
 from .DenseGenotypeMatrix import *
 from .DensePhasedGenotypeMatrix import *
+from .DensePhasedGenotypeVariantMatrix import *

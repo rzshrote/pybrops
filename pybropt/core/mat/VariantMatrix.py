@@ -352,8 +352,8 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    @staticmethod
-    def concat_vrnt(mats, **kwargs):
+    @classmethod
+    def concat_vrnt(cls, mats, **kwargs):
         """
         Concatenate list of Matrix together along the variant axis.
 

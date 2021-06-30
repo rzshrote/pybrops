@@ -1,3 +1,4 @@
+import copy
 import numpy
 
 from . import HaplotypeMatrix
@@ -217,7 +218,6 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
     ################# Taxa Data Properites #################
     def taxa():
-        doc = "The taxa property."
         doc = "Taxa label property."
         def fget(self):
             """Get taxa label array"""
@@ -236,7 +236,6 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
     taxa = property(**taxa())
 
     def taxa_grp():
-        doc = "The taxa_grp property."
         doc = "Taxa group label property."
         def fget(self):
             """Get taxa group label array"""
@@ -1656,10 +1655,10 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         # process/error check vrnt_name_ls
         if all(e is None for e in vrnt_name_ls):
             vrnt_name_ls = None
-        else:                                                               # else at least one matrix does not have a taxa array
-            for i,v in enumerate(taxa_ls):                                  # for each index,element in taxa_ls
+        else:                                                               # else at least one matrix does not have a vrnt_name array
+            for i,v in enumerate(vrnt_name_ls):                             # for each index,element in vrnt_name_ls
                 if v is None:                                               # if element is None
-                    nvrnt = shape_t[mats[0].vrnt_axis][i]                   # get number of taxa
+                    nvrnt = shape_t[mats[0].vrnt_axis][i]                   # get number of variants
                     vrnt_name_ls[i] = numpy.empty(nvrnt, dtype = "object")  # replace with array of None
 
         # process/error check vrnt_genpos_ls
@@ -1730,10 +1729,10 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         )
 
         # copy metadata from source
-        out.taxa_chrgrp_name = mats[0].taxa_chrgrp_name
-        out.taxa_chrgrp_stix = mats[0].taxa_chrgrp_stix
-        out.taxa_chrgrp_spix = mats[0].taxa_chrgrp_spix
-        out.taxa_chrgrp_len = mats[0].taxa_chrgrp_len
+        out.taxa_grp_name = mats[0].taxa_grp_name
+        out.taxa_grp_stix = mats[0].taxa_grp_stix
+        out.taxa_grp_spix = mats[0].taxa_grp_spix
+        out.taxa_grp_len = mats[0].taxa_grp_len
 
         return out
 
@@ -1805,13 +1804,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
             raise ValueError("'values' must be of type DenseHaplotypeMatrix or numpy.ndarray")
 
         # perform error checks before allocating memory
-        if self.nvrnt != values.shape[self.vrnt_axis]:
-            raise ValueError("matrix shapes do not all align along axis {0} (variant axis)".format(self.vrnt_axis))
+        if values.ndim != self.mat_ndim:
+            raise ValueError("cannot append: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
             if (i != self.taxa_axis) and (j != k):
                 raise ValueError("cannot append: axis lengths incompatible for axis {0}".format(i))
         if (self._taxa is not None) and (taxa is None):
-            taxa = numpy.empty(values.shape[self.vrnt_axis], dtype = "object") # fill with None
+            taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object") # fill with None
         if (self._taxa_grp is not None) and (taxa_grp is None):
             raise TypeError("cannot append: 'taxa_grp' argument is required")
 
@@ -1878,8 +1877,8 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
             raise ValueError("'values' must be of type DenseHaplotypeMatrix or numpy.ndarray")
 
         # perform error checks before allocating memory
-        if self.ntaxa != value.shape[self.taxa_axis]:
-            raise ValueError("matrix shapes do not all align along axis {0} (taxa axis)".format(self.taxa_axis))
+        if values.ndim != self.mat_ndim:
+            raise ValueError("cannot append: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
             if (i != self.vrnt_axis) and (j != k):
                 raise ValueError("cannot append: axis lengths incompatible for axis {0}".format(i))
@@ -2327,12 +2326,12 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         # raise error if no keys remain
         if len(keys) == 0:
-            raise ValueError("cannot lexsort on axis {0} (taxa axis): {1}".format(self.taxa_axis, emess))
+            raise ValueError("cannot lexsort on axis {0} (variant axis): {1}".format(self.vrnt_axis, emess))
 
         # raise error if keys are of incompatible length
-        if any(len(k) != self.ntaxa for k in keys):
-            emess = "keys are not all length {0}".format(self.ntaxa)
-            raise ValueError("cannot lexsort on axis {0} (taxa axis): {1}".format(self.taxa_axis, emess))
+        if any(len(k) != self.nvrnt for k in keys):
+            emess = "keys are not all length {0}".format(self.nvrnt)
+            raise ValueError("cannot lexsort on axis {0} (variant axis): {1}".format(self.vrnt_axis, emess))
 
         # get indices
         indices = numpy.lexsort(keys)

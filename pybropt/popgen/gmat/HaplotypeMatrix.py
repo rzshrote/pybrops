@@ -1,15 +1,20 @@
 from pybropt.core.mat import TaxaVariantMatrix
-from pybropt.popgen.gmap import GeneticMappableMatrix
 
-class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
-    """docstring for GenotypeMatrix."""
+class HaplotypeMatrix(TaxaVariantMatrix):
+    """
+    An abstract class for haplotype matrix objects.
+
+    The purpose of this abstract class is to proved base functionality for:
+        1) haplotype metadata manipulation routines.
+        2) haplotype math functions.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
         """
-        GenotypeMatrix constructor
+        HaplotypeMatrix constructor
 
         Parameters
         ----------
@@ -17,31 +22,40 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(GenotypeMatrix, self).__init__(**kwargs)
+        super(HaplotypeMatrix, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
 
-    ############## Matrix Metadata Properites ##############
+    ############## General matrix properties ###############
     def ploidy():
-        doc = "The ploidy level represented by the genotype matrix."
+        doc = "Ploidy number represented by matrix property."
         def fget(self):
+            """Get matrix ploidy number"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set matrix ploidy number"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete matrix ploidy number"""
             raise NotImplementedError("method is abstract")
         return locals()
     ploidy = property(**ploidy())
 
+    # REMARK: this property is defined in PhasedMatrix as well. the purpose of
+    # adding this here as well is to facilitate determination of the number of
+    # phases represented by the HaplotypeMatrix. If 0, unphased; if >0, phased.
     def nphase():
-        doc = "The number of phases represented by the genotype matrix."
+        doc = "Number of chromosome phases represented by the matrix."
         def fget(self):
+            """Get number of phases"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of phases"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of phases"""
             raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
@@ -64,27 +78,28 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
-    ################## Matrix conversion ###################
-    def mat_asformat(self, format):
-        """
-        Get mat in a specific format type.
-
-        Parameters
-        ---------
-        format : str
-            Desired output format. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".
-
-        Returns
-        -------
-        out : numpy.ndarray
-            Matrix in the desired output format.
-        """
-        raise NotImplementedError("method is abstract")
-
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype):
+    def thcount(self, dtype):
         """
-        Allele count of the non-zero allele within each taxon.
+        Haplotype count of the non-zero haplotype within each taxon.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape (n, h) containing haplotype counts of the
+            haplotype coded as 1 for all 'n' individuals, for all 'h'
+            haplotypes.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def thfreq(self, dtype):
+        """
+        Haplotype frequency of the non-zero haplotype within each taxon.
 
         Parameters
         ----------
@@ -95,62 +110,60 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (n, p) containing allele counts of the
-            allele coded as 1 for all 'n' individuals, for all 'p' loci.
+            A numpy.ndarray of shape (n, h) containing haplotype frequencies of
+            the haplotype coded as 1 for all 'n' individuals, for all 'h'
+            haplotypes.
         """
         raise NotImplementedError("method is abstract")
 
-    def tafreq(self, dtype):
+    def hcount(self, dtype):
         """
-        Allele frequency of the non-zero allele within each taxon.
+        Haplotype count of the non-zero haplotype across all taxa.
 
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (n, p) containing allele frequencies of the
-            allele coded as 1 for all 'n' individuals, for all 'p' loci.
+            A numpy.ndarray of shape (h,) containing haplotype counts of the
+            haplotype coded as 1 for all 'h' haplotypes.
         """
         raise NotImplementedError("method is abstract")
 
-    def acount(self):
+    def hfreq(self, dtype):
         """
-        Allele count of the non-zero allele across all taxa.
+        Haplotype frequency of the non-zero haplotype across all taxa.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele counts of the allele
-            coded as 1 for all 'p' loci.
+            A numpy.ndarray of shape (h,) containing haplotype frequencies of
+            the haplotype coded as 1 for all 'h' haplotypes.
         """
         raise NotImplementedError("method is abstract")
 
-    def afreq(self):
+    def mhf(self, dtype):
         """
-        Allele frequency of the non-zero allele across all taxa.
+        Minor haplotype frequency across all taxa.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele frequencies of the
-            allele coded as 1 for all 'p' loci.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def maf(self):
-        """
-        Minor allele frequency across all taxa.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele frequencies for the
-            minor allele.
+            A numpy.ndarray of shape (h,) containing haplotype frequencies for
+            the minor haplotype.
         """
         raise NotImplementedError("method is abstract")
 
@@ -160,7 +173,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
 
         Returns
         -------
-        out : numpy.float64
+        mehe : numpy.float64
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """
@@ -236,16 +249,17 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
         raise NotImplementedError("method is abstract")
 
 
+
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenotypeMatrix(v):
-    return isinstance(v, GenotypeMatrix)
+def is_HaplotypeMatrix(v):
+    return isinstance(v, HaplotypeMatrix)
 
-def check_is_GenotypeMatrix(v, varname):
-    if not isinstance(v, GenotypeMatrix):
-        raise TypeError("'%s' must be a GenotypeMatrix." % varname)
+def check_is_HaplotypeMatrix(v, varname):
+    if not isinstance(v, HaplotypeMatrix):
+        raise TypeError("'%s' must be a HaplotypeMatrix." % varname)
 
-def cond_check_is_GenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_HaplotypeMatrix(v, varname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_GenotypeMatrix(v, varname)
+        check_is_HaplotypeMatrix(v, varname)

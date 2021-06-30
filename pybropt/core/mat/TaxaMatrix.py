@@ -234,8 +234,8 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    @staticmethod
-    def concat_taxa(mats, **kwargs):
+    @classmethod
+    def concat_taxa(cls, mats, **kwargs):
         """
         Concatenate list of Matrix together along the taxa axis.
 
