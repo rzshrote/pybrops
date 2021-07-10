@@ -7,6 +7,8 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import cond_check_is_callable
+from pybropt.core.error import cond_check_is_dict
 
 class WeightedGenomicParentSelection(SelectionProtocol):
     """docstring for WeightedGenomicParentSelection."""
@@ -14,21 +16,34 @@ class WeightedGenomicParentSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny,
+    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
+    rng = None, **kwargs):
         super(WeightedGenomicParentSelection, self).__init__(**kwargs)
 
         # error checks
-        check_is_int(k_p, "k_p")
-        cond_check_is_ndarray(traitwt_p, "traitwt_p")
+        check_is_int(nparent, "nparent")
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
+        cond_check_is_callable(objfn_trans, "objfn_trans")
+        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
+        # TODO: check objfn_wt
+        cond_check_is_callable(ndset_trans, "ndset_trans")
+        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
+        # TODO: check ndset_wt
         cond_check_is_Generator(rng, "rng")
 
         # variable assignment
-        self.k_p = k_p
-        self.traitwt_p = traitwt_p
+        self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
@@ -97,7 +112,7 @@ class WeightedGenomicParentSelection(SelectionProtocol):
         """
         # get parameters
         if k is None:
-            k = self.k_p
+            k = self.nparent
         if traitwt is None:
             traitwt = self.traitwt_p
 
