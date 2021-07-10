@@ -17,3 +17,6 @@ from .error_io_h5py import *
 # from .error_attr_numpy import *
 from .error_type_numpy import *
 from .error_value_numpy import *
+
+# pandas errors
+from .error_type_pandas import *
