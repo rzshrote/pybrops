@@ -16,10 +16,7 @@ class WeightedGenomicParentSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         super(WeightedGenomicParentSelection, self).__init__(**kwargs)
 
         # error checks
@@ -53,7 +50,7 @@ class WeightedGenomicParentSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -110,12 +107,95 @@ class WeightedGenomicParentSelection(SelectionProtocol):
             misc : dict
                 Miscellaneous output (user defined).
         """
-        # get parameters
-        if k is None:
-            k = self.nparent
-        if traitwt is None:
-            traitwt = self.traitwt_p
+        # get default parameters if any are None
+        if nparent is None:
+            nparent = self.nparent
+        if ncross is None:
+            ncross = self.ncross
+        if nprogeny is None:
+            nprogeny = self.nprogeny
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+        if ndset_trans is None:
+            ndset_trans = self.ndset_trans
+        if ndset_trans_kwargs is None:
+            ndset_trans_kwargs = self.ndset_trans_kwargs
+        if ndset_wt is None:
+            ndset_wt = self.ndset_wt
 
+        # convert method string to lower
+        method = method.lower()
+
+        # single objective method: objfn_trans returns a single value for each
+        # selection configuration
+        if method == "single":
+            # get vectorized objective function
+            objfn_vec = self.objfn_vec(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # get all GEBVs for each individual
+            # (n,)
+            gebv = objfn_vec(None)
+
+            # multiply the objectives by objfn_wt to transform to maximizing function
+            # (n,) * scalar -> (n,)
+            gebv = gebv * objfn_wt
+
+            # get indices of top nparent GEBVs
+            sel = gebv.argsort()[::-1][:nparent]
+
+            # shuffle indices for random mating
+            self.rng.shuffle(sel)
+
+            # get GEBVs for reference
+            misc = {"gebv" : gebv}
+
+            return pgmat, sel, ncross, nprogeny, misc
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
+        elif method == "pareto":
+            # get the pareto frontier
+            frontier, sel_config, misc = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                nparent = nparent,
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
+            )
+
+            # get scores for each of the points along the pareto frontier
+            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to misc
+            misc["frontier"] = frontier
+            misc["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], ncross, nprogeny, misc
+        else:
+            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
         # get objective function
         objfn = self.pobjfn(
             t_cur = t_cur,
@@ -139,183 +219,262 @@ class WeightedGenomicParentSelection(SelectionProtocol):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return a parent selection objective function for the provided datasets.
         """
-        # OPTIMIZE: use geno["cand"].tacount()??? # unphased genotype matrix
-        mat = geno["cand"].mat                  # genotype matrix
-        mu = gmod["cand"].mu                    # trait means
-        beta = gmod["cand"].beta                # (p,t) regression coefficients
-        afreq = geno["cand"].afreq()[:,None]    # (p,1) allele frequencies
-        fafreq = numpy.where(                   # (p,t) calculate favorable allele frequencies
-            beta > 0.0,                         # if dominant (1) allele is beneficial
-            afreq,                              # get dominant allele frequency
-            1.0 - afreq                         # else get recessive allele frequency
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get pointers to raw numpy.ndarray matrices
+        mat = gmat.mat      # (n,p) get genotype matrix
+        beta = gpmod.beta   # (p,t) get regression coefficients
+
+        # calculate weight adjustments for WGS
+        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
+        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
+            beta > 0.0,                     # if dominant (1) allele is beneficial
+            afreq,                          # get dominant allele frequency
+            1.0 - afreq                     # else get recessive allele frequency
         )
-        fafreq[fafreq <= 0.0] = 1.0             # avoid division by zero/imaginary
-        betawt = numpy.power(fafreq, -0.5)      # calculate weights: 1/sqrt(p)
+        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
+        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
-        def objfn(sel, mat = mat, mu = mu, beta = beta, betawt = betawt, traitwt = traitwt):
-            """
-            Score a population of individuals based on Conventional Genomic Selection
-            (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-            Genomic Estimated Breeding Values (GEBV) for a population.
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_static.__code__,                 # byte code pointer
+            self.objfn_static.__globals__,              # global variables
+            None,                                       # new name for the function
+            (mat, beta, betawt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_static.__closure__               # closure byte code pointer
+        )
 
-            CGS selects the 'q' individuals with the largest GEBVs.
+        return outfn
 
-            Parameters
-            ----------
-            sel : numpy.ndarray, None
-                A selection indices matrix of shape (k,)
-                Where:
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A int8 binary genotype matrix of shape (m, n, p).
-                Where:
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'p' is the number of markers.
-            mu : numpy.ndarray
-                A trait mean matrix of shape (t, 1)
-                Where:
-                    't' is the number of traits.
-            beta : numpy.ndarray
-                A trait prediction coefficients matrix of shape (p, t).
-                Where:
-                    'p' is the number of markers.
-                    't' is the number of traits.
-            betawt : numpy.ndarray
-                Multiplicative marker weights matrix to apply to the trait
-                prediction coefficients provided of shape (p, t).
-                Where:
-                    'p' is the number of markers.
-                    't' is the number of traits.
-                Trait prediction coefficients (beta) are transformed as follows:
-                    beta_new = beta ⊙ betawt (Hadamard product)
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of trait objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
-
-            Returns
-            -------
-            cgs : numpy.ndarray
-                A GEBV matrix of shape (k, t) if objwt is None.
-                A GEBV matrix of shape (k,) if objwt shape is (t,)
-                Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
-            """
-            # if sel is None, slice all individuals
-            if sel is None:
-                sel = slice(None)
-
-            # CGS calculation explanation
-            # Step 1: (m,k,p) -> (k,p)
-            # Step 2: (k,p) . (p,t) -> (k,t)
-            # Step 3: (k,t) + (1,t) -> (k,t)
-            cgs = mat[:,sel,:].sum(0).dot(beta*betawt) + mu.T
-
-            # apply objective weights
-            # (k,t) . (t,) -> (k,)
-            if traitwt is not None:
-                cgs = cgs.dot(traitwt)
-
-            # print(cgs)
-
-            return cgs
-
-        return objfn
-
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a vectorized objective function.
         """
-        mat = geno["cand"].mat      # genotype matrix
-        mu = gmod["cand"].mu        # trait means
-        beta = gmod["cand"].beta    # regression coefficients
-        afreq = gmod["cand"].afreq()    # get allele frequencies
-        fafreq = numpy.where(           # get favorable allele frequencies
-            beta > 0.0,                 # if dominant (1) allele is beneficial
-            afreq,                      # get dominant allele frequency
-            1.0 - afreq                 # else get recessive allele frequency
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get pointers to raw numpy.ndarray matrices
+        mat = gmat.mat      # (n,p) get genotype matrix
+        beta = gpmod.beta   # (p,t) get regression coefficients
+
+        # calculate weight adjustments for WGS
+        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
+        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
+            beta > 0.0,                     # if dominant (1) allele is beneficial
+            afreq,                          # get dominant allele frequency
+            1.0 - afreq                     # else get recessive allele frequency
         )
-        fafreq[fafreq <= 0.0] = 1.0     # avoid division by zero/imaginary
+        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
         betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
-        def objfn_vec(sel, mat = mat, mu = mu, beta = beta, betawt = betawt, traitwt = traitwt):
-            """
-            Score a population of individuals based on Conventional Genomic Selection
-            (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-            Genomic Estimated Breeding Values (GEBV) for a population.
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_vec_static.__code__,             # byte code pointer
+            self.objfn_vec_static.__globals__,          # global variables
+            None,                                       # new name for the function
+            (mat, beta, betawt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_vec_static.__closure__           # closure byte code pointer
+        )
 
-            Parameters
-            ----------
-            sel : numpy.ndarray
-                A selection indices matrix of shape (j,k)
-                Where:
-                    'j' is the number of selection configurations.
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A int8 binary genotype matrix of shape (m, n, p).
-                Where:
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'p' is the number of markers.
-            mu : numpy.ndarray
-                A trait mean matrix of shape (t, 1)
-                Where:
-                    't' is the number of traits.
-            beta : numpy.ndarray
-                A trait prediction coefficients matrix of shape (p, t).
-                Where:
-                    'p' is the number of markers.
-                    't' is the number of traits.
-            betawt : numpy.ndarray
-                Multiplicative marker weights matrix to apply to the trait
-                prediction coefficients provided of shape (p, t).
-                Where:
-                    'p' is the number of markers.
-                    't' is the number of traits.
-                Trait prediction coefficients (beta) are transformed as follows:
-                    beta_new = beta ⊙ betawt (Hadamard product)
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
+        return outfn
 
-            Returns
-            -------
-            cgs : numpy.ndarray
-                A trait GEBV matrix of shape (j,k,t) if objwt is None.
-                A trait GEBV matrix of shape (j,k) if objwt shape is (t,)
-                OR
-                A weighted GEBV matrix of shape (t,).
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+        """
+        Calculate a Pareto frontier for objectives.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing three objects (frontier, sel_config, misc)
+            Elements
+            --------
+            frontier : numpy.ndarray
+                Array of shape (q,v) containing Pareto frontier points.
                 Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
-            """
-            # (m,n,p)[:,(j,k),:] -> (m,j,k,p)
-            # (m,j,k,p) -> (j,k,p)
-            # (j,k,p) . (p,t) -> (j,k,t)
-            # (j,k,t) + (1,t) -> (j,k,t)
-            cgs = mat[:,sel,:].sum(0).dot(beta*betawt) + mu.T
+                    'q' is the number of points in the frontier.
+                    'v' is the number of objectives for the frontier.
+            sel_config : numpy.ndarray
+                Array of shape (q,k) containing parent selection decisions for
+                each corresponding point in the Pareto frontier.
+                Where:
+                    'q' is the number of points in the frontier.
+                    'k' is the number of search space decision variables.
+            misc : dict
+                A dictionary of miscellaneous output. (User specified)
+        """
+        raise NotImplementedError("method is abstract")
 
-            # (j,k,t) . (t,) -> (j,k)
-            if traitwt is not None:
-                cgs = cgs.dot(traitwt)
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    @staticmethod
+    def objfn_static(sel, mat, beta, betawt, trans, kwargs):
+        """
+        Score a population of individuals based on Weighted Genomic Selection
+        (WGS). Scoring for WGS is defined as the sum of weighted Genomic
+        Estimated Breeding Values (wGEBV) for a population.
 
-            return cgs
+        WGS selects the 'q' individuals with the largest GEBVs.
 
-        return objfn_vec
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        mat : numpy.ndarray
+            A int8 binary genotype matrix of shape (n, p).
+            Where:
+                'n' is the number of individuals.
+                'p' is the number of markers.
+        beta : numpy.ndarray
+            A trait prediction coefficients matrix of shape (p, t).
+            Where:
+                'p' is the number of markers.
+                't' is the number of traits.
+        betawt : numpy.ndarray
+            Multiplicative marker weights matrix to apply to the trait
+            prediction coefficients provided of shape (p, t).
+            Where:
+                'p' is the number of markers.
+                't' is the number of traits.
+            Trait prediction coefficients (beta) are transformed as follows:
+                beta_new = beta ⊙ betawt (Hadamard product)
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+                Must accept a single numpy.ndarray argument.
+                Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to 'trans' function.
+
+        Returns
+        -------
+        wgs : numpy.ndarray
+            A GEBV matrix of shape (k, t) if objwt is None.
+            A GEBV matrix of shape (k,) if objwt shape is (t,)
+            Where:
+                'k' is the number of individuals selected.
+                't' is the number of traits.
+        """
+        # if sel is None, slice all individuals
+        if sel is None:
+            sel = slice(None)
+
+        # CGS calculation explanation
+        # Step 1: (n,p) -> (k,p)            # select individuals
+        # Step 2: (k,p) . (p,t) -> (k,t)    # calculate wGEBVs
+        # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
+        wgs = mat[sel,:].dot(beta*betawt).sum(0)
+
+        # apply transformations
+        # (t,) ---trans---> (?,)
+        if trans:
+            wgs = trans(wgs, **kwargs)
+
+        return wgs
+
+    @staticmethod
+    def objfn_vec_static(sel, mat, beta, betawt, trans, kwargs):
+        """
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
+        Genomic Estimated Breeding Values (GEBV) for a population.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (j,k)
+            Where:
+                'j' is the number of selection configurations.
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, score each individual separately: (n,1)
+        mat : numpy.ndarray
+            A genotype matrix of shape (n, p).
+            Where:
+                'n' is the number of individuals.
+                'p' is the number of markers.
+        beta : numpy.ndarray
+            A trait prediction coefficients matrix of shape (p, t).
+            Where:
+                'p' is the number of markers.
+                't' is the number of traits.
+        betawt : numpy.ndarray
+            Multiplicative marker weights matrix to apply to the trait
+            prediction coefficients provided of shape (p, t).
+            Where:
+                'p' is the number of markers.
+                't' is the number of traits.
+            Trait prediction coefficients (beta) are transformed as follows:
+                beta_new = beta ⊙ betawt (Hadamard product)
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+                Must accept a single numpy.ndarray argument.
+                Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to 'trans' function.
+
+        Returns
+        -------
+        cgs : numpy.ndarray
+            A GEBV matrix of shape (j,t) if 'trans' is None.
+            Otherwise, of shape specified by 'trans'.
+            Where:
+                'j' is the number of selection configurations.
+                't' is the number of traits.
+        """
+        # if sel is None, slice all individuals
+        if sel is None:
+            n = mat.shape[0]
+            sel = numpy.arange(n).reshape(n,1)
+
+        # CGS calculation explanation
+        # (n,p)[(j,k),:] -> (j,k,p)     # select configurations
+        # (j,k,p) . (p,t) -> (j,k,t)    # calculate wGEBVs
+        # (j,k,t).sum(1) -> (j,t)       # sum across all individuals in config
+        cgs = mat[sel,:].dot(beta*betawt).sum(1)
+
+        # apply transformations
+        # (j,t) ---trans---> (?,?)
+        if trans:
+            cgs = trans(cgs, **kwargs)
+
+        return cgs

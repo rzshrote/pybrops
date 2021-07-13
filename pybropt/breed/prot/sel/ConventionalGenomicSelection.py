@@ -9,15 +9,12 @@ from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
 
 class ConventionalGenomicSelection(SelectionProtocol):
-    """docstring for ConventionalGenomicSelection."""
+    """Perform conventional genomic selection"""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
         Constructor for conventional genomic selection (CGS).
 
@@ -67,11 +64,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max,
-    method = "single", nparent = None, ncross = None, nprogeny = None,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None,
-    **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -94,7 +87,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
         method : str
             Options: "single", "pareto"
         nparent : int
-        traitwt : numpy.ndarray
+        ncross : int
+        nprogeny : int
         **kwargs
             Additional keyword arguments.
 
@@ -137,6 +131,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
         # convert method string to lower
         method = method.lower()
 
+        # single-objective method: objfn_trans returns a single value for each
+        # selection configuration
         if method == "single":
             # get vectorized objective function
             objfn_vec = self.objfn_vec(
@@ -169,6 +165,9 @@ class ConventionalGenomicSelection(SelectionProtocol):
             misc = {"gebv" : gebv}
 
             return pgmat, sel, ncross, nprogeny, misc
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
         elif method == "pareto":
             # get the pareto frontier
             frontier, sel_config, misc = self.pareto(
@@ -199,9 +198,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max,
-    trans = None, trans_kwargs = None,
-    **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a parent selection objective function.
         """
@@ -227,9 +224,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max,
-    trans = None, trans_kwargs = None,
-    **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a vectorized objective function.
         """
@@ -255,10 +250,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max,
-    nparent = None,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None
-    **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
