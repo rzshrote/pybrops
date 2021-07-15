@@ -309,7 +309,7 @@ class MultiObjectiveGenomicParentSelection(SelectionProtocol):
             misc["frontier"] = frontier
             misc["sel_config"] = sel_config
 
-            return geno["cand"], sel_config[ix], self.ncross, self.nprogeny, misc
+            return geno["cand"], sel_config[ix], ncross, nprogeny, misc
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 

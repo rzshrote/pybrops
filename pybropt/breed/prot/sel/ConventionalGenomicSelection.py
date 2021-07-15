@@ -135,7 +135,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         # selection configuration
         if method == "single":
             # get vectorized objective function
-            objfn_vec = self.objfn_vec(
+            objfn = self.objfn(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -149,7 +149,10 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
             # get all GEBVs for each individual
             # (n,)
-            gebv = objfn_vec(None)
+            gebv = [objfn(i) for i in range(gmat.ntaxa)]
+
+            # convert to numpy.ndarray
+            gebv = numpy.array(gebv)
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)

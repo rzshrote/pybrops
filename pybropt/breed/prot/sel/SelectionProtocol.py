@@ -165,16 +165,50 @@ class SelectionProtocol:
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, **kwargs):
+    def objfn_static(sel, *args):
         """
         Objective function for the selection protocol.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A parent contribution vector of shape (n,) and floating dtype.
+            Where:
+                'n' is the number of individuals.
+        *args : tuple
+            Additional arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray, scalar
+            An array of objective function values of shape (o,) or a scalar.
+            Where:
+                'o' is the number of objectives.
         """
         raise NotImplementedError("method is abstract")
 
     @staticmethod
-    def objfn_vec_static(sel, **kwargs):
+    def objfn_vec_static(sel, *args):
         """
         Vectorized objective function for the selection protocol.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A parent contribution vector of shape (j,n) and floating dtype.
+            Where:
+                'j' is the number of selection configurations.
+                'n' is the number of individuals.
+        *args : tuple
+            Additional arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of objective function values of shape (j,o) or (j,).
+            Where:
+                'j' is the number of selection configurations.
+                'o' is the number of objectives.
         """
         raise NotImplementedError("method is abstract")
 

@@ -56,38 +56,28 @@ class WeightedGenomicParentSelection(SelectionProtocol):
 
         Parameters
         ----------
+        pgmat : PhasedGenotypeMatrix
+            Phased genotype matrix containing full genome information.
+        gmat : GenotypeMatrix
+            Genotype matrix containing genotype data (phased or unphased)
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
         t_cur : int
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        geno : dict
-            A dict containing genotypic data for all breeding populations.
-            Must have the following fields:
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
-        bval : dict
-            A dict containing breeding value data.
-            Must have the following fields:
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-        gmod : dict
-            A dict containing genomic models.
-            Must have the following fields:
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                true  | GenomicModel         | True genomic model for trait(s)
-        k : int
-        traitwt : numpy.ndarray
+        method : str
+            Options: "single", "pareto"
+        nparent : int, None
+            Number of parents. If None, use default.
+        ncross : int, None
+            Number of crosses per configuration. If None, use default.
+        nprogeny : int
+            Number of progeny per cross. If None, use default.
         **kwargs
             Additional keyword arguments.
 
@@ -134,7 +124,7 @@ class WeightedGenomicParentSelection(SelectionProtocol):
         # selection configuration
         if method == "single":
             # get vectorized objective function
-            objfn_vec = self.objfn_vec(
+            objfn = self.objfn(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -146,22 +136,25 @@ class WeightedGenomicParentSelection(SelectionProtocol):
                 trans_kwargs = objfn_trans_kwargs
             )
 
-            # get all GEBVs for each individual
+            # get all wGEBVs for each individual
             # (n,)
-            gebv = objfn_vec(None)
+            wgebv = [objfn(i) for i in range(gmat.ntaxa)]
+
+            # convert to numpy.ndarray
+            wgebv = numpy.array(wgebv)
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
-            gebv = gebv * objfn_wt
+            wgebv = wgebv * objfn_wt
 
             # get indices of top nparent GEBVs
-            sel = gebv.argsort()[::-1][:nparent]
+            sel = wgebv.argsort()[::-1][:nparent]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
 
             # get GEBVs for reference
-            misc = {"gebv" : gebv}
+            misc = {"wgebv" : wgebv}
 
             return pgmat, sel, ncross, nprogeny, misc
 
@@ -196,32 +189,10 @@ class WeightedGenomicParentSelection(SelectionProtocol):
             return pgmat, sel_config[ix], ncross, nprogeny, misc
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-        # get objective function
-        objfn = self.pobjfn(
-            t_cur = t_cur,
-            t_max = t_max,
-            geno = geno,
-            bval = bval,
-            gmod = gmod,
-            traitwt = traitwt
-        )
-
-        gebv = objfn(None)                  # get all GEBVs
-        if gebv.ndim == 1:                  # if there is one trait objective
-            sel = gebv.argsort()[::-1][:k]  # get indices of top k GEBVs
-            self.rng.shuffle(sel)           # shuffle indices
-        elif gebv.ndim == 2:                # TODO: ND-selection
-            raise RuntimeError("non-dominated genomic selection not implemented")
-
-        misc = {
-            "gebv" : gebv
-        }
-
-        return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a parent selection objective function for the provided datasets.
+        Return an objective function for the provided datasets.
         """
         # get default parameters if any are None
         if trans is None:
@@ -257,7 +228,7 @@ class WeightedGenomicParentSelection(SelectionProtocol):
 
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a vectorized objective function.
+        Return a vectorized objective function for the provided datasets.
         """
         # get default parameters if any are None
         if trans is None:

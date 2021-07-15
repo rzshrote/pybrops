@@ -59,9 +59,9 @@ class RandomSelection(SelectionProtocol):
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
-            Genomes
+            Phased genotype matrix containing full genome information.
         gmat : GenotypeMatrix
-            Genotypes
+            Genotype matrix containing genotype data (phased or unphased)
         ptdf : PhenotypeDataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
@@ -74,9 +74,17 @@ class RandomSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         method : str
             Options: "single", "pareto"
-        nparent : int
-        ncross : int
+        nparent : int, None
+            Number of parents. If None, use default.
+        ncross : int, None
+            Number of crosses per configuration. If None, use default.
         nprogeny : int
+            Number of progeny per cross. If None, use default.
+        replace : bool, None
+            Whether to sample parents with or without replacement. If None, use
+            default.
+        **kwargs
+            Additional keyword arguments.
 
         Returns
         -------

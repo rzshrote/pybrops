@@ -10,21 +10,31 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         super(ConventionalPhenotypicSelection, self).__init__(**kwargs)
 
-        # check data types
-        check_is_int(k_p, "k_p")
-        # TODO: check traitwt_p
+        # error checks
+        check_is_int(nparent, "nparent")
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
+        cond_check_is_callable(objfn_trans, "objfn_trans")
+        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
+        # TODO: check objfn_wt
+        cond_check_is_callable(ndset_trans, "ndset_trans")
+        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
+        # TODO: check ndset_wt
         cond_check_is_Generator(rng, "rng")
 
         # variable assignment
-        self.k_p = k_p
-        self.traitwt_p = traitwt_p
+        self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
@@ -34,7 +44,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -91,140 +101,150 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             misc : dict
                 Miscellaneous output (user defined).
         """
-        # get parameters
-        if k is None:
-            k = self.k_p
-        if traitwt is None:
-            traitwt = self.traitwt_p
+        # get default parameters if any are None
+        if nparent is None:
+            nparent = self.nparent
+        if ncross is None:
+            ncross = self.ncross
+        if nprogeny is None:
+            nprogeny = self.nprogeny
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+        if ndset_trans is None:
+            ndset_trans = self.ndset_trans
+        if ndset_trans_kwargs is None:
+            ndset_trans_kwargs = self.ndset_trans_kwargs
+        if ndset_wt is None:
+            ndset_wt = self.ndset_wt
 
-        # get objective function
-        objfn = self.pobjfn(
-            t_cur = t_cur,
-            t_max = t_max,
-            geno = geno,
-            bval = bval,
-            gmod = gmod,
-            traitwt = traitwt
+        # convert method string to lower
+        method = method.lower()
+
+        # single objective method: objfn_trans returns a single value for each
+        # selection configuration
+        if method == "single":
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # get all EBVs for each individual
+            # (n,)
+            ebv = [objfn(i) for i in range(bvmat.ntaxa)]
+
+            # convert to numpy.ndarray
+            ebv = numpy.array(ebv)
+
+            # multiply the objectives by objfn_wt to transform to maximizing function
+            # (n,) * scalar -> (n,)
+            ebv = ebv * objfn_wt
+
+            # get indices of top nparent GEBVs
+            sel = ebv.argsort()[::-1][:nparent]
+
+            # shuffle indices for random mating
+            self.rng.shuffle(sel)
+
+            # get GEBVs for reference
+            misc = {"ebv" : ebv}
+
+            return pgmat, sel, ncross, nprogeny, misc
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
+        elif method == "pareto":
+            # get the pareto frontier
+            frontier, sel_config, misc = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                nparent = nparent,
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
+            )
+
+            # get scores for each of the points along the pareto frontier
+            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to misc
+            misc["frontier"] = frontier
+            misc["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], ncross, nprogeny, misc
+
+        # raise error since method is not supported
+        else:
+            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
+
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+        """
+        Return an objective function for the provided datasets.
+        """
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get pointers to raw numpy.ndarray matrices
+        mat = bvmat.mat     # (n,t) get breeding value matrix
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_static.__code__,     # byte code pointer
+            self.objfn_static.__globals__,  # global variables
+            None,                           # new name for the function
+            (mat, trans, trans_kwargs),     # default values for arguments
+            self.objfn_static.__closure__   # closure byte code pointer
         )
 
-        ebv = objfn(None)                   # get all EBVs
-        if ebv.ndim == 1:                   # if there is one trait objective
-            sel = ebv.argsort()[::-1][:k]   # get indices of top k GEBVs
-            self.rng.shuffle(sel)           # shuffle indices
-        elif ebv.ndim == 2:                 # TODO: ND-selection
-            raise RuntimeError("non-dominated phenotypic selection not implemented")
+        return outfn
 
-        misc = {}   # empty dictionary
-
-        return geno["cand"], sel, self.ncross, self.nprogeny, misc
-
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return a vectorized objective function for the provided datasets.
         """
-        mat = bval["cand"].mat      # breeding value matrix
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
 
-        def objfn(sel, mat = mat, traitwt = traitwt):
-            """
-            Parameters
-            ----------
-            sel : numpy.ndarray, None
-                A selection indices matrix of shape (k,)
-                Where:
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A breeding value matrix of shape (n, t).
-                Where:
-                    'n' is the number of individuals.
-                    't' is the number of traits.
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of trait objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
+        # get pointers to raw numpy.ndarray matrices
+        mat = bvmat.mat     # (n,t) get breeding value matrix
 
-            Returns
-            -------
-            cps : numpy.ndarray
-                A matrix of shape (k, t) if objwt is None.
-                A matrix of shape (k,) if objwt shape is (t,)
-                Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
-            """
-            # if sel is None, slice all individuals
-            if sel is None:
-                sel = slice(None)
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_vec_static.__code__,     # byte code pointer
+            self.objfn_vec_static.__globals__,  # global variables
+            None,                               # new name for the function
+            (mat, trans, trans_kwargs),         # default values for arguments
+            self.objfn_vec_static.__closure__   # closure byte code pointer
+        )
 
-            # (n,t) -> (k,t)
-            cps = mat[sel,:]
-
-            # apply objective weights
-            # (k,t) . (t,) -> (k,)
-            if traitwt is not None:
-                cps = cps.dot(traitwt)
-
-            return cps
-
-        return objfn
-
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
-        """
-        Return a vectorized objective function.
-        """
-        mat = bval["cand"].mat      # breeding value matrix
-
-        def objfn_vec(sel, mat = mat, traitwt = traitwt):
-            """
-            Parameters
-            ----------
-            sel : numpy.ndarray
-                A selection indices matrix of shape (j,k)
-                Where:
-                    'j' is the number of selection configurations.
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A int8 binary genotype matrix of shape (m, n, p).
-                Where:
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'p' is the number of markers.
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
-
-            Returns
-            -------
-            cgs : numpy.ndarray
-                A trait GEBV matrix of shape (j,k,t) if objwt is None.
-                A trait GEBV matrix of shape (j,k) if objwt shape is (t,)
-                OR
-                A weighted GEBV matrix of shape (t,).
-                Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
-            """
-            # (n,t) -> (k,t)
-            # (n,t)[(j,k),:] -> (j,k,t)
-            cps = mat[sel,:]
-
-            # (j,k,t) . (t,) -> (j,k)
-            if traitwt is not None:
-                cps = cps.dot(traitwt)
-
-            return cps
-
-        return objfn_vec
+        return outfn
 
     ############################################################################
     ############################## Static Methods ##############################
@@ -233,7 +253,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     def objfn_static(sel, mat, trans, kwargs):
         """
         Score a selection configuration based on its breeding values
-        (Conventional Phenotype Selection).
+        (Conventional Phenotype Selection; CPS).
 
         CPS selects the 'q' individuals with the largest EBVs.
 
@@ -286,9 +306,10 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     @staticmethod
     def objfn_vec_static(sel, mat, trans, kwargs):
         """
-        Score a population of individuals based on Conventional Genomic Selection
-        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-        Genomic Estimated Breeding Values (GEBV) for a population.
+        Score a selection configuration based on its breeding values
+        (Conventional Phenotype Selection; CPS).
+
+        CPS selects the 'q' individuals with the largest EBVs.
 
         Parameters
         ----------
@@ -301,10 +322,10 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             Each index in 'sel' represents a single individual's row.
             If 'sel' is None, score each individual separately: (n,1)
         mat : numpy.ndarray
-            A genotype matrix of shape (n, p).
+            A breeding value matrix of shape (n,t).
             Where:
                 'n' is the number of individuals.
-                'p' is the number of markers.
+                't' is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
