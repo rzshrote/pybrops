@@ -5,6 +5,7 @@ from . import DenseMutableMatrix
 from . import TaxaMatrix
 
 from pybropt.core.error import check_is_int
+from pybropt.core.error import check_is_iterable
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8
 from pybropt.core.error import check_ndarray_is_2d
@@ -18,7 +19,6 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.mat import get_axis
-from pybropt.core.error import check_is_iterable
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     """docstring for DenseTaxaMatrix."""

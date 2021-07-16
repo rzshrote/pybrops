@@ -46,5 +46,6 @@ from .DenseTaxaMatrix import *      # order 0
 from .DenseVariantMatrix import *   # order 0
 
 # level 4 implementation
+from .DenseTaxaTraitMatrix import *         # order 0
 from .DenseTaxaVariantMatrix import *       # order 0
 from .DensePhasedTaxaVariantMatrix import * # order 1

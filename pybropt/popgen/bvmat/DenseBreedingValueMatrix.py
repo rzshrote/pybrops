@@ -1,25 +1,17 @@
-import copy
 import numpy
 
+from pybropt.core.mat import DenseTaxaTraitMatrix
 from . import BreedingValueMatrix
-from pybropt.core.mat import get_axis
-from pybropt.core.mat import is_Matrix
 from pybropt.core.error import check_is_ndarray
-from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import check_ndarray_ndim
 
-# TODO: inherit from DenseMutableMatrix
-class DenseBreedingValueMatrix(BreedingValueMatrix):
-    """
-    Partial implementation of the BreedingValueMatrix interface.
-    Implements matrix numeric, logical, and container operators.
-    Implements matrix checking.
-    All else is abstract.
-    """
+class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
+    """Dense breeding value matrix implementation."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         BreedingValueMatrix constructor
 
@@ -32,194 +24,12 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
             arguments to the parent class constructor.
 
         """
-        super(DenseBreedingValueMatrix, self).__init__(**kwargs)
-        self.mat = mat
-
-    ############## Forward numeric operators ###############
-    def __add__(self, value):
-        return self._mat + value
-
-    def __sub__(self, value):
-        return self._mat - value
-
-    def __mul__(self, value):
-        return self._mat * value
-
-    def __matmul__(self, value):
-        return self._mat @ value
-
-    def __truediv__(self, value):
-        return self._mat / value
-
-    def __floordiv__(self, value):
-        return self._mat // value
-
-    def __mod__(self, value):
-        return self._mat % value
-
-    def __divmod__(self, value):
-        return divmod(self._mat, value)
-
-    def __pow__(self, value):
-        return self._mat ** value
-
-    def __lshift__(self, value):
-        return self._mat << value
-
-    def __rshift__(self, value):
-        return self._mat >> value
-
-    def __and__(self, value):
-        return self._mat & value
-
-    def __xor__(self, value):
-        return self._mat ^ value
-
-    def __or__(self, value):
-        return self._mat | value
-
-    ############# Backwards numeric operators ##############
-    def __radd__(self, value):
-        return value + self._mat
-
-    def __rsub__(self, value):
-        return value - self._mat
-
-    def __rmul__(self, value):
-        return value * self._mat
-
-    def __rmatmul__(self, value):
-        return value @ self._mat
-
-    def __rtruediv__(self, value):
-        return value / self._mat
-
-    def __rfloordiv__(self, value):
-        return value // self._mat
-
-    def __rmod__(self, value):
-        return value % self._mat
-
-    def __rdivmod__(self, value):
-        return divmod(value, self._mat)
-
-    def __rlshift__(self, value):
-        return value << self._mat
-
-    def __rrshift__(self, value):
-        return value >> self._mat
-
-    def __rand__(self, value):
-        return value & self._mat
-
-    def __rxor__(self, value):
-        return value ^ self._mat
-
-    def __ror__(self, value):
-        return value | self._mat
-
-    ############# Augmented numeric operators ##############
-    def __iadd__(self, value):
-        self._mat += value
-
-    def __isub__(self, value):
-        self._mat -= value
-
-    def __imul__(self, value):
-        self._mat *= value
-
-    def __imatmul__(self, value):
-        self._mat @= value
-
-    def __itruediv__(self, value):
-        self._mat /= value
-
-    def __ifloordiv__(self, value):
-        self._mat //= value
-
-    def __imod__(self, value):
-        self._mat %= value
-
-    def __ipow__(self, value):
-        self._mat **= value
-
-    def __ilshift__(self, value):
-        self._mat <<= value
-
-    def __irshift__(self, value):
-        self._mat >>= value
-
-    def __iand__(self, value):
-        self._mat &= value
-
-    def __ixor__(self, value):
-        self._mat ^= value
-
-    def __ior__(self, value):
-        self._mat |= value
-
-    ################## Logical operators ###################
-    def __lt__(self, value):
-        return self._mat < value
-
-    def __le__(self, value):
-        return self._mat <= value
-
-    def __eq__(self, value):
-        return self._mat == value
-
-    def __ne__(self, value):
-        return self._mat != value
-
-    def __gt__(self, value):
-        return self._mat > value
-
-    def __ge__(self, value):
-        return self._mat >= value
-
-    ################# Container operators ##################
-    def __len__(self):
-        return len(self._mat)
-
-    def __getitem__(self, key):
-        return self._mat[key]
-
-    def __setitem__(self, key, value):
-        self._mat[key] = value
-
-    def __delitem__(self, key):
-        del self._mat[key]
-
-    def __iter__(self):
-        return iter(self._mat)
-
-    #################### Matrix copying ####################
-    def __copy__(self):
-        """
-        Make a shallow copy of the the matrix.
-
-        Returns
-        -------
-        out : Matrix
-        """
-        return self.__class__(
-            mat = copy.copy(self.mat)
-        )
-
-    def __deepcopy__(self, memo):
-        """
-        Make a deep copy of the matrix.
-
-        Parameters
-        ----------
-        memo : dict
-
-        Returns
-        -------
-        out : Matrix
-        """
-        return self.__class__(
-            mat = copy.deepcopy(self.mat)
+        super(DenseBreedingValueMatrix, self).__init__(
+            mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
         )
 
     ############################################################################
@@ -228,15 +38,17 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
 
     ################# Breeding Value Data ##################
     def mat():
-        doc = "The mat property."
+        doc = "Raw matrix property."
         def fget(self):
+            """Get raw matrix"""
             return self._mat
         def fset(self, value):
-            # The only assumption is that mat is a numpy.ndarray matrix.
-            # Let the user decide whether to overwrite error checks.
+            """Set raw matrix"""
             check_is_ndarray(value, "mat")
+            check_ndarray_ndim(value, "mat", 2)
             self._mat = value
         def fdel(self):
+            """Delete raw matrix"""
             del self._mat
         return locals()
     mat = property(**mat())
@@ -245,33 +57,126 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
-    #################### Matrix copying ####################
-    def copy(self):
+    ############## Matrix summary statistics ###############
+    def targmax(self):
         """
-        Make a shallow copy of the Matrix.
+        Return indices of the maximum values along the trait axis.
 
         Returns
         -------
-        out : Matrix
-            A shallow copy of the original Matrix.
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of maximum values
+            along the trait axis.
+            Where:
+                't' is the number of traits.
         """
-        return self.__copy__()
+        out = self._mat.argmax(axis = 0)    # get argument maximum
+        return out
 
-    def deepcopy(self, memo):
+    def targmin(self):
         """
-        Make a deep copy of the Matrix.
-
-        Parameters
-        ----------
-        memo : dict
-            Dictionary of memo metadata.
+        Return indices of the minimum values along the trait axis.
 
         Returns
         -------
-        out : Matrix
-            A deep copy of the original Matrix.
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of minimum values
+            along the trait axis.
+            Where:
+                't' is the number of traits.
         """
-        return self.__deepcopy__(memo)
+        out = self._mat.argmin(axis = 0)    # get argument minimum
+        return out
+
+    def tmax(self):
+        """
+        Return the maximum along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.max(axis = 0)   # get maximum
+        return out
+
+    def tmean(self):
+        """
+        Return the mean along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.mean(axis = 0)  # get mean
+        return out
+
+    def tmin(self):
+        """
+        Return the minimum along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An index array of shape (t,) containing minimum values along the
+            trait axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.min(axis = 0)   # get minimum
+        return out
+
+    def trange(self):
+        """
+        Return the range along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing variance values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = numpy.ptp(self._mat, axis = 0)    # get range
+        return out
+
+    def tstd(self):
+        """
+        Return the standard deviation along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing standard deviation values along
+            the trait axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.std(axis = 0)   # get standard deviation
+        return out
+
+    def tvar(self):
+        """
+        Return the variance along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing variance values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.var(axis = 0)   # get variance
+        return out
 
 
 
