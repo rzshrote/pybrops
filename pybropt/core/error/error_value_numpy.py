@@ -27,6 +27,10 @@ def check_ndarray_is_binary(v, vname):
     if not numpy.all((v == 0) | (v == 1)):
         raise ValueError("variable '{0}' must have values equal to 0 or 1".format(vname))
 
+def check_ndarray_is_positive(v, vname):
+    if numpy.any(v < 0):
+        raise ValueError("variable '{0}' must have all positive values".format(vname))
+
 ################ generic_check_ndarray_ndim ################
 def check_ndarray_ndim(v, vname, vndim):
     generic_check_ndarray_ndim(v, vname, vndim)

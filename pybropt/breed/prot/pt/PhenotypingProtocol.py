@@ -8,9 +8,43 @@ class PhenotypingProtocol:
         super(PhenotypingProtocol, self).__init__()
 
     ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+
+    ############### Genomic Model Properties ###############
+    def gpmod():
+        doc = "Genomic prediction model."
+        def fget(self):
+            """Get genomic prediction model"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set genomic prediction model"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete genomic prediction model"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    gpmod = property(**gpmod())
+
+    ################ Stochastic Parameters #################
+    def var_E():
+        doc = "Environmental variance for each trait."
+        def fget(self):
+            """Get environmental variance"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set environmental variance"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete environmental variance"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    var_E = property(**var_E())
+
+    ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, gpmod, **kwargs):
+    def phenotype(self, pgmat, **kwargs):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -18,8 +52,6 @@ class PhenotypingProtocol:
         ----------
         pgmat : PhasedGenotypeMatrix
             Genomes of the individuals to phenotype.
-        gpmod : GenomicModel
-            Genomic prediction model to use to determine phenotypes.
         **kwargs : dict
             Additional keyword arguments.
 
@@ -27,6 +59,36 @@ class PhenotypingProtocol:
         -------
         out : PhenotypeDataFrame
             DataFrame containing phenotypes.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def set_h2(self, h2, pgmat, **kwargs):
+        """
+        Set the narrow sense heritability for environments.
+
+        Parameters
+        ----------
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        pgmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
+        """
+        raise NotImplementedError("method is abstract")
+
+    def set_H2(self, H2, pgmat, **kwargs):
+        """
+        Set the broad sense heritability for environments.
+
+        Parameters
+        ----------
+        H2 : float, numpy.ndarray
+            Broad sense heritability.
+        pgmat : PhasedGenotypeVariantMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")
 

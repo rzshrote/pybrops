@@ -48,8 +48,11 @@ def check_is_str(v, vname):
 def check_is_tuple(v, vname):
     generic_check_isinstance(v, vname, tuple)
 
-def check_is_(v, vname):
-    generic_check_isinstance(v, vname, )
+def check_is_Number(v, vname):
+    generic_check_isinstance(v, vname, numbers.Number)
+
+def check_is_Integral(v, vname):
+    generic_check_isinstance(v, vname, numbers.Integral)
 
 ################################################################################
 ################ compound check functions for basic data types #################

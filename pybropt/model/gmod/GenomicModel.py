@@ -54,6 +54,17 @@ class GenomicModel:
         return locals()
     trait = property(**trait())
 
+    def ntrait():
+        doc = "Number of traits property."
+        def fget(self):
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            raise NotImplementedError("method is abstract")
+        return locals()
+    ntrait = property(**ntrait())
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
