@@ -1,4 +1,4 @@
-class PhenotypingProtocol:
+var_errclass PhenotypingProtocol:
     """docstring for PhenotypingProtocol."""
 
     ############################################################################
@@ -27,19 +27,19 @@ class PhenotypingProtocol:
     gpmod = property(**gpmod())
 
     ################ Stochastic Parameters #################
-    def var_E():
-        doc = "Environmental variance for each trait."
+    def var_err():
+        doc = "Error variance for each trait."
         def fget(self):
-            """Get environmental variance"""
+            """Get error variance"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
-            """Set environmental variance"""
+            """Set error variance"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
-            """Delete environmental variance"""
+            """Delete error variance"""
             raise NotImplementedError("method is abstract")
         return locals()
-    var_E = property(**var_E())
+    var_err = property(**var_err())
 
     ############################################################################
     ############################## Object Methods ##############################

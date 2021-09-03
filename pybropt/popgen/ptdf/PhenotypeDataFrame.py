@@ -1,4 +1,6 @@
-class PhenotypeDataFrame:
+from pybropt.core.df import DataFrame
+
+class PhenotypeDataFrame(DataFrame):
     """Abstract class for phenotype dataframe objects."""
 
     ############################################################################
@@ -10,28 +12,33 @@ class PhenotypeDataFrame:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def df():
-        doc = "Access to raw data frame."
+    def analysis_type():
+        doc = "Analysis variable type array."
         def fget(self):
-            """Get dataframe"""
+            """Get analysis variable type array"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
-            """Set dataframe"""
+            """Set analysis variable type array"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
-            """Delete dataframe"""
+            """Delete analysis variable type array"""
             raise NotImplementedError("method is abstract")
         return locals()
-    df = property(**df())
+    analysis_type = property(**analysis_type())
 
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def to_pandas_df(self, **kwargs):
-        """
-        Get dataframe as a pandas.DataFrame.
-        """
-        raise NotImplementedError("method is abstract")
+    def analysis_effect():
+        doc = "Analysis variable effect type {'response','fixed','random',None} array."
+        def fget(self):
+            """Get analysis variable effect type array"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set analysis variable effect type array"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete analysis variable effect type array"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    analysis_effect = property(**analysis_effect())
 
 
 

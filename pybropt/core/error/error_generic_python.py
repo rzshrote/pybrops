@@ -71,6 +71,10 @@ def generic_check_is_not(v, vname, w, wname):
     if v is w:
         raise ValueError("variable '{0}' is not '{1}'".format(vname, wname))
 
+def generic_check_len(v, vname, n):
+    if len(v) != n:
+        raise ValueError("the length of '{0}' is not equal to {1}".format(vname,n))
+
 def generic_check_len_eq(v, vname, w, wname):
     if len(v) != len(w):
         raise ValueError("the lengths of '{0}' and '{1}' are not equivalent".format(vname, wname))
@@ -132,6 +136,10 @@ def generic_cond_check_is(v, vname, w, wname, cond = generic_default_cond):
 def generic_cond_check_is_not(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
         generic_check_is_not(v, vname, w, wname)
+
+def generic_cond_check_len(v, vname, n, cond = generic_default_cond):
+    if cond(v):
+        generic_check_len(v, vname, n)
 
 def generic_cond_check_len_eq(v, vname, w, wname, cond = generic_default_cond):
     if cond(v):
