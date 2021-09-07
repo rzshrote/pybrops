@@ -2,7 +2,7 @@ from . import PhenotypeDataFrame
 
 from pybropt.core.error import check_is_pandas_df
 
-class PandasDataFrame(PhenotypeDataFrame):
+class PandasDataFrame(DataFrame):
     """docstring for PandasDataFrame."""
 
     ############################################################################

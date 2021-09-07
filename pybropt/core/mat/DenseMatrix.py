@@ -1,7 +1,9 @@
 import copy
+import numpy
 from . import Matrix
 
 from pybropt.core.error import error_readonly
+from pybropt.core.error import check_is_ndarray
 
 class DenseMatrix(Matrix):
     """docstring for DenseMatrix."""

@@ -1,0 +1,131 @@
+digraph pybropt_arch {
+	DataFrame [color="#EE6262" shape=box style=filled]
+	PandasDataFrame [color=lightblue2 shape=box style=filled]
+	HDF5InputOutput [color="#EE6262" shape=box style=filled]
+	DenseMatrix [color=lightblue2 shape=box style=filled]
+	DenseMutableMatrix [color=lightblue2 shape=box style=filled]
+	DensePhasedMatrix [color=lightblue2 shape=box style=filled]
+	DensePhasedTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+	DenseTaxaMatrix [color=lightblue2 shape=box style=filled]
+	DenseTaxaTraitMatrix [color=lightblue2 shape=box style=filled]
+	DenseTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+	DenseTraitMatrix [color=lightblue2 shape=box style=filled]
+	DenseVariantMatrix [color=lightblue2 shape=box style=filled]
+	GroupableMatrix [color="#EE6262" shape=box style=filled]
+	Matrix [color="#EE6262" shape=box style=filled]
+	MutableMatrix [color="#EE6262" shape=box style=filled]
+	PhasedMatrix [color="#EE6262" shape=box style=filled]
+	PhasedTaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+	PrunableMatrix [color="#EE6262" shape=box style=filled]
+	SortableMatrix [color="#EE6262" shape=box style=filled]
+	TaxaMatrix [color="#EE6262" shape=box style=filled]
+	TaxaTraitMatrix [color="#EE6262" shape=box style=filled]
+	TaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+	TraitMatrix [color="#EE6262" shape=box style=filled]
+	VariantMatrix [color="#EE6262" shape=box style=filled]
+	BreedingValueMatrix [color="#EE6262" shape=box style=filled]
+	DenseBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+	CoancestryMatrix [color="#EE6262" shape=box style=filled]
+	DenseCoancestryMatrix [color=lightblue2 shape=box style=filled]
+	DenseMolecularCoancestryMatrix [color=lightblue2 shape=box style=filled]
+	DenseVanRadenCoancestryMatrix [color=lightblue2 shape=box style=filled]
+	DenseGeneticMappableMatrix [color=lightblue2 shape=box style=filled]
+	ExtendedGeneticMap [color=lightblue2 shape=box style=filled]
+	GeneticMap [color="#EE6262" shape=box style=filled]
+	GeneticMapFunction [color="#EE6262" shape=box style=filled]
+	GeneticMappableMatrix [color="#EE6262" shape=box style=filled]
+	HaldaneMapFunction [color=lightblue2 shape=box style=filled]
+	KosambiMapFunction [color=lightblue2 shape=box style=filled]
+	StandardGeneticMap [color=lightblue2 shape=box style=filled]
+	DenseGenotypeMatrix [color=lightblue2 shape=box style=filled]
+	DensePhasedGenotypeMatrix [color=lightblue2 shape=box style=filled]
+	GenotypeMatrix [color="#EE6262" shape=box style=filled]
+	HaplotypeMatrix [color="#EE6262" shape=box style=filled]
+	PhasedGenotypeMatrix [color="#EE6262" shape=box style=filled]
+	PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
+	PandasPhenotypeDataFrame [color=lightblue2 shape=box style=filled]
+	PhenotypeDataFrame [color="#EE6262" shape=box style=filled]
+	BreedingEdge [color="#EE6262" shape=box style=filled]
+	BreedingGraph [color="#EE6262" shape=box style=filled]
+	BreedingNode [color="#EE6262" shape=box style=filled]
+	BreedingProgram [color="#EE6262" shape=box style=filled]
+	EmigrationOperator [color="#EE6262" shape=box style=filled]
+	GermplasmBank [color="#EE6262" shape=box style=filled]
+	ImmigrationOperator [color="#EE6262" shape=box style=filled]
+	RecurrentSelectionBreedingProgram [color=lightblue2 shape=box style=filled]
+	GenomicModelCalibrationOperator [color="#EE6262" shape=box style=filled]
+	LinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
+	NonlinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
+	TrueGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
+	PandasDataFrame -> DataFrame
+	DenseMatrix -> Matrix
+	DenseMutableMatrix -> DenseMatrix
+	DenseMutableMatrix -> MutableMatrix
+	DensePhasedMatrix -> DenseMutableMatrix
+	DensePhasedMatrix -> PhasedMatrix
+	DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
+	DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
+	DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
+	DenseTaxaMatrix -> DenseMutableMatrix
+	DenseTaxaMatrix -> TaxaMatrix
+	DenseTaxaVariantMatrix -> DenseTaxaMatrix
+	DenseTaxaVariantMatrix -> DenseVariantMatrix
+	DenseTaxaVariantMatrix -> TaxaVariantMatrix
+	DenseTraitMatrix -> DenseMutableMatrix
+	DenseTraitMatrix -> TraitMatrix
+	DenseVariantMatrix -> DenseMutableMatrix
+	DenseVariantMatrix -> VariantMatrix
+	GroupableMatrix -> SortableMatrix
+	MutableMatrix -> Matrix
+	PhasedMatrix -> MutableMatrix
+	PhasedTaxaVariantMatrix -> PhasedMatrix
+	PhasedTaxaVariantMatrix -> TaxaMatrix
+	PhasedTaxaVariantMatrix -> VariantMatrix
+	PrunableMatrix -> Matrix
+	SortableMatrix -> MutableMatrix
+	TaxaMatrix -> GroupableMatrix
+	TaxaTraitMatrix -> TaxaMatrix
+	TaxaTraitMatrix -> TraitMatrix
+	TaxaVariantMatrix -> TaxaMatrix
+	TaxaVariantMatrix -> VariantMatrix
+	TraitMatrix -> SortableMatrix
+	VariantMatrix -> GroupableMatrix
+	BreedingValueMatrix -> TaxaTraitMatrix
+	BreedingValueMatrix -> HDF5InputOutput
+	DenseBreedingValueMatrix -> DenseTaxaTraitMatrix
+	DenseBreedingValueMatrix -> BreedingValueMatrix
+	CoancestryMatrix -> TaxaMatrix
+	DenseCoancestryMatrix -> DenseMutableMatrix
+	DenseCoancestryMatrix -> CoancestryMatrix
+	DenseMolecularCoancestryMatrix -> DenseCoancestryMatrix
+	DenseVanRadenCoancestryMatrix -> DenseCoancestryMatrix
+	DenseGeneticMappableMatrix -> DenseVariantMatrix
+	DenseGeneticMappableMatrix -> GeneticMappableMatrix
+	ExtendedGeneticMap -> GeneticMap
+	GeneticMappableMatrix -> VariantMatrix
+	HaldaneMapFunction -> GeneticMapFunction
+	KosambiMapFunction -> GeneticMapFunction
+	StandardGeneticMap -> GeneticMap
+	DenseGenotypeMatrix -> DenseTaxaVariantMatrix
+	DenseGenotypeMatrix -> DenseGeneticMappableMatrix
+	DenseGenotypeMatrix -> GenotypeMatrix
+	DensePhasedGenotypeMatrix -> DenseGenotypeMatrix
+	DensePhasedGenotypeMatrix -> DensePhasedTaxaVariantMatrix
+	DensePhasedGenotypeMatrix -> PhasedGenotypeMatrix
+	DensePhasedGenotypeMatrix -> GeneticMap
+	GenotypeMatrix -> TaxaVariantMatrix
+	GenotypeMatrix -> GeneticMappableMatrix
+	HaplotypeMatrix -> TaxaVariantMatrix
+	PhasedGenotypeMatrix -> GenotypeMatrix
+	PhasedGenotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedHaplotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedHaplotypeMatrix -> HaplotypeMatrix
+	PandasPhenotypeDataFrame -> PandasDataFrame
+	PandasPhenotypeDataFrame -> PhenotypeDataFrame
+	PhenotypeDataFrame -> DataFrame
+	BreedingProgram -> BreedingNode
+	RecurrentSelectionBreedingProgram -> BreedingProgram
+	LinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
+	NonlinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
+	TrueGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
+}

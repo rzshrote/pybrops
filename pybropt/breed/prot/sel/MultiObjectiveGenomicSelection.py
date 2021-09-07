@@ -1,4 +1,4 @@
-import numpy
+MultiObjectiveGenomicSelectionimport numpy
 import math
 import types
 
@@ -15,8 +15,8 @@ from . import SelectionProtocol
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str
 
-class MultiObjectiveGenomicParentSelection(SelectionProtocol):
-    """docstring for MultiObjectiveGenomicParentSelection."""
+class MultiObjectiveGenomicSelection(SelectionProtocol):
+    """docstring for MultiObjectiveGenomicSelection."""
 
     def __init__(self, nparent, ncross, nprogeny, algorithm, method,
     objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0,
@@ -133,7 +133,7 @@ class MultiObjectiveGenomicParentSelection(SelectionProtocol):
             A random number generator source. Used for optimization algorithms.
             If 'rng' is None, use pybropt.core.random module (NOT THREAD SAFE!).
         """
-        super(MultiObjectiveGenomicParentSelection, self).__init__(**kwargs)
+        super(MultiObjectiveGenomicSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(nparent, "nparent")

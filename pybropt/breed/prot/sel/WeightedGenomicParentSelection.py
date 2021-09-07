@@ -10,14 +10,14 @@ from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
 
-class WeightedGenomicParentSelection(SelectionProtocol):
-    """docstring for WeightedGenomicParentSelection."""
+class WeightedGenomicSelection(SelectionProtocol):
+    """docstring for WeightedGenomicSelection."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
-        super(WeightedGenomicParentSelection, self).__init__(**kwargs)
+        super(WeightedGenomicSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(nparent, "nparent")
