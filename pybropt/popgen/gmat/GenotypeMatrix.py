@@ -240,12 +240,15 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_GenotypeMatrix(v):
+    """Return whether an object is a GenotypeMatrix or not"""
     return isinstance(v, GenotypeMatrix)
 
 def check_is_GenotypeMatrix(v, varname):
+    """Raise TypeError if object is not a GenotypeMatrix"""
     if not isinstance(v, GenotypeMatrix):
         raise TypeError("'%s' must be a GenotypeMatrix." % varname)
 
 def cond_check_is_GenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a GenotypeMatrix"""
     if cond(v):
         check_is_GenotypeMatrix(v, varname)

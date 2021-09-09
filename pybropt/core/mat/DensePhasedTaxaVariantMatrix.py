@@ -654,6 +654,32 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
+    ################### Sorting Methods ####################
+
+    ################### Grouping Methods ###################
+    def is_grouped(self, axis = -1, **kwargs):
+        """
+        Determine whether the Matrix has been sorted and grouped.
+
+        Returns
+        -------
+        grouped : bool
+            True or False indicating whether the GeneticMap has been sorted and
+            grouped.
+        """
+        axis = get_axis(axis, self.mat_ndim)    # transform axis number to an index
+        grouped = False                         # default output
+
+        if axis == self.phase_axis:
+            grouped = False     # always results to false, even though axis is ungroupable
+        elif axis == self.taxa_axis:
+            grouped = self.is_grouped_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            grouped = self.is_grouped_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot test for grouping along axis {0}".format(axis))
+
+        return grouped
 
 
 ################################################################################

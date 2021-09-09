@@ -20,7 +20,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 
 from pybropt.core.util import save_dict_to_hdf5
 
-from pybropt.popgen.bvmat import DenseGenotypicEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
 
 class GenericLinearGenomicModel(LinearGenomicModel):
     """docstring for GenericLinearGenomicModel."""
@@ -213,8 +213,8 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         # calculate GEBVs
         gebv = self.mu.T + (geno @ self.beta)
 
-        # create DenseGenotypicEstimatedBreedingValueMatrix
-        gebvmat = DenseGenotypicEstimatedBreedingValueMatrix(
+        # create DenseGenomicEstimatedBreedingValueMatrix
+        gebvmat = DenseGenomicEstimatedBreedingValueMatrix(
             mat = gebv,
             raw = None,
             se = None,

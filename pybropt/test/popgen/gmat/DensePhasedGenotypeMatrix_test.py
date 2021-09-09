@@ -85,18 +85,6 @@ def test_vrnt_phypos_fget(dpgmat, mat_phypos):
 def test_vrnt_taxa_fget(dpgmat, mat_taxa):
     assert numpy.all(dpgmat.taxa == mat_taxa)
 
-def test_ploidy_fget(dpgmat):
-    assert dpgmat.ploidy == dpgmat.mat.shape[0]
-
-def test_nphase_fget(dpgmat):
-    assert dpgmat.nphase == dpgmat.mat.shape[0]
-
-def test_ntaxa_fget(dpgmat):
-    assert dpgmat.ntaxa == dpgmat.mat.shape[1]
-
-def test_nvrnt_fget(dpgmat):
-    assert dpgmat.nvrnt == dpgmat.mat.shape[2]
-
 ########################################################
 ######### Matrix element copy-on-manipulation ##########
 ########################################################
@@ -591,18 +579,18 @@ def test_incorp_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 ################### Sorting Methods ####################
 ########################################################
 def test_lexsort_axis_0_error(dpgmat):
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         dpgmat.lexsort(axis = 0)
 
 def test_lexsort_axis_1_error(dpgmat):
     dpgmat.taxa = None
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         dpgmat.lexsort(axis = 1)
 
 def test_lexsort_axis_2_error(dpgmat):
     dpgmat.vrnt_chrgrp = None
     dpgmat.vrnt_phypos = None
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
         dpgmat.lexsort(axis = 2)
 
 def test_lexsort_axis_1(dpgmat, mat_taxa):
@@ -614,10 +602,11 @@ def test_lexsort_axis_2(dpgmat, mat_chrgrp):
     assert numpy.all(a == numpy.arange(len(mat_chrgrp)))
 
 def test_reorder_axis_0(dpgmat, mat_int8):
-    ix = numpy.array([1,0])
-    dpgmat.reorder(ix, axis = 0)
-    mat = mat_int8[ix,:,:]
-    assert numpy.all(dpgmat.mat == mat)
+    with pytest.raises(ValueError):
+        ix = numpy.array([1,0])
+        dpgmat.reorder(ix, axis = 0)
+    # mat = mat_int8[ix,:,:]
+    # assert numpy.all(dpgmat.mat == mat)
 
 def test_reorder_axis_1(dpgmat, mat_int8, mat_taxa):
     ix = numpy.arange(dpgmat.ntaxa)
@@ -721,7 +710,10 @@ def test_xoprob(song_gmap, song_dpgmat):
 
 def test_from_to_hdf5(shared_datadir, song_dpgmat):
     # write files
-    song_dpgmat.to_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5")
+    song_dpgmat.to_hdf5(
+        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
+        None
+    )
     song_dpgmat.to_hdf5(
         shared_datadir / "Song_2016_phased_chr_1000.hdf5",
         "directoryname"
@@ -732,7 +724,8 @@ def test_from_to_hdf5(shared_datadir, song_dpgmat):
 
     # read written files
     song1 = DensePhasedGenotypeMatrix.from_hdf5(
-        shared_datadir / "Song_2016_phased_chr_1000.hdf5"
+        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
+        None
     )
     song2 = DensePhasedGenotypeMatrix.from_hdf5(
         shared_datadir / "Song_2016_phased_chr_1000.hdf5",

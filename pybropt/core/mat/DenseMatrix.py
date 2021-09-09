@@ -12,20 +12,32 @@ class DenseMatrix(Matrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, **kwargs):
+        """
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Matrix to store
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
+        """Add matrices"""
         return self._mat + value
 
     def __sub__(self, value):
+        """Subtract matrices"""
         return self._mat - value
 
     def __mul__(self, value):
+        """Elementwise multiply matrices"""
         return self._mat * value
 
     def __matmul__(self, value):
+        """Multiply matrices"""
         return self._mat @ value
 
     def __truediv__(self, value):
@@ -455,12 +467,15 @@ class DenseMatrix(Matrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseMatrix(v):
+    """Return whether an object is a DenseMatrix or not"""
     return isinstance(v, DenseMatrix)
 
 def check_is_DenseMatrix(v, varname):
+    """Raise TypeError if object is not a DenseMatrix"""
     if not isinstance(v, DenseMatrix):
         raise TypeError("'%s' must be a DenseMatrix." % varname)
 
 def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a DenseMatrix"""
     if cond(v):
         check_is_DenseMatrix(v, varname)

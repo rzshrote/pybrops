@@ -1,4 +1,5 @@
 import numpy
+import h5py
 
 from pybropt.core.mat import DenseTaxaTraitMatrix
 from . import BreedingValueMatrix

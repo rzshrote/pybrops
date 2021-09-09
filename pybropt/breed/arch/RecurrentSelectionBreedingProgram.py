@@ -6,14 +6,14 @@ from . import BreedingProgram
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
-from pybropt.breed.init import check_is_InitializationOperator
-from pybropt.breed.psel import check_is_ParentSelectionOperator
-from pybropt.breed.mate import check_is_MatingOperator
-from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
-from pybropt.breed.eval import check_is_EvaluationOperator
-from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
-from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
-from pybropt.breed.ssel import check_is_SurvivorSelectionOperator
+# from pybropt.breed.op.init import check_is_InitializationOperator
+# from pybropt.breed.op.psel import check_is_ParentSelectionOperator
+# from pybropt.breed.op.mate import check_is_MatingOperator
+# from pybropt.breed.op.intg import check_is_GenotypeIntegrationOperator
+# from pybropt.breed.op.eval import check_is_EvaluationOperator
+# from pybropt.breed.op.intg import check_is_BreedingValueIntegrationOperator
+# from pybropt.breed.op.calibr import check_is_GenomicModelCalibrationOperator
+# from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
 
 # def dprint(t, lab, d, mod, ID = True, USL = True):
 #     if ID:

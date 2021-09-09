@@ -3,8 +3,8 @@ import numpy
 import pytest
 import os.path
 
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
@@ -16,7 +16,7 @@ from pybropt.popgen.gmap import HaldaneMapFunction
 @pytest.fixture
 def dpgmat(shared_datadir):
     data_path = shared_datadir / "sample.vcf"
-    yield DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+    yield DensePhasedGenotypeMatrix.from_vcf(data_path)
 
 @pytest.fixture
 def mat_int8():
@@ -70,8 +70,8 @@ def gmapfn():
 ################################# Sample Tests #################################
 ################################################################################
 
-def test_is_DensePhasedGenotypeVariantMatrix(dpgmat):
-    assert is_DensePhasedGenotypeVariantMatrix(dpgmat)
+def test_is_DensePhasedGenotypeMatrix(dpgmat):
+    assert is_DensePhasedGenotypeMatrix(dpgmat)
 
 def test_mat_fget(dpgmat, mat_int8):
     assert numpy.all(dpgmat.mat == mat_int8)
@@ -84,6 +84,18 @@ def test_vrnt_phypos_fget(dpgmat, mat_phypos):
 
 def test_vrnt_taxa_fget(dpgmat, mat_taxa):
     assert numpy.all(dpgmat.taxa == mat_taxa)
+
+def test_ploidy_fget(dpgmat):
+    assert dpgmat.ploidy == dpgmat.mat.shape[0]
+
+def test_nphase_fget(dpgmat):
+    assert dpgmat.nphase == dpgmat.mat.shape[0]
+
+def test_ntaxa_fget(dpgmat):
+    assert dpgmat.ntaxa == dpgmat.mat.shape[1]
+
+def test_nvrnt_fget(dpgmat):
+    assert dpgmat.nvrnt == dpgmat.mat.shape[2]
 
 ########################################################
 ######### Matrix element copy-on-manipulation ##########
@@ -617,7 +629,7 @@ def test_reorder_axis_1(dpgmat, mat_int8, mat_taxa):
     assert numpy.all(dpgmat.taxa == taxa)
 
 def test_reorder_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos):
-    ix = numpy.arange(dpgmat.nloci)
+    ix = numpy.arange(dpgmat.nvrnt)
     numpy.random.shuffle(ix)
     dpgmat.reorder(ix, axis = 2)
     mat = mat_int8[:,:,ix]
@@ -694,7 +706,7 @@ def song_gmapfn():
 @pytest.fixture
 def song_dpgmat(shared_datadir, song_gmap, song_gmapfn):
     data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
-    mat = DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+    mat = DensePhasedGenotypeMatrix.from_vcf(data_path)
     mat.group()
     mat.interp_xoprob(song_gmap, song_gmapfn)
     yield mat
@@ -719,10 +731,10 @@ def test_from_to_hdf5(shared_datadir, song_dpgmat):
     assert os.path.isfile(shared_datadir / "Song_2016_phased_chr_1000.hdf5")
 
     # read written files
-    song1 = DensePhasedGenotypeVariantMatrix.from_hdf5(
+    song1 = DensePhasedGenotypeMatrix.from_hdf5(
         shared_datadir / "Song_2016_phased_chr_1000.hdf5"
     )
-    song2 = DensePhasedGenotypeVariantMatrix.from_hdf5(
+    song2 = DensePhasedGenotypeMatrix.from_hdf5(
         shared_datadir / "Song_2016_phased_chr_1000.hdf5",
         "directoryname"
     )

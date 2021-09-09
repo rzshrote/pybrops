@@ -2,6 +2,7 @@ import pandas
 
 from . import generic_check_isinstance
 from . import generic_cond_check_isinstance
+from . import generic_default_cond
 
 ################################################################################
 ########################## isinstance check functions ##########################

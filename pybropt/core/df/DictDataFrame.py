@@ -1,15 +1,21 @@
+import numpy
 from . import DataFrame
 
-from pybropt.core.error import check_is_pandas_df
+from pybropt.core.error import check_is_dict
 
-class PandasDataFrame(DataFrame):
-    """docstring for PandasDataFrame."""
+# TODO: under construction
+class DictDataFrame(DataFrame):
+    """docstring for DictDataFrame."""
 
-    ############################################################################
-    ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs):
-        super(PandasDataFrame, self).__init__(**kwargs)
+    def __init__(self, data_dict, col_ctype_dict, **kwargs):
+        super(DictDataFrame, self).__init__(**kwargs)
+        self.df = {
+            "data" : None,
+            "col_ctype" : None,
+            "col_dtype" : None
+        }
+        self.df["data"] = data_dict
+        self.df["col_ctype"] = col_ctype_dict
         self.df = df
         if col_name is not None:
             self.col_name = col_name
@@ -27,7 +33,7 @@ class PandasDataFrame(DataFrame):
             return self._df
         def fset(self, value):
             """Set dataframe"""
-            check_is_pandas_df(value, "df")
+            check_is_dict(value, "df")
             self._df = value
         def fdel(self):
             """Delete dataframe"""
@@ -91,7 +97,7 @@ class PandasDataFrame(DataFrame):
         doc = "Column names."
         def fget(self):
             """Get column names"""
-            return self._df.columns.values
+            return numpy.object(self._df["data"].keys())
         def fset(self, value):
             """Set column names"""
             self._df.columns = value
@@ -218,7 +224,7 @@ class PandasDataFrame(DataFrame):
 
         # process errors if key is not found or multiple keys are found
         if len(cix) == 0:
-            err =  "PandasDataFrame does not contain a column with matches for: \n"
+            err =  "DictDataFrame does not contain a column with matches for: \n"
             err += "    name = {0}".format(name)
             err += "    ctype = {0}".format(ctype)
             err += "    dtype = {0}".format(dtype)
@@ -264,13 +270,13 @@ class PandasDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasDataFrame(v):
-    return isinstance(v, PandasDataFrame)
+def is_DictDataFrame(v):
+    return isinstance(v, DictDataFrame)
 
-def check_is_PandasDataFrame(v, vname):
-    if not isinstance(v, PandasDataFrame):
-        raise TypeError("variable '{0}' must be a PandasDataFrame".format(vname))
+def check_is_DictDataFrame(v, vname):
+    if not isinstance(v, DictDataFrame):
+        raise TypeError("variable '{0}' must be a DictDataFrame".format(vname))
 
-def cond_check_is_PandasDataFrame(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_DictDataFrame(v, vname, cond=(lambda s: s is not None)):
     if cond(v):
-        check_is_PandasDataFrame(v, vname)
+        check_is_DictDataFrame(v, vname)
