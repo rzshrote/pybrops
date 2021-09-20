@@ -39,7 +39,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             reproduces in a diploid manner.
         # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         """
-        super(DenseHaplotypeMatrix, self).__init__(
+        super(DenseVariantMatrix, self).__init__(
             mat = mat,
             **kwargs
         )
@@ -405,31 +405,31 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             The axis along which values are adjoined.
         vrnt_chrgrp : numpy.ndarray
             Variant chromosome groups to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_chrgrp field, providing this argument overwrites the field.
         vrnt_phypos : numpy.ndarray
             Variant chromosome physical positions to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_phypos field, providing this argument overwrites the field.
         vrnt_name : numpy.ndarray
             Variant names to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_name field, providing this argument overwrites the field.
         vrnt_genpos : numpy.ndarray
             Variant chromosome genetic positions to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_genpos field, providing this argument overwrites the field.
         vrnt_xoprob : numpy.ndarray
             Sequential variant crossover probabilities to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_xoprob field, providing this argument overwrites the field.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_hapgrp field, providing this argument overwrites the field.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
         **kwargs
             Additional keyword arguments.
@@ -692,44 +692,44 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         obj: int, slice, or sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : DenseVariantMatrix, numpy.ndarray
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
         vrnt_chrgrp : numpy.ndarray
             Variant chromosome groups to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_chrgrp field, providing this argument overwrites the field.
         vrnt_phypos : numpy.ndarray
             Variant chromosome physical positions to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_phypos field, providing this argument overwrites the field.
         vrnt_name : numpy.ndarray
             Variant names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_name field, providing this argument overwrites the field.
         vrnt_genpos : numpy.ndarray
             Variant chromosome genetic positions to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_genpos field, providing this argument overwrites the field.
         vrnt_xoprob : numpy.ndarray
             Sequential variant crossover probabilities to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_xoprob field, providing this argument overwrites the field.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_hapgrp field, providing this argument overwrites the field.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseVariantMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
         **kwargs
             Additional keyword arguments.
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
+        out : DenseVariantMatrix
             A Matrix with values inserted. Note that insert does not occur
             in-place: a new Matrix is allocated and filled.
         """
@@ -780,6 +780,8 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Sequential variant crossover probabilities to insert into the Matrix.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to insert into the Matrix.
+        vrnt_hapalt : numpy.ndarray
+        vrnt_hapref : numpy.ndarray
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
         **kwargs
@@ -805,6 +807,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
                 vrnt_xoprob = values.vrnt_xoprob
             if vrnt_hapgrp is None:
                 vrnt_hapgrp = values.vrnt_hapgrp
+            if vrnt_hapalt is None:
+                vrnt_hapalt = values.vrnt_hapalt
+            if vrnt_hapref is None:
+                vrnt_hapref = values.vrnt_hapref
             if vrnt_mask is None:
                 vrnt_mask = values.vrnt_mask
             values = values.mat
@@ -925,6 +931,8 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         vrnt_genpos = self._vrnt_genpos
         vrnt_xoprob = self._vrnt_xoprob
         vrnt_hapgrp = self._vrnt_hapgrp
+        vrnt_hapalt = self._vrnt_hapalt
+        vrnt_hapref = self._vrnt_hapref
         vrnt_mask = self._vrnt_mask
 
         # select values
@@ -941,6 +949,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_xoprob = numpy.take(vrnt_xoprob, indices, axis = 0)
         if vrnt_hapgrp is not None:
             vrnt_hapgrp = numpy.take(vrnt_hapgrp, indices, axis = 0)
+        if vrnt_hapalt is not None:
+            vrnt_hapalt = numpy.take(vrnt_hapalt, indices, axis = 0)
+        if vrnt_hapref is not None:
+            vrnt_hapref = numpy.take(vrnt_hapref, indices, axis = 0)
         if vrnt_mask is not None:
             vrnt_mask = numpy.take(vrnt_mask, indices, axis = 0)
 
@@ -952,6 +964,8 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_genpos = vrnt_genpos,
             vrnt_xoprob = vrnt_xoprob,
             vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_hapalt = vrnt_hapalt,
+            vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
             **kwargs
         )
@@ -975,7 +989,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
+        out : DenseVariantMatrix
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
@@ -1016,7 +1030,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         if len(mats) <= 0:
             raise ValueError("need at least one Matrix to concatenate")
 
-        # ensure that all items in mats are DenseHaplotypeMatrix
+        # ensure that all items in mats are DenseVariantMatrix
         for i,v in enumerate(mats):
             generic_check_isinstance(v, "mats[{0}]".format(i), cls)
 
@@ -1114,7 +1128,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         vrnt_mask = None if vrnt_mask_ls is None else numpy.concatenate(vrnt_mask_ls, axis = 0)
 
         # TODO: decide if first element in list is good source of information
-        # concatenate everything and put into new DenseHaplotypeMatrix
+        # concatenate everything and put into new DenseVariantMatrix
         # use first element as source of variant data
         out = cls(
             mat = mat,
@@ -1139,7 +1153,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         Parameters
         ----------
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : DenseVariantMatrix, numpy.ndarray
             Values are appended to append to the matrix.
             Must be of type int8.
             Must be of shape (m, n, p)
@@ -1395,7 +1409,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         **kwargs
             Additional keyword arguments.
         """
-        # if given a DenseHaplotypeMatrix extract *.mat values
+        # if given a DenseVariantMatrix extract *.mat values
         if isinstance(values, self.__class__):
             if vrnt_chrgrp is None:
                 vrnt_chrgrp = values.vrnt_chrgrp
