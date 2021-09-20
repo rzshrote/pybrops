@@ -1,3 +1,6 @@
+import numpy
+import copy
+
 from . import TraitMatrix
 from . import DenseMutableMatrix
 
@@ -5,10 +8,11 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_axis_len
 from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import check_is_iterable
+from pybropt.core.error import generic_check_isinstance
 from pybropt.core.error import error_readonly
 from pybropt.core.mat import get_axis
 
-# TODO: implement me
 class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     """docstring for DenseTraitMatrix."""
 
@@ -16,6 +20,18 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, trait = None, **kwargs):
+        """
+        Constructor for the concrete class DenseTraitMatrix.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Matrix used to construct the object.
+        trait : numpy.ndarray
+            Trait names.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseTraitMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -853,3 +869,56 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         # reorder internals
         self.reorder_trait(indices, **kwargs)
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_DenseTraitMatrix(v):
+    """
+    Determine whether an object is a DenseTraitMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseTraitMatrix object instance.
+    """
+    return isinstance(v, DenseTraitMatrix)
+
+def check_is_DenseTraitMatrix(v, varname):
+    """
+    Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_DenseTraitMatrix(v):
+        raise TypeError("'{0}' must be a DenseTraitMatrix".format(varname))
+
+def cond_check_is_DenseTraitMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DenseTraitMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DenseTraitMatrix.
+    """
+    if cond(v):
+        check_is_DenseTraitMatrix(v, varname)
