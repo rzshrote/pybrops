@@ -5,6 +5,14 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
     """Abstract class for TaxaMatrix + VariantMatrix class fusion."""
 
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class TaxaVariantMatrix.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments used for dependency injection.
+        """
         super(TaxaVariantMatrix, self).__init__(**kwargs)
 
 

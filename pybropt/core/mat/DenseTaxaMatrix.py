@@ -4,6 +4,7 @@ import numpy
 from . import DenseMutableMatrix
 from . import TaxaMatrix
 
+from pybropt.core.error import check_is_array_like
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_iterable
 from pybropt.core.error import check_is_ndarray
@@ -27,6 +28,20 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Constructor for the concrete class DenseTaxaMatrix.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Matrix used to construct the object.
+        taxa : numpy.ndarray
+            Taxa names.
+        taxa_grp : numpy.ndarray
+            Taxa groupings.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseTaxaMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -552,6 +567,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             The output Matrix with values selected. Note that select does not
             occur in-place: a new Matrix is allocated and filled.
         """
+        # check for array_like
+        check_is_array_like(indices, "indices")
+
         # get values
         mat = self._mat
         taxa = self._taxa

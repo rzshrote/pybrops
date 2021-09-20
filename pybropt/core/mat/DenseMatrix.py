@@ -6,7 +6,12 @@ from pybropt.core.error import error_readonly
 from pybropt.core.error import check_is_ndarray
 
 class DenseMatrix(Matrix):
-    """docstring for DenseMatrix."""
+    """
+    DenseMatrix class.
+
+    The purpose of this class is to provide dense matrix math operators, and
+    copy on manipulation subroutines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -25,11 +30,11 @@ class DenseMatrix(Matrix):
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
-        """Add matrices"""
+        """Elementwise add matrices"""
         return self._mat + value
 
     def __sub__(self, value):
-        """Subtract matrices"""
+        """Elementwise subtract matrices"""
         return self._mat - value
 
     def __mul__(self, value):
@@ -41,113 +46,149 @@ class DenseMatrix(Matrix):
         return self._mat @ value
 
     def __truediv__(self, value):
+        """Elementwise divide matrices"""
         return self._mat / value
 
     def __floordiv__(self, value):
+        """Elementwise floor divide matrices"""
         return self._mat // value
 
     def __mod__(self, value):
+        """Elementwise modulus matrices"""
         return self._mat % value
 
     def __divmod__(self, value):
+        """Elementwise divmod matrices"""
         return divmod(self._mat, value)
 
     def __pow__(self, value):
+        """Elementwise exponent matrices"""
         return self._mat ** value
 
     def __lshift__(self, value):
+        """Elementwise bitwise left shift matrices"""
         return self._mat << value
 
     def __rshift__(self, value):
+        """Elementwise bitwise right shift matrices"""
         return self._mat >> value
 
     def __and__(self, value):
+        """Elementwise bitwise and matrices"""
         return self._mat & value
 
     def __xor__(self, value):
+        """Elementwise bitwise xor matrices"""
         return self._mat ^ value
 
     def __or__(self, value):
+        """Elementwise bitwise or matrices"""
         return self._mat | value
 
     ############# Backwards numeric operators ##############
     def __radd__(self, value):
+        """Reverse elementwise add matrices"""
         return value + self._mat
 
     def __rsub__(self, value):
+        """Reverse elementwise subtract matrices"""
         return value - self._mat
 
     def __rmul__(self, value):
+        """Reverse elementwise multiply matrices"""
         return value * self._mat
 
     def __rmatmul__(self, value):
+        """Reverse multiply matrices"""
         return value @ self._mat
 
     def __rtruediv__(self, value):
+        """Reverse elementwise divide matrices"""
         return value / self._mat
 
     def __rfloordiv__(self, value):
+        """Reverse elementwise floor divide matrices"""
         return value // self._mat
 
     def __rmod__(self, value):
+        """Reverse elementwise modulus matrices"""
         return value % self._mat
 
     def __rdivmod__(self, value):
+        """Reverse elementwise divmod matrices"""
         return divmod(value, self._mat)
 
     def __rlshift__(self, value):
+        """Reverse elementwise bitwise left shift matrices"""
         return value << self._mat
 
     def __rrshift__(self, value):
+        """Reverse elementwise bitwise right shift matrices"""
         return value >> self._mat
 
     def __rand__(self, value):
+        """Reverse elementwise bitwise and matrices"""
         return value & self._mat
 
     def __rxor__(self, value):
+        """Reverse elementwise bitwise xor matrices"""
         return value ^ self._mat
 
     def __ror__(self, value):
+        """Reverse elementwise bitwise or matrices"""
         return value | self._mat
 
     ############# Augmented numeric operators ##############
     def __iadd__(self, value):
+        """Elementwise add assign matrices"""
         self._mat += value
 
     def __isub__(self, value):
+        """Elementwise subtract assign matrices"""
         self._mat -= value
 
     def __imul__(self, value):
+        """Elementwise multiply assign matrices"""
         self._mat *= value
 
     def __imatmul__(self, value):
+        """Multiply assign matrices"""
         self._mat @= value
 
     def __itruediv__(self, value):
+        """Elementwise true divide assign matrices"""
         self._mat /= value
 
     def __ifloordiv__(self, value):
+        """Elementwise floor divide assign matrices"""
         self._mat //= value
 
     def __imod__(self, value):
+        """Elementwise modulus assign matrices"""
         self._mat %= value
 
     def __ipow__(self, value):
+        """Elementwise exponent assign matrices"""
         self._mat **= value
 
     def __ilshift__(self, value):
+        """Elementwise left shift assign matrices"""
         self._mat <<= value
 
     def __irshift__(self, value):
+        """Elementwise right shift assign matrices"""
         self._mat >>= value
 
     def __iand__(self, value):
+        """Elementwise bitwise and assign matrices"""
         self._mat &= value
 
     def __ixor__(self, value):
+        """Elementwise bitwise xor assign matrices"""
         self._mat ^= value
 
     def __ior__(self, value):
+        """Elementwise bitwise or assign matrices"""
         self._mat |= value
 
     ################## Logical operators ###################

@@ -9,6 +9,8 @@ from pybropt.core.error import check_ndarray_dtype_is_int8
 from pybropt.core.error import check_ndarray_is_3d
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
+from pybropt.core.error import check_is_iterable
+from pybropt.core.error import check_is_array_like
 
 class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     """docstring for DensePhasedMatrix."""
@@ -17,6 +19,16 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, **kwargs):
+        """
+        Constructor for the concrete class DensePhasedMatrix.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Matrix used to construct the object.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DensePhasedMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -350,6 +362,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             The output Matrix with values selected. Note that select does not
             occur in-place: a new Matrix is allocated and filled.
         """
+        # check for array_like
+        check_is_array_like(indices, "indices")
+
         # select values
         mat = numpy.take(self._mat, indices, axis = self.phase_axis)
 
@@ -418,7 +433,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         if len(mats) <= 0:
             raise ValueError("need at least one Matrix to concatenate")
 
-        # ensure that all items in mats are DenseHaplotypeMatrix
+        # ensure that all items in mats are DensePhasedMatrix
         for i,v in enumerate(mats):
             generic_check_isinstance(v, "mats[{0}]".format(i), cls)
 
@@ -437,8 +452,8 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         # create matrix lists
         mat_ls = [m.mat for m in mats]
 
-        # concatenate mat, taxa, taxa_grp items
-        mat = numpy.concatenate(mat_ls, axis = mats[0].taxa_axis)
+        # concatenate items
+        mat = numpy.concatenate(mat_ls, axis = mats[0].phase_axis)
 
         # TODO: decide if first element in list is good source of information
         # concatenate everything and put into new DenseHaplotypeMatrix
@@ -494,7 +509,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         if values.ndim != self.mat_ndim:
             raise ValueError("cannot append: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
-            if (i != self.taxa_axis) and (j != k):
+            if (i != self.phase_axis) and (j != k):
                 raise ValueError("cannot append: axis lengths incompatible for axis {0}".format(i))
 
         # append values
@@ -599,26 +614,49 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DensePhasedMatrix(v):
+    """
+    Determine whether an object is a DensePhasedMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DensePhasedMatrix object instance.
+    """
     return isinstance(v, DensePhasedMatrix)
 
 def check_is_DensePhasedMatrix(v, varname):
+    """
+    Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, DensePhasedMatrix):
         raise TypeError("'%s' must be a DensePhasedMatrix." % varname)
 
 def cond_check_is_DensePhasedMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DensePhasedMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DensePhasedMatrix.
+    """
     if cond(v):
         check_is_DensePhasedMatrix(v, varname)
-
-class A:
-    def __init__(self, arg):
-        super(A, self).__init__()
-        self.arg = arg if arg == "A" else None
-
-class B:
-    def __init__(self, arg):
-        super(B, self).__init__()
-        self.arg = arg if arg == "B" else None
-
-class C(A,B):
-    def __init__(self, arg):
-        super(C, self).__init__(arg)

@@ -5,6 +5,14 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
     """Abstract class for TaxaMatrix + TraitMatrix fusion."""
 
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class TaxaTraitMatrix.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments used for dependency injection.
+        """
         super(TaxaTraitMatrix, self).__init__(**kwargs)
 
 
