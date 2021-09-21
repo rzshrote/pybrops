@@ -57,39 +57,15 @@ digraph pybropt_arch {
 	LinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
 	NonlinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
 	TrueGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
+	EvaluationOperator [color="#EE6262" shape=box style=filled]
+	NoGxEEvaluationOperator [color=lightblue2 shape=box style=filled]
+	PerformanceTrial [color="#EE6262" shape=box style=filled]
+	TrueEvaluationOperator [color=lightblue2 shape=box style=filled]
+	GenerationalInitializationOperator [color=lightblue2 shape=box style=filled]
+	InitializationOperator [color="#EE6262" shape=box style=filled]
+	RandomInitializationOperator [color=lightblue2 shape=box style=filled]
+	SimpleInitializationOperator [color=lightblue2 shape=box style=filled]
 	PandasDataFrame -> DataFrame
-	DenseMatrix -> Matrix
-	DenseMutableMatrix -> DenseMatrix
-	DenseMutableMatrix -> MutableMatrix
-	DensePhasedMatrix -> DenseMutableMatrix
-	DensePhasedMatrix -> PhasedMatrix
-	DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
-	DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
-	DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
-	DenseTaxaMatrix -> DenseMutableMatrix
-	DenseTaxaMatrix -> TaxaMatrix
-	DenseTaxaVariantMatrix -> DenseTaxaMatrix
-	DenseTaxaVariantMatrix -> DenseVariantMatrix
-	DenseTaxaVariantMatrix -> TaxaVariantMatrix
-	DenseTraitMatrix -> DenseMutableMatrix
-	DenseTraitMatrix -> TraitMatrix
-	DenseVariantMatrix -> DenseMutableMatrix
-	DenseVariantMatrix -> VariantMatrix
-	GroupableMatrix -> SortableMatrix
-	MutableMatrix -> Matrix
-	PhasedMatrix -> MutableMatrix
-	PhasedTaxaVariantMatrix -> PhasedMatrix
-	PhasedTaxaVariantMatrix -> TaxaMatrix
-	PhasedTaxaVariantMatrix -> VariantMatrix
-	PrunableMatrix -> Matrix
-	SortableMatrix -> MutableMatrix
-	TaxaMatrix -> GroupableMatrix
-	TaxaTraitMatrix -> TaxaMatrix
-	TaxaTraitMatrix -> TraitMatrix
-	TaxaVariantMatrix -> TaxaMatrix
-	TaxaVariantMatrix -> VariantMatrix
-	TraitMatrix -> SortableMatrix
-	VariantMatrix -> GroupableMatrix
 	BreedingValueMatrix -> TaxaTraitMatrix
 	BreedingValueMatrix -> HDF5InputOutput
 	DenseBreedingValueMatrix -> DenseTaxaTraitMatrix
@@ -128,4 +104,44 @@ digraph pybropt_arch {
 	LinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
 	NonlinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
 	TrueGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
+	NoGxEEvaluationOperator -> EvaluationOperator
+	TrueEvaluationOperator -> EvaluationOperator
+	GenerationalInitializationOperator -> InitializationOperator
+	RandomInitializationOperator -> InitializationOperator
+	SimpleInitializationOperator -> InitializationOperator
+	subgraph cluster_0 {
+		color=lightgrey label="pybropt.core.mat" style=filled
+		DenseMatrix -> Matrix
+		DenseMutableMatrix -> DenseMatrix
+		DenseMutableMatrix -> MutableMatrix
+		DensePhasedMatrix -> DenseMutableMatrix
+		DensePhasedMatrix -> PhasedMatrix
+		DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
+		DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
+		DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
+		DenseTaxaMatrix -> DenseMutableMatrix
+		DenseTaxaMatrix -> TaxaMatrix
+		DenseTaxaVariantMatrix -> DenseTaxaMatrix
+		DenseTaxaVariantMatrix -> DenseVariantMatrix
+		DenseTaxaVariantMatrix -> TaxaVariantMatrix
+		DenseTraitMatrix -> DenseMutableMatrix
+		DenseTraitMatrix -> TraitMatrix
+		DenseVariantMatrix -> DenseMutableMatrix
+		DenseVariantMatrix -> VariantMatrix
+		GroupableMatrix -> SortableMatrix
+		MutableMatrix -> Matrix
+		PhasedMatrix -> MutableMatrix
+		PhasedTaxaVariantMatrix -> PhasedMatrix
+		PhasedTaxaVariantMatrix -> TaxaMatrix
+		PhasedTaxaVariantMatrix -> VariantMatrix
+		PrunableMatrix -> Matrix
+		SortableMatrix -> MutableMatrix
+		TaxaMatrix -> GroupableMatrix
+		TaxaTraitMatrix -> TaxaMatrix
+		TaxaTraitMatrix -> TraitMatrix
+		TaxaVariantMatrix -> TaxaMatrix
+		TaxaVariantMatrix -> VariantMatrix
+		TraitMatrix -> SortableMatrix
+		VariantMatrix -> GroupableMatrix
+	}
 }
