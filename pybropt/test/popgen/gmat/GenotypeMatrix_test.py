@@ -23,15 +23,59 @@ from pybropt.popgen.gmat import cond_check_is_GenotypeMatrix
 def mat():
     yield GenotypeMatrix()
 
-@pytest.fixture
-def vmethods(mat):
-    yield [m for m in dir(mat) if m.startswith('__') is False]
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(GenotypeMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_abstract_methods(mat, vmethods):
-    generic_test_abstract_methods(mat, vmethods)
+def test_init_is_concrete():
+    generic_assert_concrete_method(GenotypeMatrix, "__init__")
+
+################################################################################
+########################### Test abstract properties ###########################
+################################################################################
+def test_ploidy_is_abstract():
+    generic_assert_abstract_property(GenotypeMatrix, "ploidy")
+
+def test_nphase_is_abstract():
+    generic_assert_abstract_property(GenotypeMatrix, "nphase")
+
+def test_mat_format_is_abstract():
+    generic_assert_abstract_property(GenotypeMatrix, "mat_format")
+
+################################################################################
+############################# Test abstract methods ############################
+################################################################################
+def test_mat_asformat_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "mat_asformat")
+
+def test_tacount_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "tacount")
+
+def test_tafreq_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "tafreq")
+
+def test_acount_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "acount")
+
+def test_afreq_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "afreq")
+
+def test_maf_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "maf")
+
+def test_mehe_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "mehe")
+
+def test_gtcount_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "gtcount")
+
+def test_gtfreq_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "gtfreq")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

@@ -5,6 +5,9 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
     """Abstract class for TaxaVariantMatrix + PhasedMatrix fusion."""
 
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class PhasedTaxaVariantMatrix.
+        """
         super(PhasedTaxaVariantMatrix, self).__init__(**kwargs)
 
 

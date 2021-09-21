@@ -1,7 +1,8 @@
 from pybropt.core.mat import TaxaVariantMatrix
 from pybropt.popgen.gmap import GeneticMappableMatrix
+from pybropt.core.io import HDF5InputOutput
 
-class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
+class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     """docstring for GenotypeMatrix."""
 
     ############################################################################
@@ -9,7 +10,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
     ############################################################################
     def __init__(self, **kwargs):
         """
-        GenotypeMatrix constructor
+        Constructor for abstract class GenotypeMatrix.
 
         Parameters
         ----------
@@ -27,10 +28,13 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
     def ploidy():
         doc = "The ploidy level represented by the genotype matrix."
         def fget(self):
+            """Get ploidy level"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set ploidy level"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete ploidy level"""
             raise NotImplementedError("method is abstract")
         return locals()
     ploidy = property(**ploidy())
@@ -38,10 +42,13 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
     def nphase():
         doc = "The number of phases represented by the genotype matrix."
         def fget(self):
+            """Get number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
@@ -200,40 +207,6 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    ################### Matrix File I/O ####################
-    @staticmethod
-    def from_hdf5(filename, groupname):
-        """
-        Read GenotypeMatrix from an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
-
-        Returns
-        -------
-        gmat : GenotypeMatrix
-            A genotype matrix read from file.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def to_hdf5(self, filename, groupname):
-        """
-        Write GenotypeMatrix to an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
-        """
-        raise NotImplementedError("method is abstract")
 
 
 ################################################################################

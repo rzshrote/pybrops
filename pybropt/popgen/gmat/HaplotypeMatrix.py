@@ -1,6 +1,7 @@
 from pybropt.core.mat import TaxaVariantMatrix
+from pybropt.core.io import HDF5InputOutput
 
-class HaplotypeMatrix(TaxaVariantMatrix):
+class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     """
     An abstract class for haplotype matrix objects.
 
@@ -210,41 +211,6 @@ class HaplotypeMatrix(TaxaVariantMatrix):
                 out[0] = frequency of '0' genotype across all loci
                 out[1] = frequency of '1' genotype across all loci
                 out[2] = frequency of '2' genotype across all loci
-        """
-        raise NotImplementedError("method is abstract")
-
-    ################### Matrix File I/O ####################
-    @staticmethod
-    def from_hdf5(filename, groupname):
-        """
-        Read GenotypeMatrix from an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
-
-        Returns
-        -------
-        gmat : GenotypeMatrix
-            A genotype matrix read from file.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def to_hdf5(self, filename, groupname):
-        """
-        Write GenotypeMatrix to an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
         """
         raise NotImplementedError("method is abstract")
 
