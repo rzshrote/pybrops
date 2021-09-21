@@ -102,7 +102,7 @@ def test_copy(mat):
     assert numpy.all(m.mat == mat.mat)
     assert numpy.all(m.trait == mat.trait)
 
-def test_deepcopy(mat, mat_float64, trait_object):
+def test_deepcopy(mat):
     m = copy.deepcopy(mat)
     # make sure object ID's are different
     assert id(m.mat) != id(mat.mat)

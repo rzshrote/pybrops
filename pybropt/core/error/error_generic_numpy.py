@@ -116,6 +116,22 @@ def generic_check_ndarray_ndim(v, vname, vndim):
     if v.ndim != vndim:
         raise ValueError("variable '{0}' must have dimension equal to {1}".format(vname, vndim))
 
+def generic_check_ndarray_ndim_gteq(v, vname, vndim):
+    """
+    Generic check ndarray dimension number greater than or equal to function.
+
+    Parameters
+    ----------
+    v : numpy.ndarray
+        Reference to object variable.
+    vname : str
+        Name associated with the object variable.
+    vndim : int
+        Minimum number of dimensions ndarray must have.
+    """
+    if v.ndim < vndim:
+        raise ValueError("variable '{0}' must have dimension greater than or equal to {1}".format(vname, vndim))
+
 def generic_check_ndarray_size(v, vname, vsize):
     """
     Generic check ndarray size function.

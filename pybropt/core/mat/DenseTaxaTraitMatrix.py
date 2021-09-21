@@ -1,3 +1,6 @@
+import numpy
+import copy
+
 from . import DenseTaxaMatrix
 from . import DenseTraitMatrix
 from . import TaxaTraitMatrix
@@ -12,6 +15,18 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, **kwargs):
+        """
+        Constructor for the concrete class DenseTaxaTraitMatrix.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+        taxa : numpy.ndarray
+        taxa_grp : numpy.ndarray
+        trait : numpy.ndarray
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         # cannot use super constructor since DenseTaxaTraitMatrix and DenseVariantMatrix
         # constructors have overlapping arguments
 
@@ -200,7 +215,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             A copy of mat with values appended to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).adjoin_taxa(
+        out = super(DenseTaxaTraitMatrix, self).adjoin_taxa(
             values = values,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -231,13 +246,19 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             A copy of mat with values adjoined to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).adjoin_trait(
+        out = super(DenseTaxaTraitMatrix, self).adjoin_trait(
             values = values,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             trait = trait,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -296,7 +317,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             A Matrix with deleted elements. Note that concat does not occur
             in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).delete_taxa(
+        out = super(DenseTaxaTraitMatrix, self).delete_taxa(
             obj = obj,
             trait = self._trait,
             **kwargs
@@ -321,12 +342,18 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             A Matrix with deleted elements. Note that concat does not occur
             in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).delete_trait(
+        out = super(DenseTaxaTraitMatrix, self).delete_trait(
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -413,7 +440,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             in-place: a new Matrix is allocated and filled.
         """
         # create output
-        out = super(DenseTaxaVariantMatrix, self).insert_taxa(
+        out = super(DenseTaxaTraitMatrix, self).insert_taxa(
             obj = obj,
             values = values,
             taxa = taxa,
@@ -449,7 +476,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             in-place: a new Matrix is allocated and filled.
         """
         # create output
-        out = super(DenseTaxaVariantMatrix, self).insert_trait(
+        out = super(DenseTaxaTraitMatrix, self).insert_trait(
             obj = obj,
             values = values,
             taxa = self._taxa,
@@ -457,6 +484,12 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             trait = trait,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -509,7 +542,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             The output Matrix with values selected. Note that select does not
             occur in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).select_taxa(
+        out = super(DenseTaxaTraitMatrix, self).select_taxa(
             indices = indices,
             trait = self._trait,
             **kwargs
@@ -534,12 +567,18 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             The output Matrix with values selected. Note that select does not
             occur in-place: a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, self).select_trait(
+        out = super(DenseTaxaTraitMatrix, self).select_trait(
             indices = indices,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -596,7 +635,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, cls).concat_taxa(
+        out = super(DenseTaxaTraitMatrix, cls).concat_taxa(
             mats = mats,
             trait = mats[0].trait,
             **kwargs
@@ -623,7 +662,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             The concatenated matrix. Note that concat does not occur in-place:
             a new Matrix is allocated and filled.
         """
-        out = super(DenseTaxaVariantMatrix, cls).concat_trait(
+        out = super(DenseTaxaTraitMatrix, cls).concat_trait(
             mats = mats,
             taxa = mats[0].taxa,
             taxa_grp = mats[0].taxa_grp,
@@ -874,3 +913,56 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             raise ValueError("cannot test for grouping along axis {0}".format(axis))
 
         return grouped
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_DenseTaxaTraitMatrix(v):
+    """
+    Determine whether an object is a DenseTaxaTraitMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseTaxaTraitMatrix object instance.
+    """
+    return isinstance(v, DenseTaxaTraitMatrix)
+
+def check_is_DenseTaxaTraitMatrix(v, varname):
+    """
+    Check if object is of type DenseTaxaTraitMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not is_DenseTaxaTraitMatrix(v):
+        raise TypeError("'{0}' must be a DenseTaxaTraitMatrix".format(varname))
+
+def cond_check_is_DenseTaxaTraitMatrix(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DenseTaxaTraitMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DenseTaxaTraitMatrix.
+    """
+    if cond(v):
+        check_is_DenseTaxaTraitMatrix(v, varname)

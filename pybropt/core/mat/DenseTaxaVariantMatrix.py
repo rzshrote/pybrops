@@ -1,3 +1,6 @@
+import numpy
+import copy
+
 from . import DenseTaxaMatrix
 from . import DenseVariantMatrix
 from . import TaxaVariantMatrix
@@ -5,6 +8,8 @@ from . import TaxaVariantMatrix
 from . import get_axis
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.error import error_readonly
+from pybropt.core.error import check_ndarray_at_least_2d
+from pybropt.core.error import check_is_ndarray
 
 class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatrix):
     """docstring for DenseTaxaVariantMatrix."""
@@ -72,6 +77,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapref = copy.copy(self.vrnt_hapref),
             vrnt_mask = copy.copy(self.vrnt_mask)
         )
+
         # copy taxa metadata
         out.taxa_grp_name = copy.copy(self.taxa_grp_name)
         out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
@@ -131,6 +137,20 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ##################### Matrix Data ######################
+    def mat():
+        doc = "Raw underlying matrix"
+        def fget(self):
+            return self._mat
+        def fset(self, value):
+            check_is_ndarray(value, "mat")
+            check_ndarray_at_least_2d(value, "mat")
+            self._mat = value
+        def fdel(self):
+            del self._mat
+        return locals()
+    mat = property(**mat())
 
     ############### Taxa Metadata Properites ###############
     def taxa_axis():
@@ -281,6 +301,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs
         )
 
+        # copy metadata from source
+        out.vrnt_chrgrp_name = self._vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = self._vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = self._vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len = self._vrnt_chrgrp_len
+
         return out
 
     def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
@@ -333,6 +359,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_mask = vrnt_mask,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -405,6 +437,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs
         )
 
+        # copy metadata from source
+        out.vrnt_chrgrp_name = self._vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = self._vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = self._vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len = self._vrnt_chrgrp_len
+
         return out
 
     def delete_vrnt(self, obj, **kwargs):
@@ -430,6 +468,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             taxa_grp = self._taxa_grp,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -565,6 +609,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs
         )
 
+        # copy metadata from source
+        out.vrnt_chrgrp_name = self._vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = self._vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = self._vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len = self._vrnt_chrgrp_len
+
         return out
 
     def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
@@ -618,6 +668,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_mask = vrnt_mask,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 
@@ -684,6 +740,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs
         )
 
+        # copy metadata from source
+        out.vrnt_chrgrp_name = self._vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = self._vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = self._vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len = self._vrnt_chrgrp_len
+
         return out
 
     def select_vrnt(self, indices, **kwargs):
@@ -709,6 +771,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             taxa_grp = self._taxa_grp,
             **kwargs
         )
+
+        # copy metadata from source
+        out.taxa_grp_name = self._taxa_grp_name
+        out.taxa_grp_stix = self._taxa_grp_stix
+        out.taxa_grp_spix = self._taxa_grp_spix
+        out.taxa_grp_len = self._taxa_grp_len
 
         return out
 

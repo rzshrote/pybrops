@@ -14,6 +14,7 @@ from . import generic_cond_check_ndarray_ndim
 from . import generic_cond_check_ndarray_size
 from . import generic_cond_check_ndarray_shape
 from . import generic_cond_check_ndarray_is_square
+from . import generic_check_ndarray_ndim_gteq
 
 ################################################################################
 ############################### check functions ################################
@@ -35,14 +36,26 @@ def check_ndarray_is_positive(v, vname):
 def check_ndarray_ndim(v, vname, vndim):
     generic_check_ndarray_ndim(v, vname, vndim)
 
+def check_ndarray_ndim_gteq(v, vname, vndim):
+    generic_check_ndarray_ndim_gteq(v, vname, vndim)
+
 def check_ndarray_is_1d(v, vname):
     generic_check_ndarray_ndim(v, vname, 1)
+
+def check_ndarray_at_least_1d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 1)
 
 def check_ndarray_is_2d(v, vname):
     generic_check_ndarray_ndim(v, vname, 2)
 
+def check_ndarray_at_least_2d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 2)
+
 def check_ndarray_is_3d(v, vname):
     generic_check_ndarray_ndim(v, vname, 3)
+
+def check_ndarray_at_least_3d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 3)
 
 ################ generic_check_ndarray_size ################
 def check_ndarray_size(v, vname, vsize):

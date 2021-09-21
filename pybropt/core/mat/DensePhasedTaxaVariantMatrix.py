@@ -4,6 +4,8 @@ from . import DenseTaxaVariantMatrix
 
 from . import get_axis
 from pybropt.core.error import error_readonly
+from pybropt.core.error import check_is_ndarray
+from pybropt.core.error import check_ndarray_at_least_3d
 
 class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,PhasedTaxaVariantMatrix):
     """docstring for DensePhasedTaxaVariantMatrix."""
@@ -37,6 +39,20 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ##################### Matrix Data ######################
+    def mat():
+        doc = "Raw underlying matrix"
+        def fget(self):
+            return self._mat
+        def fset(self, value):
+            check_is_ndarray(value, "mat")
+            check_ndarray_at_least_3d(value, "mat")
+            self._mat = value
+        def fdel(self):
+            del self._mat
+        return locals()
+    mat = property(**mat())
 
     ############## Phase Metadata Properites ###############
     def phase_axis():
@@ -232,7 +248,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             A Matrix with deleted elements. Note that concat does not occur
             in-place: a new Matrix is allocated and filled.
         """
-        out = super(DensePhasedTaxaVariantMatrix, self).delete_vrnt(
+        out = super(DensePhasedTaxaVariantMatrix, self).delete_phase(
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
@@ -680,6 +696,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             raise ValueError("cannot test for grouping along axis {0}".format(axis))
 
         return grouped
+
 
 
 ################################################################################

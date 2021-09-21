@@ -20,6 +20,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.mat import get_axis
+from pybropt.core.error import check_ndarray_at_least_1d
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     """docstring for DenseTaxaMatrix."""
@@ -107,6 +108,20 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ##################### Matrix Data ######################
+    def mat():
+        doc = "The mat property."
+        def fget(self):
+            return self._mat
+        def fset(self, value):
+            check_is_ndarray(value, "mat")
+            check_ndarray_at_least_1d(value, "mat")
+            self._mat = value
+        def fdel(self):
+            del self._mat
+        return locals()
+    mat = property(**mat())
 
     ################# Taxa Data Properites #################
     def taxa():
