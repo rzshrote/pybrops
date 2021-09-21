@@ -94,10 +94,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out.taxa_grp_len = copy.copy(self.taxa_grp_len)
 
         # copy variant metadata
-        out.vrnt_grp_name = copy.copy(self.vrnt_grp_name)
-        out.vrnt_grp_stix = copy.copy(self.vrnt_grp_stix)
-        out.vrnt_grp_spix = copy.copy(self.vrnt_grp_spix)
-        out.vrnt_grp_len = copy.copy(self.vrnt_grp_len)
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.copy(self.vrnt_chrgrp_len)
 
         return out
 
@@ -136,10 +136,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
 
         # copy variant metadata
-        out.vrnt_grp_name = copy.deepcopy(self.vrnt_grp_name, memo)
-        out.vrnt_grp_stix = copy.deepcopy(self.vrnt_grp_stix, memo)
-        out.vrnt_grp_spix = copy.deepcopy(self.vrnt_grp_spix, memo)
-        out.vrnt_grp_len = copy.deepcopy(self.vrnt_grp_len, memo)
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name, memo)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix, memo)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix, memo)
+        out.vrnt_chrgrp_len = copy.deepcopy(self.vrnt_chrgrp_len, memo)
 
         return out
 
@@ -595,8 +595,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Parameters
         ----------
         dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+            The dtype of the returned array.
 
         Returns
         -------
@@ -636,7 +635,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele frequencies of the
+            A numpy.ndarray of shape (p,) containing allele frequencies of the
             allele coded as 1 for all 'p' loci.
         """
         denom = (self.ploidy * self.ntaxa)              # get ploidy * ntaxa
@@ -663,7 +662,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def mehe(self):
+    def mehe(self, dtype = None):
         """
         Mean expected heterozygosity across all taxa.
 
@@ -673,13 +672,18 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """
+        # OPTIMIZE: take dot product with allele counts, then divide?
         p = self.afreq()                    # get haplotype frequency (p)
-        out = (p * (1.0 - p)).sum()         # take p*(1-p) across all loci and sum the products
-        rnphase = self.ploidy * self.nvrnt  # 1 / (ploidy * nvrnt)
+        out = numpy.dot(p, 1.0 - p)         # take p*(1-p) across all loci and sum the products
+        rnphase = self.ploidy / self.nvrnt  # ploidy / nvrnt
         out *= rnphase                      # multiply summation by (nphase / nvrnt)
-        return numpy.float64(out)
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
+        return out
 
-    def gtcount(self):
+    def gtcount(self, dtype = None):
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -707,8 +711,13 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         # get correct axis to sum across
         axis = self.taxa_axis
 
-        for i in range(ngt):
+        for i in range(ngt):                # for each genotype combo
             out[i] = (mat == i).sum(axis)   # record counts for genotype 'i'
+
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
 
         return out
 
@@ -731,6 +740,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         """
         recip = 1.0 / self.ntaxa        # get reciprocal of number of taxa
         out = recip * self.gtcount()    # calculate genotype frequencies
+        if dtype is not None:           # if dtype is specified
+            dtype = numpy.dtype(dtype)  # ensure conversion to dtype class
+            if out.dtype != dtype:      # if output dtype and desired are different
+                out = dtype.type(out)   # convert to correct dtype
         return out
 
     ################### Matrix File I/O ####################
@@ -919,17 +932,19 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
 
 
-
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseGenotypeMatrix(v):
+    """Return whether an object is a DenseGenotypeMatrix or not"""
     return isinstance(v, DenseGenotypeMatrix)
 
 def check_is_DenseGenotypeMatrix(v, varname):
+    """Raise TypeError if object is not a DenseGenotypeMatrix"""
     if not isinstance(v, DenseGenotypeMatrix):
         raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(varname))
 
 def cond_check_is_DenseGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a DenseGenotypeMatrix"""
     if cond(v):
         check_is_DenseGenotypeMatrix(v, varname)
