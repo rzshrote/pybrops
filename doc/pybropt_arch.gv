@@ -1,147 +1,321 @@
 digraph pybropt_arch {
-	DataFrame [color="#EE6262" shape=box style=filled]
-	PandasDataFrame [color=lightblue2 shape=box style=filled]
-	HDF5InputOutput [color="#EE6262" shape=box style=filled]
-	DenseMatrix [color=lightblue2 shape=box style=filled]
-	DenseMutableMatrix [color=lightblue2 shape=box style=filled]
-	DensePhasedMatrix [color=lightblue2 shape=box style=filled]
-	DensePhasedTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
-	DenseTaxaMatrix [color=lightblue2 shape=box style=filled]
-	DenseTaxaTraitMatrix [color=lightblue2 shape=box style=filled]
-	DenseTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
-	DenseTraitMatrix [color=lightblue2 shape=box style=filled]
-	DenseVariantMatrix [color=lightblue2 shape=box style=filled]
-	GroupableMatrix [color="#EE6262" shape=box style=filled]
-	Matrix [color="#EE6262" shape=box style=filled]
-	MutableMatrix [color="#EE6262" shape=box style=filled]
-	PhasedMatrix [color="#EE6262" shape=box style=filled]
-	PhasedTaxaVariantMatrix [color="#EE6262" shape=box style=filled]
-	PrunableMatrix [color="#EE6262" shape=box style=filled]
-	SortableMatrix [color="#EE6262" shape=box style=filled]
-	TaxaMatrix [color="#EE6262" shape=box style=filled]
-	TaxaTraitMatrix [color="#EE6262" shape=box style=filled]
-	TaxaVariantMatrix [color="#EE6262" shape=box style=filled]
-	TraitMatrix [color="#EE6262" shape=box style=filled]
-	VariantMatrix [color="#EE6262" shape=box style=filled]
-	BreedingValueMatrix [color="#EE6262" shape=box style=filled]
-	DenseBreedingValueMatrix [color=lightblue2 shape=box style=filled]
-	CoancestryMatrix [color="#EE6262" shape=box style=filled]
-	DenseCoancestryMatrix [color=lightblue2 shape=box style=filled]
-	DenseMolecularCoancestryMatrix [color=lightblue2 shape=box style=filled]
-	DenseVanRadenCoancestryMatrix [color=lightblue2 shape=box style=filled]
-	DenseGeneticMappableMatrix [color=lightblue2 shape=box style=filled]
-	ExtendedGeneticMap [color=lightblue2 shape=box style=filled]
-	GeneticMap [color="#EE6262" shape=box style=filled]
-	GeneticMapFunction [color="#EE6262" shape=box style=filled]
-	GeneticMappableMatrix [color="#EE6262" shape=box style=filled]
-	HaldaneMapFunction [color=lightblue2 shape=box style=filled]
-	KosambiMapFunction [color=lightblue2 shape=box style=filled]
-	StandardGeneticMap [color=lightblue2 shape=box style=filled]
-	DenseGenotypeMatrix [color=lightblue2 shape=box style=filled]
-	DensePhasedGenotypeMatrix [color=lightblue2 shape=box style=filled]
-	GenotypeMatrix [color="#EE6262" shape=box style=filled]
-	HaplotypeMatrix [color="#EE6262" shape=box style=filled]
-	PhasedGenotypeMatrix [color="#EE6262" shape=box style=filled]
-	PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
-	PandasPhenotypeDataFrame [color=lightblue2 shape=box style=filled]
-	PhenotypeDataFrame [color="#EE6262" shape=box style=filled]
-	BreedingEdge [color="#EE6262" shape=box style=filled]
-	BreedingGraph [color="#EE6262" shape=box style=filled]
-	BreedingNode [color="#EE6262" shape=box style=filled]
-	BreedingProgram [color="#EE6262" shape=box style=filled]
-	EmigrationOperator [color="#EE6262" shape=box style=filled]
-	GermplasmBank [color="#EE6262" shape=box style=filled]
-	ImmigrationOperator [color="#EE6262" shape=box style=filled]
-	RecurrentSelectionBreedingProgram [color=lightblue2 shape=box style=filled]
-	GenomicModelCalibrationOperator [color="#EE6262" shape=box style=filled]
-	LinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
-	NonlinearGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
-	TrueGenomicModelCalibrationOperator [color=lightblue2 shape=box style=filled]
-	EvaluationOperator [color="#EE6262" shape=box style=filled]
-	NoGxEEvaluationOperator [color=lightblue2 shape=box style=filled]
-	PerformanceTrial [color="#EE6262" shape=box style=filled]
-	TrueEvaluationOperator [color=lightblue2 shape=box style=filled]
-	GenerationalInitializationOperator [color=lightblue2 shape=box style=filled]
-	InitializationOperator [color="#EE6262" shape=box style=filled]
-	RandomInitializationOperator [color=lightblue2 shape=box style=filled]
-	SimpleInitializationOperator [color=lightblue2 shape=box style=filled]
-	PandasDataFrame -> DataFrame
-	BreedingValueMatrix -> TaxaTraitMatrix
+	subgraph cluster_0 {
+		color=lightgrey label="breed.arch" style=filled
+		BreedingEdge [color="#EE6262" shape=box style=filled]
+		BreedingGraph [color="#EE6262" shape=box style=filled]
+		BreedingNode [color="#EE6262" shape=box style=filled]
+		BreedingProgram [color="#EE6262" shape=box style=filled]
+		EmigrationOperator [color="#EE6262" shape=box style=filled]
+		GermplasmBank [color="#EE6262" shape=box style=filled]
+		ImmigrationOperator [color="#EE6262" shape=box style=filled]
+		RecurrentSelectionBreedingProgram [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_1 {
+		color=lightgrey label="breed.op.eval" style=filled
+		EvaluationOperator [color="#EE6262" shape=box style=filled]
+		PerformanceTrial [color=lightblue2 shape=box style=filled]
+		TrueEvaluationOperator [color=lightblue2 shape=box style=filled]
+		NoGxEEvaluationOperator [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_2 {
+		color=lightgrey label="breed.op.init" style=filled
+		InitializationOperator [color="#EE6262" shape=box style=filled]
+		GenerationalInitializationOperator [color=lightblue2 shape=box style=filled]
+		RandomInitializationOperator [color=lightblue2 shape=box style=filled]
+		SimpleInitializationOperator [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_3 {
+		color=lightgrey label="breed.op.log" style=filled
+		BasicLogbook [color=lightblue2 shape=box style=filled]
+		BlankLogbook [color=lightblue2 shape=box style=filled]
+		Logbook [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_4 {
+		color=lightgrey label="breed.op.mate" style=filled
+		FourWayDHCross [color=lightblue2 shape=box style=filled]
+		ThreeWayDHCross [color=lightblue2 shape=box style=filled]
+		GenerationalTwoWayDHCross [color=lightblue2 shape=box style=filled]
+		MatingOperator [color="#EE6262" shape=box style=filled]
+		TwoWayDHCross [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_5 {
+		color=lightgrey label="breed.op.psel" style=filled
+		ParentSelectionOperator [color="#EE6262" shape=box style=filled]
+		ConventionalGenomicParentSelection [color=lightblue2 shape=box style=filled]
+		ConventionalPhenotypicParentSelection [color=lightblue2 shape=box style=filled]
+		OptimalContributionParentSelection [color=lightblue2 shape=box style=filled]
+		OptimalPopulationValueParentSelection [color=lightblue2 shape=box style=filled]
+		TwoWayExpectedMaximumBreedingValueParentSelection [color=lightblue2 shape=box style=filled]
+		TwoWayOptimalHaploidValueParentSelection [color=lightblue2 shape=box style=filled]
+		WeightedGenomicParentSelection [color=lightblue2 shape=box style=filled]
+		RandomParentSelection [color=lightblue2 shape=box style=filled]
+		MultiObjectiveGenomicParentSelection [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_6 {
+		color=lightgrey label="breed.op.ssel" style=filled
+		SurvivorSelectionOperator [color="#EE6262" shape=box style=filled]
+		ConventionalGenomicSurvivorSelection [color=lightblue2 shape=box style=filled]
+		ConventionalPhenotypicSurvivorSelection [color=lightblue2 shape=box style=filled]
+		FamilyPhenotypicSurvivorSelection [color=lightblue2 shape=box style=filled]
+		OptimalContributionSurvivorSelection [color=lightblue2 shape=box style=filled]
+		WeightedGenomicSurvivorSelection [color=lightblue2 shape=box style=filled]
+		RandomFamilySurvivorSelection [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_7 {
+		color=lightgrey label="breed.prot.bv" style=filled
+		BreedingValueProtocol [color="#EE6262" shape=box style=filled]
+		TrueBreedingValue [color=lightblue2 shape=box style=filled]
+		G_E_RnE_EstimatedBreedingValue [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_8 {
+		color=lightgrey label="breed.prot.gt" style=filled
+		GenotypingProtocol [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_9 {
+		color=lightgrey label="breed.prot.mate" style=filled
+		FourWayCross [color=lightblue2 shape=box style=filled]
+		FourWayDHCross [color=lightblue2 shape=box style=filled]
+		GenerationalTwoWayDHCross [color=lightblue2 shape=box style=filled]
+		MatingProtocol [color="#EE6262" shape=box style=filled]
+		SelfCross [color=lightblue2 shape=box style=filled]
+		ThreeWayCross [color=lightblue2 shape=box style=filled]
+		ThreeWayDHCross [color=lightblue2 shape=box style=filled]
+		TwoWayCross [color=lightblue2 shape=box style=filled]
+		TwoWayDHCross [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_10 {
+		color=lightgrey label="breed.prot.mcfg" style=filled
+		MatingConfiguration [color="#EE6262" shape=box style=filled]
+		WeightedRandomMatingConfiguration [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_11 {
+		color=lightgrey label="breed.prot.pt" style=filled
+		PhenotypingProtocol [color="#EE6262" shape=box style=filled]
+		TruePhenotyping [color=lightblue2 shape=box style=filled]
+		G_E_Phenotyping [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_12 {
+		color=lightgrey label="breed.prot.sel" style=filled
+		ConventionalGenomicSelection [color=lightblue2 shape=box style=filled]
+		SelectionProtocol [color="#EE6262" shape=box style=filled]
+		WeightedGenomicParentSelection [color=lightblue2 shape=box style=filled]
+		RandomSelection [color=lightblue2 shape=box style=filled]
+		ConventionalPhenotypicSelection [color=lightblue2 shape=box style=filled]
+		MultiObjectiveGenomicMating [color=lightblue2 shape=box style=filled]
+		MultiObjectiveGenomicSelection [color=lightblue2 shape=box style=filled]
+		OptimalContributionSelection [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_13 {
+		color=lightgrey label="core.df" style=filled
+		DataFrame [color="#EE6262" shape=box style=filled]
+		PandasDataFrame [color="#EE6262" shape=box style=filled]
+		DictDataFrame [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_14 {
+		color=lightgrey label="core.io" style=filled
+		HDF5InputOutput [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_15 {
+		color=lightgrey label="core.mat" style=filled
+		DenseMutableMatrix [color=lightblue2 shape=box style=filled]
+		GroupableMatrix [color="#EE6262" shape=box style=filled]
+		MutableMatrix [color="#EE6262" shape=box style=filled]
+		SortableMatrix [color="#EE6262" shape=box style=filled]
+		PrunableMatrix [color="#EE6262" shape=box style=filled]
+		DenseMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+		DenseTaxaMatrix [color=lightblue2 shape=box style=filled]
+		DenseTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+		DenseTraitMatrix [color=lightblue2 shape=box style=filled]
+		DenseVariantMatrix [color=lightblue2 shape=box style=filled]
+		Matrix [color="#EE6262" shape=box style=filled]
+		PhasedMatrix [color="#EE6262" shape=box style=filled]
+		PhasedTaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+		TaxaMatrix [color="#EE6262" shape=box style=filled]
+		TaxaTraitMatrix [color="#EE6262" shape=box style=filled]
+		TaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+		TraitMatrix [color="#EE6262" shape=box style=filled]
+		VariantMatrix [color="#EE6262" shape=box style=filled]
+		DenseTaxaTraitMatrix [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_16 {
+		color=lightgrey label="popgen.bvmat" style=filled
+		BreedingValueMatrix [color="#EE6262" shape=box style=filled]
+		DenseBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+		DenseEstimatedBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+		DenseGenomicEstimatedBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_17 {
+		color=lightgrey label="popgen.cmat" style=filled
+		CoancestryMatrix [color="#EE6262" shape=box style=filled]
+		DenseMolecularCoancestryMatrix [color=lightblue2 shape=box style=filled]
+		DenseVanRadenCoancestryMatrix [color=lightblue2 shape=box style=filled]
+		DenseCoancestryMatrix [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_18 {
+		color=lightgrey label="popgen.gmap" style=filled
+		ExtendedGeneticMap [color=lightblue2 shape=box style=filled]
+		GeneticMap [color="#EE6262" shape=box style=filled]
+		GeneticMapFunction [color="#EE6262" shape=box style=filled]
+		HaldaneMapFunction [color=lightblue2 shape=box style=filled]
+		KosambiMapFunction [color=lightblue2 shape=box style=filled]
+		StandardGeneticMap [color=lightblue2 shape=box style=filled]
+		DenseGeneticMappableMatrix [color=lightblue2 shape=box style=filled]
+		GeneticMappableMatrix [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_19 {
+		color=lightgrey label="popgen.gmat" style=filled
+		DenseGenotypeMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedGenotypeMatrix [color=lightblue2 shape=box style=filled]
+		GenotypeMatrix [color="#EE6262" shape=box style=filled]
+		HaplotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedGenotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_20 {
+		color=lightgrey label="popgen.hmat" style=filled
+		DenseHaplotypeMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedHaplotypeMatrix [color=lightblue2 shape=box style=filled]
+		HaplotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_21 {
+		color=lightgrey label="popgen.ptdf" style=filled
+		PandasPhenotypeDataFrame [color=lightblue2 shape=box style=filled]
+		PhenotypeDataFrame [color="#EE6262" shape=box style=filled]
+	}
+	BasicLogbook -> Logbook
+	BlankLogbook -> Logbook
+	BreedingProgram -> BreedingNode
 	BreedingValueMatrix -> HDF5InputOutput
-	DenseBreedingValueMatrix -> DenseTaxaTraitMatrix
-	DenseBreedingValueMatrix -> BreedingValueMatrix
+	BreedingValueMatrix -> TaxaTraitMatrix
 	CoancestryMatrix -> TaxaMatrix
-	DenseCoancestryMatrix -> DenseMutableMatrix
+	ConventionalGenomicParentSelection -> ParentSelectionOperator
+	ConventionalGenomicSelection -> SelectionProtocol
+	ConventionalGenomicSurvivorSelection -> SurvivorSelectionOperator
+	ConventionalPhenotypicParentSelection -> ParentSelectionOperator
+	ConventionalPhenotypicSelection -> SelectionProtocol
+	ConventionalPhenotypicSurvivorSelection -> SurvivorSelectionOperator
+	DenseBreedingValueMatrix -> BreedingValueMatrix
+	DenseBreedingValueMatrix -> DenseTaxaTraitMatrix
 	DenseCoancestryMatrix -> CoancestryMatrix
-	DenseMolecularCoancestryMatrix -> DenseCoancestryMatrix
-	DenseVanRadenCoancestryMatrix -> DenseCoancestryMatrix
+	DenseCoancestryMatrix -> DenseMutableMatrix
+	DenseEstimatedBreedingValueMatrix -> DenseBreedingValueMatrix
 	DenseGeneticMappableMatrix -> DenseVariantMatrix
 	DenseGeneticMappableMatrix -> GeneticMappableMatrix
-	ExtendedGeneticMap -> GeneticMap
-	GeneticMappableMatrix -> VariantMatrix
-	HaldaneMapFunction -> GeneticMapFunction
-	KosambiMapFunction -> GeneticMapFunction
-	StandardGeneticMap -> GeneticMap
-	DenseGenotypeMatrix -> DenseTaxaVariantMatrix
+	DenseGenomicEstimatedBreedingValueMatrix -> DenseBreedingValueMatrix
 	DenseGenotypeMatrix -> DenseGeneticMappableMatrix
+	DenseGenotypeMatrix -> DenseTaxaVariantMatrix
 	DenseGenotypeMatrix -> GenotypeMatrix
+	DenseHaplotypeMatrix -> DenseMutableMatrix
+	DenseHaplotypeMatrix -> HaplotypeMatrix
+	DenseMatrix -> Matrix
+	DenseMolecularCoancestryMatrix -> DenseCoancestryMatrix
+	DenseMutableMatrix -> DenseMatrix
+	DenseMutableMatrix -> MutableMatrix
 	DensePhasedGenotypeMatrix -> DenseGenotypeMatrix
 	DensePhasedGenotypeMatrix -> DensePhasedTaxaVariantMatrix
-	DensePhasedGenotypeMatrix -> PhasedGenotypeMatrix
 	DensePhasedGenotypeMatrix -> GeneticMap
-	GenotypeMatrix -> TaxaVariantMatrix
+	DensePhasedGenotypeMatrix -> PhasedGenotypeMatrix
+	DensePhasedHaplotypeMatrix -> DenseHaplotypeMatrix
+	DensePhasedHaplotypeMatrix -> PhasedMatrix
+	DensePhasedMatrix -> DenseMutableMatrix
+	DensePhasedMatrix -> PhasedMatrix
+	DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
+	DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
+	DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
+	DenseTaxaMatrix -> DenseMutableMatrix
+	DenseTaxaMatrix -> TaxaMatrix
+	DenseTaxaTraitMatrix -> DenseTaxaMatrix
+	DenseTaxaTraitMatrix -> DenseTraitMatrix
+	DenseTaxaTraitMatrix -> TaxaTraitMatrix
+	DenseTaxaVariantMatrix -> DenseTaxaMatrix
+	DenseTaxaVariantMatrix -> DenseVariantMatrix
+	DenseTaxaVariantMatrix -> TaxaVariantMatrix
+	DenseTraitMatrix -> DenseMutableMatrix
+	DenseTraitMatrix -> TraitMatrix
+	DenseVanRadenCoancestryMatrix -> DenseCoancestryMatrix
+	DenseVariantMatrix -> DenseMutableMatrix
+	DenseVariantMatrix -> VariantMatrix
+	DictDataFrame -> DataFrame
+	EmigrationOperator -> BreedingEdge
+	ExtendedGeneticMap -> GeneticMap
+	FamilyPhenotypicSurvivorSelection -> SurvivorSelectionOperator
+	FourWayCross -> MatingProtocol
+	FourWayDHCross -> MatingOperator
+	FourWayDHCross -> MatingProtocol
+	G_E_Phenotyping -> PhenotypingProtocol
+	G_E_RnE_EstimatedBreedingValue -> BreedingValueProtocol
+	GenerationalInitializationOperator -> InitializationOperator
+	GenerationalTwoWayDHCross -> MatingOperator
+	GenerationalTwoWayDHCross -> TwoWayDHCross
+	GeneticMappableMatrix -> VariantMatrix
 	GenotypeMatrix -> GeneticMappableMatrix
+	GenotypeMatrix -> HDF5InputOutput
+	GenotypeMatrix -> TaxaVariantMatrix
+	GermplasmBank -> BreedingNode
+	GroupableMatrix -> SortableMatrix
+	HaldaneMapFunction -> GeneticMapFunction
+	HaplotypeMatrix -> HDF5InputOutput
+	HaplotypeMatrix -> TaxaMatrix
 	HaplotypeMatrix -> TaxaVariantMatrix
-	PhasedGenotypeMatrix -> GenotypeMatrix
-	PhasedGenotypeMatrix -> PhasedTaxaVariantMatrix
-	PhasedHaplotypeMatrix -> PhasedTaxaVariantMatrix
-	PhasedHaplotypeMatrix -> HaplotypeMatrix
+	HaplotypeMatrix -> VariantMatrix
+	ImmigrationOperator -> BreedingEdge
+	KosambiMapFunction -> GeneticMapFunction
+	MultiObjectiveGenomicMating -> SelectionProtocol
+	MultiObjectiveGenomicParentSelection -> ParentSelectionOperator
+	MultiObjectiveGenomicSelection -> SelectionProtocol
+	MutableMatrix -> Matrix
+	NoGxEEvaluationOperator -> EvaluationOperator
+	OptimalContributionParentSelection -> ParentSelectionOperator
+	OptimalContributionSelection -> SelectionProtocol
+	OptimalContributionSurvivorSelection -> SurvivorSelectionOperator
+	OptimalPopulationValueParentSelection -> ParentSelectionOperator
+	PandasDataFrame -> DataFrame
 	PandasPhenotypeDataFrame -> PandasDataFrame
 	PandasPhenotypeDataFrame -> PhenotypeDataFrame
+	PhasedGenotypeMatrix -> GenotypeMatrix
+	PhasedGenotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedHaplotypeMatrix -> HaplotypeMatrix
+	PhasedHaplotypeMatrix -> PhasedMatrix
+	PhasedHaplotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedMatrix -> MutableMatrix
+	PhasedTaxaVariantMatrix -> PhasedMatrix
+	PhasedTaxaVariantMatrix -> TaxaMatrix
+	PhasedTaxaVariantMatrix -> TaxaVariantMatrix
+	PhasedTaxaVariantMatrix -> VariantMatrix
 	PhenotypeDataFrame -> DataFrame
-	BreedingProgram -> BreedingNode
-	RecurrentSelectionBreedingProgram -> BreedingProgram
-	LinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
-	NonlinearGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
-	TrueGenomicModelCalibrationOperator -> GenomicModelCalibrationOperator
-	NoGxEEvaluationOperator -> EvaluationOperator
-	TrueEvaluationOperator -> EvaluationOperator
-	GenerationalInitializationOperator -> InitializationOperator
+	PrunableMatrix -> Matrix
+	RandomFamilySurvivorSelection -> SurvivorSelectionOperator
 	RandomInitializationOperator -> InitializationOperator
+	RandomParentSelection -> ParentSelectionOperator
+	RandomSelection -> SelectionProtocol
+	RecurrentSelectionBreedingProgram -> BreedingProgram
+	SelfCross -> MatingProtocol
 	SimpleInitializationOperator -> InitializationOperator
-	subgraph cluster_0 {
-		color=lightgrey label="pybropt.core.mat" style=filled
-		DenseMatrix -> Matrix
-		DenseMutableMatrix -> DenseMatrix
-		DenseMutableMatrix -> MutableMatrix
-		DensePhasedMatrix -> DenseMutableMatrix
-		DensePhasedMatrix -> PhasedMatrix
-		DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
-		DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
-		DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
-		DenseTaxaMatrix -> DenseMutableMatrix
-		DenseTaxaMatrix -> TaxaMatrix
-		DenseTaxaVariantMatrix -> DenseTaxaMatrix
-		DenseTaxaVariantMatrix -> DenseVariantMatrix
-		DenseTaxaVariantMatrix -> TaxaVariantMatrix
-		DenseTraitMatrix -> DenseMutableMatrix
-		DenseTraitMatrix -> TraitMatrix
-		DenseVariantMatrix -> DenseMutableMatrix
-		DenseVariantMatrix -> VariantMatrix
-		GroupableMatrix -> SortableMatrix
-		MutableMatrix -> Matrix
-		PhasedMatrix -> MutableMatrix
-		PhasedTaxaVariantMatrix -> PhasedMatrix
-		PhasedTaxaVariantMatrix -> TaxaMatrix
-		PhasedTaxaVariantMatrix -> VariantMatrix
-		PrunableMatrix -> Matrix
-		SortableMatrix -> MutableMatrix
-		TaxaMatrix -> GroupableMatrix
-		TaxaTraitMatrix -> TaxaMatrix
-		TaxaTraitMatrix -> TraitMatrix
-		TaxaVariantMatrix -> TaxaMatrix
-		TaxaVariantMatrix -> VariantMatrix
-		TraitMatrix -> SortableMatrix
-		VariantMatrix -> GroupableMatrix
-	}
+	SortableMatrix -> MutableMatrix
+	StandardGeneticMap -> GeneticMap
+	TaxaMatrix -> GroupableMatrix
+	TaxaTraitMatrix -> TaxaMatrix
+	TaxaTraitMatrix -> TraitMatrix
+	TaxaVariantMatrix -> TaxaMatrix
+	TaxaVariantMatrix -> VariantMatrix
+	ThreeWayCross -> MatingProtocol
+	ThreeWayDHCross -> MatingOperator
+	ThreeWayDHCross -> MatingProtocol
+	TraitMatrix -> SortableMatrix
+	TrueBreedingValue -> BreedingValueProtocol
+	TrueEvaluationOperator -> EvaluationOperator
+	TruePhenotyping -> PhenotypingProtocol
+	TwoWayCross -> MatingProtocol
+	TwoWayDHCross -> MatingOperator
+	TwoWayDHCross -> MatingProtocol
+	TwoWayExpectedMaximumBreedingValueParentSelection -> ParentSelectionOperator
+	TwoWayOptimalHaploidValueParentSelection -> ParentSelectionOperator
+	VariantMatrix -> GroupableMatrix
+	WeightedGenomicParentSelection -> ParentSelectionOperator
+	WeightedGenomicParentSelection -> SelectionProtocol
+	WeightedGenomicSurvivorSelection -> SurvivorSelectionOperator
+	WeightedRandomMatingConfiguration -> MatingConfiguration
 }
