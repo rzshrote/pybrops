@@ -14,10 +14,10 @@ from pybropt.test import generic_assert_concrete_function
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import ThreeWayDHCross
-from pybropt.breed.prot.mate import is_ThreeWayDHCross
-from pybropt.breed.prot.mate import check_is_ThreeWayDHCross
-from pybropt.breed.prot.mate import cond_check_is_ThreeWayDHCross
+from pybropt.breed.prot.mate import TwoWayCross
+from pybropt.breed.prot.mate import is_TwoWayCross
+from pybropt.breed.prot.mate import check_is_TwoWayCross
+from pybropt.breed.prot.mate import cond_check_is_TwoWayCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -46,26 +46,26 @@ def rng():
     yield Generator(PCG64(543212345))
 
 @pytest.fixture
-def threeway(rng):
-    yield ThreeWayDHCross(
+def twoway(rng):
+    yield TwoWayCross(
         rng = rng
     )
 
 @pytest.fixture
 def sel():
-    yield numpy.int64([0,1,2,0,2,2,1,2,1])
+    yield numpy.int64([0,1,0,2,1,2])
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(ThreeWayDHCross)
+    generic_assert_docstring(TwoWayCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(ThreeWayDHCross, "__init__")
+    generic_assert_concrete_method(TwoWayCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -78,8 +78,8 @@ def test_init_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_mate(threeway, dpgvmat, sel, rng):
-    progeny, misc = threeway.mate(dpgvmat, sel, 1, 2, s = 0)
+def test_mate(twoway, dpgvmat, sel, rng):
+    progeny, misc = twoway.mate(dpgvmat, sel, 1, 2, s = 0)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
@@ -88,20 +88,20 @@ def test_mate(threeway, dpgvmat, sel, rng):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_ThreeWayDHCross_is_concrete():
-    generic_assert_concrete_function(is_ThreeWayDHCross)
+def test_is_TwoWayCross_is_concrete():
+    generic_assert_concrete_function(is_TwoWayCross)
 
-def test_is_ThreeWayDHCross(threeway):
-    assert is_ThreeWayDHCross(threeway)
+def test_is_TwoWayCross(twoway):
+    assert is_TwoWayCross(twoway)
 
-def test_check_is_ThreeWayDHCross_is_concrete():
-    generic_assert_concrete_function(check_is_ThreeWayDHCross)
+def test_check_is_TwoWayCross_is_concrete():
+    generic_assert_concrete_function(check_is_TwoWayCross)
 
-def test_check_is_ThreeWayDHCross(threeway):
+def test_check_is_TwoWayCross(twoway):
     with not_raises(TypeError):
-        check_is_ThreeWayDHCross(threeway, "threeway")
+        check_is_TwoWayCross(twoway, "twoway")
     with pytest.raises(TypeError):
-        check_is_ThreeWayDHCross(None, "threeway")
+        check_is_TwoWayCross(None, "twoway")
 
-def test_cond_check_is_ThreeWayDHCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_ThreeWayDHCross)
+def test_cond_check_is_TwoWayCross_is_concrete():
+    generic_assert_concrete_function(cond_check_is_TwoWayCross)

@@ -76,6 +76,20 @@ def check_ndarray_axis_len(v, vname, vaxis, vlen):
 def check_ndarray_is_square(v, vname):
     generic_check_ndarray_is_square(v, vname)
 
+############# check_ndarray_len_is_multiple_of #############
+def check_ndarray_len_is_multiple_of(v, vname, m):
+    if (len(v) % m) != 0:
+        raise ValueError("len({0}) is not a multiple of {1}".format(vname, m))
+
+def check_ndarray_len_is_multiple_of_2(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 2)
+
+def check_ndarray_len_is_multiple_of_3(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 3)
+
+def check_ndarray_len_is_multiple_of_4(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 4)
+
 ################################################################################
 ######################### conditional check functions ##########################
 ################################################################################

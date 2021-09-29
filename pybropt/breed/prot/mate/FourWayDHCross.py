@@ -4,7 +4,7 @@ from . import mat_mate
 from . import mat_dh
 from . import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.core.error import check_ndarray_len_is_multiple_of_4
 from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
 class FourWayDHCross(MatingProtocol):
@@ -14,6 +14,16 @@ class FourWayDHCross(MatingProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, rng = None, **kwargs):
+        """
+        Constructor for the concrete class FourWayDHCross.
+
+        Parameters
+        ----------
+        rng : numpy.Generator
+            Random number source.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(FourWayDHCross, self).__init__(**kwargs)
 
         # check data types
@@ -65,7 +75,8 @@ class FourWayDHCross(MatingProtocol):
             A DensePhasedGenotypeMatrix of progeny.
         """
         # check data type
-        pybropt.popgen.gmat.is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_ndarray_len_is_multiple_of_4(sel, "sel")
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
         f2sel = numpy.repeat(sel[0::4], ncross)
@@ -74,26 +85,33 @@ class FourWayDHCross(MatingProtocol):
         m1sel = numpy.repeat(sel[3::4], ncross)
 
         # get pointers to genotypes and crossover probabilities, respectively
-        geno = pgmat.geno
+        geno = pgmat.mat
         xoprob = pgmat.vrnt_xoprob
 
         # create F1 genotypes
         abgeno = mat_mate(geno, geno, f1sel, m1sel, xoprob, self.rng)
         cdgeno = mat_mate(geno, geno, f2sel, m2sel, xoprob, self.rng)
 
-        # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(abgeno.shape[1]), nprogeny)
+        # generate selection array for hybrid lines
+        absel = numpy.arange(abgeno.shape[1])
+        cdsel = numpy.arange(cdgeno.shape[1])
 
         # generate dihybrid cross
-        hgeno = mat_mate(abgeno, cdgeno, asel, asel, xoprob, self.rng)
+        dihgeno = mat_mate(abgeno, cdgeno, absel, cdsel, xoprob, self.rng)
+
+        # generate selection array for dihybrid lines
+        dihsel = numpy.arange(dihgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(s):
             # self hybrids
-            hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
+            dihgeno = mat_mate(dihgeno, dihgeno, dihsel, dihsel, xoprob, self.rng)
+
+        # generate selection array for progeny
+        psel = numpy.repeat(dihsel, nprogeny)
 
         # generate doubled haploids
-        dhgeno = mat_dh(hgeno, asel, xoprob, self.rng)
+        dhgeno = mat_dh(dihgeno, psel, xoprob, self.rng)
 
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
@@ -125,12 +143,47 @@ class FourWayDHCross(MatingProtocol):
 ################################## Utilities ###################################
 ################################################################################
 def is_FourWayDHCross(v):
+    """
+    Determine whether an object is a FourWayDHCross.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a FourWayDHCross object instance.
+    """
     return isinstance(v, FourWayDHCross)
 
 def check_is_FourWayDHCross(v, varname):
+    """
+    Check if object is of type FourWayDHCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, FourWayDHCross):
         raise TypeError("'%s' must be a FourWayDHCross." % varname)
 
 def cond_check_is_FourWayDHCross(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type FourWayDHCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a FourWayDHCross.
+    """
     if cond(v):
         check_is_FourWayDHCross(v, varname)

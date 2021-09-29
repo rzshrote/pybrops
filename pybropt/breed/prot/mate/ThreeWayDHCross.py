@@ -4,6 +4,7 @@ from . import mat_mate
 from . import mat_dh
 from . import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_ndarray_len_is_multiple_of_3
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
@@ -14,6 +15,16 @@ class ThreeWayDHCross(MatingProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, rng = None, **kwargs):
+        """
+        Constructor for the concrete class ThreeWayDHCross.
+
+        Parameters
+        ----------
+        rng : numpy.Generator
+            Random number source.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(ThreeWayDHCross, self).__init__(**kwargs)
 
         # check data types
@@ -65,6 +76,7 @@ class ThreeWayDHCross(MatingProtocol):
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_ndarray_len_is_multiple_of_3(sel, "sel")
 
         # get recurrent, female, and male selections; repeat by ncross
         rsel = numpy.repeat(sel[0::3], ncross)  # recurrent parent
@@ -72,25 +84,31 @@ class ThreeWayDHCross(MatingProtocol):
         msel = numpy.repeat(sel[2::3], ncross)  # male parent
 
         # get pointers to genotypes and crossover probabilities, respectively
-        geno = pgmat.geno
+        geno = pgmat.mat
         xoprob = pgmat.vrnt_xoprob
 
         # create F1 genotypes
         f1geno = mat_mate(geno, geno, fsel, msel, xoprob, self.rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(f1geno.shape[1]), nprogeny)
+        hsel = numpy.arange(f1geno.shape[1])
 
-        # generate three way crosses
-        hgeno = mat_mate(geno, f1geno, rsel, asel, xoprob, self.rng)
+        # create backcross genotypes
+        bcgeno = mat_mate(geno, f1geno, rsel, hsel, xoprob, self.rng)
+
+        # generate selection array for all backcross lines
+        bcsel = numpy.arange(bcgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(s):
-            # self hybrids
-            hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
+            # self backcross lines
+            bcgeno = mat_mate(bcgeno, bcgeno, bcsel, bcsel, xoprob, self.rng)
+
+        # generate selection array for progeny
+        psel = numpy.repeat(bcsel, nprogeny)
 
         # generate doubled haploids
-        dhgeno = mat_dh(hgeno, asel, xoprob, self.rng)
+        dhgeno = mat_dh(bcgeno, psel, xoprob, self.rng)
 
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
@@ -122,12 +140,47 @@ class ThreeWayDHCross(MatingProtocol):
 ################################## Utilities ###################################
 ################################################################################
 def is_ThreeWayDHCross(v):
+    """
+    Determine whether an object is a ThreeWayDHCross.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a ThreeWayDHCross object instance.
+    """
     return isinstance(v, ThreeWayDHCross)
 
 def check_is_ThreeWayDHCross(v, varname):
+    """
+    Check if object is of type ThreeWayDHCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, ThreeWayDHCross):
         raise TypeError("'%s' must be a ThreeWayDHCross." % varname)
 
 def cond_check_is_ThreeWayDHCross(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type ThreeWayDHCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a ThreeWayDHCross.
+    """
     if cond(v):
         check_is_ThreeWayDHCross(v, varname)

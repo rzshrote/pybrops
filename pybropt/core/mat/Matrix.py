@@ -564,7 +564,7 @@ def is_Matrix(v):
 
     Parameters
     ----------
-    v : any object
+    v : object
         Any Python object to test.
 
     Returns
@@ -580,7 +580,7 @@ def check_is_Matrix(v, varname):
 
     Parameters
     ----------
-    v : any object
+    v : object
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
@@ -594,7 +594,7 @@ def cond_check_is_Matrix(v, varname, cond=(lambda s: s is not None)):
 
     Parameters
     ----------
-    v : any object
+    v : object
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

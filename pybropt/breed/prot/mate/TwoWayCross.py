@@ -4,6 +4,7 @@ from . import mat_mate
 from . import mat_dh
 from . import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_ndarray_len_is_multiple_of_2
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
@@ -14,6 +15,16 @@ class TwoWayCross(MatingProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, rng = None, **kwargs):
+        """
+        Constructor for the concrete class TwoWayCross.
+
+        Parameters
+        ----------
+        rng : numpy.Generator
+            Random number source.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(TwoWayCross, self).__init__(**kwargs)
 
         # check data types
@@ -64,6 +75,7 @@ class TwoWayCross(MatingProtocol):
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_ndarray_len_is_multiple_of_2(sel, "sel")
 
         # get female and male selections; repeat by ncross
         fsel = numpy.repeat(sel[0::2], ncross)
@@ -114,12 +126,47 @@ class TwoWayCross(MatingProtocol):
 ################################## Utilities ###################################
 ################################################################################
 def is_TwoWayCross(v):
+    """
+    Determine whether an object is a TwoWayCross.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a TwoWayCross object instance.
+    """
     return isinstance(v, TwoWayCross)
 
 def check_is_TwoWayCross(v, varname):
+    """
+    Check if object is of type TwoWayCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, TwoWayCross):
         raise TypeError("'%s' must be a TwoWayCross." % varname)
 
 def cond_check_is_TwoWayCross(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type TwoWayCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a TwoWayCross.
+    """
     if cond(v):
         check_is_TwoWayCross(v, varname)
