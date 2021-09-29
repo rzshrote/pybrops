@@ -146,12 +146,15 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingValueMatrix(v):
+    """Return whether an object is a BreedingValueMatrix or not"""
     return isinstance(v, BreedingValueMatrix)
 
 def check_is_BreedingValueMatrix(v, vname):
+    """Raise TypeError if object is not a BreedingValueMatrix"""
     if not isinstance(v, BreedingValueMatrix):
         raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
 
 def cond_check_is_BreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a BreedingValueMatrix"""
     if cond(v):
         check_is_BreedingValueMatrix(v, vname)

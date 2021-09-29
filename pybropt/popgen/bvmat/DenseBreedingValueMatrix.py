@@ -62,122 +62,122 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############## Matrix summary statistics ###############
     def targmax(self):
         """
-        Return indices of the maximum values along the trait axis.
+        Return indices of the maximum values for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
             An index array of shape (t,) containing indices of maximum values
-            along the trait axis.
+            along the taxa axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.argmax(axis = 0)    # get argument maximum
+        out = self._mat.argmax(axis = self.taxa_axis)    # get argument maximum
         return out
 
     def targmin(self):
         """
-        Return indices of the minimum values along the trait axis.
+        Return indices of the minimum values for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
             An index array of shape (t,) containing indices of minimum values
-            along the trait axis.
+            along the taxa axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.argmin(axis = 0)    # get argument minimum
+        out = self._mat.argmin(axis = self.taxa_axis)    # get argument minimum
         return out
 
     def tmax(self):
         """
-        Return the maximum along the trait axis.
+        Return the maximum for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the trait
+            An array of shape (t,) containing maximum values along the taxa
             axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.max(axis = 0)   # get maximum
+        out = self._mat.max(axis = self.taxa_axis)   # get maximum
         return out
 
     def tmean(self):
         """
-        Return the mean along the trait axis.
+        Return the mean for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the trait
+            An array of shape (t,) containing maximum values along the taxa
             axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.mean(axis = 0)  # get mean
+        out = self._mat.mean(axis = self.taxa_axis)  # get mean
         return out
 
     def tmin(self):
         """
-        Return the minimum along the trait axis.
+        Return the minimum for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
             An index array of shape (t,) containing minimum values along the
-            trait axis.
+            taxa axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.min(axis = 0)   # get minimum
+        out = self._mat.min(axis = self.taxa_axis)   # get minimum
         return out
 
     def trange(self):
         """
-        Return the range along the trait axis.
+        Return the range for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing variance values along the trait
+            An array of shape (t,) containing range values along the taxa
             axis.
             Where:
                 't' is the number of traits.
         """
-        out = numpy.ptp(self._mat, axis = 0)    # get range
+        out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
         return out
 
     def tstd(self):
         """
-        Return the standard deviation along the trait axis.
+        Return the standard deviation for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
             An array of shape (t,) containing standard deviation values along
-            the trait axis.
+            the taxa axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.std(axis = 0)   # get standard deviation
+        out = self._mat.std(axis = self.taxa_axis)   # get standard deviation
         return out
 
     def tvar(self):
         """
-        Return the variance along the trait axis.
+        Return the variance for each trait column (along the taxa axis).
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing variance values along the trait
+            An array of shape (t,) containing variance values along the taxa
             axis.
             Where:
                 't' is the number of traits.
         """
-        out = self._mat.var(axis = 0)   # get variance
+        out = self._mat.var(axis = self.taxa_axis)   # get variance
         return out
 
     ################### Matrix File I/O ####################
@@ -281,12 +281,15 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseBreedingValueMatrix(v):
+    """Return whether an object is a DenseBreedingValueMatrix or not"""
     return isinstance(v, DenseBreedingValueMatrix)
 
 def check_is_DenseBreedingValueMatrix(v, varname):
+    """Raise TypeError if object is not a DenseBreedingValueMatrix"""
     if not isinstance(v, DenseBreedingValueMatrix):
         raise TypeError("'%s' must be a DenseBreedingValueMatrix." % varname)
 
 def cond_check_is_DenseBreedingValueMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a DenseBreedingValueMatrix"""
     if cond(v):
         check_is_DenseBreedingValueMatrix(v, varname)
