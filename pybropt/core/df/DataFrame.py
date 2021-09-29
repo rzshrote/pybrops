@@ -5,6 +5,14 @@ class DataFrame:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class DataFrame.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DataFrame, self).__init__()
 
     ############################################################################
@@ -165,12 +173,47 @@ class DataFrame:
 ################################## Utilities ###################################
 ################################################################################
 def is_DataFrame(v):
+    """
+    Determine whether an object is a DataFrame.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DataFrame object instance.
+    """
     return isinstance(v, DataFrame)
 
 def check_is_DataFrame(v, vname):
+    """
+    Check if object is of type DataFrame. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, DataFrame):
         raise TypeError("variable '{0}' must be a DataFrame".format(vname))
 
 def cond_check_is_DataFrame(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DataFrame. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a DataFrame.
+    """
     if cond(v):
         check_is_DataFrame(v, vname)

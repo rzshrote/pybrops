@@ -226,9 +226,22 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None):
+    def lexsort(self, keys = None, **kwargs):
         """
-        Generate indices for lexsort.
+        Perform an indirect stable sort using a sequence of keys.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        indices : (N,) ndarray of ints
+            Array of indices that sort the keys along the specified axis.
         """
         # if no keys were provided, set a default
         if keys is None:
@@ -253,12 +266,15 @@ class ExtendedGeneticMap(GeneticMap):
 
     def reorder(self, indices):
         """
-        Reorder the genetic map.
+        Reorder markers in the GeneticMap using an array of indices.
+        Note this modifies the GeneticMap in-place.
 
         Parameters
         ----------
-        indices : numpy.ndarray
-            Indices of where to place elements.
+        indices : (N,) ndarray of ints
+            Array of indices that reorder the matrix along the specified axis.
+        **kwargs
+            Additional keyword arguments.
         """
         # sort internal self
         self._vrnt_chrgrp = self._vrnt_chrgrp[indices]
@@ -323,10 +339,9 @@ class ExtendedGeneticMap(GeneticMap):
         )
 
     ################ Insert/Delete Methods #################
-    def remove(self, indices):
+    def remove(self, indices, **kwargs):
         """
-        Remove indices from the MarkerSet.
-        Sort and group internal arrays.
+        Remove indices from the GeneticMap. Sort and group internal arrays.
 
         Parameters
         ----------
@@ -334,6 +349,8 @@ class ExtendedGeneticMap(GeneticMap):
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
+        **kwargs : dict
+            Additional keyword arguments.
         """
         # delete indices from self
         self._vrnt_chrgrp = numpy.delete(self._vrnt_chrgrp, indices)
@@ -348,9 +365,9 @@ class ExtendedGeneticMap(GeneticMap):
         # sort and group
         self.group()
 
-    def select(self, indices):
+    def select(self, indices, **kwargs):
         """
-        Keep only selected markers, removing all others from the MarkerSet.
+        Keep only selected markers, removing all others from the GeneticMap.
         Sort and group internal arrays.
 
         Parameters
@@ -359,6 +376,8 @@ class ExtendedGeneticMap(GeneticMap):
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
+        **kwargs : dict
+            Additional keyword arguments.
         """
         # keep only selected markers.
         self._vrnt_chrgrp = self._vrnt_chrgrp[indices]
@@ -387,6 +406,8 @@ class ExtendedGeneticMap(GeneticMap):
             priority. If the physical distance between two markers selected
             based on their genetic distance exceeds 'nt' (if provided), the
             additional markers are sought between those regions.
+        **kwargs : dict
+            Additional keyword arguments.
         """
         # check if we have acceptible inputs
         if (nt is None) and (M is None):
@@ -568,7 +589,7 @@ class ExtendedGeneticMap(GeneticMap):
 
     ################ Interpolation Methods #################
     # TODO: do not require sorted internals to build spline
-    def build_spline(self, kind = 'linear', fill_value = 'extrapolate'):
+    def build_spline(self, kind = 'linear', fill_value = 'extrapolate', **kwargs):
         """
         Build a spline for estimating genetic map distances. This is built
         using the marker start indices (self.chr_start)
@@ -596,6 +617,8 @@ class ExtendedGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
+        **kwargs : dict
+            Additional keyword arguments.
         """
         # get unique chromosome group labels
         uniq = numpy.unique(self._vrnt_chrgrp)
@@ -622,6 +645,7 @@ class ExtendedGeneticMap(GeneticMap):
             )
 
     def has_spline(self):
+        """Return whether or not the GeneticMap has a built spline."""
         return (
             (self._spline is not None) and
             (self._spline_kind is not None) and
@@ -863,7 +887,10 @@ class ExtendedGeneticMap(GeneticMap):
         # return it
         return df
 
-    def to_csv(self, fname, sep = ',', header = True, index = False):
+    def to_csv(self, fname, sep = ',', header = True, index = False, **kwargs):
+        """
+        Convert a GeneticMap object to a csv file.
+        """
         # convert GeneticMap to DataFrame
         df = self.to_pandas_df()
 

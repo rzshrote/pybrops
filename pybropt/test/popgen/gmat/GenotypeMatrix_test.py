@@ -1,4 +1,3 @@
-import inspect
 import pytest
 
 from pybropt.test import generic_test_abstract_methods
