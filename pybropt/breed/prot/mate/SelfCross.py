@@ -14,6 +14,16 @@ class SelfCross(MatingProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, rng = None, **kwargs):
+        """
+        Constructor for the concrete class SelfCross.
+
+        Parameters
+        ----------
+        rng : numpy.Generator
+            Random number source.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(SelfCross, self).__init__(**kwargs)
 
         # check data types
@@ -27,7 +37,20 @@ class SelfCross(MatingProtocol):
     ############################################################################
     def mate(self, pgmat, sel, ncross, nprogeny, s = 0, **kwargs):
         """
-        Mate individuals according to a 2-way mate selection scheme.
+        Self-fertilize individuals.
+
+        Example crossing diagram:
+                 pgmat
+                   │                sel = [A,...]
+                   A
+             ┌─────┴─────┐          ncross = 2
+             A           A
+             │           │          s = 2
+           S0(A)       S0(A)        first self
+             │           │
+           S1(A)       S1(A)        second self
+          ┌──┴──┐     ┌──┴──┐       self, nprogeny = 2
+        S2(A) S2(A) S2(A) S2(A)     final result
 
         Parameters
         ----------
@@ -38,20 +61,18 @@ class SelfCross(MatingProtocol):
             A 1D array of indices of selected individuals of shape (k,).
             Where:
                 'k' is the number of selected individuals.
-            Indices are paired as follows:
-                Even indices are female.
-                Odd indices are male.
+            Indices are as follows:
+                All indices are female.
             Example:
                 [1,5,3,8,2,7]
-                female = 1,3,2
-                male = 5,8,7
+                female = 1,5,3,8,2,7
         ncross : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
-            Number of doubled haploid progeny to generate per cross.
+            Number of progeny to generate per cross.
         s : int, default = 0
-            Number of selfing generations post-cross before double haploids are
-            generated.
+            Number of selfing generations post-cross pattern before selfed
+            individuals are generated.
         **kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
@@ -65,23 +86,37 @@ class SelfCross(MatingProtocol):
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
 
-        # get female selections; repeat by ncross
-        fsel = numpy.repeat(sel, ncross)
-
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
         xoprob = pgmat.vrnt_xoprob
 
+        # get female selections; repeat by ncross
+        fsel = numpy.repeat(sel, ncross)
+
+        # declare selfing genotypes as alias for geno
+        sgeno = geno
+
+        if s > 0:
+            # perform first self
+            sgeno = mat_mate(sgeno, sgeno, fsel, fsel, xoprob, self.rng)
+
+        # get self selections
+
+        # TODO: # FIXME:
         # create hybrid genotypes
         hgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(hgeno.shape[1]), nprogeny)
+        hsel = numpy.arange(hgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(s):
             # self hybrids
-            hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
+            hgeno = mat_mate(hgeno, hgeno, hsel, hsel, xoprob, self.rng)
+
+        # generate selection array for progeny
+        psel = numpy.repeat(bcsel, nprogeny)
+
 
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
@@ -113,12 +148,47 @@ class SelfCross(MatingProtocol):
 ################################## Utilities ###################################
 ################################################################################
 def is_SelfCross(v):
+    """
+    Determine whether an object is a SelfCross.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a SelfCross object instance.
+    """
     return isinstance(v, SelfCross)
 
 def check_is_SelfCross(v, varname):
+    """
+    Check if object is of type SelfCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, SelfCross):
         raise TypeError("'%s' must be a SelfCross." % varname)
 
 def cond_check_is_SelfCross(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type SelfCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a SelfCross.
+    """
     if cond(v):
         check_is_SelfCross(v, varname)

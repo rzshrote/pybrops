@@ -41,6 +41,19 @@ class TwoWayDHCross(MatingProtocol):
         Mate individuals according to a 2-way mate selection scheme, then create
         doubled haploid progenies.
 
+        Example crossing diagram:
+                             pgmat
+                               │                        sel = [A,B,...]
+                              A×B
+                   ┌───────────┴───────────┐            ncross = 2
+                  A×B                     A×B           duplicate cross 2 times
+                   │                       │            s = 2
+                S0(A×B)                 S0(A×B)         first self
+                   │                       │
+                S1(A×B)                 S1(A×B)         second self
+             ┌─────┴─────┐           ┌─────┴─────┐      double haploid, nprogeny = 2
+        DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) final result
+
         Parameters
         ----------
         pgmat : DensePhasedGenotypeMatrix
@@ -62,8 +75,8 @@ class TwoWayDHCross(MatingProtocol):
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
         s : int, default = 0
-            Number of selfing generations post-cross before double haploids are
-            generated.
+            Number of selfing generations post-cross pattern before 'nprogeny'
+            double haploids are generated.
         **kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
@@ -90,12 +103,15 @@ class TwoWayDHCross(MatingProtocol):
         hgeno = mat_mate(geno, geno, fsel, msel, xoprob, self.rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(hgeno.shape[1]), nprogeny)
+        asel = numpy.arange(hgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(s):
             # self hybrids
             hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
+
+        # generate selection array for all hybrid lines
+        asel = numpy.repeat(numpy.arange(hgeno.shape[1]), nprogeny)
 
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob, self.rng)

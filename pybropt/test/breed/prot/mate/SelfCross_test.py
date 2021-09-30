@@ -15,10 +15,10 @@ from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import FourWayDHCross
-from pybropt.breed.prot.mate import is_FourWayDHCross
-from pybropt.breed.prot.mate import check_is_FourWayDHCross
-from pybropt.breed.prot.mate import cond_check_is_FourWayDHCross
+from pybropt.breed.prot.mate import SelfCross
+from pybropt.breed.prot.mate import is_SelfCross
+from pybropt.breed.prot.mate import check_is_SelfCross
+from pybropt.breed.prot.mate import cond_check_is_SelfCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -48,25 +48,25 @@ def rng():
 
 @pytest.fixture
 def mprot(rng):
-    yield FourWayDHCross(
+    yield SelfCross(
         rng = rng
     )
 
 @pytest.fixture
 def sel():
-    yield numpy.int64([0,1,2,1, 0,2,2,1, 1,2,1,0])
+    yield numpy.int64([0,1,0,2,1,2])
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(FourWayDHCross)
+    generic_assert_docstring(SelfCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(FourWayDHCross, "__init__")
+    generic_assert_concrete_method(SelfCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -89,20 +89,20 @@ def test_mate(mprot, dpgvmat, sel, rng):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(is_FourWayDHCross)
+def test_is_SelfCross_is_concrete():
+    generic_assert_concrete_function(is_SelfCross)
 
-def test_is_FourWayDHCross(mprot):
-    assert is_FourWayDHCross(mprot)
+def test_is_SelfCross(mprot):
+    assert is_SelfCross(mprot)
 
-def test_check_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(check_is_FourWayDHCross)
+def test_check_is_SelfCross_is_concrete():
+    generic_assert_concrete_function(check_is_SelfCross)
 
-def test_check_is_FourWayDHCross(mprot):
+def test_check_is_SelfCross(mprot):
     with not_raises(TypeError):
-        check_is_FourWayDHCross(mprot, "mprot")
+        check_is_SelfCross(mprot, "mprot")
     with pytest.raises(TypeError):
-        check_is_FourWayDHCross(None, "mprot")
+        check_is_SelfCross(None, "mprot")
 
-def test_cond_check_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_FourWayDHCross)
+def test_cond_check_is_SelfCross_is_concrete():
+    generic_assert_concrete_function(cond_check_is_SelfCross)

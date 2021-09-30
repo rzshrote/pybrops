@@ -46,7 +46,7 @@ def rng():
     yield Generator(PCG64(543212345))
 
 @pytest.fixture
-def twoway(rng):
+def mprot(rng):
     yield TwoWayCross(
         rng = rng
     )
@@ -78,8 +78,8 @@ def test_init_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_mate(twoway, dpgvmat, sel, rng):
-    progeny, misc = twoway.mate(dpgvmat, sel, 1, 2, s = 0)
+def test_mate(mprot, dpgvmat, sel, rng):
+    progeny, misc = mprot.mate(dpgvmat, sel, 1, 2, s = 0)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
@@ -91,17 +91,17 @@ def test_mate(twoway, dpgvmat, sel, rng):
 def test_is_TwoWayCross_is_concrete():
     generic_assert_concrete_function(is_TwoWayCross)
 
-def test_is_TwoWayCross(twoway):
-    assert is_TwoWayCross(twoway)
+def test_is_TwoWayCross(mprot):
+    assert is_TwoWayCross(mprot)
 
 def test_check_is_TwoWayCross_is_concrete():
     generic_assert_concrete_function(check_is_TwoWayCross)
 
-def test_check_is_TwoWayCross(twoway):
+def test_check_is_TwoWayCross(mprot):
     with not_raises(TypeError):
-        check_is_TwoWayCross(twoway, "twoway")
+        check_is_TwoWayCross(mprot, "mprot")
     with pytest.raises(TypeError):
-        check_is_TwoWayCross(None, "twoway")
+        check_is_TwoWayCross(None, "mprot")
 
 def test_cond_check_is_TwoWayCross_is_concrete():
     generic_assert_concrete_function(cond_check_is_TwoWayCross)

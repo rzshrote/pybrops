@@ -1,10 +1,18 @@
-var_errclass PhenotypingProtocol:
+class PhenotypingProtocol:
     """docstring for PhenotypingProtocol."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class PhenotypingProtocol.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(PhenotypingProtocol, self).__init__()
 
     ############################################################################
@@ -98,12 +106,47 @@ var_errclass PhenotypingProtocol:
 ################################## Utilities ###################################
 ################################################################################
 def is_PhenotypingProtocol(v):
+    """
+    Determine whether an object is a PhenotypingProtocol.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a PhenotypingProtocol object instance.
+    """
     return isinstance(v, PhenotypingProtocol)
 
-def check_is_PhenotypingProtocol(v, vname):
-    if not isinstance(v, PhenotypingProtocol):
-        raise TypeError("variable '{0}' must be a PhenotypingProtocol".format(vname))
+def check_is_PhenotypingProtocol(v, varname):
+    """
+    Check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
 
-def cond_check_is_PhenotypingProtocol(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, PhenotypingProtocol):
+        raise TypeError("'%s' must be a PhenotypingProtocol." % varname)
+
+def cond_check_is_PhenotypingProtocol(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a PhenotypingProtocol.
+    """
     if cond(v):
-        check_is_PhenotypingProtocol(v, vname)
+        check_is_PhenotypingProtocol(v, varname)

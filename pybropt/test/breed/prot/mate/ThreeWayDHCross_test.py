@@ -46,7 +46,7 @@ def rng():
     yield Generator(PCG64(543212345))
 
 @pytest.fixture
-def threeway(rng):
+def mprot(rng):
     yield ThreeWayDHCross(
         rng = rng
     )
@@ -78,8 +78,8 @@ def test_init_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_mate(threeway, dpgvmat, sel, rng):
-    progeny, misc = threeway.mate(dpgvmat, sel, 1, 2, s = 0)
+def test_mate(mprot, dpgvmat, sel, rng):
+    progeny, misc = mprot.mate(dpgvmat, sel, 1, 2, s = 0)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
@@ -91,17 +91,17 @@ def test_mate(threeway, dpgvmat, sel, rng):
 def test_is_ThreeWayDHCross_is_concrete():
     generic_assert_concrete_function(is_ThreeWayDHCross)
 
-def test_is_ThreeWayDHCross(threeway):
-    assert is_ThreeWayDHCross(threeway)
+def test_is_ThreeWayDHCross(mprot):
+    assert is_ThreeWayDHCross(mprot)
 
 def test_check_is_ThreeWayDHCross_is_concrete():
     generic_assert_concrete_function(check_is_ThreeWayDHCross)
 
-def test_check_is_ThreeWayDHCross(threeway):
+def test_check_is_ThreeWayDHCross(mprot):
     with not_raises(TypeError):
-        check_is_ThreeWayDHCross(threeway, "threeway")
+        check_is_ThreeWayDHCross(mprot, "mprot")
     with pytest.raises(TypeError):
-        check_is_ThreeWayDHCross(None, "threeway")
+        check_is_ThreeWayDHCross(None, "mprot")
 
 def test_cond_check_is_ThreeWayDHCross_is_concrete():
     generic_assert_concrete_function(cond_check_is_ThreeWayDHCross)
