@@ -9,6 +9,14 @@ class HaldaneMapFunction(GeneticMapFunction):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Create a Haldane mapping function object.
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(HaldaneMapFunction, self).__init__(**kwargs)
 
     ############################################################################
@@ -134,12 +142,15 @@ class HaldaneMapFunction(GeneticMapFunction):
 ################################## Utilities ###################################
 ################################################################################
 def is_HaldaneMapFunction(v):
+    """Return whether an object is a HaldaneMapFunction or not"""
     return isinstance(v, HaldaneMapFunction)
 
 def check_is_HaldaneMapFunction(v, vname):
+    """Raise TypeError if object is not a HaldaneMapFunction"""
     if not isinstance(v, HaldaneMapFunction):
         raise TypeError("variable '{0}' must be a HaldaneMapFunction".format(vname))
 
 def cond_check_is_HaldaneMapFunction(v, vname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a HaldaneMapFunction"""
     if cond(v):
         check_is_HaldaneMapFunction(v, vname)

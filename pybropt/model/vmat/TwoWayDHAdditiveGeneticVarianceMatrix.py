@@ -1,5 +1,5 @@
 from . import AdditiveGeneticVarianceMatrix
-from pybropt.util import srange
+from pybropt.core.util import srange
 from . import cov_D1s
 from pybropt.core.error import check_is_ndarray
 
