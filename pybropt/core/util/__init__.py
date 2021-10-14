@@ -3,3 +3,4 @@
 from .subroutines import *
 from .util_h5py import *
 from .util_rpy2 import *
+from .util_numpy import *

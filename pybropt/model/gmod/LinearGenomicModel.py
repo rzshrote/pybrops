@@ -8,19 +8,20 @@ class LinearGenomicModel(GenomicModel):
 
     A Multivariate Multiple Linear Regression model is defined as:
 
-        Y = 1u' + XB + e
+        Y = Xβ + Zu + e
 
         Where:
-            Y is a matrix of response variables of shape (n, t)
-            1 is a vector of ones of shape (n, 1)
-            u is a vector of regression intercepts of shape (t, 1)
-            X is a matrix of genotypes of shape (n, p)
-            B is a matrix of regression coefficients of shape (p, t)
+            Y is a matrix of response variables of shape (n,t)
+            X is a matrix of fixed effect predictors of shape (n,q)
+            β is a matrix of fixed effect regression coefficients of shape (q,t)
+            Z is a matrix of random effect predictors of shape (n,p)
+            u is a matrix of random effect regression coefficients of shape (p,t)
             e is a matrix of error terms of shape (n, t)
 
         Shape definitions:
             n = the number of individuals
-            p = the number of markers
+            q = the number of fixed effect predictors (e.g. environments)
+            p = the number of random effect predictors (e.g. genomic markers)
             t = the number of traits
     """
 
@@ -44,27 +45,33 @@ class LinearGenomicModel(GenomicModel):
     ############################################################################
 
     ############## Linear Genomic Model Data ###############
-    def mu():
-        doc = "The mu property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    mu = property(**mu())
-
     def beta():
-        doc = "The beta property."
+        doc = "Fixed effect regression coefficients"
         def fget(self):
+            """Get fixed effect regression coefficients"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set fixed effect regression coefficients"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete fixed effect regression coefficients"""
             raise NotImplementedError("method is abstract")
         return locals()
     beta = property(**beta())
+
+    def u():
+        doc = "Random effect regression coefficients"
+        def fget(self):
+            """Get random effect regression coefficients"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set random effect regression coefficients"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete random effect regression coefficients"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    u = property(**u())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -76,12 +83,47 @@ class LinearGenomicModel(GenomicModel):
 ################################## Utilities ###################################
 ################################################################################
 def is_LinearGenomicModel(v):
+    """
+    Determine whether an object is a LinearGenomicModel.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a LinearGenomicModel object instance.
+    """
     return isinstance(v, LinearGenomicModel)
 
 def check_is_LinearGenomicModel(v, vname):
+    """
+    Check if object is of type LinearGenomicModel. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, LinearGenomicModel):
         raise TypeError("variable '{0}' must be a LinearGenomicModel".format(vname))
 
 def cond_check_is_LinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type LinearGenomicModel. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a LinearGenomicModel.
+    """
     if cond(v):
         check_is_LinearGenomicModel(v, vname)

@@ -8,6 +8,8 @@ from . import SelectionProtocol
 from pybropt.core.error import check_is_bool
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import cond_check_is_dict
+from pybropt.core.error import cond_check_is_callable
 
 class RandomSelection(SelectionProtocol):
     """Perform random parent selection"""
@@ -15,7 +17,7 @@ class RandomSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, replace = False, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, replace = False, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
         Construct a RandomSelection operator.
 
@@ -40,6 +42,12 @@ class RandomSelection(SelectionProtocol):
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
         check_is_bool(replace, "replace")
+        cond_check_is_callable(objfn_trans, "objfn_trans")
+        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
+        # TODO: check objfn_wt
+        cond_check_is_callable(ndset_trans, "ndset_trans")
+        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
+        # TODO: check ndset_wt
         cond_check_is_Generator(rng, "rng")
 
         # assign variables
@@ -47,12 +55,18 @@ class RandomSelection(SelectionProtocol):
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.replace = replace
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs):
         """
         Select parents for breeding.
 
@@ -135,9 +149,9 @@ class RandomSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get parameters/pointers
-        n = gmat.mat.shape[0]   # get number of taxa
-        t = gpmod.beta.shape[1] # get number of traits
-        rng = self.rng          # get random number generator
+        n = gmat.ntaxa      # get number of taxa
+        t = gpmod.ntrait    # get number of traits
+        rng = self.rng      # get random number generator
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -206,6 +220,8 @@ class RandomSelection(SelectionProtocol):
             The number of individuals available for selection.
         t : int
             The number of traits.
+        rng : numpy.Generator
+            Random number generator.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:

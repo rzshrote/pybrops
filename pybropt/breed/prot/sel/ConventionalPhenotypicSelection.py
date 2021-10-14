@@ -1,8 +1,12 @@
+import numpy
+import types
 from . import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_callable
+from pybropt.core.error import cond_check_is_dict
 
 class ConventionalPhenotypicSelection(SelectionProtocol):
     """docstring for ConventionalPhenotypicSelection."""
@@ -11,6 +15,22 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+        """
+        Constructor for Conventional Phenotypic Selection (CPS)
+
+        Parameters
+        ----------
+        nparent : int
+        ncross : int
+        nprogeny : int
+        objfn_trans : function, callable, None
+        objfn_trans_kwargs : dict, None
+        objfn_wt : float, numpy.ndarray
+        ndset_trans : function, callable, None
+        ndset_trans_kwargs : dict, None
+        ndset_wt : float
+        rng : numpy.Generator
+        """
         super(ConventionalPhenotypicSelection, self).__init__(**kwargs)
 
         # error checks
@@ -245,6 +265,51 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         )
 
         return outfn
+
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+        """
+        Calculate a Pareto frontier for objectives.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing three objects (frontier, sel_config, misc)
+            Elements
+            --------
+            frontier : numpy.ndarray
+                Array of shape (q,v) containing Pareto frontier points.
+                Where:
+                    'q' is the number of points in the frontier.
+                    'v' is the number of objectives for the frontier.
+            sel_config : numpy.ndarray
+                Array of shape (q,k) containing parent selection decisions for
+                each corresponding point in the Pareto frontier.
+                Where:
+                    'q' is the number of points in the frontier.
+                    'k' is the number of search space decision variables.
+            misc : dict
+                A dictionary of miscellaneous output. (User specified)
+        """
+        raise NotImplementedError("method is abstract")
 
     ############################################################################
     ############################## Static Methods ##############################

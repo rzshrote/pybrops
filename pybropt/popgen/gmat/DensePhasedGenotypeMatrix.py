@@ -252,6 +252,39 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     ############################## Object Methods ##############################
     ############################################################################
 
+    ################## Matrix conversion ###################
+    def mat_asformat(self, format):
+        """
+        Get mat in a specific format type.
+
+        Parameters
+        ---------
+        format : str
+            Desired output format. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Matrix in the desired output format.
+        """
+        if format == "{0,1,2}":
+            return self.mat.sum(0)
+        elif format == "{-1,0,1}":
+            out = self.mat.sum(0)
+            out -= 1
+            return out
+        elif format == "{-1,m,1}":
+            # OPTIMIZE: there's probably a matrix multiplication way to do this instead of if-else
+            out = self.mat.sum(0) - 1.0    # (n,p) float64
+            for i in range(out.shape[1]):
+                view = out[:,i]
+                mean = view.mean()
+                mask = (view == 0)
+                out[mask,i] = mean
+            return out
+        else:
+            raise ValueError('Format not recognized. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".')
+
     ############## Matrix summary statistics ###############
     def tacount(self, dtype = None):
         """

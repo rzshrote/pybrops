@@ -2,27 +2,38 @@ import numpy
 import pytest
 import os.path
 
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
+
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.model.gmod import is_GenericLinearGenomicModel
 from pybropt.model.gmod import check_is_GenericLinearGenomicModel
 from pybropt.model.gmod import cond_check_is_GenericLinearGenomicModel
 
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.bvmat import is_BreedingValueMatrix
+from pybropt.core.util import is_ndarray
 
 ################################################################################
-############################## Fixtures for tests ##############################
+################################ Test fixtures #################################
 ################################################################################
+
+############################################################
+###################### Genomic model #######################
+############################################################
 @pytest.fixture
-def mu():
+def mat_beta():
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [1.4, 2.5, 7.2]
     ])
 
 @pytest.fixture
-def beta():
+def mat_u():
     yield numpy.float64([
         [-0.33,  2.08, -2.42],
         [-0.69, -1.87,  1.38],
@@ -37,7 +48,7 @@ def beta():
     ])
 
 @pytest.fixture
-def trait():
+def mat_trait():
     yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
@@ -49,15 +60,18 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def glgmod(mat_beta, mat_u, mat_trait, model_name, params):
     yield GenericLinearGenomicModel(
-        mu = mu,
-        beta = beta,
-        trait = trait,
+        beta = mat_beta,
+        u = mat_u,
+        trait = mat_trait,
         model_name = model_name,
         params = params
     )
 
+############################################################
+######################## Genotypes #########################
+############################################################
 @pytest.fixture
 def mat_int8():
     yield numpy.int8([
@@ -90,8 +104,8 @@ def mat_taxa_grp():
     yield numpy.int64([1, 1, 2, 2, 2])
 
 @pytest.fixture
-def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
-    yield DensePhasedGenotypeVariantMatrix(
+def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
+    yield DensePhasedGenotypeMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
         vrnt_phypos = mat_phypos,
@@ -99,35 +113,115 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
         taxa_grp = mat_taxa_grp
     )
 
+############################################################
+##################### Breeding values ######################
+############################################################
+@pytest.fixture
+def mat_intercept(dpgmat, mat_beta):
+    n = dpgmat.ntaxa
+    q = mat_beta.shape[0]
+    a = numpy.ones((n,1), dtype = "float64")
+    yield a
+
 ################################################################################
-#################################### Tests #####################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(GenericLinearGenomicModel)
+
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "__init__")
+
+def test_copy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "__copy__")
+
+def test_deepcopy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "__deepcopy__")
+
+def test_fit_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "fit_numpy")
+
+def test_fit_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "fit")
+
+def test_predict_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "predict_numpy")
+
+def test_predict_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "predict")
+
+def test_score_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "score_numpy")
+
+def test_score_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "score")
+
+def test_gebv_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "gebv_numpy")
+
+def test_gebv_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "gebv")
+
+def test_var_G_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_G_numpy")
+
+def test_var_G_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_G")
+
+def test_var_A_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_A_numpy")
+
+def test_var_A_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_A")
+
+def test_var_a_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_a_numpy")
+
+def test_var_a_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "var_a")
+
+def test_bulmer_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "bulmer_numpy")
+
+def test_bulmer_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "bulmer")
+
+def test_usl_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "usl_numpy")
+
+def test_usl_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "usl")
+
+def test_lsl_numpy_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "lsl_numpy")
+
+def test_lsl_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "lsl")
+
+def test_from_hdf5_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "from_hdf5")
+
+def test_to_hdf5_is_concrete():
+    generic_assert_concrete_method(GenericLinearGenomicModel, "to_hdf5")
+
+################################################################################
+########################## Test Class Special Methods ##########################
 ################################################################################
 
-########################################
-############ Utility tests #############
-########################################
-def test_is_GenericLinearGenomicModel(glgmod):
-    assert is_GenericLinearGenomicModel(glgmod)
+################################################################################
+############################ Test Class Properties #############################
+################################################################################
+def test_u_fget(glgmod, mat_u):
+    assert numpy.all(glgmod.u == mat_u)
 
-def test_check_is_GenericLinearGenomicModel():
-    with pytest.raises(TypeError):
-        check_is_GenericLinearGenomicModel(None, "None")
+def test_beta_fget(glgmod, mat_beta):
+    assert numpy.all(glgmod.beta == mat_beta)
 
-def test_cond_check_is_GenericLinearGenomicModel():
-    with pytest.raises(TypeError):
-        cond_check_is_GenericLinearGenomicModel(0, "0")
-
-########################################
-############ Property tests ############
-########################################
-def test_mu_fget(glgmod, mu):
-    assert numpy.all(glgmod.mu == mu)
-
-def test_beta_fget(glgmod, beta):
-    assert numpy.all(glgmod.beta == beta)
-
-def test_trait_fget(glgmod, trait):
-    assert numpy.all(glgmod.trait == trait)
+def test_trait_fget(glgmod, mat_trait):
+    assert numpy.all(glgmod.trait == mat_trait)
 
 def test_model_name_fget(glgmod, model_name):
     assert glgmod.model_name == model_name
@@ -136,26 +230,47 @@ def test_params_fget(glgmod, params):
     assert glgmod.params == params
 
 ################################################################################
-################################# Method tests #################################
+###################### Test concrete method functionality ######################
 ################################################################################
 
 ########################################
 ########### Prediction tests ###########
 ########################################
+def test_fit_numpy(glgmod):
+    with pytest.raises(AttributeError):
+        glgmod.fit_numpy(None, None, None)
+
 def test_fit(glgmod):
-    with pytest.raises(RuntimeError):
-        glgmod.fit(None, None)
+    with pytest.raises(AttributeError):
+        glgmod.fit(None, None, None)
 
-def test_predict_type(glgmod, dpgvmat):
-    assert is_BreedingValueMatrix(glgmod.predict(dpgvmat))
+def test_predict_numpy(glgmod, mat_intercept, mat_beta, mat_int8, mat_u):
+    geno = mat_int8.sum(0)
+    a = glgmod.predict_numpy(mat_intercept, geno)
+    b = (mat_intercept @ mat_beta) + (geno @ mat_u)
+    assert numpy.all(a == b)
+    assert is_ndarray(a)
 
-def test_predict_value(glgmod, dpgvmat, mu, beta):
-    ghat = mu.T + (dpgvmat.tacount() @ beta)
-    assert numpy.all(glgmod.predict(dpgvmat) == ghat)
+def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
+    geno = mat_int8.sum(0)
+    a = glgmod.predict(mat_intercept, dpgmat)
+    b = (mat_intercept @ mat_beta) + (geno @ mat_u)
+    assert numpy.all(a == b)
+    assert is_BreedingValueMatrix(a)
 
-def test_score_value(glgmod, dpgvmat):
-    bvmat = glgmod.predict(dpgvmat)
-    assert glgmod.score(dpgvmat, bvmat) == 1.0
+def test_score_numpy(glgmod, mat_intercept, mat_int8):
+    geno = mat_int8.sum(0)
+    y_true = glgmod.predict_numpy(mat_intercept, geno)
+    out = glgmod.score_numpy(y_true, mat_intercept, geno)
+    assert is_ndarray(out)
+    assert numpy.all(out == 1.0)
+    assert len(out) == glgmod.ntrait
+
+def test_score(glgmod, mat_intercept, dpgmat):
+    y_true = glgmod.predict(mat_intercept, dpgmat)
+    out = glgmod.score(y_true, mat_intercept, dpgmat)
+    assert is_ndarray(out)
+    assert numpy.all(out == 1.0)
 
 ########################################
 ###### Variance calculation tests ######
@@ -165,35 +280,36 @@ def test_score_value(glgmod, dpgvmat):
 ########################################
 ######## Selection limit tests #########
 ########################################
-def test_usl(glgmod, dpgvmat, mu, beta, mat_int8):
+def test_usl(glgmod, dpgmat, mat_u, mat_int8):
     # (p,t)' -> (t,p)
     # (t,p)[:,None,None,:] -> (t,1,1,p)
     # (t,1,1,p) * (m,n,p) -> (t,m,n,p)
-    haplo = beta.T[:,None,None,:] * mat_int8
+    haplo = mat_u.T[:,None,None,:] * mat_int8
     # (t,m,n,p).max[1,2] -> (t,p)
     # scalar * (t,p) -> (t,p)
     uhaplo = 2.0 * haplo.max((1,2))
     # (t,p).sum(1) -> (t,)
     # (t,1).flatten -> (t,)
     # (t,) + (t,) -> (t,)
-    a_usl = uhaplo.sum(1) + mu.flatten()
-    b_usl = glgmod.usl(dpgvmat)
+    a_usl = uhaplo.sum(1)
+    b_usl = glgmod.usl(dpgmat)
 
     assert numpy.all(a_usl == b_usl)
 
-def test_usl(glgmod, dpgvmat, mu, beta, mat_int8):
+def test_usl(glgmod, dpgmat, mat_u, mat_int8):
     # (p,t)' -> (t,p)
     # (t,p)[:,None,None,:] -> (t,1,1,p)
     # (t,1,1,p) * (m,n,p) -> (t,m,n,p)
-    haplo = beta.T[:,None,None,:] * mat_int8
+    haplo = mat_u.T[:,None,None,:] * mat_int8
     # (t,m,n,p).max[1,2] -> (t,p)
     # scalar * (t,p) -> (t,p)
     uhaplo = 2.0 * haplo.min((1,2))
     # (t,p).sum(1) -> (t,)
     # (t,1).flatten -> (t,)
-    # (t,) + (t,) -> (t,)
-    a_lsl = uhaplo.sum(1) + mu.flatten()
-    b_lsl = glgmod.lsl(dpgvmat)
+    # (t,) + (t,) -> (t,)    pass
+
+    a_lsl = uhaplo.sum(1)
+    b_lsl = glgmod.lsl(dpgmat)
 
     assert numpy.all(a_lsl == b_lsl)
 
@@ -212,14 +328,38 @@ def test_to_from_hdf5(glgmod, shared_datadir):
     )
 
     # test whether data was loaded properly
-    assert numpy.all(glgmod.mu == glgmod1.mu)
     assert numpy.all(glgmod.beta == glgmod1.beta)
+    assert numpy.all(glgmod.u == glgmod1.u)
     assert numpy.all(glgmod.trait == glgmod1.trait)
     assert glgmod.model_name == glgmod1.model_name
     assert glgmod.params == glgmod1.params
 
-    assert numpy.all(glgmod.mu == glgmod2.mu)
     assert numpy.all(glgmod.beta == glgmod2.beta)
+    assert numpy.all(glgmod.u == glgmod2.u)
     assert numpy.all(glgmod.trait == glgmod2.trait)
     assert glgmod.model_name == glgmod2.model_name
     assert glgmod.params == glgmod2.params
+
+################################################################################
+################### Test for conrete class utility functions ###################
+################################################################################
+def test_is_GenericLinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(is_GenericLinearGenomicModel)
+
+def test_check_is_GenericLinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(check_is_GenericLinearGenomicModel)
+
+def test_cond_check_is_GenericLinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(cond_check_is_GenericLinearGenomicModel)
+
+################################################################################
+######################### Test class utility functions #########################
+################################################################################
+def test_is_GenericLinearGenomicModel(glgmod):
+    assert is_GenericLinearGenomicModel(glgmod)
+
+def test_check_is_GenericLinearGenomicModel(glgmod):
+    with not_raises(TypeError):
+        check_is_GenericLinearGenomicModel(glgmod, "glgmod")
+    with pytest.raises(TypeError):
+        check_is_GenericLinearGenomicModel(None, "glgmod")

@@ -1,31 +1,71 @@
-import inspect
 import pytest
 
 from pybropt.test import generic_test_abstract_methods
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
 
 from pybropt.model.gmod import LinearGenomicModel
 from pybropt.model.gmod import is_LinearGenomicModel
 from pybropt.model.gmod import check_is_LinearGenomicModel
 from pybropt.model.gmod import cond_check_is_LinearGenomicModel
 
+################################################################################
+################################ Test fixtures #################################
+################################################################################
 @pytest.fixture
-def lgmod():
+def gmod():
     yield LinearGenomicModel()
 
-@pytest.fixture
-def vmethods(lgmod):
-    yield [m for m in dir(lgmod) if m.startswith('__') is False]
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(LinearGenomicModel)
 
-def test_abstract_methods(lgmod, vmethods):
-    generic_test_abstract_methods(lgmod, vmethods)
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(LinearGenomicModel, "__init__")
 
-def test_is_LinearGenomicModel(lgmod):
-    assert is_LinearGenomicModel(lgmod)
+################################################################################
+########################### Test abstract properties ###########################
+################################################################################
+def test_beta_is_abstract():
+    generic_assert_abstract_property(LinearGenomicModel, "beta")
 
-def test_check_is_LinearGenomicModel():
+def test_u_is_abstract():
+    generic_assert_abstract_property(LinearGenomicModel, "u")
+
+################################################################################
+############################# Test abstract methods ############################
+################################################################################
+
+################################################################################
+################### Test for conrete class utility functions ###################
+################################################################################
+def test_is_LinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(is_LinearGenomicModel)
+
+def test_check_is_LinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(check_is_LinearGenomicModel)
+
+def test_cond_check_is_LinearGenomicModel_is_concrete():
+    generic_assert_concrete_function(cond_check_is_LinearGenomicModel)
+
+################################################################################
+######################### Test class utility functions #########################
+################################################################################
+def test_is_LinearGenomicModel(gmod):
+    assert is_LinearGenomicModel(gmod)
+
+def test_check_is_LinearGenomicModel(gmod):
+    with not_raises(TypeError):
+        check_is_LinearGenomicModel(gmod, "gmod")
     with pytest.raises(TypeError):
-        check_is_LinearGenomicModel(None, "None")
-
-def test_cond_check_is_LinearGenomicModel():
-    with pytest.raises(TypeError):
-        cond_check_is_LinearGenomicModel(0, "0")
+        check_is_LinearGenomicModel(None, "gmod")

@@ -204,6 +204,19 @@ class ConventionalGenomicSelection(SelectionProtocol):
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a parent selection objective function.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Used by this function.
+        ptdf :
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : GenomicModel
+        
         """
         # get default parameters if any are None
         if trans is None:
