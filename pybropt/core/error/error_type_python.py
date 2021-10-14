@@ -48,12 +48,23 @@ def check_is_str(v, vname):
 def check_is_tuple(v, vname):
     generic_check_isinstance(v, vname, tuple)
 
-def check_is_(v, vname):
-    generic_check_isinstance(v, vname, )
+def check_is_Number(v, vname):
+    generic_check_isinstance(v, vname, numbers.Number)
+
+def check_is_Integral(v, vname):
+    generic_check_isinstance(v, vname, numbers.Integral)
 
 ################################################################################
 ################ compound check functions for basic data types #################
 ################################################################################
+def check_is_array_like(v, vname):
+    if not hasattr(v, "__len__"):
+        raise TypeError("'{0}' must have attribute __len__".format(vname))
+    if not hasattr(v, "__iter__"):
+        raise TypeError("'{0}' must have attribute __iter__".format(vname))
+    if not hasattr(v, "__getitem__"):
+        raise TypeError("'{0}' must have attribute __getitem__".format(vname))
+
 def check_is_str_or_iterable(v, vname):
     if not (isinstance(s, str) or hasattr(s, "__iter__")):
         raise TypeError("'{0}' must be of type str or have attribute __iter__.".format(vname))

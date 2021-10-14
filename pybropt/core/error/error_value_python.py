@@ -18,6 +18,9 @@ def check_is_not_None(v, vname):
 def check_keys_in_dict(v, vname, *args):
     generic_check_dict_keys(v, vname, args, [str(e) for e in args])
 
+def check_len(v, vname, n):
+    generic_check_len(v, vname, n)
+
 def check_len_eq(v, vname, w, wname):
     generic_check_len_eq(v, vname, w, wname)
 
@@ -41,6 +44,9 @@ def cond_check_is_not_None(v, vname, cond = generic_default_cond):
 
 def cond_check_keys_in_dict(v, vname, *args, cond = generic_default_cond):
     generic_cond_check_dict_keys(v, vname, args, [str(e) for e in args], cond)
+
+def cond_check_len(v, vname, n, cond = generic_default_cond):
+    generic_cond_check_len(v, vname, n, cond)
 
 def cond_check_len_eq(v, vname, w, wname, cond = generic_default_cond):
     generic_cond_check_len_eq(v, vname, w, wname, cond)

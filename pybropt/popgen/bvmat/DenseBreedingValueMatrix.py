@@ -1,25 +1,19 @@
-import copy
 import numpy
+import h5py
 
+from pybropt.core.mat import DenseTaxaTraitMatrix
 from . import BreedingValueMatrix
-from pybropt.core.mat import get_axis
-from pybropt.core.mat import is_Matrix
 from pybropt.core.error import check_is_ndarray
-from pybropt.core.error import cond_check_is_ndarray
+from pybropt.core.error import check_ndarray_ndim
+from pybropt.core.util import save_dict_to_hdf5
 
-# TODO: inherit from DenseMutableMatrix
-class DenseBreedingValueMatrix(BreedingValueMatrix):
-    """
-    Partial implementation of the BreedingValueMatrix interface.
-    Implements matrix numeric, logical, and container operators.
-    Implements matrix checking.
-    All else is abstract.
-    """
+class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
+    """Dense breeding value matrix implementation."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         BreedingValueMatrix constructor
 
@@ -32,194 +26,12 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
             arguments to the parent class constructor.
 
         """
-        super(DenseBreedingValueMatrix, self).__init__(**kwargs)
-        self.mat = mat
-
-    ############## Forward numeric operators ###############
-    def __add__(self, value):
-        return self._mat + value
-
-    def __sub__(self, value):
-        return self._mat - value
-
-    def __mul__(self, value):
-        return self._mat * value
-
-    def __matmul__(self, value):
-        return self._mat @ value
-
-    def __truediv__(self, value):
-        return self._mat / value
-
-    def __floordiv__(self, value):
-        return self._mat // value
-
-    def __mod__(self, value):
-        return self._mat % value
-
-    def __divmod__(self, value):
-        return divmod(self._mat, value)
-
-    def __pow__(self, value):
-        return self._mat ** value
-
-    def __lshift__(self, value):
-        return self._mat << value
-
-    def __rshift__(self, value):
-        return self._mat >> value
-
-    def __and__(self, value):
-        return self._mat & value
-
-    def __xor__(self, value):
-        return self._mat ^ value
-
-    def __or__(self, value):
-        return self._mat | value
-
-    ############# Backwards numeric operators ##############
-    def __radd__(self, value):
-        return value + self._mat
-
-    def __rsub__(self, value):
-        return value - self._mat
-
-    def __rmul__(self, value):
-        return value * self._mat
-
-    def __rmatmul__(self, value):
-        return value @ self._mat
-
-    def __rtruediv__(self, value):
-        return value / self._mat
-
-    def __rfloordiv__(self, value):
-        return value // self._mat
-
-    def __rmod__(self, value):
-        return value % self._mat
-
-    def __rdivmod__(self, value):
-        return divmod(value, self._mat)
-
-    def __rlshift__(self, value):
-        return value << self._mat
-
-    def __rrshift__(self, value):
-        return value >> self._mat
-
-    def __rand__(self, value):
-        return value & self._mat
-
-    def __rxor__(self, value):
-        return value ^ self._mat
-
-    def __ror__(self, value):
-        return value | self._mat
-
-    ############# Augmented numeric operators ##############
-    def __iadd__(self, value):
-        self._mat += value
-
-    def __isub__(self, value):
-        self._mat -= value
-
-    def __imul__(self, value):
-        self._mat *= value
-
-    def __imatmul__(self, value):
-        self._mat @= value
-
-    def __itruediv__(self, value):
-        self._mat /= value
-
-    def __ifloordiv__(self, value):
-        self._mat //= value
-
-    def __imod__(self, value):
-        self._mat %= value
-
-    def __ipow__(self, value):
-        self._mat **= value
-
-    def __ilshift__(self, value):
-        self._mat <<= value
-
-    def __irshift__(self, value):
-        self._mat >>= value
-
-    def __iand__(self, value):
-        self._mat &= value
-
-    def __ixor__(self, value):
-        self._mat ^= value
-
-    def __ior__(self, value):
-        self._mat |= value
-
-    ################## Logical operators ###################
-    def __lt__(self, value):
-        return self._mat < value
-
-    def __le__(self, value):
-        return self._mat <= value
-
-    def __eq__(self, value):
-        return self._mat == value
-
-    def __ne__(self, value):
-        return self._mat != value
-
-    def __gt__(self, value):
-        return self._mat > value
-
-    def __ge__(self, value):
-        return self._mat >= value
-
-    ################# Container operators ##################
-    def __len__(self):
-        return len(self._mat)
-
-    def __getitem__(self, key):
-        return self._mat[key]
-
-    def __setitem__(self, key, value):
-        self._mat[key] = value
-
-    def __delitem__(self, key):
-        del self._mat[key]
-
-    def __iter__(self):
-        return iter(self._mat)
-
-    #################### Matrix copying ####################
-    def __copy__(self):
-        """
-        Make a shallow copy of the the matrix.
-
-        Returns
-        -------
-        out : Matrix
-        """
-        return self.__class__(
-            mat = copy.copy(self.mat)
-        )
-
-    def __deepcopy__(self, memo):
-        """
-        Make a deep copy of the matrix.
-
-        Parameters
-        ----------
-        memo : dict
-
-        Returns
-        -------
-        out : Matrix
-        """
-        return self.__class__(
-            mat = copy.deepcopy(self.mat)
+        super(DenseBreedingValueMatrix, self).__init__(
+            mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
         )
 
     ############################################################################
@@ -228,15 +40,17 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
 
     ################# Breeding Value Data ##################
     def mat():
-        doc = "The mat property."
+        doc = "Raw matrix property."
         def fget(self):
+            """Get raw matrix"""
             return self._mat
         def fset(self, value):
-            # The only assumption is that mat is a numpy.ndarray matrix.
-            # Let the user decide whether to overwrite error checks.
+            """Set raw matrix"""
             check_is_ndarray(value, "mat")
+            check_ndarray_ndim(value, "mat", 2)
             self._mat = value
         def fdel(self):
+            """Delete raw matrix"""
             del self._mat
         return locals()
     mat = property(**mat())
@@ -245,33 +59,221 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
-    #################### Matrix copying ####################
-    def copy(self):
+    ############## Matrix summary statistics ###############
+    def targmax(self):
         """
-        Make a shallow copy of the Matrix.
+        Return indices of the maximum values for each trait column (along the taxa axis).
 
         Returns
         -------
-        out : Matrix
-            A shallow copy of the original Matrix.
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of maximum values
+            along the taxa axis.
+            Where:
+                't' is the number of traits.
         """
-        return self.__copy__()
+        out = self._mat.argmax(axis = self.taxa_axis)    # get argument maximum
+        return out
 
-    def deepcopy(self, memo):
+    def targmin(self):
         """
-        Make a deep copy of the Matrix.
+        Return indices of the minimum values for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of minimum values
+            along the taxa axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.argmin(axis = self.taxa_axis)    # get argument minimum
+        return out
+
+    def tmax(self):
+        """
+        Return the maximum for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the taxa
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.max(axis = self.taxa_axis)   # get maximum
+        return out
+
+    def tmean(self):
+        """
+        Return the mean for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the taxa
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.mean(axis = self.taxa_axis)  # get mean
+        return out
+
+    def tmin(self):
+        """
+        Return the minimum for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An index array of shape (t,) containing minimum values along the
+            taxa axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.min(axis = self.taxa_axis)   # get minimum
+        return out
+
+    def trange(self):
+        """
+        Return the range for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing range values along the taxa
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
+        return out
+
+    def tstd(self):
+        """
+        Return the standard deviation for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing standard deviation values along
+            the taxa axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.std(axis = self.taxa_axis)   # get standard deviation
+        return out
+
+    def tvar(self):
+        """
+        Return the variance for each trait column (along the taxa axis).
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing variance values along the taxa
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        out = self._mat.var(axis = self.taxa_axis)   # get variance
+        return out
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(self, filename, groupname = None):
+        """
+        Write GenotypeMatrix to an HDF5 file.
 
         Parameters
         ----------
-        memo : dict
-            Dictionary of memo metadata.
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat,
+            "taxa": self.taxa,
+            "taxa_grp": self.taxa_grp,
+            "trait": self.trait
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(cls, filename, groupname = None):
+        """
+        Read GenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
 
         Returns
         -------
-        out : Matrix
-            A deep copy of the original Matrix.
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
         """
-        return self.__deepcopy__(memo)
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None,
+            "taxa": None,
+            "taxa_grp": None,
+            "trait": None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][:]         # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        data_dict["taxa"] = numpy.object_(                      # convert taxa strings from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["taxa"]]
+        )
+        data_dict["trait"] = numpy.object_(                     # convert trait string from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["trait"]]
+        )
+        ######################################################### create object
+        gmat = cls(**data_dict)                                 # create object from read data
+        return gmat
 
 
 
@@ -279,12 +281,15 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseBreedingValueMatrix(v):
+    """Return whether an object is a DenseBreedingValueMatrix or not"""
     return isinstance(v, DenseBreedingValueMatrix)
 
 def check_is_DenseBreedingValueMatrix(v, varname):
+    """Raise TypeError if object is not a DenseBreedingValueMatrix"""
     if not isinstance(v, DenseBreedingValueMatrix):
         raise TypeError("'%s' must be a DenseBreedingValueMatrix." % varname)
 
 def cond_check_is_DenseBreedingValueMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a DenseBreedingValueMatrix"""
     if cond(v):
         check_is_DenseBreedingValueMatrix(v, varname)

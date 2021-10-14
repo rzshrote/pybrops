@@ -1,137 +1,194 @@
 import copy
+import numpy
 from . import Matrix
 
+from pybropt.core.error import error_readonly
+from pybropt.core.error import check_is_ndarray
+
 class DenseMatrix(Matrix):
-    """docstring for DenseMatrix."""
+    """
+    DenseMatrix class.
+
+    The purpose of this class is to provide dense matrix math operators, and
+    copy on manipulation subroutines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, **kwargs):
+        """
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Matrix to store
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
     def __add__(self, value):
+        """Elementwise add matrices"""
         return self._mat + value
 
     def __sub__(self, value):
+        """Elementwise subtract matrices"""
         return self._mat - value
 
     def __mul__(self, value):
+        """Elementwise multiply matrices"""
         return self._mat * value
 
     def __matmul__(self, value):
+        """Multiply matrices"""
         return self._mat @ value
 
     def __truediv__(self, value):
+        """Elementwise divide matrices"""
         return self._mat / value
 
     def __floordiv__(self, value):
+        """Elementwise floor divide matrices"""
         return self._mat // value
 
     def __mod__(self, value):
+        """Elementwise modulus matrices"""
         return self._mat % value
 
     def __divmod__(self, value):
+        """Elementwise divmod matrices"""
         return divmod(self._mat, value)
 
     def __pow__(self, value):
+        """Elementwise exponent matrices"""
         return self._mat ** value
 
     def __lshift__(self, value):
+        """Elementwise bitwise left shift matrices"""
         return self._mat << value
 
     def __rshift__(self, value):
+        """Elementwise bitwise right shift matrices"""
         return self._mat >> value
 
     def __and__(self, value):
+        """Elementwise bitwise and matrices"""
         return self._mat & value
 
     def __xor__(self, value):
+        """Elementwise bitwise xor matrices"""
         return self._mat ^ value
 
     def __or__(self, value):
+        """Elementwise bitwise or matrices"""
         return self._mat | value
 
     ############# Backwards numeric operators ##############
     def __radd__(self, value):
+        """Reverse elementwise add matrices"""
         return value + self._mat
 
     def __rsub__(self, value):
+        """Reverse elementwise subtract matrices"""
         return value - self._mat
 
     def __rmul__(self, value):
+        """Reverse elementwise multiply matrices"""
         return value * self._mat
 
     def __rmatmul__(self, value):
+        """Reverse multiply matrices"""
         return value @ self._mat
 
     def __rtruediv__(self, value):
+        """Reverse elementwise divide matrices"""
         return value / self._mat
 
     def __rfloordiv__(self, value):
+        """Reverse elementwise floor divide matrices"""
         return value // self._mat
 
     def __rmod__(self, value):
+        """Reverse elementwise modulus matrices"""
         return value % self._mat
 
     def __rdivmod__(self, value):
+        """Reverse elementwise divmod matrices"""
         return divmod(value, self._mat)
 
     def __rlshift__(self, value):
+        """Reverse elementwise bitwise left shift matrices"""
         return value << self._mat
 
     def __rrshift__(self, value):
+        """Reverse elementwise bitwise right shift matrices"""
         return value >> self._mat
 
     def __rand__(self, value):
+        """Reverse elementwise bitwise and matrices"""
         return value & self._mat
 
     def __rxor__(self, value):
+        """Reverse elementwise bitwise xor matrices"""
         return value ^ self._mat
 
     def __ror__(self, value):
+        """Reverse elementwise bitwise or matrices"""
         return value | self._mat
 
     ############# Augmented numeric operators ##############
     def __iadd__(self, value):
+        """Elementwise add assign matrices"""
         self._mat += value
 
     def __isub__(self, value):
+        """Elementwise subtract assign matrices"""
         self._mat -= value
 
     def __imul__(self, value):
+        """Elementwise multiply assign matrices"""
         self._mat *= value
 
     def __imatmul__(self, value):
+        """Multiply assign matrices"""
         self._mat @= value
 
     def __itruediv__(self, value):
+        """Elementwise true divide assign matrices"""
         self._mat /= value
 
     def __ifloordiv__(self, value):
+        """Elementwise floor divide assign matrices"""
         self._mat //= value
 
     def __imod__(self, value):
+        """Elementwise modulus assign matrices"""
         self._mat %= value
 
     def __ipow__(self, value):
+        """Elementwise exponent assign matrices"""
         self._mat **= value
 
     def __ilshift__(self, value):
+        """Elementwise left shift assign matrices"""
         self._mat <<= value
 
     def __irshift__(self, value):
+        """Elementwise right shift assign matrices"""
         self._mat >>= value
 
     def __iand__(self, value):
+        """Elementwise bitwise and assign matrices"""
         self._mat &= value
 
     def __ixor__(self, value):
+        """Elementwise bitwise xor assign matrices"""
         self._mat ^= value
 
     def __ior__(self, value):
+        """Elementwise bitwise or assign matrices"""
         self._mat |= value
 
     ################## Logical operators ###################
@@ -202,7 +259,7 @@ class DenseMatrix(Matrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    #################### Genotypic Data ####################
+    ##################### Matrix Data ######################
     def mat():
         doc = "The mat property."
         def fget(self):
@@ -216,6 +273,34 @@ class DenseMatrix(Matrix):
             del self._mat
         return locals()
     mat = property(**mat())
+
+    def mat_ndim():
+        doc = "Number of dimensions of the raw matrix property."
+        def fget(self):
+            """Get number of dimensions of the raw matrix"""
+            return self._mat.ndim
+        def fset(self, value):
+            """Set number of dimensions of the raw matrix"""
+            error_readonly("mat_ndim")
+        def fdel(self):
+            """Delete number of dimensions of the raw matrix"""
+            error_readonly("mat_ndim")
+        return locals()
+    mat_ndim = property(**mat_ndim())
+
+    def mat_shape():
+        doc = "Shape of the raw matrix property."
+        def fget(self):
+            """Get the shape of the raw matrix"""
+            return self._mat.shape
+        def fset(self, value):
+            """Set the shape of the raw matrix"""
+            error_readonly("mat_shape")
+        def fdel(self):
+            """Delete the shape of the raw matrix"""
+            error_readonly("mat_shape")
+        return locals()
+    mat_shape = property(**mat_shape())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -423,12 +508,15 @@ class DenseMatrix(Matrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseMatrix(v):
+    """Return whether an object is a DenseMatrix or not"""
     return isinstance(v, DenseMatrix)
 
 def check_is_DenseMatrix(v, varname):
+    """Raise TypeError if object is not a DenseMatrix"""
     if not isinstance(v, DenseMatrix):
         raise TypeError("'%s' must be a DenseMatrix." % varname)
 
 def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a DenseMatrix"""
     if cond(v):
         check_is_DenseMatrix(v, varname)

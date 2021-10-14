@@ -5,6 +5,9 @@ class GeneticMapFunction:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class GeneticMapFunction.
+        """
         super(GeneticMapFunction, self).__init__()
 
     ############################################################################
@@ -118,12 +121,15 @@ class GeneticMapFunction:
 ################################## Utilities ###################################
 ################################################################################
 def is_GeneticMapFunction(v):
+    """Return whether an object is a GeneticMapFunction or not"""
     return isinstance(v, GeneticMapFunction)
 
 def check_is_GeneticMapFunction(v, vname):
+    """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):
         raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))
 
 def cond_check_is_GeneticMapFunction(v, vname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a GeneticMapFunction"""
     if cond(v):
         check_is_GeneticMapFunction(v, vname)

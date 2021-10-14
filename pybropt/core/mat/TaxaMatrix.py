@@ -43,20 +43,6 @@ class TaxaMatrix(GroupableMatrix):
         return locals()
     taxa = property(**taxa())
 
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of taxa"""
-            raise NotImplementedError("method is abstract")
-        return locals()
-    ntaxa = property(**ntaxa())
-
     def taxa_grp():
         doc = "Taxa group label property."
         def fget(self):
@@ -72,6 +58,34 @@ class TaxaMatrix(GroupableMatrix):
     taxa_grp = property(**taxa_grp())
 
     ############### Taxa Metadata Properites ###############
+    def ntaxa():
+        doc = "Number of taxa property."
+        def fget(self):
+            """Get number of taxa"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set number of taxa"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete number of taxa"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    ntaxa = property(**ntaxa())
+
+    def taxa_axis():
+        doc = "Axis along which taxa are stored property."
+        def fget(self):
+            """Get taxa axis number"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set taxa axis number"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete taxa axis number"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    taxa_axis = property(**taxa_axis())
+
     def taxa_grp_name():
         doc = "Taxa group name property."
         def fget(self):
@@ -220,8 +234,8 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    @staticmethod
-    def concat_taxa(mats, **kwargs):
+    @classmethod
+    def concat_taxa(cls, mats, **kwargs):
         """
         Concatenate list of Matrix together along the taxa axis.
 

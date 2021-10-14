@@ -6,6 +6,16 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     """docstring for DenseMutableMatrix."""
 
     def __init__(self, mat, **kwargs):
+        """
+        Constructor for DenseMutableMatrix
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Dense matrix to use to create object.
+        **kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseMutableMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -92,12 +102,15 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseMutableMatrix(v):
+    """Test whether an object is a DenseMutableMatrix"""
     return isinstance(v, DenseMutableMatrix)
 
 def check_is_DenseMutableMatrix(v, varname):
+    """Raise error if object is not a DenseMutableMatrix"""
     if not isinstance(v, DenseMutableMatrix):
         raise TypeError("'%s' must be a DenseMutableMatrix." % varname)
 
 def cond_check_is_DenseMutableMatrix(v, varname, cond=(lambda s: s is not None)):
+    """Conditionally raise error if object is not a DenseMutableMatrix"""
     if cond(v):
         check_is_DenseMutableMatrix(v, varname)

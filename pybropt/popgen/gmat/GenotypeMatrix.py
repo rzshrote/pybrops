@@ -1,6 +1,8 @@
-from pybropt.core.mat import MutableMatrix
+from pybropt.core.mat import TaxaVariantMatrix
+from pybropt.popgen.gmap import GeneticMappableMatrix
+from pybropt.core.io import HDF5InputOutput
 
-class GenotypeMatrix(MutableMatrix):
+class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     """docstring for GenotypeMatrix."""
 
     ############################################################################
@@ -8,7 +10,7 @@ class GenotypeMatrix(MutableMatrix):
     ############################################################################
     def __init__(self, **kwargs):
         """
-        GenotypeMatrix constructor
+        Constructor for abstract class GenotypeMatrix.
 
         Parameters
         ----------
@@ -26,10 +28,13 @@ class GenotypeMatrix(MutableMatrix):
     def ploidy():
         doc = "The ploidy level represented by the genotype matrix."
         def fget(self):
+            """Get ploidy level"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set ploidy level"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete ploidy level"""
             raise NotImplementedError("method is abstract")
         return locals()
     ploidy = property(**ploidy())
@@ -37,39 +42,51 @@ class GenotypeMatrix(MutableMatrix):
     def nphase():
         doc = "The number of phases represented by the genotype matrix."
         def fget(self):
+            """Get number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
         return locals()
     nphase = property(**nphase())
 
-    def ntaxa():
-        doc = "The number of taxa represented by the genotype matrix."
+    def mat_format():
+        doc = "Matrix representation format property."
         def fget(self):
+            """Get matrix representation format"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set matrix representation format"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete matrix representation format"""
             raise NotImplementedError("method is abstract")
         return locals()
-    ntaxa = property(**ntaxa())
-
-    def nloci():
-        doc = "The number of marker loci represented by the genotype matrix."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    nloci = property(**nloci())
+    mat_format = property(**mat_format())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ################## Matrix conversion ###################
+    def mat_asformat(self, format):
+        """
+        Get mat in a specific format type.
+
+        Parameters
+        ---------
+        format : str
+            Desired output format. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Matrix in the desired output format.
+        """
+        raise NotImplementedError("method is abstract")
 
     ############## Matrix summary statistics ###############
     def tacount(self, dtype):
@@ -102,7 +119,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        afreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (n, p) containing allele frequencies of the
             allele coded as 1 for all 'n' individuals, for all 'p' loci.
         """
@@ -114,7 +131,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        lacount : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele counts of the allele
             coded as 1 for all 'p' loci.
         """
@@ -126,7 +143,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        afreq : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele frequencies of the
             allele coded as 1 for all 'p' loci.
         """
@@ -138,7 +155,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        maf : numpy.ndarray
+        out : numpy.ndarray
             A numpy.ndarray of shape (p) containing allele frequencies for the
             minor allele.
         """
@@ -150,7 +167,7 @@ class GenotypeMatrix(MutableMatrix):
 
         Returns
         -------
-        mehe : numpy.float64
+        out : numpy.float64
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """
@@ -158,62 +175,53 @@ class GenotypeMatrix(MutableMatrix):
 
     def gtcount(self):
         """
-        Genotype counts for homozygous major, heterozygous, homozygous minor.
+        Gather haplotype counts across for homozygous major, heterozygous,
+        homozygous minor all individuals.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An int64 array of shape (3, h) containing haplotype counts across
+            all 'h' haplotypes.
+            Rows are as follows:
+                out[0] = count of '0' genotype across all loci
+                out[1] = count of '1' genotype across all loci
+                out[2] = count of '2' genotype across all loci
         """
         raise NotImplementedError("method is abstract")
 
     def gtfreq(self):
         """
-        Genotype frequency for homozygous major, heterozygous, homozygous minor.
-        """
-        raise NotImplementedError("method is abstract")
-
-    ################### Matrix File I/O ####################
-    @staticmethod
-    def from_hdf5(filename, groupname):
-        """
-        Read GenotypeMatrix from an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+        Gather haplotype frequencies for homozygous major, heterozygous,
+        homozygous minor across all individuals.
 
         Returns
         -------
-        gmat : GenotypeMatrix
-            A genotype matrix read from file.
+        out : numpy.ndarray
+            An float64 array of shape (3, h) containing haplotype counts across
+            all 'h' haplotypes.
+            Rows are as follows:
+                out[0] = frequency of '0' genotype across all loci
+                out[1] = frequency of '1' genotype across all loci
+                out[2] = frequency of '2' genotype across all loci
         """
         raise NotImplementedError("method is abstract")
 
-    def to_hdf5(self, filename, groupname):
-        """
-        Write GenotypeMatrix to an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
-        """
-        raise NotImplementedError("method is abstract")
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
 def is_GenotypeMatrix(v):
+    """Return whether an object is a GenotypeMatrix or not"""
     return isinstance(v, GenotypeMatrix)
 
 def check_is_GenotypeMatrix(v, varname):
+    """Raise TypeError if object is not a GenotypeMatrix"""
     if not isinstance(v, GenotypeMatrix):
         raise TypeError("'%s' must be a GenotypeMatrix." % varname)
 
 def cond_check_is_GenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a GenotypeMatrix"""
     if cond(v):
         check_is_GenotypeMatrix(v, varname)

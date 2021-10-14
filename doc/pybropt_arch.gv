@@ -1,0 +1,128 @@
+digraph pybropt_arch {
+	dpi=300
+	subgraph cluster_0 {
+		color=lightgrey label="core.io" style=filled
+		HDF5InputOutput [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_1 {
+		color=lightgrey label="core.mat" style=filled
+		DenseMutableMatrix [color=lightblue2 shape=box style=filled]
+		GroupableMatrix [color="#EE6262" shape=box style=filled]
+		MutableMatrix [color="#EE6262" shape=box style=filled]
+		SortableMatrix [color="#EE6262" shape=box style=filled]
+		PrunableMatrix [color="#EE6262" shape=box style=filled]
+		DenseMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+		DenseTaxaMatrix [color=lightblue2 shape=box style=filled]
+		DenseTaxaVariantMatrix [color=lightblue2 shape=box style=filled]
+		DenseTraitMatrix [color=lightblue2 shape=box style=filled]
+		DenseVariantMatrix [color=lightblue2 shape=box style=filled]
+		Matrix [color="#EE6262" shape=box style=filled]
+		PhasedMatrix [color="#EE6262" shape=box style=filled]
+		PhasedTaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+		TaxaMatrix [color="#EE6262" shape=box style=filled]
+		TaxaTraitMatrix [color="#EE6262" shape=box style=filled]
+		TaxaVariantMatrix [color="#EE6262" shape=box style=filled]
+		TraitMatrix [color="#EE6262" shape=box style=filled]
+		VariantMatrix [color="#EE6262" shape=box style=filled]
+		DenseTaxaTraitMatrix [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_2 {
+		color=lightgrey label="popgen.bvmat" style=filled
+		BreedingValueMatrix [color="#EE6262" shape=box style=filled]
+		DenseBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+		DenseEstimatedBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+		DenseGenomicEstimatedBreedingValueMatrix [color=lightblue2 shape=box style=filled]
+	}
+	subgraph cluster_3 {
+		color=lightgrey label="popgen.gmap" style=filled
+		ExtendedGeneticMap [color=lightblue2 shape=box style=filled]
+		GeneticMap [color="#EE6262" shape=box style=filled]
+		GeneticMapFunction [color="#EE6262" shape=box style=filled]
+		HaldaneMapFunction [color=lightblue2 shape=box style=filled]
+		KosambiMapFunction [color=lightblue2 shape=box style=filled]
+		StandardGeneticMap [color=lightblue2 shape=box style=filled]
+		DenseGeneticMappableMatrix [color=lightblue2 shape=box style=filled]
+		GeneticMappableMatrix [color="#EE6262" shape=box style=filled]
+	}
+	subgraph cluster_4 {
+		color=lightgrey label="popgen.gmat" style=filled
+		HaplotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
+		DenseGenotypeMatrix [color=lightblue2 shape=box style=filled]
+		DensePhasedGenotypeMatrix [color=lightblue2 shape=box style=filled]
+		GenotypeMatrix [color="#EE6262" shape=box style=filled]
+		HaplotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedGenotypeMatrix [color="#EE6262" shape=box style=filled]
+		PhasedHaplotypeMatrix [color="#EE6262" shape=box style=filled]
+	}
+	BreedingValueMatrix -> HDF5InputOutput
+	BreedingValueMatrix -> TaxaTraitMatrix
+	DenseBreedingValueMatrix -> BreedingValueMatrix
+	DenseBreedingValueMatrix -> DenseTaxaTraitMatrix
+	DenseEstimatedBreedingValueMatrix -> DenseBreedingValueMatrix
+	DenseGeneticMappableMatrix -> DenseVariantMatrix
+	DenseGeneticMappableMatrix -> GeneticMappableMatrix
+	DenseGenomicEstimatedBreedingValueMatrix -> DenseBreedingValueMatrix
+	DenseGenotypeMatrix -> DenseGeneticMappableMatrix
+	DenseGenotypeMatrix -> DenseTaxaVariantMatrix
+	DenseGenotypeMatrix -> GenotypeMatrix
+	DenseMatrix -> Matrix
+	DenseMutableMatrix -> DenseMatrix
+	DenseMutableMatrix -> MutableMatrix
+	DensePhasedGenotypeMatrix -> DenseGenotypeMatrix
+	DensePhasedGenotypeMatrix -> DensePhasedTaxaVariantMatrix
+	DensePhasedGenotypeMatrix -> GeneticMap
+	DensePhasedGenotypeMatrix -> PhasedGenotypeMatrix
+	DensePhasedMatrix -> DenseMutableMatrix
+	DensePhasedMatrix -> PhasedMatrix
+	DensePhasedTaxaVariantMatrix -> DensePhasedMatrix
+	DensePhasedTaxaVariantMatrix -> DenseTaxaVariantMatrix
+	DensePhasedTaxaVariantMatrix -> PhasedTaxaVariantMatrix
+	DenseTaxaMatrix -> DenseMutableMatrix
+	DenseTaxaMatrix -> TaxaMatrix
+	DenseTaxaTraitMatrix -> DenseTaxaMatrix
+	DenseTaxaTraitMatrix -> DenseTraitMatrix
+	DenseTaxaTraitMatrix -> TaxaTraitMatrix
+	DenseTaxaVariantMatrix -> DenseTaxaMatrix
+	DenseTaxaVariantMatrix -> DenseVariantMatrix
+	DenseTaxaVariantMatrix -> TaxaVariantMatrix
+	DenseTraitMatrix -> DenseMutableMatrix
+	DenseTraitMatrix -> TraitMatrix
+	DenseVariantMatrix -> DenseMutableMatrix
+	DenseVariantMatrix -> VariantMatrix
+	ExtendedGeneticMap -> GeneticMap
+	GeneticMappableMatrix -> VariantMatrix
+	GenotypeMatrix -> GeneticMappableMatrix
+	GenotypeMatrix -> HDF5InputOutput
+	GenotypeMatrix -> TaxaVariantMatrix
+	GroupableMatrix -> SortableMatrix
+	HaldaneMapFunction -> GeneticMapFunction
+	HaplotypeMatrix -> HDF5InputOutput
+	HaplotypeMatrix -> TaxaMatrix
+	HaplotypeMatrix -> TaxaVariantMatrix
+	HaplotypeMatrix -> VariantMatrix
+	KosambiMapFunction -> GeneticMapFunction
+	MutableMatrix -> Matrix
+	PhasedGenotypeMatrix -> GenotypeMatrix
+	PhasedGenotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedHaplotypeMatrix -> HaplotypeMatrix
+	PhasedHaplotypeMatrix -> PhasedMatrix
+	PhasedHaplotypeMatrix -> PhasedTaxaVariantMatrix
+	PhasedMatrix -> MutableMatrix
+	PhasedTaxaVariantMatrix -> PhasedMatrix
+	PhasedTaxaVariantMatrix -> TaxaMatrix
+	PhasedTaxaVariantMatrix -> TaxaVariantMatrix
+	PhasedTaxaVariantMatrix -> VariantMatrix
+	PrunableMatrix -> Matrix
+	SortableMatrix -> MutableMatrix
+	StandardGeneticMap -> GeneticMap
+	TaxaMatrix -> GroupableMatrix
+	TaxaTraitMatrix -> TaxaMatrix
+	TaxaTraitMatrix -> TraitMatrix
+	TaxaVariantMatrix -> TaxaMatrix
+	TaxaVariantMatrix -> VariantMatrix
+	TraitMatrix -> SortableMatrix
+	VariantMatrix -> GroupableMatrix
+}

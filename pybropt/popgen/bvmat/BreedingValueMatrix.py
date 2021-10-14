@@ -1,6 +1,7 @@
-from pybropt.core.mat import TaxaMatrix
+from pybropt.core.mat import TaxaTraitMatrix
+from pybropt.core.io import HDF5InputOutput
 
-class BreedingValueMatrix(TaxaMatrix):
+class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     """docstring for BreedingValueMatrix."""
 
     ############################################################################
@@ -22,65 +23,120 @@ class BreedingValueMatrix(TaxaMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    ################# Breeding Value Data ##################
-    def trait():
-        doc = "The trait property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    trait = property(**trait())
-
-    def ntrait():
-        doc = "The ntrait property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    ntrait = property(**ntrait())
-
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
-    ################### Matrix File I/O ####################
-    @staticmethod
-    def from_hdf5(filename, groupname):
+    ############## Matrix summary statistics ###############
+    def targmax(self):
         """
-        Read GenotypeMatrix from an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+        Return indices of the maximum values along the trait axis.
 
         Returns
         -------
-        gmat : GenotypeMatrix
-            A genotype matrix read from file.
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of maximum values
+            along the trait axis.
+            Where:
+                't' is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
-    def to_hdf5(self, filename, groupname):
+    def targmin(self):
         """
-        Write GenotypeMatrix to an HDF5 file.
+        Return indices of the minimum values along the trait axis.
 
-        Parameters
-        ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
+        Returns
+        -------
+        out : numpy.ndarray
+            An index array of shape (t,) containing indices of minimum values
+            along the trait axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def tmax(self):
+        """
+        Return the maximum along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def tmean(self):
+        """
+        Return the mean along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing maximum values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def tmin(self):
+        """
+        Return the minimum along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An index array of shape (t,) containing minimum values along the
+            trait axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def trange(self):
+        """
+        Return the range along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing variance values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def tstd(self):
+        """
+        Return the standard deviation along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing standard deviation values along
+            the trait axis.
+            Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def tvar(self):
+        """
+        Return the variance along the trait axis.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (t,) containing variance values along the trait
+            axis.
+            Where:
+                't' is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -90,12 +146,15 @@ class BreedingValueMatrix(TaxaMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingValueMatrix(v):
+    """Return whether an object is a BreedingValueMatrix or not"""
     return isinstance(v, BreedingValueMatrix)
 
 def check_is_BreedingValueMatrix(v, vname):
+    """Raise TypeError if object is not a BreedingValueMatrix"""
     if not isinstance(v, BreedingValueMatrix):
         raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
 
 def cond_check_is_BreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
+    """If object is not None, raise TypeError if object is not a BreedingValueMatrix"""
     if cond(v):
         check_is_BreedingValueMatrix(v, vname)

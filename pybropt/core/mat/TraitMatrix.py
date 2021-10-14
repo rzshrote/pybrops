@@ -28,7 +28,7 @@ class TraitMatrix(SortableMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    ###################### Trait Data ######################
+    ###################### Trait data ######################
     def trait():
         doc = "Trait label property."
         def fget(self):
@@ -43,6 +43,7 @@ class TraitMatrix(SortableMatrix):
         return locals()
     trait = property(**trait())
 
+    #################### Trait metadata ####################
     def ntrait():
         doc = "Number of traits property."
         def fget(self):
@@ -56,6 +57,20 @@ class TraitMatrix(SortableMatrix):
             raise NotImplementedError("method is abstract")
         return locals()
     ntrait = property(**ntrait())
+
+    def trait_axis():
+        doc = "Axis along which traits are stored property."
+        def fget(self):
+            """Get trait axis number"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set trait axis number"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete trait axis number"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    trait_axis = property(**trait_axis())
 
     ############################################################################
     ############################## Object Methods ##############################

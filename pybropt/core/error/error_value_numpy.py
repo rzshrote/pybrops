@@ -14,6 +14,7 @@ from . import generic_cond_check_ndarray_ndim
 from . import generic_cond_check_ndarray_size
 from . import generic_cond_check_ndarray_shape
 from . import generic_cond_check_ndarray_is_square
+from . import generic_check_ndarray_ndim_gteq
 
 ################################################################################
 ############################### check functions ################################
@@ -27,18 +28,34 @@ def check_ndarray_is_binary(v, vname):
     if not numpy.all((v == 0) | (v == 1)):
         raise ValueError("variable '{0}' must have values equal to 0 or 1".format(vname))
 
+def check_ndarray_is_positive(v, vname):
+    if numpy.any(v < 0):
+        raise ValueError("variable '{0}' must have all positive values".format(vname))
+
 ################ generic_check_ndarray_ndim ################
 def check_ndarray_ndim(v, vname, vndim):
     generic_check_ndarray_ndim(v, vname, vndim)
 
+def check_ndarray_ndim_gteq(v, vname, vndim):
+    generic_check_ndarray_ndim_gteq(v, vname, vndim)
+
 def check_ndarray_is_1d(v, vname):
     generic_check_ndarray_ndim(v, vname, 1)
+
+def check_ndarray_at_least_1d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 1)
 
 def check_ndarray_is_2d(v, vname):
     generic_check_ndarray_ndim(v, vname, 2)
 
+def check_ndarray_at_least_2d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 2)
+
 def check_ndarray_is_3d(v, vname):
     generic_check_ndarray_ndim(v, vname, 3)
+
+def check_ndarray_at_least_3d(v, vname):
+    generic_check_ndarray_ndim_gteq(v, vname, 3)
 
 ################ generic_check_ndarray_size ################
 def check_ndarray_size(v, vname, vsize):
@@ -58,6 +75,20 @@ def check_ndarray_axis_len(v, vname, vaxis, vlen):
 ############# generic_check_ndarray_is_square ##############
 def check_ndarray_is_square(v, vname):
     generic_check_ndarray_is_square(v, vname)
+
+############# check_ndarray_len_is_multiple_of #############
+def check_ndarray_len_is_multiple_of(v, vname, m):
+    if (len(v) % m) != 0:
+        raise ValueError("len({0}) is not a multiple of {1}".format(vname, m))
+
+def check_ndarray_len_is_multiple_of_2(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 2)
+
+def check_ndarray_len_is_multiple_of_3(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 3)
+
+def check_ndarray_len_is_multiple_of_4(v, vname):
+    check_ndarray_len_is_multiple_of(v, vname, 4)
 
 ################################################################################
 ######################### conditional check functions ##########################

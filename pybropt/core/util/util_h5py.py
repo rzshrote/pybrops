@@ -23,7 +23,7 @@ def save_dict_to_hdf5(h5file, groupname, in_dict):
             continue                                            # skip to next loop iteration
         iswritable = isinstance(                                # determine if item is writable
             item,
-            (numpy.ndarray,bytes,str,int,float,numpy.floating,numpy.integer,numpy.bool)
+            (numpy.ndarray,bytes,str,int,float,numpy.floating,numpy.integer,numpy.bool_)
         )
         if iswritable:                                          # if item is writeable
             h5file.create_dataset(groupname + key, data = item) # write to dataset

@@ -1,104 +1,134 @@
 import pytest
 import numpy
-import os.path
+import copy
+
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
 
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.bvmat import is_DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat import check_is_DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat import cond_check_is_DenseEstimatedBreedingValueMatrix
 
 ################################################################################
-############################ Sample Test Variables #############################
+################################ Test fixtures #################################
 ################################################################################
-
 @pytest.fixture
-def raw_float64():
-    numpy.random.seed(453)
-    raw = numpy.random.normal(size = (4,5,3))
-    yield raw
+def mat_float64():
+    a = numpy.float64([
+        [5.9, 5.8, 7. ],
+        [5.3, 8.3, 5. ],
+        [7.8, 6.4, 7. ],
+        [4.8, 7.6, 7.2],
+        [5.7, 4.5, 4.8],
+        [2. , 7.2, 4.9],
+        [5.5, 1.9, 6. ],
+        [3.1, 3. , 2.4]
+    ])
+    yield a
 
+###################### Taxa fixtures #######################
 @pytest.fixture
-def mat_float64(raw_float64):
-    mat = raw_float64.mean(axis = 0)
-    yield mat
-
-@pytest.fixture
-def taxa_object_():
-    taxa = numpy.object_(["A", "B", "C", "D", "E"])
-    yield taxa
+def taxa_object():
+    a = numpy.object_(["A", "B", "C", "D", "E", "F", "H", "I"])
+    yield a
 
 @pytest.fixture
 def taxa_grp_int64():
-    taxa_grp = numpy.int64([1,1,1,2,2])
-    yield taxa_grp
+    a = numpy.int64([1,1,2,2,3,3,4,4])
+    yield a
 
 @pytest.fixture
-def trait_object_():
-    trait = numpy.object_(["yield", "oil", "protein"])
-    yield trait
+def taxa_grp_name_int64():
+    a = numpy.int64([1,2,3,4])
+    yield a
 
 @pytest.fixture
-def debvmat(mat_float64, raw_float64, taxa_object_, taxa_grp_int64, trait_object_):
-    yield DenseEstimatedBreedingValueMatrix(
+def taxa_grp_stix_int64():
+    a = numpy.int64([0,2,4,6])
+    yield a
+
+@pytest.fixture
+def taxa_grp_spix_int64():
+    a = numpy.int64([2,4,6,8])
+    yield a
+
+@pytest.fixture
+def taxa_grp_len_int64():
+    a = numpy.int64([2,2,2,2])
+    yield a
+
+@pytest.fixture
+def taxa_lexsort_indices(taxa_object, taxa_grp_int64):
+    a = numpy.lexsort((taxa_object, taxa_grp_int64))
+    yield a
+
+###################### Trait fixtures ######################
+@pytest.fixture
+def trait_object():
+    a = numpy.object_(["yield", "protein", "oil"])
+    yield a
+
+############################################################
+@pytest.fixture
+def mat(mat_float64, taxa_object, taxa_grp_int64, trait_object):
+    a = DenseEstimatedBreedingValueMatrix(
         mat = mat_float64,
-        raw = raw_float64,
-        taxa = taxa_object_,
+        taxa = taxa_object,
         taxa_grp = taxa_grp_int64,
-        trait = trait_object_
+        trait = trait_object
     )
+    a.group_taxa()
+    yield a
 
 ################################################################################
-################################# Sample Tests #################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(DenseEstimatedBreedingValueMatrix)
+
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(DenseEstimatedBreedingValueMatrix, "__init__")
+
+################################################################################
+########################## Test Class Special Methods ##########################
 ################################################################################
 
-def test_is_DenseEstimatedBreedingValueMatrix(debvmat):
-    assert is_DenseEstimatedBreedingValueMatrix(debvmat)
+################################################################################
+############################ Test Class Properties #############################
+################################################################################
 
-def test_mat_fget(debvmat, mat_float64):
-    assert numpy.all(debvmat.mat == mat_float64)
+################################################################################
+###################### Test concrete method functionality ######################
+################################################################################
 
-def test_raw_fget(debvmat, raw_float64):
-    assert numpy.all(debvmat.raw == raw_float64)
+# TODO: test to_hdf5, from_hdf5
 
-def test_taxa_fget(debvmat, taxa_object_):
-    assert numpy.all(debvmat.taxa == taxa_object_)
+################################################################################
+######################### Test class utility functions #########################
+################################################################################
+def test_is_DenseEstimatedBreedingValueMatrix_is_concrete():
+    generic_assert_concrete_function(is_DenseEstimatedBreedingValueMatrix)
 
-def test_taxa_grp_fget(debvmat, taxa_grp_int64):
-    assert numpy.all(debvmat.taxa_grp == taxa_grp_int64)
+def test_is_DenseEstimatedBreedingValueMatrix(mat):
+    assert is_DenseEstimatedBreedingValueMatrix(mat)
 
-def test_trait_fget(debvmat, trait_object_):
-    assert numpy.all(debvmat.trait == trait_object_)
+def test_check_is_DenseEstimatedBreedingValueMatrix_is_concrete():
+    generic_assert_concrete_function(check_is_DenseEstimatedBreedingValueMatrix)
 
-########################################################
-################### Matrix File I/O ####################
-########################################################
-def test_from_to_hdf5(shared_datadir, debvmat):
-    # write files
-    debvmat.to_hdf5(shared_datadir / "test_debvmat.hdf5")
-    debvmat.to_hdf5(
-        shared_datadir / "test_debvmat.hdf5",
-        "directoryname"
-    )
+def test_check_is_DenseEstimatedBreedingValueMatrix(mat):
+    with not_raises(TypeError):
+        check_is_DenseEstimatedBreedingValueMatrix(mat, "mat")
+    with pytest.raises(TypeError):
+        check_is_DenseEstimatedBreedingValueMatrix(None, "mat")
 
-    # assert file was written
-    assert os.path.isfile(shared_datadir / "test_debvmat.hdf5")
-
-    # read written files
-    debvmat1 = DenseEstimatedBreedingValueMatrix.from_hdf5(
-        shared_datadir / "test_debvmat.hdf5"
-    )
-    debvmat2 = DenseEstimatedBreedingValueMatrix.from_hdf5(
-        shared_datadir / "test_debvmat.hdf5",
-        "directoryname"
-    )
-
-    # assert file was read correctly
-    assert numpy.all(debvmat.mat == debvmat1.mat)
-    assert numpy.all(debvmat.raw == debvmat1.raw)
-    assert numpy.all(debvmat.taxa == debvmat1.taxa)
-    assert numpy.all(debvmat.taxa_grp == debvmat1.taxa_grp)
-    assert numpy.all(debvmat.trait == debvmat1.trait)
-
-    assert numpy.all(debvmat.mat == debvmat2.mat)
-    assert numpy.all(debvmat.raw == debvmat2.raw)
-    assert numpy.all(debvmat.taxa == debvmat2.taxa)
-    assert numpy.all(debvmat.taxa_grp == debvmat2.taxa_grp)
-    assert numpy.all(debvmat.trait == debvmat2.trait)
+def test_cond_check_is_DenseEstimatedBreedingValueMatrix_is_concrete():
+    generic_assert_concrete_function(cond_check_is_DenseEstimatedBreedingValueMatrix)

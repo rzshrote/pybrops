@@ -9,11 +9,16 @@ from .gmap_util import cM2d
 # from .HaldaneMapFunction import HaldaneMapFunction
 # from .KosambiMapFunction import KosambiMapFunction
 
-
+# tier 0
 from .GeneticMap import *
 from .StandardGeneticMap import *
 from .ExtendedGeneticMap import *
 
+# tier 1
 from .GeneticMapFunction import *
 from .HaldaneMapFunction import *
 from .KosambiMapFunction import *
+
+# tier 2
+from .GeneticMappableMatrix import *
+from .DenseGeneticMappableMatrix import *
