@@ -1,4 +1,4 @@
-MultiObjectiveGenomicSelectionimport numpy
+import numpy
 import math
 import types
 
@@ -25,6 +25,10 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5,
     rng = None, **kwargs):
         """
+        Constructor for MultiObjectiveGenomicSelection class.
+        
+        Parameters
+        ----------
         nparent : int
             Number of parents to select.
         ncross : int
@@ -223,8 +227,8 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.

@@ -16,8 +16,8 @@ class MatingOperator:
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of parental candidates.
+        pgvmat : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix of parental candidates.
         sel : numpy.ndarray
             Array of indices specifying a cross pattern. Each index corresponds
             to an individual in 'pgvmat'.
@@ -32,8 +32,8 @@ class MatingOperator:
         -------
         out : tuple
             A tuple containing two elements: (progeny, misc)
-            progeny : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of progeny.
+            progeny : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of progeny.
             misc : dict
                 Miscellaneous output (user defined).
         """

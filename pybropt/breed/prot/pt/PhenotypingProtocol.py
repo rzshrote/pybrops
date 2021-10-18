@@ -78,7 +78,7 @@ class PhenotypingProtocol:
         ----------
         h2 : float, numpy.ndarray
             Narrow sense heritability.
-        pgmat : PhasedGenotypeVariantMatrix
+        pgmat : PhasedGenotypeMatrix
             Founder genotypes.
         **kwargs : dict
             Additional keyword arguments
@@ -93,7 +93,7 @@ class PhenotypingProtocol:
         ----------
         H2 : float, numpy.ndarray
             Broad sense heritability.
-        pgmat : PhasedGenotypeVariantMatrix
+        pgmat : PhasedGenotypeMatrix
             Founder genotypes.
         **kwargs : dict
             Additional keyword arguments

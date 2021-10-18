@@ -7,7 +7,7 @@ import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 
-class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
+class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
     """docstring for TwoWayOptimalHaploidValueParentSelection."""
 
     def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng = None, **kwargs):
@@ -203,8 +203,8 @@ class TwoWayOptimalHaploidValueParentSelection(ParentSelectionOperator):
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.

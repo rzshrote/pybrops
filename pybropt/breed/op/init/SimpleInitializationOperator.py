@@ -12,11 +12,11 @@ from pybropt.breed.eval import check_is_EvaluationOperator
 from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
 from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
 from pybropt.breed.mate import check_is_MatingOperator
-from pybropt.breed.psel import check_is_ParentSelectionOperator
+from pybropt.breed.prot.sel import check_is_ParentSelectionOperator
 from pybropt.breed.ssel import check_is_SurvivorSelectionOperator
 from pybropt.model.gmod import check_is_GenomicModel
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
 class SimpleInitializationOperator(InitializationOperator):
     """docstring for SimpleInitializationOperator."""
@@ -219,7 +219,7 @@ class SimpleInitializationOperator(InitializationOperator):
     @staticmethod
     def from_dpgvmat(dpgvmat, nfounder, founder_ncross, founder_nprogeny, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, rng = None):
         """
-        Create an initialization operator from a DensePhasedGenotypeVariantMatrix.
+        Create an initialization operator from a DensePhasedGenotypeMatrix.
 
         Initialization is conducted as follows:
             1) 'nfounder' lines are selected as founders.
@@ -227,13 +227,13 @@ class SimpleInitializationOperator(InitializationOperator):
 
         Parameters
         ----------
-        dpgvmat : DensePhasedGenotypeVariantMatrix
+        dpgvmat : DensePhasedGenotypeMatrix
         rng : numpy.Generator
         nfounder : int
             Number of founders to select. Sampling is done without replacement.
         """
         # perform error checks
-        check_is_DensePhasedGenotypeVariantMatrix(dpgvmat, "dpgvmat")
+        check_is_DensePhasedGenotypeMatrix(dpgvmat, "dpgvmat")
         check_is_int(nfounder, "nfounder")
         check_is_int(founder_ncross, "founder_ncross")
         check_is_int(founder_nprogeny, "founder_nprogeny")
@@ -395,7 +395,7 @@ class SimpleInitializationOperator(InitializationOperator):
                 remaining genotypes with genotypes sampled without replacement.
         """
         # step 1: load genotype matrix
-        dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
+        dpgvmat = DensePhasedGenotypeMatrix.from_vcf(fname)
 
         # step 2: create from genotype matrix
         geninitop = SimpleInitializationOperator.from_dpgvmat(

@@ -6,9 +6,9 @@
 #
 # from pybropt.popgen.gmap import ExtendedGeneticMap
 # from pybropt.popgen.gmap import HaldaneMapFunction
-# from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+# from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 # from pybropt.model.gmod import GenericLinearGenomicModel
-# from pybropt.breed.psel import ConventionalPhenotypicParentSelection
+# from pybropt.breed.prot.sel import ConventionalPhenotypicParentSelection
 # from pybropt.breed.mate import GenerationalTwoWayDHCross
 # from pybropt.breed.intg import GenerationalGenotypeIntegrationOperator
 # from pybropt.breed.eval import NoGxEEvaluationOperator
@@ -35,7 +35,7 @@
 # @pytest.fixture
 # def dpgvmat(shared_datadir, gmap, gmapfn):
 #     data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
-#     result = DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+#     result = DensePhasedGenotypeMatrix.from_vcf(data_path)
 #     result.group()
 #     result.interp_xoprob(gmap, gmapfn)
 #     yield result

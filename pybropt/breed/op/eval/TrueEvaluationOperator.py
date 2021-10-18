@@ -24,7 +24,7 @@ class TrueEvaluationOperator(EvaluationOperator):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        pgvmat : PhasedGenotypeVariantMatrix
+        pgvmat : PhasedGenotypeMatrix
             Genotypes to evaluate.
         gmod_true : GenomicModel
             True genomic model.

@@ -85,8 +85,8 @@ class WeightedGenomicSelection(SelectionProtocol):
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.

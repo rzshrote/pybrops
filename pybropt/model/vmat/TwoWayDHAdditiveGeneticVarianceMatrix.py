@@ -68,8 +68,8 @@ class TwoWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix object containing genetic data.
+        pgvmat : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix object containing genetic data.
             It is assumed that the genetic map positions (vrnt_genpos) have
             been interpolated in this object. It is also assumed that this
             object has been grouped into chromosome groups.

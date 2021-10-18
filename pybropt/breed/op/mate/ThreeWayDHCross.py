@@ -1,8 +1,8 @@
 import numpy
 from . import mat_mate
 from . import MatingOperator
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
 class ThreeWayDHCross(MatingOperator):
     """docstring for ThreeWayDHCross."""
@@ -22,8 +22,8 @@ class ThreeWayDHCross(MatingOperator):
 
         Parameters
         ----------
-        pgvmat : DensePhasedGenotypeVariantMatrix
-            A GenotypeVariantMatrix containing candidate breeding individuals.
+        pgvmat : DensePhasedGenotypeMatrix
+            A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
             Where:
@@ -47,11 +47,11 @@ class ThreeWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeVariantMatrix
-            A DensePhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
         # check data type
-        check_is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        check_is_DensePhasedGenotypeMatrix(pgvmat, "pgvmat")
 
         # get recurrent, female, and male selections; repeat by ncross
         rsel = numpy.repeat(sel[0::3], ncross)
@@ -79,8 +79,8 @@ class ThreeWayDHCross(MatingOperator):
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob)
 
-        # create new DensePhasedGenotypeVariantMatrix
-        progeny = DensePhasedGenotypeVariantMatrix(
+        # create new DensePhasedGenotypeMatrix
+        progeny = DensePhasedGenotypeMatrix(
             geno = dhgeno,
             vrnt_chrgrp = pgvmat.vrnt_chrgrp,
             vrnt_phypos = pgvmat.vrnt_phypos,
@@ -104,8 +104,8 @@ class ThreeWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeVariantMatrix
-            A DensePhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
         # extract the mating configuration as a dictionary
         d = mcfg.config()

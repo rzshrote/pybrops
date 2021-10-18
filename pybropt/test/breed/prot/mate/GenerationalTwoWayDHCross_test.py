@@ -4,8 +4,8 @@ import pytest
 from numpy.random import PCG64
 from numpy.random import Generator
 
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
@@ -26,7 +26,7 @@ def gmapfn():
 @pytest.fixture
 def dpgvmat(shared_datadir, egmap, gmapfn):
     data_path = shared_datadir / "sample.vcf"
-    dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(data_path)
+    dpgvmat = DensePhasedGenotypeMatrix.from_vcf(data_path)
     dpgvmat.group()
     dpgvmat.interp_xoprob(egmap, gmapfn)
     yield dpgvmat

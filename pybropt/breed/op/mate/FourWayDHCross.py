@@ -18,8 +18,8 @@ class FourWayDHCross(MatingOperator):
 
         Parameters
         ----------
-        pgvmat : DensePhasedGenotypeVariantMatrix
-            A GenotypeVariantMatrix containing candidate breeding individuals.
+        pgvmat : DensePhasedGenotypeMatrix
+            A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
             Where:
@@ -45,11 +45,11 @@ class FourWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeVariantMatrix
-            A DensePhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
         # check data type
-        pybropt.popgen.gmat.is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        pybropt.popgen.gmat.is_DensePhasedGenotypeMatrix(pgvmat, "pgvmat")
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
         f2sel = numpy.repeat(sel[0::4], ncross)
@@ -79,8 +79,8 @@ class FourWayDHCross(MatingOperator):
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob)
 
-        # create new DensePhasedGenotypeVariantMatrix
-        progeny = DensePhasedGenotypeVariantMatrix(
+        # create new DensePhasedGenotypeMatrix
+        progeny = DensePhasedGenotypeMatrix(
             geno = dhgeno,
             vrnt_chrgrp = pgvmat.vrnt_chrgrp,
             vrnt_phypos = pgvmat.vrnt_phypos,
@@ -104,8 +104,8 @@ class FourWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeVariantMatrix
-            A DensePhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
         # extract the mating configuration as a dictionary
         d = mcfg.config()

@@ -4,10 +4,10 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.psel import MultiObjectiveGenomicParentSelection
+from pybropt.breed.prot.sel import MultiObjectiveGenomicSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.algo.opt import SteepestAscentSetHillClimber
 from pybropt.algo.opt import StochasticAscentSetHillClimber
 
@@ -125,7 +125,7 @@ def mat_taxa_grp():
 
 @pytest.fixture
 def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
-    yield DensePhasedGenotypeVariantMatrix(
+    yield DensePhasedGenotypeMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
         vrnt_phypos = mat_phypos,
@@ -135,7 +135,7 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
 
 @pytest.fixture
 def dpgvmat_big(mat_int8_big, mat_chrgrp_big, mat_phypos_big, mat_taxa_big):
-    yield DensePhasedGenotypeVariantMatrix(
+    yield DensePhasedGenotypeMatrix(
         mat = mat_int8_big,
         vrnt_chrgrp = mat_chrgrp_big,
         vrnt_phypos = mat_phypos_big,
@@ -233,7 +233,7 @@ def bvmat_big(glgmod_big, dpgvmat_big):
     yield glgmod_big.predict(dpgvmat_big)
 
 ################################################################################
-##################### MultiObjectiveGenomicParentSelection #####################
+##################### MultiObjectiveGenomicSelection #####################
 ################################################################################
 @pytest.fixture
 def nparent():
@@ -253,7 +253,7 @@ def method():
 
 @pytest.fixture
 def objfn_trans():
-    yield MultiObjectiveGenomicParentSelection.traitsum_trans
+    yield MultiObjectiveGenomicSelection.traitsum_trans
 
 @pytest.fixture
 def objfn_wt():
@@ -261,7 +261,7 @@ def objfn_wt():
 
 @pytest.fixture
 def ndset_trans():
-    yield MultiObjectiveGenomicParentSelection.vecptdist_trans
+    yield MultiObjectiveGenomicSelection.vecptdist_trans
 
 @pytest.fixture
 def ndset_trans_kwargs(objfn_wt):
@@ -289,7 +289,7 @@ def algorithm(nparent, dpgvmat, rng):
 
 @pytest.fixture
 def mogps(nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_wt, ndset_trans, ndset_trans_kwargs, ndset_wt, rng):
-    yield MultiObjectiveGenomicParentSelection(
+    yield MultiObjectiveGenomicSelection(
         nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
@@ -311,73 +311,73 @@ def mogps(nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_wt, n
 ########### test calc_mkrwt ############
 ########################################
 def test_calc_mkrwt_magnitude(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("magnitude", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_mkrwt("magnitude", beta_big)
     b = numpy.absolute(beta_big)
     assert numpy.all(a == b)
 
 def test_calc_mkrwt_equal(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("equal", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_mkrwt("equal", beta_big)
     assert numpy.all(a == 1.0)
 
 def test_calc_mkrwt_str_case(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("mAgNiTuDe", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_mkrwt("mAgNiTuDe", beta_big)
     b = numpy.absolute(beta_big)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicParentSelection.calc_mkrwt("Equal", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_mkrwt("Equal", beta_big)
     assert numpy.all(a == 1.0)
 
 def test_calc_mkrwt_str_ValueError(beta_big):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicParentSelection.calc_mkrwt("unknown", beta_big)
+        a = MultiObjectiveGenomicSelection.calc_mkrwt("unknown", beta_big)
 
 def test_calc_mkrwt_ndarray(beta_big):
     wt = numpy.random.normal(size = beta_big.shape)
-    a = MultiObjectiveGenomicParentSelection.calc_mkrwt(wt, beta_big)
+    a = MultiObjectiveGenomicSelection.calc_mkrwt(wt, beta_big)
     assert numpy.all(a == wt)
 
 def test_calc_mkrwt_type_TypeError(beta_big):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicParentSelection.calc_mkrwt(None, beta_big)
+        a = MultiObjectiveGenomicSelection.calc_mkrwt(None, beta_big)
 
 ########################################
 ########### test calc_tfreq ############
 ########################################
 def test_calc_tfreq_positive(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("positive", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("positive", beta_big)
     b = numpy.float64(beta_big >= 0.0)
     assert numpy.all(a == b)
 
 def test_calc_tfreq_negative(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("negative", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("negative", beta_big)
     b = numpy.float64(beta_big <= 0.0)
     assert numpy.all(a == b)
 
 def test_calc_tfreq_stabilizing(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("stabilizing", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("stabilizing", beta_big)
     assert numpy.all(a == 0.5)
 
 def test_calc_tfreq_str_case(beta_big):
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("PoSiTiVe", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("PoSiTiVe", beta_big)
     b = numpy.float64(beta_big >= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("NEGATIVE", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("NEGATIVE", beta_big)
     b = numpy.float64(beta_big <= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq("Stabilizing", beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq("Stabilizing", beta_big)
     assert numpy.all(a == 0.5)
 
 def test_calc_tfreq_str_ValueError(beta_big):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicParentSelection.calc_tfreq("unknown", beta_big)
+        a = MultiObjectiveGenomicSelection.calc_tfreq("unknown", beta_big)
 
 def test_calc_tfreq_ndarray(beta_big):
     wt = numpy.random.uniform(0, 1, size = beta_big.shape)
-    a = MultiObjectiveGenomicParentSelection.calc_tfreq(wt, beta_big)
+    a = MultiObjectiveGenomicSelection.calc_tfreq(wt, beta_big)
     assert numpy.all(a == wt)
 
 def test_calc_tfreq_type_TypeError(beta_big):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicParentSelection.calc_tfreq(None, beta_big)
+        a = MultiObjectiveGenomicSelection.calc_tfreq(None, beta_big)
 
 # test constructor
 def test_init(mogps):

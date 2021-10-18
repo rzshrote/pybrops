@@ -8,15 +8,15 @@ from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.breed.eval import check_is_EvaluationOperator
-from pybropt.breed.psel import check_is_ParentSelectionOperator
+from pybropt.breed.prot.sel import check_is_ParentSelectionOperator
 from pybropt.breed.mate import check_is_MatingOperator
 from pybropt.breed.intg import check_is_GenotypeIntegrationOperator
 from pybropt.breed.intg import check_is_BreedingValueIntegrationOperator
 from pybropt.breed.calibr import check_is_GenomicModelCalibrationOperator
 from pybropt.breed.ssel import check_is_SurvivorSelectionOperator
 from pybropt.model.gmod import check_is_GenomicModel
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
 class GenerationalInitializationOperator(InitializationOperator):
     """docstring for GenerationalInitializationOperator."""
@@ -219,7 +219,7 @@ class GenerationalInitializationOperator(InitializationOperator):
     @staticmethod
     def from_dpgvmat(dpgvmat, nfounder, founder_ncross, founder_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, rng = None):
         # perform error checks
-        check_is_DensePhasedGenotypeVariantMatrix(dpgvmat, "dpgvmat")
+        check_is_DensePhasedGenotypeMatrix(dpgvmat, "dpgvmat")
         check_is_int(nfounder, "nfounder")
         check_is_int(founder_ncross, "founder_ncross")
         check_is_int(founder_nprogeny, "founder_nprogeny")
@@ -388,7 +388,7 @@ class GenerationalInitializationOperator(InitializationOperator):
             A random number generator object.
         """
         # step 1: load genotype matrix
-        dpgvmat = DensePhasedGenotypeVariantMatrix.from_vcf(fname)
+        dpgvmat = DensePhasedGenotypeMatrix.from_vcf(fname)
 
         # step 2: create from genotype matrix
         geninitop = GenerationalInitializationOperator.from_dpgvmat(

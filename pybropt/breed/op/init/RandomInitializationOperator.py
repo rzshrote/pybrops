@@ -5,7 +5,7 @@ from . import InitializationOperator
 from pybropt.core import random as pbo_rng
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_int
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 
 class RandomInitializationOperator(InitializationOperator):
     """docstring for RandomInitializationOperator."""

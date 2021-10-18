@@ -4,8 +4,8 @@ from . import mat_dh
 from . import MatingOperator
 from pybropt.core import random as pbo_rng
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
 
 class TwoWayDHCross(MatingOperator):
     """docstring for TwoWayDHCross."""
@@ -30,8 +30,8 @@ class TwoWayDHCross(MatingOperator):
 
         Parameters
         ----------
-        pgvmat : DensePhasedGenotypeVariantMatrix
-            A GenotypeVariantMatrix containing candidate breeding individuals.
+        pgvmat : DensePhasedGenotypeMatrix
+            A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
             Where:
@@ -53,11 +53,11 @@ class TwoWayDHCross(MatingOperator):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeVariantMatrix
-            A DensePhasedGenotypeVariantMatrix of progeny.
+        progeny : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
         # check data type
-        check_is_DensePhasedGenotypeVariantMatrix(pgvmat, "pgvmat")
+        check_is_DensePhasedGenotypeMatrix(pgvmat, "pgvmat")
 
         # get female and male selections; repeat by ncross
         fsel = numpy.repeat(sel[0::2], ncross)
@@ -81,8 +81,8 @@ class TwoWayDHCross(MatingOperator):
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob, self.rng)
 
-        # create new DensePhasedGenotypeVariantMatrix
-        progeny = DensePhasedGenotypeVariantMatrix(
+        # create new DensePhasedGenotypeMatrix
+        progeny = DensePhasedGenotypeMatrix(
             mat = dhgeno,
             vrnt_chrgrp = pgvmat.vrnt_chrgrp,
             vrnt_phypos = pgvmat.vrnt_phypos,

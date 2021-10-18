@@ -78,7 +78,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
+        pgvmat : PhasedGenotypeMatrix
             Founder genotypes.
         gmod_true : GenomicModel
             True genomic model.
@@ -105,7 +105,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
+        pgvmat : PhasedGenotypeMatrix
             Founder genotypes.
         gmod_true : GenomicModel
             True genomic model.
@@ -122,7 +122,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        pgvmat : PhasedGenotypeVariantMatrix
+        pgvmat : PhasedGenotypeMatrix
             Genotypes to evaluate.
         gmod_true : GenomicModel
             True genomic model.

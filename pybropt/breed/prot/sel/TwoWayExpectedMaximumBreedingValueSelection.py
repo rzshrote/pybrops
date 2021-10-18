@@ -7,7 +7,7 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.breed.mate import TwoWayDHCross
 
-class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator):
+class TwoWayExpectedMaximumBreedingValueParentSelection(SelectionProtocol):
     """docstring for TwoWayExpectedMaximumBreedingValueParentSelection."""
 
     def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs):
@@ -89,8 +89,8 @@ class TwoWayExpectedMaximumBreedingValueParentSelection(ParentSelectionOperator)
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.

@@ -30,8 +30,8 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
-            A GenotypeVariantMatrix containing candidate breeding individuals.
+        pgvmat : PhasedGenotypeMatrix
+            A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
             Where:
@@ -53,8 +53,8 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
 
         Returns
         -------
-        progeny : PhasedGenotypeVariantMatrix
-            A PhasedGenotypeVariantMatrix of progeny.
+        progeny : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix of progeny.
         """
         progeny, misc = super(GenerationalTwoWayDHCross, self).mate(
             t_cur = t_cur,
