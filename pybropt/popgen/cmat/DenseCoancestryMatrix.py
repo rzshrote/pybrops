@@ -54,7 +54,7 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
     ############################################################################
 
     ################## Coancestry Methods ##################
-    def coancestry(self, *args):
+    def coancestry(self, *args, **kwargs):
         """
         Retrieve the coancestry between individuals.
 
@@ -62,6 +62,8 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
         ----------
         *args : *tuple
             A tuple of matrix indices to access the coancestry.
+        **kwargs : **dict
+            Additional keyword arguments.
         """
         # index via numpy and return.
         return self._mat[args]

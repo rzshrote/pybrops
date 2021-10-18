@@ -250,6 +250,16 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     @classmethod
     def from_gmat(cls, gmat):
+        """
+        Create a CoancestryMatrix from a GenotypeMatrix.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Input genotype matrix from which to calculate coancestry.
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         ####################################################
         ### Calculate the coancestry matrix.
 

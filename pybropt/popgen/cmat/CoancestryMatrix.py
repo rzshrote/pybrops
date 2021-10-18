@@ -32,7 +32,7 @@ class CoancestryMatrix(TaxaMatrix):
     ############################################################################
 
     ################## Coancestry Methods ##################
-    def coancestry(self, *args):
+    def coancestry(self, *args, **kwargs):
         """
         Retrieve the coancestry between individuals.
 
@@ -40,8 +40,27 @@ class CoancestryMatrix(TaxaMatrix):
         ----------
         *args : *tuple
             A tuple of matrix indices to access the coancestry.
+        **kwargs : **dict
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+    @classmethod
+    def from_gmat(cls, gmat, **kwargs):
+        """
+        Create a CoancestryMatrix from a GenotypeMatrix.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Input genotype matrix from which to calculate coancestry.
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("class method is abstract")
 
 
 
