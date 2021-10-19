@@ -10,6 +10,7 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
+from pybropt.algo.opt import NSGA2SetGeneticAlgorithm
 
 class WeightedGenomicSelection(SelectionProtocol):
     """docstring for WeightedGenomicSelection."""
@@ -312,7 +313,45 @@ class WeightedGenomicSelection(SelectionProtocol):
             misc : dict
                 A dictionary of miscellaneous output. (User specified)
         """
-        raise NotImplementedError("method is abstract")
+        if nparent is None:
+            nparent = self.nparent
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max,
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
+        )
+
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
+            **kwargs
+        )
+
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
+        )
+
+        return frontier, sel_config, misc
 
     ############################################################################
     ############################## Static Methods ##############################

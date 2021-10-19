@@ -2,6 +2,7 @@ import numpy
 import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
+from matplotlib import pyplot
 
 from pybropt.test import not_raises
 from pybropt.test import generic_assert_docstring
@@ -70,26 +71,40 @@ def dgmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
 ############################################################
 @pytest.fixture
 def beta():
-    yield numpy.float64([[1.4, 2.5, 7.2]])
+    yield numpy.float64([[1.4, 2.5]])
+    # yield numpy.float64([[1.4, 2.5, 7.2]])
 
 @pytest.fixture
 def u():
     yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87, -1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
+        [-0.33,  2.08],
+        [-0.69, -1.87],
+        [ 1.12,  1.38],
+        [-1.44,  0.20],
+        [ 0.88, -0.81],
+        [ 1.23,  0.25],
+        [ 0.19,  4.35],
+        [-2.12,  0.73],
+        [-0.87,  1.25],
+        [ 0.06, -2.52]
     ])
+    # yield numpy.float64([
+    #     [-0.33,  2.08, -2.42],
+    #     [-0.69, -1.87, -1.38],
+    #     [ 1.12,  1.38, -5.65],
+    #     [-1.44,  0.20,  4.22],
+    #     [ 0.88, -0.81,  1.55],
+    #     [ 1.23,  0.25,  5.13],
+    #     [ 0.19,  4.35,  0.15],
+    #     [-2.12,  0.73, -0.38],
+    #     [-0.87,  1.25,  2.38],
+    #     [ 0.06, -2.52,  2.48]
+    # ])
 
 @pytest.fixture
 def trait():
-    yield numpy.object_(["protein", "yield", "quality"])
+    yield numpy.object_(["protein", "yield"])
+    # yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
 def model_name():
@@ -143,6 +158,11 @@ def cgs(nparent, ncross, nprogeny, rng):
         nprogeny = nprogeny,
         rng = rng
     )
+
+@pytest.fixture
+def objfn_wt():
+    yield [1., 1.]
+    # yield [1., 1., 1.]
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -207,6 +227,35 @@ def test_objfn_multiobjective(cgs, dgmat, bvmat, glgmod, ncross, nprogeny, mat_i
         numpy.testing.assert_almost_equal(taxon_bv, objfn([i]))
         # print(taxon_bv == objfn([i]))
         # assert numpy.all(taxon_bv == objfn([i]))
+
+def test_pareto(cgs, dgmat, bvmat, glgmod, objfn_wt):
+    frontier, sel_config, misc = cgs.pareto(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        objfn_wt = objfn_wt
+    )
+
+    xdata = frontier[:,0]
+    ydata = frontier[:,1]
+    # zdata = frontier[:,2]
+
+    xlabel = glgmod.trait[0]
+    ylabel = glgmod.trait[1]
+
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    ax.scatter(xdata, ydata)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title("Conventional Genomic Selection Test Pareto Frontier")
+    # ax = pyplot.axes(projection='3d')
+    # ax.scatter3D(xdata, ydata, zdata)
+    pyplot.savefig("CGS_2d_frontier.png", dpi = 250)
 
 # def test_pselect(cgs, dgmat, bvmat, glgmod, ncross, nprogeny):
 #     a,b,c,d,e = cgs.select(
