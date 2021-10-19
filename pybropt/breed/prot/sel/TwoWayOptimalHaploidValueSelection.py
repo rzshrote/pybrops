@@ -1,7 +1,7 @@
 import numpy
 from sklearn.cluster import KMeans
 
-from . import ParentSelectionOperator
+from . import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
@@ -10,29 +10,50 @@ from pybropt.core.error import cond_check_is_Generator
 class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
     """docstring for TwoWayOptimalHaploidValueParentSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
-        k_p : int
-            Number of crosses to select (1/2 number of parents).
-        b_p : int
-            Number of haplotype blocks.
+        Constructor for two-way Optimal Haploid Value Selection (OHV).
+
+        Parameters
+        ----------
+        nparent : int
+            Number of parents to select.
+        ncross : int
+            Number of crosses per configuration.
+        nprogeny : int
+            Number of progeny to derive from each cross.
+        objfn_trans : function, callable, None
+        objfn_trans_kwargs : dict, None
+        objfn_wt : float, numpy.ndarray
+        ndset_trans : function, callable, None
+        ndset_trans_kwargs : dict, None
+        ndset_wt : float
+        rng : numpy.Generator
         """
         super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
 
         # error checks
-        check_is_int(k_p, "k_p")
-        # TODO: check traitwt_p
-        check_is_int(b_p, "b_p")
+        check_is_int(nparent, "nparent")
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
+        cond_check_is_callable(objfn_trans, "objfn_trans")
+        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
+        # TODO: check objfn_wt
+        cond_check_is_callable(ndset_trans, "ndset_trans")
+        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
+        # TODO: check ndset_wt
         cond_check_is_Generator(rng, "rng")
 
         # variable assignment
-        self.k_p = k_p
-        self.traitwt_p = traitwt_p
-        self.b_p = b_p
+        self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
@@ -256,6 +277,9 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single"):
+        pass
+
     def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
         """
         Return a parent selection objective function.
@@ -396,3 +420,124 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
     #         return cgs
     #
     #     return objfn_vec
+
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    @staticmethod
+    def objfn_static(sel, mat, trans, kwargs):
+        """
+        Score individuals based on Optimal Haploid Value Selection for two-way
+        crosses.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select. (k/2 pairs)
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape (t, m, n, b).
+            Where:
+                't' is the number of traits.
+                'm' is the number of chromosome phases (2 for diploid, etc.).
+                'n' is the number of individuals.
+                'b' is the number of haplotype blocks.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+                Must accept a single numpy.ndarray argument.
+                Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to 'trans' function.
+
+        Returns
+        -------
+        ohv : numpy.ndarray
+            A GEBV matrix of shape (t,) if 'trans' is None.
+            Otherwise, of shape specified by 'trans'.
+            Where:
+                't' is the number of traits.
+        """
+        # get female and male selections
+        fsel = sel[0::2]
+        msel = sel[1::2]
+
+        # construct selection tuple
+        s = tuple(zip(fsel,msel))
+
+        # get max haplotype value
+        # (m,n,h,t)[:,(k/2,2),:,:] -> (m,k/2,2,h,t)
+        # (m,k/2,2,h,t).max((0,2)) -> (k/2,h,t)
+        # (k/2,h,t).sum(1) -> (k/2,t)
+        ohv = mat[:,s,:,:].max((0,2)).sum(1)
+
+        # apply transformations
+        # (t,) ---trans---> (?,)
+        if trans:
+            cgs = trans(cgs, **kwargs)
+
+        return ohv
+
+    def objfn(sel, mat, traitwt):
+        """
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
+        Genomic Estimated Breeding Values (GEBV) for a population.
+
+        CGS selects the 'q' individuals with the largest GEBVs.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select. (k/2 pairs)
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape (t, m, n, b).
+            Where:
+                't' is the number of traits.
+                'm' is the number of chromosome phases (2 for diploid, etc.).
+                'n' is the number of individuals.
+                'b' is the number of haplotype blocks.
+        traitwt : numpy.ndarray, None
+            A trait objective coefficients matrix of shape (t,).
+            Where:
+                't' is the number of trait objectives.
+            These are used to weigh objectives in the weight sum method.
+            If None, do not multiply GEBVs by a weight sum vector.
+
+        Returns
+        -------
+        cgs : numpy.ndarray
+            A GEBV matrix of shape (k, t) if objwt is None.
+            A GEBV matrix of shape (k,) if objwt shape is (t,)
+            Where:
+                'k' is the number of individuals selected.
+                't' is the number of traits.
+        """
+        # get female and male selections
+        fsel = sel[0::2]
+        msel = sel[1::2]
+
+        # construct selection tuple
+        s = tuple(zip(fsel,msel))
+
+        # get max haplotype value
+        # (m,n,h,t)[:,(k/2,2),:,:] -> (m,k/2,2,h,t)
+        # (m,k/2,2,h,t).max((0,2)) -> (k/2,h,t)
+        # (k/2,h,t).sum(1) -> (k/2,t)
+        ohv = mat[:,s,:,:].max((0,2)).sum(1)
+
+        # apply objective weights
+        # (k/2,t) dot (t,) -> (k/2,)
+        if traitwt is not None:
+            ohv = ohv.dot(traitwt)
+
+        return ohv

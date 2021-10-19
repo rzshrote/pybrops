@@ -69,15 +69,11 @@ def dgmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
 ###################### Genomic model #######################
 ############################################################
 @pytest.fixture
-def mu():
-    yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
-    ])
+def beta():
+    yield numpy.float64([[1.4, 2.5, 7.2]])
 
 @pytest.fixture
-def beta():
+def u():
     yield numpy.float64([
         [-0.33,  2.08, -2.42],
         [-0.69, -1.87, -1.38],
@@ -104,10 +100,10 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def glgmod(beta, u, trait, model_name, params):
     yield GenericLinearGenomicModel(
-        mu = mu,
         beta = beta,
+        u = u,
         trait = trait,
         model_name = model_name,
         params = params
@@ -118,7 +114,7 @@ def glgmod(mu, beta, trait, model_name, params):
 ############################################################
 @pytest.fixture
 def bvmat(glgmod, dgmat):
-    yield glgmod.predict(dgmat)
+    yield glgmod.gebv(dgmat)
 
 ############################################################
 ############# ConventionalPhenotypicSelection ##############
@@ -190,7 +186,7 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_objfn_multiobjective(cps, dgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, beta):
+def test_objfn_multiobjective(cps, dgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, u):
     objfn = cps.objfn(
         pgmat = None,
         gmat = dgmat,

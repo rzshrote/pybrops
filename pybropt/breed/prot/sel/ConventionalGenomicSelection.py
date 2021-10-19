@@ -21,8 +21,11 @@ class ConventionalGenomicSelection(SelectionProtocol):
         Parameters
         ----------
         nparent : int
+            Number of parents to select.
         ncross : int
+            Number of crosses per configuration.
         nprogeny : int
+            Number of progeny to derive from each cross.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
         objfn_wt : float, numpy.ndarray
@@ -73,7 +76,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         pgmat : PhasedGenotypeMatrix
             Genomes
         gmat : GenotypeMatrix
-            Genotypes
+            Genotypes (unphased most likely)
         ptdf : PhenotypeDataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
@@ -216,7 +219,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         bvmat : BreedingValueMatrix
             Not used by this function.
         gpmod : GenomicModel
-        
+
         """
         # get default parameters if any are None
         if trans is None:
@@ -225,8 +228,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u     # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -234,7 +237,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,         # byte code pointer
             self.objfn_static.__globals__,      # global variables
             None,                               # new name for the function
-            (mat, beta, trans, trans_kwargs),   # default values for arguments
+            (mat, u, trans, trans_kwargs),      # default values for arguments
             self.objfn_static.__closure__       # closure byte code pointer
         )
 
@@ -251,8 +254,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u     # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -260,7 +263,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (mat, beta, trans, trans_kwargs),   # default values for arguments
+            (mat, u, trans, trans_kwargs),   # default values for arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -315,7 +318,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, beta, trans, kwargs):
+    def objfn_static(sel, mat, u, trans, kwargs):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -337,7 +340,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
@@ -366,7 +369,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         # Step 1: (n,p) -> (k,p)            # select individuals
         # Step 2: (k,p) . (p,t) -> (k,t)    # take marker dot product (calculate GEBVs)
         # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
-        cgs = mat[sel,:].dot(beta).sum(0)
+        cgs = mat[sel,:].dot(u).sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
@@ -376,7 +379,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         return cgs
 
     @staticmethod
-    def objfn_vec_static(sel, mat, beta, trans, kwargs):
+    def objfn_vec_static(sel, mat, u, trans, kwargs):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -397,7 +400,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
@@ -428,7 +431,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         # (n,p)[(j,k),:] -> (j,k,p)
         # (j,k,p) . (p,t) -> (j,k,t)
         # (j,k,t).sum(1) -> (j,t)
-        cgs = mat[sel,:].dot(beta).sum(1)
+        cgs = mat[sel,:].dot(u).sum(1)
 
         # apply transformations
         # (j,t) ---trans---> (?,?)

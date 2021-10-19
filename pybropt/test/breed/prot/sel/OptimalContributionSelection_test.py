@@ -58,18 +58,12 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
 ################################ Genomic model #################################
 ################################################################################
 @pytest.fixture
-def mu():
-    yield numpy.float64([
-        [1.4]
-    ])
-    # yield numpy.float64([
-    #     [1.4],
-    #     [2.5],
-    #     [7.2]
-    # ])
+def beta():
+    yield numpy.float64([[1.4]])
+    # yield numpy.float64([[1.4, 2.5, 7.2]])
 
 @pytest.fixture
-def beta():
+def u():
     yield numpy.float64([
         [-0.33],
         [-0.69],
@@ -109,10 +103,10 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def glgmod(beta, u, trait, model_name, params):
     yield GenericLinearGenomicModel(
-        mu = mu,
         beta = beta,
+        u = u,
         trait = trait,
         model_name = model_name,
         params = params
@@ -123,13 +117,13 @@ def glgmod(mu, beta, trait, model_name, params):
 ################################################################################
 @pytest.fixture
 def bvmat(glgmod, dpgvmat):
-    yield glgmod.predict(dpgvmat)
+    yield glgmod.gebv(dpgvmat)
 
 ################################################################################
 ###################### OptimalContributionSelection ######################
 ################################################################################
 @pytest.fixture
-def k_p():
+def nparent():
     yield 2
 
 @pytest.fixture
@@ -150,7 +144,7 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def inbfn_p():
+def inbfn():
     def fn(t_cur, t_max):
         return 0.75
     yield fn
@@ -160,13 +154,13 @@ def cmatcls():
     yield DenseMolecularCoancestryMatrix
 
 @pytest.fixture
-def ocps(k_p, traitwt_p, inbfn_p, ncross, nprogeny, cmatcls, rng):
+def ocs(nparent, traitwt_p, inbfn, ncross, nprogeny, cmatcls, rng):
     yield OptimalContributionSelection(
-        k_p = k_p,
-        traitwt_p = traitwt_p,
-        inbfn_p = inbfn_p,
+        nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
+        traitwt_p = traitwt_p,
+        inbfn = inbfn,
         cmatcls = cmatcls,
         rng = rng
     )
@@ -174,33 +168,3 @@ def ocps(k_p, traitwt_p, inbfn_p, ncross, nprogeny, cmatcls, rng):
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-def test_pselect(ocps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
-    geno = {
-        "cand" : dpgvmat,
-        "main" : dpgvmat,
-        "queue" : [dpgvmat]
-    }
-    bval = {
-        "cand" : bvmat,
-        "cand_true" : bvmat,
-        "main" : bvmat,
-        "main_true" : bvmat
-    }
-    gmod = {
-        "cand" : glgmod,
-        "main" : glgmod,
-        "true" : glgmod
-    }
-
-    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = ocps.pselect(
-        t_cur = 0,
-        t_max = 20,
-        geno = geno,
-        bval = bval,
-        gmod = gmod
-    )
-
-    # print(out_sel)
-    # assert numpy.all(out_sel == [2,0])
-    assert out_ncross == ncross
-    assert out_nprogeny == nprogeny

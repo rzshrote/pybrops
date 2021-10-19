@@ -1,11 +1,11 @@
 import numpy
 
-from . import ParentSelectionOperator
+from . import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.breed.mate import TwoWayDHCross
+from pybropt.breed.prot.mate import TwoWayDHCross
 
 class TwoWayExpectedMaximumBreedingValueParentSelection(SelectionProtocol):
     """docstring for TwoWayExpectedMaximumBreedingValueParentSelection."""

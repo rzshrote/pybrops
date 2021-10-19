@@ -1,4 +1,5 @@
 import numpy
+import types
 
 from . import SelectionProtocol
 
@@ -17,6 +18,12 @@ class WeightedGenomicSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+        """
+        Constructor for WeightedGenomicSelection class.
+
+        Parameters
+        ----------
+        """
         super(WeightedGenomicSelection, self).__init__(**kwargs)
 
         # error checks
@@ -201,18 +208,18 @@ class WeightedGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u     # (p,t) get regression coefficients
 
         # calculate weight adjustments for WGS
         afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
         fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
-            beta > 0.0,                     # if dominant (1) allele is beneficial
+            u > 0.0,                        # if dominant (1) allele is beneficial
             afreq,                          # get dominant allele frequency
             1.0 - afreq                     # else get recessive allele frequency
         )
         fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
+        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -220,7 +227,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,                 # byte code pointer
             self.objfn_static.__globals__,              # global variables
             None,                                       # new name for the function
-            (mat, beta, betawt, trans, trans_kwargs),   # default values for arguments
+            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
             self.objfn_static.__closure__               # closure byte code pointer
         )
 
@@ -238,17 +245,17 @@ class WeightedGenomicSelection(SelectionProtocol):
 
         # get pointers to raw numpy.ndarray matrices
         mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        u = gpmod.u   # (p,t) get regression coefficients
 
         # calculate weight adjustments for WGS
         afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
         fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
-            beta > 0.0,                     # if dominant (1) allele is beneficial
+            u > 0.0,                        # if dominant (1) allele is beneficial
             afreq,                          # get dominant allele frequency
             1.0 - afreq                     # else get recessive allele frequency
         )
         fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        betawt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
+        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -256,7 +263,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,             # byte code pointer
             self.objfn_vec_static.__globals__,          # global variables
             None,                                       # new name for the function
-            (mat, beta, betawt, trans, trans_kwargs),   # default values for arguments
+            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
             self.objfn_vec_static.__closure__           # closure byte code pointer
         )
 
@@ -311,7 +318,7 @@ class WeightedGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, beta, betawt, trans, kwargs):
+    def objfn_static(sel, mat, u, uwt, trans, kwargs):
         """
         Score a population of individuals based on Weighted Genomic Selection
         (WGS). Scoring for WGS is defined as the sum of weighted Genomic
@@ -333,19 +340,19 @@ class WeightedGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
                 't' is the number of traits.
-        betawt : numpy.ndarray
+        uwt : numpy.ndarray
             Multiplicative marker weights matrix to apply to the trait
             prediction coefficients provided of shape (p, t).
             Where:
                 'p' is the number of markers.
                 't' is the number of traits.
-            Trait prediction coefficients (beta) are transformed as follows:
-                beta_new = beta ⊙ betawt (Hadamard product)
+            Trait prediction coefficients (u) are transformed as follows:
+                u_new = u ⊙ uwt (Hadamard product)
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -371,7 +378,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         # Step 1: (n,p) -> (k,p)            # select individuals
         # Step 2: (k,p) . (p,t) -> (k,t)    # calculate wGEBVs
         # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
-        wgs = mat[sel,:].dot(beta*betawt).sum(0)
+        wgs = mat[sel,:].dot(u*uwt).sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
@@ -381,7 +388,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         return wgs
 
     @staticmethod
-    def objfn_vec_static(sel, mat, beta, betawt, trans, kwargs):
+    def objfn_vec_static(sel, mat, u, uwt, trans, kwargs):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -402,19 +409,19 @@ class WeightedGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
                 't' is the number of traits.
-        betawt : numpy.ndarray
+        uwt : numpy.ndarray
             Multiplicative marker weights matrix to apply to the trait
             prediction coefficients provided of shape (p, t).
             Where:
                 'p' is the number of markers.
                 't' is the number of traits.
-            Trait prediction coefficients (beta) are transformed as follows:
-                beta_new = beta ⊙ betawt (Hadamard product)
+            Trait prediction coefficients (u) are transformed as follows:
+                u_new = u ⊙ uwt (Hadamard product)
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -441,7 +448,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         # (n,p)[(j,k),:] -> (j,k,p)     # select configurations
         # (j,k,p) . (p,t) -> (j,k,t)    # calculate wGEBVs
         # (j,k,t).sum(1) -> (j,t)       # sum across all individuals in config
-        cgs = mat[sel,:].dot(beta*betawt).sum(1)
+        cgs = mat[sel,:].dot(u*uwt).sum(1)
 
         # apply transformations
         # (j,t) ---trans---> (?,?)

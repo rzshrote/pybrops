@@ -69,7 +69,7 @@ class OptimalContributionSelection(SelectionProtocol):
             bvtype = self.bvtype            # get default option
         bvtype = bvtype.lower()             # convert bvtype to lowercase
         if bvtype == "gebv":                # use GEBVs estimated from genomic model
-            return gpmod.predict(gmat).mat  # calculate GEBVs
+            return gpmod.gebv(gmat).mat     # calculate GEBVs
         elif bvtype == "ebv":               # use EBVs estimated by some means
             return bvmat.mat                # get breeding values
         elif bvtype == "tbv":               # use true BVs
