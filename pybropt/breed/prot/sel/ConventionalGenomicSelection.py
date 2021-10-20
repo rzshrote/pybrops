@@ -153,7 +153,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
             # get all GEBVs for each individual
             # (n,)
-            gebv = [objfn(i) for i in range(gmat.ntaxa)]
+            gebv = [objfn([i]) for i in range(gmat.ntaxa)]
 
             # convert to numpy.ndarray
             gebv = numpy.array(gebv)
@@ -219,8 +219,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : GenomicModel
-
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
         """
         # get default parameters if any are None
         if trans is None:
@@ -405,7 +405,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             sel = slice(None)
 
         # CGS calculation explanation
-        # Step 1: (n,p) -> (k,p)            # select individuals
+        # Step 1: (n,p)[(k,),:] -> (k,p)    # select individuals
         # Step 2: (k,p) . (p,t) -> (k,t)    # take marker dot product (calculate GEBVs)
         # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
         cgs = mat[sel,:].dot(u).sum(0)

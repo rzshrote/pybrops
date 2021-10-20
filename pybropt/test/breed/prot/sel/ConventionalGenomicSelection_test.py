@@ -15,6 +15,8 @@ from pybropt.test import generic_assert_concrete_function
 from pybropt.breed.prot.sel import ConventionalGenomicSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
+from pybropt.breed.prot.sel.transfn import trans_sum
 
 
 ################################################################################
@@ -185,9 +187,8 @@ def test_objfn_is_concrete():
 def test_objfn_vec_is_concrete():
     generic_assert_concrete_method(ConventionalGenomicSelection, "objfn_vec")
 
-# TODO:
-# def test_pareto_is_concrete():
-#     generic_assert_concrete_method(ConventionalGenomicSelection, "pareto")
+def test_pareto_is_concrete():
+    generic_assert_concrete_method(ConventionalGenomicSelection, "pareto")
 
 def test_objfn_static_is_concrete():
     generic_assert_concrete_method(ConventionalGenomicSelection, "objfn_static")
@@ -206,7 +207,53 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_objfn_multiobjective(cgs, dgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, u):
+def test_select_single(cgs, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, mat_int8, u):
+    pgmat, sel, ncross, nprogeny, misc = cgs.select(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = None,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        method = "single",
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        objfn_trans = trans_sum,
+        objfn_trans_kwargs = {"axis": None},
+        objfn_wt = None,
+        ndset_trans = None,
+        ndset_trans_kwargs = None,
+        ndset_wt = None
+    )
+
+    assert sel.ndim == 1
+
+def test_select_pareto(cgs, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, objfn_wt):
+    pgmat, sel, ncross, nprogeny, misc = cgs.select(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = None,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        method = "pareto",
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        objfn_trans = None,
+        objfn_trans_kwargs = None,
+        objfn_wt = objfn_wt,
+        ndset_trans = trans_ndpt_to_vec_dist,
+        ndset_trans_kwargs = {"objfn_wt": numpy.array(objfn_wt), "wt": numpy.array([.5,.5])},
+        ndset_wt = 1.0
+    )
+
+    assert sel.ndim == 1
+
+def test_objfn_is_function(cgs, dgmat, bvmat, glgmod):
     objfn = cgs.objfn(
         pgmat = None,
         gmat = dgmat,
@@ -219,14 +266,57 @@ def test_objfn_multiobjective(cgs, dgmat, bvmat, glgmod, ncross, nprogeny, mat_i
 
     assert callable(objfn)
 
+def test_objfn_multiobjective(cgs, dgmat, bvmat, glgmod, mat_int8, u):
+    objfn = cgs.objfn(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
     Z = mat_int8        # (n,p) genotypes {0,1,2}
     u = u               # (p,t) regression coefficients
     Y = Z@u             # (n,t) values
 
     for i,taxon_bv in enumerate(Y):
         numpy.testing.assert_almost_equal(taxon_bv, objfn([i]))
-        # print(taxon_bv == objfn([i]))
-        # assert numpy.all(taxon_bv == objfn([i]))
+
+def test_objfn_vec_is_callable(cgs, dgmat, bvmat, glgmod):
+    objfn_vec = cgs.objfn_vec(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    assert callable(objfn_vec)
+
+def test_objfn_vec_multiobjective(cgs, dgmat, bvmat, glgmod, mat_int8, u):
+    objfn_vec = cgs.objfn_vec(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    Z = mat_int8        # (n,p) genotypes {0,1,2}
+    u = u               # (p,t) regression coefficients
+    Y = Z@u             # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            numpy.stack([taxon_bv, taxon_bv]),
+            objfn_vec([[i],[i]])
+        )
 
 def test_pareto(cgs, dgmat, bvmat, glgmod, objfn_wt):
     frontier, sel_config, misc = cgs.pareto(
@@ -257,17 +347,24 @@ def test_pareto(cgs, dgmat, bvmat, glgmod, objfn_wt):
     # ax.scatter3D(xdata, ydata, zdata)
     pyplot.savefig("CGS_2d_frontier.png", dpi = 250)
 
-# def test_pselect(cgs, dgmat, bvmat, glgmod, ncross, nprogeny):
-#     a,b,c,d,e = cgs.select(
-#         pgmat = None,
-#         gmat = dgmat,
-#         ptdf = None,
-#         bvmat = bvmat,
-#         gpmod = glgmod,
-#         t_cur = 0,
-#         t_max = 20
-#     )
-#
-#     assert numpy.all(b == [3,4])
-#     assert c == ncross
-#     assert d == nprogeny
+def test_objfn_static_multiobjective(cgs, mat_int8, u):
+    Z = mat_int8        # (n,p) genotypes {0,1,2}
+    u = u               # (p,t) regression coefficients
+    Y = Z@u             # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            taxon_bv,
+            cgs.objfn_static([i], Z, u, None, None)
+        )
+
+def test_objfn_vec_static_multiobjective(cgs, dgmat, bvmat, glgmod, mat_int8, u):
+    Z = mat_int8        # (n,p) genotypes {0,1,2}
+    u = u               # (p,t) regression coefficients
+    Y = Z@u             # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            numpy.stack([taxon_bv, taxon_bv]),
+            cgs.objfn_vec_static([[i],[i]], Z, u, None, None)
+        )

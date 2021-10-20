@@ -26,7 +26,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     rng = None, **kwargs):
         """
         Constructor for MultiObjectiveGenomicSelection class.
-        
+
         Parameters
         ----------
         nparent : int
@@ -778,70 +778,3 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             return target
         else:
             raise TypeError("variable 'target' must be a string or numpy.ndarray")
-
-    @staticmethod
-    def traitsum_trans(mat, wt = None):
-        if wt is None:
-            return mat.sum(-1)
-        else:
-            return mat @ wt
-
-    @staticmethod
-    def weightsum_trans(mat, wt = None):
-        if wt is None:
-            return mat.sum()
-        else:
-            return mat.dot(wt)
-
-    @staticmethod
-    def vecptdist_trans(mat, objfn_wt, wt = None):
-        """
-        mat : numpy.ndarray
-            (npt, nobj)
-        objfn_wt : numpy.ndarray
-            (nobj,)
-        wt : numpy.ndarray
-            (nobj,)
-        """
-        # create a default wt if wt is None
-        if wt is None:
-            wt = numpy.ones(mat.shape[1], dtype = 'float64')
-
-        # transform mat to all maximizing functions
-        # (nobj,) -> (1,nobj)
-        # (npt,nobj) * (1,nobj) -> (npt,nobj)
-        mat = mat * wt[None,:]
-
-        # subtract column minimums
-        mat = mat - mat.min(0)
-
-        # divide by column maximums; mat is in range [0,1]
-        mat = mat / mat.max(0)
-
-        # calculate distance between point and line
-        # calculate ((v dot p) / (v dot v)) * v
-        # where v is the line vector originating from 0
-        #       p is the point vector
-
-        # get inverse of (v dot v)
-        # (nobj,) dot (nobj,) -> scalar
-        vdvinv = 1.0 / objfn_wt.dot(objfn_wt)
-
-        # get scaling factor (v dot p) / (v dot v)
-        # (npt,nobj) dot (nobj,) -> (npt,)
-        # (npt,) * scalar -> (npt,)
-        scale = mat.dot(objfn_wt) * vdvinv
-
-        # use outer product to get points on plane that intersect line
-        # (npt,) outer (nobj,) -> (npt,nobj)
-        P = numpy.outer(scale, objfn_wt)
-
-        # calculate difference between each vector
-        # (npt,nobj) - (npt,nobj) -> (npt,nobj)
-        diff = mat - P
-
-        # take vector norms of difference to get distances
-        # (npt,nobj) -> (npt,)
-        d = numpy.linalg.norm(diff, axis = 1)
-
-        return d
