@@ -11,6 +11,7 @@ from deap import benchmarks
 import pybropt.core.random
 
 from . import SelectionProtocol
+# from pybropt.breed.prot.sel.transfn import is_pareto_efficient
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str
@@ -552,7 +553,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         pop_decision = numpy.array(pop)
 
         # get pareto frontier mask
-        pareto_mask = self.is_pareto_efficient(
+        pareto_mask = is_pareto_efficient(
             pop_solution,
             wt = objfn_wt,
             return_mask = True
@@ -705,46 +706,6 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
 
         # transform and return
         return trans(mogs, **kwargs)
-
-    # based on:
-    # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
-    @staticmethod
-    def is_pareto_efficient(fmat, wt, return_mask = True):
-        """
-        Find the pareto-efficient points (maximizing function)
-
-        Parameters
-        ----------
-        fmat : numpy.ndarray
-            A matrix of shape (npt, nobj) containing fitness values. Where
-            'npt' is the number of points and 'nobj' is the number of
-            objectives.
-        return_mask : bool
-            If True, return a mask.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of indices of pareto-efficient points.
-            If return_mask is True, this will be an (npt, ) boolean array
-            Otherwise it will be a (n_efficient_points, ) integer array of indices.
-        """
-        fmat = fmat * (wt.flatten()[None,:])    # apply weights
-        npt = fmat.shape[0]                     # get number of points
-        is_efficient = numpy.arange(npt)        # starting list of efficient points (holds indices)
-        pt_ix = 0  # Next index in the is_efficient array to search for
-        while pt_ix < len(fmat):
-            ndpt_mask = numpy.any(fmat > fmat[pt_ix], axis=1)
-            ndpt_mask[pt_ix] = True
-            is_efficient = is_efficient[ndpt_mask]  # Remove dominated points
-            fmat = fmat[ndpt_mask]
-            pt_ix = numpy.sum(ndpt_mask[:pt_ix])+1
-        if return_mask:
-            is_efficient_mask = numpy.zeros(npt, dtype = bool)
-            is_efficient_mask[is_efficient] = True
-            return is_efficient_mask
-        else:
-            return is_efficient
 
     @staticmethod
     def calc_mkrwt(weight, beta):

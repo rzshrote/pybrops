@@ -2,6 +2,7 @@ import numpy
 import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
+from matplotlib import pyplot
 
 from pybropt.test import not_raises
 from pybropt.test import generic_assert_docstring
@@ -13,8 +14,10 @@ from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel import ConventionalPhenotypicSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
+from pybropt.breed.prot.sel.transfn import trans_sum
+
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -70,26 +73,40 @@ def dgmat(mat_int8, mat_chrgrp, mat_phypos, mat_taxa, mat_taxa_grp):
 ############################################################
 @pytest.fixture
 def beta():
-    yield numpy.float64([[1.4, 2.5, 7.2]])
+    yield numpy.float64([[1.4, 2.5]])
+    # yield numpy.float64([[1.4, 2.5, 7.2]])
 
 @pytest.fixture
 def u():
     yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87, -1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
+        [-0.33,  2.08],
+        [-0.69, -1.87],
+        [ 1.12,  1.38],
+        [-1.44,  0.20],
+        [ 0.88, -0.81],
+        [ 1.23,  0.25],
+        [ 0.19,  4.35],
+        [-2.12,  0.73],
+        [-0.87,  1.25],
+        [ 0.06, -2.52]
     ])
+    # yield numpy.float64([
+    #     [-0.33,  2.08, -2.42],
+    #     [-0.69, -1.87, -1.38],
+    #     [ 1.12,  1.38, -5.65],
+    #     [-1.44,  0.20,  4.22],
+    #     [ 0.88, -0.81,  1.55],
+    #     [ 1.23,  0.25,  5.13],
+    #     [ 0.19,  4.35,  0.15],
+    #     [-2.12,  0.73, -0.38],
+    #     [-0.87,  1.25,  2.38],
+    #     [ 0.06, -2.52,  2.48]
+    # ])
 
 @pytest.fixture
 def trait():
-    yield numpy.object_(["protein", "yield", "quality"])
+    yield numpy.object_(["protein", "yield"])
+    # yield numpy.object_(["protein", "yield", "quality"])
 
 @pytest.fixture
 def model_name():
@@ -117,7 +134,7 @@ def bvmat(glgmod, dgmat):
     yield glgmod.gebv(dgmat)
 
 ############################################################
-############# ConventionalPhenotypicSelection ##############
+############### ConventionalPhenotypicSelection ###############
 ############################################################
 @pytest.fixture
 def nparent():
@@ -144,6 +161,11 @@ def cps(nparent, ncross, nprogeny, rng):
         rng = rng
     )
 
+@pytest.fixture
+def objfn_wt():
+    yield [1., 1.]
+    # yield [1., 1., 1.]
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
@@ -165,9 +187,8 @@ def test_objfn_is_concrete():
 def test_objfn_vec_is_concrete():
     generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn_vec")
 
-# TODO:
-# def test_pareto_is_concrete():
-#     generic_assert_concrete_method(ConventionalPhenotypicSelection, "pareto")
+def test_pareto_is_concrete():
+    generic_assert_concrete_method(ConventionalPhenotypicSelection, "pareto")
 
 def test_objfn_static_is_concrete():
     generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn_static")
@@ -186,7 +207,53 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_objfn_multiobjective(cps, dgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, u):
+def test_select_single(cps, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, mat_int8, u):
+    pgmat, sel, ncross, nprogeny, misc = cps.select(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        method = "single",
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        objfn_trans = trans_sum,
+        objfn_trans_kwargs = {"axis": None},
+        objfn_wt = None,
+        ndset_trans = None,
+        ndset_trans_kwargs = None,
+        ndset_wt = None
+    )
+
+    assert sel.ndim == 1
+
+def test_select_pareto(cps, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, objfn_wt):
+    pgmat, sel, ncross, nprogeny, misc = cps.select(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        method = "pareto",
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        objfn_trans = None,
+        objfn_trans_kwargs = None,
+        objfn_wt = objfn_wt,
+        ndset_trans = trans_ndpt_to_vec_dist,
+        ndset_trans_kwargs = {"objfn_wt": numpy.array(objfn_wt), "wt": numpy.array([.5,.5])},
+        ndset_wt = 1.0
+    )
+
+    assert sel.ndim == 1
+
+def test_objfn_is_function(cps, dgmat, bvmat, glgmod):
     objfn = cps.objfn(
         pgmat = None,
         gmat = dgmat,
@@ -197,8 +264,99 @@ def test_objfn_multiobjective(cps, dgmat, bvmat, glgmod, ncross, nprogeny, mat_i
         t_max = 20
     )
 
-    print(bvmat.mat)
     assert callable(objfn)
 
-    for i,taxon_bv in enumerate(bvmat.mat):
+def test_objfn_multiobjective(cps, dgmat, bvmat, glgmod, mat_int8, u):
+    objfn = cps.objfn(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    Y = bvmat.mat # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
         numpy.testing.assert_almost_equal(taxon_bv, objfn([i]))
+
+def test_objfn_vec_is_callable(cps, dgmat, bvmat, glgmod):
+    objfn_vec = cps.objfn_vec(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    assert callable(objfn_vec)
+
+def test_objfn_vec_multiobjective(cps, dgmat, bvmat, glgmod, mat_int8, u):
+    objfn_vec = cps.objfn_vec(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    Y = bvmat.mat # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            numpy.stack([taxon_bv, taxon_bv]),
+            objfn_vec([[i],[i]])
+        )
+
+def test_pareto(cps, dgmat, bvmat, glgmod, objfn_wt):
+    frontier, sel_config, misc = cps.pareto(
+        pgmat = None,
+        gmat = dgmat,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+        objfn_wt = objfn_wt
+    )
+
+    xdata = frontier[:,0]
+    ydata = frontier[:,1]
+    # zdata = frontier[:,2]
+
+    xlabel = glgmod.trait[0]
+    ylabel = glgmod.trait[1]
+
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    ax.scatter(xdata, ydata)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title("Conventional Phenotypic Selection Test Pareto Frontier")
+    # ax = pyplot.axes(projection='3d')
+    # ax.scatter3D(xdata, ydata, zdata)
+    pyplot.savefig("CPS_2d_frontier.png", dpi = 250)
+
+def test_objfn_static_multiobjective(cps, bvmat):
+    Y = bvmat.mat # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            taxon_bv,
+            cps.objfn_static([i], Y, None, None)
+        )
+
+def test_objfn_vec_static_multiobjective(cps, dgmat, bvmat, glgmod, mat_int8, u):
+    Y = bvmat.mat # (n,t) values
+
+    for i,taxon_bv in enumerate(Y):
+        numpy.testing.assert_almost_equal(
+            numpy.stack([taxon_bv, taxon_bv]),
+            cps.objfn_vec_static([[i],[i]], Y, None, None)
+        )
