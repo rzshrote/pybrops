@@ -87,6 +87,10 @@ def generic_check_gteq(v, vname, w):
     if v < w:
         raise ValueError("variable '{0}' is not greater than or equal to {1}".format(vname, w))
 
+def generic_check_keys_in_dict_all(v, vname, vtype):
+    if any(not isinstance(e, vtype) for e in iter(v)):
+        raise ValueError("not all keys in {0} are of type {1}".format(vname, str(vtype)))
+
 ################################################################################
 ######################### conditional check functions ##########################
 ################################################################################
@@ -152,3 +156,7 @@ def generic_cond_check_dict_keys(v, vname, w, wname, cond = generic_default_cond
 def generic_cond_check_gteq(v, vname, w, cond = generic_default_cond):
     if cond(v):
         generic_check_gteq(v, vname, w)
+
+def generic_cond_check_keys_in_dict_all(v, vname, vtype, cond = generic_default_cond):
+    if cond(v):
+        generic_check_keys_in_dict_all(v, vname, vtype)
