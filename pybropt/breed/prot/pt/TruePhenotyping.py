@@ -1,7 +1,5 @@
-import pandas
-
 from . import PhenotypingProtocol
-from pybropt.popgen.ptdf import PandasPhenotypeDataFrame
+from pybropt.popgen.ptdf import DictPhenotypeDataFrame
 
 class TruePhenotyping(PhenotypingProtocol):
     """docstring for TruePhenotyping."""
@@ -34,7 +32,7 @@ class TruePhenotyping(PhenotypingProtocol):
             DataFrame containing phenotypes.
         """
         # gather true breeding values
-        bvmat = gpmod.predict(pgmat)
+        bvmat = gpmod.gebv(pgmat)
 
         # gather pointers to raw matrices
         mat = bvmat.mat             # breeding values
@@ -54,29 +52,56 @@ class TruePhenotyping(PhenotypingProtocol):
         if any(e is None for e in trait):
             raise ValueError("unable to construct phenotype dataframe: breeding value matrix produced by 'gpmod.predict(pgmat)' has trait name(s) which are 'None'")
 
-        # construct dictionary
-        data_dict = {}
+        # construct data dictionary
+        data_dict = {"taxa": taxa}
 
-        # add taxa names
-        data_dict["taxa"] = taxa
+        # construct column analysis type dictionary
+        col_analysis_type_dict = {"taxa": "factor(str)"}
+
+        # construct column effect type dictionary
+        col_analysis_effect_dict = {"taxa": "fixed"}
 
         # if there are taxa groups, add group information
         if taxa_grp is not None:
-            data_dict["taxa_grp"] = taxa_grp
+            data_dict.update(taxa_grp = taxa_grp)
+            col_analysis_type_dict.update(taxa_grp = "factor(int)")
+            col_analysis_effect_dict.update(taxa_grp = "fixed")
+
+        # trait type
+        if mat.dtype == "float64":
+            tatype = "double"
+        elif mat.dtype == "float32":
+            mat = mat.astype("float64")
+            tatype = "double"
+        elif mat.dtype == "int8":
+            mat = mat.astype("int32")
+            tatype = "int"
+        elif mat.dtype == "int16":
+            mat = mat.astype("int32")
+            tatype = "int"
+        elif mat.dtype == "int32":
+            tatype = "int"
+        elif mat.dtype == "int64":
+            mat = mat.astype("int32")
+            tatype = "int"
+        else:
+            raise TypeError("unsupported breeding value data type")
 
         # add each trait and corresponding data
         for i,e in enumerate(trait):
             # construct matrix slice selection tuple
             t = tuple(i if a == taxis else slice(None) for a in range(ndim))
-            # select data and put into dictionary
-            data_dict[e] = mat[t]
+            data_dict[e] = mat[t].copy()                # select data and put into dictionary
+            col_analysis_type_dict[e] = tatype          # add column analysis type
+            col_analysis_effect_dict[e] = "response"    # add column analysis effect type
 
-        # construct pandas.DataFrame
-        df = pandas.DataFrame(data_dict)
-
-        # construct PandasPhenotypeDataFrame
-        ptdf = PandasPhenotypeDataFrame(
-            df = df,
+        # construct DictPhenotypeDataFrame
+        ptdf = DictPhenotypeDataFrame(
+            data = data_dict,
+            col_grp = None,
+            col_analysis_type = col_analysis_type_dict,
+            col_analysis_effect = col_analysis_effect_dict,
+            row_name = None,
             **kwargs
         )
 
