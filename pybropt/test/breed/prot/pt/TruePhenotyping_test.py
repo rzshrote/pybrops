@@ -1,8 +1,8 @@
 import numpy
 import pytest
+import copy
 from numpy.random import Generator
 from numpy.random import PCG64
-from matplotlib import pyplot
 
 from pybropt.test import not_raises
 from pybropt.test import generic_assert_docstring
@@ -135,8 +135,10 @@ def bvmat(gpmod, dpgmat):
 ##################### TruePhenotyping ######################
 ############################################################
 @pytest.fixture
-def ptprot():
-    yield TruePhenotyping()
+def ptprot(gpmod):
+    yield TruePhenotyping(
+        gpmod = gpmod
+    )
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -147,8 +149,17 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(TruePhenotyping, "__init__")
+
 def test_phenotype_is_concrete():
     generic_assert_concrete_method(TruePhenotyping, "phenotype")
+
+def test_set_h2_is_concrete():
+    generic_assert_concrete_method(TruePhenotyping, "set_h2")
+
+def test_set_H2_is_concrete():
+    generic_assert_concrete_method(TruePhenotyping, "set_H2")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -157,6 +168,29 @@ def test_phenotype_is_concrete():
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
+def test_gpmod_fget(ptprot, gpmod):
+    # TODO: assert equality of models
+    assert id(ptprot.gpmod) == id(gpmod)
+
+def test_gpmod_fset(ptprot, gpmod):
+    a = copy.copy(gpmod)
+    ptprot.gpmod = a
+    assert id(ptprot.gpmod) == id(a)
+
+def test_gpmod_fdel(ptprot):
+    del ptprot.gpmod
+    assert not hasattr(ptprot, "_gpmod")
+
+def test_var_err_fget(ptprot):
+    assert numpy.all(ptprot.var_err == 1.0)
+
+def test_var_err_fset(ptprot):
+    with pytest.raises(AttributeError):
+        ptprot.var_err = 0.5
+
+def test_var_err_fdel(ptprot):
+    with pytest.raises(AttributeError):
+        del ptprot.var_err
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -174,3 +208,11 @@ def test_phenotype(ptprot, dpgmat, gpmod):
 
     expected_nrow = dpgmat.ntaxa
     assert df.nrow == expected_nrow
+
+def test_set_h2(ptprot, dpgmat):
+    with pytest.raises(AttributeError):
+        ptprot.set_h2(0.5, dpgmat)
+
+def test_set_H2(ptprot, dpgmat):
+    with pytest.raises(AttributeError):
+        ptprot.set_H2(0.5, dpgmat)

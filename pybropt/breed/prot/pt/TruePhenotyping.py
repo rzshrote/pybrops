@@ -1,5 +1,10 @@
+import numpy
+
 from . import PhenotypingProtocol
 from pybropt.popgen.ptdf import DictPhenotypeDataFrame
+from pybropt.model.gmod import check_is_GenomicModel
+from pybropt.core.error import error_readonly
+from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
 
 class TruePhenotyping(PhenotypingProtocol):
     """docstring for TruePhenotyping."""
@@ -7,13 +12,59 @@ class TruePhenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, gpmod, **kwargs):
+        """
+        Constructor for the concrete class TruePhenotyping.
+
+        Parameters
+        ----------
+        gpmod : GenomicModel
+            Genomic prediction model to use to determine phenotypes.
+        **kwargs : **dict
+            Additional keyword arguments
+        """
         super(TruePhenotyping, self).__init__(**kwargs)
+        self.gpmod = gpmod
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+
+    ############### Genomic Model Properties ###############
+    def gpmod():
+        doc = "Genomic prediction model."
+        def fget(self):
+            """Get genomic prediction model"""
+            return self._gpmod
+        def fset(self, value):
+            """Set genomic prediction model"""
+            check_is_GenomicModel(value, "gpmod")
+            self._gpmod = value
+        def fdel(self):
+            """Delete genomic prediction model"""
+            del self._gpmod
+        return locals()
+    gpmod = property(**gpmod())
+
+    ################ Stochastic Parameters #################
+    def var_err():
+        doc = "Error variance for each trait."
+        def fget(self):
+            """Get error variance"""
+            return numpy.repeat(1.0, self.gpmod.ntrait)
+        def fset(self, value):
+            """Set error variance"""
+            error_readonly("var_err")
+        def fdel(self):
+            """Delete error variance"""
+            error_readonly("var_err")
+        return locals()
+    var_err = property(**var_err())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, gpmod, **kwargs):
+    def phenotype(self, pgmat, gpmod = None, **kwargs):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -21,8 +72,9 @@ class TruePhenotyping(PhenotypingProtocol):
         ----------
         pgmat : PhasedGenotypeMatrix
             Genomes of the individuals to phenotype.
-        gpmod : GenomicModel
+        gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
+            If None, use default genomic prediction model.
         **kwargs : dict
             Additional keyword arguments.
 
@@ -31,6 +83,11 @@ class TruePhenotyping(PhenotypingProtocol):
         out : PhenotypeDataFrame
             DataFrame containing phenotypes.
         """
+        # process arguments
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        if gpmod is None:
+            gpmod = self.gpmod
+
         # gather true breeding values
         bvmat = gpmod.gebv(pgmat)
 
@@ -106,3 +163,33 @@ class TruePhenotyping(PhenotypingProtocol):
         )
 
         return ptdf
+
+    def set_h2(self, h2, pgmat, **kwargs):
+        """
+        Set the narrow sense heritability for environments.
+
+        Parameters
+        ----------
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        pgmat : PhasedGenotypeMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
+        """
+        raise AttributeError("unsupported operation: heritability always set at 1.0")
+
+    def set_H2(self, H2, pgmat, **kwargs):
+        """
+        Set the broad sense heritability for environments.
+
+        Parameters
+        ----------
+        H2 : float, numpy.ndarray
+            Broad sense heritability.
+        pgmat : PhasedGenotypeMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
+        """
+        raise AttributeError("unsupported operation: heritability always set at 1.0")
