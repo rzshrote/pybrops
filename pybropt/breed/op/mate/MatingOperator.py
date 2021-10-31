@@ -1,9 +1,16 @@
 class MatingOperator:
     """docstring for MatingOperator."""
 
-    def __init__(self, arg):
+    def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class MatingOperator
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(MatingOperator, self).__init__()
-        self.arg = arg
 
     def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         """
