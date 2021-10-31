@@ -15,18 +15,6 @@ from pybropt.core.error import check_keys_in_dict
 # from pybropt.breed.op.calibr import check_is_GenomicModelCalibrationOperator
 # from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
 
-# def dprint(t, lab, d, mod, ID = True, USL = True):
-#     if ID:
-#         x = "cand:" + str(id(d["cand"]))
-#         y = "main:" + str(id(d["main"]))
-#         z = "queue:" + str([id(a) for a in d["queue"]])
-#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "ID", lab, x, y, z))
-#     if USL:
-#         x = "cand:" + str(mod.usl(d["cand"]))
-#         y = "main:" + str(mod.usl(d["main"]))
-#         z = "queue:" + str([mod.usl(a) for a in d["queue"]])
-#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "USL", lab, x, y, z))
-
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
 
@@ -62,106 +50,145 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################ Object Properties #############################
     ############################################################################
 
-    ############# Generation number properties #############
-    def t_cur():
-        doc = "Current generation number of the BreedingNode."
+    ############ Starting condition containers #############
+    def start_genome():
+        doc = "Starting genomes for individuals in the breeding program."
         def fget(self):
-            return self._t_cur
+            """Get starting genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            check_is_int(value, "t_cur")
-            self._t_cur = value
+            """Set starting genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._t_cur
+            """Delete starting genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
-    t_cur = property(**t_cur())
+    start_genome = property(**start_genome())
 
-    def t_max():
-        doc = "Maximum generation number of the BreedingNode."
-        def fget(self):
-            return self._t_max
-        def fset(self, value):
-            check_is_int(value, "t_max")
-            self._t_max = value
-        def fdel(self):
-            del self._t_max
-        return locals()
-    t_max = property(**t_max())
-
-    ################ Population properties #################
     def start_geno():
-        doc = "The start_geno property."
+        doc = "Starting genotypes for individuals in the breeding program."
         def fget(self):
-            return self._start_geno
+            """Get starting genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_geno = value
+            """Set starting genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_geno
+            """Delete starting genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
     start_geno = property(**start_geno())
 
-    def geno():
-        doc = "Main breeding population of the BreedingNode."
+    def start_pheno():
+        doc = "Starting phenotypes for individuals in the breeding program."
         def fget(self):
-            return self._geno
+            """Get starting phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            check_is_dict(value, "geno")
-            # TODO:
-            # check_keys_in_dict(value, "geno", "cand", "main", "queue")
-            self._geno = value
+            """Set starting phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._geno
+            """Delete starting phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
-    geno = property(**geno())
+    start_pheno = property(**start_pheno())
 
-    ############## Breeding value properties ###############
     def start_bval():
-        doc = "The start_bval property."
+        doc = "Starting breeding values for individuals in the breeding program."
         def fget(self):
-            return self._start_bval
+            """Get starting breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_bval = value
+            """Set starting breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_bval
+            """Delete starting breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
     start_bval = property(**start_bval())
 
-    def bval():
-        doc = "Estimated breeding values for the main breeding population of the BreedingNode."
-        def fget(self):
-            return self._bval
-        def fset(self, value):
-            check_is_dict(value, "bval")
-            # TODO:
-            # check_keys_in_dict(value, "bval", "cand", "cand_true", "main", "main_true", "queue", "queue_true")
-            self._bval = value
-        def fdel(self):
-            del self._bval
-        return locals()
-    bval = property(**bval())
-
-    ############### Genomic model properties ###############
     def start_gmod():
-        doc = "The start_gmod property."
+        doc = "Starting genomic models for individuals in the breeding program."
         def fget(self):
-            return self._start_gmod
+            """Get starting genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            self._start_gmod = value
+            """Set starting genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._start_gmod
+            """Delete starting genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
     start_gmod = property(**start_gmod())
 
-    def gmod():
-        doc = "Estimated genomic model for the main breeding population of the BreedingNode."
+    ############ Program information containers ############
+    def genome():
+        doc = "Genomes for individuals in the breeding program."
         def fget(self):
-            return self._gmod
+            """Get genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fset(self, value):
-            check_is_dict(value, "gmod")
-            # TODO:
-            # check_keys_in_dict(value, "gmod", "cand", "main", "queue", "true")
-            self._gmod = value
+            """Set genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         def fdel(self):
-            del self._gmod
+            """Delete genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    genome = property(**genome())
+
+    def geno():
+        doc = "Genotypes for individuals in the breeding program."
+        def fget(self):
+            """Get genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    geno = property(**geno())
+
+    def pheno():
+        doc = "Phenotypes for individuals in the breeding program."
+        def fget(self):
+            """Get phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    pheno = property(**pheno())
+
+    def bval():
+        doc = "Breeding values for individuals in the breeding program."
+        def fget(self):
+            """Get breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    bval = property(**bval())
+
+    def gmod():
+        doc = "Genomic models for individuals in the breeding program."
+        def fget(self):
+            """Get genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
         return locals()
     gmod = property(**gmod())
 
@@ -202,18 +229,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         return locals()
     mateop = property(**mateop())
 
-    def gintgop():
-        doc = "Genotype integration operator."
-        def fget(self):
-            return self._gintgop
-        def fset(self, value):
-            check_is_GenotypeIntegrationOperator(value, "gintgop")
-            self._gintgop = value
-        def fdel(self):
-            del self._gintgop
-        return locals()
-    gintgop = property(**gintgop())
-
     def evalop():
         doc = "Evaluation operator."
         def fget(self):
@@ -226,30 +241,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         return locals()
     evalop = property(**evalop())
 
-    def bvintgop():
-        doc = "Breeding value integration operator."
-        def fget(self):
-            return self._bvintgop
-        def fset(self, value):
-            check_is_BreedingValueIntegrationOperator(value, "bvintgop")
-            self._bvintgop = value
-        def fdel(self):
-            del self._bvintgop
-        return locals()
-    bvintgop = property(**bvintgop())
-
-    def calop():
-        doc = "Genomic model calibration operator."
-        def fget(self):
-            return self._calop
-        def fset(self, value):
-            check_is_GenomicModelCalibrationOperator(value, "calop")
-            self._calop = value
-        def fdel(self):
-            del self._calop
-        return locals()
-    calop = property(**calop())
-
     def sselop():
         doc = "Survivor selection operator."
         def fget(self):
@@ -261,6 +252,31 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             del self._sselop
         return locals()
     sselop = property(**sselop())
+
+    ############# Generation number properties #############
+    def t_cur():
+        doc = "Current generation number of the BreedingNode."
+        def fget(self):
+            return self._t_cur
+        def fset(self, value):
+            check_is_int(value, "t_cur")
+            self._t_cur = value
+        def fdel(self):
+            del self._t_cur
+        return locals()
+    t_cur = property(**t_cur())
+
+    def t_max():
+        doc = "Maximum generation number of the BreedingNode."
+        def fget(self):
+            return self._t_max
+        def fset(self, value):
+            check_is_int(value, "t_max")
+            self._t_max = value
+        def fdel(self):
+            del self._t_max
+        return locals()
+    t_max = property(**t_max())
 
     ############################################################################
     ############################## Object Methods ##############################

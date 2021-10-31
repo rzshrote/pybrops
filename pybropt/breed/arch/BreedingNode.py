@@ -19,64 +19,105 @@ class BreedingNode:
     ############################ Object Properties #############################
     ############################################################################
 
-    ############# Generation number properties #############
-    def t_cur():
-        doc = "Current generation number of the BreedingNode."
+    ############ Program information containers ############
+    def genome():
+        doc = "Genomes for individuals in the breeding program."
         def fget(self):
+            """Get genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    genome = property(**genome())
+
+    def geno():
+        doc = "Genotypes for individuals in the breeding program."
+        def fget(self):
+            """Get genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    geno = property(**geno())
+
+    def pheno():
+        doc = "Phenotypes for individuals in the breeding program."
+        def fget(self):
+            """Get phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    pheno = property(**pheno())
+
+    def bval():
+        doc = "Breeding values for individuals in the breeding program."
+        def fget(self):
+            """Get breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    bval = property(**bval())
+
+    def gmod():
+        doc = "Genomic models for individuals in the breeding program."
+        def fget(self):
+            """Get genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete genomic models for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    gmod = property(**gmod())
+
+    ############# Generation number properties #############
+    def t_cur():
+        doc = "Current time of the BreedingNode."
+        def fget(self):
+            """Get the current time for the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set the current time for the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete the current time for the breeding program"""
             raise NotImplementedError("method is abstract")
         return locals()
     t_cur = property(**t_cur())
 
     def t_max():
-        doc = "Maximum generation number of the BreedingNode."
+        doc = "Maximum time of the BreedingNode."
         def fget(self):
+            """Get the maximum time for the breeding program"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the maximum time for the breeding program"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the maximum time for the breeding program"""
             raise NotImplementedError("method is abstract")
         return locals()
     t_max = property(**t_max())
-
-    ################ Population properties #################
-    def geno():
-        doc = "Main breeding population of the BreedingNode."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    geno = property(**geno())
-
-    ############## Breeding value properties ###############
-    def bval():
-        doc = "Dictionary of breeding values for the BreedingNode."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    bval = property(**bval())
-
-    ############### Genomic model properties ###############
-    def gmod():
-        doc = "Dictionary of genomic models for the BreedingNode."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    gmod = property(**gmod())
 
     ############################################################################
     ############################## Object Methods ##############################

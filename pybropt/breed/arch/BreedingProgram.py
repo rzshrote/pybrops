@@ -21,7 +21,7 @@ class BreedingProgram(BreedingNode):
     ############################ Object Properties #############################
     ############################################################################
 
-    ######### Starting geno, bval, gmod containers #########
+    ############ Starting condition containers #############
     def start_genome():
         doc = "Starting genomes for individuals in the breeding program."
         def fget(self):

@@ -36,6 +36,27 @@ def test_init_is_concrete():
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
+def test_genome_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "genome")
+
+def test_geno_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "geno")
+
+def test_pheno_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "pheno")
+
+def test_bval_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "bval")
+
+def test_gmod_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "gmod")
+
+def test_t_cur_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "t_cur")
+
+def test_t_max_is_abstract():
+    generic_assert_abstract_property(BreedingNode, "t_max")
+
 
 ################################################################################
 ############################# Test abstract methods ############################
