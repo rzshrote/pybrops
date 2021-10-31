@@ -7,6 +7,14 @@ class ImmigrationOperator(BreedingEdge):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class ImmigrationOperator.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(ImmigrationOperator, self).__init__(
             **kwargs
         )
@@ -40,12 +48,47 @@ class ImmigrationOperator(BreedingEdge):
 ################################## Utilities ###################################
 ################################################################################
 def is_ImmigrationOperator(v):
+    """
+    Determine whether an object is a ImmigrationOperator.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a ImmigrationOperator object instance.
+    """
     return isinstance(v, ImmigrationOperator)
 
-def check_is_ImmigrationOperator(v, vname):
-    if not isinstance(v, ImmigrationOperator):
-        raise TypeError("variable '{0}' must be a ImmigrationOperator".format(vname))
+def check_is_ImmigrationOperator(v, varname):
+    """
+    Check if object is of type ImmigrationOperator. Otherwise raise TypeError.
 
-def cond_check_is_ImmigrationOperator(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, ImmigrationOperator):
+        raise TypeError("'%s' must be a ImmigrationOperator." % varname)
+
+def cond_check_is_ImmigrationOperator(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type ImmigrationOperator. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a ImmigrationOperator.
+    """
     if cond(v):
-        check_is_ImmigrationOperator(v, vname)
+        check_is_ImmigrationOperator(v, varname)

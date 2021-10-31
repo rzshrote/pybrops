@@ -5,6 +5,14 @@ class BreedingNode:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class BreedingNode.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(BreedingNode, self).__init__()
 
     ############################################################################
@@ -80,12 +88,47 @@ class BreedingNode:
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingNode(v):
+    """
+    Determine whether an object is a BreedingNode.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a BreedingNode object instance.
+    """
     return isinstance(v, BreedingNode)
 
-def check_is_BreedingNode(v, vname):
-    if not isinstance(v, BreedingNode):
-        raise TypeError("variable '{0}' must be a BreedingNode".format(vname))
+def check_is_BreedingNode(v, varname):
+    """
+    Check if object is of type BreedingNode. Otherwise raise TypeError.
 
-def cond_check_is_BreedingNode(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, BreedingNode):
+        raise TypeError("'%s' must be a BreedingNode." % varname)
+
+def cond_check_is_BreedingNode(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type BreedingNode. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a BreedingNode.
+    """
     if cond(v):
-        check_is_BreedingNode(v, vname)
+        check_is_BreedingNode(v, varname)

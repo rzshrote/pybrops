@@ -7,6 +7,14 @@ class BreedingProgram(BreedingNode):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class BreedingProgram.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(BreedingProgram, self).__init__(**kwargs)
 
     ############################################################################
@@ -14,58 +22,101 @@ class BreedingProgram(BreedingNode):
     ############################################################################
 
     ######### Starting geno, bval, gmod containers #########
-    def start_geno():
-        doc = "The start_geno property."
+    def start_genome():
+        doc = "Starting genomes for individuals in the breeding program."
         def fget(self):
+            """Get starting genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set starting genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete starting genomes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    start_genome = property(**start_genome())
+
+    def start_geno():
+        doc = "Starting genotypes for individuals in the breeding program."
+        def fget(self):
+            """Get starting genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set starting genotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete starting genotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         return locals()
     start_geno = property(**start_geno())
 
-    def start_bval():
-        doc = "The start_bval property."
+    def start_pheno():
+        doc = "Starting phenotypes for individuals in the breeding program."
         def fget(self):
+            """Get starting phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set starting phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete starting phenotypes for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    start_pheno = property(**start_pheno())
+
+    def start_bval():
+        doc = "Starting breeding values for individuals in the breeding program."
+        def fget(self):
+            """Get starting breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set starting breeding values for individuals in the breeding program"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete starting breeding values for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         return locals()
     start_bval = property(**start_bval())
 
     def start_gmod():
-        doc = "The start_gmod property."
+        doc = "Starting genomic models for individuals in the breeding program."
         def fget(self):
+            """Get starting genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set starting genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete starting genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
         return locals()
     start_gmod = property(**start_gmod())
 
     ######### Breeding program operator properties #########
     def initop():
-        doc = "Initialization operator."
+        doc = "Initialization operator"
         def fget(self):
+            """Get the initialization operator"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the initialization operator"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the initialization operator"""
             raise NotImplementedError("method is abstract")
         return locals()
     initop = property(**initop())
 
     def pselop():
-        doc = "Parental selection operator."
+        doc = "Parent selection operator."
         def fget(self):
+            """Get the parent selection operator"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the parent selection operator"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the parent selection operator"""
             raise NotImplementedError("method is abstract")
         return locals()
     pselop = property(**pselop())
@@ -73,65 +124,41 @@ class BreedingProgram(BreedingNode):
     def mateop():
         doc = "Mating operator."
         def fget(self):
+            """Get the mating operator"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the mating operator"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the mating operator"""
             raise NotImplementedError("method is abstract")
         return locals()
     mateop = property(**mateop())
 
-    def gintgop():
-        doc = "Genotype integration operator."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    gintgop = property(**gintgop())
-
     def evalop():
         doc = "Evaluation operator."
         def fget(self):
+            """Get the evaluation operator"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the evaluation operator"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the evaluation operator"""
             raise NotImplementedError("method is abstract")
         return locals()
     evalop = property(**evalop())
 
-    def bvintgop():
-        doc = "Breeding value integration operator."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    bvintgop = property(**bvintgop())
-
-    def calop():
-        doc = "Genomic model calibration operator."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    calop = property(**calop())
-
     def sselop():
         doc = "Survivor selection operator."
         def fget(self):
+            """Get the survivor selection operator"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set the survivor selection operator"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete the survivor selection operator"""
             raise NotImplementedError("method is abstract")
         return locals()
     sselop = property(**sselop())
@@ -188,12 +215,47 @@ class BreedingProgram(BreedingNode):
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingProgram(v):
+    """
+    Determine whether an object is a BreedingProgram.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a BreedingProgram object instance.
+    """
     return isinstance(v, BreedingProgram)
 
-def check_is_BreedingProgram(v, vname):
-    if not isinstance(v, BreedingProgram):
-        raise TypeError("variable '{0}' must be a BreedingProgram".format(vname))
+def check_is_BreedingProgram(v, varname):
+    """
+    Check if object is of type BreedingProgram. Otherwise raise TypeError.
 
-def cond_check_is_BreedingProgram(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, BreedingProgram):
+        raise TypeError("'%s' must be a BreedingProgram." % varname)
+
+def cond_check_is_BreedingProgram(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type BreedingProgram. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a BreedingProgram.
+    """
     if cond(v):
-        check_is_BreedingProgram(v, vname)
+        check_is_BreedingProgram(v, varname)
