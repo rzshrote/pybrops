@@ -21,30 +21,35 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, t_max, initop, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
-        super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
+    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs):
+        """
+        Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
-        # set time variables
-        self.t_cur = 0
-        self.t_max = t_max
+        This class simulates a recurrent selection breeding program.
+
+        Parameters
+        ----------
+        initop :
+        """
+        super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
 
         # save operators
         self.initop = initop
         self.pselop = pselop
         self.mateop = mateop
-        self.gintgop = gintgop
         self.evalop = evalop
-        self.bvintgop = bvintgop
-        self.calop = calop
         self.sselop = sselop
 
+        # set time variables
+        self.t_cur = 0
+        self.t_max = t_max
+
         # TODO: go through set methods properly
-        self._start_geno = None
-        self._start_bval = None
-        self._start_gmod = None
-        self._geno = None
-        self._bval = None
-        self._gmod = None
+        self.start_genome = start_genome
+        self.start_geno = start_geno
+        self.start_pheno = start_pheno
+        self.start_bval = start_bval
+        self.start_gmod = start_gmod
 
     ############################################################################
     ############################ Object Properties #############################
@@ -55,13 +60,15 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         doc = "Starting genomes for individuals in the breeding program."
         def fget(self):
             """Get starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
+            return self._start_genome
         def fset(self, value):
             """Set starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
+            if value is not None:
+                check_is_dict(value, "start_genome")
+                self._start_genome = value
         def fdel(self):
             """Delete starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
+            del self._start_genome
         return locals()
     start_genome = property(**start_genome())
 
@@ -291,6 +298,24 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self._start_geno, self._start_bval, self._start_gmod = self._initop.initialize(
             **kwargs
         )
+
+    def is_initialized(self, **kwargs):
+        """
+        Return whether or not the BreedingProgram has been initialized with a
+        starting set of conditions.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : boolean
+            True if the BreedingProgram has been initialized.
+            False if the BreedingProgram has not been initialized.
+        """
+        raise NotImplementedError("method is abstract")
 
     ################ Whole breeding program ################
     def advance(self, ngen, lbook, **kwargs):

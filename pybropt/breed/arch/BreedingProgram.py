@@ -175,6 +175,24 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
+    def is_initialized(self, **kwargs):
+        """
+        Return whether or not the BreedingProgram has been initialized with a
+        starting set of conditions.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : boolean
+            True if the BreedingProgram has been initialized.
+            False if the BreedingProgram has not been initialized.
+        """
+        raise NotImplementedError("method is abstract")
+
     ############# Population evolution methods #############
     def advance(self, ngen, lbook, **kwargs):
         """

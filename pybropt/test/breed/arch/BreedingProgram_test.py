@@ -69,8 +69,17 @@ def test_sselop_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-# def test__is_abstract():
-#     generic_assert_abstract_method(BreedingProgram, "")
+def test_initialize_is_abstract():
+    generic_assert_abstract_method(BreedingProgram, "initialize")
+
+def test_is_initialized_is_abstract():
+    generic_assert_abstract_method(BreedingProgram, "is_initialized")
+
+def test_advance_is_abstract():
+    generic_assert_abstract_method(BreedingProgram, "advance")
+
+def test_evolve_is_abstract():
+    generic_assert_abstract_method(BreedingProgram, "evolve")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
