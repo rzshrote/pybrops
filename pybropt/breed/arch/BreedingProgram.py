@@ -194,6 +194,17 @@ class BreedingProgram(BreedingNode):
         raise NotImplementedError("method is abstract")
 
     ############# Population evolution methods #############
+    def reset(self, **kwargs):
+        """
+        Reset the evolution of the breeding program back to starting conditions.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
     def advance(self, ngen, lbook, **kwargs):
         """
         Advance the breeding program by a specified number of generations.

@@ -75,6 +75,9 @@ def test_initialize_is_abstract():
 def test_is_initialized_is_abstract():
     generic_assert_abstract_method(BreedingProgram, "is_initialized")
 
+def test_reset_is_abstract():
+    generic_assert_abstract_method(BreedingProgram, "reset")
+
 def test_advance_is_abstract():
     generic_assert_abstract_method(BreedingProgram, "advance")
 

@@ -9,6 +9,12 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
+from pybropt.breed.op.init import InitializationOperator
+from pybropt.breed.op.psel import ParentSelectionOperator
+from pybropt.breed.op.mate import MatingOperator
+from pybropt.breed.op.eval import EvaluationOperator
+from pybropt.breed.op.ssel import SurvivorSelectionOperator
+
 from pybropt.breed.arch import RecurrentSelectionBreedingProgram
 from pybropt.breed.arch import is_RecurrentSelectionBreedingProgram
 from pybropt.breed.arch import check_is_RecurrentSelectionBreedingProgram
@@ -18,8 +24,39 @@ from pybropt.breed.arch import cond_check_is_RecurrentSelectionBreedingProgram
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def arch():
-    yield RecurrentSelectionBreedingProgram()
+def initop():
+    yield InitializationOperator()
+
+@pytest.fixture
+def pselop():
+    yield ParentSelectionOperator()
+
+@pytest.fixture
+def mateop():
+    yield MatingOperator()
+
+@pytest.fixture
+def evalop():
+    yield EvaluationOperator()
+
+@pytest.fixture
+def sselop():
+    yield SurvivorSelectionOperator()
+
+@pytest.fixture
+def t_max():
+    yield 20
+
+@pytest.fixture
+def arch(initop, pselop, mateop, evalop, sselop, t_max):
+    yield RecurrentSelectionBreedingProgram(
+        initop = initop,
+        pselop = pselop,
+        mateop = mateop,
+        evalop = evalop,
+        sselop = sselop,
+        t_max = t_max
+    )
 
 ################################################################################
 ############################## Test class docstring ############################
