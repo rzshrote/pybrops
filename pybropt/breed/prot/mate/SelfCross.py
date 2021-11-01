@@ -45,12 +45,12 @@ class SelfCross(MatingProtocol):
                    A
              ┌─────┴─────┐          ncross = 2
              A           A
-             │           │          s = 2
-           S0(A)       S0(A)        first self
-             │           │
-           S1(A)       S1(A)        second self
-          ┌──┴──┐     ┌──┴──┐       self, nprogeny = 2
-        S2(A) S2(A) S2(A) S2(A)     final result
+          ┌──┴──┐     ┌──┴──┐       initial self, nprogeny = 2
+        S0(A) S0(A) S0(A) S0(A)     cross pattern finished.
+          │     │     │     │       s = 2
+        S1(A) S1(A) S1(A) S1(A)     first self
+          │     │     │     │
+        S2(A) S2(A) S2(A) S2(A)     second self, final result
 
         Parameters
         ----------
@@ -71,8 +71,7 @@ class SelfCross(MatingProtocol):
         nprogeny : numpy.ndarray
             Number of progeny to generate per cross.
         s : int, default = 0
-            Number of selfing generations post-cross pattern before selfed
-            individuals are generated.
+            Number of generations of single seed descent post-cross pattern.
         **kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
@@ -91,36 +90,21 @@ class SelfCross(MatingProtocol):
         xoprob = pgmat.vrnt_xoprob
 
         # get female selections; repeat by ncross
-        fsel = numpy.repeat(sel, ncross)
+        fsel = numpy.repeat(sel, ncross*nprogeny)
 
-        # declare selfing genotypes as alias for geno
-        sgeno = geno
+        # self genotypes
+        sgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
 
-        if s > 0:
-            # perform first self
-            sgeno = mat_mate(sgeno, sgeno, fsel, fsel, xoprob, self.rng)
-
-        # get self selections
-
-        # TODO: # FIXME:
-        # create hybrid genotypes
-        hgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
-
-        # generate selection array for all hybrid lines
-        hsel = numpy.arange(hgeno.shape[1])
-
-        # self down hybrids if needed
+        # perform single seed descent
         for i in range(s):
-            # self hybrids
-            hgeno = mat_mate(hgeno, hgeno, hsel, hsel, xoprob, self.rng)
-
-        # generate selection array for progeny
-        psel = numpy.repeat(bcsel, nprogeny)
-
+            # generate selection array for all selfed lines
+            ssel = numpy.arange(sgeno.shape[1])
+            # self lines
+            sgeno = mat_mate(sgeno, sgeno, ssel, ssel, xoprob, self.rng)
 
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
-            mat = hgeno,
+            mat = sgeno,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,
             vrnt_phypos = pgmat.vrnt_phypos,
             vrnt_name = pgmat.vrnt_name,

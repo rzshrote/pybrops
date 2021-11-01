@@ -47,7 +47,7 @@ def sel():
     yield numpy.int64([0,1,0,2,1,2])
 
 def test_mate(twoway, dpgvmat, sel, rng):
-    progeny, misc = twoway.mate(1, 10, dpgvmat, sel, 1, 2, s = 0)
+    progeny, misc = twoway.mate(dpgvmat, sel, 1, 10, 0, s = 0)
     # print(progeny.taxa_grp)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
