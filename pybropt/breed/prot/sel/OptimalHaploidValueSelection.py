@@ -6,22 +6,44 @@ from . import SelectionProtocol
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_is_bool
+from pybropt.core.util import triuix
+from pybropt.core.util import triudix
 
-class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
-    """docstring for TwoWayOptimalHaploidValueParentSelection."""
+class OptimalHaploidValueSelection(SelectionProtocol):
+    """docstring for OptimalHaploidValueSelection."""
 
-    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+    def __init__(self, nconfig, nparent, ncross, nprogeny, nblock, unique_parents = True, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
-        Constructor for two-way Optimal Haploid Value Selection (OHV).
+        Constructor for Optimal Haploid Value Selection (OHV).
 
         Parameters
         ----------
+        nconfig : int
+            Number of cross configurations to consider
+            Example:
+                20 two-way crosses would be:
+                    nconfig = 20
+                20 three way crosses would be:
+                    nconfig = 20
         nparent : int
-            Number of parents to select.
+            Number of parents to per configuration.
+            Example:
+                20 two-way crosses would be:
+                    nparent = 2
+                20 three-way crosses would be:
+                    nparent = 3
         ncross : int
-            Number of crosses per configuration.
+            Number of crosses to perform per configuration.
         nprogeny : int
-            Number of progeny to derive from each cross.
+            Number of progeny to derive from each cross configuration.
+        nblock : int
+            Number of haplotype blocks to segment the genome into.
+        unique_parents : bool, default = True
+            Whether to allow force unique parents or not.
+            If True, all parents in the mating configuration must be unique.
+            If False, non-unique parents are allowed. In this scenario,
+            self-fertilization is considered as a viable option.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
         objfn_wt : float, numpy.ndarray
@@ -30,12 +52,15 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         ndset_wt : float
         rng : numpy.Generator
         """
-        super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
+        super(OptimalHaploidValueSelection, self).__init__(**kwargs)
 
         # error checks
+        check_is_int(nconfig, "nconfig")
         check_is_int(nparent, "nparent")
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
+        check_is_int(nblock, "nblock")
+        check_is_bool(allow_selfing, "allow_selfing")
         cond_check_is_callable(objfn_trans, "objfn_trans")
         cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
         # TODO: check objfn_wt
@@ -45,9 +70,12 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         cond_check_is_Generator(rng, "rng")
 
         # variable assignment
+        self.nconfig = nconfig
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.nblock = nblock
+        self.allow_selfing = allow_selfing
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
         self.objfn_wt = objfn_wt
@@ -63,6 +91,36 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+    def calc_nblock(self, nblock, chrgrp_len):
+        """
+        Determine the number of blocks to assign to each chromosome.
+
+        Parameters
+        ----------
+        nblock : int
+            Number of blocks to divide the genome into.
+        chrgrp_len : numpy.ndarray
+            Length of each chromosome group. Can be number of markers per
+            chromosome or length of the genetic map along each chromosome.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Number of blocks to assign to each chromosome group.
+        """
+        # if nblock is less than the number of chromosomes, then raise error
+        if nblock < len(chrgrp_len):
+            raise ValueError("nblock is less than the number of chromosome groups")
+        # begin hill-climber
+        ideal_ratio = (1.0 / chrgrp_len.sum()) * chrgrp_len # calculate ideal number of blocks per chromosome
+        out = numpy.repeat(1, len(chrgrp_len))              # give every chromosome 1 block to start with
+        while out.sum() < nblock:                           # while the number of blocks assigned < required number of blocks
+            current_ratio = (1.0 / out.sum()) * out         # calculate current block ratio
+            diff = current_ratio - ideal_ratio              # calculate the difference between the ratios
+            ix = diff.argmin()                              # find the chromosome that needs the next block the most
+            out[ix] += 1                                    # give one block to the chromosome
+        return out
+
     def calc_nblk(self, genpos, chrgrp_stix, chrgrp_spix):
         """
         Determine the number of markers to give per chromosome
@@ -178,6 +236,14 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
                 hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[st:sp,i])   # take dot product and fill
 
         return hmat
+
+    def calc_xmap(self, ntaxa):
+        """
+        Calculate the cross map.
+        """
+        fn = triudix if self.unique_parents else triuix     # get correct function
+        out = numpy.array(list(fn(ntaxa, self.nparent)))    # generate cross map array
+        return out
 
     def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
         """
@@ -483,83 +549,55 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
 
         return objfn
 
-    # TODO: implementation of this function
-    # def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
-    #     """
-    #     Return a vectorized objective function.
-    #     """
-    #     mat = geno["cand"].mat      # genotype matrix
-    #     mu = gmod["cand"].mu        # trait means
-    #     beta = gmod["cand"].beta    # regression coefficients
-    #
-    #     def objfn_vec(sel, mat = mat, mu = mu, beta = beta, traitwt = traitwt):
-    #         """
-    #         Score a population of individuals based on Conventional Genomic Selection
-    #         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-    #         Genomic Estimated Breeding Values (GEBV) for a population.
-    #
-    #         Parameters
-    #         ----------
-    #         sel : numpy.ndarray
-    #             A selection indices matrix of shape (j,k)
-    #             Where:
-    #                 'j' is the number of selection configurations.
-    #                 'k' is the number of individuals to select.
-    #             Each index indicates which individuals to select.
-    #             Each index in 'sel' represents a single individual's row.
-    #             If 'sel' is None, use all individuals.
-    #         mat : numpy.ndarray
-    #             A int8 binary genotype matrix of shape (m, n, p).
-    #             Where:
-    #                 'm' is the number of chromosome phases (2 for diploid, etc.).
-    #                 'n' is the number of individuals.
-    #                 'p' is the number of markers.
-    #         mu : numpy.ndarray
-    #             A trait mean matrix of shape (t, 1)
-    #             Where:
-    #                 't' is the number of traits.
-    #         beta : numpy.ndarray
-    #             A trait prediction coefficients matrix of shape (p, t).
-    #             Where:
-    #                 'p' is the number of markers.
-    #                 't' is the number of traits.
-    #         traitwt : numpy.ndarray, None
-    #             A trait objective coefficients matrix of shape (t,).
-    #             Where:
-    #                 't' is the number of objectives.
-    #             These are used to weigh objectives in the weight sum method.
-    #             If None, do not multiply GEBVs by a weight sum vector.
-    #
-    #         Returns
-    #         -------
-    #         cgs : numpy.ndarray
-    #             A trait GEBV matrix of shape (j,k,t) if objwt is None.
-    #             A trait GEBV matrix of shape (j,k) if objwt shape is (t,)
-    #             OR
-    #             A weighted GEBV matrix of shape (t,).
-    #             Where:
-    #                 'k' is the number of individuals selected.
-    #                 't' is the number of traits.
-    #         """
-    #         # (m,n,p)[:,(j,k),:] -> (m,j,k,p)
-    #         # (m,j,k,p) -> (j,k,p)
-    #         # (j,k,p) . (p,t) -> (j,k,t)
-    #         # (j,k,t) + (1,t) -> (j,k,t)
-    #         cgs = mat[:,sel,:].sum(0).dot(beta) + mu.T
-    #
-    #         # (j,k,t) . (t,) -> (j,k)
-    #         if traitwt is not None:
-    #             cgs = cgs.dot(traitwt)
-    #
-    #         return cgs
-    #
-    #     return objfn_vec
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+        """
+        Return a parent selection objective function.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Used by this function.
+        ptdf :
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+        """
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get haplotype matrix
+        mat = self.calc_hmat(gmat, gpmod)   # (t,m,n,h)
+
+        # get the cross map
+        xmap = self.calc_xmap() # (s,p)
+
+        # get ploidy
+        ploidy = gmat.ploidy
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_static.__code__,                 # byte code pointer
+            self.objfn_static.__globals__,              # global variables
+            None,                                       # new name for the function
+            (xmap, mat, ploidy, trans, trans_kwargs),   # default values for arguments
+            self.objfn_static.__closure__               # closure byte code pointer
+        )
+
+        return outfn
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, trans, kwargs):
+    def objfn_static(sel, xmap, mat, ploidy, trans, kwargs):
         """
         Score a population of individuals based on Optimal Haploid Value
         Selection (OHV). Scoring for OHV is defined as the sum of maximum
@@ -570,9 +608,15 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray
-            A selection indices array of shape (k,)
+            A cross selection indices array of shape (k,)
             Where:
-                'k' is the number of individuals to select.
+                'k' is the number of crosses to select.
+        xmap : numpy.ndarray
+            A cross selection index map array of shape (s,p)
+            Where:
+                's' is the size of the sample space (number of cross
+                    combinations for 'd' parents)
+                'p' is the number of parents
         mat : numpy.ndarray
             A haplotype effect matrix of shape (t, m, n, b).
             Where:
@@ -580,6 +624,11 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
                 'm' is the number of chromosome phases (2 for diploid, etc.).
                 'n' is the number of individuals.
                 'b' is the number of haplotype blocks.
+        ploidy : int
+            Ploidy level of the species.
+            In many cases, this should be equal to 'm' from the 'mat' parameter.
+            In cases where data is unphased (m == 1), then this parameter should
+            be different from 'm'.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -596,12 +645,19 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
             Where:
                 't' is the number of traits.
         """
+        # get the cross configurations
+        # (s,p)[(k,),:] -> (k,p)
+        sel = xmap[sel,:]
+
         # get maximum haplotype value
-        # (t,m,n,b)[:,:,k,:] -> (t,m,k,b)   # select k individuals
-        # (t,m,k,b).max(1) -> (t,k,b)       # find maximum haplotype across all phases
-        # (t,k,b).sum((1,2)) -> (t,)        # add maximum haplotypes for k individuals and b blocks
-        # scalar * (t,) -> (t,)             # multiply result by number of phases
-        ohv = mat.shape[1] * (mat[:,:,sel,:].max(1).sum((1,2)))
+        # (t,m,n,b)[:,:,(k,p),:] -> (t,m,k,p,b) # select k individuals
+        # (t,m,k,p,b).max((1,3)) -> (t,k,b)     # find maximum haplotype across all parental phases
+        # (t,k,b).sum((1,2)) -> (t,)            # add maximum haplotypes for k crosses and b blocks
+        ohv = mat[:,:,sel,:].max((1,3)).sum((1,2))
+
+        # multiply by ploidy
+        # scalar * (t,) -> (t,)                 # multiply result by number of phases
+        ohv *= ploidy
 
         # apply transformations
         # (t,) ---trans---> (?,)
@@ -611,7 +667,7 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         return ohv
 
     @staticmethod
-    def objfn_vec_static(sel, mat, trans, kwargs):
+    def objfn_vec_static(sel, xmap, mat, ploidy, trans, kwargs):
         """
         Score a population of individuals based on Optimal Haploid Value
         Selection (OHV). Scoring for OHV is defined as the sum of maximum
@@ -626,6 +682,12 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
             Where:
                 'j' is the number of selection configurations.
                 'k' is the number of individuals to select.
+        xmap : numpy.ndarray
+            A cross selection index map array of shape (s,p)
+            Where:
+                's' is the size of the sample space (number of cross
+                    combinations for 'd' parents)
+                'p' is the number of parents
         mat : numpy.ndarray
             A haplotype effect matrix of shape (t, m, n, b).
             Where:
@@ -633,6 +695,11 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
                 'm' is the number of chromosome phases (2 for diploid, etc.).
                 'n' is the number of individuals.
                 'b' is the number of haplotype blocks.
+        ploidy : int
+            Ploidy level of the species.
+            In many cases, this should be equal to 'm' from the 'mat' parameter.
+            In cases where data is unphased (m == 1), then this parameter should
+            be different from 'm'.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -649,16 +716,23 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
             Where:
                 't' is the number of traits.
         """
+        # get the cross configurations
+        # (s,p)[(j,k),:] -> (j,k,p)
+        sel = xmap[sel,:]
+
         # get maximum haplotype value
-        # (t,m,n,b)[:,:,(j,k),:] -> (t,m,j,k,b) # select k individuals
-        # (t,m,j,k,b).max(1) -> (t,j,k,b)       # find maximum haplotype across all phases
-        # (t,j,k,b).sum((2,3)) -> (t,j)         # add maximum haplotypes for k individuals and b blocks
-        # (t,j).T -> (j,t)                      # transpose matrix results
-        # scalar * (j,t) -> (j,t)               # multiply result by number of phases
-        ohv = mat.shape[1] * (mat[:,:,sel,:].max(1).sum((2,3)).T)
+        # (t,m,n,b)[:,:,(j,k,p),:] -> (t,m,j,k,p,b) # select k individuals
+        # (t,m,j,k,p,b).max((1,4)) -> (t,j,k,b)     # find maximum haplotype across all parental phases
+        # (t,j,k,b).sum((1,2)) -> (t,j)             # add maximum haplotypes for k crosses and b blocks
+        # (t,j).T -> (j,t)                          # transpose matrix results
+        ohv = mat[:,:,sel,:].max((1,4)).sum((1,2)).T
+
+        # multiply by ploidy
+        # scalar * (t,) -> (t,)                 # multiply result by number of phases
+        ohv *= ploidy
 
         # apply transformations
-        # (j,t) ---trans---> (j,?)
+        # (t,) ---trans---> (?,)
         if trans:
             ohv = trans(ohv, **kwargs)
 

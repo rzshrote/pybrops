@@ -3,7 +3,6 @@ from .SelectionProtocol import *
 
 # import utilities
 from . import transfn
-from . import util
 
 # import classes
 from .ConventionalGenomicSelection import *
