@@ -1,4 +1,4 @@
-MultiObjectiveGenomicSelectionimport numpy
+import numpy
 import math
 import types
 
@@ -11,6 +11,7 @@ from deap import benchmarks
 import pybropt.core.random
 
 from . import SelectionProtocol
+from pybropt.core.util import is_pareto_efficient
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str
@@ -25,6 +26,10 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5,
     rng = None, **kwargs):
         """
+        Constructor for MultiObjectiveGenomicSelection class.
+
+        Parameters
+        ----------
         nparent : int
             Number of parents to select.
         ncross : int
@@ -223,8 +228,8 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.
@@ -548,7 +553,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         pop_decision = numpy.array(pop)
 
         # get pareto frontier mask
-        pareto_mask = self.is_pareto_efficient(
+        pareto_mask = is_pareto_efficient(
             pop_solution,
             wt = objfn_wt,
             return_mask = True
@@ -702,46 +707,6 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # transform and return
         return trans(mogs, **kwargs)
 
-    # based on:
-    # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
-    @staticmethod
-    def is_pareto_efficient(fmat, wt, return_mask = True):
-        """
-        Find the pareto-efficient points (maximizing function)
-
-        Parameters
-        ----------
-        fmat : numpy.ndarray
-            A matrix of shape (npt, nobj) containing fitness values. Where
-            'npt' is the number of points and 'nobj' is the number of
-            objectives.
-        return_mask : bool
-            If True, return a mask.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of indices of pareto-efficient points.
-            If return_mask is True, this will be an (npt, ) boolean array
-            Otherwise it will be a (n_efficient_points, ) integer array of indices.
-        """
-        fmat = fmat * (wt.flatten()[None,:])    # apply weights
-        npt = fmat.shape[0]                     # get number of points
-        is_efficient = numpy.arange(npt)        # starting list of efficient points (holds indices)
-        pt_ix = 0  # Next index in the is_efficient array to search for
-        while pt_ix < len(fmat):
-            ndpt_mask = numpy.any(fmat > fmat[pt_ix], axis=1)
-            ndpt_mask[pt_ix] = True
-            is_efficient = is_efficient[ndpt_mask]  # Remove dominated points
-            fmat = fmat[ndpt_mask]
-            pt_ix = numpy.sum(ndpt_mask[:pt_ix])+1
-        if return_mask:
-            is_efficient_mask = numpy.zeros(npt, dtype = bool)
-            is_efficient_mask[is_efficient] = True
-            return is_efficient_mask
-        else:
-            return is_efficient
-
     @staticmethod
     def calc_mkrwt(weight, beta):
         if isinstance(weight, str):
@@ -774,70 +739,3 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             return target
         else:
             raise TypeError("variable 'target' must be a string or numpy.ndarray")
-
-    @staticmethod
-    def traitsum_trans(mat, wt = None):
-        if wt is None:
-            return mat.sum(-1)
-        else:
-            return mat @ wt
-
-    @staticmethod
-    def weightsum_trans(mat, wt = None):
-        if wt is None:
-            return mat.sum()
-        else:
-            return mat.dot(wt)
-
-    @staticmethod
-    def vecptdist_trans(mat, objfn_wt, wt = None):
-        """
-        mat : numpy.ndarray
-            (npt, nobj)
-        objfn_wt : numpy.ndarray
-            (nobj,)
-        wt : numpy.ndarray
-            (nobj,)
-        """
-        # create a default wt if wt is None
-        if wt is None:
-            wt = numpy.ones(mat.shape[1], dtype = 'float64')
-
-        # transform mat to all maximizing functions
-        # (nobj,) -> (1,nobj)
-        # (npt,nobj) * (1,nobj) -> (npt,nobj)
-        mat = mat * wt[None,:]
-
-        # subtract column minimums
-        mat = mat - mat.min(0)
-
-        # divide by column maximums; mat is in range [0,1]
-        mat = mat / mat.max(0)
-
-        # calculate distance between point and line
-        # calculate ((v dot p) / (v dot v)) * v
-        # where v is the line vector originating from 0
-        #       p is the point vector
-
-        # get inverse of (v dot v)
-        # (nobj,) dot (nobj,) -> scalar
-        vdvinv = 1.0 / objfn_wt.dot(objfn_wt)
-
-        # get scaling factor (v dot p) / (v dot v)
-        # (npt,nobj) dot (nobj,) -> (npt,)
-        # (npt,) * scalar -> (npt,)
-        scale = mat.dot(objfn_wt) * vdvinv
-
-        # use outer product to get points on plane that intersect line
-        # (npt,) outer (nobj,) -> (npt,nobj)
-        P = numpy.outer(scale, objfn_wt)
-
-        # calculate difference between each vector
-        # (npt,nobj) - (npt,nobj) -> (npt,nobj)
-        diff = mat - P
-
-        # take vector norms of difference to get distances
-        # (npt,nobj) -> (npt,)
-        d = numpy.linalg.norm(diff, axis = 1)
-
-        return d

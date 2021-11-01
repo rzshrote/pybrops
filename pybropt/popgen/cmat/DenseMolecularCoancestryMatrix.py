@@ -19,12 +19,21 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+        """
+        Constructor for DenseMolecularCoancestryMatrix class.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+        taxa : numpy.ndarray
+        taxa_grp : numpy.ndarray
+        """
         super(DenseMolecularCoancestryMatrix, self).__init__(
             mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
             **kwargs
         )
-        self.taxa = taxa
-        self.taxa_grp = taxa_grp
 
     ############################################################################
     ############################ Object Properties #############################
@@ -236,24 +245,27 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             (self._taxa_grp_len is not None)
         )
 
-    ################## Coancestry Methods ##################
-    def coancestry(i, j):
-        """
-        Retrieve the coancestry between individuals 'i' and 'j'.
-        """
-        return self._mat[i,j]
-
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
-    @staticmethod
-    def from_gmat(gmat):
+    @classmethod
+    def from_gmat(cls, gmat):
+        """
+        Create a CoancestryMatrix from a GenotypeMatrix.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Input genotype matrix from which to calculate coancestry.
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         ####################################################
         ### Calculate the coancestry matrix.
 
         # get ploidy level and reciprocol of number of loci
         ploidy = gmat.ploidy
-        rnloci = 1.0 / gmat.nloci
+        rnvrnt = 1.0 / gmat.nvrnt
 
         # check if we have subroutines to calculate coancestry
         if ploidy not in [1,2]:
@@ -268,10 +280,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         # test ploidy level and apply appropriate coancestry calculation
         if ploidy == 1:
             Y = 1 - X                                   # calculate complement to X
-            mat = rnloci * ((X @ X.T) + (Y @ Y.T))      # (1/m)(XX' + YY')
+            mat = rnvrnt * ((X @ X.T) + (Y @ Y.T))      # (1/m)(XX' + YY')
         elif ploidy == 2:
             X -= 1                                      # {-1,0,1} format
-            mat = 0.5 * (1.0 + (rnloci * (X @ X.T)))    # (1/2)(1+((1/m)XX'))
+            mat = 0.5 * (1.0 + (rnvrnt * (X @ X.T)))    # (1/2)(1+((1/m)XX'))
         ####################################################
 
         ####################################################
@@ -281,17 +293,17 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         taxa_grp = numpy.int64(gmat.taxa_grp) if gmat.taxa_grp is not None else None
 
         # construct basic object
-        dmcmat = DenseMolecularCoancestryMatrix(
+        dmcmat = cls(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp
         )
 
         # copy taxa metadata if available
-        dmcmat.taxa_grp_name = numpy.int64(gmat.taxa_grp_name) if gmat.taxa_grp_name is not None else None
-        dmcmat.taxa_grp_stix = numpy.int64(gmat.taxa_grp_stix) if gmat.taxa_grp_stix is not None else None
-        dmcmat.taxa_grp_spix = numpy.int64(gmat.taxa_grp_spix) if gmat.taxa_grp_spix is not None else None
-        dmcmat.taxa_grp_len = numpy.int64(gmat.taxa_grp_len) if gmat.taxa_grp_len is not None else None
+        dmcmat.taxa_grp_name = gmat.taxa_grp_name
+        dmcmat.taxa_grp_stix = gmat.taxa_grp_stix
+        dmcmat.taxa_grp_spix = gmat.taxa_grp_spix
+        dmcmat.taxa_grp_len = gmat.taxa_grp_len
 
         # return matrix
         return dmcmat
@@ -302,12 +314,49 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseMolecularCoancestryMatrix(v):
+    """
+    Determine whether an object is a DenseMolecularCoancestryMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseMolecularCoancestryMatrix object instance.
+    """
     return isinstance(v, DenseMolecularCoancestryMatrix)
 
-def check_is_DenseMolecularCoancestryMatrix(v, varname):
-    if not isinstance(v, DenseMolecularCoancestryMatrix):
-        raise TypeError("'%s' must be a DenseMolecularCoancestryMatrix." % varname)
+def check_is_DenseMolecularCoancestryMatrix(v, vname):
+    """
+    Check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise TypeError.
 
-def cond_check_is_DenseMolecularCoancestryMatrix(v, varname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, DenseMolecularCoancestryMatrix):
+        raise TypeError("variable '{0}' must be a DenseMolecularCoancestryMatrix".format(vname))
+
+def cond_check_is_DenseMolecularCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DenseMolecularCoancestryMatrix.
+    """
     if cond(v):
-        check_is_DenseMolecularCoancestryMatrix(v, varname)
+        check_is_DenseMolecularCoancestryMatrix(v, vname)

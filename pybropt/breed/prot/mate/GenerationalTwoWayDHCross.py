@@ -31,7 +31,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
-            A GenotypeVariantMatrix containing candidate breeding individuals.
+            A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
             A 1D array of indices of selected individuals of shape (k,).
             Where:

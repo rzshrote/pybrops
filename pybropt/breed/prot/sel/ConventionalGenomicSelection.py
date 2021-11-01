@@ -7,6 +7,7 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
+from pybropt.algo.opt import NSGA2SetGeneticAlgorithm
 
 class ConventionalGenomicSelection(SelectionProtocol):
     """Perform conventional genomic selection"""
@@ -21,8 +22,11 @@ class ConventionalGenomicSelection(SelectionProtocol):
         Parameters
         ----------
         nparent : int
+            Number of parents to select.
         ncross : int
+            Number of crosses per configuration.
         nprogeny : int
+            Number of progeny to derive from each cross.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
         objfn_wt : float, numpy.ndarray
@@ -73,7 +77,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         pgmat : PhasedGenotypeMatrix
             Genomes
         gmat : GenotypeMatrix
-            Genotypes
+            Genotypes (unphased most likely)
         ptdf : PhenotypeDataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
@@ -149,7 +153,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
             # get all GEBVs for each individual
             # (n,)
-            gebv = [objfn(i) for i in range(gmat.ntaxa)]
+            gebv = [objfn([i]) for i in range(gmat.ntaxa)]
 
             # convert to numpy.ndarray
             gebv = numpy.array(gebv)
@@ -215,8 +219,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : GenomicModel
-        
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
         """
         # get default parameters if any are None
         if trans is None:
@@ -225,8 +229,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u     # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -234,7 +238,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,         # byte code pointer
             self.objfn_static.__globals__,      # global variables
             None,                               # new name for the function
-            (mat, beta, trans, trans_kwargs),   # default values for arguments
+            (mat, u, trans, trans_kwargs),      # default values for arguments
             self.objfn_static.__closure__       # closure byte code pointer
         )
 
@@ -251,8 +255,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        beta = gpmod.beta   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u     # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -260,7 +264,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (mat, beta, trans, trans_kwargs),   # default values for arguments
+            (mat, u, trans, trans_kwargs),   # default values for arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -309,13 +313,51 @@ class ConventionalGenomicSelection(SelectionProtocol):
             misc : dict
                 A dictionary of miscellaneous output. (User specified)
         """
-        raise NotImplementedError("method is abstract")
+        if nparent is None:
+            nparent = self.nparent
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max,
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
+        )
+
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
+            **kwargs
+        )
+
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
+        )
+
+        return frontier, sel_config, misc
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, beta, trans, kwargs):
+    def objfn_static(sel, mat, u, trans, kwargs):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -337,7 +379,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
@@ -363,10 +405,10 @@ class ConventionalGenomicSelection(SelectionProtocol):
             sel = slice(None)
 
         # CGS calculation explanation
-        # Step 1: (n,p) -> (k,p)            # select individuals
+        # Step 1: (n,p)[(k,),:] -> (k,p)    # select individuals
         # Step 2: (k,p) . (p,t) -> (k,t)    # take marker dot product (calculate GEBVs)
         # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
-        cgs = mat[sel,:].dot(beta).sum(0)
+        cgs = mat[sel,:].dot(u).sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
@@ -376,7 +418,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         return cgs
 
     @staticmethod
-    def objfn_vec_static(sel, mat, beta, trans, kwargs):
+    def objfn_vec_static(sel, mat, u, trans, kwargs):
         """
         Score a population of individuals based on Conventional Genomic Selection
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
@@ -397,7 +439,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Where:
                 'n' is the number of individuals.
                 'p' is the number of markers.
-        beta : numpy.ndarray
+        u : numpy.ndarray
             A trait prediction coefficients matrix of shape (p, t).
             Where:
                 'p' is the number of markers.
@@ -428,7 +470,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
         # (n,p)[(j,k),:] -> (j,k,p)
         # (j,k,p) . (p,t) -> (j,k,t)
         # (j,k,t).sum(1) -> (j,t)
-        cgs = mat[sel,:].dot(beta).sum(1)
+        cgs = mat[sel,:].dot(u).sum(1)
 
         # apply transformations
         # (j,t) ---trans---> (?,?)

@@ -7,6 +7,7 @@ from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
+from pybropt.algo.opt import NSGA2SetGeneticAlgorithm
 
 class ConventionalPhenotypicSelection(SelectionProtocol):
     """docstring for ConventionalPhenotypicSelection."""
@@ -109,8 +110,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         -------
         out : tuple
             A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
+            pgvmat : PhasedGenotypeMatrix
+                A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
                 Array of indices specifying a cross pattern. Each index
                 corresponds to an individual in 'pgvmat'.
@@ -162,7 +163,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
             # get all EBVs for each individual
             # (n,)
-            ebv = [objfn(i) for i in range(bvmat.ntaxa)]
+            ebv = [objfn([i]) for i in range(bvmat.ntaxa)]
 
             # convert to numpy.ndarray
             ebv = numpy.array(ebv)
@@ -309,7 +310,45 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             misc : dict
                 A dictionary of miscellaneous output. (User specified)
         """
-        raise NotImplementedError("method is abstract")
+        if nparent is None:
+            nparent = self.nparent
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = bvmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max,
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
+        )
+
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
+            **kwargs
+        )
+
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
+        )
+
+        return frontier, sel_config, misc
 
     ############################################################################
     ############################## Static Methods ##############################

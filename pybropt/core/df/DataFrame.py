@@ -15,10 +15,34 @@ class DataFrame:
         """
         super(DataFrame, self).__init__()
 
+    def __copy__(self):
+        """
+        Make a shallow copy of the the dataframe.
+
+        Returns
+        -------
+        out : DataFrame
+        """
+        raise NotImplementedError("method is abstract")
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the dataframe.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : DataFrame
+        """
+        raise NotImplementedError("method is abstract")
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def df():
+    def data():
         doc = "Access to raw data frame object."
         def fget(self):
             """Get dataframe"""
@@ -30,7 +54,7 @@ class DataFrame:
             """Delete dataframe"""
             raise NotImplementedError("method is abstract")
         return locals()
-    df = property(**df())
+    data = property(**data())
 
     ################## Column attributes ###################
     def ncol():
@@ -89,19 +113,19 @@ class DataFrame:
         return locals()
     col_name = property(**col_name())
 
-    def col_ctype():
-        doc = "Column types used for classifying variables"
+    def col_grp():
+        doc = "Column groups used for classifying variables"
         def fget(self):
-            """Get column types"""
+            """Get column groups"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
-            """Set column types"""
+            """Set column groups"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
-            """Delete column types"""
+            """Delete column groups"""
             raise NotImplementedError("method is abstract")
         return locals()
-    col_ctype = property(**col_ctype())
+    col_grp = property(**col_grp())
 
     #################### Row attributes ####################
     def nrow():
@@ -158,12 +182,22 @@ class DataFrame:
     def to_pandas_df(self, **kwargs):
         """
         Get dataframe as a pandas.DataFrame.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            DataFrame as a pandas.DataFrame.
         """
         raise NotImplementedError("method is abstract")
 
     def to_dict(self, **kwargs):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
+
+        Returns
+        -------
+        out : dict
+            DataFrame as a dictionary of numpy.ndarray's.
         """
         raise NotImplementedError("method is abstract")
 

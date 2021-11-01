@@ -1,3 +1,4 @@
 from .PhenotypeDataFrame import *
 
-from .PandasPhenotypeDataFrame import *
+from .DictPhenotypeDataFrame import *
+# from .PandasPhenotypeDataFrame import *

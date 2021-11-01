@@ -1,31 +1,68 @@
-import inspect
 import pytest
 
 from pybropt.test import generic_test_abstract_methods
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.arch import ImmigrationOperator
 from pybropt.breed.arch import is_ImmigrationOperator
 from pybropt.breed.arch import check_is_ImmigrationOperator
 from pybropt.breed.arch import cond_check_is_ImmigrationOperator
 
+################################################################################
+################################ Test fixtures #################################
+################################################################################
 @pytest.fixture
-def immiop():
+def arch():
     yield ImmigrationOperator()
 
-@pytest.fixture
-def vmethods(immiop):
-    yield [m for m in dir(immiop) if m.startswith('__') is False]
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(ImmigrationOperator)
 
-def test_abstract_methods(immiop, vmethods):
-    generic_test_abstract_methods(immiop, vmethods)
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(ImmigrationOperator, "__init__")
 
-def test_is_ImmigrationOperator(immiop):
-    assert is_ImmigrationOperator(immiop)
+################################################################################
+########################### Test abstract properties ###########################
+################################################################################
 
-def test_check_is_ImmigrationOperator():
+################################################################################
+############################# Test abstract methods ############################
+################################################################################
+# def test__is_abstract():
+#     generic_assert_abstract_method(ImmigrationOperator, "")
+
+################################################################################
+################### Test for conrete class utility functions ###################
+################################################################################
+def test_is_ImmigrationOperator_is_concrete():
+    generic_assert_concrete_function(is_ImmigrationOperator)
+
+def test_check_is_ImmigrationOperator_is_concrete():
+    generic_assert_concrete_function(check_is_ImmigrationOperator)
+
+def test_cond_check_is_ImmigrationOperator_is_concrete():
+    generic_assert_concrete_function(cond_check_is_ImmigrationOperator)
+
+################################################################################
+######################### Test class utility functions #########################
+################################################################################
+def test_is_ImmigrationOperator(arch):
+    assert is_ImmigrationOperator(arch)
+
+def test_check_is_ImmigrationOperator(arch):
+    with not_raises(TypeError):
+        check_is_ImmigrationOperator(arch, "arch")
     with pytest.raises(TypeError):
-        check_is_ImmigrationOperator(None, "None")
-
-def test_cond_check_is_ImmigrationOperator():
-    with pytest.raises(TypeError):
-        cond_check_is_ImmigrationOperator(0, "0")
+        check_is_ImmigrationOperator(None, "arch")

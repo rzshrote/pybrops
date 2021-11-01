@@ -39,7 +39,7 @@ def test_init_is_concrete():
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_df_is_abstract():
-    generic_assert_abstract_property(DataFrame, "df")
+    generic_assert_abstract_property(DataFrame, "data")
 
 def test_ncol_is_abstract():
     generic_assert_abstract_property(DataFrame, "ncol")
@@ -54,7 +54,7 @@ def test_col_name_is_abstract():
     generic_assert_abstract_property(DataFrame, "col_name")
 
 def test_col_ctype_is_abstract():
-    generic_assert_abstract_property(DataFrame, "col_ctype")
+    generic_assert_abstract_property(DataFrame, "col_grp")
 
 def test_nrow_is_abstract():
     generic_assert_abstract_property(DataFrame, "nrow")

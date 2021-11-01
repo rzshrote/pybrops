@@ -1,7 +1,10 @@
-import pandas
+import numpy
 
 from . import PhenotypingProtocol
-from pybropt.popgen.ptdf import PandasPhenotypeDataFrame
+from pybropt.popgen.ptdf import DictPhenotypeDataFrame
+from pybropt.model.gmod import check_is_GenomicModel
+from pybropt.core.error import error_readonly
+from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
 
 class TruePhenotyping(PhenotypingProtocol):
     """docstring for TruePhenotyping."""
@@ -9,13 +12,59 @@ class TruePhenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, gpmod, **kwargs):
+        """
+        Constructor for the concrete class TruePhenotyping.
+
+        Parameters
+        ----------
+        gpmod : GenomicModel
+            Genomic prediction model to use to determine phenotypes.
+        **kwargs : **dict
+            Additional keyword arguments
+        """
         super(TruePhenotyping, self).__init__(**kwargs)
+        self.gpmod = gpmod
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+
+    ############### Genomic Model Properties ###############
+    def gpmod():
+        doc = "Genomic prediction model."
+        def fget(self):
+            """Get genomic prediction model"""
+            return self._gpmod
+        def fset(self, value):
+            """Set genomic prediction model"""
+            check_is_GenomicModel(value, "gpmod")
+            self._gpmod = value
+        def fdel(self):
+            """Delete genomic prediction model"""
+            del self._gpmod
+        return locals()
+    gpmod = property(**gpmod())
+
+    ################ Stochastic Parameters #################
+    def var_err():
+        doc = "Error variance for each trait."
+        def fget(self):
+            """Get error variance"""
+            return numpy.repeat(1.0, self.gpmod.ntrait)
+        def fset(self, value):
+            """Set error variance"""
+            error_readonly("var_err")
+        def fdel(self):
+            """Delete error variance"""
+            error_readonly("var_err")
+        return locals()
+    var_err = property(**var_err())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, gpmod, **kwargs):
+    def phenotype(self, pgmat, gpmod = None, **kwargs):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -23,8 +72,9 @@ class TruePhenotyping(PhenotypingProtocol):
         ----------
         pgmat : PhasedGenotypeMatrix
             Genomes of the individuals to phenotype.
-        gpmod : GenomicModel
+        gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
+            If None, use default genomic prediction model.
         **kwargs : dict
             Additional keyword arguments.
 
@@ -33,8 +83,13 @@ class TruePhenotyping(PhenotypingProtocol):
         out : PhenotypeDataFrame
             DataFrame containing phenotypes.
         """
+        # process arguments
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        if gpmod is None:
+            gpmod = self.gpmod
+
         # gather true breeding values
-        bvmat = gpmod.predict(pgmat)
+        bvmat = gpmod.gebv(pgmat)
 
         # gather pointers to raw matrices
         mat = bvmat.mat             # breeding values
@@ -54,30 +109,87 @@ class TruePhenotyping(PhenotypingProtocol):
         if any(e is None for e in trait):
             raise ValueError("unable to construct phenotype dataframe: breeding value matrix produced by 'gpmod.predict(pgmat)' has trait name(s) which are 'None'")
 
-        # construct dictionary
-        data_dict = {}
+        # construct data dictionary
+        data_dict = {"taxa": taxa}
 
-        # add taxa names
-        data_dict["taxa"] = taxa
+        # construct column analysis type dictionary
+        col_analysis_type_dict = {"taxa": "factor(str)"}
+
+        # construct column effect type dictionary
+        col_analysis_effect_dict = {"taxa": "fixed"}
 
         # if there are taxa groups, add group information
         if taxa_grp is not None:
-            data_dict["taxa_grp"] = taxa_grp
+            data_dict.update(taxa_grp = taxa_grp)
+            col_analysis_type_dict.update(taxa_grp = "factor(int)")
+            col_analysis_effect_dict.update(taxa_grp = "fixed")
+
+        # trait type
+        if mat.dtype == "float64":
+            tatype = "double"
+        elif mat.dtype == "float32":
+            mat = mat.astype("float64")
+            tatype = "double"
+        elif mat.dtype == "int8":
+            mat = mat.astype("int32")
+            tatype = "int"
+        elif mat.dtype == "int16":
+            mat = mat.astype("int32")
+            tatype = "int"
+        elif mat.dtype == "int32":
+            tatype = "int"
+        elif mat.dtype == "int64":
+            mat = mat.astype("int32")
+            tatype = "int"
+        else:
+            raise TypeError("unsupported breeding value data type")
 
         # add each trait and corresponding data
         for i,e in enumerate(trait):
             # construct matrix slice selection tuple
             t = tuple(i if a == taxis else slice(None) for a in range(ndim))
-            # select data and put into dictionary
-            data_dict[e] = mat[t]
+            data_dict[e] = mat[t].copy()                # select data and put into dictionary
+            col_analysis_type_dict[e] = tatype          # add column analysis type
+            col_analysis_effect_dict[e] = "response"    # add column analysis effect type
 
-        # construct pandas.DataFrame
-        df = pandas.DataFrame(data_dict)
-
-        # construct PandasPhenotypeDataFrame
-        ptdf = PandasPhenotypeDataFrame(
-            df = df,
+        # construct DictPhenotypeDataFrame
+        ptdf = DictPhenotypeDataFrame(
+            data = data_dict,
+            col_grp = None,
+            col_analysis_type = col_analysis_type_dict,
+            col_analysis_effect = col_analysis_effect_dict,
+            row_name = None,
             **kwargs
         )
 
         return ptdf
+
+    def set_h2(self, h2, pgmat, **kwargs):
+        """
+        Set the narrow sense heritability for environments.
+
+        Parameters
+        ----------
+        h2 : float, numpy.ndarray
+            Narrow sense heritability.
+        pgmat : PhasedGenotypeMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
+        """
+        raise AttributeError("unsupported operation: heritability always set at 1.0")
+
+    def set_H2(self, H2, pgmat, **kwargs):
+        """
+        Set the broad sense heritability for environments.
+
+        Parameters
+        ----------
+        H2 : float, numpy.ndarray
+            Broad sense heritability.
+        pgmat : PhasedGenotypeMatrix
+            Founder genotypes.
+        **kwargs : dict
+            Additional keyword arguments
+        """
+        raise AttributeError("unsupported operation: heritability always set at 1.0")

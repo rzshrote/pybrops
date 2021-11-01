@@ -6,26 +6,11 @@ from . import BreedingProgram
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
-# from pybropt.breed.op.init import check_is_InitializationOperator
-# from pybropt.breed.op.psel import check_is_ParentSelectionOperator
-# from pybropt.breed.op.mate import check_is_MatingOperator
-# from pybropt.breed.op.intg import check_is_GenotypeIntegrationOperator
-# from pybropt.breed.op.eval import check_is_EvaluationOperator
-# from pybropt.breed.op.intg import check_is_BreedingValueIntegrationOperator
-# from pybropt.breed.op.calibr import check_is_GenomicModelCalibrationOperator
-# from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
-
-# def dprint(t, lab, d, mod, ID = True, USL = True):
-#     if ID:
-#         x = "cand:" + str(id(d["cand"]))
-#         y = "main:" + str(id(d["main"]))
-#         z = "queue:" + str([id(a) for a in d["queue"]])
-#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "ID", lab, x, y, z))
-#     if USL:
-#         x = "cand:" + str(mod.usl(d["cand"]))
-#         y = "main:" + str(mod.usl(d["main"]))
-#         z = "queue:" + str([mod.usl(a) for a in d["queue"]])
-#         print("{0}\t{1}\t{2}\t{3}\t{4}\t{5}".format(t, "USL", lab, x, y, z))
+from pybropt.breed.op.init import check_is_InitializationOperator
+from pybropt.breed.op.psel import check_is_ParentSelectionOperator
+from pybropt.breed.op.mate import check_is_MatingOperator
+from pybropt.breed.op.eval import check_is_EvaluationOperator
+from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
@@ -33,234 +18,303 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, t_max, initop, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
-        super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
+    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs):
+        """
+        Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
-        # set time variables
-        self.t_cur = 0
-        self.t_max = t_max
+        This class simulates a recurrent selection breeding program.
+
+        Parameters
+        ----------
+        initop :
+        """
+        super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
 
         # save operators
         self.initop = initop
         self.pselop = pselop
         self.mateop = mateop
-        self.gintgop = gintgop
         self.evalop = evalop
-        self.bvintgop = bvintgop
-        self.calop = calop
         self.sselop = sselop
 
+        # set time variables
+        self.t_cur = 0
+        self.t_max = t_max
+
         # TODO: go through set methods properly
-        self._start_geno = None
-        self._start_bval = None
-        self._start_gmod = None
-        self._geno = None
-        self._bval = None
-        self._gmod = None
+        self.start_genome = start_genome
+        self.start_geno = start_geno
+        self.start_pheno = start_pheno
+        self.start_bval = start_bval
+        self.start_gmod = start_gmod
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
 
-    ############# Generation number properties #############
-    def t_cur():
-        doc = "Current generation number of the BreedingNode."
+    ############ Starting condition containers #############
+    def start_genome():
+        doc = "Starting genomes for individuals in the breeding program."
         def fget(self):
-            return self._t_cur
+            """Get starting genomes for individuals in the breeding program"""
+            return self._start_genome
         def fset(self, value):
-            check_is_int(value, "t_cur")
-            self._t_cur = value
+            """Set starting genomes for individuals in the breeding program"""
+            if value is not None:
+                check_is_dict(value, "start_genome")
+            self._start_genome = value
         def fdel(self):
-            del self._t_cur
+            """Delete starting genomes for individuals in the breeding program"""
+            del self._start_genome
         return locals()
-    t_cur = property(**t_cur())
+    start_genome = property(**start_genome())
 
-    def t_max():
-        doc = "Maximum generation number of the BreedingNode."
-        def fget(self):
-            return self._t_max
-        def fset(self, value):
-            check_is_int(value, "t_max")
-            self._t_max = value
-        def fdel(self):
-            del self._t_max
-        return locals()
-    t_max = property(**t_max())
-
-    ################ Population properties #################
     def start_geno():
-        doc = "The start_geno property."
+        doc = "Starting genotypes for individuals in the breeding program."
         def fget(self):
+            """Get starting genotypes for individuals in the breeding program"""
             return self._start_geno
         def fset(self, value):
+            """Set starting genotypes for individuals in the breeding program"""
+            if value is not None:
+                check_is_dict(value, "start_geno")
             self._start_geno = value
         def fdel(self):
+            """Delete starting genotypes for individuals in the breeding program"""
             del self._start_geno
         return locals()
     start_geno = property(**start_geno())
 
-    def geno():
-        doc = "Main breeding population of the BreedingNode."
+    def start_pheno():
+        doc = "Starting phenotypes for individuals in the breeding program."
         def fget(self):
-            return self._geno
+            """Get starting phenotypes for individuals in the breeding program"""
+            return self._start_pheno
         def fset(self, value):
-            check_is_dict(value, "geno")
-            # TODO:
-            # check_keys_in_dict(value, "geno", "cand", "main", "queue")
-            self._geno = value
+            """Set starting phenotypes for individuals in the breeding program"""
+            if value is not None:
+                check_is_dict(value, "start_pheno")
+            self._start_pheno = value
         def fdel(self):
-            del self._geno
+            """Delete starting phenotypes for individuals in the breeding program"""
+            del self._start_pheno
         return locals()
-    geno = property(**geno())
+    start_pheno = property(**start_pheno())
 
-    ############## Breeding value properties ###############
     def start_bval():
-        doc = "The start_bval property."
+        doc = "Starting breeding values for individuals in the breeding program."
         def fget(self):
+            """Get starting breeding values for individuals in the breeding program"""
             return self._start_bval
         def fset(self, value):
+            """Set starting breeding values for individuals in the breeding program"""
+            if value is not None:
+                check_is_dict(value, "start_bval")
             self._start_bval = value
         def fdel(self):
+            """Delete starting breeding values for individuals in the breeding program"""
             del self._start_bval
         return locals()
     start_bval = property(**start_bval())
 
-    def bval():
-        doc = "Estimated breeding values for the main breeding population of the BreedingNode."
-        def fget(self):
-            return self._bval
-        def fset(self, value):
-            check_is_dict(value, "bval")
-            # TODO:
-            # check_keys_in_dict(value, "bval", "cand", "cand_true", "main", "main_true", "queue", "queue_true")
-            self._bval = value
-        def fdel(self):
-            del self._bval
-        return locals()
-    bval = property(**bval())
-
-    ############### Genomic model properties ###############
     def start_gmod():
-        doc = "The start_gmod property."
+        doc = "Starting genomic models for individuals in the breeding program."
         def fget(self):
+            """Get starting genomic models for individuals in the breeding program"""
             return self._start_gmod
         def fset(self, value):
+            """Set starting genomic models for individuals in the breeding program"""
+            if value is not None:
+                check_is_dict(value, "start_gmod")
             self._start_gmod = value
         def fdel(self):
+            """Delete starting genomic models for individuals in the breeding program"""
             del self._start_gmod
         return locals()
     start_gmod = property(**start_gmod())
 
-    def gmod():
-        doc = "Estimated genomic model for the main breeding population of the BreedingNode."
+    ############ Program information containers ############
+    def genome():
+        doc = "Genomes for individuals in the breeding program."
         def fget(self):
+            """Get genomes for individuals in the breeding program"""
+            return self._genome
+        def fset(self, value):
+            """Set genomes for individuals in the breeding program"""
+            check_is_dict(value, "genome")
+            self._genome = value
+        def fdel(self):
+            """Delete genomes for individuals in the breeding program"""
+            del self._genome
+        return locals()
+    genome = property(**genome())
+
+    def geno():
+        doc = "Genotypes for individuals in the breeding program."
+        def fget(self):
+            """Get genotypes for individuals in the breeding program"""
+            return self._geno
+        def fset(self, value):
+            """Set genotypes for individuals in the breeding program"""
+            check_is_dict(value, "geno")
+            self._geno = value
+        def fdel(self):
+            """Delete genotypes for individuals in the breeding program"""
+            del self._geno
+        return locals()
+    geno = property(**geno())
+
+    def pheno():
+        doc = "Phenotypes for individuals in the breeding program."
+        def fget(self):
+            """Get phenotypes for individuals in the breeding program"""
+            return self._pheno
+        def fset(self, value):
+            """Set phenotypes for individuals in the breeding program"""
+            check_is_dict(value, "pheno")
+            self._pheno = value
+        def fdel(self):
+            """Delete phenotypes for individuals in the breeding program"""
+            del self._pheno
+        return locals()
+    pheno = property(**pheno())
+
+    def bval():
+        doc = "Breeding values for individuals in the breeding program."
+        def fget(self):
+            """Get breeding values for individuals in the breeding program"""
+            return self._bval
+        def fset(self, value):
+            """Set breeding values for individuals in the breeding program"""
+            check_is_dict(value, "bval")
+            self._bval = value
+        def fdel(self):
+            """Delete breeding values for individuals in the breeding program"""
+            del self._bval
+        return locals()
+    bval = property(**bval())
+
+    def gmod():
+        doc = "Genomic models for individuals in the breeding program."
+        def fget(self):
+            """Get genomic models for individuals in the breeding program"""
             return self._gmod
         def fset(self, value):
+            """Set genomic models for individuals in the breeding program"""
             check_is_dict(value, "gmod")
-            # TODO:
-            # check_keys_in_dict(value, "gmod", "cand", "main", "queue", "true")
             self._gmod = value
         def fdel(self):
+            """Delete genomic models for individuals in the breeding program"""
             del self._gmod
         return locals()
     gmod = property(**gmod())
 
     ######### Breeding program operator properties #########
     def initop():
-        doc = "Initialization operator."
+        doc = "Initialization operator"
         def fget(self):
+            """Get the initialization operator"""
             return self._initop
         def fset(self, value):
-            # check_is_InitializationOperator(value, "initop")
+            """Set the initialization operator"""
+            check_is_InitializationOperator(value, "initop")
             self._initop = value
         def fdel(self):
+            """Delete the initialization operator"""
             del self._initop
         return locals()
     initop = property(**initop())
 
     def pselop():
-        doc = "Parental selection operator."
+        doc = "Parent selection operator"
         def fget(self):
+            """Get the parent selection operator"""
             return self._pselop
         def fset(self, value):
+            """Set the parent selection operator"""
             check_is_ParentSelectionOperator(value, "pselop")
             self._pselop = value
         def fdel(self):
+            """Delete the parent selection operator"""
             del self._pselop
         return locals()
     pselop = property(**pselop())
 
     def mateop():
-        doc = "Mating operator."
+        doc = "Mating operator"
         def fget(self):
+            """Get the mating operator"""
             return self._mateop
         def fset(self, value):
+            """Set the mating operator"""
             check_is_MatingOperator(value, "mateop")
             self._mateop = value
         def fdel(self):
+            """Delete the mating operator"""
             del self._mateop
         return locals()
     mateop = property(**mateop())
 
-    def gintgop():
-        doc = "Genotype integration operator."
-        def fget(self):
-            return self._gintgop
-        def fset(self, value):
-            check_is_GenotypeIntegrationOperator(value, "gintgop")
-            self._gintgop = value
-        def fdel(self):
-            del self._gintgop
-        return locals()
-    gintgop = property(**gintgop())
-
     def evalop():
-        doc = "Evaluation operator."
+        doc = "Evaluation operator"
         def fget(self):
+            """Get the evaluation operator"""
             return self._evalop
         def fset(self, value):
+            """Set the evaluation operator"""
             check_is_EvaluationOperator(value, "evalop")
             self._evalop = value
         def fdel(self):
+            """Delete the evaluation operator"""
             del self._evalop
         return locals()
     evalop = property(**evalop())
 
-    def bvintgop():
-        doc = "Breeding value integration operator."
-        def fget(self):
-            return self._bvintgop
-        def fset(self, value):
-            check_is_BreedingValueIntegrationOperator(value, "bvintgop")
-            self._bvintgop = value
-        def fdel(self):
-            del self._bvintgop
-        return locals()
-    bvintgop = property(**bvintgop())
-
-    def calop():
-        doc = "Genomic model calibration operator."
-        def fget(self):
-            return self._calop
-        def fset(self, value):
-            check_is_GenomicModelCalibrationOperator(value, "calop")
-            self._calop = value
-        def fdel(self):
-            del self._calop
-        return locals()
-    calop = property(**calop())
-
     def sselop():
-        doc = "Survivor selection operator."
+        doc = "Survivor selection operator"
         def fget(self):
+            """Get the survivor selection operator"""
             return self._sselop
         def fset(self, value):
+            """Set the survivor selection operator"""
             check_is_SurvivorSelectionOperator(value, "sselop")
             self._sselop = value
         def fdel(self):
+            """Delete the survivor selection operator"""
             del self._sselop
         return locals()
     sselop = property(**sselop())
+
+    ############# Generation number properties #############
+    def t_cur():
+        doc = "Current time of the BreedingNode."
+        def fget(self):
+            """Get the current time for the breeding program"""
+            return self._t_cur
+        def fset(self, value):
+            """Set the current time for the breeding program"""
+            check_is_int(value, "t_cur")
+            self._t_cur = value
+        def fdel(self):
+            """Delete the current time for the breeding program"""
+            del self._t_cur
+        return locals()
+    t_cur = property(**t_cur())
+
+    def t_max():
+        doc = "Maximum time of the BreedingNode."
+        def fget(self):
+            """Get the maximum time for the breeding program"""
+            return self._t_max
+        def fset(self, value):
+            """Set the maximum time for the breeding program"""
+            check_is_int(value, "t_max")
+            self._t_max = value
+        def fdel(self):
+            """Delete the maximum time for the breeding program"""
+            del self._t_max
+        return locals()
+    t_max = property(**t_max())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -272,11 +326,49 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
-        self._start_geno, self._start_bval, self._start_gmod = self._initop.initialize(
-            **kwargs
+        self.start_genome, self.start_geno, self.start_pheno, self.start_bval, self.start_gmod = self._initop.initialize(**kwargs)
+
+    def is_initialized(self, **kwargs):
+        """
+        Return whether or not the BreedingProgram has been initialized with a
+        starting set of conditions.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : boolean
+            True if the BreedingProgram has been initialized.
+            False if the BreedingProgram has not been initialized.
+        """
+        return (
+            (self._start_genome is not None) and
+            (self._start_geno is not None) and
+            (self._start_pheno is not None) and
+            (self._start_bval is not None) and
+            (self._start_gmod is not None)
         )
 
     ################ Whole breeding program ################
+    def reset(self, **kwargs):
+        """
+        Reset the evolution of the breeding program back to starting conditions.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
+        self.genome = self.start_genome     # reset genomes container
+        self.geno = self.start_geno         # reset genotypes container
+        self.pheno = self.start_pheno       # reset phenotypes container
+        self.bval = self.start_bval         # reset breeding values container
+        self.gmod = self.start_gmod         # reset genomic model container
+        self.t_cur = 0                      # reset time
+
     def advance(self, ngen, lbook, **kwargs):
         """
         Advance the breeding program by a specified number of generations.
@@ -291,129 +383,99 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             Additional keyword arguments.
         """
         # iterate through main breeding loop for ngen generations
-        for t in range(self._t_cur, self._t_cur + ngen):
+        for _ in range(ngen):
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
-            parent_gmat, sel, ncross, nprogeny, misc = self._pselop.pselect(
-                t_cur = t,
-                t_max = self._t_max,
+            mcfg, self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._pselop.pselect(
+                genome = self._genome,
                 geno = self._geno,
+                pheno = self._pheno,
                 bval = self._bval,
-                gmod = self._gmod
+                gmod = self._gmod,
+                t_cur = self._t_cur,
+                t_max = self._t_max
             )
             lbook.log_pselect(
-                t_cur = t,
+                genome = self._genome,
+                geno = self._geno,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
+                t_cur = self._t_cur,
                 t_max = self._t_max,
-                pgvmat = parent_gmat,
-                sel = sel,
-                ncross = ncross,
-                nprogeny = nprogeny,
-                misc = misc
+                **misc
             )
 
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
-            progeny_gmat, misc = self._mateop.mate(
-                t_cur = t,
-                t_max = self._t_max,
-                pgvmat = parent_gmat,
-                sel = sel,
-                ncross = ncross,
-                nprogeny = nprogeny
+            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._mateop.mate(
+                mcfg = mcfg,
+                genome = self._genome,
+                geno = self._geno,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
+                t_cur = self._t_cur,
+                t_max = self._t_max
             )
             lbook.log_mate(
-                t_cur = t,
-                t_max = self._t_max,
-                pgvmat = progeny_gmat,
-                misc = misc
-            )
-
-            ####################################################################
-            ####################### integrate genotypes ########################
-            ####################################################################
-            self._geno, misc = self._gintgop.gintegrate(
-                t_cur = t,
-                t_max = self._t_max,
-                pgvmat = progeny_gmat,
+                mcfg = mcfg,
+                genome = self._genome,
                 geno = self._geno,
-            )
-            lbook.log_gintegrate(
-                t_cur = t,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
+                t_cur = self._t_cur,
                 t_max = self._t_max,
-                geno = self._geno,
-                misc = misc
+                **misc
             )
 
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
-            bvmat, bvmat_true, misc = self._evalop.evaluate(
-                t_cur = t,
-                t_max = self._t_max,
-                pgvmat = self._geno["main"],
-                gmod_true = self._gmod["true"]
+            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._evalop.evaluate(
+                genome = self._genome,
+                geno = self._geno,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
+                t_cur = self._t_cur,
+                t_max = self._t_max
             )
             lbook.log_evaluate(
-                t_cur = t,
-                t_max = self._t_max,
-                bvmat = bvmat,
-                bvmat_true = bvmat_true,
-                misc = misc
-            )
-
-            ####################################################################
-            #################### integrate breeding values #####################
-            ####################################################################
-            self._bval, misc = self._bvintgop.bvintegrate(
-                t_cur = t,
-                t_max = self._t_max,
-                bvmat = bvmat,
-                bvmat_true = bvmat_true,
-                bval = self._bval,
-            )
-            lbook.log_bvintegrate(
-                t_cur = t,
-                t_max = self._t_max,
-                bval = self._bval,
-                misc = misc
-            )
-
-            ####################################################################
-            ######################### calibrate models #########################
-            ####################################################################
-            self._gmod, misc = self._calop.calibrate(
-                t_cur = t,
-                t_max = self._t_max,
+                genome = self._genome,
                 geno = self._geno,
+                pheno = self._pheno,
                 bval = self._bval,
-                gmod = self._gmod
-            )
-            lbook.log_calibrate(
-                t_cur = t,
-                t_max = self._t_max,
                 gmod = self._gmod,
-                misc = misc
+                t_cur = self._t_cur,
+                t_max = self._t_max,
+                **misc
             )
 
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            self._geno, self._bval, self._gmod, misc = self._sselop.sselect(
-                t_cur = t,
-                t_max = self._t_max,
+            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._sselop.sselect(
+                genome = self._genome,
                 geno = self._geno,
-                bval = self._bval,
-                gmod = self._gmod
-            )
-            lbook.log_sselect(
-                t_cur = t,
-                t_max = self._t_max,
-                geno = self._geno,
+                pheno = self._pheno,
                 bval = self._bval,
                 gmod = self._gmod,
-                misc = misc
+                t_cur = self._t_cur,
+                t_max = self._t_max
+            )
+            lbook.log_sselect(
+                genome = self._genome,
+                geno = self._geno,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
+                t_cur = self._t_cur,
+                t_max = self._t_max,
+                **misc
             )
 
             ####################################################################
@@ -422,7 +484,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             # increment time variables
             self._t_cur += 1
 
-    def evolve(self, nrep, ngen, lbook, loginit, verbose = False, **kwargs):
+    def evolve(self, nrep, ngen, lbook, loginit = True, verbose = False, **kwargs):
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,
@@ -445,59 +507,45 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             Whether to print the rep number.
         """
         # initialize if needed
-        if any(e is None for e in (self._start_geno, self._start_bval, self._start_gmod)):
+        if not self.is_initialized():
             self.initialize()
 
         # main replication loop
-        for r in range(1, nrep+1):
+        for r in range(nrep):
+            # increment rep in Logbook
+            lbook.rep += 1
+
             # verbose messages
             if verbose:
-                print("Simulating rep {0}".format(r))
+                print("Simulating rep {0} of {1} (Logbook entry {2})".format(r, nrep, lbook.rep))
 
-            # copy starting pointers (okay since operators replace, not overwrite)
-            self._geno = self._start_geno
-            self._bval = self._start_bval
-            self._gmod = self._start_gmod
+            # reset simulation to starting conditions
+            self.reset()
 
-            # set t_cur to zero (starting population)
-            self._t_cur = 0
-
-            # set rep in Logbook
-            lbook.rep = r
-
-            # cand_bvmat, cand_bvmat_true, misc = self._evalop.evaluate(
-            #     t_cur = self._t_cur,
-            #     t_max = self._t_max,
-            #     pgvmat = self._geno["cand"],
-            #     gmod_true = self._gmod["true"]
-            # )
-            #
-            # self._bval["cand"] = cand_bvmat
-            # self._bval["cand_true"] = cand_bvmat_true
-
-            # evaluate main population starting genotypes using evalop
-            main_bvmat, main_bvmat_true, misc = self._evalop.evaluate(
+            # evaluate breeding program at starting conditions
+            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._evalop.evaluate(
+                genome = self._genome,
+                geno = self._geno,
+                pheno = self._pheno,
+                bval = self._bval,
+                gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max,
-                pgvmat = self._geno["main"],
-                gmod_true = self._gmod["true"]
+                t_max = self._t_max
             )
-
-            self._bval["main"] = main_bvmat
-            self._bval["main_true"] = main_bvmat_true
-
-            # log initial conditions if needed
             if loginit:
-                lbook.log_initialize(
+                lbook.log_evaluate(
+                    genome = self._genome,
+                    geno = self._geno,
+                    pheno = self._pheno,
+                    bval = self._bval,
+                    gmod = self._gmod,
                     t_cur = self._t_cur,
                     t_max = self._t_max,
-                    geno = self._geno,
-                    bval = self._bval,
-                    gmod = self._gmod
+                    **misc
                 )
 
-            # set t_cur to 1 (first generation)
-            self._t_cur = 1
+            # increment t_cur from 0 to 1 (first generation)
+            self.t_cur += 1
 
             # evolve the population
             self.advance(
@@ -512,12 +560,47 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 ################################## Utilities ###################################
 ################################################################################
 def is_RecurrentSelectionBreedingProgram(v):
+    """
+    Determine whether an object is a RecurrentSelectionBreedingProgram.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a RecurrentSelectionBreedingProgram object instance.
+    """
     return isinstance(v, RecurrentSelectionBreedingProgram)
 
-def check_is_RecurrentSelectionBreedingProgram(v, vname):
-    if not isinstance(v, RecurrentSelectionBreedingProgram):
-        raise TypeError("variable '{0}' must be a RecurrentSelectionBreedingProgram".format(vname))
+def check_is_RecurrentSelectionBreedingProgram(v, varname):
+    """
+    Check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
 
-def cond_check_is_BreedingProgram(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, RecurrentSelectionBreedingProgram):
+        raise TypeError("'%s' must be a RecurrentSelectionBreedingProgram." % varname)
+
+def cond_check_is_RecurrentSelectionBreedingProgram(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a RecurrentSelectionBreedingProgram.
+    """
     if cond(v):
-        check_is_RecurrentSelectionBreedingProgram(v, vname)
+        check_is_RecurrentSelectionBreedingProgram(v, varname)

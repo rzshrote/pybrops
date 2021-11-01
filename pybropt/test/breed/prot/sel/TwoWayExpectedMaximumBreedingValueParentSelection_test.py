@@ -4,10 +4,10 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.psel import TwoWayExpectedMaximumBreedingValueParentSelection
+from pybropt.breed.prot.sel import TwoWayExpectedMaximumBreedingValueParentSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
-from pybropt.popgen.gmat import DensePhasedGenotypeVariantMatrix
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 
 ################################################################################
 ################################## Genotypes ###################################
@@ -59,7 +59,7 @@ def mat_taxa_grp():
 
 @pytest.fixture
 def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_xoprob, mat_taxa, mat_taxa_grp):
-    out = DensePhasedGenotypeVariantMatrix(
+    out = DensePhasedGenotypeMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
         vrnt_phypos = mat_phypos,

@@ -84,9 +84,9 @@ def test_mate(mprot, dpgvmat, sel, rng):
     nprogeny = 2
     s = 2
     progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
-    print("parents:\n", dpgvmat.mat)
-    print("progeny:\n", progeny.mat)
-    raise RuntimeError("stop")
+    # print("parents:\n", dpgvmat.mat)
+    # print("progeny:\n", progeny.mat)
+    # raise RuntimeError("stop")
     assert is_DensePhasedGenotypeMatrix(progeny)
     mat = progeny.mat
     for i in range(1,len(mat)):

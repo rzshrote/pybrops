@@ -62,6 +62,6 @@ class TrueBreedingValue(BreedingValueProtocol):
             check_is_GenomicModel(gpmod, "gpmod")
 
         # calculate true breeding values
-        bvmat = gpmod.predict(gmat)
+        bvmat = gpmod.gebv(gmat)
 
         return bvmat

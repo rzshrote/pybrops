@@ -7,6 +7,14 @@ class BreedingGraph:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class BreedingGraph.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(BreedingGraph, self).__init__()
 
     ############################################################################
@@ -35,12 +43,47 @@ class BreedingGraph:
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingGraph(v):
+    """
+    Determine whether an object is a BreedingGraph.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a BreedingGraph object instance.
+    """
     return isinstance(v, BreedingGraph)
 
-def check_is_BreedingGraph(v, vname):
-    if not isinstance(v, BreedingGraph):
-        raise TypeError("variable '{0}' must be a BreedingGraph".format(vname))
+def check_is_BreedingGraph(v, varname):
+    """
+    Check if object is of type BreedingGraph. Otherwise raise TypeError.
 
-def cond_check_is_BreedingGraph(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, BreedingGraph):
+        raise TypeError("'%s' must be a BreedingGraph." % varname)
+
+def cond_check_is_BreedingGraph(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type BreedingGraph. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a BreedingGraph.
+    """
     if cond(v):
-        check_is_BreedingGraph(v, vname)
+        check_is_BreedingGraph(v, varname)

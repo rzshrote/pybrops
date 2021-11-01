@@ -1,159 +1,109 @@
 class ParentSelectionOperator:
     """docstring for ParentSelectionOperator."""
 
-    ############################################################################
-    ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class ParentSelectionOperator.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(ParentSelectionOperator, self).__init__()
 
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         """
-        Select parents individuals for breeding.
+        Select individuals to serve as parents in a breeding program.
 
         Parameters
         ----------
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
+        genome : dict
+            Dictionary of genomes for the breeding program.
         geno : dict
-            A dict containing genotypic data for all breeding populations.
-            Must have the following fields:
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
+            Dictionary of genotypes for the breeding program.
+        pheno : dict
+            Dictionary of phenotypes for the breeding program.
         bval : dict
-            A dict containing breeding value data.
-            Must have the following fields:
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
+            Dictionary of breeding values for the breeding program.
         gmod : dict
-            A dict containing genomic models.
-            Must have the following fields:
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                true  | GenomicModel         | True genomic model for trait(s)
-        **kwargs
+            Dictionary of genomic models for the breeding program.
+        t_cur : int
+            Current time in the breeding program.
+        t_max : int
+            Deadline time for the breeding program.
+        **kwargs : **dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeVariantMatrix
-                A PhasedGenotypeVariantMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgvmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
+            A tuple of length 7: (mcfg, genome, geno, pheno, bval, gmod, misc)
+            Where:
+                mcfg : dict
+                    A dictionary of mating configurations for the breeding program.
+                genome : dict
+                    A dictionary of genomes for the breeding program.
+                geno : dict
+                    A dictionary of genotypes for the breeding program.
+                pheno : dict
+                    A dictionary of phenotypes for the breeding program.
+                bval : dict
+                    A dictionary of breeding values for the breeding program.
+                gmod : dict
+                    A dictionary of genomic models for the breeding program.
+                misc : dict
+                    A dictionary containing miscellaneous output.
         """
         raise NotImplementedError("method is abstract")
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs):
-        """
-        Return an objective function.
-        """
-        raise NotImplementedError("method is abstract")
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
-        """
-        Return a vectorized objective function.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def ppareto(self, t_cur, t_max, geno, bval, gmod, **kwargs):
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        geno : dict
-            A dict containing genotypic data for all breeding populations.
-            Must have the following fields:
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
-        bval : dict
-            A dict containing breeding value data.
-            Must have the following fields:
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-        gmod : dict
-            A dict containing genomic models.
-            Must have the following fields:
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                true  | GenomicModel         | True genomic model for trait(s)
-        **kwargs
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing three objects (frontier, sel_config, misc)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
-            misc : dict
-                A dictionary of miscellaneous output. (User specified)
-        """
-        raise NotImplementedError("method is abstract")
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
 def is_ParentSelectionOperator(v):
+    """
+    Determine whether an object is a ParentSelectionOperator.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a ParentSelectionOperator object instance.
+    """
     return isinstance(v, ParentSelectionOperator)
 
-def check_is_ParentSelectionOperator(v, vname):
-    if not isinstance(v, ParentSelectionOperator):
-        raise TypeError("variable '{0}' must be a ParentSelectionOperator".format(vname))
+def check_is_ParentSelectionOperator(v, varname):
+    """
+    Check if object is of type ParentSelectionOperator. Otherwise raise TypeError.
 
-def cond_check_is_ParentSelectionOperator(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, ParentSelectionOperator):
+        raise TypeError("'%s' must be a ParentSelectionOperator." % varname)
+
+def cond_check_is_ParentSelectionOperator(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type ParentSelectionOperator. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a ParentSelectionOperator.
+    """
     if cond(v):
-        check_is_ParentSelectionOperator(v, vname)
+        check_is_ParentSelectionOperator(v, varname)

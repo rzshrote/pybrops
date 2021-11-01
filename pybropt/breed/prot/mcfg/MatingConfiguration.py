@@ -19,8 +19,8 @@ class MatingConfiguration:
         cfg : dict
             A dictionary specifying the mating configuration.
             Dictionary must have the following fields:
-                pgvmat : PhasedGenotypeVariantMatrix
-                    A GenotypeVariantMatrix containing candidate breeding individuals.
+                pgvmat : PhasedGenotypeMatrix
+                    A GenotypeMatrix containing candidate breeding individuals.
                 sel : numpy.ndarray
                     An array of indices indicating the cross pattern.
                 ncross : numpy.ndarray

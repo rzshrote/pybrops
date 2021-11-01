@@ -1,31 +1,68 @@
-import inspect
 import pytest
 
 from pybropt.test import generic_test_abstract_methods
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.arch import BreedingGraph
 from pybropt.breed.arch import is_BreedingGraph
 from pybropt.breed.arch import check_is_BreedingGraph
 from pybropt.breed.arch import cond_check_is_BreedingGraph
 
+################################################################################
+################################ Test fixtures #################################
+################################################################################
 @pytest.fixture
-def bgraph():
+def arch():
     yield BreedingGraph()
 
-@pytest.fixture
-def vmethods(bgraph):
-    yield [m for m in dir(bgraph) if m.startswith('__') is False]
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(BreedingGraph)
 
-def test_abstract_methods(bgraph, vmethods):
-    generic_test_abstract_methods(bgraph, vmethods)
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(BreedingGraph, "__init__")
 
-def test_is_BreedingGraph(bgraph):
-    assert is_BreedingGraph(bgraph)
+################################################################################
+########################### Test abstract properties ###########################
+################################################################################
 
-def test_check_is_BreedingGraph():
+################################################################################
+############################# Test abstract methods ############################
+################################################################################
+# def test__is_abstract():
+#     generic_assert_abstract_method(BreedingGraph, "")
+
+################################################################################
+################### Test for conrete class utility functions ###################
+################################################################################
+def test_is_BreedingGraph_is_concrete():
+    generic_assert_concrete_function(is_BreedingGraph)
+
+def test_check_is_BreedingGraph_is_concrete():
+    generic_assert_concrete_function(check_is_BreedingGraph)
+
+def test_cond_check_is_BreedingGraph_is_concrete():
+    generic_assert_concrete_function(cond_check_is_BreedingGraph)
+
+################################################################################
+######################### Test class utility functions #########################
+################################################################################
+def test_is_BreedingGraph(arch):
+    assert is_BreedingGraph(arch)
+
+def test_check_is_BreedingGraph(arch):
+    with not_raises(TypeError):
+        check_is_BreedingGraph(arch, "arch")
     with pytest.raises(TypeError):
-        check_is_BreedingGraph(None, "None")
-
-def test_cond_check_is_BreedingGraph():
-    with pytest.raises(TypeError):
-        cond_check_is_BreedingGraph(0, "0")
+        check_is_BreedingGraph(None, "arch")

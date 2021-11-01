@@ -952,7 +952,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
         vrnt_name = numpy.object_(vrnt_name)    # convert to object array
 
-        pvm = DensePhasedGenotypeVariantMatrix(
+        pvm = DensePhasedGenotypeMatrix(
             mat = mat,
             vrnt_chrgrp = vrnt_chrgrp,
             vrnt_phypos = vrnt_phypos,

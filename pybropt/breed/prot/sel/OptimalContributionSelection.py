@@ -69,7 +69,7 @@ class OptimalContributionSelection(SelectionProtocol):
             bvtype = self.bvtype            # get default option
         bvtype = bvtype.lower()             # convert bvtype to lowercase
         if bvtype == "gebv":                # use GEBVs estimated from genomic model
-            return gpmod.predict(gmat).mat  # calculate GEBVs
+            return gpmod.gebv(gmat).mat     # calculate GEBVs
         elif bvtype == "ebv":               # use EBVs estimated by some means
             return bvmat.mat                # get breeding values
         elif bvtype == "tbv":               # use true BVs
@@ -201,7 +201,7 @@ class OptimalContributionSelection(SelectionProtocol):
                 j += 1                                  # increment beyond index
         return sel
 
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, inbfn = None, cmatcls = None, bvtype = None **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, inbfn = None, cmatcls = None, bvtype = None, **kwargs):
         """
         Select parents individuals for breeding.
 

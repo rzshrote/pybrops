@@ -1,95 +1,57 @@
 class EvaluationOperator:
     """docstring for EvaluationOperator."""
 
-    ############################################################################
-    ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class EvaluationOperator.
+
+        Parameters
+        ----------
+        **kwargs : **dict
+            Additional keyword arguments.
+        """
         super(EvaluationOperator, self).__init__()
 
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ################ environment parameters ################
-    def nenv():
-        doc = "The nenv property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    nenv = property(**nenv())
-
-    def var_E():
-        doc = "The var_E property."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    var_E = property(**var_E())
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def set_h2(self, pgvmat, gmod_true, h2):
+    def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         """
-        Set the narrow sense heritability for environments.
+        Evaluate individuals in a breeding program.
 
         Parameters
         ----------
-        pgvmat : PhasedGenotypeVariantMatrix
-            Founder genotypes.
-        gmod_true : GenomicModel
-            True genomic model.
-        h2 : float, numpy.ndarray
-            Narrow sense heritability.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def set_H2(self, pgvmat, gmod_true, H2):
-        """
-        Set the broad sense heritability for environments.
-
-        Parameters
-        ----------
-        pgvmat : PhasedGenotypeVariantMatrix
-            Founder genotypes.
-        gmod_true : GenomicModel
-            True genomic model.
-        h2 : float, numpy.ndarray
-            Narrow sense heritability.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
-        """
-        Parameters
-        ----------
+        genome : dict
+            Dictionary of genomes for the breeding program.
+        geno : dict
+            Dictionary of genotypes for the breeding program.
+        pheno : dict
+            Dictionary of phenotypes for the breeding program.
+        bval : dict
+            Dictionary of breeding values for the breeding program.
+        gmod : dict
+            Dictionary of genomic models for the breeding program.
         t_cur : int
-            Current generation number.
+            Current time in the breeding program.
         t_max : int
-            Maximum (deadline) generation number.
-        pgvmat : PhasedGenotypeVariantMatrix
-            Genotypes to evaluate.
-        gmod_true : GenomicModel
-            True genomic model.
+            Deadline time for the breeding program.
+        **kwargs : **dict
+            Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing two elements: (bvmat, misc)
-            bvmat : BreedingValueMatrix
-                A matrix of breeding values
-            bvmat_true : BreedingValueMatrix
-                A matrix of true breeding values
-            misc : dict
-                Miscellaneous output (user defined).
+            A tuple of length 6: (genome, geno, pheno, bval, gmod, misc)
+            Where:
+                genome : dict
+                    A dictionary of genomes for the breeding program.
+                geno : dict
+                    A dictionary of genotypes for the breeding program.
+                pheno : dict
+                    A dictionary of phenotypes for the breeding program.
+                bval : dict
+                    A dictionary of breeding values for the breeding program.
+                gmod : dict
+                    A dictionary of genomic models for the breeding program.
+                misc : dict
+                    A dictionary containing miscellaneous output.
         """
         raise NotImplementedError("method is abstract")
 
@@ -99,12 +61,47 @@ class EvaluationOperator:
 ################################## Utilities ###################################
 ################################################################################
 def is_EvaluationOperator(v):
+    """
+    Determine whether an object is a EvaluationOperator.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a EvaluationOperator object instance.
+    """
     return isinstance(v, EvaluationOperator)
 
-def check_is_EvaluationOperator(v, vname):
-    if not isinstance(v, EvaluationOperator):
-        raise TypeError("variable '{0}' must be a EvaluationOperator".format(vname))
+def check_is_EvaluationOperator(v, varname):
+    """
+    Check if object is of type EvaluationOperator. Otherwise raise TypeError.
 
-def cond_check_is_EvaluationOperator(v, vname, cond=(lambda s: s is not None)):
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, EvaluationOperator):
+        raise TypeError("'%s' must be a EvaluationOperator." % varname)
+
+def cond_check_is_EvaluationOperator(v, varname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type EvaluationOperator. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a EvaluationOperator.
+    """
     if cond(v):
-        check_is_EvaluationOperator(v, vname)
+        check_is_EvaluationOperator(v, varname)
