@@ -3,7 +3,7 @@ import numbers
 import pandas
 
 from . import PhenotypingProtocol
-from pybropt.popgen.ptdf import PandasPhenotypeDataFrame
+from pybropt.popgen.ptdf import DictPhenotypeDataFrame
 from pybropt.model.gmod import check_is_GenomicModel
 
 from pybropt.core.error import check_is_positive
@@ -266,7 +266,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         Returns
         -------
         out : PhenotypeDataFrame
-            DataFrame containing phenotypes.
+            A PhenotypeDataFrame containing phenotypes.
         """
         ################### set default parameters if needed ###################
         # set default gpmod
@@ -499,8 +499,8 @@ class G_E_Phenotyping(PhenotypingProtocol):
         analysis_type = numpy.object_(analysis_type)
         analysis_effect = numpy.object_(analysis_effect)
 
-        # construct PandasPhenotypeDataFrame
-        ptdf = PandasPhenotypeDataFrame(
+        # construct DictPhenotypeDataFrame
+        ptdf = DictPhenotypeDataFrame(
             df = df,
             analysis_type = analysis_type,
             analysis_effect = analysis_effect,
@@ -528,15 +528,11 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             check_is_GenomicModel(gpmod, "gpmod")
 
-        # get matrices
-        x = pgmat.tacount() # (n,p) genotype matrix
-        b = gpmod.beta      # (p,t) marker effect matrix
-
-        # get breeding values
-        y = x @ b           # (n,p) @ (p,t) -> (n,t)
+        # get GEBVs
+        gebv = gpmod.gebv(pgmat)
 
         # get variance of breeding values
-        var_A = y.var(0)    # (n,t) -> (t,)
+        var_A = gebv.tvar() # (t,)
 
         # calculate environmental variance
         # var_E = (1 - h2)/h2 * var_A - var_G

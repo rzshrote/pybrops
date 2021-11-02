@@ -18,18 +18,18 @@ class BreedingValueProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, obj, gmat, **kwargs):
+    def estimate(self, ptobj, gtobj, **kwargs):
         """
         Estimate breeding values.
 
         Parameters
         ----------
-        obj : PhenotypeDataFrame, BreedingValueMatrix
-            Phenotype dataframe or breeding value matrix to use to estimate
-            breeding values.
-        gmat : GenotypeMatrix
-            Genotype matrix to use for estimation. Also used to align genotypes
-            in estimation output.
+        ptobj : PhenotypeDataFrame
+            An object containing phenotype data. Must be a phenotype data frame.
+        gtobj : GenotypeMatrix
+            An object containing genotype data. Must be a genotype matrix.
+        **kwargs : **dict
+            Additional keyword arguments.
 
         Returns
         -------

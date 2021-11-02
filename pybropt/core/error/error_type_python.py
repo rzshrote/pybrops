@@ -6,6 +6,35 @@ from . import generic_cond_check_isinstance
 ################################################################################
 ################## basic check functions for basic data types ##################
 ################################################################################
+def check_isinstance(v, vname, vtype):
+    """
+    Generic check type function.
+
+    Parameters
+    ----------
+    v : object
+        Reference to object variable.
+    vname : str
+        Name associated with the object variable.
+    vtype : type, tuple
+        type : Type associated with the object variable.
+        tuple : Tuple of acceptable types (logical or) for the object variable.
+    """
+    if not isinstance(v, vtype):
+        tname = None
+        if isinstance(vtype, tuple):
+            tname = ""
+            l = len(vtype)
+            for e, i in enumerate(vtype):
+                tname += e.__name__
+                if i < l - 2:
+                    tname += ", "
+                elif i < l - 1:
+                    tname += ", or "
+        else:
+            tname = vtype.__name__
+        raise TypeError("variable '{0}' must of type {1}".format(vname, tname))
+
 def check_is_bool(v, vname):
     generic_check_isinstance(v, vname, bool)
 
@@ -58,12 +87,10 @@ def check_is_Integral(v, vname):
 ################ compound check functions for basic data types #################
 ################################################################################
 def check_is_array_like(v, vname):
-    if not hasattr(v, "__len__"):
-        raise TypeError("'{0}' must have attribute __len__".format(vname))
-    if not hasattr(v, "__iter__"):
-        raise TypeError("'{0}' must have attribute __iter__".format(vname))
-    if not hasattr(v, "__getitem__"):
-        raise TypeError("'{0}' must have attribute __getitem__".format(vname))
+    alattr = ("__len__","__iter__","__getitem__")
+    for a in alattr:
+        if not hasattr(v, a):
+            raise TypeError("'{0}' must have attribute '{1}' to be array_like".format(vname,a))
 
 def check_is_str_or_iterable(v, vname):
     if not (isinstance(s, str) or hasattr(s, "__iter__")):

@@ -33,19 +33,22 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, obj, gmat, gpmod = None, **kwargs):
+    def estimate(self, ptobj, gtobj, gpmod = None, **kwargs):
         """
         Estimate breeding values.
 
         Parameters
         ----------
-        pt_or_bv : PhenotypeDataFrame, BreedingValueMatrix
-            Phenotype dataframe or breeding value matrix to use to estimate
-            breeding values.
-            Unused by this class.
-        gmat : PhasedGenotypeMatrix
-            Genotype matrix to use for breeding value calculation.
-            Also used to align genotypes in estimation output.
+        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+            An object containing phenotype data. Must be a matrix of breeding
+            values or a phenotype data frame.
+        gtobj : GenotypeMatrix, numpy.ndarray
+            An object containing genotype data. Must be a matrix of genotype
+            values.
+        gpmod : GenomicModel
+            Genomic model used for predicting genotypes.
+        **kwargs : **dict
+            Additional keyword arguments.
 
         Returns
         -------
