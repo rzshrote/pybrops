@@ -36,6 +36,11 @@ def test_init_is_concrete():
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
+def test_location_is_abstract():
+    generic_assert_abstract_property(BreedingValueMatrix, "location")
+
+def test_scale_is_abstract():
+    generic_assert_abstract_property(BreedingValueMatrix, "scale")
 
 ################################################################################
 ############################# Test abstract methods ############################

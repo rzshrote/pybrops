@@ -4,7 +4,7 @@ from . import DenseBreedingValueMatrix
 class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     """docstring for DenseEstimatedBreedingValueMatrix."""
 
-    def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
         Constructor for the concrete class DenseEstimatedBreedingValueMatrix.
 
@@ -19,11 +19,15 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         """
         super(DenseEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
+            location = location,
+            scale = scale,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = trait,
             **kwargs
         )
+
+
 
 ################################################################################
 ################################## Utilities ###################################

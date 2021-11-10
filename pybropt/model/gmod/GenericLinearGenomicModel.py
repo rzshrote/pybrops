@@ -22,6 +22,7 @@ from pybropt.core.util import save_dict_to_hdf5
 from pybropt.core.util import is_ndarray
 from pybropt.popgen.gmat import is_GenotypeMatrix
 from pybropt.popgen.bvmat import is_BreedingValueMatrix
+from pybropt.popgen.ptdf import is_PhenotypeDataFrame
 from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
 
 class GenericLinearGenomicModel(LinearGenomicModel):
@@ -315,8 +316,8 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         Y_hat = self.predict_numpy(X, Z, **kwargs)
 
         # create output breeding value matrix
-        out = DenseGenomicEstimatedBreedingValueMatrix(
-            mat = Y_hat,
+        out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
+            a = Y_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait
@@ -403,7 +404,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         """
         # process ptobj
         if is_BreedingValueMatrix(ptobj):
-            Y = ptobj.mat
+            Y = ptobj.descale()
         elif is_PhenotypeDataFrame(ptobj):
             raise RuntimeError("not implmented yet")
         elif is_ndarray(ptobj):
@@ -493,8 +494,8 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gebv_hat = self.gebv_numpy(Z, **kwargs)
 
         # create output breeding value matrix
-        out = DenseGenomicEstimatedBreedingValueMatrix(
-            mat = gebv_hat,
+        out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
+            a = gebv_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait

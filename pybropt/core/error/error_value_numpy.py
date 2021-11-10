@@ -65,6 +65,14 @@ def check_ndarray_size(v, vname, vsize):
 def check_ndarray_sum(v, vname, vsum, vaxis):
     generic_check_ndarray_sum(v, vname, vsum, vaxis)
 
+def check_ndarray_mean_is_approx(v, vname, vmean, vaxis = None, rtol = 1e-5, atol = 1e-8):
+    if not numpy.allclose(v.mean(vaxis), vmean, rtol = rtol, atol = atol):
+        raise ValueError("'{0}' must have a mean of {1} along axis {2}".format(vname,vmean,vaxis))
+
+def check_ndarray_std_is_approx(v, vname, vstd, vaxis = None, rtol = 1e-5, atol = 1e-8):
+    if not numpy.allclose(v.std(vaxis), vstd, rtol = rtol, atol = atol):
+        raise ValueError("'{0}' must have a standard deviation of {1} along axis {2}".format(vname,vmean,vaxis))
+
 ############### generic_check_ndarray_shape ################
 def check_ndarray_shape(v, vname, vshape, vaxis = None):
     generic_check_ndarray_shape(v, vname, vshape, vaxis)
