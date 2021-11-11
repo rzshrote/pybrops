@@ -48,17 +48,13 @@ class MyInitMatingOperator(MatingOperator):
         return genome, geno, pheno, bval, gmod, misc
 
 class MyInitEvaluationOperator(EvaluationOperator):
-    def __init__(self, **kwargs):
+    def __init__(self, ptprot, **kwargs):
         super(MyInitEvaluationOperator, self).__init__(**kwargs)
-        self.pt = G_E_Phenotyping(
-            gpmod = gmod["true"],
-            nenv = 4,
-
-        )
+        self.ptprot = ptprot
     def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
-        progeny_bv = gmod["true"].gebv(genome["progeny"])
         pass
-
+    def set_h2(self, ):
+        pass
 
 class MyInitializationOperator(InitializationOperator):
     def __init__(self, arg):
