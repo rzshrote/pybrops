@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+
+import numpy
+import pybropt.core.random
+from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmap import ExtendedGeneticMap
+from pybropt.popgen.gmap import HaldaneMapFunction
+from pybropt.model.gmod import GenericLinearGenomicModel
+from pybropt.breed.op.init import InitializationOperator
+from pybropt.breed.prot.mate import FamilyGroupTwoWayDHCross
+
+# seed python random and numpy random
+pybropt.core.random.seed(941)
+
+def build_gmap(path):
+    """Load genetic map."""
+    genetic_map = ExtendedGeneticMap.from_egmap(path)   # read from file
+    genetic_map.group()                                 # group markers
+    genetic_map.build_spline()                          # construct spline
+    assert genetic_map.is_congruent()                   # make sure we don't have map inversions
+    return genetic_map
+
+def build_gmapfn():
+    """Create recombination mapping function."""
+    gmapfn = HaldaneMapFunction()                   # use generic Haldane function
+    return gmapfn
+
+def build_dpgmat(path, gmap, gmapfn):
+    """Load genotype matrix."""
+    gmat = DensePhasedGenotypeMatrix.from_vcf(path) # read from file
+    gmat.group()                                    # group markers
+    gmat.interp_xoprob(gmap, gmapfn)                # interpolate genetic positions
+    return gmat
+
+def build_gmod_true(gmat):
+    nvrnt = gmat.nvrnt
+    # (1,1); model intercept
+    beta = numpy.float64([[100.0]])
+    # (nvrnt,1); randomly assign marker weights
+    u = numpy.random.normal(0, 0.05, (nvrnt,1))
+    # (1,); trait name
+    trait = numpy.object_(["protein"])
+    model_name = "protein_test"
+    glgmod = GenericLinearGenomicModel(
+        beta = beta,
+        u = u,
+        trait = trait,
+        model_name = model_name,
+        params = None
+    )
+    return glgmod
+
+gmap = build_gmap("McMullen_2009_US_NAM_corrected.M.egmap")
+print("loaded genetic map")
+gmapfn = build_gmapfn()
+print("built genetic map function")
+dpgmat = build_dpgmat("widiv_2000SNPs_imputed_chr1-10_APGv4_noNA_noHet_q0.2_Q0.8.vcf.gz", gmap, gmapfn)
+print("loaded genotypes")
+gmod_true = build_gmod_true(dpgmat)
+print("built true genomic model")
+
+class MyInitializationOperator(InitializationOperator):
+    def __init__(self, founder_genome, founder_geno, founder_pheno, founder_bval, founder_gmod, **kwargs):
+        super(MyInitializationOperator, self).__init__(**kwargs)
+    @classmethod
+    def from_dpgmat(cls, dpgmat, mateprot, nfounder, founder_ncross, founder_nprogeny, gqlen, gmod_true):
+        # get default random number generator
+        rng = pybropt.core.random
+
+        ####################################################
+        ### step 1: count available taxa
+        ####################################################
+        ntaxa = dpgmat.ntaxa
+
+        ###################################################################
+        ### step 2: define and populate dictionaries containing founder:
+        ###             1) genomes
+        ###             2) genotypes
+        ###             3) phenotypes
+        ###             4) breeding values
+        ###             5) genomic models
+        ###################################################################
+        # define founding dictionaries
+        founder_genome = {"cand":None,      "main":None,      "queue":[]}
+        founder_geno =   {"cand":None,      "main":None,      "queue":[]}
+        founder_pheno =  {"cand":None,      "main":None}
+        founder_bval =   {"cand":None,      "main":None}
+        founder_gmod =   {"cand":gmod_true, "main":gmod_true, "true":gmod_true}
+
+        #######################################
+        ### Main populataion initialization ###
+        #######################################
+        # get random selections (pselect)
+        sel = rng.choice(ntaxa, nfounder, replace = False)
+
+        # fill queue with random matings of founders
+        for _ in range(gqlen):
+            print(sel)
+            # mate random selections (mate)
+            pgmat, misc = mateprot.mate(
+                pgmat = dpgmat,
+                sel = sel,
+                ncross = founder_ncross,
+                nprogeny = founder_nprogeny
+            )
+
+            # add progeny to queue
+            founder_geno["queue"].append(pgmat)
+
+            # randomly shuffle founders again to get new crosses
+            rng.shuffle(sel)
+
+        # construct object
+        out = cls(
+            founder_genome = founder_genome,
+            founder_geno = founder_geno,
+            founder_pheno = founder_pheno,
+            founder_bval = founder_bval,
+            founder_gmod = founder_gmod
+        )
+
+        return out
+
+mateprot = FamilyGroupTwoWayDHCross()
+
+initop = MyInitializationOperator.from_dpgmat(
+    dpgmat = dpgmat,
+    mateprot = mateprot,
+    nfounder = 40,
+    founder_ncross = 1,
+    founder_nprogeny = 80,
+    gqlen = 6,
+    gmod_true = gmod_true
+)

@@ -55,7 +55,6 @@ class MyInitEvaluationOperator(EvaluationOperator):
             nenv = 4,
 
         )
-
     def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         progeny_bv = gmod["true"].gebv(genome["progeny"])
         pass
@@ -129,38 +128,12 @@ class MyInitializationOperator(InitializationOperator):
             nprogeny = founder_nprogeny
         )
 
-        # integrate genotypes (gintegrate)
-        founder_geno, misc = gintgop.gintegrate(
-            t_cur = -burnin,
-            t_max = 0,
-            pgvmat = pgvmat,
-            geno = founder_geno,
-        )
-
         # phenotype main population (evaluate)
         bvmat, bvmat_true, misc = evalop.evaluate(
             t_cur = -burnin,
             t_max = 0,
             pgvmat = founder_geno["main"],
             gmod_true = founder_gmod["true"]
-        )
-
-        # assign breeding values (bvintegrate)
-        founder_bval, misc = bvintgop.bvintegrate(
-            t_cur = -burnin,
-            t_max = 0,
-            bvmat = bvmat,
-            bvmat_true = bvmat_true,
-            bval = founder_bval,
-        )
-
-        # calibrate genomic model (calibrate)
-        founder_gmod, misc = calop.calibrate(
-            t_cur = -burnin,
-            t_max = 0,
-            geno = founder_geno,
-            bval = founder_bval,
-            gmod = founder_gmod
         )
 
         # select survivors to fill breeding candidates (sselect)
@@ -184,55 +157,6 @@ class MyInitializationOperator(InitializationOperator):
             bvintgop = bvintgop,
             calop = calop,
             sselop = sselop,
-        )
-
-        return geninitop
-
-    @staticmethod
-    def from_vcf(fname, nfounder, founder_ncross, founder_nprogeny, gqlen, gmod_true, burnin, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, rng = None):
-        """
-        Create a GenerationalInitializationOperator from a VCF file.
-
-        Initializes a "main" population with genotypes, and queue populations
-        of various lengths. Uses the individuals in "main" to select a set of
-        parental candidates using a provided SurvivorSelectionOperator. Then,
-        a provided ParentSelectionOperator, and Mating operator is used to
-        select and mate parents to create one additional generation that is
-        added to the queue.
-
-        Parameters
-        ----------
-        fname : str
-            VCF file name.
-        size : dict
-            Field | Type        | Description
-            ------+-------------+-----------------------------------------------
-            cand  | None        | None
-            main  | int         | Number of taxa in main breeding population.
-            queue | list of int | Number of taxa in breeding populations on queue.
-        rng : numpy.random.Generator
-            A random number generator object.
-        """
-        # step 1: load genotype matrix
-        dpgmat = DensePhasedGenotypeMatrix.from_vcf(fname)
-
-        # step 2: create from genotype matrix
-        geninitop = GenerationalInitializationOperator.from_dpgmat(
-            dpgmat = dpgmat,
-            nfounder = nfounder,
-            founder_ncross = founder_ncross,
-            founder_nprogeny = founder_nprogeny,
-            gqlen = gqlen,
-            gmod_true = gmod_true,
-            burnin = burnin,
-            pselop = pselop,
-            mateop = mateop,
-            gintgop = gintgop,
-            evalop = evalop,
-            bvintgop = bvintgop,
-            calop = calop,
-            sselop = sselop,
-            rng = rng
         )
 
         return geninitop

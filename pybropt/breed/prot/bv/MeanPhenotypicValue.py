@@ -98,11 +98,9 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         # stack results into an array
         mat = numpy.stack(mat, axis = 1)    # add each vector as a column
 
-        # TODO: mean center values and add intercepts
-
         # construct breeding value matrix
-        out = DenseEstimatedBreedingValueMatrix(
-            mat = mat,
+        out = DenseEstimatedBreedingValueMatrix.from_numpy(
+            a = mat,
             taxa = gtobj.taxa,
             taxa_grp = gtobj.taxa_grp,
             trait = numpy.object_(self.trait_col),
