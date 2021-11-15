@@ -12,7 +12,7 @@ class ParentSelectionOperator:
         """
         super(ParentSelectionOperator, self).__init__()
 
-    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         """
         Select individuals to serve as parents in a breeding program.
 
@@ -32,13 +32,17 @@ class ParentSelectionOperator:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs : **dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple of length 7: (mcfg, genome, geno, pheno, bval, gmod, misc)
+            A tuple of length 6: (mcfg, genome, geno, pheno, bval, gmod)
             Where:
                 mcfg : dict
                     A dictionary of mating configurations for the breeding program.
@@ -52,8 +56,6 @@ class ParentSelectionOperator:
                     A dictionary of breeding values for the breeding program.
                 gmod : dict
                     A dictionary of genomic models for the breeding program.
-                misc : dict
-                    A dictionary containing miscellaneous output.
         """
         raise NotImplementedError("method is abstract")
 

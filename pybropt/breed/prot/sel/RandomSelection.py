@@ -66,7 +66,7 @@ class RandomSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs):
         """
         Select parents for breeding.
 
@@ -86,6 +86,10 @@ class RandomSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
         nparent : int, None
@@ -103,7 +107,7 @@ class RandomSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgmat, sel, ncross, nprogeny, misc)
+            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
             pgmat : PhasedGenotypeMatrix
                 A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
@@ -113,8 +117,6 @@ class RandomSelection(SelectionProtocol):
                 Number of crosses to perform per cross pattern.
             nprogeny : numpy.ndarray
                 Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
         """
         # get default parameters if any are None
         if nparent is None:
@@ -133,10 +135,7 @@ class RandomSelection(SelectionProtocol):
             replace = replace
         )
 
-        # empty misc dictionary
-        misc = {}
-
-        return pgmat, sel, ncross, nprogeny, misc
+        return pgmat, sel, ncross, nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
@@ -192,7 +191,7 @@ class RandomSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Random selection has no Pareto frontier since it has no objective function.
         Raises RuntimeError.

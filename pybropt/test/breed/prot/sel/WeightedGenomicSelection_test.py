@@ -238,7 +238,7 @@ def test_objfn_multiobjective(wgs, dgmat, bvmat, glgmod, ncross, nprogeny, mat_i
         # assert numpy.all(taxon_bv == objfn([i]))
 
 def test_pareto(wgs, dgmat, bvmat, glgmod, objfn_wt):
-    frontier, sel_config, misc = wgs.pareto(
+    frontier, sel_config = wgs.pareto(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,

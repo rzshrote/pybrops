@@ -41,7 +41,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, ptobj, gtobj, **kwargs):
+    def estimate(self, ptobj, gtobj, miscout = None, **kwargs):
         """
         Estimate breeding values by taking the mean performance.
 
@@ -53,13 +53,17 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
             An object containing genotype data. Must be a genotype matrix.
             This genotype object is used to align taxa orders in the returned
             BreedingValueMatrix.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs : **dict
             Additional keyword arguments.
 
         Returns
         -------
-        bvmat : BreedingValueMatrix
-            Breeding value matrix.
+        out : BreedingValueMatrix
+            A matrix of breeding values.
         """
         # check arguments
         check_is_PhenotypeDataFrame(ptobj, "ptobj")
@@ -99,7 +103,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         mat = numpy.stack(mat, axis = 1)    # add each vector as a column
 
         # construct breeding value matrix
-        out = DenseEstimatedBreedingValueMatrix.from_numpy(
+        bvmat = DenseEstimatedBreedingValueMatrix.from_numpy(
             a = mat,
             taxa = gtobj.taxa,
             taxa_grp = gtobj.taxa_grp,
@@ -107,4 +111,4 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
             **kwargs
         )
 
-        return out
+        return bvmat

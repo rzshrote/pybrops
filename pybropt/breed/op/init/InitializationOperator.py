@@ -12,19 +12,23 @@ class InitializationOperator:
         """
         super(InitializationOperator, self).__init__()
 
-    def initialize(self, **kwargs):
+    def initialize(self, miscout, **kwargs):
         """
         Initialize a breeding program.
 
         Parameters
         ----------
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs : **dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple of length 6: (genome, geno, pheno, bval, gmod, misc)
+            A tuple of length 5: (genome, geno, pheno, bval, gmod)
             Where:
                 genome : dict
                     A dictionary of genomes for the breeding program.
@@ -36,8 +40,6 @@ class InitializationOperator:
                     A dictionary of breeding values for the breeding program.
                 gmod : dict
                     A dictionary of genomic models for the breeding program.
-                misc : dict
-                    A dictionary containing miscellaneous output.
         """
         raise NotImplementedError("method is abstract")
 

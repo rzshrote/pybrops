@@ -65,7 +65,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -75,6 +75,10 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         geno : dict
             A dict containing genotypic data for all breeding populations.
             Must have the following fields:
@@ -109,7 +113,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
+            A tuple containing four objects: (pgvmat, sel, ncross, nprogeny)
             pgvmat : PhasedGenotypeMatrix
                 A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
@@ -119,8 +123,6 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 Number of crosses to perform per cross pattern.
             nprogeny : numpy.ndarray
                 Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
         """
         # get default parameters if any are None
         if nparent is None:
@@ -179,15 +181,16 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             self.rng.shuffle(sel)
 
             # get GEBVs for reference
-            misc = {"ebv" : ebv}
+            if miscout is not None:
+                miscout["ebv"] = ebv
 
-            return pgmat, sel, ncross, nprogeny, misc
+            return pgmat, sel, ncross, nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
         elif method == "pareto":
             # get the pareto frontier
-            frontier, sel_config, misc = self.pareto(
+            frontier, sel_config = self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -195,6 +198,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
+                miscout = miscout,
                 nparent = nparent,
                 objfn_trans = objfn_trans,
                 objfn_trans_kwargs = objfn_trans_kwargs,
@@ -207,11 +211,12 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             # get index of maximum score
             ix = score.argmax()
 
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], ncross, nprogeny, misc
+            return pgmat, sel_config[ix], ncross, nprogeny
 
         # raise error since method is not supported
         else:
@@ -267,7 +272,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -293,7 +298,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing three objects (frontier, sel_config, misc)
+            A tuple containing two objects (frontier, sel_config)
             Elements
             --------
             frontier : numpy.ndarray
@@ -307,8 +312,6 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 Where:
                     'q' is the number of points in the frontier.
                     'k' is the number of search space decision variables.
-            misc : dict
-                A dictionary of miscellaneous output. (User specified)
         """
         if nparent is None:
             nparent = self.nparent
@@ -348,7 +351,11 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             objfn_wt = objfn_wt             # weights to apply to each objective
         )
 
-        return frontier, sel_config, misc
+        if miscout is not None:
+            for k,i in misc.items():
+                miscout[k] = i
+
+        return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################

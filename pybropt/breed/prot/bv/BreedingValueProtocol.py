@@ -18,7 +18,7 @@ class BreedingValueProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, ptobj, gtobj, **kwargs):
+    def estimate(self, ptobj, gtobj, miscout, **kwargs):
         """
         Estimate breeding values.
 
@@ -28,13 +28,17 @@ class BreedingValueProtocol:
             An object containing phenotype data. Must be a phenotype data frame.
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a genotype matrix.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs : **dict
             Additional keyword arguments.
 
         Returns
         -------
-        bvmat : BreedingValueMatrix
-            Breeding value matrix.
+        out : BreedingValueMatrix
+            A matrix of breeding values.
         """
         raise NotImplementedError("method is abstract")
 

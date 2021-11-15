@@ -1,3 +1,5 @@
+import numbers
+
 from . import generic_check_isinstance
 
 from . import generic_default_cond

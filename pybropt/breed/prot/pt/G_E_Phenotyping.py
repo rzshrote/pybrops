@@ -9,6 +9,9 @@ from pybropt.model.gmod import check_is_GenomicModel
 from pybropt.core.error import check_is_positive
 from pybropt.core.error import check_ndarray_is_1d
 from pybropt.core.error import check_ndarray_size
+from pybropt.core.error import check_is_Integral
+from pybropt.core.error import check_ndarray_is_positive
+from pybropt.core.error import check_ndarray_dtype_is_integer
 
 class G_E_Phenotyping(PhenotypingProtocol):
     """docstring for G_E_Phenotyping."""
@@ -108,7 +111,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 check_is_positive(value, "var_env") # make sure >= 0 variance
                 self._var_env = numpy.full(         # allocate empty array
                     self.gpmod.ntrait,              # ntrait length
-                    var_env,                        # fill value
+                    value,                          # fill value
                     dtype = "float64"               # must be float64
                 )
             elif isinstance(value, numpy.ndarray):
@@ -141,7 +144,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 check_is_positive(value, "var_rep") # make sure >= 0 variance
                 self._var_rep = numpy.full(         # allocate empty array
                     self.gpmod.ntrait,              # ntrait length
-                    var_rep,                        # fill value
+                    value,                          # fill value
                     dtype = "float64"               # must be float64
                 )
             elif isinstance(value, numpy.ndarray):
@@ -175,7 +178,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 check_is_positive(value, "var_err") # make sure >= 0 variance
                 self._var_err = numpy.full(         # allocate empty array
                     self.gpmod.ntrait,              # ntrait length
-                    var_err,                        # fill value
+                    value,                          # fill value
                     dtype = "float64"               # must be float64
                 )
             elif isinstance(value, numpy.ndarray):
@@ -240,7 +243,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, gpmod = None, nenv = None, var_env = None, nrep = None, var_rep = None, var_err = None, **kwargs):
+    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, var_env = None, nrep = None, var_rep = None, var_err = None, **kwargs):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -248,6 +251,10 @@ class G_E_Phenotyping(PhenotypingProtocol):
         ----------
         pgmat : PhasedGenotypeMatrix
             Genomes of the individuals to phenotype.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
         nenv : int
@@ -266,7 +273,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         Returns
         -------
         out : PhenotypeDataFrame
-            A PhenotypeDataFrame containing phenotypes.
+            A PhenotypeDataFrame containing phenotypes for individuals.
         """
         ################### set default parameters if needed ###################
         # set default gpmod
@@ -532,15 +539,15 @@ class G_E_Phenotyping(PhenotypingProtocol):
         gebv = gpmod.gebv(pgmat)
 
         # get variance of breeding values
-        var_A = gebv.tvar() # (t,)
+        var_A = gebv.tvar(descale = True) # (t,)
 
         # calculate environmental variance
-        # var_E = (1 - h2)/h2 * var_A - var_G
-        # we assume var_G is zero, so var_E = (1 - h2)/h2 * var_A
+        # var_err = (1 - h2)/h2 * var_A - var_G
+        # we assume var_G is zero, so var_err = (1 - h2)/h2 * var_A
         # scalar - (t,) -> (t,)
         # (t,) / (t,) -> (t,)
         # (t,) * (t,) -> (t,)
-        self.var_E = (1.0 - h2) / h2 * var_A
+        self.var_err = (1.0 - h2) / h2 * var_A
 
     def set_H2(self, H2, pgmat, gpmod = None, **kwargs):
         """

@@ -18,7 +18,7 @@ class GenotypingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def genotype(self, pgmat, **kwargs):
+    def genotype(self, pgmat, miscout, **kwargs):
         """
         Genotype a genome.
 
@@ -26,13 +26,17 @@ class GenotypingProtocol:
         ----------
         pgmat : PhasedGenotypeMatrix
             A phased genotype matrix representing the whole simulated genome.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        gmat : GenotypeMatrix
-            A genotype matrix representing genotyped individuals.
+        out : GenotypeMatrix
+            A GenotypeMatrix of genotyped individuals.
         """
         raise NotImplementedError("method is abstract")
 

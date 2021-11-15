@@ -22,7 +22,7 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
         # make assignments
         self.counter = counter
 
-    def mate(self, pgmat, sel, ncross, nprogeny, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme.
 
@@ -45,15 +45,17 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
-        t_cur : int
-            Current time.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
 
         Returns
         -------
-        progeny : PhasedGenotypeMatrix
+        out : PhasedGenotypeMatrix
             A PhasedGenotypeMatrix of progeny.
         """
         nfam = len(sel) // 2            # calculate number of families
@@ -73,11 +75,12 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
         self.counter += nfam
 
         # construct progeny
-        progeny, misc = super(FamilyGroupTwoWayDHCross, self).mate(
+        progeny = super(FamilyGroupTwoWayDHCross, self).mate(
             pgmat = pgmat,
             sel = sel,
             ncross = ncross,
             nprogeny = nprogeny,
+            miscout = miscout,
             s = s,
             taxa_grp = taxa_grp,    # add taxa_grp as keyword argument for object construction
             **kwargs
@@ -86,4 +89,4 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
         # group progeny taxa
         progeny.group_taxa()
 
-        return progeny, misc
+        return progeny

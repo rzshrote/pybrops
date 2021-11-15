@@ -19,12 +19,7 @@ from pybropt.core.error import check_is_str
 class MultiObjectiveGenomicSelection(SelectionProtocol):
     """docstring for MultiObjectiveGenomicSelection."""
 
-    def __init__(self, nparent, ncross, nprogeny, algorithm, method,
-    objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    target = "positive", weight = "magnitude",
-    ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5,
-    rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, target = "positive", weight = "magnitude", ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5, rng = None, **kwargs):
         """
         Constructor for MultiObjectiveGenomicSelection class.
 
@@ -177,11 +172,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod,
-    nparent = None, algorithm = None, method = None,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None,
-    **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, miscout = None, nparent = None, algorithm = None, method = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
         Select parents individuals for breeding.
 
