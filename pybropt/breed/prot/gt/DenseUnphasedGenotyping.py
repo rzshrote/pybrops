@@ -1,6 +1,7 @@
 from . import GenotypingProtocol
 
 from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
+from pybropt.popgen.gmat import DenseGenotypeMatrix
 
 class DenseUnphasedGenotyping(GenotypingProtocol):
     """docstring for DenseUnphasedGenotyping."""
@@ -49,7 +50,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
 
         # create genotype matrix
         out = DenseGenotypeMatrix(
-            mat = pgmat.mat_format("{0,1,2}"),
+            mat = pgmat.mat_asformat("{0,1,2}"),
             taxa = pgmat.taxa,
             taxa_grp = pgmat.taxa_grp,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,

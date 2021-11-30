@@ -268,9 +268,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             Matrix in the desired output format.
         """
         if format == "{0,1,2}":
-            return self.mat.sum(0)
+            return self.mat.sum(0, dtype = self.mat.dtype)
         elif format == "{-1,0,1}":
-            out = self.mat.sum(0)
+            out = self.mat.sum(0, dtype = self.mat.dtype)
             out -= 1
             return out
         elif format == "{-1,m,1}":

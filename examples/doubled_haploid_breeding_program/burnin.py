@@ -5,8 +5,9 @@ import pybropt.core.random
 from pybropt.breed.op.init import InitializationOperator
 from pybropt.breed.op.mate import MatingOperator
 from pybropt.breed.op.eval import EvaluationOperator
+from pybropt.breed.prot.bv import MeanPhenotypicBreedingValue
 from pybropt.breed.prot.gt import DenseUnphasedGenotyping
-from pybropt.breed.prot.mate import FamilyGroupTwoWayDHCross
+from pybropt.breed.prot.mate import TwoWayDHCross
 from pybropt.breed.prot.pt import G_E_Phenotyping
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
@@ -110,10 +111,9 @@ class MyInitMatingOperator(MatingOperator):
     def __init__(self, mprot, **kwargs):
         super(MyInitMatingOperator, self).__init__(**kwargs)
         self.mprot = mprot
-    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout = None, **kwargs):
         progeny = self.mprot.mate(**mcfg, s = 0)  # mate parents
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
-        misc = {}
         return genome, geno, pheno, bval, gmod
 
 class MyInitEvaluationOperator(EvaluationOperator):
@@ -142,8 +142,8 @@ dpgmat.interp_xoprob(gmap, gmapfn)                                              
 
 ################# Construct genomic model ##################
 gmod_true = GenericLinearGenomicModel(                                          # create model
-    beta = numpy.float64([[100.0]]),                                            # model intercepts
-    u = pybropt.core.random.normal(0, 0.05, (dpgmat.nvrnt,1)),                  # random marker weights
+    beta = numpy.float64([[10.0]]),                                            # model intercepts
+    u = pybropt.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),                  # random marker weights
     trait = numpy.object_(["yield"]),                                           # trait names
     model_name = "yield_model",
     params = None
@@ -167,11 +167,11 @@ sel.sort()                                                                      
 dpgmat = dpgmat.select_taxa(sel)                                                # select founder individuals
 
 ################ Build founder populations #################
-mateprot = FamilyGroupTwoWayDHCross()                                           # make mating protocol
+mateprot = TwoWayDHCross()                                                      # make mating protocol
 gtprot = DenseUnphasedGenotyping()                                              # genotyping protocols
 ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                                   # make phenotyping protocol
 ptprot.set_h2(founder_heritability, dpgmat)                                     # set heritability
-bvprot = MeanPhenotypicValue("taxa", ["yield"])
+bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])                         # make breeding value protocol
 
 ################ Build founder populations #################
 founder_genome = {"cand":None,      "main":None,      "queue":[]}
@@ -184,54 +184,52 @@ founder_gmod =   {"cand":gmod_true, "main":gmod_true, "true":gmod_true}
 sel = numpy.arange(dpgmat.ntaxa)                                                # create indices [0,1,...,nfounder-1]
 for _ in range(gqlen):                                                          # fill queue with random matings of founders
     pybropt.core.random.shuffle(sel)                                            # randomly shuffle indices
-    pgmat = mateprot.mate(                                                # mate random selections (mate)
+    pgmat = mateprot.mate(                                                      # mate random selections (mate)
         pgmat = dpgmat,
         sel = sel,
         ncross = founder_ncross,
         nprogeny = founder_nprogeny
     )
     founder_genome["queue"].append(pgmat)                                       # add progeny to queue
-    gmat = gtprot.genotype(                                               # genotype progeny
+    gmat = gtprot.genotype(                                                     # genotype progeny
         pgmat = pgmat
     )
     founder_geno["queue"].append(gmat)                                          # add progeny genotypes to queue
 
-founder_genome["main"] = DensePhasedGenotypeMatrix.concat_taxa(                 # construct main population
+founder_genome["main"] = founder_genome["queue"][0].concat_taxa(                # construct main population
     founder_genome["queue"][0:3]
 )
-founder_geno["main"] = DenseGenotypeMatrix.concat_taxa(                         # construct main population genotypes
+founder_geno["main"] = founder_geno["queue"][0].concat_taxa(                    # construct main population genotypes
     founder_geno["queue"][0:3]
 )
 
 ################ Build founder populations #################
-founder_pheno["main"] = ptprot.phenotype(                                 # phenotype main population
+founder_pheno["main"] = ptprot.phenotype(                                       # phenotype main population
     founder_genome["main"]
 )
-founder_bval["main"] = bvprot.estimate(                                   # estimate breeding values
-    founder_pheno["main"]
+founder_bval["main"] = bvprot.estimate(                                         # estimate breeding values
+    founder_pheno["main"],
+    founder_geno["main"]
 )
 
 #######################################
 ### Main populataion initialization ###
 #######################################
 
-mateprot = FamilyGroupTwoWayDHCross()           # make mating protocol
-mateop = MyInitMatingOperator(mateprot)         # make init mating operator
-ptprot = G_E_Phenotyping(gmod_true, nenv = 4)   # make phenotyping protocol
-evalop = MyInitEvaluationOperator(ptprot)       # make init evaluation operator
-
-initop = MyInitializationOperator.from_dpgmat(
-    dpgmat = dpgmat,
-    mateprot = mateprot,
-    nfounder = 40,
-    founder_ncross = 1,
-    founder_nprogeny = 80,
-    gqlen = 6,
-    gmod_true = gmod_true,
-    burnin = 20,
-    mateop = mateop,
-    evalop = evalop,
-)
-
-print("var_env", ptprot.var_env)
-print("var_err", ptprot.var_err)
+# mateprot = TwoWayDHCross()           # make mating protocol
+# mateop = MyInitMatingOperator(mateprot)         # make init mating operator
+# ptprot = G_E_Phenotyping(gmod_true, nenv = 4)   # make phenotyping protocol
+# evalop = MyInitEvaluationOperator(ptprot)       # make init evaluation operator
+#
+# initop = MyInitializationOperator.from_dpgmat(
+#     dpgmat = dpgmat,
+#     mateprot = mateprot,
+#     nfounder = 40,
+#     founder_ncross = 1,
+#     founder_nprogeny = 80,
+#     gqlen = 6,
+#     gmod_true = gmod_true,
+#     burnin = 20,
+#     mateop = mateop,
+#     evalop = evalop,
+# )

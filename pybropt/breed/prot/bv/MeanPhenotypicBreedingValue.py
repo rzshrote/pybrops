@@ -1,7 +1,11 @@
-from . import BreedingValueProtocol
+import numpy
 
+from . import BreedingValueProtocol
 from pybropt.core.error import check_is_str
 from pybropt.core.error import check_is_array_like
+from pybropt.popgen.ptdf import check_is_PhenotypeDataFrame
+from pybropt.popgen.gmat import check_is_GenotypeMatrix
+from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 
 class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """docstring for MeanPhenotypicBreedingValue."""
@@ -93,7 +97,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
 
         # calculate means for each genotype
         for t in self.trait_col:
-            tval = ptobj.col_data(name = t)                     # get trait values for each taxa
+            tval = ptobj.col_data(name = t)[0]                  # get trait values for each taxa
             tsum = numpy.bincount(taxa_pt_inv, weights = tval)  # get trait sums for each taxa
             tmean = tsum / taxa_pt_cnt                          # get trait means for each taxa
             tmean = tmean[tselix]                               # select correct taxa

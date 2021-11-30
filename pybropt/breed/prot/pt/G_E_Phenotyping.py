@@ -2,6 +2,7 @@ import numpy
 import numbers
 import pandas
 
+import pybropt.core.random
 from . import PhenotypingProtocol
 from pybropt.popgen.ptdf import DictPhenotypeDataFrame
 from pybropt.model.gmod import check_is_GenomicModel
@@ -19,7 +20,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, nenv = 1, var_env = 0, nrep = 1, var_err = 0, **kwargs):
+    def __init__(self, gpmod, nenv = 1, nrep = 1, var_env = 0, var_rep = 0, var_err = 0, rng = None, **kwargs):
         """
         Construct a phenotyping protocol that simulates environments as having
         a fixed effect, but no genotype by environment interaction. Variance
@@ -32,6 +33,14 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
         nenv : int
             Number of environments.
+        nrep : int, numpy.ndarray
+            Number of replications per environment.
+            --------------------------------------------------------------------
+            If int:
+                Broadcast 'nrep' to an array of shape (nenv,)
+            If numpy.ndarray:
+                Must be of shape (nenv,)
+            --------------------------------------------------------------------
         var_env : numeric, numpy.ndarray
             Environmental variance parameter for each trait.
             Determines distribution of fixed effect added to each environment.
@@ -40,14 +49,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 Broadcast 'var_env' to an array of shape (ntrait,)
             If numpy.ndarray:
                 Must be of shape (ntrait,)
-            --------------------------------------------------------------------
-        nrep : int, numpy.ndarray
-            Number of replications per environment.
-            --------------------------------------------------------------------
-            If int:
-                Broadcast 'nrep' to an array of shape (nenv,)
-            If numpy.ndarray:
-                Must be of shape (nenv,)
             --------------------------------------------------------------------
         var_rep : numeric, numpy.ndarray
             Replication variance parameter for each trait.
@@ -61,6 +62,12 @@ class G_E_Phenotyping(PhenotypingProtocol):
             --------------------------------------------------------------------
         var_err : numeric, numpy.ndarray
             Error variance parameter.
+            --------------------------------------------------------------------
+            If numeric:
+                Broadcast 'var_err' to an array of shape (ntrait,)
+            If numpy.ndarray:
+                Must be of shape (ntrait,)
+            --------------------------------------------------------------------
 
 
         nrep : int, numpy.ndarray
@@ -75,9 +82,12 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # order dependent initialization!
         self.gpmod = gpmod      # order 0
         self.nenv = nenv        # order 1
-        self.var_env = var_env  # order 2
-        self.nrep = nrep        # order 3
-        self.var_err = var_err  # order 4
+        self.nrep = nrep        # order 2
+        self.var_env = var_env  # order 3
+        self.var_rep = var_rep  # order 4
+        self.var_err = var_err  # order 5
+        self.rng = pybropt.core.random if rng is None else rng
+
 
     ############################################################################
     ############################ Object Properties #############################
@@ -243,7 +253,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, var_env = None, nrep = None, var_rep = None, var_err = None, **kwargs):
+    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, nrep = None, var_env = None, var_rep = None, var_err = None, **kwargs):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -259,10 +269,10 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Genomic prediction model to use to determine phenotypes.
         nenv : int
             Number of environments.
-        var_env : numeric, numpy.ndarray
-            Environmental variance parameter.
         nrep : int, numpy.ndarray
             Number of replications per environment.
+        var_env : numeric, numpy.ndarray
+            Environmental variance parameter.
         var_rep : numeric, numpy.ndarray
             Replication variance parameter.
         var_err : numeric, numpy.ndarray
@@ -288,6 +298,21 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             check_is_Integral(nenv, "nenv")     # error check nenv
 
+        # set default nrep
+        if nrep is None:
+            nrep = self.nrep
+        elif isinstance(nrep, numbers.Integral):
+            check_is_positive(nrep, "nrep")
+            nrep = numpy.repeat(nrep, nenv)
+        elif isinstance(nrep, numpy.ndarray):
+            check_ndarray_dtype_is_integer(nrep, "nrep")
+            check_ndarray_is_1d(nrep, "nrep")
+            check_ndarray_is_positive(nrep, "nrep")
+            check_ndarray_size(nrep, "nrep", nenv)
+            nrep = value
+        else:
+            raise TypeError("'nrep' must be an integer type or numpy.ndarray")
+
         # set default var_env
         if var_env is None:
             var_env = self.var_env
@@ -306,21 +331,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 var_env = numpy.float64(var_env)                # convert array to float64
         else:
             raise TypeError("'var_env' must be a numeric or numpy.ndarray type")
-
-        # set default nrep
-        if nrep is None:
-            nrep = self.nrep
-        elif isinstance(nrep, numbers.Integral):
-            check_is_positive(nrep, "nrep")
-            nrep = numpy.repeat(nrep, nenv)
-        elif isinstance(nrep, numpy.ndarray):
-            check_ndarray_dtype_is_integer(nrep, "nrep")
-            check_ndarray_is_1d(nrep, "nrep")
-            check_ndarray_is_positive(nrep, "nrep")
-            check_ndarray_size(nrep, "nrep", nenv)
-            nrep = value
-        else:
-            raise TypeError("'nrep' must be an integer type or numpy.ndarray")
 
         # set default var_rep
         if var_rep is None:
@@ -361,30 +371,16 @@ class G_E_Phenotyping(PhenotypingProtocol):
             raise TypeError("'var_err' must be a numeric or numpy.ndarray type")
 
         ################## extract breeding value information ##################
-        # gather true breeding values
-        # assumes taxa_axis == 0, trait_axis == 1
-        bvmat = gpmod.predict(pgmat)
-
-        # gather pointers to raw matrices
-        mat = bvmat.mat             # get breeding values
+        bvmat = gpmod.gebv(pgmat)   # gather true breeding values
+        mat = bvmat.descale()       # get descaled breeding values
         taxa = bvmat.taxa           # taxa names
         taxa_grp = bvmat.taxa_grp   # taxa groups
         trait = bvmat.trait         # trait names
-
-        # get shape parameters
         ntaxa = bvmat.ntaxa         # number of taxa
         ntrait = bvmat.ntrait       # number of traits
         nplot = nrep.sum()          # get number of plots per genotype
 
-        # transpose matrix if needed
-        if (bvmat.taxa_axis == 1) and (bvmat.trait_axis == 0):
-            mat = mat.T
-
         ############### perform error checks ###############
-        # check to make sure ndim == 2
-        if bvmat.mat_ndim != 2:
-            raise ValueError("unable to construct phenotype dataframe: breeding value matrix is not 2d.")
-
         # make sure all taxa names are all valid
         if taxa is None:
             raise ValueError("unable to construct phenotype dataframe: breeding value matrix produced by 'gpmod.predict(pgmat)' does not have taxa names")
@@ -403,7 +399,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
         # copy breeding value information into pheno_mat
         for i in range(nplot):
-            pheno_mat[i*nplot:(i+1)*nplot,:] = mat
+            pheno_mat[i*ntaxa:(i+1)*ntaxa,:] = mat
 
         # sample environmental effects (additive; no GxE)
         env_effect = self.rng.normal(
@@ -454,63 +450,63 @@ class G_E_Phenotyping(PhenotypingProtocol):
         rep_vec = numpy.repeat(numpy.concatenate([numpy.arange(e) for e in nrep]), ntaxa)
 
         ################ construct data dictionary and metadata ################
-        data_dict = {}          # dictionary to contain all data
+        data = {}                   # dictionary to contain all data
+        col_analysis_type = {}
+        col_analysis_effect = {}
         analysis_type = []      # list to contain variable type metadata
         analysis_effect = []    # list to contain variable effect type metadata
 
-        # add traits
-        for i,t in enumerate(trait):        # for each trait
-            colview = pheno_mat[:,i]        # get column view
-            if numpy.issubdtype(colview.dtype, numpy.floating):
-                analysis_type.append('double')          # append analysis type
-            elif numpy.issubdtype(colview.dtype, numpy.integer):
-                analysis_type.append('int')             # append analysis type
-            elif numpy.issubdtype(colview.dtype, numpy.object_):
-                analysis_type.append('factor(str)')     # append analysis type
-            elif numpy.issubdtype(colview.dtype, numpy.bool_):
-                analysis_type.append('bool')            # append analysis type
-            else:
+
+        numpy_to_R_dtype_lookup = {
+            numpy.dtype('float16'): "double",
+            numpy.dtype('float32'): "double",
+            numpy.dtype('float64'): "double",
+            numpy.dtype('int8'): "int",
+            numpy.dtype('int16'): "int",
+            numpy.dtype('int32'): "int",
+            numpy.dtype('int64'): "int",
+            numpy.dtype('uint8'): "int",
+            numpy.dtype('uint16'): "int",
+            numpy.dtype('uint32'): "int",
+            numpy.dtype('uint64'): "int",
+            numpy.dtype('object'): "factor(str)",
+            numpy.dtype('bool'): "bool"
+        }
+
+        for i,t in enumerate(trait):
+            colview = pheno_mat[:,i]
+            data[t] = colview
+            try:
+                col_analysis_type[t] = numpy_to_R_dtype_lookup[colview.dtype]
+            except KeyError:
                 raise TypeError("unrecognized type {0}".format(colview.dtype))
-            data_dict[t] = colview
-            analysis_effect.append('response')
+            col_analysis_effect[t] = "response"
 
         # add taxa fixed effect
-        data_dict["taxa"] = taxa_vec            # add taxa to dict
-        analysis_type.append("factor(str)")     # taxa is a string factor
-        analysis_effect.append("fixed")         # taxa is a fixed effect
+        data["taxa"] = taxa_vec                     # add taxa to dict
+        col_analysis_type["taxa"] = "factor(str)"   # taxa is a string factor
+        col_analysis_effect["taxa"] = "fixed"       # taxa is a fixed effect
 
         # add taxa group (family) fixed effect
-        if taxa_grp_vec is None:                # if no groups are specified
-            data_dict["taxa_grp"] = None        # set to None
-            analysis_type.append(None)          # set to None
-            analysis_effect.append(None)        # set to None
-        else:                                   # otherwise groups are specified
-            data_dict["taxa_grp"] = taxa_grp_vec# add taxa_grp to dict
-            analysis_type.append("factor(int)") # taxa_grp is an int factor
-            analysis_effect.append("fixed")     # taxa_grp is a fixed effect
+        data["taxa_grp"] = taxa_grp_vec
+        col_analysis_type["taxa_grp"] = None if taxa_grp_vec is None else "factor(int)"
+        col_analysis_effect["taxa_grp"] = None if taxa_grp_vec is None else "fixed"
 
         # add environment random effect
-        data_dict["env"] = env_vec              # add environment to dict
-        analysis_type.append("factor(int)")     # environment is an int factor
-        analysis_effect.append("random")        # environment is a random effect
+        data["env"] = env_vec                   # add environment to dict
+        col_analysis_type["env"] = "factor(int)"# environment is an int factor
+        col_analysis_effect["env"] = "random"   # environment is a random effect
 
         # add replicate random effect
-        data_dict["rep"] = rep_vec              # add replication to dict
-        analysis_type.append("factor(int)")     # replication is an int factor
-        analysis_effect.append("random")        # replication is a random effect
-
-        # construct pandas.DataFrame
-        df = pandas.DataFrame(data_dict)
-
-        # convert lists to numpy.ndarray(dtype = object)
-        analysis_type = numpy.object_(analysis_type)
-        analysis_effect = numpy.object_(analysis_effect)
+        data["rep"] = rep_vec                       # add replication to dict
+        col_analysis_type["rep"] = "factor(int)"    # replication is an int factor
+        col_analysis_effect["rep"] = "random"       # replication is a random effect
 
         # construct DictPhenotypeDataFrame
         ptdf = DictPhenotypeDataFrame(
-            df = df,
-            analysis_type = analysis_type,
-            analysis_effect = analysis_effect,
+            data = data,
+            col_analysis_type = col_analysis_type,
+            col_analysis_effect = col_analysis_effect,
             **kwargs
         )
 
