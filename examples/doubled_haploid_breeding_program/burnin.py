@@ -172,6 +172,7 @@ gtprot = DenseUnphasedGenotyping()                                              
 ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                                   # make phenotyping protocol
 ptprot.set_h2(founder_heritability, dpgmat)                                     # set heritability
 bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])                         # make breeding value protocol
+sselprot = FamilyPhenotypicSelection()
 
 ################ Build founder populations #################
 founder_genome = {"cand":None,      "main":None,      "queue":[]}
@@ -203,14 +204,19 @@ founder_geno["main"] = founder_geno["queue"][0].concat_taxa(                    
     founder_geno["queue"][0:3]
 )
 
-################ Build founder populations #################
+################ Phenotype founder populations #################
 founder_pheno["main"] = ptprot.phenotype(                                       # phenotype main population
     founder_genome["main"]
 )
+
+################ Calculate breeding values for founder populations #################
 founder_bval["main"] = bvprot.estimate(                                         # estimate breeding values
     founder_pheno["main"],
     founder_geno["main"]
 )
+
+#### Develop first set of parental candidates ####
+
 
 #######################################
 ### Main populataion initialization ###

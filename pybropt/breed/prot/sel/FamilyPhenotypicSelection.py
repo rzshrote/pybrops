@@ -136,7 +136,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
         return geno_new, bval_new, gmod_new, misc
 
-    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a parent selection objective function.
         """
@@ -243,3 +243,112 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             return cps
 
         return objfn_vec
+
+
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    @staticmethod
+    def objfn_static(sel, mat, trans, kwargs):
+        """
+        Score a family of individuals based on phenotypic breeding values.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (k,)
+            Where:
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, use all individuals.
+        mat : numpy.ndarray
+            A breeding value matrix of shape (n,t).
+            Where:
+                'n' is the number of individuals.
+                't' is the number of traits.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+                Must accept a single numpy.ndarray argument.
+                Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to 'trans' function.
+
+        Returns
+        -------
+        fps : numpy.ndarray
+            A phenotypic selection matrix of shape (t,) if 'trans' is None.
+            Where:
+                't' is the number of traits.
+            Otherwise, of shape specified by 'trans'.
+        """
+        # if sel is None, slice all individuals
+        if sel is None:
+            sel = slice(None)
+
+        # select breeding values
+        # (n,t)[(k,),:] -> (k,t)
+        # (k,t).sum(0) -> (t,)
+        fps = mat[sel,:].sum(0)
+
+        # apply transformations
+        # (t,) ---trans---> (?,)
+        if trans:
+            fps = trans(fps, **kwargs)
+
+        return fps
+
+    @staticmethod
+    def objfn_vec_static(sel, mat, trans, kwargs):
+        """
+        Score a family of individuals based on phenotypic breeding values.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape (j,k)
+            Where:
+                'j' is the number of selection configurations.
+                'k' is the number of individuals to select.
+            Each index indicates which individuals to select.
+            Each index in 'sel' represents a single individual's row.
+            If 'sel' is None, score each individual separately: (n,1)
+        mat : numpy.ndarray
+            A breeding value matrix of shape (n,t).
+            Where:
+                'n' is the number of individuals.
+                't' is the number of traits.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+                Must accept a single numpy.ndarray argument.
+                Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to 'trans' function.
+
+        Returns
+        -------
+        fps : numpy.ndarray
+            A phenotypic selection matrix of shape (j,t) if 'trans' is None.
+            Where:
+                'j' is the number of selection configurations.
+                't' is the number of traits.
+            Otherwise, of shape specified by 'trans'.
+        """
+        # if sel is None, slice all individuals
+        if sel is None:
+            n = mat.shape[0]
+            sel = numpy.arange(n).reshape(n,1)
+
+        # select breeding values
+        # (n,t)[(j,k,),:] -> (j,k,t)
+        # (j,k,t).sum(1) -> (t,)
+        fps = mat[sel,:].sum(1)
+
+        # apply transformations
+        # (j,t) ---trans---> (j,?)
+        if trans:
+            fps = trans(fps, **kwargs)
+
+        return fps
