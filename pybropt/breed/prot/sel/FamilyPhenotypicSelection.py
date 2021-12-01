@@ -1,9 +1,14 @@
 import numpy
+import types
 
 from . import SelectionProtocol
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import cond_check_is_callable
+from pybropt.core.error import cond_check_is_dict
+from pybropt.core.error import check_isinstance
+from pybropt.core.error import cond_check_is_float
 
 class FamilyPhenotypicSelection(SelectionProtocol):
     """docstring for FamilyPhenotypicSelection."""
@@ -163,21 +168,22 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             # convert to numpy.ndarray
             ebv = numpy.array(ebv)
 
+            # make sure we have a (n,) array
+            if ebv.ndim != 1:
+                raise RuntimeError("objfn_trans does not reduce objectives to single objective")
+
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
             ebv = ebv * objfn_wt
 
-            if ebv.ndim != 1:
-                raise RuntimeError("objfn_trans does not reduce objectives to single objective")
-
             # perform within family selection
-            sel = []                            # construct empty list
-            ord = ebv.argsort()[::-1]           # get order of EBVs
-            for taxa in numpy.unique(taxa_grp): # for each family
-                mask = (taxa_grp[ord] == taxa)  # mask for each family
-                s = min(mask.sum(), k)          # min(# in family, k_f)
-                sel.append(ord[mask][:s])       # add indices to list
-            sel = numpy.concatenate(sel)        # concatenate to numpy.ndarray
+            sel = []                                # construct empty list
+            ord = ebv.argsort()[::-1]               # get order of EBVs
+            for taxa in numpy.unique(taxa_grp):     # for each family
+                mask = (taxa_grp[ord] == taxa)      # mask for each family
+                s = min(mask.sum(), self.nparent)   # min(# in family, nparent)
+                sel.append(ord[mask][:s])           # add indices to list
+            sel = numpy.concatenate(sel)            # concatenate to numpy.ndarray
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
