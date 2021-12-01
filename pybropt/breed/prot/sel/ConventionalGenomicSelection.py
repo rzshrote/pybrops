@@ -219,8 +219,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Used by this function.
-        ptdf :
+            Used by this function. Input genotype matrix.
+        ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
@@ -252,6 +252,19 @@ class ConventionalGenomicSelection(SelectionProtocol):
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a vectorized objective function.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Used by this function. Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
         """
         # get default parameters if any are None
         if trans is None:
