@@ -1,3 +1,4 @@
+import copy
 import numpy
 import h5py
 
@@ -9,6 +10,7 @@ from pybropt.core.util import save_dict_to_hdf5
 from pybropt.core.error import check_ndarray_std_is_approx
 from pybropt.core.error import check_ndarray_mean_is_approx
 from pybropt.core.error import check_ndarray_axis_len
+from pybropt.core.error import check_is_array_like
 
 class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     """Dense breeding value matrix implementation."""
@@ -39,6 +41,62 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         # set location and scale parameters
         self.location = location
         self.scale = scale
+
+    #################### Matrix copying ####################
+    def __copy__(self):
+        """
+        Make a shallow copy of the the matrix.
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # create new object
+        out = self.__class__(
+            mat = copy.copy(self.mat),
+            location = copy.copy(self.location),
+            scale = copy.copy(self.scale),
+            taxa = copy.copy(self.taxa),
+            taxa_grp = copy.copy(self.taxa_grp),
+            trait = copy.copy(self.trait)
+        )
+        # copy taxa metadata
+        out.taxa_grp_name = copy.copy(self.taxa_grp_name)
+        out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
+        out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
+        out.taxa_grp_len = copy.copy(self.taxa_grp_len)
+
+        return out
+
+    def __deepcopy__(self, memo):
+        """
+        Make a deep copy of the matrix.
+
+        Parameters
+        ----------
+        memo : dict
+
+        Returns
+        -------
+        out : Matrix
+        """
+        # create new object
+        out = self.__class__(
+            mat = copy.deepcopy(self.mat, memo),
+            location = copy.deepcopy(self.location),
+            scale = copy.deepcopy(self.scale),
+            taxa = copy.deepcopy(self.taxa, memo),
+            taxa_grp = copy.deepcopy(self.taxa_grp, memo),
+            trait = copy.deepcopy(self.trait, memo)
+        )
+
+        # copy taxa metadata
+        out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name, memo)
+        out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix, memo)
+        out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix, memo)
+        out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
+
+        return out
 
     ############################################################################
     ############################ Object Properties #############################
@@ -100,6 +158,58 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ######### Matrix element copy-on-manipulation ##########
+    # FIXME: super adjoin, delete, insert, select, ... for location, scale bug
+
+    def select_taxa(self, indices, **kwargs):
+        """
+        Select certain values from the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        **kwargs
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            The output Matrix with values selected. Note that select does not
+            occur in-place: a new Matrix is allocated and filled.
+        """
+        # check for array_like
+        check_is_array_like(indices, "indices")
+
+        # get values
+        mat = self.descale()        # get descaled values
+        taxa = self._taxa
+        taxa_grp = self._taxa_grp
+
+        # select values
+        mat = numpy.take(mat, indices, axis = self.taxa_axis)
+        if taxa is not None:
+            taxa = numpy.take(taxa, indices, axis = 0)
+        if taxa_grp is not None:
+            taxa_grp = numpy.take(taxa_grp, indices, axis = 0)
+
+        # re-calculate breeding values
+        location = mat.mean(0)          # recalculate location
+        scale = mat.std(0)              # recalculate scale
+        mat = (mat - location) / scale  # mean center and scale values
+
+        # construct output
+        out = self.__class__(
+            mat = mat,
+            location = location,
+            scale = scale,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+        return out
 
     ############## Matrix summary statistics ###############
     def targmax(self):
