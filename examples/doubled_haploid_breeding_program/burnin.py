@@ -9,6 +9,8 @@ from pybropt.breed.prot.bv import MeanPhenotypicBreedingValue
 from pybropt.breed.prot.gt import DenseUnphasedGenotyping
 from pybropt.breed.prot.mate import TwoWayDHCross
 from pybropt.breed.prot.pt import G_E_Phenotyping
+from pybropt.breed.prot.sel import FamilyPhenotypicSelection
+from pybropt.breed.prot.sel.transfn import trans_sum
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
@@ -160,6 +162,9 @@ gqlen = 6
 nfounder = 40
 founder_ncross = 1
 founder_nprogeny = 80
+fps_nparent = 4
+fps_ncross = 1
+fps_nprogeny = 80
 
 #################### Determine founders ####################
 sel = pybropt.core.random.choice(dpgmat.ntaxa, nfounder, replace = False)       # get random selections (pselect)
@@ -172,7 +177,12 @@ gtprot = DenseUnphasedGenotyping()                                              
 ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                                   # make phenotyping protocol
 ptprot.set_h2(founder_heritability, dpgmat)                                     # set heritability
 bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])                         # make breeding value protocol
-sselprot = FamilyPhenotypicSelection()
+sselprot = FamilyPhenotypicSelection(
+    nparent = fps_nparent,
+    ncross = fps_ncross,
+    nprogeny = fps_nprogeny,
+    objfn_trans = trans_sum
+)
 
 ################ Build founder populations #################
 founder_genome = {"cand":None,      "main":None,      "queue":[]}
@@ -216,26 +226,23 @@ founder_bval["main"] = bvprot.estimate(                                         
 )
 
 #### Develop first set of parental candidates ####
+pgmat, sel, ncross, nprogeny = sselprot.select(
+    pgmat = founder_genome["main"],
+    gmat = founder_geno["main"],
+    ptdf = founder_pheno["main"],
+    bvmat = founder_bval["main"],
+    gpmod = founder_gmod["main"],
+    t_cur = t_cur,
+    t_max = t_max,
+    miscout = None,
+    method = "single"
+)
 
-
-#######################################
-### Main populataion initialization ###
-#######################################
-
-# mateprot = TwoWayDHCross()           # make mating protocol
-# mateop = MyInitMatingOperator(mateprot)         # make init mating operator
-# ptprot = G_E_Phenotyping(gmod_true, nenv = 4)   # make phenotyping protocol
-# evalop = MyInitEvaluationOperator(ptprot)       # make init evaluation operator
-#
-# initop = MyInitializationOperator.from_dpgmat(
-#     dpgmat = dpgmat,
-#     mateprot = mateprot,
-#     nfounder = 40,
-#     founder_ncross = 1,
-#     founder_nprogeny = 80,
-#     gqlen = 6,
-#     gmod_true = gmod_true,
-#     burnin = 20,
-#     mateop = mateop,
-#     evalop = evalop,
-# )
+### select parental candidates ###
+sel.sort()
+founder_genome["cand"] = founder_genome["main"].select_taxa(sel)
+founder_geno["cand"] = founder_geno["main"].select_taxa(sel)
+founder_bval["cand"] = founder_bval["main"].select_taxa(sel)
+# print(founder_genome["cand"].taxa)
+# print(founder_bval["cand"].taxa)
+# print(founder_genome["cand"].taxa == founder_bval["cand"].taxa)
