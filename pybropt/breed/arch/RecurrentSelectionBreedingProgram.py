@@ -362,12 +362,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         **kwargs : **dict
             Additional keyword arguments.
         """
-        self.genome = self.start_genome     # reset genomes container
-        self.geno = self.start_geno         # reset genotypes container
-        self.pheno = self.start_pheno       # reset phenotypes container
-        self.bval = self.start_bval         # reset breeding values container
-        self.gmod = self.start_gmod         # reset genomic model container
-        self.t_cur = 0                      # reset time
+        self.genome = copy.deepcopy(self.start_genome)  # reset genomes container
+        self.geno = copy.deepcopy(self.start_geno)      # reset genotypes container
+        self.pheno = copy.deepcopy(self.start_pheno)    # reset phenotypes container
+        self.bval = copy.deepcopy(self.start_bval)      # reset breeding values container
+        self.gmod = copy.deepcopy(self.start_gmod)      # reset genomic model container
+        self.t_cur = 0                                  # reset time
 
     def advance(self, ngen, lbook, **kwargs):
         """
@@ -399,6 +399,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 miscout = misc
             )
             lbook.log_pselect(
+                mcfg = mcfg,
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
@@ -525,7 +526,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
             # verbose messages
             if verbose:
-                print("Simulating rep {0} of {1} (Logbook entry {2})".format(r, nrep, lbook.rep))
+                print("Simulating rep {0} of {1} (Logbook entry {2})".format(r+1, nrep, lbook.rep))
 
             # reset simulation to starting conditions
             self.reset()
@@ -543,7 +544,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 miscout = misc
             )
             if loginit:
-                lbook.log_evaluate(
+                lbook.log_initialize(
                     genome = self._genome,
                     geno = self._geno,
                     pheno = self._pheno,
