@@ -33,24 +33,31 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, obj, gmat, gpmod = None, **kwargs):
+    def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs):
         """
         Estimate breeding values.
 
         Parameters
         ----------
-        pt_or_bv : PhenotypeDataFrame, BreedingValueMatrix
-            Phenotype dataframe or breeding value matrix to use to estimate
-            breeding values.
-            Unused by this class.
-        gmat : PhasedGenotypeMatrix
-            Genotype matrix to use for breeding value calculation.
-            Also used to align genotypes in estimation output.
+        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+            An object containing phenotype data. Must be a matrix of breeding
+            values or a phenotype data frame.
+        gtobj : GenotypeMatrix, numpy.ndarray
+            An object containing genotype data. Must be a matrix of genotype
+            values.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
+        gpmod : GenomicModel
+            Genomic model used for predicting genotypes.
+        **kwargs : **dict
+            Additional keyword arguments.
 
         Returns
         -------
-        bvmat : BreedingValueMatrix
-            Breeding value matrix.
+        out : BreedingValueMatrix
+            A matrix of breeding values.
         """
         # check inputs
         check_is_PhasedGenotypeMatrix(gmat, "gmat")

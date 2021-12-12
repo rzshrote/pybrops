@@ -362,12 +362,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         **kwargs : **dict
             Additional keyword arguments.
         """
-        self.genome = self.start_genome     # reset genomes container
-        self.geno = self.start_geno         # reset genotypes container
-        self.pheno = self.start_pheno       # reset phenotypes container
-        self.bval = self.start_bval         # reset breeding values container
-        self.gmod = self.start_gmod         # reset genomic model container
-        self.t_cur = 0                      # reset time
+        self.genome = copy.deepcopy(self.start_genome)  # reset genomes container
+        self.geno = copy.deepcopy(self.start_geno)      # reset genotypes container
+        self.pheno = copy.deepcopy(self.start_pheno)    # reset phenotypes container
+        self.bval = copy.deepcopy(self.start_bval)      # reset breeding values container
+        self.gmod = copy.deepcopy(self.start_gmod)      # reset genomic model container
+        self.t_cur = 0                                  # reset time
 
     def advance(self, ngen, lbook, **kwargs):
         """
@@ -387,16 +387,19 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
-            mcfg, self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._pselop.pselect(
+            misc = {}
+            mcfg, self.genome, self.geno, self.pheno, self.bval, self.gmod = self._pselop.pselect(
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
                 bval = self._bval,
                 gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max
+                t_max = self._t_max,
+                miscout = misc
             )
             lbook.log_pselect(
+                mcfg = mcfg,
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
@@ -410,7 +413,8 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ########################### mate parents ###########################
             ####################################################################
-            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._mateop.mate(
+            misc = {}
+            self.genome, self.geno, self.pheno, self.bval, self.gmod = self._mateop.mate(
                 mcfg = mcfg,
                 genome = self._genome,
                 geno = self._geno,
@@ -418,7 +422,8 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
                 bval = self._bval,
                 gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max
+                t_max = self._t_max,
+                miscout = misc
             )
             lbook.log_mate(
                 mcfg = mcfg,
@@ -435,14 +440,16 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ######################## evaluate genotypes ########################
             ####################################################################
-            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._evalop.evaluate(
+            misc = {}
+            self.genome, self.geno, self.pheno, self.bval, self.gmod = self._evalop.evaluate(
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
                 bval = self._bval,
                 gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max
+                t_max = self._t_max,
+                miscout = misc
             )
             lbook.log_evaluate(
                 genome = self._genome,
@@ -458,14 +465,16 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             ####################################################################
             ######################### select survivors #########################
             ####################################################################
-            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._sselop.sselect(
+            misc = {}
+            self.genome, self.geno, self.pheno, self.bval, self.gmod = self._sselop.sselect(
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
                 bval = self._bval,
                 gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max
+                t_max = self._t_max,
+                miscout = misc
             )
             lbook.log_sselect(
                 genome = self._genome,
@@ -517,23 +526,25 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
             # verbose messages
             if verbose:
-                print("Simulating rep {0} of {1} (Logbook entry {2})".format(r, nrep, lbook.rep))
+                print("Simulating rep {0} of {1} (Logbook entry {2})".format(r+1, nrep, lbook.rep))
 
             # reset simulation to starting conditions
             self.reset()
 
             # evaluate breeding program at starting conditions
-            self.genome, self.geno, self.pheno, self.bval, self.gmod, misc = self._evalop.evaluate(
+            misc = {}
+            self.genome, self.geno, self.pheno, self.bval, self.gmod = self._evalop.evaluate(
                 genome = self._genome,
                 geno = self._geno,
                 pheno = self._pheno,
                 bval = self._bval,
                 gmod = self._gmod,
                 t_cur = self._t_cur,
-                t_max = self._t_max
+                t_max = self._t_max,
+                miscout = misc
             )
             if loginit:
-                lbook.log_evaluate(
+                lbook.log_initialize(
                     genome = self._genome,
                     geno = self._geno,
                     pheno = self._pheno,

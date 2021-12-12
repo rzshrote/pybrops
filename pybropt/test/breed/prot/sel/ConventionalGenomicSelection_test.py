@@ -208,7 +208,7 @@ def test_objfn_vec_static_is_concrete():
 ###################### Test concrete method functionality ######################
 ################################################################################
 def test_select_single(cgs, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, mat_int8, u):
-    pgmat, sel, ncross, nprogeny, misc = cgs.select(
+    pgmat, sel, ncross, nprogeny = cgs.select(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -231,7 +231,7 @@ def test_select_single(cgs, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, mat
     assert sel.ndim == 1
 
 def test_select_pareto(cgs, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, objfn_wt):
-    pgmat, sel, ncross, nprogeny, misc = cgs.select(
+    pgmat, sel, ncross, nprogeny = cgs.select(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -319,7 +319,7 @@ def test_objfn_vec_multiobjective(cgs, dgmat, bvmat, glgmod, mat_int8, u):
         )
 
 def test_pareto(cgs, dgmat, bvmat, glgmod, objfn_wt):
-    frontier, sel_config, misc = cgs.pareto(
+    frontier, sel_config = cgs.pareto(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,

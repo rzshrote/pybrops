@@ -90,10 +90,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         out.taxa_grp_len = copy.copy(self.taxa_grp_len)
 
         # copy variant metadata
-        out.vrnt_grp_name = copy.copy(self.vrnt_grp_name)
-        out.vrnt_grp_stix = copy.copy(self.vrnt_grp_stix)
-        out.vrnt_grp_spix = copy.copy(self.vrnt_grp_spix)
-        out.vrnt_grp_len = copy.copy(self.vrnt_grp_len)
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len = copy.copy(self.vrnt_chrgrp_len)
 
         return out
 
@@ -132,10 +132,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
 
         # copy variant metadata
-        out.vrnt_grp_name = copy.deepcopy(self.vrnt_grp_name, memo)
-        out.vrnt_grp_stix = copy.deepcopy(self.vrnt_grp_stix, memo)
-        out.vrnt_grp_spix = copy.deepcopy(self.vrnt_grp_spix, memo)
-        out.vrnt_grp_len = copy.deepcopy(self.vrnt_grp_len, memo)
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name, memo)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix, memo)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix, memo)
+        out.vrnt_chrgrp_len = copy.deepcopy(self.vrnt_chrgrp_len, memo)
 
         return out
 
@@ -268,9 +268,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             Matrix in the desired output format.
         """
         if format == "{0,1,2}":
-            return self.mat.sum(0)
+            return self.mat.sum(0, dtype = self.mat.dtype)
         elif format == "{-1,0,1}":
-            out = self.mat.sum(0)
+            out = self.mat.sum(0, dtype = self.mat.dtype)
             out -= 1
             return out
         elif format == "{-1,m,1}":

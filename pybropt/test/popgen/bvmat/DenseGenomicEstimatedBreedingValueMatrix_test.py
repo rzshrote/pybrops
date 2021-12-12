@@ -19,8 +19,8 @@ from pybropt.popgen.bvmat import cond_check_is_DenseGenomicEstimatedBreedingValu
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def mat_float64():
-    a = numpy.float64([
+def mat_uncentered_float64():
+    yield numpy.float64([
         [5.9, 5.8, 7. ],
         [5.3, 8.3, 5. ],
         [7.8, 6.4, 7. ],
@@ -30,7 +30,18 @@ def mat_float64():
         [5.5, 1.9, 6. ],
         [3.1, 3. , 2.4]
     ])
-    yield a
+
+@pytest.fixture
+def location_float64(mat_uncentered_float64):
+    yield mat_uncentered_float64.mean(0)
+
+@pytest.fixture
+def scale_float64(mat_uncentered_float64):
+    yield mat_uncentered_float64.std(0)
+
+@pytest.fixture
+def mat_float64(mat_uncentered_float64, location_float64, scale_float64):
+    yield (mat_uncentered_float64 - location_float64) / scale_float64
 
 ###################### Taxa fixtures #######################
 @pytest.fixture
@@ -76,9 +87,11 @@ def trait_object():
 
 ############################################################
 @pytest.fixture
-def mat(mat_float64, taxa_object, taxa_grp_int64, trait_object):
+def mat(mat_float64, location_float64, scale_float64, taxa_object, taxa_grp_int64, trait_object):
     a = DenseGenomicEstimatedBreedingValueMatrix(
         mat = mat_float64,
+        location = location_float64,
+        scale = scale_float64,
         taxa = taxa_object,
         taxa_grp = taxa_grp_int64,
         trait = trait_object

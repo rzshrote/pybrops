@@ -83,7 +83,7 @@ def test_mate(mprot, dpgvmat, sel, rng):
     ncross = 2
     nprogeny = 2
     s = 2
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
@@ -96,42 +96,42 @@ def test_mate_ncross(mprot, dpgvmat, sel, rng):
     ncross = 10
     nprogeny = 1
     s = 0
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 def test_mate_ncross_s(mprot, dpgvmat, sel, rng):
     ncross = 10
     nprogeny = 1
     s = 1
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 def test_mate_nprogeny(mprot, dpgvmat, sel, rng):
     ncross = 1
     nprogeny = 10
     s = 0
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 def test_mate_nprogeny_s(mprot, dpgvmat, sel, rng):
     ncross = 1
     nprogeny = 10
     s = 1
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 def test_mate_ncross_nprogeny(mprot, dpgvmat, sel, rng):
     ncross = 10
     nprogeny = 10
     s = 0
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 def test_mate_ncross_nprogeny_s(mprot, dpgvmat, sel, rng):
     ncross = 10
     nprogeny = 10
     s = 1
-    progeny, misc = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, s)
     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
 ################################################################################

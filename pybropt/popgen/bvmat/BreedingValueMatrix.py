@@ -2,7 +2,23 @@ from pybropt.core.mat import TaxaTraitMatrix
 from pybropt.core.io import HDF5InputOutput
 
 class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
-    """docstring for BreedingValueMatrix."""
+    """
+    The BreedingValueMatrix class represents a Multivariate Breeding Value.
+
+    All elements within a BreedingValueMatrix are mean-centered and scaled to
+    unit variance for each trait.
+                                     X - μ
+                                BV = ─────
+                                       σ
+        Where:
+            BV is the breeding value.
+            X is the phenotype value.
+            μ is the mean (location) for X.
+            σ is the standard deviation (scale) for X.
+
+    Phenotype values can be reconstituted using:
+        X = σBV + μ
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -22,6 +38,33 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def location():
+        doc = "Mean of the phenotype values used to calculate breeding values"
+        def fget(self):
+            """Get the mean of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set the mean of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete the mean of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    location = property(**location())
+
+    def scale():
+        doc = "Standard deviation of the phenotype values used to calculate breeding values"
+        def fget(self):
+            """Get the standard deviation of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        def fset(self, value):
+            """Set the standard deviation of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        def fdel(self):
+            """Delete the standard deviation of the phenotype values used to calculate breeding values"""
+            raise NotImplementedError("method is abstract")
+        return locals()
+    scale = property(**scale())
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -56,10 +99,15 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmax(self):
+    def tmax(self, descale):
         """
         Return the maximum along the trait axis.
 
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
+
         Returns
         -------
         out : numpy.ndarray
@@ -70,10 +118,15 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmean(self):
+    def tmean(self, descale):
         """
         Return the mean along the trait axis.
 
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
+
         Returns
         -------
         out : numpy.ndarray
@@ -84,9 +137,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmin(self):
+    def tmin(self, descale):
         """
         Return the minimum along the trait axis.
+
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
 
         Returns
         -------
@@ -98,9 +156,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def trange(self):
+    def trange(self, descale):
         """
         Return the range along the trait axis.
+
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
 
         Returns
         -------
@@ -112,9 +175,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tstd(self):
+    def tstd(self, descale):
         """
         Return the standard deviation along the trait axis.
+
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
 
         Returns
         -------
@@ -126,9 +194,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tvar(self):
+    def tvar(self, descale):
         """
         Return the variance along the trait axis.
+
+        Parameters
+        ----------
+        descale : boolean
+            whether to transform results to their de-scaled values.
 
         Returns
         -------
@@ -136,6 +209,21 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
             An array of shape (t,) containing variance values along the trait
             axis.
             Where:
+                't' is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def descale(self):
+        """
+        Transform values within the BreedingValueMatrix back to their de-scaled
+        and de-centered values.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape (n,t) containing de-scaled and de-centered values.
+            Where:
+                'n' is the number of taxa.
                 't' is the number of traits.
         """
         raise NotImplementedError("method is abstract")

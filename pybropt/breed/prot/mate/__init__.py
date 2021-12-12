@@ -9,6 +9,7 @@ from .SelfCross import *
 from .TwoWayCross import *
 from .TwoWayDHCross import *
 from .GenerationalTwoWayDHCross import *
+from .FamilyGroupTwoWayDHCross import *
 from .ThreeWayCross import *
 from .ThreeWayDHCross import *
 from .FourWayCross import *

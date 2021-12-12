@@ -1,6 +1,6 @@
 import numpy
 
-def trans_ndpt_to_vec_dist(mat, objfn_wt, wt):
+def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
     """
     Transform a set of non-dominated points by calculating their distances to a
     vector.
@@ -85,7 +85,7 @@ def trans_ndpt_to_vec_dist(mat, objfn_wt, wt):
 
     return d
 
-def trans_sum(mat, axis = None):
+def trans_sum(mat, axis = None, **kwargs):
     """
     Transform a numpy.ndarray by taking a summation across an axis.
 
@@ -103,7 +103,7 @@ def trans_sum(mat, axis = None):
     """
     return mat.sum(axis = axis)
 
-def trans_dot(mat, wt):
+def trans_dot(mat, wt, **kwargs):
     """
     Transform a numpy.ndarray by taking the dot product with a vector of weights
 
@@ -127,7 +127,7 @@ def trans_dot(mat, wt):
     """
     return mat.dot(wt)
 
-def trans_flatten(mat):
+def trans_flatten(mat, **kwargs):
     """
     Transform a numpy.ndarray by flattening it.
 

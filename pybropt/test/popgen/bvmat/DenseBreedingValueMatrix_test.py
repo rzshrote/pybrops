@@ -19,8 +19,8 @@ from pybropt.popgen.bvmat import cond_check_is_DenseBreedingValueMatrix
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def mat_float64():
-    a = numpy.float64([
+def mat_uncentered_float64():
+    yield numpy.float64([
         [5.9, 5.8, 7. ],
         [5.3, 8.3, 5. ],
         [7.8, 6.4, 7. ],
@@ -30,7 +30,18 @@ def mat_float64():
         [5.5, 1.9, 6. ],
         [3.1, 3. , 2.4]
     ])
-    yield a
+
+@pytest.fixture
+def location_float64(mat_uncentered_float64):
+    yield mat_uncentered_float64.mean(0)
+
+@pytest.fixture
+def scale_float64(mat_uncentered_float64):
+    yield mat_uncentered_float64.std(0)
+
+@pytest.fixture
+def mat_float64(mat_uncentered_float64, location_float64, scale_float64):
+    yield (mat_uncentered_float64 - location_float64) / scale_float64
 
 ###################### Taxa fixtures #######################
 @pytest.fixture
@@ -76,9 +87,11 @@ def trait_object():
 
 ############################################################
 @pytest.fixture
-def mat(mat_float64, taxa_object, taxa_grp_int64, trait_object):
+def bvmat(mat_float64, location_float64, scale_float64, taxa_object, taxa_grp_int64, trait_object):
     a = DenseBreedingValueMatrix(
         mat = mat_float64,
+        location = location_float64,
+        scale = scale_float64,
         taxa = taxa_object,
         taxa_grp = taxa_grp_int64,
         trait = trait_object
@@ -131,67 +144,118 @@ def test_tvar_is_concrete():
 ################################################################################
 
 ################ General matrix properties #################
-def test_mat_fget(mat, mat_float64):
-    assert numpy.all(mat == mat_float64)
 
-def test_mat_fset_TypeError(mat, mat_float64):
+################# mat ##################
+def test_mat_fget(bvmat, mat_float64):
+    assert numpy.all(bvmat.mat == mat_float64)
+
+def test_mat_fset_TypeError(bvmat, mat_float64):
     with pytest.raises(TypeError):
-        mat.mat = list(mat_float64.flatten())
+        bvmat.mat = list(mat_float64.flatten())
 
-def test_mat_fset_ValueError(mat, mat_float64):
+def test_mat_fset_ValueError(bvmat, mat_float64):
     with pytest.raises(ValueError):
-        mat.mat = mat_float64.flatten()
+        bvmat.mat = mat_float64.flatten()
+    a = (mat_float64 + 4) * 1.4
+    with pytest.raises(ValueError):
+        bvmat.mat = a
 
-def test_mat_fset(mat, mat_float64):
-    mat.mat = mat_float64
-    assert numpy.all(mat.mat == mat_float64)
+def test_mat_fset(bvmat, mat_float64):
+    bvmat.mat = mat_float64
+    assert numpy.all(bvmat.mat == mat_float64)
 
-def test_mat_fdel(mat, mat_float64):
-    del mat.mat
+def test_mat_fdel(bvmat, mat_float64):
+    del bvmat.mat
     with pytest.raises(AttributeError):
-        mat.mat
+        bvmat.mat
+
+############### location ###############
+def test_location_fget(bvmat, location_float64):
+    assert numpy.all(bvmat.location == location_float64)
+
+def test_location_fset_TypeError(bvmat, location_float64):
+    with pytest.raises(TypeError):
+        bvmat.location = 5
+
+def test_location_fset_ValueError(bvmat, location_float64):
+    l = len(location_float64) // 2
+    a = location_float64[0:l]
+    with pytest.raises(ValueError):
+        bvmat.location = a
+
+def test_location_fset(bvmat, location_float64):
+    bvmat.location = location_float64
+    assert numpy.all(bvmat.location == location_float64)
+
+def test_location_fdel(bvmat, location_float64):
+    del bvmat.location
+    with pytest.raises(AttributeError):
+        bvmat.location
+
+################ scale #################
+def test_scale_fget(bvmat, scale_float64):
+    assert numpy.all(bvmat.scale == scale_float64)
+
+def test_scale_fset_TypeError(bvmat, scale_float64):
+    with pytest.raises(TypeError):
+        bvmat.scale = 5
+
+def test_scale_fset_ValueError(bvmat, scale_float64):
+    l = len(scale_float64) // 2
+    a = scale_float64[0:l]
+    with pytest.raises(ValueError):
+        bvmat.scale = a
+
+def test_scale_fset(bvmat, scale_float64):
+    bvmat.scale = scale_float64
+    assert numpy.all(bvmat.scale == scale_float64)
+
+def test_scale_fdel(bvmat, scale_float64):
+    del bvmat.scale
+    with pytest.raises(AttributeError):
+        bvmat.scale
 
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_targmax(mat):
-    a = mat.targmax()
-    b = numpy.argmax(mat.mat, axis = mat.taxa_axis)
+def test_targmax(bvmat):
+    a = bvmat.targmax()
+    b = numpy.argmax(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_targmin(mat):
-    a = mat.targmin()
-    b = numpy.argmin(mat.mat, axis = mat.taxa_axis)
+def test_targmin(bvmat):
+    a = bvmat.targmin()
+    b = numpy.argmin(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_tmax(mat):
-    a = mat.tmax()
-    b = numpy.max(mat.mat, axis = mat.taxa_axis)
+def test_tmax(bvmat):
+    a = bvmat.tmax()
+    b = numpy.max(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_tmean(mat):
-    a = mat.tmean()
-    b = numpy.mean(mat.mat, axis = mat.taxa_axis)
+def test_tmean(bvmat):
+    a = bvmat.tmean()
+    b = numpy.mean(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_tmin(mat):
-    a = mat.tmin()
-    b = numpy.min(mat.mat, axis = mat.taxa_axis)
+def test_tmin(bvmat):
+    a = bvmat.tmin()
+    b = numpy.min(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_trange(mat):
-    a = mat.trange()
-    b = numpy.ptp(mat.mat, axis = mat.taxa_axis)
+def test_trange(bvmat):
+    a = bvmat.trange()
+    b = numpy.ptp(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_tstd(mat):
-    a = mat.tstd()
-    b = numpy.std(mat.mat, axis = mat.taxa_axis)
+def test_tstd(bvmat):
+    a = bvmat.tstd()
+    b = numpy.std(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-def test_tvar(mat):
-    a = mat.tvar()
-    b = numpy.var(mat.mat, axis = mat.taxa_axis)
+def test_tvar(bvmat):
+    a = bvmat.tvar()
+    b = numpy.var(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
 # TODO: test to_hdf5, from_hdf5
@@ -202,17 +266,17 @@ def test_tvar(mat):
 def test_is_DenseBreedingValueMatrix_is_concrete():
     generic_assert_concrete_function(is_DenseBreedingValueMatrix)
 
-def test_is_DenseBreedingValueMatrix(mat):
-    assert is_DenseBreedingValueMatrix(mat)
+def test_is_DenseBreedingValueMatrix(bvmat):
+    assert is_DenseBreedingValueMatrix(bvmat)
 
 def test_check_is_DenseBreedingValueMatrix_is_concrete():
     generic_assert_concrete_function(check_is_DenseBreedingValueMatrix)
 
-def test_check_is_DenseBreedingValueMatrix(mat):
+def test_check_is_DenseBreedingValueMatrix(bvmat):
     with not_raises(TypeError):
-        check_is_DenseBreedingValueMatrix(mat, "mat")
+        check_is_DenseBreedingValueMatrix(bvmat, "bvmat")
     with pytest.raises(TypeError):
-        check_is_DenseBreedingValueMatrix(None, "mat")
+        check_is_DenseBreedingValueMatrix(None, "bvmat")
 
 def test_cond_check_is_DenseBreedingValueMatrix_is_concrete():
     generic_assert_concrete_function(cond_check_is_DenseBreedingValueMatrix)

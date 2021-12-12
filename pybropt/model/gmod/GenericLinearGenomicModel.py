@@ -22,10 +22,32 @@ from pybropt.core.util import save_dict_to_hdf5
 from pybropt.core.util import is_ndarray
 from pybropt.popgen.gmat import is_GenotypeMatrix
 from pybropt.popgen.bvmat import is_BreedingValueMatrix
+from pybropt.popgen.ptdf import is_PhenotypeDataFrame
 from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
 
 class GenericLinearGenomicModel(LinearGenomicModel):
-    """docstring for GenericLinearGenomicModel."""
+    """
+    The GenericLinearGenomicModel class represents a Multivariate Multiple Linear
+    Regression model.
+
+    A Multivariate Multiple Linear Regression model is defined as:
+
+        Y = Xβ + Zu + e
+
+        Where:
+            Y is a matrix of response variables of shape (n,t)
+            X is a matrix of fixed effect predictors of shape (n,q)
+            β is a matrix of fixed effect regression coefficients of shape (q,t)
+            Z is a matrix of random effect predictors of shape (n,p)
+            u is a matrix of random effect regression coefficients of shape (p,t)
+            e is a matrix of error terms of shape (n, t)
+
+        Shape definitions:
+            n = the number of individuals
+            q = the number of fixed effect predictors (e.g. environments)
+            p = the number of random effect predictors (e.g. genomic markers)
+            t = the number of traits
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -315,8 +337,8 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         Y_hat = self.predict_numpy(X, Z, **kwargs)
 
         # create output breeding value matrix
-        out = DenseGenomicEstimatedBreedingValueMatrix(
-            mat = Y_hat,
+        out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
+            a = Y_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait
@@ -403,7 +425,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         """
         # process ptobj
         if is_BreedingValueMatrix(ptobj):
-            Y = ptobj.mat
+            Y = ptobj.descale()
         elif is_PhenotypeDataFrame(ptobj):
             raise RuntimeError("not implmented yet")
         elif is_ndarray(ptobj):
@@ -492,9 +514,23 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         # make predictions
         gebv_hat = self.gebv_numpy(Z, **kwargs)
 
+        # construct contrast (X*) to take cell means assuming that the first
+        # column in X is a corner (first fixed effect is the intercept)
+        # construct a contrast to calculate the GEBV center
+        nfixed = self.beta.shape[0]
+        Xstar = numpy.empty((1,nfixed), dtype = self.beta.dtype)
+        Xstar[0,0] = 1
+        Xstar[0,1:] = 1/nfixed
+
+        # calculate intercepts (location)
+        location = Xstar @ self.beta
+
+        # add location to gebv_hat
+        gebv_hat += location
+
         # create output breeding value matrix
-        out = DenseGenomicEstimatedBreedingValueMatrix(
-            mat = gebv_hat,
+        out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
+            a = gebv_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait

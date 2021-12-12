@@ -24,7 +24,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         # make assignments
         self.gmult = gmult
 
-    def mate(self, pgmat, sel, ncross, nprogeny, t_cur, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, t_cur = 0, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme.
 
@@ -47,6 +47,10 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         t_cur : int
             Current time.
         s : int, default = 0
@@ -55,7 +59,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
 
         Returns
         -------
-        progeny : PhasedGenotypeMatrix
+        out : PhasedGenotypeMatrix
             A PhasedGenotypeMatrix of progeny.
         """
         # construct taxa_grp
@@ -69,11 +73,12 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         taxa_grp += t_cur * self.gmult
 
         # construct progeny
-        progeny, misc = super(GenerationalTwoWayDHCross, self).mate(
+        progeny = super(GenerationalTwoWayDHCross, self).mate(
             pgmat = pgmat,
             sel = sel,
             ncross = ncross,
             nprogeny = nprogeny,
+            miscout = miscout,
             s = s,
             taxa_grp = taxa_grp,    # add taxa_grp as keyword argument
             **kwargs
@@ -82,4 +87,4 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         # group progeny taxa
         progeny.group_taxa()
 
-        return progeny, misc
+        return progeny

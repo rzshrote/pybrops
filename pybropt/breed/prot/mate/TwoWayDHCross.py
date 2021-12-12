@@ -7,6 +7,7 @@ from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_ndarray_len_is_multiple_of_2
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.core.error import check_is_int
 
 class TwoWayDHCross(MatingProtocol):
     """docstring for TwoWayDHCross."""
@@ -14,7 +15,7 @@ class TwoWayDHCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, progeny_counter = 0, family_counter = 0, rng = None, **kwargs):
         """
         Constructor for the concrete class TwoWayDHCross.
 
@@ -28,15 +29,20 @@ class TwoWayDHCross(MatingProtocol):
         super(TwoWayDHCross, self).__init__(**kwargs)
 
         # check data types
-        cond_check_is_Generator(rng, "rng")
+        check_is_int(progeny_counter, "progeny_counter")
+        self.progeny_counter = progeny_counter
+        check_is_int(family_counter, "family_counter")
+        self.family_counter = family_counter
+        if rng is None:
+            self.rng = pybropt.core.random
+        else:
+            check_is_Generator(rng, "rng")
 
-        # make assignments
-        self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme, then create
         doubled haploid progenies.
@@ -74,6 +80,10 @@ class TwoWayDHCross(MatingProtocol):
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross pattern before 'nprogeny'
             double haploids are generated.
@@ -83,14 +93,15 @@ class TwoWayDHCross(MatingProtocol):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeMatrix
-            A DensePhasedGenotypeMatrix of progeny. Output is of the same class
-            as 'pgmat', but are guaranteed to be a DensePhasedGenotypeMatrix.
+        out : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix of progeny.
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
         check_ndarray_len_is_multiple_of_2(sel, "sel")
 
+        ########################################################################
+        ########################## Progeny generation ##########################
         # get female and male selections; repeat by ncross
         fsel = numpy.repeat(sel[0::2], ncross)
         msel = numpy.repeat(sel[1::2], ncross)
@@ -116,9 +127,39 @@ class TwoWayDHCross(MatingProtocol):
         # generate doubled haploids
         dhgeno = mat_dh(hgeno, asel, xoprob, self.rng)
 
+        ########################################################################
+        ######################### Metadata generation ##########################
+        # generate line names
+        progcnt = dhgeno.shape[1]               # get number of progeny generated
+        riter = range(                          # range iterator for line names
+            self.progeny_counter,               # start progeny number (inclusive)
+            self.progeny_counter + progcnt      # stop progeny number (exclusive)
+        )
+        taxa = numpy.object_(                   # create taxa names
+            ["dh"+str(i).zfill(7) for i in riter]
+        )
+        self.progeny_counter += progcnt         # increment counter
+
+        # calculate taxa family groupings
+        nfam = len(sel) // 2                    # calculate number of families
+        taxa_grp = numpy.repeat(                # construct taxa_grp
+            numpy.repeat(                       # repeat for progeny
+                numpy.arange(                   # repeat for crosses
+                    self.family_counter,        # start family number (inclusive)
+                    self.family_counter + nfam, # stop family number (exclusive)
+                    dtype = 'int64'
+                ), ncross
+            ), nprogeny
+        )
+        self.family_counter += nfam             # increment counter
+
+        ########################################################################
+        ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
             mat = dhgeno,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,
             vrnt_phypos = pgmat.vrnt_phypos,
             vrnt_name = pgmat.vrnt_name,
@@ -135,10 +176,10 @@ class TwoWayDHCross(MatingProtocol):
         progeny.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
         progeny.vrnt_chrgrp_len = pgmat.vrnt_chrgrp_len
 
-        # empty additional output
-        misc = {}
+        # group progeny taxa
+        progeny.group_taxa()
 
-        return progeny, misc
+        return progeny
 
 
 

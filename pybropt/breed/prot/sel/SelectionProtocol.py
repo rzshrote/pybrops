@@ -14,7 +14,7 @@ class SelectionProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -34,13 +34,17 @@ class SelectionProtocol:
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgmat, sel, ncross, nprogeny, misc)
+            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
             pgmat : PhasedGenotypeMatrix
                 A PhasedGenotypeMatrix of parental candidates.
             sel : numpy.ndarray
@@ -50,8 +54,6 @@ class SelectionProtocol:
                 Number of crosses to perform per cross pattern.
             nprogeny : numpy.ndarray
                 Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
         """
         raise NotImplementedError("method is abstract")
 
@@ -116,7 +118,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -136,13 +138,17 @@ class SelectionProtocol:
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing three objects (frontier, sel_config, misc)
+            A tuple containing two objects (frontier, sel_config)
             Elements
             --------
             frontier : numpy.ndarray
@@ -156,8 +162,6 @@ class SelectionProtocol:
                 Where:
                     'q' is the number of points in the frontier.
                     'k' is the number of search space decision variables.
-            misc : dict
-                A dictionary of miscellaneous output. (User specified)
         """
         raise NotImplementedError("method is abstract")
 

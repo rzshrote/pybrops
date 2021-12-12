@@ -255,6 +255,7 @@ def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
     geno = mat_int8.sum(0)
     a = glgmod.predict(mat_intercept, dpgmat)
     b = (mat_intercept @ mat_beta) + (geno @ mat_u)
+    b = (b - b.mean(0)) / b.std(0)
     assert numpy.all(a == b)
     assert is_BreedingValueMatrix(a)
 

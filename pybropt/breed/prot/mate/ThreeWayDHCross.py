@@ -36,7 +36,7 @@ class ThreeWayDHCross(MatingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
         """
         Mate individuals according to a 3-way mate selection scheme.
 
@@ -61,6 +61,10 @@ class ThreeWayDHCross(MatingProtocol):
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
@@ -70,9 +74,8 @@ class ThreeWayDHCross(MatingProtocol):
 
         Returns
         -------
-        progeny : DensePhasedGenotypeMatrix
-            A DensePhasedGenotypeMatrix of progeny. Output is of the same class
-            as 'pgmat', but are guaranteed to be a DensePhasedGenotypeMatrix.
+        out : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix of progeny.
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
@@ -129,10 +132,7 @@ class ThreeWayDHCross(MatingProtocol):
         progeny.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
         progeny.vrnt_chrgrp_len = pgmat.vrnt_chrgrp_len
 
-        # empty additional output
-        misc = {}
-
-        return progeny, misc
+        return progeny
 
 
 

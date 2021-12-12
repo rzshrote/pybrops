@@ -18,7 +18,7 @@ class MatingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs):
         """
         Mate individuals according to a mating scheme.
 
@@ -33,17 +33,17 @@ class MatingProtocol:
             Number of crosses to perform per cross pattern.
         nprogeny : numpy.ndarray
             Number of progeny to generate per cross.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         **kwargs
             Additional keyword arguments.
 
         Returns
         -------
-        out : tuple
-            A tuple containing two elements: (progeny, misc)
-            progeny : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of progeny.
-            misc : dict
-                Miscellaneous output (user defined).
+        out : PhasedGenotypeMatrix
+            A PhasedGenotypeMatrix of progeny.
         """
         raise NotImplementedError("method is abstract")
 
