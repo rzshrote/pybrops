@@ -2,3 +2,7 @@ numpy
 pandas
 cyvcf2
 igraph
+rpy2
+deap
+pytest
+pytest-datadir
