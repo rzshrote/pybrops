@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.ssel import SurvivorSelectionOperator
-from pybropt.breed.op.ssel import is_SurvivorSelectionOperator
-from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
-from pybropt.breed.op.ssel import cond_check_is_SurvivorSelectionOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import is_SurvivorSelectionOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import cond_check_is_SurvivorSelectionOperator
 
 ################################################################################
 ################################ Test fixtures #################################
