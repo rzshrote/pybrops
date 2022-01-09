@@ -15,10 +15,10 @@ from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import FourWayDHCross
-from pybropt.breed.prot.mate import is_FourWayDHCross
-from pybropt.breed.prot.mate import check_is_FourWayDHCross
-from pybropt.breed.prot.mate import cond_check_is_FourWayDHCross
+from pybropt.breed.prot.mate.FourWayDHCross import FourWayDHCross
+from pybropt.breed.prot.mate.FourWayDHCross import is_FourWayDHCross
+from pybropt.breed.prot.mate.FourWayDHCross import check_is_FourWayDHCross
+from pybropt.breed.prot.mate.FourWayDHCross import cond_check_is_FourWayDHCross
 
 ################################################################################
 ################################ Test fixtures #################################

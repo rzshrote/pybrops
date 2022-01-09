@@ -1,27 +1,8 @@
+"""
+Module containing mating utilities.
+"""
+
 import numpy
-
-def mat_dh(geno, sel, xoprob, rng):
-    """
-    Perform doubled haploid production on matrix inputs.
-
-    Parameters
-    ----------
-    geno : numpy.ndarray
-    sel : numpy.ndarray
-    xoprob : numpy.ndarray
-    seed : int
-
-    Returns
-    -------
-    progeny : numpy.ndarray
-    """
-    # generate gametes
-    gamete = mat_meiosis(geno, sel, xoprob, rng)
-
-    # generate offspring genotypes by stacking matrices to make 3d matrix
-    progeny = numpy.stack([gamete, gamete])
-
-    return progeny
 
 def mat_meiosis(geno, sel, xoprob, rng):
     """
@@ -73,6 +54,29 @@ def mat_meiosis(geno, sel, xoprob, rng):
         gamete[i,stix:] = geno[phase,s,stix:]
 
     return gamete
+
+def mat_dh(geno, sel, xoprob, rng):
+    """
+    Perform doubled haploid production on matrix inputs.
+
+    Parameters
+    ----------
+    geno : numpy.ndarray
+    sel : numpy.ndarray
+    xoprob : numpy.ndarray
+    seed : int
+
+    Returns
+    -------
+    progeny : numpy.ndarray
+    """
+    # generate gametes
+    gamete = mat_meiosis(geno, sel, xoprob, rng)
+
+    # generate offspring genotypes by stacking matrices to make 3d matrix
+    progeny = numpy.stack([gamete, gamete])
+
+    return progeny
 
 def mat_mate(fgeno, mgeno, fsel, msel, xoprob, rng):
     """

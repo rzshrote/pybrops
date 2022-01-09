@@ -1,16 +1,22 @@
+"""
+Module containing mating simulation protocols.
+"""
+
 # import libraries; order dependent
 
 # import helper functions
-from .mate_util import *
+from . import util
 
-# import classes
-from .MatingProtocol import *
-from .SelfCross import *
-from .TwoWayCross import *
-from .TwoWayDHCross import *
-from .GenerationalTwoWayDHCross import *
-from .FamilyGroupTwoWayDHCross import *
-from .ThreeWayCross import *
-from .ThreeWayDHCross import *
-from .FourWayCross import *
-from .FourWayDHCross import *
+# abstract classes
+from . import MatingProtocol
+
+# concrete classes
+from . import SelfCross
+from . import TwoWayCross
+from . import TwoWayDHCross
+from . import GenerationalTwoWayDHCross
+from . import FamilyGroupTwoWayDHCross
+from . import ThreeWayCross
+from . import ThreeWayDHCross
+from . import FourWayCross
+from . import FourWayDHCross

@@ -15,10 +15,10 @@ from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import SelfCross
-from pybropt.breed.prot.mate import is_SelfCross
-from pybropt.breed.prot.mate import check_is_SelfCross
-from pybropt.breed.prot.mate import cond_check_is_SelfCross
+from pybropt.breed.prot.mate.SelfCross import SelfCross
+from pybropt.breed.prot.mate.SelfCross import is_SelfCross
+from pybropt.breed.prot.mate.SelfCross import check_is_SelfCross
+from pybropt.breed.prot.mate.SelfCross import cond_check_is_SelfCross
 
 ################################################################################
 ################################ Test fixtures #################################

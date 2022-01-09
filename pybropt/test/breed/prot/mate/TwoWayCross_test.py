@@ -15,10 +15,10 @@ from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
 from pybropt.popgen.gmap import ExtendedGeneticMap
 from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import TwoWayCross
-from pybropt.breed.prot.mate import is_TwoWayCross
-from pybropt.breed.prot.mate import check_is_TwoWayCross
-from pybropt.breed.prot.mate import cond_check_is_TwoWayCross
+from pybropt.breed.prot.mate.TwoWayCross import TwoWayCross
+from pybropt.breed.prot.mate.TwoWayCross import is_TwoWayCross
+from pybropt.breed.prot.mate.TwoWayCross import check_is_TwoWayCross
+from pybropt.breed.prot.mate.TwoWayCross import cond_check_is_TwoWayCross
 
 ################################################################################
 ################################ Test fixtures #################################

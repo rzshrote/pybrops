@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.prot.mate import MatingProtocol
-from pybropt.breed.prot.mate import is_MatingProtocol
-from pybropt.breed.prot.mate import check_is_MatingProtocol
-from pybropt.breed.prot.mate import cond_check_is_MatingProtocol
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
+from pybropt.breed.prot.mate.MatingProtocol import is_MatingProtocol
+from pybropt.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
+from pybropt.breed.prot.mate.MatingProtocol import cond_check_is_MatingProtocol
 
 
 ################################################################################

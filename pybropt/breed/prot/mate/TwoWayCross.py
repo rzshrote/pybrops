@@ -1,8 +1,8 @@
 import numpy
 import pybropt.core.random
-from . import mat_mate
-from . import mat_dh
-from . import MatingProtocol
+from pybropt.breed.prot.mate.util import mat_mate
+from pybropt.breed.prot.mate.util import mat_dh
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_ndarray_len_is_multiple_of_2
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix

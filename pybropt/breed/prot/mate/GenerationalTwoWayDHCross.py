@@ -1,7 +1,6 @@
 import numpy
 
-from . import TwoWayDHCross
-
+from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybropt.core.error import check_is_int
 
 class GenerationalTwoWayDHCross(TwoWayDHCross):
