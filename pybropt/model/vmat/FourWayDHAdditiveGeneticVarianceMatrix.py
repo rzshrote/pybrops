@@ -1,4 +1,4 @@
-from . import AdditiveGeneticVarianceMatrix
+from pybropt.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
 class FourWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
     """docstring for FourWayDHAdditiveGeneticVarianceMatrix."""
