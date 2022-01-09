@@ -1,9 +1,14 @@
+"""
+Module containing breeding value matrix infrastructure.
+"""
 # order dependent import
 
 # utilities
 
-# classes
-from .BreedingValueMatrix import *
-from .DenseBreedingValueMatrix import *
-from .DenseEstimatedBreedingValueMatrix import *
-from .DenseGenomicEstimatedBreedingValueMatrix import *
+# abstract classes
+from . import BreedingValueMatrix
+
+# concrete classes
+from . import DenseBreedingValueMatrix
+from . import DenseEstimatedBreedingValueMatrix
+from . import DenseGenomicEstimatedBreedingValueMatrix

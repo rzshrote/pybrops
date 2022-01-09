@@ -3,7 +3,7 @@ import numpy
 import h5py
 
 from pybropt.core.mat import DenseTaxaTraitMatrix
-from . import BreedingValueMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.util import save_dict_to_hdf5

@@ -1,4 +1,4 @@
-from . import DenseBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
 class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
