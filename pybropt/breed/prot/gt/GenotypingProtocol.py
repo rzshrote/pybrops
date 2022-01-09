@@ -1,3 +1,7 @@
+"""
+Module containing the abstract class GenotypingProtocol and its service functions.
+"""
+
 class GenotypingProtocol:
     """docstring for GenotypingProtocol."""
 

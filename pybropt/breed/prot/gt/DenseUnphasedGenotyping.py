@@ -1,4 +1,4 @@
-from . import GenotypingProtocol
+from pybropt.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 
 from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
 from pybropt.popgen.gmat import DenseGenotypeMatrix
