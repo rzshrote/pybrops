@@ -3,7 +3,7 @@ import types
 
 import pybropt.core.random
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 from pybropt.core.error import check_is_bool
 from pybropt.core.error import check_is_int

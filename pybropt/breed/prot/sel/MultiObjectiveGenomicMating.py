@@ -10,7 +10,7 @@ from deap import benchmarks
 
 import pybropt.core.random
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str

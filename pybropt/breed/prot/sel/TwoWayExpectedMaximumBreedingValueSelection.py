@@ -1,6 +1,6 @@
 import numpy
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
