@@ -28,9 +28,9 @@ build:
 dist:
 	echo "distribution build instructions not written yet"
 
-# instructions for building the package documentation
-doc:
-	echo "documentation instructions not written yet"
+# instructions for building the package html documentation
+doc-html:
+	cd doc/ && $(MAKE) html
 
 # instructions for cleaning the virtual environment
 clean-virtualenv-devel:
