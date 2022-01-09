@@ -1,6 +1,6 @@
 import numpy
 
-from pybropt.breed.prot.mate.TwoWayCross import TwoWayDHCross
+from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybropt.core.error import check_is_int
 
 class FamilyGroupTwoWayDHCross(TwoWayDHCross):
