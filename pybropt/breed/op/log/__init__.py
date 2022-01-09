@@ -1,2 +1,9 @@
+"""
+Module containing logbook operators.
+"""
 # order dependent import
-from .Logbook import *
+
+# abstract classes
+from . import Logbook
+
+# concrete classes
