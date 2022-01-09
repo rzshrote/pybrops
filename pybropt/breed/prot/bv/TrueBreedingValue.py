@@ -1,4 +1,4 @@
-from . import BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 
 class TrueBreedingValue(BreedingValueProtocol):
     """docstring for TrueBreedingValue."""
