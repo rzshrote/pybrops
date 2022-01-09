@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.mate import MatingOperator
-from pybropt.breed.op.mate import is_MatingOperator
-from pybropt.breed.op.mate import check_is_MatingOperator
-from pybropt.breed.op.mate import cond_check_is_MatingOperator
+from pybropt.breed.op.mate.MatingOperator import MatingOperator
+from pybropt.breed.op.mate.MatingOperator import is_MatingOperator
+from pybropt.breed.op.mate.MatingOperator import check_is_MatingOperator
+from pybropt.breed.op.mate.MatingOperator import cond_check_is_MatingOperator
 
 ################################################################################
 ################################ Test fixtures #################################

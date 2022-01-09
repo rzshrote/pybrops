@@ -1,2 +1,9 @@
+"""
+Module containing breeding program mating operators.
+"""
 # order dependent import
-from .MatingOperator import *
+
+# abstract classes
+from . import MatingOperator
+
+# concrete classes
