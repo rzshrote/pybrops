@@ -1,4 +1,4 @@
-from . import MatingConfiguration
+from pybropt.breed.prot.mcfg.MatingConfiguration import MatingConfiguration
 
 class WeightedRandomMatingConfiguration(MatingConfiguration):
     """docstring for WeightedRandomMatingConfiguration."""
