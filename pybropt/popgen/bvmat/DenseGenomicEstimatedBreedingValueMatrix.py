@@ -14,7 +14,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         taxa : numpy.ndarray
         taxa_grp : numpy.ndarray
         trait : numpy.ndarray
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseGenomicEstimatedBreedingValueMatrix, self).__init__(

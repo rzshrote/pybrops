@@ -60,9 +60,9 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
 
         Parameters
         ----------
-        *args : *tuple
+        args : tuple
             A tuple of matrix indices to access the coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # index via numpy and return.

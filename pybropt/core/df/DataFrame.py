@@ -10,7 +10,7 @@ class DataFrame:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DataFrame, self).__init__()

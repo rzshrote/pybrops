@@ -10,7 +10,7 @@ class BreedingEdge:
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(BreedingEdge, self).__init__()

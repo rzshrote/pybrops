@@ -10,7 +10,7 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments used for dependency injection.
         """
         super(TaxaVariantMatrix, self).__init__(**kwargs)

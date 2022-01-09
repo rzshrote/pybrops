@@ -29,7 +29,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Matrix used to construct the object.
         trait : numpy.ndarray
             Trait names.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseTraitMatrix, self).__init__(
@@ -142,7 +142,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to adjoin to the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -559,7 +559,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to append to the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis

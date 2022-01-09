@@ -14,7 +14,7 @@ class HaldaneMapFunction(GeneticMapFunction):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(HaldaneMapFunction, self).__init__(**kwargs)

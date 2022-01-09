@@ -40,7 +40,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseTaxaMatrix, self).__init__(

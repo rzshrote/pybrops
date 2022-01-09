@@ -26,7 +26,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         mat : numpy.ndarray
             Matrix used to construct the object.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DensePhasedMatrix, self).__init__(

@@ -10,7 +10,7 @@ class MatingProtocol:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(MatingProtocol, self).__init__()

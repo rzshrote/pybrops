@@ -257,7 +257,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         ----------
         gmat : GenotypeMatrix
             Input genotype matrix from which to calculate coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         ####################################################

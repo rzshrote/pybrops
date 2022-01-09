@@ -10,7 +10,7 @@ class PhenotypingProtocol:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(PhenotypingProtocol, self).__init__()
@@ -64,7 +64,7 @@ class PhenotypingProtocol:
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -84,7 +84,7 @@ class PhenotypingProtocol:
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")
@@ -99,7 +99,7 @@ class PhenotypingProtocol:
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")

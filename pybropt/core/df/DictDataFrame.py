@@ -31,7 +31,7 @@ class DictDataFrame(DataFrame):
             Dictionary values must be all numpy.ndarray's.
         col_grp : dict
             Column groups
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DictDataFrame, self).__init__()
@@ -314,7 +314,7 @@ class DictDataFrame(DataFrame):
             Whether to return the column type along with the column data.
         return_dtype : boolean, default = False
             Whether to return the column dtype along with the column data.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

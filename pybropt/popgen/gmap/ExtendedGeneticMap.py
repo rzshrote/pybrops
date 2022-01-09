@@ -349,7 +349,7 @@ class ExtendedGeneticMap(GeneticMap):
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete indices from self
@@ -376,7 +376,7 @@ class ExtendedGeneticMap(GeneticMap):
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # keep only selected markers.
@@ -406,7 +406,7 @@ class ExtendedGeneticMap(GeneticMap):
             priority. If the physical distance between two markers selected
             based on their genetic distance exceeds 'nt' (if provided), the
             additional markers are sought between those regions.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # check if we have acceptible inputs
@@ -617,7 +617,7 @@ class ExtendedGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # get unique chromosome group labels

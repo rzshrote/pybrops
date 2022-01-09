@@ -63,7 +63,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
                 Parameters
                     obj : scalar, numpy.ndarray
                         Objective scalar or vector to be transformed
-                    **kwargs : dict
+                    kwargs : dict
                         Additional keyword arguments
                 Returns
                     out : scalar, numpy.ndarray
@@ -87,7 +87,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
                         Array of shape (j, o) containing nondominated points.
                         Where 'j' is the number of nondominated points and 'o'
                         is the number of objectives.
-                    **kwargs : dict
+                    kwargs : dict
                         Additional keyword arguments.
                 Returns
                     out : numpy.ndarray
@@ -320,7 +320,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             Function must adhere to the following standard:
                 Must accept a single numpy.ndarray argument.
                 Must return a single object, whether scalar or numpy.ndarray.
-        **kwargs : dict
+        kwargs : dict
             Dictionary of keyword arguments to pass to 'trans' function.
         """
         mat = geno["cand"].mat                      # (m,n,p) get genotype matrix

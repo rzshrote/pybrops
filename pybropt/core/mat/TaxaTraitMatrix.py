@@ -10,7 +10,7 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments used for dependency injection.
         """
         super(TaxaTraitMatrix, self).__init__(**kwargs)

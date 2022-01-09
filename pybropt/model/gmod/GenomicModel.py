@@ -12,7 +12,7 @@ class GenomicModel(HDF5InputOutput):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -120,7 +120,7 @@ class GenomicModel(HDF5InputOutput):
             A covariate matrix of shape (n,q).
         Z : numpy.ndarray
             A genotypes matrix of shape (n,p).
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -139,7 +139,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix, numpy.ndarray
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -158,7 +158,7 @@ class GenomicModel(HDF5InputOutput):
             A matrix of covariates.
         Z : numpy.ndarray
             A matrix of genotype values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -183,7 +183,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -205,7 +205,7 @@ class GenomicModel(HDF5InputOutput):
             A matrix of covariates.
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -231,7 +231,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -256,7 +256,7 @@ class GenomicModel(HDF5InputOutput):
         ----------
         Z : numpy.ndarray
             A matrix of genotype values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -279,7 +279,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -298,7 +298,7 @@ class GenomicModel(HDF5InputOutput):
         ----------
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -316,7 +316,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -333,7 +333,7 @@ class GenomicModel(HDF5InputOutput):
         ----------
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -351,7 +351,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -370,7 +370,7 @@ class GenomicModel(HDF5InputOutput):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -390,7 +390,7 @@ class GenomicModel(HDF5InputOutput):
             values.
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -411,7 +411,7 @@ class GenomicModel(HDF5InputOutput):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -429,7 +429,7 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -451,7 +451,7 @@ class GenomicModel(HDF5InputOutput):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -471,7 +471,7 @@ class GenomicModel(HDF5InputOutput):
             values.
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -490,7 +490,7 @@ class GenomicModel(HDF5InputOutput):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -510,7 +510,7 @@ class GenomicModel(HDF5InputOutput):
             values.
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

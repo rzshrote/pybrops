@@ -12,7 +12,7 @@ class GermplasmBank(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(GermplasmBank, self).__init__()

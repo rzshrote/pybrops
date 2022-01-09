@@ -10,7 +10,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(GeneticMap, self).__init__()
@@ -260,7 +260,7 @@ class GeneticMap:
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -276,7 +276,7 @@ class GeneticMap:
             Array of shape (a,), slice or int of item(s) to remove.
             Where:
                 'a' is the number of indices to remove.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -295,7 +295,7 @@ class GeneticMap:
             priority. If the physical distance between two markers selected
             based on their genetic distance exceeds 'nt' (if provided), the
             additional markers are sought between those regions.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -353,7 +353,7 @@ class GeneticMap:
             Specifies the kind of interpolation as a string.
         fill_value : obj
             Fill value for points extrapolated outside the spline.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -509,7 +509,7 @@ class GeneticMap:
         sep : str
         header : bool
         index : bool, int
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")

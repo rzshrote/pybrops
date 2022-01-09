@@ -117,7 +117,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         return_aefct : boolean, default = False
             Whether to return the column analysis effect type along with the
             column data.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

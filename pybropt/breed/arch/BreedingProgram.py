@@ -12,7 +12,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(BreedingProgram, self).__init__(**kwargs)
@@ -182,7 +182,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -200,7 +200,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

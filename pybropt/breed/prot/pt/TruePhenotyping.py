@@ -20,7 +20,7 @@ class TruePhenotyping(PhenotypingProtocol):
         ----------
         gpmod : GenomicModel
             Genomic prediction model to use to determine phenotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments
         """
         super(TruePhenotyping, self).__init__(**kwargs)
@@ -79,7 +79,7 @@ class TruePhenotyping(PhenotypingProtocol):
         gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
             If None, use default genomic prediction model.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -178,7 +178,7 @@ class TruePhenotyping(PhenotypingProtocol):
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise AttributeError("unsupported operation: heritability always set at 1.0")
@@ -193,7 +193,7 @@ class TruePhenotyping(PhenotypingProtocol):
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise AttributeError("unsupported operation: heritability always set at 1.0")

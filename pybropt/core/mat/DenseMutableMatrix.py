@@ -13,7 +13,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         ----------
         mat : numpy.ndarray
             Dense matrix to use to create object.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseMutableMatrix, self).__init__(

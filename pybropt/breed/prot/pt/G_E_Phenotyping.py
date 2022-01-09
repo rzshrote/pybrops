@@ -277,7 +277,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Replication variance parameter.
         var_err : numeric, numpy.ndarray
             Error variance parameter.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -522,7 +522,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         # set default gpmod
@@ -555,7 +555,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")

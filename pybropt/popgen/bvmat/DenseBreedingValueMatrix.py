@@ -26,7 +26,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         ----------
         mat : numpy.ndarray
             A float64 matrix of breeding values of shape (n, t).
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
 

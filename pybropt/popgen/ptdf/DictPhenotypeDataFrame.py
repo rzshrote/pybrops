@@ -25,7 +25,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         col_analysis_type : dict
         col_analysis_effect : dict
         row_name : dict
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DictPhenotypeDataFrame, self).__init__(
@@ -180,7 +180,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
             Whether to return the column type along with the column data.
         return_dtype : boolean, default = False
             Whether to return the column dtype along with the column data.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

@@ -74,7 +74,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
                 t : is the number of traits.
         model_name : str, None
         params : dict, None
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -238,7 +238,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A genotypes matrix of shape (n,p).
         trait : numpy.ndarray
             A trait name array of shape (t,).
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise AttributeError("GenericLinearGenomicModel is read-only")
@@ -259,7 +259,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             values.
         trait : numpy.ndarray, None
             A trait name array of shape (t,).
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise AttributeError("GenericLinearGenomicModel is read-only")
@@ -279,7 +279,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A matrix of covariates.
         Z : numpy.ndarray
             A matrix of genotype values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -307,7 +307,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix,
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -358,7 +358,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A matrix of covariates.
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -413,7 +413,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix, numpy.ndarray
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -465,7 +465,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         ----------
         Z : numpy.ndarray
             A matrix of genotype values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -491,7 +491,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -547,7 +547,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         ----------
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -572,7 +572,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix, numpy.ndarray
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -599,7 +599,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         ----------
         Z : numpy.ndarray
             A matrix of genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -624,7 +624,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -653,7 +653,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -687,7 +687,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
                     Get ploidy from GenotypeMatrix.
                 If gtobj is a numpy.ndarray:
                     Assumed to be 2 (diploid).
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -722,7 +722,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -754,7 +754,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
                     Get ploidy from GenotypeMatrix.
                 If gtobj is a numpy.ndarray:
                     Assumed to be 2 (diploid).
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -792,7 +792,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -827,7 +827,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -860,7 +860,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -895,7 +895,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

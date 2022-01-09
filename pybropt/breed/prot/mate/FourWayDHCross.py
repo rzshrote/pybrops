@@ -21,7 +21,7 @@ class FourWayDHCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(FourWayDHCross, self).__init__(**kwargs)
@@ -69,7 +69,7 @@ class FourWayDHCross(MatingProtocol):
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

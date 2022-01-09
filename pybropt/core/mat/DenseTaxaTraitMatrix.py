@@ -24,7 +24,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         taxa : numpy.ndarray
         taxa_grp : numpy.ndarray
         trait : numpy.ndarray
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # cannot use super constructor since DenseTaxaTraitMatrix and DenseVariantMatrix
@@ -702,7 +702,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Trait names to append to the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis

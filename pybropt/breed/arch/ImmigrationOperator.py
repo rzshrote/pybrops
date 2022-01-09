@@ -12,7 +12,7 @@ class ImmigrationOperator(BreedingEdge):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(ImmigrationOperator, self).__init__(

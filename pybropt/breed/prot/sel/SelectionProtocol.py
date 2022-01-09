@@ -179,7 +179,7 @@ class SelectionProtocol:
             A parent contribution vector of shape (n,) and floating dtype.
             Where:
                 'n' is the number of individuals.
-        *args : tuple
+        args : tuple
             Additional arguments.
 
         Returns
@@ -203,7 +203,7 @@ class SelectionProtocol:
             Where:
                 'j' is the number of selection configurations.
                 'n' is the number of individuals.
-        *args : tuple
+        args : tuple
             Additional arguments.
 
         Returns

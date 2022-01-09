@@ -22,7 +22,7 @@ class TwoWayCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(TwoWayCross, self).__init__(**kwargs)
@@ -67,7 +67,7 @@ class TwoWayCross(MatingProtocol):
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

@@ -22,7 +22,7 @@ class DenseMatrix(Matrix):
         ----------
         mat : numpy.ndarray
             Matrix to store
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseMatrix, self).__init__(**kwargs)

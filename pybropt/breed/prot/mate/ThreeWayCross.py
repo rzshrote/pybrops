@@ -56,7 +56,7 @@ class ThreeWayCross(MatingProtocol):
             If None, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

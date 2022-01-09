@@ -34,7 +34,7 @@ class LinearGenomicModel(GenomicModel):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """

@@ -335,7 +335,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -359,7 +359,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         self.genome = copy.deepcopy(self.start_genome)  # reset genomes container

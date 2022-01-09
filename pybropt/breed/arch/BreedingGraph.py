@@ -10,7 +10,7 @@ class BreedingGraph:
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(BreedingGraph, self).__init__()
