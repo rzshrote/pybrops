@@ -2,7 +2,7 @@ import copy
 import numpy
 import h5py
 
-from . import LinearGenomicModel
+from pybropt.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 from pybropt.core.error import check_file_exists
 from pybropt.core.error import check_group_in_hdf5
@@ -25,9 +25,9 @@ from pybropt.popgen.bvmat import is_BreedingValueMatrix
 from pybropt.popgen.ptdf import is_PhenotypeDataFrame
 from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
 
-class GenericLinearGenomicModel(LinearGenomicModel):
+class AdditiveLinearGenomicModel(LinearGenomicModel):
     """
-    The GenericLinearGenomicModel class represents a Multivariate Multiple Linear
+    The AdditiveLinearGenomicModel class represents a Multivariate Multiple Linear
     Regression model.
 
     A Multivariate Multiple Linear Regression model is defined as:
@@ -54,7 +54,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     def __init__(self, beta, u, trait = None, model_name = None, params = None, **kwargs):
         """
-        Constructor for GenericLinearGenomicModel class.
+        Constructor for AdditiveLinearGenomicModel class.
 
         Parameters
         ----------
@@ -78,7 +78,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(GenericLinearGenomicModel, self).__init__(**kwargs)
+        super(AdditiveLinearGenomicModel, self).__init__(**kwargs)
 
         # set variables
         self.beta = beta
@@ -241,7 +241,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise AttributeError("GenericLinearGenomicModel is read-only")
+        raise AttributeError("AdditiveLinearGenomicModel is read-only")
 
     def fit(self, ptobj, cvobj, gtobj, **kwargs):
         """
@@ -262,7 +262,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise AttributeError("GenericLinearGenomicModel is read-only")
+        raise AttributeError("AdditiveLinearGenomicModel is read-only")
 
     ######## methods for estimated breeding values #########
     def predict_numpy(self, X, Z, **kwargs):
@@ -982,7 +982,7 @@ class GenericLinearGenomicModel(LinearGenomicModel):
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object
-        glgmod = GenericLinearGenomicModel(**data_dict)         # create object from read data
+        glgmod = AdditiveLinearGenomicModel(**data_dict)         # create object from read data
         return glgmod
 
     def to_hdf5(self, filename, groupname = None):
@@ -1023,9 +1023,9 @@ class GenericLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenericLinearGenomicModel(v):
+def is_AdditiveLinearGenomicModel(v):
     """
-    Determine whether an object is a GenericLinearGenomicModel.
+    Determine whether an object is a AdditiveLinearGenomicModel.
 
     Parameters
     ----------
@@ -1035,13 +1035,13 @@ def is_GenericLinearGenomicModel(v):
     Returns
     -------
     out : bool
-        True or False for whether v is a GenericLinearGenomicModel object instance.
+        True or False for whether v is a AdditiveLinearGenomicModel object instance.
     """
-    return isinstance(v, GenericLinearGenomicModel)
+    return isinstance(v, AdditiveLinearGenomicModel)
 
-def check_is_GenericLinearGenomicModel(v, vname):
+def check_is_AdditiveLinearGenomicModel(v, vname):
     """
-    Check if object is of type GenericLinearGenomicModel. Otherwise raise TypeError.
+    Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -1050,12 +1050,12 @@ def check_is_GenericLinearGenomicModel(v, vname):
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, GenericLinearGenomicModel):
-        raise TypeError("variable '{0}' must be a GenericLinearGenomicModel".format(vname))
+    if not isinstance(v, AdditiveLinearGenomicModel):
+        raise TypeError("variable '{0}' must be a AdditiveLinearGenomicModel".format(vname))
 
-def cond_check_is_GenericLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_AdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
     """
-    Conditionally check if object is of type GenericLinearGenomicModel. Otherwise raise TypeError.
+    Conditionally check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -1064,7 +1064,7 @@ def cond_check_is_GenericLinearGenomicModel(v, vname, cond=(lambda s: s is not N
     varname : str
         Name of variable to print in TypeError message.
     cond : function
-        A function returning True/False for whether to test if is a GenericLinearGenomicModel.
+        A function returning True/False for whether to test if is a AdditiveLinearGenomicModel.
     """
     if cond(v):
-        check_is_GenericLinearGenomicModel(v, vname)
+        check_is_AdditiveLinearGenomicModel(v, vname)

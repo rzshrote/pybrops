@@ -1,5 +1,4 @@
-# our libraries
-from . import GenomicModel
+from pybropt.model.gmod.GenomicModel import GenomicModel
 
 class LinearGenomicModel(GenomicModel):
     """

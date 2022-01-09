@@ -1,4 +1,4 @@
-from . import GenomicModel
+from pybropt.model.gmod.GenomicModel import GenomicModel
 
 class NonlinearGenomicModel(GenomicModel):
     """docstring for NonlinearGenomicModel."""

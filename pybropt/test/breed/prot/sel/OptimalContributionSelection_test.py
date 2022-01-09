@@ -5,7 +5,7 @@ from numpy.random import Generator
 from numpy.random import PCG64
 
 from pybropt.breed.prot.sel.OptimalContributionSelection import OptimalContributionSelection
-from pybropt.model.gmod import GenericLinearGenomicModel
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.popgen.cmat import DenseMolecularCoancestryMatrix
@@ -104,7 +104,7 @@ def params():
 
 @pytest.fixture
 def glgmod(beta, u, trait, model_name, params):
-    yield GenericLinearGenomicModel(
+    yield AdditiveLinearGenomicModel(
         beta = beta,
         u = u,
         trait = trait,

@@ -5,7 +5,7 @@ from numpy.random import Generator
 from numpy.random import PCG64
 
 from pybropt.breed.prot.sel.MultiObjectiveGenomicSelection import MultiObjectiveGenomicSelection
-from pybropt.model.gmod import GenericLinearGenomicModel
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
 from pybropt.algo.opt import SteepestAscentSetHillClimber
@@ -203,7 +203,7 @@ def params():
 
 @pytest.fixture
 def glgmod(mu, beta, trait, model_name, params):
-    yield GenericLinearGenomicModel(
+    yield AdditiveLinearGenomicModel(
         mu = mu,
         beta = beta,
         trait = trait,
@@ -213,7 +213,7 @@ def glgmod(mu, beta, trait, model_name, params):
 
 @pytest.fixture
 def glgmod_big(mu, beta_big, trait, model_name, params):
-    yield GenericLinearGenomicModel(
+    yield AdditiveLinearGenomicModel(
         mu = mu,
         beta = beta_big,
         trait = trait,
