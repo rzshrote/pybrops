@@ -1,6 +1,6 @@
 import numpy
 
-from . import PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybropt.popgen.ptdf import DictPhenotypeDataFrame
 from pybropt.model.gmod import check_is_GenomicModel
 from pybropt.core.error import error_readonly

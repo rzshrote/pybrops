@@ -3,7 +3,7 @@ import numbers
 import pandas
 
 import pybropt.core.random
-from . import PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybropt.popgen.ptdf import DictPhenotypeDataFrame
 from pybropt.model.gmod import check_is_GenomicModel
 

@@ -12,7 +12,7 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.prot.sel import ConventionalGenomicSelection
+from pybropt.breed.prot.sel.ConventionalGenomicSelection import ConventionalGenomicSelection
 from pybropt.model.gmod import GenericLinearGenomicModel
 from pybropt.popgen.gmat import DenseGenotypeMatrix
 from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist

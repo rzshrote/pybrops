@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.prot.pt import PhenotypingProtocol
-from pybropt.breed.prot.pt import is_PhenotypingProtocol
-from pybropt.breed.prot.pt import check_is_PhenotypingProtocol
-from pybropt.breed.prot.pt import cond_check_is_PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import is_PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import check_is_PhenotypingProtocol
+from pybropt.breed.prot.pt.PhenotypingProtocol import cond_check_is_PhenotypingProtocol
 
 
 ################################################################################

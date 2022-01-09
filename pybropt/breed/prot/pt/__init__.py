@@ -1,5 +1,9 @@
-# order dependent imports
-from .PhenotypingProtocol import *
+"""
+Module containing phenotyping protocols.
+"""
 
-from .TruePhenotyping import *
-from .G_E_Phenotyping import *
+# order dependent imports
+from . import PhenotypingProtocol
+
+from . import TruePhenotyping
+from . import G_E_Phenotyping
