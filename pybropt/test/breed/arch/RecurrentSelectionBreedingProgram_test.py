@@ -15,10 +15,10 @@ from pybropt.breed.op.mate.MatingOperator import MatingOperator
 from pybropt.breed.op.eval.EvaluationOperator import EvaluationOperator
 from pybropt.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
 
-from pybropt.breed.arch import RecurrentSelectionBreedingProgram
-from pybropt.breed.arch import is_RecurrentSelectionBreedingProgram
-from pybropt.breed.arch import check_is_RecurrentSelectionBreedingProgram
-from pybropt.breed.arch import cond_check_is_RecurrentSelectionBreedingProgram
+from pybropt.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
+from pybropt.breed.arch.RecurrentSelectionBreedingProgram import is_RecurrentSelectionBreedingProgram
+from pybropt.breed.arch.RecurrentSelectionBreedingProgram import check_is_RecurrentSelectionBreedingProgram
+from pybropt.breed.arch.RecurrentSelectionBreedingProgram import cond_check_is_RecurrentSelectionBreedingProgram
 
 ################################################################################
 ################################ Test fixtures #################################

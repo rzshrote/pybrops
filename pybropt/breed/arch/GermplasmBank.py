@@ -1,4 +1,4 @@
-from . import BreedingNode
+from pybropt.breed.arch.BreedingNode import BreedingNode
 
 class GermplasmBank(BreedingNode):
     """docstring for GermplasmBank."""

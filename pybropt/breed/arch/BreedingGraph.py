@@ -1,5 +1,3 @@
-
-
 class BreedingGraph:
     """docstring for BreedingGraph."""
 

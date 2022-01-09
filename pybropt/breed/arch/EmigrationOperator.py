@@ -1,4 +1,4 @@
-from . import BreedingEdge
+from pybropt.breed.arch.BreedingEdge import BreedingEdge
 
 class EmigrationOperator(BreedingEdge):
     """docstring for EmigrationOperator."""

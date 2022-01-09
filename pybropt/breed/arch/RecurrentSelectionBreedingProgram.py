@@ -1,7 +1,7 @@
 import copy
 import numpy
 
-from . import BreedingProgram
+from pybropt.breed.arch.BreedingProgram import BreedingProgram
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_dict

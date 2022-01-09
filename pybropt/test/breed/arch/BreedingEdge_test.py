@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.arch import BreedingEdge
-from pybropt.breed.arch import is_BreedingEdge
-from pybropt.breed.arch import check_is_BreedingEdge
-from pybropt.breed.arch import cond_check_is_BreedingEdge
+from pybropt.breed.arch.BreedingEdge import BreedingEdge
+from pybropt.breed.arch.BreedingEdge import is_BreedingEdge
+from pybropt.breed.arch.BreedingEdge import check_is_BreedingEdge
+from pybropt.breed.arch.BreedingEdge import cond_check_is_BreedingEdge
 
 ################################################################################
 ################################ Test fixtures #################################

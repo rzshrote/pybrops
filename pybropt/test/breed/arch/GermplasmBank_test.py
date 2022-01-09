@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.arch import GermplasmBank
-from pybropt.breed.arch import is_GermplasmBank
-from pybropt.breed.arch import check_is_GermplasmBank
-from pybropt.breed.arch import cond_check_is_GermplasmBank
+from pybropt.breed.arch.GermplasmBank import GermplasmBank
+from pybropt.breed.arch.GermplasmBank import is_GermplasmBank
+from pybropt.breed.arch.GermplasmBank import check_is_GermplasmBank
+from pybropt.breed.arch.GermplasmBank import cond_check_is_GermplasmBank
 
 ################################################################################
 ################################ Test fixtures #################################

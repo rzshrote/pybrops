@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.arch import ImmigrationOperator
-from pybropt.breed.arch import is_ImmigrationOperator
-from pybropt.breed.arch import check_is_ImmigrationOperator
-from pybropt.breed.arch import cond_check_is_ImmigrationOperator
+from pybropt.breed.arch.ImmigrationOperator import ImmigrationOperator
+from pybropt.breed.arch.ImmigrationOperator import is_ImmigrationOperator
+from pybropt.breed.arch.ImmigrationOperator import check_is_ImmigrationOperator
+from pybropt.breed.arch.ImmigrationOperator import cond_check_is_ImmigrationOperator
 
 ################################################################################
 ################################ Test fixtures #################################
