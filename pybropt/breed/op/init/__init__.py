@@ -1,2 +1,9 @@
+"""
+Module containing breeding program initialization operators.
+"""
 # order dependent import
-from .InitializationOperator import *
+
+# abstract classes
+from . import InitializationOperator
+
+# concrete classes

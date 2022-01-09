@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.init import InitializationOperator
-from pybropt.breed.op.init import is_InitializationOperator
-from pybropt.breed.op.init import check_is_InitializationOperator
-from pybropt.breed.op.init import cond_check_is_InitializationOperator
+from pybropt.breed.op.init.InitializationOperator import InitializationOperator
+from pybropt.breed.op.init.InitializationOperator import is_InitializationOperator
+from pybropt.breed.op.init.InitializationOperator import check_is_InitializationOperator
+from pybropt.breed.op.init.InitializationOperator import cond_check_is_InitializationOperator
 
 ################################################################################
 ################################ Test fixtures #################################
