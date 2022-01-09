@@ -1,3 +1,8 @@
+"""
+PyBrOpt: a software package for numerical optimization and simulation of
+breeding programs.
+"""
+
 # order dependent import of submodules
 
 # core before all other submodules
