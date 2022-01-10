@@ -5,7 +5,7 @@ from pybropt.core.error import check_is_str
 from pybropt.core.error import check_is_array_like
 from pybropt.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
 from pybropt.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 
 class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """docstring for MeanPhenotypicBreedingValue."""

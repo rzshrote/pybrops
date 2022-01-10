@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.cmat import DenseMolecularCoancestryMatrix
-from pybropt.popgen.cmat import is_DenseMolecularCoancestryMatrix
-from pybropt.popgen.cmat import check_is_DenseMolecularCoancestryMatrix
-from pybropt.popgen.cmat import cond_check_is_DenseMolecularCoancestryMatrix
+from pybropt.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
+from pybropt.popgen.cmat.DenseMolecularCoancestryMatrix import is_DenseMolecularCoancestryMatrix
+from pybropt.popgen.cmat.DenseMolecularCoancestryMatrix import check_is_DenseMolecularCoancestryMatrix
+from pybropt.popgen.cmat.DenseMolecularCoancestryMatrix import cond_check_is_DenseMolecularCoancestryMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################

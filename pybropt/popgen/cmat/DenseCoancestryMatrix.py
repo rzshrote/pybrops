@@ -1,4 +1,4 @@
-from . import CoancestryMatrix
+from pybropt.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_is_2d

@@ -13,7 +13,7 @@ from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.RandomSelection import RandomSelection
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################

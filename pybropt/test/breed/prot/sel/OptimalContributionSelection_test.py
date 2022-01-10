@@ -6,9 +6,9 @@ from numpy.random import PCG64
 
 from pybropt.breed.prot.sel.OptimalContributionSelection import OptimalContributionSelection
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybropt.popgen.cmat import DenseMolecularCoancestryMatrix
+from pybropt.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 
 ################################################################################
 ################################## Genotypes ###################################

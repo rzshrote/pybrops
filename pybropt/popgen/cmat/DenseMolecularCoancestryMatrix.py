@@ -1,6 +1,6 @@
 import numpy
 
-from . import DenseCoancestryMatrix
+from pybropt.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim

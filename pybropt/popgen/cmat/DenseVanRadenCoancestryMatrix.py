@@ -1,4 +1,4 @@
-from . import DenseCoancestryMatrix
+from pybropt.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 
 # TODO: implement VanRaden methods
 class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
