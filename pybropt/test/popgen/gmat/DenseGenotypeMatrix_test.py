@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmat import DenseGenotypeMatrix
-from pybropt.popgen.gmat import is_DenseGenotypeMatrix
-from pybropt.popgen.gmat import check_is_DenseGenotypeMatrix
-from pybropt.popgen.gmat import cond_check_is_DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import is_DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import check_is_DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import cond_check_is_DenseGenotypeMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

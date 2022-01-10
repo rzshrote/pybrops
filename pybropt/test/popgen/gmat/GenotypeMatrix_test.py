@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmat import GenotypeMatrix
-from pybropt.popgen.gmat import is_GenotypeMatrix
-from pybropt.popgen.gmat import check_is_GenotypeMatrix
-from pybropt.popgen.gmat import cond_check_is_GenotypeMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import cond_check_is_GenotypeMatrix
 
 
 ################################################################################

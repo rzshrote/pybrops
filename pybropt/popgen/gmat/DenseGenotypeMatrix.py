@@ -3,7 +3,7 @@ import numpy
 import cyvcf2
 import h5py
 
-from . import GenotypeMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybropt.core.mat import DenseTaxaVariantMatrix
 from pybropt.core.mat import get_axis
 from pybropt.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix

@@ -1,5 +1,5 @@
 from pybropt.core.mat import PhasedTaxaVariantMatrix
-from . import HaplotypeMatrix
+from pybropt.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 
 class PhasedHaplotypeMatrix(PhasedTaxaVariantMatrix,HaplotypeMatrix):
     """docstring for PhasedHaplotypeMatrix."""

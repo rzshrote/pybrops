@@ -4,8 +4,8 @@ from pybropt.breed.prot.mate.util import mat_mate
 from pybropt.breed.prot.mate.util import mat_dh
 from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class SelfCross(MatingProtocol):
     """docstring for SelfCross."""

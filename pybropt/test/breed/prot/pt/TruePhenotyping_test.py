@@ -14,7 +14,7 @@ from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.pt.TruePhenotyping import TruePhenotyping
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybropt.popgen.ptdf import is_PhenotypeDataFrame
 
 ################################################################################

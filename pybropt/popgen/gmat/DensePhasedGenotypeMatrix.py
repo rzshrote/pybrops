@@ -2,8 +2,8 @@ import copy
 import numpy
 import cyvcf2
 
-from . import PhasedGenotypeMatrix
-from . import DenseGenotypeMatrix
+from pybropt.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybropt.core.mat import DensePhasedTaxaVariantMatrix
 from pybropt.core.mat import get_axis
 
@@ -21,7 +21,7 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 
 from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap
-from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""

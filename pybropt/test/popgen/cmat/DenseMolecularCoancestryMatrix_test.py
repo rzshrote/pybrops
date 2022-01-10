@@ -14,7 +14,7 @@ from pybropt.popgen.cmat import DenseMolecularCoancestryMatrix
 from pybropt.popgen.cmat import is_DenseMolecularCoancestryMatrix
 from pybropt.popgen.cmat import check_is_DenseMolecularCoancestryMatrix
 from pybropt.popgen.cmat import cond_check_is_DenseMolecularCoancestryMatrix
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

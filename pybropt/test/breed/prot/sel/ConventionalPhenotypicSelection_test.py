@@ -14,7 +14,7 @@ from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybropt.breed.prot.sel.transfn import trans_sum
 

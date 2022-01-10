@@ -14,7 +14,7 @@ from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicSelection
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 
 ################################################################################

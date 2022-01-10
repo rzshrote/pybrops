@@ -1,7 +1,7 @@
 from pybropt.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 
-from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
-from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 class DenseUnphasedGenotyping(GenotypingProtocol):
     """docstring for DenseUnphasedGenotyping."""

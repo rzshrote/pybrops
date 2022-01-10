@@ -1,11 +1,14 @@
-# order dependent
+"""
+Module containing genotype matrix containers
+"""
+# imports are order dependent!!!
 
 # abstract classes
-from .GenotypeMatrix import *
-from .HaplotypeMatrix import *
-from .PhasedGenotypeMatrix import *
-from .PhasedHaplotypeMatrix import *
+from . import GenotypeMatrix
+from . import HaplotypeMatrix
+from . import PhasedGenotypeMatrix
+from . import PhasedHaplotypeMatrix
 
 # implemented dense classes
-from .DenseGenotypeMatrix import *
-from .DensePhasedGenotypeMatrix import *
+from . import DenseGenotypeMatrix
+from . import DensePhasedGenotypeMatrix
