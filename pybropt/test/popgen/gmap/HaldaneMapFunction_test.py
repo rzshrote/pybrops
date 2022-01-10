@@ -10,11 +10,11 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.popgen.gmap import is_HaldaneMapFunction
-from pybropt.popgen.gmap import check_is_HaldaneMapFunction
-from pybropt.popgen.gmap import cond_check_is_HaldaneMapFunction
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
+from pybropt.popgen.gmap.HaldaneMapFunction import is_HaldaneMapFunction
+from pybropt.popgen.gmap.HaldaneMapFunction import check_is_HaldaneMapFunction
+from pybropt.popgen.gmap.HaldaneMapFunction import cond_check_is_HaldaneMapFunction
 
 ################################################################################
 ################################ Test fixtures #################################

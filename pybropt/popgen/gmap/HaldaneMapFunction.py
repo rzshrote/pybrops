@@ -1,6 +1,6 @@
 import numpy
 
-from . import GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class HaldaneMapFunction(GeneticMapFunction):
     """docstring for HaldaneMapFunction."""

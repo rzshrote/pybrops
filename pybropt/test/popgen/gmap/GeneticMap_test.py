@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmap import GeneticMap
-from pybropt.popgen.gmap import is_GeneticMap
-from pybropt.popgen.gmap import check_is_GeneticMap
-from pybropt.popgen.gmap import cond_check_is_GeneticMap
+from pybropt.popgen.gmap.GeneticMap import GeneticMap
+from pybropt.popgen.gmap.GeneticMap import is_GeneticMap
+from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybropt.popgen.gmap.GeneticMap import cond_check_is_GeneticMap
 
 
 ################################################################################

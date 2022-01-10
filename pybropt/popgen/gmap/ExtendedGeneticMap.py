@@ -3,7 +3,7 @@ import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from . import GeneticMap
+from pybropt.popgen.gmap.GeneticMap import GeneticMap
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype

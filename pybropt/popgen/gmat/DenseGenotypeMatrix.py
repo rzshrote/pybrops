@@ -6,7 +6,7 @@ import h5py
 from . import GenotypeMatrix
 from pybropt.core.mat import DenseTaxaVariantMatrix
 from pybropt.core.mat import get_axis
-from pybropt.popgen.gmap import DenseGeneticMappableMatrix
+from pybropt.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8

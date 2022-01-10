@@ -1,24 +1,20 @@
-# order dependent
-from .gmap_util import cM2d
+"""
+Module containing genetic map functionality.
+"""
 
-# from .GeneticMap import GeneticMap
-# from .StandardGeneticMap import StandardGeneticMap
-# from .ExtendedGeneticMap import ExtendedGeneticMap
-#
-# from .GeneticMapFunction import GeneticMapFunction
-# from .HaldaneMapFunction import HaldaneMapFunction
-# from .KosambiMapFunction import KosambiMapFunction
+# order dependent
+from . import util
 
 # tier 0
-from .GeneticMap import *
-from .StandardGeneticMap import *
-from .ExtendedGeneticMap import *
+from . import GeneticMap
+from . import StandardGeneticMap
+from . import ExtendedGeneticMap
 
 # tier 1
-from .GeneticMapFunction import *
-from .HaldaneMapFunction import *
-from .KosambiMapFunction import *
+from . import GeneticMapFunction
+from . import HaldaneMapFunction
+from . import KosambiMapFunction
 
 # tier 2
-from .GeneticMappableMatrix import *
-from .DenseGeneticMappableMatrix import *
+from . import GeneticMappableMatrix
+from . import DenseGeneticMappableMatrix

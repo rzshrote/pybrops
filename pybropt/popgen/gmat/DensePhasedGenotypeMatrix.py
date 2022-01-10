@@ -20,8 +20,8 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_bool
 from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 
-from pybropt.popgen.gmap import check_is_GeneticMap
-from pybropt.popgen.gmap import check_is_GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMapFunction
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""

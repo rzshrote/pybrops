@@ -1,5 +1,5 @@
 from pybropt.core.mat import TaxaVariantMatrix
-from pybropt.popgen.gmap import GeneticMappableMatrix
+from pybropt.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 from pybropt.core.io import HDF5InputOutput
 
 class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
