@@ -2,10 +2,10 @@ from rpy2 import robjects
 from rpy2.robjects import vectors
 
 from pybropt.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
-from pybropt.core.util import numpy_to_R_BoolVector
-from pybropt.core.util import numpy_to_R_FloatVector
-from pybropt.core.util import numpy_to_R_IntFactorVector
-from pybropt.core.util import numpy_to_R_IntVector
+from pybropt.core.util.rpy2 import numpy_to_R_BoolVector
+from pybropt.core.util.rpy2 import numpy_to_R_FloatVector
+from pybropt.core.util.rpy2 import numpy_to_R_IntFactorVector
+from pybropt.core.util.rpy2 import numpy_to_R_IntVector
 from rpy2.robjects.vectors import DataFrame as rpy2_DataFrame
 from rpy2.robjects import globalenv
 from rpy2 import robjects

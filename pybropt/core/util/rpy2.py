@@ -45,6 +45,24 @@ from rpy2.robjects.vectors import StrMatrix
 # from rpy2.robjects.vectors import IntArray
 # from rpy2.robjects.vectors import StrArray
 
+__all__ = [
+    "generic_numpy_to_R_Vector",
+    "generic_numpy_to_R_Matrix",
+    "rpy2_to_R_FactorVector",
+    "numpy_to_R_BoolVector",
+    "numpy_to_R_BoolFactorVector",
+    "numpy_to_R_BoolMatrix",
+    "numpy_to_R_FloatVector",
+    "numpy_to_R_FloatFactorVector",
+    "numpy_to_R_FloatMatrix",
+    "numpy_to_R_IntVector",
+    "numpy_to_R_IntFactorVector",
+    "numpy_to_R_IntMatrix",
+    "numpy_to_R_StrVector",
+    "numpy_to_R_StrFactorVector",
+    "numpy_to_R_StrMatrix",
+    "numpy_to_R"
+]
 
 ################################################################################
 ############################## Generic Functions ###############################

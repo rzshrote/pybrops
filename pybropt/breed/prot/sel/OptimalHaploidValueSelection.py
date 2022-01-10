@@ -7,8 +7,8 @@ import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_bool
-from pybropt.core.util import triuix
-from pybropt.core.util import triudix
+from pybropt.core.util.arrayix import triuix
+from pybropt.core.util.arrayix import triudix
 
 class OptimalHaploidValueSelection(SelectionProtocol):
     """docstring for OptimalHaploidValueSelection."""

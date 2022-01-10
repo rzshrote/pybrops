@@ -1,8 +1,11 @@
+"""
+Module containing general utility functions.
+"""
 # order dependent imports
 
-from .subroutines import *
-from .arrayix import *
-from .pareto import *
-from .util_h5py import *
-from .util_rpy2 import *
-from .util_numpy import *
+from . import subroutines
+from . import arrayix
+from . import pareto
+from . import h5py
+from . import rpy2
+from . import numpy

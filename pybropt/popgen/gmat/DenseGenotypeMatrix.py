@@ -22,7 +22,7 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_file_exists
 from pybropt.core.error import check_group_in_hdf5
-from pybropt.core.util import save_dict_to_hdf5
+from pybropt.core.util.h5py import save_dict_to_hdf5
 
 class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,GenotypeMatrix):
     """docstring for DenseGenotypeMatrix."""

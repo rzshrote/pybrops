@@ -6,7 +6,7 @@ from pybropt.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
 from pybropt.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
-from pybropt.core.util import save_dict_to_hdf5
+from pybropt.core.util.h5py import save_dict_to_hdf5
 from pybropt.core.error import check_ndarray_std_is_approx
 from pybropt.core.error import check_ndarray_mean_is_approx
 from pybropt.core.error import check_ndarray_axis_len

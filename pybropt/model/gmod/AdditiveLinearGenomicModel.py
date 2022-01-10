@@ -18,8 +18,8 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 
-from pybropt.core.util import save_dict_to_hdf5
-from pybropt.core.util import is_ndarray
+from pybropt.core.util.h5py import save_dict_to_hdf5
+from pybropt.core.util.numpy import is_ndarray
 from pybropt.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
 from pybropt.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybropt.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame

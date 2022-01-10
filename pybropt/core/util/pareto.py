@@ -1,5 +1,7 @@
 import numpy
 
+__all__ = ["is_pareto_efficient"]
+
 # based on:
 # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
 def is_pareto_efficient(fmat, wt, return_mask = True):

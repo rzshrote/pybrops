@@ -17,7 +17,7 @@ from pybropt.model.gmod.AdditiveLinearGenomicModel import cond_check_is_Additive
 
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybropt.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
-from pybropt.core.util import is_ndarray
+from pybropt.core.util.numpy import is_ndarray
 
 ################################################################################
 ################################ Test fixtures #################################
