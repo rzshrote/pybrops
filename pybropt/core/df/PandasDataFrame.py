@@ -1,4 +1,4 @@
-from . import DataFrame
+from pybropt.core.df.DataFrame import DataFrame
 
 from pybropt.core.error import check_is_pandas_df
 

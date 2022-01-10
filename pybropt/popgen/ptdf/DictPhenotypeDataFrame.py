@@ -1,7 +1,7 @@
 import numpy
 import copy
 
-from pybropt.core.df import DictDataFrame
+from pybropt.core.df.DictDataFrame import DictDataFrame
 from pybropt.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 from pybropt.core.error import check_keys_in_dict

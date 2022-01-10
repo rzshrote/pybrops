@@ -1,5 +1,5 @@
 from pybropt.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
-from pybropt.core.df import PandasDataFrame
+from pybropt.core.df.PandasDataFrame import PandasDataFrame
 
 from pybropt.core.error import check_is_pandas_df
 

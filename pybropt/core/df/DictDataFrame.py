@@ -2,7 +2,7 @@ import numpy
 import numbers
 import pandas
 import copy
-from . import DataFrame
+from pybropt.core.df.DataFrame import DataFrame
 
 from pybropt.core.error import check_len
 from pybropt.core.error import check_keys_in_dict
