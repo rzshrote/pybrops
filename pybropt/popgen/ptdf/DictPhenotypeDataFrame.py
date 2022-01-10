@@ -2,7 +2,7 @@ import numpy
 import copy
 
 from pybropt.core.df import DictDataFrame
-from . import PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 from pybropt.core.error import check_keys_in_dict
 from pybropt.core.error import check_values_in_dict_all_type

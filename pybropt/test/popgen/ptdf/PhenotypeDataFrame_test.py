@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.ptdf import PhenotypeDataFrame
-from pybropt.popgen.ptdf import is_PhenotypeDataFrame
-from pybropt.popgen.ptdf import check_is_PhenotypeDataFrame
-from pybropt.popgen.ptdf import cond_check_is_PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import cond_check_is_PhenotypeDataFrame
 
 
 ################################################################################

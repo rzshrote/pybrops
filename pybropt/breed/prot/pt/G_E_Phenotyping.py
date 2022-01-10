@@ -4,7 +4,7 @@ import pandas
 
 import pybropt.core.random
 from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybropt.popgen.ptdf import DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybropt.model.gmod.GenomicModel import check_is_GenomicModel
 
 from pybropt.core.error import check_is_positive

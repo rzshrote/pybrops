@@ -1,7 +1,7 @@
 import numpy
 
 from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybropt.popgen.ptdf import DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybropt.model.gmod.GenomicModel import check_is_GenomicModel
 from pybropt.core.error import error_readonly
 from pybropt.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix

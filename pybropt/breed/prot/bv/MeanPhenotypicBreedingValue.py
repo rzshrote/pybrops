@@ -3,7 +3,7 @@ import numpy
 from pybropt.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybropt.core.error import check_is_str
 from pybropt.core.error import check_is_array_like
-from pybropt.popgen.ptdf import check_is_PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
 from pybropt.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
 

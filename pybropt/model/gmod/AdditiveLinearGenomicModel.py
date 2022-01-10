@@ -22,7 +22,7 @@ from pybropt.core.util import save_dict_to_hdf5
 from pybropt.core.util import is_ndarray
 from pybropt.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
 from pybropt.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
-from pybropt.popgen.ptdf import is_PhenotypeDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
 
 class AdditiveLinearGenomicModel(LinearGenomicModel):
