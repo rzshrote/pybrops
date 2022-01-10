@@ -1,4 +1,4 @@
-from pybropt.core.io import HDF5InputOutput
+from pybropt.core.io.HDF5InputOutput import HDF5InputOutput
 
 class GenomicModel(HDF5InputOutput):
     """docstring for GenomicModel."""

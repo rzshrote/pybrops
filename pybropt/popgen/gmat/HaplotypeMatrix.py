@@ -1,5 +1,5 @@
 from pybropt.core.mat import TaxaVariantMatrix
-from pybropt.core.io import HDF5InputOutput
+from pybropt.core.io.HDF5InputOutput import HDF5InputOutput
 
 class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     """
