@@ -1,8 +1,8 @@
-from . import PhasedTaxaVariantMatrix
-from . import DensePhasedMatrix
-from . import DenseTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
+from pybropt.core.mat.DensePhasedMatrix import DensePhasedMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 
-from . import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_at_least_3d

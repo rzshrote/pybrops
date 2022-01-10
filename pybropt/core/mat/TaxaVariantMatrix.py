@@ -1,5 +1,5 @@
-from . import TaxaMatrix
-from . import VariantMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
 
 class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
     """Abstract class for TaxaMatrix + VariantMatrix class fusion."""

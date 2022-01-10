@@ -1,8 +1,8 @@
 import copy
 import numpy
 
-from . import DenseMutableMatrix
-from . import VariantMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
@@ -17,7 +17,7 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import check_is_iterable
 
 class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):

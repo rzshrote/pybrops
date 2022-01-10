@@ -1,11 +1,11 @@
 import numpy
 import copy
 
-from . import DenseTaxaMatrix
-from . import DenseVariantMatrix
-from . import TaxaVariantMatrix
+from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
+from pybropt.core.mat.DenseVariantMatrix import DenseVariantMatrix
+from pybropt.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
-from . import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_ndarray_at_least_2d

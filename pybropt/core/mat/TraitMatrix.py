@@ -1,4 +1,4 @@
-from . import SortableMatrix
+from pybropt.core.mat.SortableMatrix import SortableMatrix
 
 class TraitMatrix(SortableMatrix):
     """

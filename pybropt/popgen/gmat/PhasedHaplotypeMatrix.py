@@ -1,4 +1,4 @@
-from pybropt.core.mat import PhasedTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybropt.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 
 class PhasedHaplotypeMatrix(PhasedTaxaVariantMatrix,HaplotypeMatrix):

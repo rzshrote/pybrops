@@ -1,6 +1,6 @@
-from . import DenseMatrix
-from . import is_DenseMatrix
-from . import MutableMatrix
+from pybropt.core.mat.DenseMatrix import DenseMatrix
+from pybropt.core.mat.DenseMatrix import is_DenseMatrix
+from pybropt.core.mat.MutableMatrix import MutableMatrix
 
 class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     """docstring for DenseMutableMatrix."""

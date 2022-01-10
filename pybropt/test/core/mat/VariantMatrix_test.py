@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import VariantMatrix
-from pybropt.core.mat import is_VariantMatrix
-from pybropt.core.mat import check_is_VariantMatrix
-from pybropt.core.mat import cond_check_is_VariantMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
+from pybropt.core.mat.VariantMatrix import is_VariantMatrix
+from pybropt.core.mat.VariantMatrix import check_is_VariantMatrix
+from pybropt.core.mat.VariantMatrix import cond_check_is_VariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

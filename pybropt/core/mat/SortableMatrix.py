@@ -1,4 +1,4 @@
-from . import MutableMatrix
+from pybropt.core.mat.MutableMatrix import MutableMatrix
 
 class SortableMatrix(MutableMatrix):
     """

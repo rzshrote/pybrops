@@ -1,4 +1,4 @@
-from . import Matrix
+from pybropt.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):
     """

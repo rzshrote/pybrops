@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import SortableMatrix
-from pybropt.core.mat import is_SortableMatrix
-from pybropt.core.mat import check_is_SortableMatrix
-from pybropt.core.mat import cond_check_is_SortableMatrix
+from pybropt.core.mat.SortableMatrix import SortableMatrix
+from pybropt.core.mat.SortableMatrix import is_SortableMatrix
+from pybropt.core.mat.SortableMatrix import check_is_SortableMatrix
+from pybropt.core.mat.SortableMatrix import cond_check_is_SortableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

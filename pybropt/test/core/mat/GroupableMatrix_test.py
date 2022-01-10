@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import GroupableMatrix
-from pybropt.core.mat import is_GroupableMatrix
-from pybropt.core.mat import check_is_GroupableMatrix
-from pybropt.core.mat import cond_check_is_GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import is_GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import check_is_GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import cond_check_is_GroupableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

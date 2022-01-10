@@ -1,8 +1,8 @@
 import copy
 import numpy
 
-from . import DenseMutableMatrix
-from . import PhasedMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybropt.core.mat.PhasedMatrix import PhasedMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8

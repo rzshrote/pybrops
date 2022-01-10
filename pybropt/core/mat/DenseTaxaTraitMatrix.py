@@ -1,11 +1,11 @@
 import numpy
 import copy
 
-from . import DenseTaxaMatrix
-from . import DenseTraitMatrix
-from . import TaxaTraitMatrix
+from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
+from pybropt.core.mat.DenseTraitMatrix import DenseTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-from . import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import error_readonly
 
 class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):

@@ -1,4 +1,4 @@
-from pybropt.core.mat import DenseVariantMatrix
+from pybropt.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybropt.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 
 from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap

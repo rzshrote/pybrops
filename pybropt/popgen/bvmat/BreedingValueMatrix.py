@@ -1,4 +1,4 @@
-from pybropt.core.mat import TaxaTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 from pybropt.core.io.HDF5InputOutput import HDF5InputOutput
 
 class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):

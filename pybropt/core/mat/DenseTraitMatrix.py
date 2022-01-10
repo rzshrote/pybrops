@@ -1,8 +1,8 @@
 import numpy
 import copy
 
-from . import TraitMatrix
-from . import DenseMutableMatrix
+from pybropt.core.mat.TraitMatrix import TraitMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
 
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_axis_len
@@ -11,7 +11,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import check_is_iterable
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.error import error_readonly
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.util import get_axis
 
 class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     """docstring for DenseTraitMatrix."""

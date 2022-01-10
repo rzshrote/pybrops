@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import TaxaTraitMatrix
-from pybropt.core.mat import is_TaxaTraitMatrix
-from pybropt.core.mat import check_is_TaxaTraitMatrix
-from pybropt.core.mat import cond_check_is_TaxaTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import is_TaxaTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import check_is_TaxaTraitMatrix
+from pybropt.core.mat.TaxaTraitMatrix import cond_check_is_TaxaTraitMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

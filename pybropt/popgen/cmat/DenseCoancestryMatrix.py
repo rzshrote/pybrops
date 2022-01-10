@@ -3,7 +3,7 @@ from pybropt.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_is_2d
 from pybropt.core.error import check_ndarray_is_square
-from pybropt.core.mat import DenseTaxaMatrix
+from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 
 class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
     """docstring for DenseCoancestryMatrix."""

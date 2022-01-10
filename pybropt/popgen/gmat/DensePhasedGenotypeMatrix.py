@@ -4,8 +4,8 @@ import cyvcf2
 
 from pybropt.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybropt.core.mat import DensePhasedTaxaVariantMatrix
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
+from pybropt.core.mat.util import get_axis
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8

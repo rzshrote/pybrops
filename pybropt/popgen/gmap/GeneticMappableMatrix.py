@@ -1,4 +1,4 @@
-from pybropt.core.mat import VariantMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
 
 class GeneticMappableMatrix(VariantMatrix):
     """

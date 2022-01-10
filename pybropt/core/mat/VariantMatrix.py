@@ -1,4 +1,4 @@
-from . import GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import GroupableMatrix
 
 class VariantMatrix(GroupableMatrix):
     """

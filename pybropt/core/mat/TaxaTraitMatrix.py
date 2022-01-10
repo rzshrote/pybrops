@@ -1,5 +1,5 @@
-from . import TaxaMatrix
-from . import TraitMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
+from pybropt.core.mat.TraitMatrix import TraitMatrix
 
 class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
     """Abstract class for TaxaMatrix + TraitMatrix fusion."""

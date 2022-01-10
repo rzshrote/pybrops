@@ -7,10 +7,10 @@ from pybropt.test import generic_assert_abstract_method
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import PrunableMatrix
-from pybropt.core.mat import is_PrunableMatrix
-from pybropt.core.mat import check_is_PrunableMatrix
-from pybropt.core.mat import cond_check_is_PrunableMatrix
+from pybropt.core.mat.PrunableMatrix import PrunableMatrix
+from pybropt.core.mat.PrunableMatrix import is_PrunableMatrix
+from pybropt.core.mat.PrunableMatrix import check_is_PrunableMatrix
+from pybropt.core.mat.PrunableMatrix import cond_check_is_PrunableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import DenseTaxaVariantMatrix
-from pybropt.core.mat import is_DenseTaxaVariantMatrix
-from pybropt.core.mat import check_is_DenseTaxaVariantMatrix
-from pybropt.core.mat import cond_check_is_DenseTaxaVariantMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import is_DenseTaxaVariantMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import check_is_DenseTaxaVariantMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import cond_check_is_DenseTaxaVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
