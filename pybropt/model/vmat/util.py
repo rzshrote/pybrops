@@ -13,11 +13,20 @@ def rprob_filial(r, k):
         Recombination probability matrix.
     k : int, inf
         Selfing filial generation number to derive gametes from.
-        Example:
-            k = 1    ->  Derive gametes from F1
-            k = 2    ->  Derive gametes from F2
-            ...
-            k = inf  ->  Derive gametes from SSD
+
+        +-------------+-------------------------+
+        | Example     | Description             |
+        +=============+=========================+
+        | ``k = 1``   | Derive gametes from F1  |
+        +-------------+-------------------------+
+        | ``k = 2``   | Derive gametes from F2  |
+        +-------------+-------------------------+
+        | ``k = 3``   | Derive gametes from F3  |
+        +-------------+-------------------------+
+        | ``...``     | etc.                    |
+        +-------------+-------------------------+
+        | ``k = inf`` | Derive gametes from SSD |
+        +-------------+-------------------------+
 
     Returns
     -------
@@ -52,12 +61,20 @@ def cov_D1s(r, s):
         Recombination probability matrix.
     s : int, inf
         Selfing generation number to derive gametes from.
-        Example:
-            s = 0    ->  Derive gametes from F1
-            s = 1    ->  Derive gametes from F2
-            s = 2    ->  Derive gametes from F3
-            ...
-            k = inf  ->  Derive gametes from SSD
+
+        +-------------+-------------------------+
+        | Example     | Description             |
+        +=============+=========================+
+        | ``s = 0``   | Derive gametes from F1  |
+        +-------------+-------------------------+
+        | ``s = 1``   | Derive gametes from F2  |
+        +-------------+-------------------------+
+        | ``s = 2``   | Derive gametes from F3  |
+        +-------------+-------------------------+
+        | ``...``     | etc.                    |
+        +-------------+-------------------------+
+        | ``s = inf`` | Derive gametes from SSD |
+        +-------------+-------------------------+
 
     Returns
     -------
@@ -85,12 +102,20 @@ def cov_D2s(r, s):
         Recombination probability matrix.
     s : int, inf
         Selfing generation number to derive gametes from.
-        Example:
-            s = 0    ->  Derive gametes from F1
-            s = 1    ->  Derive gametes from F2
-            s = 2    ->  Derive gametes from F3
-            ...
-            k = inf  ->  Derive gametes from SSD
+
+        +-------------+-------------------------+
+        | Example     | Description             |
+        +=============+=========================+
+        | ``s = 0``   | Derive gametes from F1  |
+        +-------------+-------------------------+
+        | ``s = 1``   | Derive gametes from F2  |
+        +-------------+-------------------------+
+        | ``s = 2``   | Derive gametes from F3  |
+        +-------------+-------------------------+
+        | ``...``     | etc.                    |
+        +-------------+-------------------------+
+        | ``s = inf`` | Derive gametes from SSD |
+        +-------------+-------------------------+
 
     Returns
     -------
@@ -118,26 +143,46 @@ def cov_D1st(r, s, t):
         Recombination probability matrix.
     s : int, inf
         Selfing generation number to derive gametes from.
-        Example:
-            s = 0    ->  Derive gametes from F1
-            s = 1    ->  Derive gametes from F2
-            s = 2    ->  Derive gametes from F3
-            ...
-            k = inf  ->  Derive gametes from SSD
+
+        +-------------+-------------------------+
+        | Example     | Description             |
+        +=============+=========================+
+        | ``s = 0``   | Derive gametes from F1  |
+        +-------------+-------------------------+
+        | ``s = 1``   | Derive gametes from F2  |
+        +-------------+-------------------------+
+        | ``s = 2``   | Derive gametes from F3  |
+        +-------------+-------------------------+
+        | ``...``     | etc.                    |
+        +-------------+-------------------------+
+        | ``s = inf`` | Derive gametes from SSD |
+        +-------------+-------------------------+
+
         Remark:
-            's' takes priority over 't'. If s > 0, 't' calculations are not
-            performed.
+
+        - 's' takes priority over 't'. If s > 0, 't' calculations are not
+          performed.
     t : int, inf
         Random intermating generation number to derive gametes from.
-        Example:
-            t = 0    ->  Derive gametes from F1
-            t = 1    ->  Derive gametes from (F1 x F1)
-            t = 2    ->  Derive gametes from (F1 x F1) x (F1 x F1)
-            ...
-            t = inf  ->  Derive gametes from unlimited random intermating
+
+        +-------------+--------------------------------------------------+
+        | Example     | Description                                      |
+        +=============+==================================================+
+        | ``t = 0``   | Derive gametes from F1                           |
+        +-------------+--------------------------------------------------+
+        | ``t = 1``   | Derive gametes from (F1 x F1)                    |
+        +-------------+--------------------------------------------------+
+        | ``t = 2``   | Derive gametes from (F1 x F1) x (F1 x F1)        |
+        +-------------+--------------------------------------------------+
+        | ``...``     | etc.                                             |
+        +-------------+--------------------------------------------------+
+        | ``t = inf`` | Derive gametes from unlimited random intermating |
+        +-------------+--------------------------------------------------+
+
         Remark:
-            's' takes priority over 't'. If s > 0, 't' calculations are not
-            performed.
+
+        - 's' takes priority over 't'. If s > 0, 't' calculations are not
+          performed.
 
     Returns
     -------
@@ -166,26 +211,46 @@ def cov_D2st(r, s, t):
         Recombination probability matrix.
     s : int, inf
         Selfing generation number to derive gametes from.
-        Example:
-            s = 0    ->  Derive gametes from F1
-            s = 1    ->  Derive gametes from F2
-            s = 2    ->  Derive gametes from F3
-            ...
-            k = inf  ->  Derive gametes from SSD
+
+        +-------------+-------------------------+
+        | Example     | Description             |
+        +=============+=========================+
+        | ``s = 0``   | Derive gametes from F1  |
+        +-------------+-------------------------+
+        | ``s = 1``   | Derive gametes from F2  |
+        +-------------+-------------------------+
+        | ``s = 2``   | Derive gametes from F3  |
+        +-------------+-------------------------+
+        | ``...``     | etc.                    |
+        +-------------+-------------------------+
+        | ``s = inf`` | Derive gametes from SSD |
+        +-------------+-------------------------+
+
         Remark:
-            's' takes priority over 't'. If s > 0, 't' calculations are not
-            performed.
+
+        - 's' takes priority over 't'. If s > 0, 't' calculations are not
+          performed.
     t : int, inf
         Random intermating generation number to derive gametes from.
-        Example:
-            t = 0    ->  Derive gametes from F1
-            t = 1    ->  Derive gametes from (F1 x F1)
-            t = 2    ->  Derive gametes from (F1 x F1) x (F1 x F1)
-            ...
-            t = inf  ->  Derive gametes from unlimited random intermating
+
+        +-------------+--------------------------------------------------+
+        | Example     | Description                                      |
+        +=============+==================================================+
+        | ``t = 0``   | Derive gametes from F1                           |
+        +-------------+--------------------------------------------------+
+        | ``t = 1``   | Derive gametes from (F1 x F1)                    |
+        +-------------+--------------------------------------------------+
+        | ``t = 2``   | Derive gametes from (F1 x F1) x (F1 x F1)        |
+        +-------------+--------------------------------------------------+
+        | ``...``     | etc.                                             |
+        +-------------+--------------------------------------------------+
+        | ``t = inf`` | Derive gametes from unlimited random intermating |
+        +-------------+--------------------------------------------------+
+
         Remark:
-            's' takes priority over 't'. If s > 0, 't' calculations are not
-            performed.
+
+        - 's' takes priority over 't'. If s > 0, 't' calculations are not
+          performed.
 
     Returns
     -------

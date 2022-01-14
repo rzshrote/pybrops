@@ -79,16 +79,24 @@ class TwoWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
             A GeneticMapFunction to calculate recombination probabilities.
         s : int
             Selfing generation number to derive gametes from.
-            Example:
-                s = 0    ->  Derive gametes from F1
-                s = 1    ->  Derive gametes from F2
-                s = 2    ->  Derive gametes from F3
-                ...
-                k = inf  ->  Derive gametes from SSD
+
+            +-------------+-------------------------+
+            | Example     | Description             |
+            +=============+=========================+
+            | ``s = 0``   | Derive gametes from F1  |
+            +-------------+-------------------------+
+            | ``s = 1``   | Derive gametes from F2  |
+            +-------------+-------------------------+
+            | ``s = 2``   | Derive gametes from F3  |
+            +-------------+-------------------------+
+            | ``...``     | etc.                    |
+            +-------------+-------------------------+
+            | ``s = inf`` | Derive gametes from SSD |
+            +-------------+-------------------------+
         mem : int, default = None
             Max square matrix dimensions to compute. If not None, will compute
             covariance matrix segments in chunks of shape (mem, mem) or less.
-            If None, full matrix chunks will be computed, which may exceed
+            If ``None``, full matrix chunks will be computed, which may exceed
             physical memory size! Use this option to save random access memory!
         gmap : GeneticMap, default = None
             A GeneticMap object containing genetic map information. If a

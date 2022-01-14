@@ -211,9 +211,11 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         Rsq : numpy.ndarray
-            A coefficient of determination array of shape (t,).
+            A coefficient of determination array of shape ``(t,)``.
+
             Where:
-                t : is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -237,9 +239,11 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         Rsq : numpy.ndarray
-            A coefficient of determination array of shape (t,).
+            A coefficient of determination array of shape ``(t,)``.
+
             Where:
-                t : is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 

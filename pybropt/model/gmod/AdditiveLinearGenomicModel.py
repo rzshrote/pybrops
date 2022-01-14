@@ -32,21 +32,26 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 
     A Multivariate Multiple Linear Regression model is defined as:
 
-        Y = Xβ + Zu + e
+    .. math::
+        Y = X \\beta + Zu + e
 
-        Where:
-            Y is a matrix of response variables of shape (n,t)
-            X is a matrix of fixed effect predictors of shape (n,q)
-            β is a matrix of fixed effect regression coefficients of shape (q,t)
-            Z is a matrix of random effect predictors of shape (n,p)
-            u is a matrix of random effect regression coefficients of shape (p,t)
-            e is a matrix of error terms of shape (n, t)
+    Where:
 
-        Shape definitions:
-            n = the number of individuals
-            q = the number of fixed effect predictors (e.g. environments)
-            p = the number of random effect predictors (e.g. genomic markers)
-            t = the number of traits
+    - :math:`Y` is a matrix of response variables of shape ``(n,t)``.
+    - :math:`X` is a matrix of fixed effect predictors of shape ``(n,q)``.
+    - :math:`\\beta` is a matrix of fixed effect regression coefficients of
+      shape ``(q,t)``.
+    - :math:`Z` is a matrix of random effect predictors of shape ``(n,p)``.
+    - :math:`u` is a matrix of random effect regression coefficients of shape
+      ``(p,t)``.
+    - :math:`e` is a matrix of error terms of shape ``(n,t)``.
+
+    Shape definitions:
+    
+    - ``n`` is the number of individuals
+    - ``q`` is the number of fixed effect predictors (e.g. environments)
+    - ``p`` is the number of random effect predictors (e.g. genomic markers)
+    - ``t`` is the number of traits
     """
 
     ############################################################################
@@ -59,21 +64,33 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         Parameters
         ----------
         beta : numpy.ndarray
-            A numpy.float64 fixed effect regression coefficient matrix of shape (q,t).
+            A ``float64`` fixed effect regression coefficient matrix of shape
+            ``(q,t)``.
+
             Where:
-                q : is the number of fixed effect predictors (e.g. environments)
-                t : is the number of individuals
+
+            - ``q`` is the number of fixed effect predictors (e.g.
+              environments).
+            - ``t`` is the number of individuals.
         u : numpy.ndarray
-            A numpy.float64 random effect regression coefficient matrix of shape (p,t).
+            A ``float64`` random effect regression coefficient matrix of shape
+            ``(p,t)``.
+
             Where:
-                p : is the number of random effect predictors (e.g. genomic markers)
-                t : is the number of individuals
+
+            - ``p`` is the number of random effect predictors (e.g. genomic
+              markers).
+            - ``t`` is the number of individuals.
         trait : numpy.ndarray, None
-            A numpy.object_ array of shape (t,).
+            An ``object_`` array of shape ``(t,)``.
+
             Where:
-                t : is the number of traits.
+
+            - ``t`` is the number of traits.
         model_name : str, None
+            Name of the model.
         params : dict, None
+            Model parameters.
         kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
@@ -93,7 +110,8 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 
         Returns
         -------
-        out : GenomicModel
+        out : AdditiveLinearGenomicModel
+            A shallow copy of the model.
         """
         out = self.__class__(
             beta = copy.copy(self.beta),
@@ -115,7 +133,8 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 
         Returns
         -------
-        out : GenomicModel
+        out : AdditiveLinearGenomicModel
+            A deep copy of the model.
         """
         out = self.__class__(
             beta = copy.deepcopy(self.beta),
@@ -364,9 +383,11 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         Returns
         -------
         Rsq : numpy.ndarray
-            A coefficient of determination array of shape (t,).
+            A coefficient of determination array of shape ``(t,)``.
+
             Where:
-                t : is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # TODO: array shape checks
 
@@ -419,9 +440,11 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         Returns
         -------
         Rsq : numpy.ndarray
-            A coefficient of determination array of shape (t,).
+            A coefficient of determination array of shape ``(t,)``.
+
             Where:
-                t : is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # process ptobj
         if is_BreedingValueMatrix(ptobj):
@@ -682,11 +705,11 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
             values.
         ploidy : int
             Ploidy of the species.
+
             If ploidy is None:
-                If gtobj is a GenotypeMatrix:
-                    Get ploidy from GenotypeMatrix.
-                If gtobj is a numpy.ndarray:
-                    Assumed to be 2 (diploid).
+
+            - If gtobj is a GenotypeMatrix, then get ploidy from GenotypeMatrix.
+            - If gtobj is a numpy.ndarray, then assumed to be 2 (diploid).
         kwargs : dict
             Additional keyword arguments.
 
@@ -750,10 +773,9 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         ploidy : int
             Ploidy of the species.
             If ploidy is None:
-                If gtobj is a GenotypeMatrix:
-                    Get ploidy from GenotypeMatrix.
-                If gtobj is a numpy.ndarray:
-                    Assumed to be 2 (diploid).
+
+            - If gtobj is a GenotypeMatrix, then get ploidy from GenotypeMatrix.
+            - If gtobj is a numpy.ndarray, then assumed to be 2 (diploid).
         kwargs : dict
             Additional keyword arguments.
 
@@ -930,7 +952,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
             HDF5 file name which to read.
         groupname : str or None
             HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+            If ``None``, GenotypeMatrix is read from base HDF5 group.
 
         Returns
         -------
@@ -995,7 +1017,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
             HDF5 file name to which to write.
         groupname : str or None
             HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
+            If ``None``, GenotypeMatrix is written to the base HDF5 group.
         """
         h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
         ######################################################### process groupname argument
