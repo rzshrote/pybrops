@@ -11,11 +11,20 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
+            A float64 matrix of breeding values of shape (n, t).
+        location : numpy.ndarray
+            An array of breeding value locations of shape (t,).
+        scale : numpy.ndarray
+            An array of breeding value scales of shape (t,).
         taxa : numpy.ndarray
+            An array of taxa names.
         taxa_grp : numpy.ndarray
+            An array of taxa groups.
         trait : numpy.ndarray
+            An array of trait names.
         kwargs : dict
-            Additional keyword arguments.
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(DenseEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,

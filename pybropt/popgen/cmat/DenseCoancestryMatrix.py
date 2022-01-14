@@ -19,8 +19,7 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
         ----------
         mat : numpy.ndarray
             Coancestry matrix of shape (n,n)
-            Where:
-                n is the number of taxa.
+            Where: 'n' is the number of taxa.
         """
         # call constructor for DenseTaxaMatrix
         super(DenseCoancestryMatrix, self).__init__(
