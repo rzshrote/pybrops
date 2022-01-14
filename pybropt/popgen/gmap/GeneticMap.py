@@ -257,9 +257,11 @@ class GeneticMap:
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
+
+            - ``a`` is the number of indices to remove.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -273,9 +275,11 @@ class GeneticMap:
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
+
+            - ``a`` is the number of indices to remove.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -293,7 +297,7 @@ class GeneticMap:
             Target distance between each selected marker in Morgans.
             If this option is specified, selection based on Morgans takes first
             priority. If the physical distance between two markers selected
-            based on their genetic distance exceeds 'nt' (if provided), the
+            based on their genetic distance exceeds ``nt`` (if provided), the
             additional markers are sought between those regions.
         kwargs : dict
             Additional keyword arguments.

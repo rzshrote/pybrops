@@ -18,8 +18,11 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Coancestry matrix of shape (n,n)
-            Where: 'n' is the number of taxa.
+            Coancestry matrix of shape ``(n,n)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
         """
         # call constructor for DenseTaxaMatrix
         super(DenseCoancestryMatrix, self).__init__(

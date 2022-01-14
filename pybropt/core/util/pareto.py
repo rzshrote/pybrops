@@ -11,20 +11,25 @@ def is_pareto_efficient(fmat, wt, return_mask = True):
     Parameters
     ----------
     fmat : numpy.ndarray
-        A matrix of shape (npt, nobj) containing fitness values. Where
-        'npt' is the number of points and 'nobj' is the number of
-        objectives.
+        A matrix of shape ``(npt, nobj)`` containing fitness values.
+
+        Where:
+
+        - ``npt`` is the number of points
+        - ``nobj`` is the number of objectives.
     wt : numpy.ndarray
         Weights to applied to fmat.
     return_mask : bool
-        If True, return a mask.
+        If ``True``, return a mask.
 
     Returns
     -------
     out : numpy.ndarray
         An array of indices of pareto-efficient points.
-        If return_mask is True, this will be an (npt, ) boolean array
-        Otherwise it will be a (n_efficient_points, ) integer array of indices.
+
+        If return_mask is ``True``, this will be an ``(npt,)`` boolean array.
+        Otherwise it will be a ``(n_efficient_points, )`` integer array of
+        indices.
     """
     fmat = fmat * (wt.flatten()[None,:])    # apply weights
     npt = fmat.shape[0]                     # get number of points

@@ -128,11 +128,14 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         Returns
         -------
         out : tuple
-            A tuple of length 3 containing (frontier, sel_config, misc). Where:
-            'frontier' is a matrix of the Pareto frontier points, 'sel_config'
-            is an array of corresponding decision variables for the
-            corresponding Pareto frontier points, and 'misc' is a dictionary of
-            miscellaneous output.
+            A tuple of length 3 containing ``(frontier, sel_config, misc)``.
+
+            Where:
+
+            - ``frontier`` is a matrix of the Pareto frontier points.
+            - ``sel_config`` is an array of corresponding decision variables
+              for the corresponding Pareto frontier points.
+            - ``misc`` is a dictionary of miscellaneous output.
         """
         # convert objective function weights to a numpy array
         if not hasattr(objfn_wt, "__iter__"):
