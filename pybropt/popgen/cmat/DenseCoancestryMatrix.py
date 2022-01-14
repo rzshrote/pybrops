@@ -27,7 +27,7 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
     ############################################################################

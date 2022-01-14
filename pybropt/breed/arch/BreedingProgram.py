@@ -215,7 +215,7 @@ class BreedingProgram(BreedingNode):
             Number of generations to advance the BreedingProgram.
         lbook : Logbook
             Logbook into which to write statistics.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

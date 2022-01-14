@@ -233,7 +233,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Variant mask to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -251,7 +251,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.vrnt_axis:
             out = self.adjoin_vrnt(
@@ -265,7 +265,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -282,7 +282,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Taxa groups to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         out = super(DenseTaxaVariantMatrix, self).adjoin_taxa(
@@ -298,7 +298,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -335,7 +335,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Variant haplotype reference sequence.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -357,7 +357,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -378,7 +378,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -394,12 +394,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         if axis == self.taxa_axis:
             out = self.delete_taxa(
                 obj = obj,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.vrnt_axis:
             out = self.delete_vrnt(
                 obj = obj,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -414,7 +414,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -434,7 +434,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -453,7 +453,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -466,7 +466,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -526,7 +526,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Variant mask to insert into the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -545,7 +545,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.vrnt_axis:
             out = self.insert_vrnt(
@@ -560,7 +560,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -582,7 +582,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -606,7 +606,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -642,7 +642,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Variant haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -666,7 +666,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -687,7 +687,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -717,7 +717,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -737,7 +737,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -756,7 +756,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -769,7 +769,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             indices = indices,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -792,7 +792,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -824,7 +824,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -844,7 +844,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = mats[0].vrnt_hapalt,
             vrnt_hapref = mats[0].vrnt_hapref,
             vrnt_mask = mats[0].vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -865,7 +865,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -878,7 +878,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             mats = mats,
             taxa = mats[0].taxa,
             taxa_grp = mats[0].taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -912,7 +912,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.vrnt_axis:
             self.append_vrnt(
@@ -926,7 +926,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -941,7 +941,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -967,7 +967,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -979,7 +979,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.vrnt_axis:
             self.incorp(
@@ -994,7 +994,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

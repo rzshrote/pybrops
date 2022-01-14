@@ -90,7 +90,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             Number of crosses per configuration. If None, use default.
         nprogeny : int
             Number of progeny per cross. If None, use default.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -299,7 +299,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -348,7 +348,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         # create optimization algorithm
         moalgo = NSGA2SetGeneticAlgorithm(
             rng = self.rng,
-            **kwargs
+            kwargs : dict
         )
 
         # TODO: fixme with miscout dictionary

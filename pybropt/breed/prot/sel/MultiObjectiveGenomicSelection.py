@@ -210,7 +210,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
                 true  | GenomicModel         | True genomic model for trait(s)
         nparent : int
             Number of parents to select
-        **kwargs
+        kwargs : dict
             Additional keyword arguments to be passed to either
             algorithm.optimize (method = "single") or self.ppareto (method =
             "pareto"), depending on method used.
@@ -380,7 +380,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             gmod = gmod,
             trans = objfn_trans,
             trans_kwargs = objfn_trans_kwargs,
-            **kwargs
+            kwargs : dict
         )
 
         # MOGS objectives are minimizing (DEAP uses larger fitness as better)

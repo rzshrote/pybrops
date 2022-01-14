@@ -39,7 +39,7 @@ class SortableMatrix(MutableMatrix):
             keys is a 2D array) is the primary sort key.
         axis : int
             Axis to be indirectly sorted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -60,7 +60,7 @@ class SortableMatrix(MutableMatrix):
             Array of indices that reorder the matrix along the specified axis.
         axis : int
             Axis to be reordered.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -77,7 +77,7 @@ class SortableMatrix(MutableMatrix):
             keys is a 2D array) is the primary sort key.
         axis : int
             Axis to be indirectly sorted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

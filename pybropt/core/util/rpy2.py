@@ -127,7 +127,7 @@ def generic_numpy_to_R_Matrix(a, dtype, cls, dimnames = NULL):
         Numpy dtype conversion requried to construct an R Vector of class 'cls'.
     cls : class
         R Vector class. Must have class method 'from_memoryview'.
-    **kwargs
+    kwargs : dict
         Additional keyword arguments for calling 'matrix' function from R.
 
     Returns

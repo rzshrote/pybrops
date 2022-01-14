@@ -52,7 +52,7 @@ class RandomInitializationOperator(InitializationOperator):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
 
         Returns
         -------

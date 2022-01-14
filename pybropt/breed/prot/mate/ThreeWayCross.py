@@ -101,7 +101,7 @@ class ThreeWayCross(MatingProtocol):
             vrnt_xoprob = pgmat.vrnt_xoprob,
             vrnt_hapgrp = pgmat.vrnt_hapgrp,
             vrnt_mask = pgmat.vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata

@@ -107,7 +107,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 true  | GenomicModel         | True genomic model for trait(s)
         k : int
         traitwt : numpy.ndarray
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -292,7 +292,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -341,7 +341,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         # create optimization algorithm
         moalgo = NSGA2SetGeneticAlgorithm(
             rng = self.rng,
-            **kwargs
+            kwargs : dict
         )
 
         frontier, sel_config, misc = moalgo.optimize(

@@ -243,7 +243,7 @@ class OptimalContributionSelection(SelectionProtocol):
         nparent : int
         ncross : int
         nprogeny : int
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -461,7 +461,7 @@ class OptimalContributionSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

@@ -85,7 +85,7 @@ setup.py
 ./pybropt/breed/prot/mate/TwoWayCross.py
 ./pybropt/breed/prot/mate/TwoWayDHCross.py
 ./pybropt/breed/prot/mate/__init__.py
-./pybropt/breed/prot/mate/mate_util.py
+./pybropt/breed/prot/mate/util.py
 ./pybropt/breed/prot/mcfg/MatingConfiguration.py
 ./pybropt/breed/prot/mcfg/WeightedRandomMatingConfiguration.py
 ./pybropt/breed/prot/mcfg/__init__.py
@@ -107,8 +107,7 @@ setup.py
 ./pybropt/breed/prot/sel/TwoWayOptimalHaploidValueSelection.py
 ./pybropt/breed/prot/sel/WeightedGenomicSelection.py
 ./pybropt/breed/prot/sel/__init__.py
-./pybropt/breed/prot/sel/transfn/__init__.py
-./pybropt/breed/prot/sel/transfn/transfn.py
+./pybropt/breed/prot/sel/transfn.py
 ./pybropt/core/__init__.py
 ./pybropt/core/df/DataFrame.py
 ./pybropt/core/df/DictDataFrame.py
@@ -149,16 +148,16 @@ setup.py
 ./pybropt/core/mat/TraitMatrix.py
 ./pybropt/core/mat/VariantMatrix.py
 ./pybropt/core/mat/__init__.py
-./pybropt/core/mat/mat_util.py
+./pybropt/core/mat/util.py
 ./pybropt/core/random/__init__.py
 ./pybropt/core/random/random_util.py
 ./pybropt/core/util/__init__.py
 ./pybropt/core/util/arrayix.py
+./pybropt/core/util/h5py.py
+./pybropt/core/util/numpy.py
 ./pybropt/core/util/pareto.py
+./pybropt/core/util/rpy2.py
 ./pybropt/core/util/subroutines.py
-./pybropt/core/util/util_h5py.py
-./pybropt/core/util/util_numpy.py
-./pybropt/core/util/util_rpy2.py
 ./pybropt/model/__init__.py
 ./pybropt/model/emat/EffectMatrix.py
 ./pybropt/model/emat/GenotypeEffectMatrix.py
@@ -170,7 +169,7 @@ setup.py
 ./pybropt/model/emat/PhasedHaplotypeEffectMatrix.py
 ./pybropt/model/emat/PhasedHaplotypeEffectVariantMatrix.py
 ./pybropt/model/emat/__init__.py
-./pybropt/model/gmod/GenericLinearGenomicModel.py
+./pybropt/model/gmod/AdditiveLinearGenomicModel.py
 ./pybropt/model/gmod/GenomicModel.py
 ./pybropt/model/gmod/LinearGenomicModel.py
 ./pybropt/model/gmod/NonlinearGenomicModel.py
@@ -186,7 +185,7 @@ setup.py
 ./pybropt/model/vmat/TwoWayDHAdditiveGeneticVarianceMatrix.py
 ./pybropt/model/vmat/VarianceMatrix.py
 ./pybropt/model/vmat/__init__.py
-./pybropt/model/vmat/vmat_util.py
+./pybropt/model/vmat/util.py
 ./pybropt/popgen/__init__.py
 ./pybropt/popgen/bvmat/BreedingValueMatrix.py
 ./pybropt/popgen/bvmat/DenseBreedingValueMatrix.py
@@ -207,7 +206,7 @@ setup.py
 ./pybropt/popgen/gmap/KosambiMapFunction.py
 ./pybropt/popgen/gmap/StandardGeneticMap.py
 ./pybropt/popgen/gmap/__init__.py
-./pybropt/popgen/gmap/gmap_util.py
+./pybropt/popgen/gmap/util.py
 ./pybropt/popgen/gmat/DenseGenotypeMatrix.py
 ./pybropt/popgen/gmat/DensePhasedGenotypeMatrix.py
 ./pybropt/popgen/gmat/GenotypeMatrix.py
@@ -221,7 +220,7 @@ setup.py
 ./pybropt/popgen/ldmat/R_LDMatrix.py
 ./pybropt/popgen/ldmat/Rsq_LDMatrix.py
 ./pybropt/popgen/ldmat/__init__.py
-./pybropt/popgen/ldmat/ldmat_util.py
+./pybropt/popgen/ldmat/util.py
 ./pybropt/popgen/ptdf/DictPhenotypeDataFrame.py
 ./pybropt/popgen/ptdf/PandasPhenotypeDataFrame.py
 ./pybropt/popgen/ptdf/PhenotypeDataFrame.py

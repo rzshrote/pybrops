@@ -32,7 +32,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
             data = data,
             col_grp = col_grp,
             row_name = row_name,
-            **kwargs
+            kwargs : dict
         )
 
         ### error checks and assignments (order dependent)

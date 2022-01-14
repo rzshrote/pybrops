@@ -69,7 +69,7 @@ class PhasedMatrix(MutableMatrix):
         ----------
         values : Matrix, numpy.ndarray
             Values are appended to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -88,7 +88,7 @@ class PhasedMatrix(MutableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -110,7 +110,7 @@ class PhasedMatrix(MutableMatrix):
             inserted.
         values : Matrix, numpy.ndarray
             Values to insert into the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -129,7 +129,7 @@ class PhasedMatrix(MutableMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -150,7 +150,7 @@ class PhasedMatrix(MutableMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -170,7 +170,7 @@ class PhasedMatrix(MutableMatrix):
         ----------
         values : Matrix, numpy.ndarray
             Values are appended to append to the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -183,7 +183,7 @@ class PhasedMatrix(MutableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -199,7 +199,7 @@ class PhasedMatrix(MutableMatrix):
             incorporated.
         values : Matrix, numpy.ndarray
             Values to incorporate into the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

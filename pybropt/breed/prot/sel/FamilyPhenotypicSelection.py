@@ -102,7 +102,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         nparent : int
         ncross : int
         nprogeny : int
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -328,7 +328,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

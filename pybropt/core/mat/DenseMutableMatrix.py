@@ -18,7 +18,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         """
         super(DenseMutableMatrix, self).__init__(
             mat = mat,
-            **kwargs
+            kwargs : dict
         )
 
     ############################################################################
@@ -59,7 +59,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -81,7 +81,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis

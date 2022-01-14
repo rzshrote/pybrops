@@ -181,7 +181,7 @@ class GeneticMap:
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -200,7 +200,7 @@ class GeneticMap:
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -215,7 +215,7 @@ class GeneticMap:
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -227,7 +227,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -238,7 +238,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

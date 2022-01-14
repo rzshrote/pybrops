@@ -11,7 +11,7 @@ class MemeticOperator:
         objfn : function
         pop : list of numpy.ndarray
         score : numpy.ndarray
-        **kwargs :
+        kwargs : dict
             Additional arguments to pass to objfn.
 
         Returns

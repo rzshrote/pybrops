@@ -3,7 +3,7 @@ class TournamentSelectionOperator(SelectionOperator):
     def __init__(self, n, **kwargs):
         super(TournamentSelectionOperator, self).__init__(
             n = n,
-            **kwargs
+            kwargs : dict
         )
         self.n = n
     # TODO: fixme

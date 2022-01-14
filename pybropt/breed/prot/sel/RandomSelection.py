@@ -101,7 +101,7 @@ class RandomSelection(SelectionProtocol):
         replace : bool, None
             Whether to sample parents with or without replacement. If None, use
             default.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

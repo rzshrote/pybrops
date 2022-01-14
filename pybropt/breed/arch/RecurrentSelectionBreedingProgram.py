@@ -379,7 +379,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             Number of generations to advance the BreedingProgram.
         lbook : Logbook
             Logbook into which to write statistics.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # iterate through main breeding loop for ngen generations
@@ -562,7 +562,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             self.advance(
                 ngen = ngen,
                 lbook = lbook,
-                **kwargs
+                kwargs : dict
             )
 
 

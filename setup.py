@@ -42,6 +42,7 @@ pybropt_requirements_install = [
     "scipy",
     "cvxpy",
     "sklearn",
+    "matplotlib",
     "pytest",
     "pytest-datadir"
 ]

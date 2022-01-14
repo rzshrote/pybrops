@@ -13,7 +13,7 @@ class TwoWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
     def __init__(self, var_A, **kwargs):
         super(TwoWayDHAdditiveGeneticVarianceMatrix, self).__init__(
             var_A,
-            **kwargs
+            kwargs : dict
         )
         self.var_A = var_A
 

@@ -15,12 +15,6 @@
 import os
 import sys
 import pathlib
-print("######################################################")
-print(pathlib.Path(__file__))
-print(pathlib.Path(__file__).parents[2])
-print(pathlib.Path(__file__).parents[2].resolve())
-print(pathlib.Path(__file__).parents[2].resolve().as_posix())
-print("######################################################")
 sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 
 
@@ -61,6 +55,8 @@ source_suffix = '.rst'
 
 # Will change to `root_doc` in Sphinx 4
 master_doc = 'index'
+
+# A boolean that decides whether module names are prepended to all object names.
 add_module_names = False # Remove namespaces from class/method signatures
 
 # List of patterns, relative to source directory, that match files and

@@ -112,7 +112,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
             taxa = gtobj.taxa,
             taxa_grp = gtobj.taxa_grp,
             trait = numpy.object_(self.trait_col),
-            **kwargs
+            kwargs : dict
         )
 
         return bvmat

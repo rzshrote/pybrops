@@ -32,7 +32,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
     ############################################################################

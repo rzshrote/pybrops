@@ -217,7 +217,7 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
                 true  | GenomicModel         | True genomic model for trait(s)
         k : int
         traitwt : numpy.ndarray
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -302,7 +302,7 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         nparent : int
         ncross : int
         nprogeny : int
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

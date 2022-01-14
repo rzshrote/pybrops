@@ -235,7 +235,7 @@ class ExtendedGeneticMap(GeneticMap):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -273,7 +273,7 @@ class ExtendedGeneticMap(GeneticMap):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # sort internal self
@@ -702,7 +702,7 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_genpos = vrnt_genpos,
             vrnt_name = vrnt_name,
             vrnt_fncode = vrnt_fncode,
-            **kwargs
+            kwargs : dict
         )
 
         # copy pointers to spline and spline metadata

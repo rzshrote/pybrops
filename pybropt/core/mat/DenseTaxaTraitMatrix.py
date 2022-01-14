@@ -155,7 +155,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Traits to adjoin to the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -173,13 +173,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.trait_axis:
             out = self.adjoin_trait(
                 values = values,
                 trait = trait,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -206,7 +206,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Traits to adjoin to the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -220,7 +220,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self._trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -237,7 +237,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Trait names to adjoin to the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -251,7 +251,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             trait = trait,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -272,7 +272,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -288,12 +288,12 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         if axis == self.taxa_axis:
             out = self.delete_taxa(
                 obj = obj,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.trait_axis:
             out = self.delete_trait(
                 obj = obj,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -308,7 +308,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -320,7 +320,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, self).delete_taxa(
             obj = obj,
             trait = self._trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -333,7 +333,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -346,7 +346,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -382,7 +382,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Trait names to insert into the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -401,14 +401,14 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.trait_axis:
             out = self.insert_trait(
                 obj = obj,
                 values = values,
                 trait = trait,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -430,7 +430,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -446,7 +446,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self._trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -466,7 +466,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Trait names to insert into the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -482,7 +482,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             trait = trait,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -503,7 +503,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -533,7 +533,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -545,7 +545,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, self).select_taxa(
             indices = indices,
             trait = self._trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -558,7 +558,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -571,7 +571,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             indices = indices,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -594,7 +594,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -626,7 +626,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -638,7 +638,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, cls).concat_taxa(
             mats = mats,
             trait = mats[0].trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -653,7 +653,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -666,7 +666,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             mats = mats,
             taxa = mats[0].taxa,
             taxa_grp = mats[0].taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -714,13 +714,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.trait_axis:
             self.append_trait(
                 values = values,
                 trait = trait,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -735,7 +735,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -773,7 +773,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             Trait names to incorporate into the Matrix.
             If values is a DenseTaxaTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -785,14 +785,14 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                **kwargs
+                kwargs : dict
             )
         elif axis == self.trait_axis:
             self.incorp(
                 obj = obj,
                 values = values,
                 trait = trait,
-                **kwargs
+                kwargs : dict
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

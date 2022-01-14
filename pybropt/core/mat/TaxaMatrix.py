@@ -159,7 +159,7 @@ class TaxaMatrix(GroupableMatrix):
             Taxa names to adjoin to the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -178,7 +178,7 @@ class TaxaMatrix(GroupableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -204,7 +204,7 @@ class TaxaMatrix(GroupableMatrix):
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -223,7 +223,7 @@ class TaxaMatrix(GroupableMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -244,7 +244,7 @@ class TaxaMatrix(GroupableMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -268,7 +268,7 @@ class TaxaMatrix(GroupableMatrix):
             Taxa names to append to the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -281,7 +281,7 @@ class TaxaMatrix(GroupableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -301,7 +301,7 @@ class TaxaMatrix(GroupableMatrix):
             Taxa names to incorporate into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -317,7 +317,7 @@ class TaxaMatrix(GroupableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -336,7 +336,7 @@ class TaxaMatrix(GroupableMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -351,7 +351,7 @@ class TaxaMatrix(GroupableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -364,7 +364,7 @@ class TaxaMatrix(GroupableMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -376,7 +376,7 @@ class TaxaMatrix(GroupableMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

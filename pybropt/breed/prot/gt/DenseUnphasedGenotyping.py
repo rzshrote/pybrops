@@ -63,7 +63,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
             vrnt_hapref = pgmat.vrnt_hapref,
             vrnt_mask = pgmat.vrnt_mask,
             ploidy = pgmat.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out

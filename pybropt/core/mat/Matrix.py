@@ -454,7 +454,7 @@ class Matrix:
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -475,7 +475,7 @@ class Matrix:
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -499,7 +499,7 @@ class Matrix:
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -520,7 +520,7 @@ class Matrix:
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -543,7 +543,7 @@ class Matrix:
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns

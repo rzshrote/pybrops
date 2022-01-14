@@ -36,7 +36,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = trait,
-            **kwargs
+            kwargs : dict
         )
         # set location and scale parameters
         self.location = location
@@ -170,7 +170,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -206,7 +206,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             scale = scale,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -525,7 +525,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = trait,
-            **kwargs
+            kwargs : dict
         )
 
         return out

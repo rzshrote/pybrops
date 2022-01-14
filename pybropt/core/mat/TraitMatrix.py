@@ -87,7 +87,7 @@ class TraitMatrix(SortableMatrix):
             Values are appended to adjoin to the Matrix.
         trait : numpy.ndarray
             Taxa names to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -106,7 +106,7 @@ class TraitMatrix(SortableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -130,7 +130,7 @@ class TraitMatrix(SortableMatrix):
             Values to insert into the matrix.
         trait : numpy.ndarray
             Taxa names to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -149,7 +149,7 @@ class TraitMatrix(SortableMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -170,7 +170,7 @@ class TraitMatrix(SortableMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -192,7 +192,7 @@ class TraitMatrix(SortableMatrix):
             Values are appended to append to the matrix.
         trait : numpy.ndarray
             Taxa names to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -205,7 +205,7 @@ class TraitMatrix(SortableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -223,7 +223,7 @@ class TraitMatrix(SortableMatrix):
             Values to incorporate into the matrix.
         trait : numpy.ndarray
             Taxa names to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -239,7 +239,7 @@ class TraitMatrix(SortableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -258,7 +258,7 @@ class TraitMatrix(SortableMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -273,7 +273,7 @@ class TraitMatrix(SortableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

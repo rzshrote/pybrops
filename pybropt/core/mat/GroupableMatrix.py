@@ -36,7 +36,7 @@ class GroupableMatrix(SortableMatrix):
         ----------
         axis : int
             The axis along which values are grouped.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -50,7 +50,7 @@ class GroupableMatrix(SortableMatrix):
         axis: int
             Axis along which to determine whether elements have been sorted and
             grouped.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

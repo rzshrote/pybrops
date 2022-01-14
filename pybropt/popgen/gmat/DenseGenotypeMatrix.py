@@ -56,7 +56,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            **kwargs
+            kwargs : dict
         )
         # set ploidy
         check_is_int(ploidy, "ploidy")
@@ -250,7 +250,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Taxa groups to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         out = super(DenseGenotypeMatrix, self).adjoin_taxa(
@@ -258,7 +258,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             taxa = taxa,
             taxa_grp = taxa_grp,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -289,7 +289,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Variant haplotype reference sequence.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -310,7 +310,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -323,7 +323,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -335,7 +335,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).delete_taxa(
             obj = obj,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -348,7 +348,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -360,7 +360,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).delete_vrnt(
             obj = obj,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -380,7 +380,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -396,7 +396,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             taxa = taxa,
             taxa_grp = taxa_grp,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -426,7 +426,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Variant haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -449,7 +449,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -462,7 +462,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -474,7 +474,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).select_taxa(
             indices = indices,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -487,7 +487,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -499,7 +499,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).select_vrnt(
             indices = indices,
             ploidy = self.ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out
@@ -514,7 +514,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -526,7 +526,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, cls).concat_taxa(
             mats = mats,
             ploidy = mats[0].ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         # copy metadata from source
@@ -547,7 +547,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -559,7 +559,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, cls).concat_vrnt(
             mats = mats,
             ploidy = mats[0].ploidy,
-            **kwargs
+            kwargs : dict
         )
 
         return out

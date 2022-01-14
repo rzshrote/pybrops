@@ -36,7 +36,7 @@ class PrunableMatrix(Matrix):
         ----------
         axis : int
             The axis along which indices are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
