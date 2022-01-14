@@ -97,3 +97,4 @@ experiments/2020-Mar-26_soybean_optimize/Song_2016.linear.egmap
 *.mp4
 breeding/tarspot/tarspot_geno.vcf.gz
 breeding/height/2019_wisdiv_geno.vcf.gz
+.idea/
