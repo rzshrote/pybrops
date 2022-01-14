@@ -6,7 +6,7 @@ __all__ = ["is_pareto_efficient"]
 # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
 def is_pareto_efficient(fmat, wt, return_mask = True):
     """
-    Find the pareto-efficient points (maximizing function)
+    Find pareto-efficient points assuming maximizing functions.
 
     Parameters
     ----------
@@ -14,6 +14,8 @@ def is_pareto_efficient(fmat, wt, return_mask = True):
         A matrix of shape (npt, nobj) containing fitness values. Where
         'npt' is the number of points and 'nobj' is the number of
         objectives.
+    wt : numpy.ndarray
+        Weights to applied to fmat.
     return_mask : bool
         If True, return a mask.
 

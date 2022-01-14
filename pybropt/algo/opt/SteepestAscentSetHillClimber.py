@@ -1,16 +1,28 @@
 import numpy
 
-from . import OptimizationAlgorithm
+from pybropt.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 
 class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     """docstring for SteepestAscentSetHillClimber."""
 
     def __init__(self, k, setspace, rng, objwt = 1.0, **kwargs):
         """
+        Constructor for a steepest ascent set hill-climber.
+
+        Parameters
+        ----------
+        k : int
+            Number of states to select in set space. Select n choose k.
+        setspace : numpy.ndarray
+            Array of shape (n,) where 'n' is the size of the set space.
+        rng : numpy.Generator
+            Random number generator.
         objwt : float, numpy.ndarray
             Weight to apply to objective function.
             If the function is a maximizing function, provide a positive weight.
             If the function is a minimizing function, provide a negative weight.
+        kwargs : dict
+            Additional keyword arguments.
         """
         super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
         self.k = k
@@ -19,6 +31,20 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         self.objwt = objwt
 
     def optimize(self, objfn, k = None, setspace = None, objwt = None, **kwargs):
+        """
+        Optimize an objective function.
+
+        Parameters
+        ----------
+        objfn : callable
+            Objective function to optimize.
+
+        Returns
+        -------
+        out : dict
+            A dictionary containing the best solution and its objective
+            function evaluation.
+        """
         # get parameters for optimization
         if k is None:
             k = self.k

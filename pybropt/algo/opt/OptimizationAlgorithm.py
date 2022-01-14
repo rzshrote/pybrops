@@ -4,6 +4,11 @@ class OptimizationAlgorithm:
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class OptimizationAlgorithm.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
         """
         super(OptimizationAlgorithm, self).__init__()
 

@@ -82,15 +82,8 @@ def generic_numpy_to_R_Vector(a, dtype, cls, Rfn_name = 'as.vector'):
         R Vector class. Must have class method 'from_memoryview'.
     Rfn_name : str
         Name of function in R baseenv to call to create R Vector.
-        Must be:
-            as.vector
-            as.logical
-            as.double
-            as.integer
-            as.complex
-            as.raw
-            ...
-            etc.
+        Must be: "as.vector", "as.logical", "as.double", "as.integer",
+        "as.complex", "as.raw", etc.
 
     Returns
     -------
