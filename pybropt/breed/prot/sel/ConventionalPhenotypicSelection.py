@@ -341,7 +341,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         # create optimization algorithm
         moalgo = NSGA2SetGeneticAlgorithm(
             rng = self.rng,
-            kwargs : dict
+            **kwargs
         )
 
         frontier, sel_config, misc = moalgo.optimize(

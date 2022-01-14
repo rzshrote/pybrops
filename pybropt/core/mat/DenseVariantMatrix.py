@@ -41,7 +41,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """
         super(DenseVariantMatrix, self).__init__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
         # error check and setting values using properties
         self.vrnt_chrgrp = vrnt_chrgrp
@@ -456,7 +456,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -579,7 +579,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -610,7 +610,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         if axis == self.vrnt_axis:
             out = self.delete_vrnt(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -678,7 +678,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -750,7 +750,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -871,7 +871,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -967,7 +967,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -1141,7 +1141,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -1176,7 +1176,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -1376,7 +1376,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

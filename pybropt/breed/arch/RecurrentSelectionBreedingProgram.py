@@ -562,7 +562,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             self.advance(
                 ngen = ngen,
                 lbook = lbook,
-                kwargs : dict
+                **kwargs
             )
 
 

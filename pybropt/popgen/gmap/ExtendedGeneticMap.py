@@ -702,7 +702,7 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_genpos = vrnt_genpos,
             vrnt_name = vrnt_name,
             vrnt_fncode = vrnt_fncode,
-            kwargs : dict
+            **kwargs
         )
 
         # copy pointers to spline and spline metadata

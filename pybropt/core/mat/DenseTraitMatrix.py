@@ -34,7 +34,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         """
         super(DenseTraitMatrix, self).__init__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
         self.trait = trait
 
@@ -159,7 +159,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             out = self.adjoin_trait(
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -212,7 +212,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         out = self.__class__(
             mat = values,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -243,7 +243,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if axis == self.trait_axis:
             out = self.delete_trait(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -279,7 +279,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         out = self.__class__(
             mat = mat,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -319,7 +319,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
                 obj = obj,
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -374,7 +374,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         out = self.__class__(
             mat = values,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -438,7 +438,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         out = self.__class__(
             mat = mat,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -537,7 +537,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         out = cls(
             mat = mat,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -570,7 +570,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             self.append_trait(
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -672,7 +672,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
                 obj = obj,
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

@@ -15,9 +15,7 @@ class EmigrationOperator(BreedingEdge):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(EmigrationOperator, self).__init__(
-            kwargs : dict
-        )
+        super(EmigrationOperator, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################

@@ -348,7 +348,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         # create optimization algorithm
         moalgo = NSGA2SetGeneticAlgorithm(
             rng = self.rng,
-            kwargs : dict
+            **kwargs
         )
 
         # TODO: fixme with miscout dictionary

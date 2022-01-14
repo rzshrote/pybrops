@@ -31,7 +31,7 @@ class SetPopulationGenerator(PopulationGenerator):
                 self.chrgenop.generate(
                     k = k,
                     setspace = setspace,
-                    kwargs : dict
+                    **kwargs
                 )
             )
 

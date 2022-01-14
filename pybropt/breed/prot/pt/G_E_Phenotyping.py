@@ -507,7 +507,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             data = data,
             col_analysis_type = col_analysis_type,
             col_analysis_effect = col_analysis_effect,
-            kwargs : dict
+            **kwargs
         )
 
         return ptdf

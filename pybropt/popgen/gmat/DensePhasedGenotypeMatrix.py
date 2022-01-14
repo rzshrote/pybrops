@@ -55,7 +55,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
     #################### Matrix copying ####################

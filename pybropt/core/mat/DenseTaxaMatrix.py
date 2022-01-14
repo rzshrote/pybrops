@@ -45,7 +45,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """
         super(DenseTaxaMatrix, self).__init__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
         self.taxa = taxa
         self.taxa_grp = taxa_grp
@@ -298,7 +298,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -350,7 +350,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             mat = values,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -381,7 +381,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if axis == self.taxa_axis:
             out = self.delete_taxa(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -421,7 +421,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -466,7 +466,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -530,7 +530,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             mat = values,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -601,7 +601,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -712,7 +712,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -740,7 +740,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -865,7 +865,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

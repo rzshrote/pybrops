@@ -380,7 +380,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             gmod = gmod,
             trans = objfn_trans,
             trans_kwargs = objfn_trans_kwargs,
-            kwargs : dict
+            **kwargs
         )
 
         # MOGS objectives are minimizing (DEAP uses larger fitness as better)

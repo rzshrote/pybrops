@@ -9,7 +9,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     def __init__(self, **kwargs):
         super(DenseVanRadenCoancestryMatrix, self).__init__(
-            kwargs : dict
+            **kwargs
         )
 
     ############################################################################

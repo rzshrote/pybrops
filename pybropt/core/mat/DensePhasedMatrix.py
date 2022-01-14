@@ -31,7 +31,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         """
         super(DensePhasedMatrix, self).__init__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
 
     #################### Matrix copying ####################
@@ -133,7 +133,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         if axis == self.phase_axis:
             out = self.adjoin_phase(
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -169,7 +169,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         out = self.__class__(
             mat = values,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -229,7 +229,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         out = self.__class__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -264,7 +264,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             out = self.insert_phase(
                 obj = obj,
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -310,7 +310,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         # create output
         out = self.__class__(
             mat = values,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -370,7 +370,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         out = self.__class__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -460,7 +460,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         # use first element as source of variant data
         out = cls(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -573,7 +573,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             self.incorp(
                 obj = obj,
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

@@ -82,7 +82,7 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
             miscout = miscout,
             s = s,
             taxa_grp = taxa_grp,    # add taxa_grp as keyword argument for object construction
-            kwargs : dict
+            **kwargs
         )
 
         # group progeny taxa

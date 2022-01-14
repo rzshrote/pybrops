@@ -56,7 +56,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
         # set ploidy
         check_is_int(ploidy, "ploidy")
@@ -258,7 +258,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             taxa = taxa,
             taxa_grp = taxa_grp,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -310,7 +310,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -335,7 +335,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).delete_taxa(
             obj = obj,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -360,7 +360,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).delete_vrnt(
             obj = obj,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -396,7 +396,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             taxa = taxa,
             taxa_grp = taxa_grp,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -449,7 +449,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -474,7 +474,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).select_taxa(
             indices = indices,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -499,7 +499,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, self).select_vrnt(
             indices = indices,
             ploidy = self.ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -526,7 +526,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, cls).concat_taxa(
             mats = mats,
             ploidy = mats[0].ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -559,7 +559,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = super(DenseGenotypeMatrix, cls).concat_vrnt(
             mats = mats,
             ploidy = mats[0].ploidy,
-            kwargs : dict
+            **kwargs
         )
 
         return out

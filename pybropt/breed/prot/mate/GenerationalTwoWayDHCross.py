@@ -15,7 +15,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
         """
         super(GenerationalTwoWayDHCross, self).__init__(
             rng = rng,
-            kwargs : dict
+            **kwargs
         )
         # check data types
         check_is_int(gmult, "gmult")
@@ -80,7 +80,7 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
             miscout = miscout,
             s = s,
             taxa_grp = taxa_grp,    # add taxa_grp as keyword argument
-            kwargs : dict
+            **kwargs
         )
 
         # group progeny taxa

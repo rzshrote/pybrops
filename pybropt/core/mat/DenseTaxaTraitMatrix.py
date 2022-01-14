@@ -173,13 +173,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.trait_axis:
             out = self.adjoin_trait(
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -220,7 +220,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self._trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -251,7 +251,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -288,12 +288,12 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         if axis == self.taxa_axis:
             out = self.delete_taxa(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.trait_axis:
             out = self.delete_trait(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -320,7 +320,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, self).delete_taxa(
             obj = obj,
             trait = self._trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -346,7 +346,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -401,14 +401,14 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.trait_axis:
             out = self.insert_trait(
                 obj = obj,
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -446,7 +446,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self._trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -482,7 +482,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -545,7 +545,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, self).select_taxa(
             indices = indices,
             trait = self._trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -571,7 +571,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             indices = indices,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -638,7 +638,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         out = super(DenseTaxaTraitMatrix, cls).concat_taxa(
             mats = mats,
             trait = mats[0].trait,
-            kwargs : dict
+            **kwargs
         )
 
         return out
@@ -666,7 +666,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             mats = mats,
             taxa = mats[0].taxa,
             taxa_grp = mats[0].taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -714,13 +714,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.trait_axis:
             self.append_trait(
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -785,14 +785,14 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.trait_axis:
             self.incorp(
                 obj = obj,
                 values = values,
                 trait = trait,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

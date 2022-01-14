@@ -24,7 +24,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = trait,
-            kwargs : dict
+            **kwargs
         )
 
 ################################################################################

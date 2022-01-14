@@ -33,7 +33,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
     ############################################################################
@@ -130,14 +130,14 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         if axis == self.phase_axis:
             out = self.adjoin_phase(
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.taxa_axis:
             out = self.adjoin_taxa(
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             out = self.adjoin_vrnt(
@@ -151,7 +151,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -182,7 +182,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -261,7 +261,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -306,7 +306,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             out = self.insert_phase(
                 obj = obj,
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.taxa_axis:
             out = self.insert_taxa(
@@ -314,7 +314,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             out = self.insert_vrnt(
@@ -329,7 +329,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -370,7 +370,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -449,7 +449,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -532,7 +532,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             vrnt_hapalt = mats[0].vrnt_hapalt,
             vrnt_hapref = mats[0].vrnt_hapref,
             vrnt_mask = mats[0].vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -568,14 +568,14 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         if axis == self.phase_axis:
             self.append_phase(
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.taxa_axis:
             self.append_taxa(
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             self.append_vrnt(
@@ -589,7 +589,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -642,7 +642,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             self.incorp_phase(
                 obj = obj,
                 values = values,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.taxa_axis:
             self.incorp_taxa(
@@ -650,7 +650,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             self.incorp_vrnt(
@@ -665,7 +665,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

@@ -251,7 +251,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             out = self.adjoin_vrnt(
@@ -265,7 +265,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -298,7 +298,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -357,7 +357,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -394,12 +394,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         if axis == self.taxa_axis:
             out = self.delete_taxa(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             out = self.delete_vrnt(
                 obj = obj,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot delete along axis {0}".format(axis))
@@ -434,7 +434,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -466,7 +466,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             obj = obj,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -545,7 +545,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             out = self.insert_vrnt(
@@ -560,7 +560,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot insert along axis {0}".format(axis))
@@ -606,7 +606,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -666,7 +666,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = vrnt_hapalt,
             vrnt_hapref = vrnt_hapref,
             vrnt_mask = vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -737,7 +737,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = self._vrnt_hapalt,
             vrnt_hapref = self._vrnt_hapref,
             vrnt_mask = self._vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -769,7 +769,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             indices = indices,
             taxa = self._taxa,
             taxa_grp = self._taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -844,7 +844,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_hapalt = mats[0].vrnt_hapalt,
             vrnt_hapref = mats[0].vrnt_hapref,
             vrnt_mask = mats[0].vrnt_mask,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -878,7 +878,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             mats = mats,
             taxa = mats[0].taxa,
             taxa_grp = mats[0].taxa_grp,
-            kwargs : dict
+            **kwargs
         )
 
         # copy metadata from source
@@ -912,7 +912,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             self.append_vrnt(
@@ -926,7 +926,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
@@ -979,7 +979,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 values = values,
                 taxa = taxa,
                 taxa_grp = taxa_grp,
-                kwargs : dict
+                **kwargs
             )
         elif axis == self.vrnt_axis:
             self.incorp(
@@ -994,7 +994,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 vrnt_hapalt = vrnt_hapalt,
                 vrnt_hapref = vrnt_hapref,
                 vrnt_mask = vrnt_mask,
-                kwargs : dict
+                **kwargs
             )
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))

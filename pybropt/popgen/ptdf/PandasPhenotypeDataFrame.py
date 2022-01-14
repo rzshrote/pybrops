@@ -12,7 +12,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     def __init__(self, df, col_atype, col_aefct, **kwargs):
         super(PandasPhenotypeDataFrame, self).__init__(
             df = df,
-            kwargs : dict
+            **kwargs
         )
         self.col_atype = col_atype
         self.col_aefct = col_aefct

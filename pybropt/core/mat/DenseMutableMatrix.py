@@ -18,7 +18,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         """
         super(DenseMutableMatrix, self).__init__(
             mat = mat,
-            kwargs : dict
+            **kwargs
         )
 
     ############################################################################

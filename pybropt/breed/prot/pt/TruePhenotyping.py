@@ -163,7 +163,7 @@ class TruePhenotyping(PhenotypingProtocol):
             col_analysis_type = col_analysis_type_dict,
             col_analysis_effect = col_analysis_effect_dict,
             row_name = None,
-            kwargs : dict
+            **kwargs
         )
 
         return ptdf
