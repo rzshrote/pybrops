@@ -6,15 +6,16 @@
 PyBrOpt documentation main page
 ===============================
 
+This is the project homepage.
+
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Contents:
 
     Homepage <self>
     Installation <installation>
     API reference <_autosummary/pybropt>
-    Breeding program examples <examples>
-
+    Examples <examples>
 
 
 Indices and tables

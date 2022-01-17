@@ -1,8 +1,8 @@
 :orphan:
 
 .. autosummary::
-    :toctree: _autosummary
-    :template: custom-module-template.rst
-    :recursive:
+   :toctree: _autosummary
+   :template: custom-module-template.rst
+   :recursive:
 
-    pybropt
+   pybropt
