@@ -7,7 +7,7 @@ class MatingOperator:
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(MatingOperator, self).__init__()
@@ -36,26 +36,23 @@ class MatingOperator:
             Deadline time for the breeding program.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
-        **kwargs : **dict
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple of length 5: (genome, geno, pheno, bval, gmod)
+            A tuple of length 5: ``(genome, geno, pheno, bval, gmod)``
+
             Where:
-                genome : dict
-                    A dictionary of genomes for the breeding program.
-                geno : dict
-                    A dictionary of genotypes for the breeding program.
-                pheno : dict
-                    A dictionary of phenotypes for the breeding program.
-                bval : dict
-                    A dictionary of breeding values for the breeding program.
-                gmod : dict
-                    A dictionary of genomic models for the breeding program.
+
+            - ``genome`` is a ``dict`` of genomes for the breeding program.
+            - ``geno`` is a ``dict`` of genotypes for the breeding program.
+            - ``pheno`` is a ``dict`` of phenotypes for the breeding program.
+            - ``bval`` is a ``dict`` of breeding values for the breeding program.
+            - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
         raise NotImplementedError("method is abstract")
 

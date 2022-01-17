@@ -1,5 +1,5 @@
-from . import TaxaMatrix
-from . import VariantMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
 
 class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
     """Abstract class for TaxaMatrix + VariantMatrix class fusion."""
@@ -10,7 +10,7 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments used for dependency injection.
         """
         super(TaxaVariantMatrix, self).__init__(**kwargs)

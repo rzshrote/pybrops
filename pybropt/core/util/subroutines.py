@@ -1,6 +1,17 @@
 import numpy
 import math
 
+__all__ = [
+    "cond_str_lower",
+    "cond_seed_rng",
+    "srange",
+    "matrix_is_sorted",
+    "cond_len",
+    "slice_to_range",
+    "slice_to_list",
+    "human2bytes"
+]
+
 def cond_str_lower(s, cond=(lambda s: isinstance(s, str))):
     return s.lower() if cond(s) else s
 

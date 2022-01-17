@@ -1,2 +1,9 @@
+"""
+Module containing breeding program survivor selection operators.
+"""
 # order dependent import
-from .SurvivorSelectionOperator import *
+
+# abstract classes
+from . import SurvivorSelectionOperator
+
+# concrete classes

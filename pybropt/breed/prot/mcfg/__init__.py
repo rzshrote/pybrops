@@ -1,7 +1,11 @@
+"""
+Module containing mating configuration protocols.
+"""
+
 # order dependent
 
 # Utilities
 
 # classes
-from .MatingConfiguration import *
-from .WeightedRandomMatingConfiguration import *
+from . import MatingConfiguration
+from . import WeightedRandomMatingConfiguration

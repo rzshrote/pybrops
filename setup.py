@@ -1,40 +1,71 @@
 #!/usr/bin/env python3
 import pathlib
+import setuptools
 
-from setuptools import setup
-from setuptools import find_packages
+# setup.py metadata
+setup_location = "." # pathlib.Path(__file__).parents[1]
 
-HERE = pathlib.Path(__file__).parent
+# package metadata: general descriptors
+pybropt_name = "PyBrOpt"
+pybropt_version = "1.0.0"
+pybropt_author = "Robert Z. Shrote"
+pybropt_author_email = "shrotero@msu.edu"
+pybropt_description = "Python package for numerical breeding optimizations"
+with open("README.md", "r", encoding = "utf-8") as readme_file:
+    pybropt_description_long = readme_file.read()
+    pybropt_description_long_type = "text/markdown"
 
-VERSION = "0.4.0"
-PACKAGE_NAME = "PyBrOpt"
-AUTHOR = "Robert Z. Shrote"
-AUTHOR_EMAIL = "shrotero@msu.edu"
-URL = "https://github.com/oceaquaris/PyBrOpt"
+# package metadata: project URLs
+pybropt_url = "https://github.com/rzshrote/PyBrOpt"
+pybropt_project_url = {
+    "Bug Tracker": "https://github.com/rzshrote/PyBrOpt/issues",
+}
 
-LICENSE = "Apache License 2.0"
-DESCRIPTION = "Python package for numerical breeding optimizations"
-LONG_DESCRIPTION = (HERE / "README.md").read_text()
-LONG_DESCRIPTION_TYPE = "text/markdown"
+# package metadata: licensing and classifiers
+pybropt_license = "Apache License 2.0"
+pybropt_classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
 
-INSTALL_REQUIRES = [
+# package metadata: installation requirements
+pybropt_requirements_python = ">=3.6"
+pybropt_requirements_install = [
     "numpy",
     "pandas",
     "cyvcf2",
     "igraph",
+    "rpy2",
+    "h5py",
+    "deap",
+    "scipy",
+    "cvxpy",
+    "sklearn",
+    "matplotlib",
     "pytest",
     "pytest-datadir"
 ]
 
-setup(
-    name = PACKAGE_NAME,
-    description = DESCRIPTION,
-    long_description = LONG_DESCRIPTION,
-    long_description_content_type = LONG_DESCRIPTION_TYPE,
-    author = AUTHOR,
-    license = LICENSE,
-    author_email = AUTHOR_EMAIL,
-    url = URL,
-    install_requires = INSTALL_REQUIRES,
-    packages = find_packages()
+# package metadata: package locations
+pybropt_package_directory = {"" : setup_location}
+pybropt_packages = setuptools.find_packages(where = setup_location)
+
+# setup the package
+setuptools.setup(
+    name = pybropt_name,
+    version = pybropt_version,
+    author = pybropt_author,
+    author_email = pybropt_author_email,
+    description = pybropt_description,
+    long_description = pybropt_description_long,
+    long_description_content_type = pybropt_description_long_type,
+    url = pybropt_url,
+    project_urls = pybropt_project_url,
+    license = pybropt_license,
+    classifiers = pybropt_classifiers,
+    package_dir = pybropt_package_directory,
+    packages = pybropt_packages,
+    python_requires = pybropt_requirements_python,
+    install_requires = pybropt_requirements_install
 )

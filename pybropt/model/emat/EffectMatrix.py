@@ -1,4 +1,4 @@
-from pybropt.core.mat import Matrix
+from pybropt.core.mat.Matrix import Matrix
 
 class EffectMatrix(Matrix):
     """docstring for EffectMatrix."""
@@ -12,7 +12,7 @@ class EffectMatrix(Matrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """

@@ -1,20 +1,25 @@
-# order dependent imports
+"""
+Experimental module. Still under development.
+"""
+# imports are order dependent!!!
 
+# abstract classes
 # level 1 interface
-from .EffectMatrix import *
+from . import EffectMatrix
 
 # level 2 interface
-from .GenotypeEffectMatrix import *
-from .HaplotypeEffectMatrix import *
+from . import GenotypeEffectMatrix
+from . import HaplotypeEffectMatrix
 
 # level 3 interface
-from .GenotypeEffectVariantMatrix import *
-from .HaplotypeEffectVariantMatrix import *
+from . import GenotypeEffectVariantMatrix
+from . import HaplotypeEffectVariantMatrix
 
+# concrete classes
 # level 1 implementation
-from .PhasedGenotypeEffectMatrix import *
-from .PhasedHaplotypeEffectMatrix import *
+from . import PhasedGenotypeEffectMatrix
+from . import PhasedHaplotypeEffectMatrix
 
 # level 2 implementation
-from .PhasedGenotypeEffectVariantMatrix import *
-from .PhasedHaplotypeEffectVariantMatrix import *
+from . import PhasedGenotypeEffectVariantMatrix
+from . import PhasedHaplotypeEffectVariantMatrix

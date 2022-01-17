@@ -1,5 +1,12 @@
-from .OptimizationAlgorithm import *
+"""
+Module containing optimization algorithms
+"""
+# order dependent imports
 
-from .SteepestAscentSetHillClimber import *
-from .StochasticAscentSetHillClimber import *
-from .NSGA2SetGeneticAlgorithm import *
+# abstract classes
+from . import OptimizationAlgorithm
+
+# concrete classes
+from . import SteepestAscentSetHillClimber
+from . import StochasticAscentSetHillClimber
+from . import NSGA2SetGeneticAlgorithm

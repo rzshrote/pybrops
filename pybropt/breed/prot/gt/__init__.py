@@ -1,4 +1,10 @@
+"""
+Module containing genotyping protocols.
+"""
 # order dependent imports
-from .GenotypingProtocol import *
 
-from .DenseUnphasedGenotyping import *
+# abstract classes
+from . import GenotypingProtocol
+
+# concrete classes
+from . import DenseUnphasedGenotyping

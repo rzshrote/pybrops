@@ -4,13 +4,13 @@ import pytest
 from numpy.random import PCG64
 from numpy.random import Generator
 
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
 
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import HaldaneMapFunction
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
-from pybropt.breed.prot.mate import GenerationalTwoWayDHCross
+from pybropt.breed.prot.mate.GenerationalTwoWayDHCross import GenerationalTwoWayDHCross
 
 @pytest.fixture
 def egmap(shared_datadir):

@@ -3,10 +3,10 @@ import numpy
 import cyvcf2
 import h5py
 
-from . import GenotypeMatrix
-from pybropt.core.mat import DenseTaxaVariantMatrix
-from pybropt.core.mat import get_axis
-from pybropt.popgen.gmap import DenseGeneticMappableMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
+from pybropt.core.mat.util import get_axis
+from pybropt.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8
@@ -22,7 +22,7 @@ from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_file_exists
 from pybropt.core.error import check_group_in_hdf5
-from pybropt.core.util import save_dict_to_hdf5
+from pybropt.core.util.h5py import save_dict_to_hdf5
 
 class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,GenotypeMatrix):
     """docstring for DenseGenotypeMatrix."""
@@ -41,8 +41,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             ploidy of the reproductive habit. If the organism represented is an
             allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
             reproduces in a diploid manner.
-        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         """
+        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         super(DenseGenotypeMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
@@ -69,7 +69,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
+        out : DenseGenotypeMatrix
+            A shallow copy of the matrix.
         """
         # create new object
         out = self.__class__(
@@ -250,7 +251,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Taxa groups to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         out = super(DenseGenotypeMatrix, self).adjoin_taxa(
@@ -289,7 +290,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Variant haplotype reference sequence.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -323,7 +324,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -348,7 +349,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -380,7 +381,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -426,7 +427,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Variant haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -462,7 +463,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -487,7 +488,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -514,7 +515,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -547,7 +548,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -723,14 +724,16 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Returns
         -------
         out : numpy.ndarray
-            An int64 array of shape (g, p) containing allele counts across
-            all 'p' loci for each of 'g' genotype combinations.
-            Rows are as follows:
-                out[0] = count of '0' genotype across all loci
-                out[1] = count of '1' genotype across all loci
-                out[2] = count of '2' genotype across all loci
-                ...
-                out[g-1] = count of 'g-1' genotype across all loci
+            An ``int64`` array of shape ``(g,p)`` containing allele counts across
+            all ``p`` loci for each of ``g`` genotype combinations.
+
+            Where:
+
+            - ``out[0]`` is the count of ``0`` genotype across all loci
+            - ``out[1]`` is the count of ``1`` genotype across all loci
+            - ``out[2]`` is the count of ``2`` genotype across all loci
+            - ``...``
+            - ``out[g-1]`` is the count of ``g-1`` genotype across all loci
         """
         ngt = self.nphase + 1   # get number of genotype combos
         mat = self._mat         # get matrix
@@ -761,14 +764,16 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Returns
         -------
         out : numpy.ndarray
-            An float64 array of shape (g, p) containing haplotype counts across
-            all 'p' loci for all 'g' genotype combinations.
-            Rows are as follows:
-                out[0] = frequency of '0' genotype across all loci
-                out[1] = frequency of '1' genotype across all loci
-                out[2] = frequency of '2' genotype across all loci
-                ...
-                out[g-1] = frequency of 'g-1' genotype across all loci
+            An ``float64`` array of shape ``(g,p)`` containing haplotype counts
+            across all ``p`` loci for all ``g`` genotype combinations.
+
+            Where:
+
+            - ``out[0]`` is the frequency of ``0`` genotype across all loci
+            - ``out[1]`` is the frequency of ``1`` genotype across all loci
+            - ``out[2]`` is the frequency of ``2`` genotype across all loci
+            - ``...``
+            - ``out[g-1]`` is the frequency of ``g-1`` genotype across all loci
         """
         recip = 1.0 / self.ntaxa        # get reciprocal of number of taxa
         out = recip * self.gtcount()    # calculate genotype frequencies

@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmat import HaplotypeMatrix
-from pybropt.popgen.gmat import is_HaplotypeMatrix
-from pybropt.popgen.gmat import check_is_HaplotypeMatrix
-from pybropt.popgen.gmat import cond_check_is_HaplotypeMatrix
+from pybropt.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
+from pybropt.popgen.gmat.HaplotypeMatrix import is_HaplotypeMatrix
+from pybropt.popgen.gmat.HaplotypeMatrix import check_is_HaplotypeMatrix
+from pybropt.popgen.gmat.HaplotypeMatrix import cond_check_is_HaplotypeMatrix
 
 
 ################################################################################

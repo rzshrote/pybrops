@@ -1,8 +1,8 @@
-from . import PhasedTaxaVariantMatrix
-from . import DensePhasedMatrix
-from . import DenseTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
+from pybropt.core.mat.DensePhasedMatrix import DensePhasedMatrix
+from pybropt.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 
-from . import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_at_least_3d
@@ -114,7 +114,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -166,7 +166,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         ----------
         values : Matrix or numpy.ndarray
             Values to adjoin along the phase axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         out = super(DensePhasedTaxaVariantMatrix, self).adjoin_phase(
@@ -207,7 +207,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -239,7 +239,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -289,7 +289,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -347,7 +347,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             inserted.
         values : Matrix, numpy.ndarray
             Values to insert into the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -395,7 +395,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -427,7 +427,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -476,7 +476,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -510,7 +510,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -604,7 +604,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -632,7 +632,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis

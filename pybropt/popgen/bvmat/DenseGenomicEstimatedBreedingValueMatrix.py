@@ -1,4 +1,4 @@
-from . import DenseBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
 class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
@@ -11,11 +11,20 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
+            A float64 matrix of breeding values of shape (n, t).
+        location : numpy.ndarray
+            An array of breeding value locations of shape (t,).
+        scale : numpy.ndarray
+            An array of breeding value scales of shape (t,).
         taxa : numpy.ndarray
+            An array of taxa names.
         taxa_grp : numpy.ndarray
+            An array of taxa groups.
         trait : numpy.ndarray
-        **kwargs : dict
-            Additional keyword arguments.
+            An array of trait names.
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(DenseGenomicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,

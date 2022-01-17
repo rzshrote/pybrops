@@ -1,7 +1,6 @@
 import numpy
 
-from . import TwoWayDHCross
-
+from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybropt.core.error import check_is_int
 
 class FamilyGroupTwoWayDHCross(TwoWayDHCross):
@@ -31,14 +30,20 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
         pgmat : PhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are paired as follows:
-                Even indices are female.
-                Odd indices are male.
-            Example:
-                [1,5,3,8,2,7]
+
+            - Even indices are female.
+            - Odd indices are male.
+
+            Example::
+
+                sel = [1,5,3,8,2,7]
                 female = 1,3,2
                 male = 5,8,7
         ncross : numpy.ndarray
@@ -47,8 +52,8 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
             Number of doubled haploid progeny to generate per cross.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.

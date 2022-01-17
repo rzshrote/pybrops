@@ -1,2 +1,6 @@
+"""
+Module providing input/output interfaces.
+"""
+
 # order dependent imports
-from .HDF5InputOutput import *
+from . import HDF5InputOutput

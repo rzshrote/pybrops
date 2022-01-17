@@ -3,10 +3,9 @@ import pytest
 
 def generic_test_ndarray_operator(op, v, w):
     """
-    Test:
-        numpy.all(
-            op(*v) == op(*w)
-        )
+    Test::
+
+        numpy.all( op(*v) == op(*w) )
 
     Parameters
     ----------
@@ -18,10 +17,9 @@ def generic_test_ndarray_operator(op, v, w):
 
 def generic_test_ndarray_function_eq(vfn, vargs, vkwargs, wfn, wargs, wkwargs):
     """
-    Test:
-        numpy.all(
-            vfn(*vargs, **vkwargs) == wfn(*wargs, **wkwargs)
-        )
+    Test::
+
+        numpy.all( vfn(*vargs, **vkwargs) == wfn(*wargs, **wkwargs) )
 
     Parameters
     ----------

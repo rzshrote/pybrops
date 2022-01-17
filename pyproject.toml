@@ -1,0 +1,19 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "numpy",
+    "pandas",
+    "cyvcf2",
+    "igraph",
+    "rpy2",
+    "h5py",
+    "deap",
+    "scipy",
+    "cvxpy",
+    "sklearn",
+    "matplotlib",
+    "pytest",
+    "pytest-datadir"
+]
+build-backend = "setuptools.build_meta"

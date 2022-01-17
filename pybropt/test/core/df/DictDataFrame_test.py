@@ -11,10 +11,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.df import DictDataFrame
-from pybropt.core.df import is_DictDataFrame
-from pybropt.core.df import check_is_DictDataFrame
-from pybropt.core.df import cond_check_is_DictDataFrame
+from pybropt.core.df.DictDataFrame import DictDataFrame
+from pybropt.core.df.DictDataFrame import is_DictDataFrame
+from pybropt.core.df.DictDataFrame import check_is_DictDataFrame
+from pybropt.core.df.DictDataFrame import cond_check_is_DictDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################

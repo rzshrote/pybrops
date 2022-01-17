@@ -1,4 +1,4 @@
-from . import Matrix
+from pybropt.core.mat.Matrix import Matrix
 
 class PrunableMatrix(Matrix):
     """
@@ -19,7 +19,7 @@ class PrunableMatrix(Matrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -36,7 +36,7 @@ class PrunableMatrix(Matrix):
         ----------
         axis : int
             The axis along which indices are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

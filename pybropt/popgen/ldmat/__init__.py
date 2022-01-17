@@ -1,8 +1,12 @@
-# dependencies are order dependent
-from .ldmat_util import *
+"""
+Modules for linkage disequilibrium calculation.
+"""
 
-from .LDMatrix import *
-from .D_LDMatrix import *
-from .Dprime_LDMatrix import *
-from .R_LDMatrix import *
-from .Rsq_LDMatrix import *
+# dependencies are order dependent
+from . import util
+
+from . import LDMatrix
+from . import D_LDMatrix
+from . import Dprime_LDMatrix
+from . import R_LDMatrix
+from . import Rsq_LDMatrix

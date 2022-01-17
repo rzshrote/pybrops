@@ -3,10 +3,10 @@ import pytest
 
 from pybropt.test import generic_test_abstract_methods
 
-from pybropt.breed.prot.sel import SelectionProtocol
-from pybropt.breed.prot.sel import is_SelectionProtocol
-from pybropt.breed.prot.sel import check_is_SelectionProtocol
-from pybropt.breed.prot.sel import cond_check_is_SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import is_SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import check_is_SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import cond_check_is_SelectionProtocol
 
 @pytest.fixture
 def bedge():

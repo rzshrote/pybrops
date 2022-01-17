@@ -1,6 +1,6 @@
 import numpy
 
-from . import DenseCoancestryMatrix
+from pybropt.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
@@ -257,7 +257,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         ----------
         gmat : GenotypeMatrix
             Input genotype matrix from which to calculate coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         ####################################################

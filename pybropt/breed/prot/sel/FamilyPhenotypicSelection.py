@@ -1,7 +1,7 @@
 import numpy
 import types
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
@@ -35,8 +35,8 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         ndset_trans_kwargs : dict, None
         ndset_wt : float
             Weight given to the transformed non-dominated set objective function.
-            Setting to 1.0 yields a maximization problem.
-            Setting to -1.0 yields a minimization problem.
+            Setting to ``1.0`` yields a maximization problem.
+            Setting to ``-1.0`` yields a minimization problem.
         rng : numpy.Generator
         """
         super(FamilyPhenotypicSelection, self).__init__(**kwargs)
@@ -95,29 +95,30 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
         nparent : int
         ncross : int
         nprogeny : int
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
             A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get default parameters if any are None
         if nparent is None:
@@ -230,7 +231,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return an objective function for the provided datasets.
 
         Parameters
         ----------
@@ -244,6 +245,11 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Used by this function. Input breeding value matrix.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -268,7 +274,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a vectorized objective function.
+        Return a vectorized objective function for the provided datasets.
 
         Parameters
         ----------
@@ -282,6 +288,11 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Used by this function. Input breeding value matrix.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -328,26 +339,27 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing two objects (frontier, sel_config)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - frontier is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - sel_config is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
         raise NotImplementedError("feature not implemented yet")
 
@@ -362,32 +374,40 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (k,)
+            A selection indices matrix of shape ``(k,)``.
+
             Where:
-                'k' is the number of individuals to select.
+
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, use all individuals.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, use all individuals.
         mat : numpy.ndarray
-            A breeding value matrix of shape (n,t).
+            A breeding value matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of individuals.
-                't' is the number of traits.
+
+            - ``n`` is the number of individuals.
+            - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         fps : numpy.ndarray
-            A phenotypic selection matrix of shape (t,) if 'trans' is None.
+            A phenotypic selection matrix of shape ``(t,)`` if ``trans`` is
+            ``None``. Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
-            Otherwise, of shape specified by 'trans'.
+
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:
@@ -413,34 +433,42 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (j,k)
+            A selection indices matrix of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'k' is the number of individuals to select.
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, score each individual separately: (n,1)
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, score each individual separately: ``(n,1)``
         mat : numpy.ndarray
-            A breeding value matrix of shape (n,t).
+            A breeding value matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of individuals.
-                't' is the number of traits.
+
+            - ``n`` is the number of individuals.
+            - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         fps : numpy.ndarray
-            A phenotypic selection matrix of shape (j,t) if 'trans' is None.
+            A phenotypic selection matrix of shape ``(j,t)`` if ``trans`` is
+            ``None``. Otherwise, of shape specified by ``trans``.
+
             Where:
-                'j' is the number of selection configurations.
-                't' is the number of traits.
-            Otherwise, of shape specified by 'trans'.
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:

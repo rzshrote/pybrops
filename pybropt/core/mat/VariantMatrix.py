@@ -1,4 +1,4 @@
-from . import GroupableMatrix
+from pybropt.core.mat.GroupableMatrix import GroupableMatrix
 
 class VariantMatrix(GroupableMatrix):
     """
@@ -18,7 +18,7 @@ class VariantMatrix(GroupableMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -267,7 +267,7 @@ class VariantMatrix(GroupableMatrix):
             Variant haplotype labels to adjoin to the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -286,7 +286,7 @@ class VariantMatrix(GroupableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -322,7 +322,7 @@ class VariantMatrix(GroupableMatrix):
             Variant haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -341,7 +341,7 @@ class VariantMatrix(GroupableMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -362,7 +362,7 @@ class VariantMatrix(GroupableMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -396,7 +396,7 @@ class VariantMatrix(GroupableMatrix):
             Variant haplotype labels to append to the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -409,7 +409,7 @@ class VariantMatrix(GroupableMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -439,7 +439,7 @@ class VariantMatrix(GroupableMatrix):
             Variant haplotype labels to incorporate into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -455,7 +455,7 @@ class VariantMatrix(GroupableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -474,7 +474,7 @@ class VariantMatrix(GroupableMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -489,7 +489,7 @@ class VariantMatrix(GroupableMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -502,7 +502,7 @@ class VariantMatrix(GroupableMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -514,7 +514,7 @@ class VariantMatrix(GroupableMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -535,7 +535,7 @@ class VariantMatrix(GroupableMatrix):
         gmap : GeneticMap
             A genetic map from which to interopolate genetic map postions for
             loci within the VariantMatrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -553,7 +553,7 @@ class VariantMatrix(GroupableMatrix):
         gmapfn : GeneticMapFunction
             A genetic map function from which to interpolate crossover
             probabilities for loci within the VariantMatrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -567,7 +567,7 @@ class VariantMatrix(GroupableMatrix):
         ----------
         k : int, numpy.ndarray
             Number of haplotype groups to assign to each
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

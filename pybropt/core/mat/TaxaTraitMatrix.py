@@ -1,5 +1,5 @@
-from . import TaxaMatrix
-from . import TraitMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
+from pybropt.core.mat.TraitMatrix import TraitMatrix
 
 class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
     """Abstract class for TaxaMatrix + TraitMatrix fusion."""
@@ -10,7 +10,7 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments used for dependency injection.
         """
         super(TaxaTraitMatrix, self).__init__(**kwargs)

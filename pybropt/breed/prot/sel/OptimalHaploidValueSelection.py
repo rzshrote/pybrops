@@ -1,14 +1,14 @@
 import numpy
 from sklearn.cluster import KMeans
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_bool
-from pybropt.core.util import triuix
-from pybropt.core.util import triudix
+from pybropt.core.util.arrayix import triuix
+from pybropt.core.util.arrayix import triudix
 
 class OptimalHaploidValueSelection(SelectionProtocol):
     """docstring for OptimalHaploidValueSelection."""
@@ -20,19 +20,19 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         Parameters
         ----------
         nconfig : int
-            Number of cross configurations to consider
-            Example:
-                20 two-way crosses would be:
-                    nconfig = 20
-                20 three way crosses would be:
-                    nconfig = 20
+            Number of cross configurations to consider.
+
+            Examples:
+
+            - 20 two-way crosses would be: ``nconfig = 20``
+            - 20 three way crosses would be: ``nconfig = 20``
         nparent : int
             Number of parents to per configuration.
+
             Example:
-                20 two-way crosses would be:
-                    nparent = 2
-                20 three-way crosses would be:
-                    nparent = 3
+
+            - 20 two-way crosses would be: ``nparent = 2``
+            - 20 three-way crosses would be: ``nparent = 3``
         ncross : int
             Number of crosses to perform per configuration.
         nprogeny : int
@@ -41,8 +41,8 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Number of haplotype blocks to segment the genome into.
         unique_parents : bool, default = True
             Whether to allow force unique parents or not.
-            If True, all parents in the mating configuration must be unique.
-            If False, non-unique parents are allowed. In this scenario,
+            If ``True``, all parents in the mating configuration must be unique.
+            If ``False``, non-unique parents are allowed. In this scenario,
             self-fertilization is considered as a viable option.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
@@ -245,6 +245,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         out = numpy.array(list(fn(ntaxa, self.nparent)))    # generate cross map array
         return out
 
+    # FIXME: replace this function with select
     def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
         """
         Select parents individuals for breeding.
@@ -283,7 +284,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 true  | GenomicModel         | True genomic model for trait(s)
         k : int
         traitwt : numpy.ndarray
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -368,7 +369,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         nparent : int
         ncross : int
         nprogeny : int
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -480,6 +481,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
+    # FIXME: replace this function with objfn
     def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
         """
         Return a parent selection objective function.
@@ -493,28 +495,28 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
             Genomic Estimated Breeding Values (GEBV) for a population.
 
-            CGS selects the 'q' individuals with the largest GEBVs.
+            CGS selects the ``q`` individuals with the largest GEBVs.
 
             Parameters
             ----------
             sel : numpy.ndarray, None
                 A selection indices matrix of shape (k,)
                 Where:
-                    'k' is the number of individuals to select. (k/2 pairs)
+                    ``k`` is the number of individuals to select. (k/2 pairs)
                 Each index indicates which individuals to select.
                 Each index in 'sel' represents a single individual's row.
                 If 'sel' is None, use all individuals.
             mat : numpy.ndarray
                 A haplotype effect matrix of shape (t, m, n, b).
                 Where:
-                    't' is the number of traits.
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'b' is the number of haplotype blocks.
+                    ``t`` is the number of traits.
+                    ``m`` is the number of chromosome phases (2 for diploid, etc.).
+                    ``n`` is the number of individuals.
+                    ``b`` is the number of haplotype blocks.
             traitwt : numpy.ndarray, None
                 A trait objective coefficients matrix of shape (t,).
                 Where:
-                    't' is the number of trait objectives.
+                    ``t`` is the number of trait objectives.
                 These are used to weigh objectives in the weight sum method.
                 If None, do not multiply GEBVs by a weight sum vector.
 
@@ -524,8 +526,8 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 A GEBV matrix of shape (k, t) if objwt is None.
                 A GEBV matrix of shape (k,) if objwt shape is (t,)
                 Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
+                    ``k`` is the number of individuals selected.
+                    ``t`` is the number of traits.
             """
             # get female and male selections
             fsel = sel[0::2]
@@ -593,6 +595,10 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return outfn
 
+    # FIXME: add objfn_vec function
+
+    # FIXME: add pareto function
+
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
@@ -603,47 +609,56 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         Selection (OHV). Scoring for OHV is defined as the sum of maximum
         haploid breeding values obtainable from a population.
 
-        OHV selects the 'q' individuals with the largest OHVs.
+        OHV selects the ``q`` individuals with the largest OHVs.
 
         Parameters
         ----------
         sel : numpy.ndarray
-            A cross selection indices array of shape (k,)
+            A cross selection indices array of shape ``(k,)``.
+
             Where:
-                'k' is the number of crosses to select.
+
+            - ``k`` is the number of crosses to select.
         xmap : numpy.ndarray
-            A cross selection index map array of shape (s,p)
+            A cross selection index map array of shape ``(s,p)``.
+
             Where:
-                's' is the size of the sample space (number of cross
-                    combinations for 'd' parents)
-                'p' is the number of parents
+
+            - ``s`` is the size of the sample space (number of cross
+              combinations for ``d`` parents).
+            - ``p`` is the number of parents.
         mat : numpy.ndarray
-            A haplotype effect matrix of shape (t, m, n, b).
+            A haplotype effect matrix of shape ``(t,m,n,b)``.
+
             Where:
-                't' is the number of traits.
-                'm' is the number of chromosome phases (2 for diploid, etc.).
-                'n' is the number of individuals.
-                'b' is the number of haplotype blocks.
+
+            - ``t`` is the number of traits.
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``b`` is the number of haplotype blocks.
         ploidy : int
             Ploidy level of the species.
-            In many cases, this should be equal to 'm' from the 'mat' parameter.
-            In cases where data is unphased (m == 1), then this parameter should
-            be different from 'm'.
+            In many cases, this should be equal to ``m`` from the ``mat``
+            parameter. In cases where data is unphased (``m == 1``), then this
+            parameter should be different from ``m``.
         trans : function or callable
             A transformation operator to alter the output.
-            Function must adhere to the following standard:
+            Function must adhere to the following standard::
+
                 trans(numpy.ndarray, **kwargs):
                     return (scalar or numpy.ndarray)
         kwargs : dict
-            Dictionary of keyword arguments to pass to the 'trans' function.
+            Dictionary of keyword arguments to pass to the ``trans`` function.
 
         Returns
         -------
         ohv : numpy.ndarray
-            A OHV matrix of shape (t,) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # get the cross configurations
         # (s,p)[(k,),:] -> (k,p)
@@ -673,48 +688,57 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         Selection (OHV). Scoring for OHV is defined as the sum of maximum
         haploid breeding values obtainable from a population.
 
-        OHV selects the 'q' individuals with the largest OHVs.
+        OHV selects the ``q`` individuals with the largest OHVs.
 
         Parameters
         ----------
         sel : numpy.ndarray
-            A selection indices matrix of shape (j,k)
+            A selection indices matrix of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'k' is the number of individuals to select.
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals to select.
         xmap : numpy.ndarray
-            A cross selection index map array of shape (s,p)
+            A cross selection index map array of shape ``(s,p)``.
+
             Where:
-                's' is the size of the sample space (number of cross
-                    combinations for 'd' parents)
-                'p' is the number of parents
+
+            - ``s`` is the size of the sample space (number of cross
+              combinations for ``d`` parents).
+            - ``p`` is the number of parents.
         mat : numpy.ndarray
-            A haplotype effect matrix of shape (t, m, n, b).
+            A haplotype effect matrix of shape ``(t,m,n,b)``.
+
             Where:
-                't' is the number of traits.
-                'm' is the number of chromosome phases (2 for diploid, etc.).
-                'n' is the number of individuals.
-                'b' is the number of haplotype blocks.
+
+            - ``t`` is the number of traits.
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``b`` is the number of haplotype blocks.
         ploidy : int
             Ploidy level of the species.
-            In many cases, this should be equal to 'm' from the 'mat' parameter.
-            In cases where data is unphased (m == 1), then this parameter should
-            be different from 'm'.
+            In many cases, this should be equal to ``m`` from the ``mat``
+            parameter. In cases where data is unphased (``m == 1``), then this
+            parameter should be different from ``m``.
         trans : function or callable
             A transformation operator to alter the output.
-            Function must adhere to the following standard:
+            Function must adhere to the following standard::
+
                 trans(numpy.ndarray, **kwargs):
                     return (scalar or numpy.ndarray)
         kwargs : dict
-            Dictionary of keyword arguments to pass to the 'trans' function.
+            Dictionary of keyword arguments to pass to the ``trans`` function.
 
         Returns
         -------
         ohv : numpy.ndarray
-            A OHV matrix of shape (t,) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # get the cross configurations
         # (s,p)[(j,k),:] -> (j,k,p)

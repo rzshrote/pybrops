@@ -1,12 +1,12 @@
 import numpy
 import pybropt.core.random
-from . import mat_mate
-from . import mat_dh
-from . import MatingProtocol
+from pybropt.breed.prot.mate.util import mat_mate
+from pybropt.breed.prot.mate.util import mat_dh
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_ndarray_len_is_multiple_of_2
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybropt.core.error import check_is_int
 
 class TwoWayDHCross(MatingProtocol):
@@ -23,7 +23,7 @@ class TwoWayDHCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(TwoWayDHCross, self).__init__(**kwargs)
@@ -45,20 +45,21 @@ class TwoWayDHCross(MatingProtocol):
     def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme, then create
-        doubled haploid progenies.
+        doubled haploid (DH) progenies.
 
-        Example crossing diagram:
-                             pgmat
-                               │                        sel = [A,B,...]
-                              A×B
-                   ┌───────────┴───────────┐            ncross = 2
-                  A×B                     A×B           duplicate cross 2 times
-                   │                       │            s = 2
-                S0(A×B)                 S0(A×B)         first self
-                   │                       │
-                S1(A×B)                 S1(A×B)         second self
-             ┌─────┴─────┐           ┌─────┴─────┐      double haploid, nprogeny = 2
-        DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) final result
+        Example crossing diagram::
+
+                                 pgmat
+                                   │                        sel = [A,B,...]
+                                  A×B
+                       ┌───────────┴───────────┐            ncross = 2
+                      A×B                     A×B           duplicate cross 2x
+                       │                       │            s = 2
+                    S0(A×B)                 S0(A×B)         first self
+                       │                       │
+                    S1(A×B)                 S1(A×B)         second self
+                 ┌─────┴─────┐           ┌─────┴─────┐      DH, nprogeny = 2
+            DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) final result
 
         Parameters
         ----------
@@ -66,14 +67,20 @@ class TwoWayDHCross(MatingProtocol):
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are paired as follows:
-                Even indices are female.
-                Odd indices are male.
-            Example:
-                [1,5,3,8,2,7]
+
+            - Even indices are female.
+            - Odd indices are male.
+
+            Example::
+
+                sel = [1,5,3,8,2,7]
                 female = 1,3,2
                 male = 5,8,7
         ncross : numpy.ndarray
@@ -82,12 +89,12 @@ class TwoWayDHCross(MatingProtocol):
             Number of doubled haploid progeny to generate per cross.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross pattern before 'nprogeny'
             double haploids are generated.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

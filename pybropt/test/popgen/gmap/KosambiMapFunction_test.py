@@ -1,11 +1,11 @@
 import inspect
 import pytest
 
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import KosambiMapFunction
-from pybropt.popgen.gmap import is_KosambiMapFunction
-from pybropt.popgen.gmap import check_is_KosambiMapFunction
-from pybropt.popgen.gmap import cond_check_is_KosambiMapFunction
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.KosambiMapFunction import KosambiMapFunction
+from pybropt.popgen.gmap.KosambiMapFunction import is_KosambiMapFunction
+from pybropt.popgen.gmap.KosambiMapFunction import check_is_KosambiMapFunction
+from pybropt.popgen.gmap.KosambiMapFunction import cond_check_is_KosambiMapFunction
 
 @pytest.fixture
 def gmap(shared_datadir):

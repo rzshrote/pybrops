@@ -1,5 +1,7 @@
 import numpy
 
+__all__ = ["sqarrayix", "triuix", "triuix"]
+
 def sqarrayix(n,k):
     """
     Generate lists containing indices for indexing square arrays.

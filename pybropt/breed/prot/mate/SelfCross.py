@@ -1,11 +1,11 @@
 import numpy
 import pybropt.core.random
-from . import mat_mate
-from . import mat_dh
-from . import MatingProtocol
+from pybropt.breed.prot.mate.util import mat_mate
+from pybropt.breed.prot.mate.util import mat_dh
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class SelfCross(MatingProtocol):
     """docstring for SelfCross."""
@@ -21,7 +21,7 @@ class SelfCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(SelfCross, self).__init__(**kwargs)
@@ -39,18 +39,19 @@ class SelfCross(MatingProtocol):
         """
         Self-fertilize individuals.
 
-        Example crossing diagram:
-                 pgmat
-                   │                sel = [A,...]
-                   A
-             ┌─────┴─────┐          ncross = 2
-             A           A
-          ┌──┴──┐     ┌──┴──┐       initial self, nprogeny = 2
-        S0(A) S0(A) S0(A) S0(A)     cross pattern finished.
-          │     │     │     │       s = 2
-        S1(A) S1(A) S1(A) S1(A)     first self
-          │     │     │     │
-        S2(A) S2(A) S2(A) S2(A)     second self, final result
+        Example crossing diagram::
+
+                     pgmat
+                       │                sel = [A,...]
+                       A
+                 ┌─────┴─────┐          ncross = 2
+                 A           A
+              ┌──┴──┐     ┌──┴──┐       initial self, nprogeny = 2
+            S0(A) S0(A) S0(A) S0(A)     cross pattern finished.
+              │     │     │     │       s = 2
+            S1(A) S1(A) S1(A) S1(A)     first self
+              │     │     │     │
+            S2(A) S2(A) S2(A) S2(A)     second self, final result
 
         Parameters
         ----------
@@ -58,12 +59,18 @@ class SelfCross(MatingProtocol):
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are as follows:
-                All indices are female.
-            Example:
+
+            - All indices are female.
+
+            Example::
+
                 [1,5,3,8,2,7]
                 female = 1,5,3,8,2,7
         ncross : numpy.ndarray
@@ -72,11 +79,11 @@ class SelfCross(MatingProtocol):
             Number of progeny to generate per cross.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         s : int, default = 0
             Number of generations of single seed descent post-cross pattern.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

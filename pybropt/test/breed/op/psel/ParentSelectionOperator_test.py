@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.psel import ParentSelectionOperator
-from pybropt.breed.op.psel import is_ParentSelectionOperator
-from pybropt.breed.op.psel import check_is_ParentSelectionOperator
-from pybropt.breed.op.psel import cond_check_is_ParentSelectionOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import is_ParentSelectionOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import cond_check_is_ParentSelectionOperator
 
 ################################################################################
 ################################ Test fixtures #################################

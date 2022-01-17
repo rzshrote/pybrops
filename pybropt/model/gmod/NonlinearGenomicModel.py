@@ -1,4 +1,4 @@
-from . import GenomicModel
+from pybropt.model.gmod.GenomicModel import GenomicModel
 
 class NonlinearGenomicModel(GenomicModel):
     """docstring for NonlinearGenomicModel."""
@@ -12,7 +12,7 @@ class NonlinearGenomicModel(GenomicModel):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """

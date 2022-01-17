@@ -1,16 +1,16 @@
 import copy
 import numpy
 
-from . import BreedingProgram
+from pybropt.breed.arch.BreedingProgram import BreedingProgram
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_dict
 from pybropt.core.error import check_keys_in_dict
-from pybropt.breed.op.init import check_is_InitializationOperator
-from pybropt.breed.op.psel import check_is_ParentSelectionOperator
-from pybropt.breed.op.mate import check_is_MatingOperator
-from pybropt.breed.op.eval import check_is_EvaluationOperator
-from pybropt.breed.op.ssel import check_is_SurvivorSelectionOperator
+from pybropt.breed.op.init.InitializationOperator import check_is_InitializationOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
+from pybropt.breed.op.mate.MatingOperator import check_is_MatingOperator
+from pybropt.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """docstring for RecurrentSelectionBreedingProgram."""
@@ -335,7 +335,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -359,7 +359,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         self.genome = copy.deepcopy(self.start_genome)  # reset genomes container
@@ -379,7 +379,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             Number of generations to advance the BreedingProgram.
         lbook : Logbook
             Logbook into which to write statistics.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # iterate through main breeding loop for ngen generations

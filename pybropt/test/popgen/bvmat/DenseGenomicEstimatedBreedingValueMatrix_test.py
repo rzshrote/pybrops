@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.bvmat import DenseGenomicEstimatedBreedingValueMatrix
-from pybropt.popgen.bvmat import is_DenseGenomicEstimatedBreedingValueMatrix
-from pybropt.popgen.bvmat import check_is_DenseGenomicEstimatedBreedingValueMatrix
-from pybropt.popgen.bvmat import cond_check_is_DenseGenomicEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import is_DenseGenomicEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import check_is_DenseGenomicEstimatedBreedingValueMatrix
+from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import cond_check_is_DenseGenomicEstimatedBreedingValueMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

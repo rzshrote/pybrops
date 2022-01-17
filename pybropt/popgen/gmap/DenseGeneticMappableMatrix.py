@@ -1,8 +1,8 @@
-from pybropt.core.mat import DenseVariantMatrix
-from . import GeneticMappableMatrix
+from pybropt.core.mat.DenseVariantMatrix import DenseVariantMatrix
+from pybropt.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 
-from pybropt.popgen.gmap import check_is_GeneticMap
-from pybropt.popgen.gmap import check_is_GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybropt.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     """docstring for DenseGeneticMappableMatrix."""

@@ -1,8 +1,8 @@
 import copy
 import numpy
 
-from . import DenseMutableMatrix
-from . import PhasedMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybropt.core.mat.PhasedMatrix import PhasedMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8
@@ -26,7 +26,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         mat : numpy.ndarray
             Matrix used to construct the object.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DensePhasedMatrix, self).__init__(
@@ -117,7 +117,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -148,7 +148,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         values : Matrix or numpy.ndarray
             Values to adjoin along the phase axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -184,7 +184,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -212,7 +212,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -247,7 +247,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -282,7 +282,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             inserted.
         values : Matrix, numpy.ndarray
             Values to insert into the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -325,7 +325,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -353,7 +353,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -387,7 +387,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -417,7 +417,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -496,7 +496,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         values : Matrix, numpy.ndarray
             Values are appended to append to the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # if given a DensePhasedGenotypeMatrix extract *.mat values
@@ -525,7 +525,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -544,7 +544,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete values
@@ -563,7 +563,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -589,7 +589,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             incorporated.
         values : Matrix, numpy.ndarray
             Values to incorporate into the matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # if given a DensePhasedGenotypeMatrix extract *.mat values

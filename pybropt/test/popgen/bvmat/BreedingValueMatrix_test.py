@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.bvmat import BreedingValueMatrix
-from pybropt.popgen.bvmat import is_BreedingValueMatrix
-from pybropt.popgen.bvmat import check_is_BreedingValueMatrix
-from pybropt.popgen.bvmat import cond_check_is_BreedingValueMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import check_is_BreedingValueMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import cond_check_is_BreedingValueMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

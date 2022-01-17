@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.log import Logbook
-from pybropt.breed.op.log import is_Logbook
-from pybropt.breed.op.log import check_is_Logbook
-from pybropt.breed.op.log import cond_check_is_Logbook
+from pybropt.breed.op.log.Logbook import Logbook
+from pybropt.breed.op.log.Logbook import is_Logbook
+from pybropt.breed.op.log.Logbook import check_is_Logbook
+from pybropt.breed.op.log.Logbook import cond_check_is_Logbook
 
 ################################################################################
 ################################ Test fixtures #################################

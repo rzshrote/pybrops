@@ -1,6 +1,6 @@
 import numpy
 
-from . import GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class HaldaneMapFunction(GeneticMapFunction):
     """docstring for HaldaneMapFunction."""
@@ -14,7 +14,7 @@ class HaldaneMapFunction(GeneticMapFunction):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(HaldaneMapFunction, self).__init__(**kwargs)

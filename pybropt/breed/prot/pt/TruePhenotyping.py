@@ -1,10 +1,10 @@
 import numpy
 
-from . import PhenotypingProtocol
-from pybropt.popgen.ptdf import DictPhenotypeDataFrame
-from pybropt.model.gmod import check_is_GenomicModel
+from pybropt.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
+from pybropt.model.gmod.GenomicModel import check_is_GenomicModel
 from pybropt.core.error import error_readonly
-from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
+from pybropt.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class TruePhenotyping(PhenotypingProtocol):
     """docstring for TruePhenotyping."""
@@ -20,7 +20,7 @@ class TruePhenotyping(PhenotypingProtocol):
         ----------
         gpmod : GenomicModel
             Genomic prediction model to use to determine phenotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments
         """
         super(TruePhenotyping, self).__init__(**kwargs)
@@ -74,12 +74,12 @@ class TruePhenotyping(PhenotypingProtocol):
             Genomes of the individuals to phenotype.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
             If None, use default genomic prediction model.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -178,7 +178,7 @@ class TruePhenotyping(PhenotypingProtocol):
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise AttributeError("unsupported operation: heritability always set at 1.0")
@@ -193,7 +193,7 @@ class TruePhenotyping(PhenotypingProtocol):
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise AttributeError("unsupported operation: heritability always set at 1.0")

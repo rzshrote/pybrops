@@ -1,8 +1,8 @@
 import copy
 import numpy
 
-from . import DenseMutableMatrix
-from . import VariantMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybropt.core.mat.VariantMatrix import VariantMatrix
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_ndarray
@@ -17,7 +17,7 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import check_is_iterable
 
 class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
@@ -431,7 +431,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Variant mask to adjoin to the Matrix.
             If values is a DenseVariantMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -489,7 +489,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Variant haplotype reference sequence.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -594,7 +594,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -625,7 +625,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -724,7 +724,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Variant mask to insert into the Matrix.
             If values is a DenseVariantMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -784,7 +784,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         vrnt_hapref : numpy.ndarray
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -886,7 +886,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -914,7 +914,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -984,7 +984,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -1014,7 +1014,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -1203,7 +1203,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Variant haplotype labels to append to the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # if given a DensePhasedGenotypeMatrix extract *.mat values
@@ -1294,7 +1294,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -1313,7 +1313,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete values
@@ -1357,7 +1357,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -1406,7 +1406,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             Variant haplotype labels to incorporate into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # if given a DenseVariantMatrix extract *.mat values
@@ -1525,7 +1525,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -1587,7 +1587,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # build a tuple to slice the matrix
@@ -1648,7 +1648,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # reset variant group metadata
@@ -1685,7 +1685,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # sort variants using default keys
@@ -1726,7 +1726,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

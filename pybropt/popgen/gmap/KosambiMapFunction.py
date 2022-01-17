@@ -1,4 +1,4 @@
-from . import GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class KosambiMapFunction(GeneticMapFunction):
     """docstring for KosambiMapFunction."""

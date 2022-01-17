@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.model.gmod import GenomicModel
-from pybropt.model.gmod import is_GenomicModel
-from pybropt.model.gmod import check_is_GenomicModel
-from pybropt.model.gmod import cond_check_is_GenomicModel
+from pybropt.model.gmod.GenomicModel import GenomicModel
+from pybropt.model.gmod.GenomicModel import is_GenomicModel
+from pybropt.model.gmod.GenomicModel import check_is_GenomicModel
+from pybropt.model.gmod.GenomicModel import cond_check_is_GenomicModel
 
 ################################################################################
 ################################ Test fixtures #################################

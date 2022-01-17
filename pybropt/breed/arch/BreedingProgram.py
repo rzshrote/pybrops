@@ -1,4 +1,4 @@
-from . import BreedingNode
+from pybropt.breed.arch.BreedingNode import BreedingNode
 
 class BreedingProgram(BreedingNode):
     """docstring for BreedingProgram."""
@@ -12,7 +12,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(BreedingProgram, self).__init__(**kwargs)
@@ -182,7 +182,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -200,7 +200,7 @@ class BreedingProgram(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -215,7 +215,7 @@ class BreedingProgram(BreedingNode):
             Number of generations to advance the BreedingProgram.
         lbook : Logbook
             Logbook into which to write statistics.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

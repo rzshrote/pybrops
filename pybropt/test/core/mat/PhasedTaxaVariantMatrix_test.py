@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import PhasedTaxaVariantMatrix
-from pybropt.core.mat import is_PhasedTaxaVariantMatrix
-from pybropt.core.mat import check_is_PhasedTaxaVariantMatrix
-from pybropt.core.mat import cond_check_is_PhasedTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import is_PhasedTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import check_is_PhasedTaxaVariantMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import cond_check_is_PhasedTaxaVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

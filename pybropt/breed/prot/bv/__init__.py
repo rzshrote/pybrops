@@ -1,5 +1,12 @@
+"""
+Module containing breeding value calculation protocols.
+"""
 # order depend imports
-from .BreedingValueProtocol import *
-from .TrueBreedingValue import *
-from .MeanPhenotypicBreedingValue import *
-# from .G_E_RnE_EstimatedBreedingValue import *
+
+# abstract classes
+from . import BreedingValueProtocol
+
+# concrete classes
+from . import TrueBreedingValue
+from . import MeanPhenotypicBreedingValue
+# from . import G_E_RnE_EstimatedBreedingValue

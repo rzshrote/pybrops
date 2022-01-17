@@ -10,7 +10,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(GeneticMap, self).__init__()
@@ -181,7 +181,7 @@ class GeneticMap:
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -200,7 +200,7 @@ class GeneticMap:
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -215,7 +215,7 @@ class GeneticMap:
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -227,7 +227,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -238,7 +238,7 @@ class GeneticMap:
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -257,10 +257,12 @@ class GeneticMap:
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
-        **kwargs : dict
+
+            - ``a`` is the number of indices to remove.
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -273,10 +275,12 @@ class GeneticMap:
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
-        **kwargs : dict
+
+            - ``a`` is the number of indices to remove.
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -293,9 +297,9 @@ class GeneticMap:
             Target distance between each selected marker in Morgans.
             If this option is specified, selection based on Morgans takes first
             priority. If the physical distance between two markers selected
-            based on their genetic distance exceeds 'nt' (if provided), the
+            based on their genetic distance exceeds ``nt`` (if provided), the
             additional markers are sought between those regions.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -353,7 +357,7 @@ class GeneticMap:
             Specifies the kind of interpolation as a string.
         fill_value : obj
             Fill value for points extrapolated outside the spline.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -509,7 +513,7 @@ class GeneticMap:
         sep : str
         header : bool
         index : bool, int
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments
         """
         raise NotImplementedError("method is abstract")

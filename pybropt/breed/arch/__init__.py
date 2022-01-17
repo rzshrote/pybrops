@@ -1,17 +1,20 @@
+"""
+Modules specifying breeding program high-level architecture.
+"""
 # order dependent import libraries
 
 # graph nodes
-from .BreedingNode import *
-from .BreedingProgram import *
-from .GermplasmBank import *
+from . import BreedingNode
+from . import BreedingProgram
+from . import GermplasmBank
 
 # graph edges
-from .BreedingEdge import *
-from .ImmigrationOperator import *
-from .EmigrationOperator import *
+from . import BreedingEdge
+from . import ImmigrationOperator
+from . import EmigrationOperator
 
 # full graph
-from .BreedingGraph import *
+from . import BreedingGraph
 
 # objects
-from .RecurrentSelectionBreedingProgram import *
+from . import RecurrentSelectionBreedingProgram

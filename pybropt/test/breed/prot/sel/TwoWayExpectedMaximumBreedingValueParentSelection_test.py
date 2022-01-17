@@ -4,10 +4,10 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 
-from pybropt.breed.prot.sel import TwoWayExpectedMaximumBreedingValueParentSelection
-from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.popgen.bvmat import DenseEstimatedBreedingValueMatrix
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
+from pybropt.breed.prot.sel.TwoWayExpectedMaximumBreedingValueParentSelection import TwoWayExpectedMaximumBreedingValueParentSelection
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################
 ################################## Genotypes ###################################
@@ -127,7 +127,7 @@ def params():
 
 @pytest.fixture
 def glgmod(mu, beta, trait, model_name, params):
-    yield GenericLinearGenomicModel(
+    yield AdditiveLinearGenomicModel(
         mu = mu,
         beta = beta,
         trait = trait,

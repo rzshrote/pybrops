@@ -1,7 +1,7 @@
 import numpy
 import types
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
@@ -24,6 +24,9 @@ class WeightedGenomicSelection(SelectionProtocol):
 
         Parameters
         ----------
+        nparent : int
+        ncross : int
+        nprogeny : int
         """
         super(WeightedGenomicSelection, self).__init__(**kwargs)
 
@@ -90,22 +93,23 @@ class WeightedGenomicSelection(SelectionProtocol):
             Number of crosses per configuration. If None, use default.
         nprogeny : int
             Number of progeny per cross. If None, use default.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgvmat, sel, ncross, nprogeny)
-            pgvmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgvmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get default parameters if any are None
         if nparent is None:
@@ -206,6 +210,24 @@ class WeightedGenomicSelection(SelectionProtocol):
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return an objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Used by this function. Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -242,6 +264,24 @@ class WeightedGenomicSelection(SelectionProtocol):
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a vectorized objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Used by this function. Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -297,28 +337,29 @@ class WeightedGenomicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
-        **kwargs
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing two objects (frontier, sel_config)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - frontier is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - sel_config is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
         if nparent is None:
             nparent = self.nparent
@@ -375,51 +416,70 @@ class WeightedGenomicSelection(SelectionProtocol):
         (WGS). Scoring for WGS is defined as the sum of weighted Genomic
         Estimated Breeding Values (wGEBV) for a population.
 
-        WGS selects the 'q' individuals with the largest GEBVs.
+        WGS selects the ``q`` individuals with the largest GEBVs.
 
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (k,)
+            A selection indices matrix of shape ``(k,)``
+
             Where:
-                'k' is the number of individuals to select.
+
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, use all individuals.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, use all individuals.
         mat : numpy.ndarray
-            A int8 binary genotype matrix of shape (n, p).
+            A int8 binary genotype matrix of shape ``(n,p)``.
+
             Where:
-                'n' is the number of individuals.
-                'p' is the number of markers.
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
         u : numpy.ndarray
-            A trait prediction coefficients matrix of shape (p, t).
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
         uwt : numpy.ndarray
             Multiplicative marker weights matrix to apply to the trait
-            prediction coefficients provided of shape (p, t).
+            prediction coefficients provided of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
-            Trait prediction coefficients (u) are transformed as follows:
-                u_new = u ⊙ uwt (Hadamard product)
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+
+            .. math::
+                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+
+            Where:
+
+            - :math:`\\bigdot` is the Hadamard product
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         wgs : numpy.ndarray
-            A GEBV matrix of shape (k, t) if objwt is None.
-            A GEBV matrix of shape (k,) if objwt shape is (t,)
+            A GEBV matrix of shape ``(k,t)`` if ``objwt`` is ``None``.
+            A GEBV matrix of shape ``(k,)`` if ``objwt`` shape is ``(t,)``
+
             Where:
-                'k' is the number of individuals selected.
-                't' is the number of traits.
+
+            - ``k`` is the number of individuals selected.
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:
@@ -448,47 +508,66 @@ class WeightedGenomicSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (j,k)
+            A selection indices matrix of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'k' is the number of individuals to select.
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, score each individual separately: (n,1)
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, score each individual separately: ``(n,1)``
         mat : numpy.ndarray
-            A genotype matrix of shape (n, p).
+            A genotype matrix of shape ``(n,p)``.
+
             Where:
-                'n' is the number of individuals.
-                'p' is the number of markers.
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
         u : numpy.ndarray
-            A trait prediction coefficients matrix of shape (p, t).
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
         uwt : numpy.ndarray
             Multiplicative marker weights matrix to apply to the trait
-            prediction coefficients provided of shape (p, t).
+            prediction coefficients provided of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
-            Trait prediction coefficients (u) are transformed as follows:
-                u_new = u ⊙ uwt (Hadamard product)
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+
+            .. math::
+                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+
+            Where:
+
+            - :math:`\\bigdot` is the Hadamard product
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A GEBV matrix of shape (j,t) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A GEBV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                'j' is the number of selection configurations.
-                't' is the number of traits.
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:

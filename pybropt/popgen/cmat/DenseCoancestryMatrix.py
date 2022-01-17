@@ -1,9 +1,9 @@
-from . import CoancestryMatrix
+from pybropt.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_is_2d
 from pybropt.core.error import check_ndarray_is_square
-from pybropt.core.mat import DenseTaxaMatrix
+from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 
 class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
     """docstring for DenseCoancestryMatrix."""
@@ -18,9 +18,11 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Coancestry matrix of shape (n,n)
+            Coancestry matrix of shape ``(n,n)``.
+
             Where:
-                n is the number of taxa.
+
+            - ``n`` is the number of taxa.
         """
         # call constructor for DenseTaxaMatrix
         super(DenseCoancestryMatrix, self).__init__(
@@ -60,9 +62,9 @@ class DenseCoancestryMatrix(DenseTaxaMatrix,CoancestryMatrix):
 
         Parameters
         ----------
-        *args : *tuple
+        args : tuple
             A tuple of matrix indices to access the coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # index via numpy and return.

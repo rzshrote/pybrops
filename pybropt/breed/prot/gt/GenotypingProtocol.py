@@ -1,3 +1,7 @@
+"""
+Module containing the abstract class GenotypingProtocol and its service functions.
+"""
+
 class GenotypingProtocol:
     """docstring for GenotypingProtocol."""
 
@@ -10,7 +14,7 @@ class GenotypingProtocol:
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(GenotypingProtocol, self).__init__()
@@ -30,7 +34,7 @@ class GenotypingProtocol:
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

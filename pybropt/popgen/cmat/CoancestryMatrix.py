@@ -1,4 +1,4 @@
-from pybropt.core.mat import TaxaMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
 
 class CoancestryMatrix(TaxaMatrix):
     """docstring for CoancestryMatrix."""
@@ -12,7 +12,7 @@ class CoancestryMatrix(TaxaMatrix):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments for dependency injection.
         """
         super(CoancestryMatrix, self).__init__(**kwargs)
@@ -38,9 +38,9 @@ class CoancestryMatrix(TaxaMatrix):
 
         Parameters
         ----------
-        *args : *tuple
+        args : tuple
             A tuple of matrix indices to access the coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -57,7 +57,7 @@ class CoancestryMatrix(TaxaMatrix):
         ----------
         gmat : GenotypeMatrix
             Input genotype matrix from which to calculate coancestry.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("class method is abstract")

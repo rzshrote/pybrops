@@ -10,10 +10,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.df import DataFrame
-from pybropt.core.df import is_DataFrame
-from pybropt.core.df import check_is_DataFrame
-from pybropt.core.df import cond_check_is_DataFrame
+from pybropt.core.df.DataFrame import DataFrame
+from pybropt.core.df.DataFrame import is_DataFrame
+from pybropt.core.df.DataFrame import check_is_DataFrame
+from pybropt.core.df.DataFrame import cond_check_is_DataFrame
 
 
 ################################################################################

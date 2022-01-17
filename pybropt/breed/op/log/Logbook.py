@@ -10,7 +10,7 @@ class Logbook:
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(Logbook, self).__init__()
@@ -70,7 +70,7 @@ class Logbook:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -98,7 +98,7 @@ class Logbook:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -123,7 +123,7 @@ class Logbook:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -149,7 +149,7 @@ class Logbook:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -175,7 +175,7 @@ class Logbook:
             Current time in the breeding program.
         t_max : int
             Deadline time for the breeding program.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

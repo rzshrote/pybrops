@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.prot.bv import BreedingValueProtocol
-from pybropt.breed.prot.bv import is_BreedingValueProtocol
-from pybropt.breed.prot.bv import check_is_BreedingValueProtocol
-from pybropt.breed.prot.bv import cond_check_is_BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import is_BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import check_is_BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import cond_check_is_BreedingValueProtocol
 
 
 ################################################################################

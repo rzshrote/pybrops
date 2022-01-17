@@ -1,12 +1,12 @@
 import numpy
 import pybropt.core.random
-from . import mat_mate
-from . import mat_dh
-from . import MatingProtocol
+from pybropt.breed.prot.mate.util import mat_mate
+from pybropt.breed.prot.mate.util import mat_dh
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_ndarray_len_is_multiple_of_3
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class ThreeWayDHCross(MatingProtocol):
     """docstring for ThreeWayDHCross."""
@@ -22,7 +22,7 @@ class ThreeWayDHCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(ThreeWayDHCross, self).__init__(**kwargs)
@@ -45,15 +45,21 @@ class ThreeWayDHCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are paired as follows:
-                First index is the recurrent parent.
-                Second index is the female parent.
-                Third index is the male parent.
-            Example:
-                [1,5,3,8,2,7]
+
+            - First index is the recurrent parent.
+            - Second index is the female parent.
+            - Third index is the male parent.
+
+            Example::
+
+                sel = [1,5,3,8,2,7]
                 recurrent = 1,8
                 female = 5,2
                 male = 3,7
@@ -68,7 +74,7 @@ class ThreeWayDHCross(MatingProtocol):
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

@@ -12,9 +12,9 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.prot.sel import WeightedGenomicSelection
-from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicSelection
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 
 ################################################################################
@@ -116,7 +116,7 @@ def params():
 
 @pytest.fixture
 def glgmod(beta, u, trait, model_name, params):
-    yield GenericLinearGenomicModel(
+    yield AdditiveLinearGenomicModel(
         beta = beta,
         u = u,
         trait = trait,

@@ -1,11 +1,11 @@
 import numpy
 import pybropt.core.random
-from . import mat_mate
-from . import mat_dh
-from . import MatingProtocol
+from pybropt.breed.prot.mate.util import mat_mate
+from pybropt.breed.prot.mate.util import mat_dh
+from pybropt.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_ndarray_len_is_multiple_of_4
-from pybropt.popgen.gmat import check_is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class FourWayDHCross(MatingProtocol):
     """docstring for FourWayDHCross."""
@@ -21,7 +21,7 @@ class FourWayDHCross(MatingProtocol):
         ----------
         rng : numpy.Generator
             Random number source.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(FourWayDHCross, self).__init__(**kwargs)
@@ -44,16 +44,22 @@ class FourWayDHCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are paired as follows:
-                First index is the female parent 2.
-                Second index is the male parent 2.
-                Third index is the female parent 1.
-                Fourth index is the male parent 1.
-            Example:
-                [1,5,3,8]
+
+            - First index is the female parent 2.
+            - Second index is the male parent 2.
+            - Third index is the female parent 1.
+            - Fourth index is the male parent 1.
+
+            Example::
+
+                sel = [1,5,3,8]
                 female2 = 1
                 male2 = 5
                 female1 = 3
@@ -64,12 +70,12 @@ class FourWayDHCross(MatingProtocol):
             Number of doubled haploid progeny to generate per cross.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         s : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments to be passed to constructor for the
             output DensePhasedGenotypeMatrix.
 

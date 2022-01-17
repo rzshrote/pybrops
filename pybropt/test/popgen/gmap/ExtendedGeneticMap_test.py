@@ -2,10 +2,10 @@ import inspect
 import pytest
 import numpy
 
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import is_ExtendedGeneticMap
-from pybropt.popgen.gmap import check_is_ExtendedGeneticMap
-from pybropt.popgen.gmap import cond_check_is_ExtendedGeneticMap
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.ExtendedGeneticMap import is_ExtendedGeneticMap
+from pybropt.popgen.gmap.ExtendedGeneticMap import check_is_ExtendedGeneticMap
+from pybropt.popgen.gmap.ExtendedGeneticMap import cond_check_is_ExtendedGeneticMap
 
 ################################################################################
 ################################### Fixtures ###################################

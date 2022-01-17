@@ -11,10 +11,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.ptdf import DictPhenotypeDataFrame
-from pybropt.popgen.ptdf import is_DictPhenotypeDataFrame
-from pybropt.popgen.ptdf import check_is_DictPhenotypeDataFrame
-from pybropt.popgen.ptdf import cond_check_is_DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import is_DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import check_is_DictPhenotypeDataFrame
+from pybropt.popgen.ptdf.DictPhenotypeDataFrame import cond_check_is_DictPhenotypeDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################

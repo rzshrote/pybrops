@@ -1,23 +1,30 @@
-from pybropt.core.mat import TaxaTraitMatrix
-from pybropt.core.io import HDF5InputOutput
+from pybropt.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
+from pybropt.core.io.HDF5InputOutput import HDF5InputOutput
 
 class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     """
     The BreedingValueMatrix class represents a Multivariate Breeding Value.
 
+    Notes
+    -----
     All elements within a BreedingValueMatrix are mean-centered and scaled to
     unit variance for each trait.
-                                     X - μ
-                                BV = ─────
-                                       σ
-        Where:
-            BV is the breeding value.
-            X is the phenotype value.
-            μ is the mean (location) for X.
-            σ is the standard deviation (scale) for X.
+
+    .. math::
+        BV = \\frac{X - \\mu}{\\sigma}
+
+    Where:
+
+    - :math:`BV` is the breeding value.
+    - :math:`X` is the phenotype value.
+    - :math:`\\mu` is the mean (location) for :math:`X`.
+    - :math:`\\sigma` is the standard deviation (scale) for :math:`X`.
 
     Phenotype values can be reconstituted using:
-        X = σBV + μ
+
+    .. math::
+        X = \\sigma BV + \\mu
+
     """
 
     ############################################################################
@@ -29,7 +36,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -78,10 +85,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing indices of maximum values
-            along the trait axis.
+            An index array of shape ``(t,)`` containing indices of maximum
+            values along the trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -92,10 +101,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing indices of minimum values
-            along the trait axis.
+            An index array of shape ``(t,)`` containing indices of minimum
+            values along the trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -111,10 +122,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the trait
+            An array of shape ``(t,)`` containing maximum values along the trait
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -130,10 +143,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the trait
+            An array of shape ``(t,)`` containing maximum values along the trait
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -149,10 +164,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing minimum values along the
+            An index array of shape ``(t,)`` containing minimum values along the
             trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -168,10 +185,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing variance values along the trait
-            axis.
+            An array of shape ``(t,)`` containing variance values along the
+            trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -187,10 +206,12 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing standard deviation values along
-            the trait axis.
+            An array of shape ``(t,)`` containing standard deviation values
+            along the trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -206,10 +227,30 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing variance values along the trait
-            axis.
+            An array of shape ``(t,)`` containing variance values along the
+            trait axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def descale(self):
+        """
+        Transform values within the BreedingValueMatrix back to their de-scaled
+        and de-centered values.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(n,t)`` containing de-scaled and de-centered
+            values.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 

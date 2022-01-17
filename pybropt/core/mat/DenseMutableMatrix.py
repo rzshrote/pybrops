@@ -1,6 +1,6 @@
-from . import DenseMatrix
-from . import is_DenseMatrix
-from . import MutableMatrix
+from pybropt.core.mat.DenseMatrix import DenseMatrix
+from pybropt.core.mat.DenseMatrix import is_DenseMatrix
+from pybropt.core.mat.MutableMatrix import MutableMatrix
 
 class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     """docstring for DenseMutableMatrix."""
@@ -13,7 +13,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         ----------
         mat : numpy.ndarray
             Dense matrix to use to create object.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseMutableMatrix, self).__init__(
@@ -59,7 +59,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -81,7 +81,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis

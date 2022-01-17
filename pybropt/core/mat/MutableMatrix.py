@@ -1,4 +1,4 @@
-from . import Matrix
+from pybropt.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):
     """
@@ -19,7 +19,7 @@ class MutableMatrix(Matrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -40,7 +40,7 @@ class MutableMatrix(Matrix):
             Values are appended to append to the matrix.
         axis : int
             The axis along which values are appended.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -55,7 +55,7 @@ class MutableMatrix(Matrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -73,7 +73,7 @@ class MutableMatrix(Matrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")

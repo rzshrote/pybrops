@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import PhasedMatrix
-from pybropt.core.mat import is_PhasedMatrix
-from pybropt.core.mat import check_is_PhasedMatrix
-from pybropt.core.mat import cond_check_is_PhasedMatrix
+from pybropt.core.mat.PhasedMatrix import PhasedMatrix
+from pybropt.core.mat.PhasedMatrix import is_PhasedMatrix
+from pybropt.core.mat.PhasedMatrix import check_is_PhasedMatrix
+from pybropt.core.mat.PhasedMatrix import cond_check_is_PhasedMatrix
 
 ################################################################################
 ################################ Test fixtures #################################

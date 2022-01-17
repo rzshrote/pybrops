@@ -2,11 +2,11 @@ import copy
 import numpy
 import h5py
 
-from pybropt.core.mat import DenseTaxaTraitMatrix
-from . import BreedingValueMatrix
+from pybropt.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
+from pybropt.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
-from pybropt.core.util import save_dict_to_hdf5
+from pybropt.core.util.h5py import save_dict_to_hdf5
 from pybropt.core.error import check_ndarray_std_is_approx
 from pybropt.core.error import check_ndarray_mean_is_approx
 from pybropt.core.error import check_ndarray_axis_len
@@ -25,11 +25,20 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            A float64 matrix of breeding values of shape (n, t).
-        **kwargs : dict
+            A float64 matrix of breeding values of shape (n,t).
+        location : numpy.ndarray
+            An array of breeding value locations of shape (t,).
+        scale : numpy.ndarray
+            An array of breeding value scales of shape (t,).
+        taxa : numpy.ndarray
+            An array of taxa names.
+        taxa_grp : numpy.ndarray
+            An array of taxa groups.
+        trait : numpy.ndarray
+            An array of trait names.
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
-
         """
         super(DenseBreedingValueMatrix, self).__init__(
             mat = mat,
@@ -49,7 +58,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
         Returns
         -------
-        out : Matrix
+        out : DenseBreedingValueMatrix
+            A copy of the matrix.
         """
         # create new object
         out = self.__class__(
@@ -75,10 +85,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         memo : dict
+            A dictionary of objects already copied during the current copying
+            pass.
 
         Returns
         -------
-        out : Matrix
+        out : DenseBreedingValueMatrix
+            A deep copy of the matrix.
         """
         # create new object
         out = self.__class__(
@@ -170,7 +183,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -219,10 +232,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing indices of maximum values
-            along the taxa axis.
+            An index array of shape ``(t,)`` containing indices of maximum
+            values along the taxa axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._mat.argmax(axis = self.taxa_axis)    # get argument maximum
         return out
@@ -234,10 +249,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing indices of minimum values
-            along the taxa axis.
+            An index array of shape ``(t,)`` containing indices of minimum
+            values along the taxa axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._mat.argmin(axis = self.taxa_axis)    # get argument minimum
         return out
@@ -249,15 +266,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         descale : boolean, default = False
-            whether to transform results to their de-scaled values.
+            Whether to transform results to their de-scaled values.
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the taxa
+            An array of shape ``(t,)`` containing maximum values along the taxa
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._mat.max(axis = self.taxa_axis)   # get maximum
         if descale:
@@ -272,15 +291,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         descale : boolean, default = False
-            whether to transform results to their de-scaled values.
+            Whether to transform results to their de-scaled values.
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing maximum values along the taxa
+            An array of shape ``(t,)`` containing maximum values along the taxa
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._location if descale else self._mat.mean(axis = self.taxa_axis) # get mean
         return out
@@ -292,15 +313,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         descale : boolean, default = False
-            whether to transform results to their de-scaled values.
+            Whether to transform results to their de-scaled values.
 
         Returns
         -------
         out : numpy.ndarray
-            An index array of shape (t,) containing minimum values along the
+            An index array of shape ``(t,)`` containing minimum values along the
             taxa axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._mat.min(axis = self.taxa_axis)   # get minimum
         if descale:
@@ -315,15 +338,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         descale : boolean, default = False
-            whether to transform results to their de-scaled values.
+            Whether to transform results to their de-scaled values.
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing range values along the taxa
+            An array of shape ``(t,)`` containing range values along the taxa
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
         if descale:
@@ -343,10 +368,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing standard deviation values along
-            the taxa axis.
+            An array of shape ``(t,)`` containing standard deviation values
+            along the taxa axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._scale if descale else self._mat.std(axis = self.taxa_axis) # get standard deviation
         return out
@@ -363,10 +390,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing variance values along the taxa
+            An array of shape ``(t,)`` containing variance values along the taxa
             axis.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         out = self._scale**2 if descale else self._mat.var(axis = self.taxa_axis) # get variance
         return out
@@ -379,10 +408,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (n,t) containing de-scaled and de-centered values.
+            An array of shape ``(n,t)`` containing de-scaled and de-centered
+            values.
+
             Where:
-                'n' is the number of taxa.
-                't' is the number of traits.
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
         """
         return (self._scale * self._mat) + self._location
 
@@ -395,9 +427,9 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         ----------
         filename : str
             HDF5 file name to which to write.
-        groupname : str or None
+        groupname : str, None
             HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
+            If ``None``, GenotypeMatrix is written to the base HDF5 group.
         """
         h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
         ######################################################### process groupname argument
@@ -437,7 +469,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             HDF5 file name which to read.
         groupname : str or None
             HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+            If ``None``, GenotypeMatrix is read from base HDF5 group.
 
         Returns
         -------
@@ -494,13 +526,18 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         a : numpy.ndarray
-            A float64 matrix of shape (n,t).
+            A ``float64`` matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of taxa.
-                't' is the number of traits.
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
         taxa : numpy.ndarray
+            An array of taxa names.
         taxa_grp : numpy.ndarray
+            An array of taxa groups.
         trait : numpy.ndarray
+            An array of trait names.
 
         Returns
         -------

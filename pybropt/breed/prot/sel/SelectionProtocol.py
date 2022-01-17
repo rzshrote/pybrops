@@ -5,6 +5,14 @@ class SelectionProtocol:
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class SelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(SelectionProtocol, self).__init__()
 
     ############################################################################
@@ -16,7 +24,7 @@ class SelectionProtocol:
     ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
 
         Parameters
         ----------
@@ -36,24 +44,25 @@ class SelectionProtocol:
             Maximum (deadline) generation number.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
-        **kwargs
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         raise NotImplementedError("method is abstract")
 
@@ -77,13 +86,13 @@ class SelectionProtocol:
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : function
-            Output function
+            A selection objective function for the specified problem.
         """
         raise NotImplementedError("method is abstract")
 
@@ -108,13 +117,13 @@ class SelectionProtocol:
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : function
-            Output function
+            A vectorized selection objective function for the specified problem.
         """
         raise NotImplementedError("method is abstract")
 
@@ -140,28 +149,29 @@ class SelectionProtocol:
             Maximum (deadline) generation number.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
-        **kwargs
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing two objects (frontier, sel_config)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
         raise NotImplementedError("method is abstract")
 
@@ -176,18 +186,22 @@ class SelectionProtocol:
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A parent contribution vector of shape (n,) and floating dtype.
+            A selection vector of shape ``(k,)``.
+
             Where:
-                'n' is the number of individuals.
-        *args : tuple
+
+            - ``k`` is the number of individuals.
+        args : tuple
             Additional arguments.
 
         Returns
         -------
         out : numpy.ndarray, scalar
-            An array of objective function values of shape (o,) or a scalar.
+            An array of objective function values of shape ``(o,)`` or a scalar.
+
             Where:
-                'o' is the number of objectives.
+
+            - ``o`` is the number of objectives.
         """
         raise NotImplementedError("method is abstract")
 
@@ -199,20 +213,25 @@ class SelectionProtocol:
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A parent contribution vector of shape (j,n) and floating dtype.
+            A selection vector of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'n' is the number of individuals.
-        *args : tuple
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals.
+        args : tuple
             Additional arguments.
 
         Returns
         -------
         out : numpy.ndarray
-            An array of objective function values of shape (j,o) or (j,).
+            An array of objective function values of shape ``(j,o)`` or
+            ``(j,)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'o' is the number of objectives.
+
+            - ``j`` is the number of selection configurations.
+            - ``o`` is the number of objectives.
         """
         raise NotImplementedError("method is abstract")
 

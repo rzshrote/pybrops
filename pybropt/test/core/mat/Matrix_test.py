@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.core.mat import Matrix
-from pybropt.core.mat import is_Matrix
-from pybropt.core.mat import check_is_Matrix
-from pybropt.core.mat import cond_check_is_Matrix
+from pybropt.core.mat.Matrix import Matrix
+from pybropt.core.mat.Matrix import is_Matrix
+from pybropt.core.mat.Matrix import check_is_Matrix
+from pybropt.core.mat.Matrix import cond_check_is_Matrix
 
 ################################################################################
 ################################ Test fixtures #################################

@@ -1,4 +1,4 @@
-from . import BreedingNode
+from pybropt.breed.arch.BreedingNode import BreedingNode
 
 class GermplasmBank(BreedingNode):
     """docstring for GermplasmBank."""
@@ -12,10 +12,10 @@ class GermplasmBank(BreedingNode):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
-        super(GermplasmBank, self).__init__()
+        super(GermplasmBank, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################

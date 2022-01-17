@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.model.gmod import NonlinearGenomicModel
-from pybropt.model.gmod import is_NonlinearGenomicModel
-from pybropt.model.gmod import check_is_NonlinearGenomicModel
-from pybropt.model.gmod import cond_check_is_NonlinearGenomicModel
+from pybropt.model.gmod.NonlinearGenomicModel import NonlinearGenomicModel
+from pybropt.model.gmod.NonlinearGenomicModel import is_NonlinearGenomicModel
+from pybropt.model.gmod.NonlinearGenomicModel import check_is_NonlinearGenomicModel
+from pybropt.model.gmod.NonlinearGenomicModel import cond_check_is_NonlinearGenomicModel
 
 ################################################################################
 ################################ Test fixtures #################################

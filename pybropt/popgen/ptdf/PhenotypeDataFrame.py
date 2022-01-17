@@ -1,4 +1,4 @@
-from pybropt.core.df import DataFrame
+from pybropt.core.df.DataFrame import DataFrame
 
 class PhenotypeDataFrame(DataFrame):
     """Abstract class for phenotype dataframe objects."""

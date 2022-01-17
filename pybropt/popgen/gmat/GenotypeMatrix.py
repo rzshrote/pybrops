@@ -1,6 +1,6 @@
-from pybropt.core.mat import TaxaVariantMatrix
-from pybropt.popgen.gmap import GeneticMappableMatrix
-from pybropt.core.io import HDF5InputOutput
+from pybropt.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
+from pybropt.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
+from pybropt.core.io.HDF5InputOutput import HDF5InputOutput
 
 class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     """docstring for GenotypeMatrix."""
@@ -14,7 +14,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -181,12 +181,14 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An int64 array of shape (3, h) containing haplotype counts across
-            all 'h' haplotypes.
-            Rows are as follows:
-                out[0] = count of '0' genotype across all loci
-                out[1] = count of '1' genotype across all loci
-                out[2] = count of '2' genotype across all loci
+            An ``int64`` array of shape ``(3,h)`` containing haplotype counts
+            across all ``h`` haplotypes.
+
+            Where:
+
+            - ``out[0]`` is the count of ``0`` genotype across all loci
+            - ``out[1]`` is the count of ``1`` genotype across all loci
+            - ``out[2]`` is the count of ``2`` genotype across all loci
         """
         raise NotImplementedError("method is abstract")
 
@@ -198,12 +200,14 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An float64 array of shape (3, h) containing haplotype counts across
-            all 'h' haplotypes.
-            Rows are as follows:
-                out[0] = frequency of '0' genotype across all loci
-                out[1] = frequency of '1' genotype across all loci
-                out[2] = frequency of '2' genotype across all loci
+            An ``float64`` array of shape ``(3,h)`` containing haplotype counts
+            across all ``h`` haplotypes.
+
+            Where:
+
+            - ``out[0]`` is the frequency of ``0`` genotype across all loci
+            - ``out[1]`` is the frequency of ``1`` genotype across all loci
+            - ``out[2]`` is the frequency of ``2`` genotype across all loci
         """
         raise NotImplementedError("method is abstract")
 

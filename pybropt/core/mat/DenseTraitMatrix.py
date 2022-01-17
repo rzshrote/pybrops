@@ -1,8 +1,8 @@
 import numpy
 import copy
 
-from . import TraitMatrix
-from . import DenseMutableMatrix
+from pybropt.core.mat.TraitMatrix import TraitMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
 
 from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_ndarray_axis_len
@@ -11,7 +11,7 @@ from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import check_is_iterable
 from pybropt.core.error import generic_check_isinstance
 from pybropt.core.error import error_readonly
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.util import get_axis
 
 class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     """docstring for DenseTraitMatrix."""
@@ -29,7 +29,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Matrix used to construct the object.
         trait : numpy.ndarray
             Trait names.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseTraitMatrix, self).__init__(
@@ -142,7 +142,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to adjoin to the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -178,7 +178,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to adjoin to the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -227,7 +227,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -258,7 +258,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -301,7 +301,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to insert into the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -339,7 +339,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Values to insert into the matrix.
         trait : numpy.ndarray
             Trait names to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -389,7 +389,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -417,7 +417,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -455,7 +455,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -485,7 +485,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -559,7 +559,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Trait names to append to the Matrix.
             If values is a DenseTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -585,7 +585,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Values are appended to append to the matrix.
         trait : numpy.ndarray
             Trait names to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -620,7 +620,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -639,7 +639,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete values
@@ -661,7 +661,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -690,7 +690,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Values to incorporate into the matrix.
         trait : numpy.ndarray
             Trait names to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -755,7 +755,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -817,7 +817,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # build a tuple to slice the matrix
@@ -861,7 +861,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get indices for sort

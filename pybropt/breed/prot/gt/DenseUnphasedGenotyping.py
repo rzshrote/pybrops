@@ -1,7 +1,7 @@
-from . import GenotypingProtocol
+from pybropt.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 
-from pybropt.popgen.gmat import check_is_PhasedGenotypeMatrix
-from pybropt.popgen.gmat import DenseGenotypeMatrix
+from pybropt.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 class DenseUnphasedGenotyping(GenotypingProtocol):
     """docstring for DenseUnphasedGenotyping."""
@@ -17,7 +17,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseUnphasedGenotyping, self).__init__(**kwargs)
@@ -37,7 +37,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

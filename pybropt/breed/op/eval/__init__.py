@@ -1,2 +1,9 @@
+"""
+Module containing evaluation operators.
+"""
 # order dependent import
-from .EvaluationOperator import *
+
+# abstract classes
+from . import EvaluationOperator
+
+# concrete classes

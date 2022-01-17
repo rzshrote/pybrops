@@ -1,4 +1,4 @@
-from . import BreedingEdge
+from pybropt.breed.arch.BreedingEdge import BreedingEdge
 
 class ImmigrationOperator(BreedingEdge):
     """docstring for ImmigrationOperator."""
@@ -12,12 +12,10 @@ class ImmigrationOperator(BreedingEdge):
 
         Parameters
         ----------
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
         """
-        super(ImmigrationOperator, self).__init__(
-            **kwargs
-        )
+        super(ImmigrationOperator, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################

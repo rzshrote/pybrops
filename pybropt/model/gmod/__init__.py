@@ -1,11 +1,18 @@
+"""
+Module containing genomic prediction models.
+"""
+# imports are order dependent!!!
+
 # utilities
 
+# abstract classes
 # level 1
-from .GenomicModel import *
+from . import GenomicModel
 
 # level 2
-from .LinearGenomicModel import *
-from .NonlinearGenomicModel import *
+from . import LinearGenomicModel
+from . import NonlinearGenomicModel
 
+# concrete classes
 # level 3
-from .GenericLinearGenomicModel import *
+from . import AdditiveLinearGenomicModel

@@ -1,6 +1,6 @@
 import copy
 import numpy
-from . import Matrix
+from pybropt.core.mat.Matrix import Matrix
 
 from pybropt.core.error import error_readonly
 from pybropt.core.error import check_is_ndarray
@@ -22,7 +22,7 @@ class DenseMatrix(Matrix):
         ----------
         mat : numpy.ndarray
             Matrix to store
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseMatrix, self).__init__(**kwargs)
@@ -345,7 +345,7 @@ class DenseMatrix(Matrix):
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are appended.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -381,7 +381,7 @@ class DenseMatrix(Matrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -414,7 +414,7 @@ class DenseMatrix(Matrix):
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -450,7 +450,7 @@ class DenseMatrix(Matrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -482,7 +482,7 @@ class DenseMatrix(Matrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns

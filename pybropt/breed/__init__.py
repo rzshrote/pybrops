@@ -1,3 +1,7 @@
+"""
+Module containing breeding program components.
+"""
+
 # order dependent imports!
 
 from . import prot

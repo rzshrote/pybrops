@@ -1,5 +1,5 @@
-from . import PhenotypeDataFrame
-from pybropt.core.df import PandasDataFrame
+from pybropt.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
+from pybropt.core.df.PandasDataFrame import PandasDataFrame
 
 from pybropt.core.error import check_is_pandas_df
 
@@ -117,7 +117,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         return_aefct : boolean, default = False
             Whether to return the column analysis effect type along with the
             column data.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

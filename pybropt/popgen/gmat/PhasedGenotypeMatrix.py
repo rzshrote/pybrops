@@ -1,5 +1,5 @@
-from pybropt.core.mat import PhasedTaxaVariantMatrix
-from . import GenotypeMatrix
+from pybropt.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
+from pybropt.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 # NOTE: GenotypeMatrix MUST GO FIRST: causes method resolution error otherwise!
 # NOTE: this is because

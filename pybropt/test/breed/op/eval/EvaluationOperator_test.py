@@ -9,10 +9,10 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.breed.op.eval import EvaluationOperator
-from pybropt.breed.op.eval import is_EvaluationOperator
-from pybropt.breed.op.eval import check_is_EvaluationOperator
-from pybropt.breed.op.eval import cond_check_is_EvaluationOperator
+from pybropt.breed.op.eval.EvaluationOperator import EvaluationOperator
+from pybropt.breed.op.eval.EvaluationOperator import is_EvaluationOperator
+from pybropt.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
+from pybropt.breed.op.eval.EvaluationOperator import cond_check_is_EvaluationOperator
 
 ################################################################################
 ################################ Test fixtures #################################

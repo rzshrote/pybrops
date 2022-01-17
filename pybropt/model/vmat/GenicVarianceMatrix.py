@@ -1,4 +1,4 @@
-from . import VarianceMatrix
+from pybropt.model.vmat.VarianceMatrix import VarianceMatrix
 
 class GenicVarianceMatrix(VarianceMatrix):
     """docstring for GenicVarianceMatrix."""

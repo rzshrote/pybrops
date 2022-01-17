@@ -1,4 +1,4 @@
-from . import BreedingValueProtocol
+from pybropt.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 
 class TrueBreedingValue(BreedingValueProtocol):
     """docstring for TrueBreedingValue."""
@@ -51,7 +51,7 @@ class TrueBreedingValue(BreedingValueProtocol):
             If None, user defined output is not calculated or stored.
         gpmod : GenomicModel
             Genomic model used for predicting genotypes.
-        **kwargs : **dict
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

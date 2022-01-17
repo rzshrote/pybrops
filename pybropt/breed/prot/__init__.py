@@ -1,3 +1,7 @@
+"""
+Module containing breeding protocols.
+"""
+
 from . import bv
 from . import gt
 from . import mate

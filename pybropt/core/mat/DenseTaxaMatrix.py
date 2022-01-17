@@ -1,8 +1,8 @@
 import copy
 import numpy
 
-from . import DenseMutableMatrix
-from . import TaxaMatrix
+from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybropt.core.mat.TaxaMatrix import TaxaMatrix
 
 from pybropt.core.error import check_is_array_like
 from pybropt.core.error import check_is_int
@@ -19,7 +19,7 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_object
 from pybropt.core.error import cond_check_ndarray_ndim
 from pybropt.core.error import error_readonly
 from pybropt.core.error import generic_check_isinstance
-from pybropt.core.mat import get_axis
+from pybropt.core.mat.util import get_axis
 from pybropt.core.error import check_ndarray_at_least_1d
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
@@ -40,7 +40,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         super(DenseTaxaMatrix, self).__init__(
@@ -280,7 +280,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa groups to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -315,7 +315,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa groups to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -365,7 +365,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -396,7 +396,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -447,7 +447,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa groups to insert into the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -488,7 +488,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa names to insert into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -545,7 +545,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -573,7 +573,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         ----------
         indices : array_like (Nj, ...)
             The indices of the values to select.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -618,7 +618,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             shape, except in the dimension corresponding to axis.
         axis : int
             The axis along which the arrays will be joined.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -648,7 +648,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         mats : array_like of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments
 
         Returns
@@ -757,7 +757,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa names to append to the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to append to the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -804,7 +804,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -823,7 +823,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         ----------
         obj : slice, int, or array of ints
             Indicate indices of sub-arrays to remove along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete values
@@ -853,7 +853,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # get axis
@@ -885,7 +885,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Taxa names to incorporate into the Matrix.
         taxa_grp : numpy.ndarray
             Taxa groups to incorporate into the Matrix.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # extract mat values
@@ -962,7 +962,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -1024,7 +1024,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # build a tuple to slice the matrix
@@ -1070,7 +1070,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # reset taxa group metadata
@@ -1106,7 +1106,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # sort taxa using default keys
@@ -1147,7 +1147,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Parameters
         ----------
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

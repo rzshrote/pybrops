@@ -1,4 +1,4 @@
-from . import AdditiveGeneticVarianceMatrix
+from pybropt.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
 class ThreeWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
     """docstring for ThreeWayDHAdditiveGeneticVarianceMatrix."""
@@ -6,4 +6,3 @@ class ThreeWayDHAdditiveGeneticVarianceMatrix(AdditiveGeneticVarianceMatrix):
     def __init__(self, arg):
         super(ThreeWayDHAdditiveGeneticVarianceMatrix, self).__init__()
         self.arg = arg
-        

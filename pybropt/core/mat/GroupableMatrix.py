@@ -1,4 +1,4 @@
-from . import SortableMatrix
+from pybropt.core.mat.SortableMatrix import SortableMatrix
 
 class GroupableMatrix(SortableMatrix):
     """
@@ -17,7 +17,7 @@ class GroupableMatrix(SortableMatrix):
 
         Parameters
         ----------
-        **kwargs : dict
+        kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
@@ -36,7 +36,7 @@ class GroupableMatrix(SortableMatrix):
         ----------
         axis : int
             The axis along which values are grouped.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
@@ -50,7 +50,7 @@ class GroupableMatrix(SortableMatrix):
         axis: int
             Axis along which to determine whether elements have been sorted and
             grouped.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

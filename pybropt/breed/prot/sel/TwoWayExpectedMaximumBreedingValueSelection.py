@@ -1,6 +1,6 @@
 import numpy
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
@@ -82,7 +82,7 @@ class TwoWayExpectedMaximumBreedingValueParentSelection(SelectionProtocol):
                 true  | GenomicModel         | True genomic model for trait(s)
         k : int
         traitwt : numpy.ndarray
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns

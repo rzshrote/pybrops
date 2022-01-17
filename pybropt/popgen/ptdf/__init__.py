@@ -1,4 +1,8 @@
-from .PhenotypeDataFrame import *
+"""
+Module defining phenotype dataframes.
+"""
 
-from .DictPhenotypeDataFrame import *
+from . import PhenotypeDataFrame
+
+from . import DictPhenotypeDataFrame
 # from .PandasPhenotypeDataFrame import *

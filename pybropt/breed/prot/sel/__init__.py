@@ -1,18 +1,24 @@
+"""
+Module containing selection protocols.
+"""
+
 # order dependent imports
-from .SelectionProtocol import *
 
 # import utilities
 from . import transfn
 
-# import classes
-from .ConventionalGenomicSelection import *
-from .ConventionalPhenotypicSelection import *
-from .FamilyPhenotypicSelection import *
-from .MultiObjectiveGenomicMating import *
-from .MultiObjectiveGenomicSelection import *
-from .OptimalContributionSelection import *
-from .OptimalPopulationValueSelection import *
-from .RandomSelection import *
-from .TwoWayExpectedMaximumBreedingValueSelection import *
-from .TwoWayOptimalHaploidValueSelection import *
-from .WeightedGenomicSelection import *
+# abstract classes
+from . import SelectionProtocol
+
+# concrete classes
+from . import ConventionalGenomicSelection
+from . import ConventionalPhenotypicSelection
+from . import FamilyPhenotypicSelection
+from . import MultiObjectiveGenomicMating
+from . import MultiObjectiveGenomicSelection
+from . import OptimalContributionSelection
+from . import OptimalPopulationValueSelection
+from . import RandomSelection
+from . import TwoWayExpectedMaximumBreedingValueSelection
+from . import TwoWayOptimalHaploidValueSelection
+from . import WeightedGenomicSelection

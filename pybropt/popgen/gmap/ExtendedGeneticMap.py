@@ -3,7 +3,7 @@ import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from . import GeneticMap
+from pybropt.popgen.gmap.GeneticMap import GeneticMap
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_ndim
 from pybropt.core.error import check_ndarray_dtype
@@ -235,7 +235,7 @@ class ExtendedGeneticMap(GeneticMap):
         keys : (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
 
         Returns
@@ -273,7 +273,7 @@ class ExtendedGeneticMap(GeneticMap):
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
-        **kwargs
+        kwargs : dict
             Additional keyword arguments.
         """
         # sort internal self
@@ -346,10 +346,12 @@ class ExtendedGeneticMap(GeneticMap):
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
-        **kwargs : dict
+
+            - ``a`` is the number of indices to remove.
+        kwargs : dict
             Additional keyword arguments.
         """
         # delete indices from self
@@ -373,10 +375,12 @@ class ExtendedGeneticMap(GeneticMap):
         Parameters
         ----------
         indices : numpy.ndarray, slice, int
-            Array of shape (a,), slice or int of item(s) to remove.
+            Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
+
             Where:
-                'a' is the number of indices to remove.
-        **kwargs : dict
+
+            - ``a`` is the number of indices to remove.
+        kwargs : dict
             Additional keyword arguments.
         """
         # keep only selected markers.
@@ -406,7 +410,7 @@ class ExtendedGeneticMap(GeneticMap):
             priority. If the physical distance between two markers selected
             based on their genetic distance exceeds 'nt' (if provided), the
             additional markers are sought between those regions.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # check if we have acceptible inputs
@@ -617,7 +621,7 @@ class ExtendedGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
-        **kwargs : dict
+        kwargs : dict
             Additional keyword arguments.
         """
         # get unique chromosome group labels
@@ -918,55 +922,12 @@ class ExtendedGeneticMap(GeneticMap):
     @staticmethod
     def from_pandas_df(pandas_df, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
         """
-        Read genetic map data from a CSV-like file.
-
-        ------------------------------------------------------------=
-        Genetic map file (*.gmap) format (similar to BED file format)
-        ------------------------------------------------------------=
-        Genetic map assumptions:
-            This file format assumes that we have a high quality genome assembly
-            with near complete chromosome pseudomolecules and low number of errors.
-            This file format also assumes that we have a high quality genetic map
-            with minimal inversions and mis-assemblies. The number of linkage groups
-            in the genetic map should equal the number of whole chromosomes in our
-            genome assembly.
-            ***For discrepancies in the physical map vs. the genetic map, we assume
-            that the physical map is correct.***
-        File delimiters:
-            *.gmap files are tab delimited
-        File headers:
-            *.gmap files are headerless.
-        File fields:
-            1) chrom (REQUIRED)
-                Name of the chromosome; equivalent to the linkage group.
-                This is of type 'str'.
-            2) vrnt_phypos (REQUIRED)
-                The start position of the feature on the chromosome or scaffold.
-                This is 0-indexed (e.g. the first base of a chromosome is 0) and
-                inclusive (e.g. vrnt_phypos <= sequence < vrnt_stop).
-                This is an integer type.
-            3) vrnt_stop (REQUIRED)
-                The stop position of the feature on the chromosome or scaffold. This
-                is 0-indexed (e.g. the first base of a chromosome is 0) and
-                exclusive (e.g. vrnt_phypos <= sequence < vrnt_stop).
-                This is an integer type.
-            4) vrnt_genpos (REQUIRED)
-                The genetic map position in Morgans. (NOT centiMorgans!)
-                This is an floating type.
-            5) vrnt_name (optional)
-                The name of the marker on the genetic map.
-                This is of type 'str'.
-            6) vrnt_fncode (optional)
-                The mapping function code used to create this gentic map.
-                This is of type 'str'.
-                Mapping function codes:
-                    Haldane: 'H'
-                    Kosambi: 'K'
-                    Unknown: 'U'
-                    Custom: <str of any length>
+        Read genetic map data from a Pandas DataFrame.
 
         Parameters
         ----------
+        pandas_df : pandas.DataFrame
+            A Pandas DataFrame.
         vrnt_chrgrp_ix : int, default=0
             Column index to specify 'chrom' (chromosome) field.
         vrnt_phypos_ix : int, default=1
@@ -985,6 +946,52 @@ class ExtendedGeneticMap(GeneticMap):
         genetic_map : ExtendedGeneticMap
             An ExtendedGeneticMap object containing all data required for
             genetic inferences.
+
+        Notes
+        -----
+        Genetic map assumptions:
+
+        - This assumes that we have a high quality genome assembly
+          with near complete chromosome pseudomolecules and low number of
+          errors.
+        - This also assumes that we have a high quality genetic map
+          with minimal inversions and mis-assemblies.
+        - The number of linkage groups in the genetic map should equal the
+          number of whole chromosomes in our genome assembly.
+        - For discrepancies in the physical map vs. the genetic map, we assume
+          that the physical map is correct.
+
+        Pandas DataFrame field specifications:
+
+        1) vrnt_chrgrp (REQUIRED)
+            Name of the chromosome; equivalent to the linkage group.
+            This is of type 'str'.
+        2) vrnt_phypos (REQUIRED)
+            The start position of the feature on the chromosome or scaffold.
+            This is 1-indexed (e.g. the first base of a chromosome is 1) and
+            inclusive (e.g. chr_start <= sequence <= chr_stop).
+            This is an integer type.
+        3) vrnt_stop (REQUIRED)
+            The stop position of the feature on the chromosome or scaffold. This
+            is 1-indexed (e.g. the first base of a chromosome is 1) and
+            inclusive (e.g. chr_start <= sequence <= chr_stop).
+            This is an integer type.
+        4) vrnt_genpos (REQUIRED)
+            The genetic map position in Morgans. (NOT centiMorgans!)
+            This is an floating type.
+        5) vrnt_name (optional)
+            The name of the marker on the genetic map.
+            This is of type 'str'.
+        6) vrnt_fncode (optional)
+            The mapping function code used to create this gentic map.
+            This is of type 'str'.
+
+            Mapping function codes:
+
+            - Haldane: 'H'
+            - Kosambi: 'K'
+            - Unknown: 'U'
+            - Custom: <str of any length>
         """
         # check to make sure several indices aren't None.
         check_is_not_None(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
@@ -1076,54 +1083,7 @@ class ExtendedGeneticMap(GeneticMap):
     @staticmethod
     def from_egmap(fpath):
         """
-        Read extended genetic map file (*.egmap).
-
-        Assumes that the file is correctly formatted.
-
-        ------------------------------------------------------------=
-        Genetic map file (*.gmap) format (similar to BED file format)
-        ------------------------------------------------------------=
-        Genetic map assumptions:
-            This file format assumes that we have a high quality genome assembly
-            with near complete chromosome pseudomolecules and low number of
-            errors. This file format also assumes that we have a high quality
-            genetic map with minimal inversions and mis-assemblies. The number
-            of linkage groups in the genetic map should equal the number of
-            whole chromosomes in our genome assembly.
-            ***For discrepancies in the physical map vs. the genetic map, we
-            assume that the physical map is correct.***
-        File delimiters:
-            *.egmap files are tab delimited
-        File headers:
-            *.gmap files are headerless.
-        File fields:
-            1) chrom (REQUIRED)
-                Name of the chromosome; equivalent to the linkage group.
-                This is of type 'str'.
-            2) chr_start (REQUIRED)
-                The start position of the feature on the chromosome or scaffold.
-                This is 1-indexed (e.g. the first base of a chromosome is 1) and
-                inclusive (e.g. chr_start <= sequence <= chr_stop).
-                This is an integer type.
-            3) chr_stop (REQUIRED)
-                The stop position of the feature on the chromosome or scaffold. This
-                is 1-indexed (e.g. the first base of a chromosome is 1) and
-                inclusive (e.g. chr_start <= sequence <= chr_stop).
-                This is an integer type.
-            4) map_pos (REQUIRED)
-                The genetic map position in Morgans. (NOT centiMorgans!)
-                This is an floating type.
-            5) mkr_name (optional)
-                The name of the marker on the genetic map.
-                This is of type 'str'.
-            6) map_fncode (optional)
-                The mapping function code used to create this gentic map.
-                This is of type 'str'.
-                Mapping function codes:
-                    Haldane: 'H'
-                    Kosambi: 'K'
-                    Unknown: 'U'
-                    Custom: <str of any length>
+        Read an extended genetic map file (\*.egmap).
 
         Parameters
         ----------
@@ -1133,8 +1093,61 @@ class ExtendedGeneticMap(GeneticMap):
 
         Returns
         -------
-        genetic_map : gmap
+        genetic_map : ExtendedGeneticMap
             A gmap object containing all data required for genetic inferences.
+
+        Notes
+        -----
+        Extended genetic map file (\*.egmap) format (similar to BED file format).
+
+        Genetic map assumptions:
+
+        - This file format assumes that we have a high quality genome assembly
+          with near complete chromosome pseudomolecules and low number of
+          errors.
+        - This file format also assumes that we have a high quality genetic map
+          with minimal inversions and mis-assemblies.
+        - The number of linkage groups in the genetic map should equal the
+          number of whole chromosomes in our genome assembly.
+        - For discrepancies in the physical map vs. the genetic map, we assume
+          that the physical map is correct.
+
+        General Extended Genetic Map File (\*.egmap) specifications:
+
+        - This file format is headerless.
+        - This file format is tab delimited.
+
+        Extended Genetic Map File (\*.egmap) field specifications:
+
+        1) chrom (REQUIRED)
+            Name of the chromosome; equivalent to the linkage group.
+            This is of type 'str'.
+        2) chr_start (REQUIRED)
+            The start position of the feature on the chromosome or scaffold.
+            This is 1-indexed (e.g. the first base of a chromosome is 1) and
+            inclusive (e.g. chr_start <= sequence <= chr_stop).
+            This is an integer type.
+        3) chr_stop (REQUIRED)
+            The stop position of the feature on the chromosome or scaffold. This
+            is 1-indexed (e.g. the first base of a chromosome is 1) and
+            inclusive (e.g. chr_start <= sequence <= chr_stop).
+            This is an integer type.
+        4) map_pos (REQUIRED)
+            The genetic map position in Morgans. (NOT centiMorgans!)
+            This is an floating type.
+        5) mkr_name (optional)
+            The name of the marker on the genetic map.
+            This is of type 'str'.
+        6) map_fncode (optional)
+            The mapping function code used to create this gentic map.
+            This is of type 'str'.
+
+            Mapping function codes:
+
+            - Haldane: 'H'
+            - Kosambi: 'K'
+            - Unknown: 'U'
+            - Custom: <str of any length>
         """
         # read the file using pandas
         df = pandas.read_csv(

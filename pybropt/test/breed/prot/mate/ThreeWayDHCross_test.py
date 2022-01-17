@@ -11,14 +11,14 @@ from pybropt.test import generic_assert_abstract_property
 from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmat import is_DensePhasedGenotypeMatrix
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.prot.mate import ThreeWayDHCross
-from pybropt.breed.prot.mate import is_ThreeWayDHCross
-from pybropt.breed.prot.mate import check_is_ThreeWayDHCross
-from pybropt.breed.prot.mate import cond_check_is_ThreeWayDHCross
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
+from pybropt.breed.prot.mate.ThreeWayDHCross import ThreeWayDHCross
+from pybropt.breed.prot.mate.ThreeWayDHCross import is_ThreeWayDHCross
+from pybropt.breed.prot.mate.ThreeWayDHCross import check_is_ThreeWayDHCross
+from pybropt.breed.prot.mate.ThreeWayDHCross import cond_check_is_ThreeWayDHCross
 
 ################################################################################
 ################################ Test fixtures #################################

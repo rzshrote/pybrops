@@ -1,4 +1,4 @@
-from . import LDMatrix
+from pybropt.popgen.ldmat.LDMatrix import LDMatrix
 
 # TODO: implementation
 class D_LDMatrix(LDMatrix):

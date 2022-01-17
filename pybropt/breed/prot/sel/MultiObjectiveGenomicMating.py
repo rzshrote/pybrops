@@ -10,7 +10,7 @@ from deap import benchmarks
 
 import pybropt.core.random
 
-from . import SelectionProtocol
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str
@@ -42,12 +42,20 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
         Given a 2D weight vector 'dcoeff', calculate the Euclidian distance from the
         origin according to:
-            dist = dot( dcoeff, F(x) )
-            Where:
-                F(x) is a vector of objective functions:
-                    F(x) = < f_PAU(x), f_PAFD(x) >
 
-        f_PAU(x):
+        dist = dot( dcoeff, F(x) )
+
+        Where :math:`F(\\textbf{x})` is a vector of objective functions:
+
+        .. math::
+            F(\\textbf{x}) = \begin{bmatrix}
+            f^{\\textup{PAU}}(\\textbf{x})  \\\\
+            f^{\\textup{PAFD}}(\\textbf{x})
+            \end{bmatrix}
+
+        Objectives:
+
+        Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
 
         Given the provided genotype matrix 'geno' and row selections from it 'sel',
         calculate the selection allele freq. From the selection allele frequencies
@@ -55,14 +63,14 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         cannot be attained after unlimited generations and selection rounds.
         Multiply this vector by a weight coefficients vector 'wcoeff'.
 
-        f_PAFD(x):
+        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
 
         Given a genotype matrix, a target allele frequency vector, and a vector of
         weights, calculate the distance between the selection frequency and the
         target frequency.
 
         Parameters
-        ==========
+        ----------
         sel : numpy.ndarray, None
             A selection indices matrix of shape (k,)
             Where:
@@ -102,7 +110,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             Dictionary of keyword arguments to pass to 'trans' function.
 
         Returns
-        =======
+        -------
         mogs : numpy.ndarray
             A MOGS score matrix of shape (2,t) or other.
         """

@@ -2,10 +2,10 @@ import copy
 import numpy
 import cyvcf2
 
-from . import PhasedGenotypeMatrix
-from . import DenseGenotypeMatrix
-from pybropt.core.mat import DensePhasedTaxaVariantMatrix
-from pybropt.core.mat import get_axis
+from pybropt.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybropt.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
+from pybropt.core.mat.util import get_axis
 
 from pybropt.core.error import check_is_ndarray
 from pybropt.core.error import check_ndarray_dtype_is_int8
@@ -20,8 +20,8 @@ from pybropt.core.error import cond_check_ndarray_dtype_is_bool
 from pybropt.core.error import check_is_int
 from pybropt.core.error import error_readonly
 
-from pybropt.popgen.gmap import check_is_GeneticMap
-from pybropt.popgen.gmap import check_is_GeneticMapFunction
+from pybropt.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybropt.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
     """docstring for DensePhasedGenotypeMatrix."""
@@ -40,8 +40,8 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             ploidy of the reproductive habit. If the organism represented is an
             allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
             reproduces in a diploid manner.
-        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         """
+        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         super(DensePhasedGenotypeMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
@@ -406,14 +406,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         Returns
         -------
         out : numpy.ndarray
-            An int64 array of shape (g, p) containing allele counts across
-            all 'p' loci for each of 'g' genotype combinations.
-            Rows are as follows:
-                out[0] = count of '0' genotype across all loci
-                out[1] = count of '1' genotype across all loci
-                out[2] = count of '2' genotype across all loci
-                ...
-                out[g-1] = count of 'g-1' genotype across all loci
+            An ``int64`` array of shape ``(g,p)`` containing allele counts across
+            all ``p`` loci for each of ``g`` genotype combinations.
+
+            Where:
+
+            - ``out[0]`` is the count of ``0`` genotype across all loci
+            - ``out[1]`` is the count of ``1`` genotype across all loci
+            - ``out[2]`` is the count of ``2`` genotype across all loci
+            - ``...``
+            - ``out[g-1]`` is the count of ``g-1`` genotype across all loci
         """
         ngt = self.nphase + 1                   # get number of genotype combos
         mat = self._mat.sum(self.phase_axis)    # get sum of all phases
@@ -439,14 +441,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         Returns
         -------
         out : numpy.ndarray
-            An float64 array of shape (g, p) containing haplotype counts across
-            all 'p' loci for all 'g' genotype combinations.
-            Rows are as follows:
-                out[0] = frequency of '0' genotype across all loci
-                out[1] = frequency of '1' genotype across all loci
-                out[2] = frequency of '2' genotype across all loci
-                ...
-                out[g-1] = frequency of 'g-1' genotype across all loci
+            An ``float64`` array of shape ``(g,p)`` containing haplotype counts
+            across all ``p`` loci for all ``g`` genotype combinations.
+
+            Where:
+
+            - ``out[0]`` is the frequency of ``0`` genotype across all loci
+            - ``out[1]`` is the frequency of ``1`` genotype across all loci
+            - ``out[2]`` is the frequency of ``2`` genotype across all loci
+            - ``...``
+            - ``out[g-1]`` is the frequency of ``g-1`` genotype across all loci
         """
         recip = 1.0 / self.ntaxa        # get reciprocal of number of taxa
         out = recip * self.gtcount()    # calculate genotype frequencies

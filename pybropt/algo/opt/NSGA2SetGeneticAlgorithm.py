@@ -8,12 +8,31 @@ from deap import benchmarks
 
 import pybropt.core.random
 
-from . import OptimizationAlgorithm
+from pybropt.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybropt.core.util.pareto import is_pareto_efficient
 
 class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
     """docstring for NSGA2SetGeneticAlgorithm."""
 
     def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = None, **kwargs):
+        """
+        Constructor for NSGA-II set optimization algorithm.
+
+        Parameters
+        ----------
+        ngen : int
+            Number of generations to evolve population.
+        mu : int
+            Number of parental candidates to keep in population.
+        lamb : int
+            Number of progeny to generate.
+        M : float
+            Length of the chromosome genetic map, in Morgans.
+        rng : numpy.Generator, None
+            Random number generator source.
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(NSGA2SetGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.mu = mu
@@ -23,6 +42,24 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
 
     # define set crossover operator
     def cxSet(self, ind1, ind2, indpb):
+        """
+        Set crossover operator.
+
+        Parameters
+        ----------
+        ind1 : array_like
+            Chromosome of the first parent (modified in place).
+        ind2 : array_like
+            Chromosome of the second parent (modified in place).
+        indpb : float
+            Probability of initiating a crossover at a specific chromosome
+            locus.
+
+        Returns
+        -------
+        out : tuple
+            A tuple of length 2 containing progeny resulting from the crossover.
+        """
         a = numpy.array(ind1)           # convert ind1 to numpy.ndarray
         b = numpy.array(ind2)           # convert ind2 to numpy.ndarray
         mab = ~numpy.isin(a,b)          # get mask for ind1 not in ind2
@@ -48,52 +85,29 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
 
     # define set mutation operator
     def mutSet(self, ind, sspace, indpb):
+        """
+        Set mutation operator.
+
+        Parameters
+        ----------
+        ind : array_like
+            Individual chromosome to mutate (modified in place).
+        sspace : array_like
+            Array representing the set search space.
+        indpb : float
+            Probability of mutation at a single locus.
+
+        Returns
+        -------
+        ind : array_like
+            A mutated chromosome.
+        """
         a = numpy.array(sspace)
         for i in range(len(ind)):
             if self.rng.random() < indpb:
                 mab = ~numpy.isin(a,ind)
                 ind[i] = self.rng.choice(a[mab], 1, False)[0]
         return ind
-
-    # based on:
-    # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
-    @staticmethod
-    def is_pareto_efficient(fmat, wt, return_mask = True):
-        """
-        Find the pareto-efficient points (maximizing function)
-
-        Parameters
-        ----------
-        fmat : numpy.ndarray
-            A matrix of shape (npt, nobj) containing fitness values. Where
-            'npt' is the number of points and 'nobj' is the number of
-            objectives.
-        return_mask : bool
-            If True, return a mask.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of indices of pareto-efficient points.
-            If return_mask is True, this will be an (npt, ) boolean array
-            Otherwise it will be a (n_efficient_points, ) integer array of indices.
-        """
-        fmat = fmat * (wt.flatten()[None,:])    # apply weights
-        npt = fmat.shape[0]                     # get number of points
-        is_efficient = numpy.arange(npt)        # starting list of efficient points (holds indices)
-        pt_ix = 0  # Next index in the is_efficient array to search for
-        while pt_ix < len(fmat):
-            ndpt_mask = numpy.any(fmat > fmat[pt_ix], axis=1)
-            ndpt_mask[pt_ix] = True
-            is_efficient = is_efficient[ndpt_mask]  # Remove dominated points
-            fmat = fmat[ndpt_mask]
-            pt_ix = numpy.sum(ndpt_mask[:pt_ix])+1
-        if return_mask:
-            is_efficient_mask = numpy.zeros(npt, dtype = bool)
-            is_efficient_mask[is_efficient] = True
-            return is_efficient_mask
-        else:
-            return is_efficient
 
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
         """
@@ -110,6 +124,18 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
             Search space that the OptimizationAlgorithm searches in.
         objfn_wt : numpy.ndarray
             Weight(s) applied to output(s) from the objfn.
+
+        Returns
+        -------
+        out : tuple
+            A tuple of length 3 containing ``(frontier, sel_config, misc)``.
+
+            Where:
+
+            - ``frontier`` is a matrix of the Pareto frontier points.
+            - ``sel_config`` is an array of corresponding decision variables
+              for the corresponding Pareto frontier points.
+            - ``misc`` is a dictionary of miscellaneous output.
         """
         # convert objective function weights to a numpy array
         if not hasattr(objfn_wt, "__iter__"):
@@ -247,7 +273,7 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         pop_decn = numpy.array(pop)
 
         # get pareto frontier mask
-        pareto_mask = self.is_pareto_efficient(
+        pareto_mask = is_pareto_efficient(
             pop_soln,
             wt = objfn_wt,
             return_mask = True
