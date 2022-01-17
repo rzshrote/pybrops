@@ -7,6 +7,8 @@ def not_raises(ForbiddenException):
     """
     Ensure that method does not raise an ForbiddenException.
 
+    Parameters
+    ----------
     ForbiddenException : Exception
         Forbidden Exception.
     """
@@ -20,7 +22,9 @@ def not_raises(ForbiddenException):
 def generic_test_operator(op, v, w):
     """
     Generic test an operator.
-    Tests:
+
+    Tests::
+
         op(*v) == op(*w)
 
     Parameters
@@ -34,6 +38,8 @@ def generic_assert_docstring(obj):
     """
     Test for the presence of a docstring in an object.
 
+    Parameters
+    ----------
     obj : Any object
         Any Python object to test for a docstring.
     """
@@ -85,8 +91,9 @@ def generic_assert_not_raise_NotImplementedError(fn):
 def generic_assert_abstract_function(fn):
     """
     Assert an abstract function for several attributes:
-        1) have a docstring
-        2) raise NotImplementedError.
+
+    1) have a docstring
+    2) raise NotImplementedError.
 
     Parameters
     ----------
@@ -99,8 +106,9 @@ def generic_assert_abstract_function(fn):
 def generic_assert_concrete_function(fn):
     """
     Assert a concrete function for several attributes:
-        1) have a docstring
-        2) not raise NotImplementedError.
+
+    1) have a docstring
+    2) not raise NotImplementedError.
 
     Parameters
     ----------
@@ -116,7 +124,7 @@ def generic_assert_hasattr(obj, a):
 
     Parameters
     ----------
-    obj : any object
+    obj : object
         Any Python object.
     a : str
         String of the attribute.
@@ -126,13 +134,14 @@ def generic_assert_hasattr(obj, a):
 def generic_assert_abstract_method(obj, met):
     """
     Assert an object has an abstract method. Must have several attributes:
-        1) have the method
-        2) have a docstring for the method
-        3) method must raise NotImplementedError
+
+    1) have the method
+    2) have a docstring for the method
+    3) method must raise NotImplementedError
 
     Parameters
     ----------
-    obj : any object
+    obj : object
         Any Python object.
     met : str
         Name of the method to test
@@ -144,13 +153,14 @@ def generic_assert_abstract_method(obj, met):
 def generic_assert_concrete_method(obj, met):
     """
     Assert an object has a concrete method. Must have several attributes:
-        1) have the method
-        2) have a docstring for the method
-        3) method must not raise NotImplementedError
+
+    1) have the method
+    2) have a docstring for the method
+    3) method must not raise NotImplementedError
 
     Parameters
     ----------
-    obj : any object
+    obj : object
         Any Python object.
     met : str
         Name of the method to test
@@ -162,13 +172,14 @@ def generic_assert_concrete_method(obj, met):
 def generic_assert_abstract_property(obj, prop):
     """
     Assert an object has an abstract property. Must have several attributes:
-        1) have the property
-        2) have a docstring for the property
-        3) fget, fset, fdel methods must be abstract
+
+    1) have the property
+    2) have a docstring for the property
+    3) fget, fset, fdel methods must be abstract
 
     Parameters
     ----------
-    obj : any object
+    obj : object
         Any Python object.
     met : str
         Name of the method to test
@@ -185,7 +196,9 @@ def generic_test_abstract_methods(obj, mets):
     Note: this is depricated.
     Test all methods for raise NotImplementedError in an object.
 
-    obj : Any object
+    Parameters
+    ----------
+    obj : object
         Any Python object to test for method attributes.
     mets : list
         List of str for attributes to be tested.
@@ -208,7 +221,9 @@ def generic_test_concrete_methods(obj, met):
     """
     Test all methods for not raising NotImplementedError in an object.
 
-    obj : Any object
+    Parameters
+    ----------
+    obj : object
         Any Python object to test for method attributes.
     met : list
         List of str for attributes to be tested.

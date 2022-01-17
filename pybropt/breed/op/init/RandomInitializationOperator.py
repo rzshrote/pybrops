@@ -12,14 +12,12 @@ class RandomInitializationOperator(InitializationOperator):
 
     def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng = None, **kwargs):
         """
+        Constructor for the concrete class RandomInitializationOperator.
+
+        Parameters
+        ----------
         ntaxa : dict
             Number of taxa.
-            Field | Type        | Description
-            ------+-------------+------------
-            cand  | int         |
-            main  | int         |
-            queue | list of int |
-
         nloci : int
             Number of loci.
         ntrait : int
@@ -53,44 +51,22 @@ class RandomInitializationOperator(InitializationOperator):
         Parameters
         ----------
         kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing three dict objects: (geno, bval, gmod)
-            Elements of this tuple are as follows:
-            Element | Description
-            --------+-----------------------------------
-            geno    | A dict of genotypic data.
-            bval    | A dict of breeding value data.
-            gmod    | A dict of genomic models.
+            A tuple of length 5: ``(genome, geno, pheno, bval, gmod)``
 
-            Dictionaries must have the following fields:
-            ============================================
-            geno : dict
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
-            bval : dict
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-                queue      | List of BreedingValueMatrix | Breeding values for populations on queue
-                queue_true | List of BreedingValueMatrix | True breeding values for populations on queue
-            gmod : dict
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                queue | List of GenomicModel | Genomic models for populations on queue
-                true  | GenomicModel         | True genomic model for trait(s)
+            Where:
+
+            - ``genome`` is a ``dict`` of genomes for the breeding program.
+            - ``geno`` is a ``dict`` of genotypes for the breeding program.
+            - ``pheno`` is a ``dict`` of phenotypes for the breeding program.
+            - ``bval`` is a ``dict`` of breeding values for the breeding program.
+            - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
+        # TODO: implement me
         # create empty containters
         geno = {
             "cand" : None,

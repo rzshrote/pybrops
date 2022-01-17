@@ -45,15 +45,21 @@ class ThreeWayDHCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         sel : numpy.ndarray
-            A 1D array of indices of selected individuals of shape (k,).
+            A 1D array of indices of selected individuals of shape ``(k,)``.
+
             Where:
-                'k' is the number of selected individuals.
+
+            - ``k`` is the number of selected individuals.
+
             Indices are paired as follows:
-                First index is the recurrent parent.
-                Second index is the female parent.
-                Third index is the male parent.
-            Example:
-                [1,5,3,8,2,7]
+
+            - First index is the recurrent parent.
+            - Second index is the female parent.
+            - Third index is the male parent.
+
+            Example::
+
+                sel = [1,5,3,8,2,7]
                 recurrent = 1,8
                 female = 5,2
                 male = 3,7

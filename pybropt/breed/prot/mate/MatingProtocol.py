@@ -35,8 +35,8 @@ class MatingProtocol:
             Number of progeny to generate per cross.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
 

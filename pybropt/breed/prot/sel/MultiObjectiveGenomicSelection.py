@@ -35,64 +35,71 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             Optimization algorithm to optimize the objective function.
         method : str
             Method of selecting parents.
-            Method   | Description
-            ---------+----------------------------------------------------------
-            "single" | MOGS is transformed to a single objective and
-                     | optimization is done on the transformed function.
-                     | This is done using the 'trans' function provided:
-                     |    optimize : objfn_trans(MOGS)
-            -------+------------------------------------------------------------
-            "pareto" | MOGS is transformed by a transformation function, but NOT
-                     | reduced to a single objective. The Pareto frontier for
-                     | this transformed function is mapped using a
-                     | multi-objective GA.
-                     | Objectives are scaled to [0,1] and a vector orthogonal to
-                     | the hyperplane defined by the extremes of the front is
-                     | drawn starting at the point defined by 'ndset_trans'. The
-                     | closest point on the Pareto frontier to the orthogonal
-                     | vector is selected.
-            ---------+----------------------------------------------------------
+
+            +--------------+---------------------------------------------------+
+            | Method       | Description                                       |
+            +==============+===================================================+
+            | ``"single"`` | MOGS is transformed to a single objective and     |
+            |              | optimization is done on the transformed function. |
+            |              | This is done using the ``trans`` function         |
+            |              | provided::                                        |
+            |              |                                                   |
+            |              |    optimize : objfn_trans(MOGS)                   |
+            +--------------+---------------------------------------------------+
+            | ``"pareto"`` | MOGS is transformed by a transformation function, |
+            |              | but NOT reduced to a single objective. The Pareto |
+            |              | frontier for this transformed function is mapped  |
+            |              | using a multi-objective genetic algorithm.        |
+            |              |                                                   |
+            |              | Objectives are scaled to :math:`[0,1]` and a      |
+            |              | vector orthogonal to the hyperplane defined by    |
+            |              | the extremes of the front is drawn starting at    |
+            |              | the point defined by ``ndset_trans``. The closest |
+            |              | point on the Pareto frontier to the orthogonal    |
+            |              | vector is selected.                               |
+            +--------------+---------------------------------------------------+
         objfn_trans : function or callable
             Function to transform the MOGS function. If method = "single", this
             function must return a scalar. If method = "pareto", this function
             must return a numpy.ndarray.
 
-            Function definition:
-            --------------------
-            objfn_trans(obj, **kwargs):
-                Parameters
-                    obj : scalar, numpy.ndarray
-                        Objective scalar or vector to be transformed
-                    kwargs : dict
-                        Additional keyword arguments
-                Returns
-                    out : scalar, numpy.ndarray
-                        Transformed objective scalar or vector.
+            Function definition::
+
+                objfn_trans(obj, **kwargs):
+                    Parameters
+                        obj : scalar, numpy.ndarray
+                            Objective scalar or vector to be transformed
+                        kwargs : dict
+                            Additional keyword arguments
+                    Returns
+                        out : scalar, numpy.ndarray
+                            Transformed objective scalar or vector.
         objfn_trans_kwargs : dict
             Dictionary of keyword arguments to be passed to 'objfn_trans'.
         objfn_wt : float, numpy.ndarray
             Weight applied to transformed objective function. Indicates whether
-            a function is maximizing or minimizing.
-                1.0 for maximizing function.
-                -1.0 for minimizing function.
+            a function is maximizing or minimizing:
+
+            - ``1.0`` for maximizing function.
+            - ``-1.0`` for minimizing function.
         ndset_trans : numpy.ndarray
             Function to transform nondominated points along the Pareto frontier
             into a single score for each point.
 
-            Function definition:
-            --------------------
-            ndset_trans(ndset, **kwargs):
-                Parameters
-                    ndset : numpy.ndarray
-                        Array of shape (j, o) containing nondominated points.
-                        Where 'j' is the number of nondominated points and 'o'
-                        is the number of objectives.
-                    kwargs : dict
-                        Additional keyword arguments.
-                Returns
-                    out : numpy.ndarray
-                        Array of shape (j,) containing transformed Pareto
-                        frontier points.
+            Function definition::
+
+                ndset_trans(ndset, **kwargs):
+                    Parameters
+                        ndset : numpy.ndarray
+                            Array of shape (j,o) containing nondominated points.
+                            Where 'j' is the number of nondominated points and
+                            'o' is the number of objectives.
+                        kwargs : dict
+                            Additional keyword arguments.
+                    Returns
+                        out : numpy.ndarray
+                            Array of shape (j,) containing transformed Pareto
+                            frontier points.
         ndset_trans_kwargs : dict
             Dictionary of keyword arguments to be passed to 'ndset_trans'.
         ndset_wt : float
@@ -102,18 +109,30 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
                 -1.0 for minimizing function.
         target : str or numpy.ndarray
             If target is a string, check value and follow these rules:
-                Value         | Description
-                --------------+-------------------------------------------------
-                "positive"    | Select alleles with the most positive effect.
-                "negative"    | Select alleles with the most negate effect.
-                "stabilizing" | Set target allele frequency to 0.5.
-            If target is a numpy.ndarray, use values as is.
+
+            +-------------------+----------------------------------------------+
+            | Value             | Description                                  |
+            +===================+==============================================+
+            | ``"positive"``    | Select alleles with the most positive        |
+            |                   | effect.                                      |
+            +-------------------+----------------------------------------------+
+            | ``"negative"``    | Select alleles with the most negate effect.  |
+            +-------------------+----------------------------------------------+
+            | ``"stabilizing"`` | Set target allele frequency to ``0.5``.      |
+            +-------------------+----------------------------------------------+
+            | ``numpy.ndarray`` | Use frequency values in ``target`` as is.    |
+            +-------------------+----------------------------------------------+
         weight : str or numpy.ndarray
             If weight is a string, check value and follow these rules:
-                Value       | Description
-                ------------+---------------------------------------------------
-                "magnitude" | Assign weights using the magnitudes of regression coefficients.
-                "equal"     | Assign weights equally.
+
+            +-----------------+------------------------------------------------+
+            | Value           | Description                                    |
+            +=================+================================================+
+            | ``"magnitude"`` | Assign weights using the magnitudes of         |
+            |                 | regression coefficients.                       |
+            +-----------------+------------------------------------------------+
+            | ``"equal"``     | Assign weights equally.                        |
+            +-----------------+------------------------------------------------+
         ga_ngen : int
             Number of generations to evolve multi-objective genetic algorithm.
         ga_mu : int
@@ -127,6 +146,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             Number of recombinations follows a Poisson distribution meaning that
             the mean number of recombinations per chromosome in the genetic
             algorithm is 'ga_M'.
+
             ONLY RELEVANT TO THE GENETIC ALGORITHM. DOES NOT AFFECT SIMULATION
             OF GENETIC RECOMBINATIONS IN BREEDING SIMULATIONS.
         rng : numpy.random.Generator or None

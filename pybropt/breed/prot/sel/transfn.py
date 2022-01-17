@@ -5,18 +5,6 @@ def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
     Transform a set of non-dominated points by calculating their distances to a
     vector.
 
-    How this is done:
-        Step 1)
-            Apply weights to each objective.
-        Step 2)
-            Scale points for each objective to the range [0,1]
-        Step 3)
-            For each scaled point, calculate a plane that is both perpendicular
-            to the input vector and contains the point. Determine the point on
-            the plane where the vector intersects the plane.
-        Step 4)
-            Calculate the distance (norm) between the two points.
-
     Parameters
     ----------
     mat : numpy.ndarray
@@ -41,6 +29,18 @@ def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
     out : numpy.ndarray
         An array of shape (npt,) containing the distance between each point
         to the vector.
+
+    Notes
+    -----
+    How the transformation is done:
+
+    1. Apply weights to each objective.
+    2. Scale points for each objective to the range [0,1]
+    3. For each scaled point, calculate a plane that is both perpendicular to
+       the input vector and contains the point. Determine the point on the
+       plane where the vector intersects the plane.
+    4. Calculate the distance (norm) between the two points.
+
     """
     # transform mat to all maximizing functions
     # (npt,nobj) * (nobj,) -> (npt,nobj) * (1,nobj) -> (npt,nobj)
@@ -107,10 +107,10 @@ def trans_dot(mat, wt, **kwargs):
     """
     Transform a numpy.ndarray by taking the dot product with a vector of weights
 
-    Useful for the weight sum method:
+    Useful for the weight sum method::
+
         mat.shape == (npt,nobj)
         wt.shape == (nobj,)
-
         mat.dot(wt).shape == (npt,)
 
     Parameters

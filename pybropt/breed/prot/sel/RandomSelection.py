@@ -33,7 +33,8 @@ class RandomSelection(SelectionProtocol):
             Whether to sample parents with replacement.
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
-            If 'rng' is None, use pybropt.core.random module (NOT THREAD SAFE!).
+            If ``rng`` is ``None``, use ``pybropt.core.random`` module
+            (NOT THREAD SAFE!).
         """
         super(RandomSelection, self).__init__(**kwargs)
 
@@ -88,35 +89,36 @@ class RandomSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
         nparent : int, None
-            Number of parents. If None, use default.
+            Number of parents. If ``None``, use default.
         ncross : int, None
-            Number of crosses per configuration. If None, use default.
+            Number of crosses per configuration. If ``None``, use default.
         nprogeny : int
-            Number of progeny per cross. If None, use default.
+            Number of progeny per cross. If ``None``, use default.
         replace : bool, None
-            Whether to sample parents with or without replacement. If None, use
-            default.
+            Whether to sample parents with or without replacement. If ``None``,
+            use default.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get default parameters if any are None
         if nparent is None:
@@ -140,6 +142,24 @@ class RandomSelection(SelectionProtocol):
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
         Return a selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -166,7 +186,25 @@ class RandomSelection(SelectionProtocol):
 
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a vectorized objective function for the provided datasets.
+        Return a vectorized selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -195,6 +233,29 @@ class RandomSelection(SelectionProtocol):
         """
         Random selection has no Pareto frontier since it has no objective function.
         Raises RuntimeError.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
         """
         raise RuntimeError("Random selection has no Pareto frontier since it has no objective function.")
 
@@ -204,17 +265,20 @@ class RandomSelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel, n, t, rng, trans, kwargs):
         """
-        Randomly assign a score in the range [-1,1) individuals for each trait.
+        Randomly assign a score in the range :math:`[-1,1)` individuals for each trait.
 
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (k,)
+            A selection indices matrix of shape ``(k,)``.
+
             Where:
-                'k' is the number of individuals to select.
+
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, use all individuals.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, use all individuals.
         n : int
             The number of individuals available for selection.
         t : int
@@ -224,18 +288,21 @@ class RandomSelection(SelectionProtocol):
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A GEBV matrix of shape (t,) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A GEBV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # get random number vector lengths
         nsel = n if sel is None else len(sel)   # get number of individuals
@@ -256,18 +323,22 @@ class RandomSelection(SelectionProtocol):
     @staticmethod
     def objfn_vec_static(sel, n, t, rng, trans, kwargs):
         """
-        Randomly assign a score in the range [-1,1) individuals for each trait.
+        Randomly assign a score in the range :math:`[-1,1)` individuals for
+        each trait.
 
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (j,k)
+            A selection indices matrix of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'k' is the number of individuals to select.
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, score each individual separately: (n,1)
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, score each individual separately: (n,1)
         n : int
             The number of individuals available for selection.
         t : int
@@ -275,19 +346,22 @@ class RandomSelection(SelectionProtocol):
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single numpy.ndarray argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A GEBV matrix of shape (j,t) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A GEBV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                'j' is the number of selection configurations.
-                't' is the number of traits.
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
         # get random number vector lengths
         nsel = (n,1) if sel is None else sel.shape  # get number of individuals (j,k)

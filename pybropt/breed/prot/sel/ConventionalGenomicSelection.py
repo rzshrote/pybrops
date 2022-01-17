@@ -70,7 +70,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
     ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
 
         Parameters
         ----------
@@ -90,8 +90,8 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
         nparent : int
@@ -103,16 +103,17 @@ class ConventionalGenomicSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get default parameters if any are None
         if nparent is None:
@@ -212,20 +213,25 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return a selection objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Used by this function. Input genotype matrix.
+            Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -251,20 +257,25 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
         """
-        Return a vectorized objective function.
+        Return a vectorized selection objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Used by this function. Input genotype matrix.
+            Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -310,28 +321,29 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing two objects (frontier, sel_config)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
         if nparent is None:
             nparent = self.nparent
@@ -387,42 +399,52 @@ class ConventionalGenomicSelection(SelectionProtocol):
         (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
         Genomic Estimated Breeding Values (GEBV) for a population.
 
-        CGS selects the 'q' individuals with the largest GEBVs.
+        CGS selects the ``q`` individuals with the largest GEBVs.
 
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (k,)
+            A selection indices matrix of shape ``(k,)``.
+
             Where:
-                'k' is the number of individuals to select.
+
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, use all individuals.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, use all individuals.
         mat : numpy.ndarray
-            A genotype matrix of shape (n, p).
+            A genotype matrix of shape ``(n,p)``.
+
             Where:
-                'n' is the number of individuals.
-                'p' is the number of markers.
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
         u : numpy.ndarray
-            A trait prediction coefficients matrix of shape (p, t).
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A GEBV matrix of shape (t,) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A GEBV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:
@@ -451,39 +473,49 @@ class ConventionalGenomicSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (j,k)
+            A selection indices matrix of shape ``(j,k)``.
+
             Where:
-                'j' is the number of selection configurations.
-                'k' is the number of individuals to select.
+
+            - ``j`` is the number of selection configurations.
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, score each individual separately: (n,1)
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, score each individual separately: ``(n,1)``
         mat : numpy.ndarray
-            A genotype matrix of shape (n, p).
+            A genotype matrix of shape ``(n,p)``.
+
             Where:
-                'n' is the number of individuals.
-                'p' is the number of markers.
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
         u : numpy.ndarray
-            A trait prediction coefficients matrix of shape (p, t).
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A GEBV matrix of shape (j,t) if 'trans' is None.
-            Otherwise, of shape specified by 'trans'.
+            A GEBV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
             Where:
-                'j' is the number of selection configurations.
-                't' is the number of traits.
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
         # if sel is None, slice all individuals
         if sel is None:

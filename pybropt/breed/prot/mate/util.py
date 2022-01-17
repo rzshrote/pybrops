@@ -11,13 +11,18 @@ def mat_meiosis(geno, sel, xoprob, rng):
     Parameters
     ----------
     geno : numpy.ndarray
+        Genotype matrix.
     sel : numpy.ndarray
+        Selection configuration array.
     xoprob : numpy.ndarray
-    rng : random number generator instance
+        Crossover porbability array.
+    rng : numpy.Generator
+        Random number generator instance
 
     Returns
     -------
     gamete : numpy.ndarray
+        Genotype matrix of gametes.
     """
     # calculate shape of the retured gamete matrix
     # number of rows is the number of elements in sel

@@ -35,48 +35,28 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Number of environments.
         nrep : int, numpy.ndarray
             Number of replications per environment.
-            --------------------------------------------------------------------
-            If int:
-                Broadcast 'nrep' to an array of shape (nenv,)
-            If numpy.ndarray:
-                Must be of shape (nenv,)
-            --------------------------------------------------------------------
+
+            If ``int``, then broadcast ``nrep`` to an array of shape ``(nenv,)``
+            If ``numpy.ndarray``, then must be of shape ``(nenv,)``
         var_env : numeric, numpy.ndarray
             Environmental variance parameter for each trait.
             Determines distribution of fixed effect added to each environment.
-            --------------------------------------------------------------------
-            If numeric:
-                Broadcast 'var_env' to an array of shape (ntrait,)
-            If numpy.ndarray:
-                Must be of shape (ntrait,)
-            --------------------------------------------------------------------
+
+            If numeric, then broadcast ``var_env`` to an array of shape ``(ntrait,)``
+            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
         var_rep : numeric, numpy.ndarray
             Replication variance parameter for each trait.
+
             Replication variance is assumed to be constant across environments.
             Replication is nested within each environment.
-            --------------------------------------------------------------------
-            If numeric:
-                Broadcast 'var_rep' to an array of shape (ntrait,)
-            If numpy.ndarray:
-                Must be of shape (ntrait,)
-            --------------------------------------------------------------------
+
+            If numeric, then broadcast ``var_rep`` to an array of shape ``(ntrait,)``
+            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
         var_err : numeric, numpy.ndarray
             Error variance parameter.
-            --------------------------------------------------------------------
-            If numeric:
-                Broadcast 'var_err' to an array of shape (ntrait,)
-            If numpy.ndarray:
-                Must be of shape (ntrait,)
-            --------------------------------------------------------------------
 
-
-        nrep : int, numpy.ndarray
-            Number of replications per environment.
-        var_err : numeric, numpy.ndarray
-            Error variance parameter. Determines distribution of random error
-            added to each replicate within an environment.
-            If numeric, apply variance to each trait.
-            If numpy.ndarray, must be of shape (gpmod.ntrait,)
+            If numeric, then broadcast ``var_err`` to an array of shape ``(ntrait,)``
+            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
         """
         super(G_E_Phenotyping, self).__init__(**kwargs)
         # order dependent initialization!
@@ -263,8 +243,8 @@ class G_E_Phenotyping(PhenotypingProtocol):
             Genomes of the individuals to phenotype.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         gpmod : GenomicModel, None
             Genomic prediction model to use to determine phenotypes.
         nenv : int

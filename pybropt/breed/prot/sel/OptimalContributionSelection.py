@@ -19,16 +19,41 @@ class OptimalContributionSelection(SelectionProtocol):
     ############################################################################
     def __init__(self, nparent, ncross, nprogeny, inbfn, cmatcls, bvtype = "gebv", rng = None, **kwargs):
         """
-        cmatcls : CoancestryMatrix class
+        Constructor for Optimal Contribution Selection (OCS).
+
+        Parameters
+        ----------
+        cmatcls : class
+            The class name of a CoancestryMatrix to generate.
         inbfn : function
-            inbfn(t_cur, t_max)
+            Inbreeding control function: ``inbfn(t_cur, t_max)``.
+
             Returns constraint for mean population inbreeding defined as:
-                (1/2) x'Ax = x'Kx <= inbfn(t_cur, t_max)
+
+            .. math::
+
+                \\frac{1}{2} \\textbf{x}' \\textbf{A} \\textbf{x} =
+                \\textbf{x}' \\textbf{K} \\textbf{x} =
+                f^{\\textup{Inb}}(t_{cur}, t_{max})
+
+            Where:
+
+            - :math:`x` is the parental contribution vector.
+            - :math:`A` is the additive relationship matrix.
+            - :math:`K` is the kinship relationship matrix.
+            - :math:`f^{\\textup{Inb}}` is ``inbfn``.
+            - :math:`t_{cur}` is the current time.
+            - :math:`t_{max}` is the deadline time.
         bvtype : str
             Whether to use GEBVs or phenotypic EBVs.
-            Options:
-                "gebv"      Use GEBVs
-                "ebv"       Use EBVs
+
+            +------------+-------------+
+            | Option     | Description |
+            +============+=============+
+            | ``"gebv"`` | Use GEBVs   |
+            +------------+-------------+
+            | ``"ebv"``  | Use EBVs    |
+            +------------+-------------+
         """
         super(OptimalContributionSelection, self).__init__(**kwargs)
 
@@ -60,10 +85,12 @@ class OptimalContributionSelection(SelectionProtocol):
         Returns
         -------
         out : numpy.ndarray
-            Breeding value matrix of shape (n,t).
+            Breeding value matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of individuals.
-                't' is the number of traits.
+
+            - ``n`` is the number of individuals.
+            - ``t`` is the number of traits.
         """
         if bvtype is None:                  # if no bvtype provided
             bvtype = self.bvtype            # get default option
@@ -82,9 +109,11 @@ class OptimalContributionSelection(SelectionProtocol):
         Returns
         -------
         out : numpy.ndarray
-            A kinship matrix of shape (n,n).
+            A kinship matrix of shape ``(n,n)``.
+
             Where:
-                'n' is the number of individuals.
+
+            - ``n`` is the number of individuals.
         """
         # set default parameters
         if cmatcls is None:                     # if no cmatcls provided
@@ -110,18 +139,18 @@ class OptimalContributionSelection(SelectionProtocol):
         Parameters
         ----------
         bv : numpy.ndarray
-            Array of shape (n,) containing breeding values for each parent.
+            Array of shape ``(n,)`` containing breeding values for each parent.
         C : numpy.ndarray
-            Array of shape (n,n) containing the Cholesky decomposition of the
-            kinship matrix. Must be an upper triangle matrix.
+            Array of shape ``(n,n)`` containing the Cholesky decomposition of
+            the kinship matrix. Must be an upper triangle matrix.
         inbmax : float
             Maximum mean inbreeding allowed.
 
         Returns
         -------
         contrib : numpy.ndarray
-            A contribution vector of shape (n,) defining each parent's relative
-            contribution.
+            A contribution vector of shape ``(n,)`` defining each parent's
+            relative contribution.
         """
         # get the number of taxa
         ntaxa = len(bv)
@@ -161,17 +190,21 @@ class OptimalContributionSelection(SelectionProtocol):
 
     def sus(self, k, contrib):
         """
-        Stochastic universal sampling
+        Perform stochastic universal sampling.
 
         k : int
             Number of individuals to sample.
         contrib : numpy.ndarray
-            Contribution matrix of shape (n,).
+            Contribution matrix of shape ``(n,)``.
+
             Where:
-                'n' is the number of individuals.
+
+            - ``n`` is the number of individuals.
+
             Restrictions:
-                Values are restricted to [0, inf].
-                Sum of values in vector must be > 0.0
+
+            - Values are restricted to :math:`[0,\\infty]`.
+            - Sum of values in vector must be :math:`>0.0`.
         """
         tot_fit = contrib.sum()                         # calculate the total fitness
         ptr_dist = tot_fit / k                          # calculate the distance between pointers
@@ -223,23 +256,27 @@ class OptimalContributionSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         method : str
             Optimization strategy.
-            Option  | Description
-            --------+-----------------------------------------------------------
-            single  | Transform all breeding values into a single overall
-                    | breeding value using the function 'objfn_trans'. Then
-                    | solve for OCS with a diversity constraint using
-                    | transformed breeding values.
-            --------+-----------------------------------------------------------
-            pareto  | Treat inbreeding and each trait as different objectives.
-                    | Transform this list of objectives using 'objfn_trans' to
-                    | get a list of transformed objectives. Approximate the
-                    | Pareto by identifying a set of non-dominated points along
-                    | each transformed objective. Then apply 'ndset_trans' to
-                    | score the non-dominated points.
+
+            +--------+---------------------------------------------------------+
+            | Option | Description                                             |
+            +========+=========================================================+
+            | single | Transform all breeding values into a single overall     |
+            |        | breeding value using the function ``objfn_trans``. Then |
+            |        | solve for OCS with a diversity constraint using         |
+            |        | transformed breeding values.                            |
+            +--------+---------------------------------------------------------+
+            | pareto | Treat inbreeding and each trait as different            |
+            |        | objectives. Transform this list of objectives using     |
+            |        | ``objfn_trans`` to get a list of transformed            |
+            |        | objectives. Approximate the Pareto by identifying a set |
+            |        | of non-dominated points along each transformed          |
+            |        | objective. Then apply ``ndset_trans`` to score the      |
+            |        | non-dominated points.                                   |
+            +--------+---------------------------------------------------------+
         nparent : int
         ncross : int
         nprogeny : int
@@ -249,16 +286,17 @@ class OptimalContributionSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get parameters
         if nparent is None:
@@ -383,7 +421,25 @@ class OptimalContributionSelection(SelectionProtocol):
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, cmatcls = None, bvtype = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return an objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Input phased genotype matrix containing genomes.
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Input breeding value matrix.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
         # get default parameters if any are None
         if trans is None:
@@ -467,20 +523,21 @@ class OptimalContributionSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing two objects (frontier, sel_config)
-            Elements
-            --------
-            frontier : numpy.ndarray
-                Array of shape (q,v) containing Pareto frontier points.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'v' is the number of objectives for the frontier.
-            sel_config : numpy.ndarray
-                Array of shape (q,k) containing parent selection decisions for
-                each corresponding point in the Pareto frontier.
-                Where:
-                    'q' is the number of points in the frontier.
-                    'k' is the number of search space decision variables.
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
         raise NotImplementedError("method is abstract")
 
@@ -496,37 +553,49 @@ class OptimalContributionSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A parent contribution vector of shape (n,) and floating dtype.
+            A parent contribution vector of shape ``(n,)`` and floating dtype.
+
             Where:
-                'n' is the number of individuals.
+
+            - ``n`` is the number of individuals.
         mat : numpy.ndarray
-            A breeding value matrix of shape (n,t).
+            A breeding value matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of individuals.
-                't' is the number of traits.
+
+            - ``n`` is the number of individuals.
+            - ``t`` is the number of traits.
         K : numpy.ndarray
             A kinship matrix of shape (n,n).
+
             Where:
-                'n' is the number of individuals.
+
+            - ``n`` is the number of individuals.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         ocs : numpy.ndarray
-            A EBV matrix of shape (1+t,) if 'trans' is None.
+            A EBV matrix of shape (1+t,) if ``trans`` is ``None``.
+
             The first index in the array is the mean expected kinship:
-                mean expected inbreeding = (sel') @ K @ (sel)
-            Other indices are the mean expected trait values for the other 't'
-            traits.
-            Otherwise, of shape specified by 'trans'.
+
+            .. math::
+                mean expected inbreeding = \\textbf{(sel)}' \\textbf{K} \\textbf{(sel)}
+
+            Other indices are the mean expected trait values for the other ``t``
+            traits. Otherwise, of shape specified by ``trans``.
+
             Where:
-                't' is the number of traits.
+
+            - ``t`` is the number of traits.
         """
         # Calculate the mean expected kinship: x'Kx
         # Step 1: (n,) . (n,n) -> (n,)
@@ -557,39 +626,50 @@ class OptimalContributionSelection(SelectionProtocol):
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A parent contribution vector of shape (j,n) and floating dtype.
+            A parent contribution vector of shape ``(j,n)`` and floating dtype.
+
             Where:
-                'j' is the number of selection configurations.
-                'n' is the number of individuals.
+
+            - ``j`` is the number of selection configurations.
+            - ``n`` is the number of individuals.
         mat : numpy.ndarray
-            A breeding value matrix of shape (n,t).
+            A breeding value matrix of shape ``(n,t)``.
+
             Where:
-                'n' is the number of individuals.
-                't' is the number of traits.
+
+            - ``n`` is the number of individuals.
+            - ``t`` is the number of traits.
         K : numpy.ndarray
-            A kinship matrix of shape (n,n).
+            A kinship matrix of shape ``(n,n)``.
+
             Where:
-                'n' is the number of individuals.
+
+            - ``n`` is the number of individuals.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single numpy.ndarray argument.
+            - Must return a single object, whether scalar or numpy.ndarray.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
         cgs : numpy.ndarray
-            A EBV matrix of shape (j,1+t) if 'trans' is None.
+            A EBV matrix of shape ``(j,1+t)`` if ``trans`` is ``None``.
             The first column in the matrix is the mean expected kinship:
-                mean expected inbreeding = (sel') @ K @ (sel)
-            Other indices are the mean expected trait values for the other 't'
-            traits.
-            Otherwise, of shape specified by 'trans'.
+
+            .. math::
+                mean expected inbreeding = \\textbf{(sel)}' \\textbf{K} \\textbf{(sel)}
+
+            Other indices are the mean expected trait values for the other ``t``
+            traits. Otherwise, of shape specified by ``trans``.
+
             Where:
-                'j' is the number of selection configurations.
-                't' is the number of traits.
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
         # Calculate the mean expected kinship: x'Kx
         # Step 1: for each row in range {1,2,...,j}
