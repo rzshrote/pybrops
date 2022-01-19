@@ -19,6 +19,9 @@ from pybropt.core.error import check_is_str
 class MultiObjectiveGenomicSelection(SelectionProtocol):
     """docstring for MultiObjectiveGenomicSelection."""
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, target = "positive", weight = "magnitude", ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5, rng = None, **kwargs):
         """
         Constructor for MultiObjectiveGenomicSelection class.
@@ -190,74 +193,98 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################################################################
 
     ############################################################################
+    ########################## Private Object Methods ##########################
+    ############################################################################
+    @staticmethod
+    def _calc_mkrwt(weight, u):
+        if isinstance(weight, str):
+            weight = weight.lower()             # convert to lowercase
+            if weight == "magnitude":           # return abs(u)
+                return numpy.absolute(u)
+            elif weight == "equal":             # return 1s matrix
+                return numpy.full(u.shape, 1.0, dtype='float64')
+            else:
+                raise ValueError("string value for 'weight' not recognized")
+        elif isinstance(weight, numpy.ndarray):
+            return weight
+        else:
+            raise TypeError("variable 'weight' must be a string or numpy.ndarray")
+
+    @staticmethod
+    def _calc_tfreq(target, u):
+        if isinstance(target, str):
+            target = target.lower()                 # convert to lowercase
+            if target == "positive":
+                return numpy.float64(u >= 0.0)   # positive alleles are desired
+            elif target == "negative":
+                return numpy.float64(u <= 0.0)   # negative alleles are desired
+            elif target == "stabilizing":
+                return 0.5                          # both alleles desired
+                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
+            else:
+                raise ValueError("string value for 'target' not recognized")
+        elif isinstance(target, numpy.ndarray):
+            return target
+        else:
+            raise TypeError("variable 'target' must be a string or numpy.ndarray")
+
+    ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, miscout = None, nparent = None, algorithm = None, method = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, weight = None, target = None, **kwargs):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
 
         Parameters
         ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes (unphased most likely)
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
         t_cur : int
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        geno : dict
-            A dict containing genotypic data for all breeding populations.
-            Must have the following fields:
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
-        bval : dict
-            A dict containing breeding value data.
-            Must have the following fields:
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-        gmod : dict
-            A dict containing genomic models.
-            Must have the following fields:
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                true  | GenomicModel         | True genomic model for trait(s)
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        method : str
+            Options: "single", "pareto"
         nparent : int
-            Number of parents to select
+        ncross : int
+        nprogeny : int
         kwargs : dict
-            Additional keyword arguments to be passed to either
-            algorithm.optimize (method = "single") or self.ppareto (method =
-            "pareto"), depending on method used.
+            Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgvmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
-        # if any optional parameters are None, set to defaults.
+        # get default parameters if any are None
         if nparent is None:
             nparent = self.nparent
-        if algorithm is None:
-            algorithm = self.algorithm
-        if method is None:
-            method = self.method
+        if ncross is None:
+            ncross = self.ncross
+        if nprogeny is None:
+            nprogeny = self.nprogeny
         if objfn_trans is None:
             objfn_trans = self.objfn_trans
         if objfn_trans_kwargs is None:
@@ -274,45 +301,66 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # convert method string to lower
         method = method.lower()
 
-        # protocols for which method to use
+        # single-objective method: objfn_trans returns a single value for each
+        # selection configuration
         if method == "single":
-            # get objective function
-            objfn = self.pobjfn(
+            # get number of taxa
+            ntaxa = pgmat.ntaxa
+
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod,
                 trans = objfn_trans,
-                trans_kwargs = objfn_trans_kwargs
+                trans_kwargs = objfn_trans_kwargs,
+                weight = weight,
+                target = target
             )
 
-            # optimize the objective function
-            soln_dict = algorithm.optimize(
-                objfn,
-                k = nparent,
-                setspace = numpy.arange(geno["cand"].ntaxa),
-                objwt = objfn_wt
+            # create optimization algorithm
+            soalgo = SteepestAscentSetHillClimber(
+                k = nparent,                    # number of parents to select
+                setspace = numpy.arange(ntaxa), # parental indices
+                rng = self.rng,                 # PRNG source
+                objwt = 1.0                     # maximizing function
             )
 
-            # extract solution
-            sel = soln_dict["soln"]
+            # optimize using hill-climber algorithm
+            opt = soalgo.optimize(objfn)
 
-            # return optimized selection configuration and other items
-            return geno["cand"], sel, self.ncross, self.nprogeny, soln_dict
+            # get best solution
+            sel = opt["soln"]
 
+            # add optimization details to miscellaneous output
+            if miscout is not None:     # if miscout was provided
+                miscout.update(opt)     # add dict to dict
+
+            return pgmat, sel, ncross, nprogeny
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
         elif method == "pareto":
             # get the pareto frontier
-            frontier, sel_config, misc = self.ppareto(
+            frontier, sel_config = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                geno = geno,
-                bval = bval,
-                gmod = gmod,
+                miscout = miscout,
                 nparent = nparent,
                 objfn_trans = objfn_trans,
                 objfn_trans_kwargs = objfn_trans_kwargs,
-                objfn_wt = objfn_wt
+                objfn_wt = objfn_wt,
+                weight = weight,
+                target = target
             )
 
             # get scores for each of the points along the pareto frontier
@@ -321,56 +369,164 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             # get index of maximum score
             ix = score.argmax()
 
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
 
-            return geno["cand"], sel_config[ix], ncross, nprogeny, misc
+            return pgmat, sel_config[ix], ncross, nprogeny
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, trans, trans_kwargs, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, weight = None, target = None, **kwargs):
         """
-        Return a parent selection objective function.
+        Return a selection objective function for the provided datasets.
 
         Parameters
         ----------
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
-        kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
-        mat = geno["cand"].mat                      # (m,n,p) get genotype matrix
-        beta = gmod["cand"].beta                    # (p,t) get regression coefficients
-        mkrwt = self.calc_mkrwt(self.weight, beta)  # (p,t) get marker weights
-        tfreq = self.calc_tfreq(self.target, beta)  # (p,t) get target allele frequencies
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+        if weight is None:
+            weight = self.weight
+        if target is None:
+            target = self.target
+
+        # calculate default function parameters
+        mat = gmat.mat                      # (n,p) get genotype matrix
+        ploidy = gmat.ploidy                # (scalar) get number of phases
+        u = gpmod.u                         # (p,t) get regression coefficients
+        mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
+        tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn.__code__,                        # byte code pointer
-            self.objfn.__globals__,                     # global variables
-            None,                                       # new name for the function
-            (mat, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
-            self.objfn.__closure__                      # closure byte code pointer
+            self.objfn_static.__code__,                         # byte code pointer
+            self.objfn_static.__globals__,                      # global variables
+            None,                                               # new name for the function
+            (mat, ploidy, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_static.__closure__                       # closure byte code pointer
         )
 
         return outfn
 
-    # TODO: implementation of this function
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, weight = None, target = None, **kwargs):
         """
-        Return a vectorized objective function.
-        """
-        raise NotImplementedError("method is abstract")
+        Return a vectorized selection objective function for the provided datasets.
 
-    def ppareto(self, t_cur, t_max, geno, bval, gmod, nparent = None,
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None,
-    ngen = None, mu = None, lamb = None, M = None, **kwargs):
-        # get parameters
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Not used by this function.
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
+        """
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+        if weight is None:
+            weight = self.weight
+        if target is None:
+            target = self.target
+
+        # calculate default function parameters
+        mat = gmat.mat                      # (n,p) get genotype matrix
+        ploidy = gmat.ploidy                # (scalar) get number of phases
+        u = gpmod.u                         # (p,t) get regression coefficients
+        mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
+        tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_vec_static.__code__,                     # byte code pointer
+            self.objfn_vec_static.__globals__,                  # global variables
+            None,                                               # new name for the function
+            (mat, ploidy, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_vec_static.__closure__                   # closure byte code pointer
+        )
+
+        return outfn
+
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, weight = None, target = None, **kwargs):
+        """
+        Calculate a Pareto frontier for objectives.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
+        """
+        # process inputs, apply defaults as needed.
         if nparent is None:
             nparent = self.nparent
         if objfn_trans is None:
@@ -379,319 +535,205 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             objfn_trans_kwargs = self.objfn_trans_kwargs
         if objfn_wt is None:
             objfn_wt = self.objfn_wt
-        if ngen is None:
-            ngen = self.ga_ngen
-        if mu is None:
-            mu = self.ga_mu
-        if lamb is None:
-            lamb = self.ga_lamb
-        if M is None:
-            M = self.ga_M
 
         # get number of taxa
-        ntaxa = geno["cand"].ntaxa
+        ntaxa = gmat.ntaxa
 
-        # get objective function
-        objfn = self.pobjfn(
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
             t_cur = t_cur,
             t_max = t_max,
-            geno = geno,
-            bval = bval,
-            gmod = gmod,
             trans = objfn_trans,
             trans_kwargs = objfn_trans_kwargs,
+            weight = weight,
+            target = target
+        )
+
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
             **kwargs
         )
 
-        # MOGS objectives are minimizing (DEAP uses larger fitness as better)
-        creator.create("FitnessMax", base.Fitness, weights = tuple(objfn_wt))
-
-        # create an individual, which is a list representation
-        creator.create("Individual", list, fitness=creator.FitnessMax)
-
-        # create a toolbox
-        toolbox = base.Toolbox()
-
-        # since this is a subset problem, represent individual as a permutation
-        toolbox.register(
-            "permutation",          # create a permutation protocol
-            self.rng.choice,        # randomly sample
-            ntaxa,                  # from 0:ntaxa
-            size = nparent,         # select nparent from 0:ntaxa
-            replace = False         # no replacement
+        # use multi-objective optimization to approximate Pareto front.
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
         )
 
-        # register individual creation protocol
-        toolbox.register(
-            "individual",           # name of function in toolbox
-            tools.initIterate,
-            creator.Individual,
-            toolbox.permutation
-        )
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
-        # register population creation protocol
-        toolbox.register(
-            "population",           # name of function in toolbox
-            tools.initRepeat,       # list of toolbox.individual objects
-            list,                   # containter type
-            toolbox.individual      # function to execute
-        )
-
-        # register the objective function
-        toolbox.register(
-            "evaluate",             # name of function in toolbox
-            objfn                   # function to execute
-        )
-
-        # define set crossover operator
-        def cxSet(ind1, ind2, indpb):
-            a = numpy.array(ind1)           # convert ind1 to numpy.ndarray
-            b = numpy.array(ind2)           # convert ind2 to numpy.ndarray
-            mab = ~numpy.isin(a,b)          # get mask for ind1 not in ind2
-            mba = ~numpy.isin(b,a)          # get mask for ind2 not in ind1
-            ap = a[mab]                     # get reduced ind1 chromosome
-            bp = b[mba]                     # get reduced ind2 chromosome
-            clen = min(len(ap), len(bp))    # get minimum chromosome length
-            # crossover algorithm
-            p = 0                               # get starting individual phase index
-            for i in range(clen):               # for each point in the chromosome
-                if self.rng.random() < indpb:   # if a crossover has occured
-                    p = 1 - p                   # switch parent
-                if p == 1:                      # if using second parent
-                    ap[i], bp[i] = bp[i], ap[i] # exchange alleles
-            a[mab] = ap                         # copy over exchanges
-            b[mba] = bp                         # copy over exchanges
-            # copy to original arrays
-            for i in range(len(ind1)):
-                ind1[i] = a[i]
-            for i in range(len(ind2)):
-                ind2[i] = b[i]
-            return ind1, ind2
-
-        ### register the crossover operator
-        indpb = 0.5 * (1.0 - math.exp(-2.0 * M / nparent))
-        toolbox.register(
-            "mate",                 # name of function
-            cxSet,                  # function to execute
-            indpb = indpb           # average of M crossovers
-        )
-
-        # define set mutation operator
-        def mutSet(ind, setspace, indpb):
-            a = numpy.array(setspace)
-            for i in range(len(ind)):
-                if self.rng.random() < indpb:
-                    mab = ~numpy.isin(a,ind)
-                    ind[i] = self.rng.choice(a[mab], 1, False)[0]
-            return ind
-
-        # register the mutation operator
-        toolbox.register(
-            "mutate",                               # name of function
-            mutSet,                                 # custom mutation operator
-            setspace = [i for i in range(ntaxa)],   # set space
-            indpb = 2.0 / nparent                   # probability of mutation
-        )
-
-        # register the selection operator
-        toolbox.register(
-            "select",
-            tools.selNSGA2
-        )
-
-        # register logbook statistics to take
-        stats = tools.Statistics(lambda ind: ind.fitness.values)
-        stats.register("min", numpy.min, axis=0)
-        stats.register("max", numpy.max, axis=0)
-        stats.register("avg", numpy.mean, axis=0)
-        stats.register("std", numpy.std, axis=0)
-
-        # create logbook
-        logbook = tools.Logbook()
-        logbook.header = ("gen", "evals", "min", "max", "avg", "std")
-
-        # create population
-        pop = toolbox.population(n = mu)
-
-        # evaluate individuals with an invalid fitness
-        invalid_ind = [ind for ind in pop if not ind.fitness.valid]
-        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-        for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit
-
-        # assign crowding distances (no actual selection is done)
-        pop = toolbox.select(pop, len(pop))
-
-        # compile population statistics
-        record = stats.compile(pop)
-
-        # record statistics in logbook
-        logbook.record(gen=0, evals=len(invalid_ind), **record)
-
-        # main genetic algorithm loop
-        for gen in range(1, ngen):
-            # create lambda progeny using distance crowding tournament selection
-            offspring = tools.selTournamentDCD(pop, lamb)
-
-            # clone individuals for modification
-            offspring = [toolbox.clone(ind) for ind in offspring]
-
-            # for each offspring pair
-            for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
-                toolbox.mate(ind1, ind2)    # mating is guaranteed
-                toolbox.mutate(ind1)        # mutate ind1
-                toolbox.mutate(ind2)        # mutate ind2
-                del ind1.fitness.values     # delete fitness value since ind1 is modified
-                del ind2.fitness.values     # delete fitness value since ind1 is modified
-
-            # Evaluate the individuals with an invalid fitness
-            invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
-            fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
-            for ind, fit in zip(invalid_ind, fitnesses):
-                ind.fitness.values = fit
-
-            # Select the next generation population
-            pop = toolbox.select(pop + offspring, mu)
-
-            # save logs
-            record = stats.compile(pop)
-            logbook.record(gen = gen, evals = len(invalid_ind), **record)
-
-        # extract population fitnesses (solutions)
-        pop_solution = numpy.array([ind.fitness.values for ind in pop])
-
-        # extract population decision configurations
-        pop_decision = numpy.array(pop)
-
-        # get pareto frontier mask
-        pareto_mask = is_pareto_efficient(
-            pop_solution,
-            wt = objfn_wt,
-            return_mask = True
-        )
-
-        # get pareto frontier
-        frontier = pop_solution[pareto_mask]
-
-        # get selection configurations
-        sel_config = pop_decision[pareto_mask]
-
-        # stuff everything else into a dictionary
-        misc = {
-            "pop_solution" : pop_solution,
-            "pop_decision" : pop_decision,
-            "pop" : pop,
-            "logbook" : logbook
-        }
-
-        return frontier, sel_config, misc
+        return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn(sel, mat, tfreq, mkrwt, trans, kwargs):
+    def objfn_static(sel, mat, ploidy, tfreq, mkrwt, trans, kwargs):
         """
         Multi-objective genomic selection objective function.
-            The goal is to minimize this function. Lower is better.
-            This is a bare bones function. Minimal error checking is done.
 
-        Given a 2D weight vector 'dcoeff', calculate the Euclidian distance from the
-        origin according to:
-            dist = dot( dcoeff, F(x) )
-            Where:
-                F(x) is a vector of objective functions:
-                    F(x) = < f_PAU(x), f_PAFD(x) >
+        - The goal is to minimize all objectives for this function.
+        - This is a bare bones function. Minimal error checking is done.
 
-        f_PAU(x):
+        Objectives: :math:`F(\\textbf{x})`
 
-        Given the provided genotype matrix 'geno' and row selections from it 'sel',
-        calculate the selection allele freq. From the selection allele frequencies
-        and the target allele frequencies, determine if the target frequencies
-        cannot be attained after unlimited generations and selection rounds.
-        Multiply this vector by a weight coefficients vector 'wcoeff'.
+        .. math::
 
-        f_PAFD(x):
+            F(\\textbf{x}) = {[f^{\\textup{PAU}}(\\textbf{x}), f^{\\textup{PAFD}}(\\textbf{x})]}'
 
-        Given a genotype matrix, a target allele frequency vector, and a vector of
-        weights, calculate the distance between the selection frequency and the
-        target frequency.
+        Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
+
+        .. math::
+
+            f^{\\textup{PAU}}(\\textbf{x}) = \\textbf{w} \\cdot \\textbf{u}
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency.
+        From the selection allele frequencies and the target allele frequencies
+        ``tfreq``, determine if the target frequencies can be attained after
+        unlimited generations of selection. If the target allele frequency at a
+        locus cannot be attained, score locus as ``1``, otherwise score as
+        ``0``. Store this into a binary score vector :math:`\\textbf{u}`.
+        Take the dot product between the binary score vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAU}}(\\textbf{x})` and return the result.
+
+        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
+
+        .. math::
+            f^{\\textup{PAFD}}(\\textbf{x}) = \\textbf{w} \\cdot \\left | \\textbf{p}_{x} - \\textbf{p}_{t} \\right |
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency
+        :math:`\\textbf{p}_{x}`. From the selection allele frequencies and the
+        target allele frequencies :math:`\\textbf{p}_{t} =` ``tfreq``,
+        calculate the absolute value of the difference between the two vectors.
+        Finally, take the dot product between the difference vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAFD}}(\\textbf{x})` and return the result.
 
         Parameters
-        ==========
+        ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape (k,)
+            A selection indices matrix of shape ``(k,)``.
+
             Where:
-                'k' is the number of individuals to select.
+
+            - ``k`` is the number of individuals to select.
+
             Each index indicates which individuals to select.
-            Each index in 'sel' represents a single individual's row.
-            If 'sel' is None, use all individuals.
-        mat : numpy.ndarray, None
-            A int8 binary genotype matrix of shape (m, n, p).
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, use all individuals.
+        mat : numpy.ndarray
+            A genotype matrix of shape ``(n,p)`` representing only biallelic
+            loci. One of the two alleles at a locus is coded using a ``1``. The
+            other allele is coded as a ``0``. ``mat`` holds the counts of the
+            allele coded by ``1``.
+
             Where:
-                'm' is the number of chromosome phases (2 for diploid, etc.).
-                'n' is the number of individuals.
-                'p' is the number of markers.
-            Remarks:
-                Shape of the matrix is most critical. Underlying matrix
-                operations will support other numeric data types.
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
+
+            Example::
+
+                # matrix of shape (n = 3, p = 4)
+                mat = numpy.array([[0,2,1,0],
+                                   [2,2,1,1],
+                                   [0,1,0,2]])
+        ploidy : int
+            Number of phases that the genotype matrix ``mat`` represents.
         tfreq : floating, numpy.ndarray
-            A target allele frequency matrix of shape (p, t).
+            A target allele frequency matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
-            Example:
-                tfreq = numpy.array([0.2, 0.6, 0.7])
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Example::
+
+                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
         mkrwt : numpy.ndarray
-            A marker weight coefficients matrix of shape (p, t).
+            A marker weight coefficients matrix of shape ``(p,t)``.
+
             Where:
-                'p' is the number of markers.
-                't' is the number of traits.
-            Remarks: Values in 'mkrwt' have an assumption:
-                All values must be non-negative.
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Remarks:
+
+            - All values in ``mkrwt`` must be non-negative.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                Must accept a single numpy.ndarray argument.
-                Must return a single object, whether scalar or numpy.ndarray.
+
+            - Must accept a single numpy.ndarray argument.
+            - Must return a single object, whether scalar or numpy.ndarray.
         kwargs : dict
-            Dictionary of keyword arguments to pass to 'trans' function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
-        =======
+        -------
         mogs : numpy.ndarray
-            A MOGS score matrix of shape (2,t) or other.
+            A MOGS score matrix of shape ``(t + t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+
+            Matrix element ordering for un-transformed MOGS score matrix:
+
+            - The first set of ``t`` elements in the ``mogs`` output correspond
+              to the ``t`` PAU outputs for each trait.
+            - The second set of ``t`` elements in the ``mogs`` output correspond
+              to the ``t`` PAFD outputs for each trait.
         """
         # if no selection, select all
         if sel is None:
             sel = slice(None)
 
         # generate a view of the genotype matrix that only contains 'sel' rows.
-        # (m,(k,),p) -> (m,k,p)
-        sgeno = mat[:,sel,:]
+        # (n,p)[(k,),:] -> (k,p)
+        sgeno = mat[sel,:]
 
         # calculate reciprocal number of phases
-        rphase = 1.0 / (sgeno.shape[0] * sgeno.shape[1])
+        # number of phases * number of individuals in 'sgeno'
+        rphase = 1.0 / (ploidy * sgeno.shape[1])
 
         # calculate population frequencies; add axis for correct broadcast
-        # (m,k,p).sum[0,1] -> (p,)
+        # (k,p).sum(0) -> (p,)
         # (p,) * scalar -> (p,)
-        # (p,None) -> (p,1) # need (p,1) for broadcasting with (p,t) arrays
-        pfreq = (sgeno.sum((0,1)) * rphase)[:,None]
+        # (p,None) -> (p,1)
+        # Remark: we need (p,1) for broadcasting with (p,t) arrays
+        pfreq = (sgeno.sum(0) * rphase)[:,None]
 
         # calculate some inequalities for use multiple times
         pfreq_lteq_0 = (pfreq <= 0.0)   # is population freq <= 0.0
         pfreq_gteq_1 = (pfreq >= 1.0)   # is population freq >= 1.0
 
         # calculate allele unavailability
+        # (p,t)
         allele_unavail = numpy.where(
             tfreq >= 1.0,           # if target freq >= 1.0 (should always be 1.0)
             pfreq_lteq_0,           # then set True if sel has allele freq == 0
             numpy.where(            # else
                 tfreq > 0.0,        # if 0.0 < target freq < 1.0
                 numpy.logical_or(   # then set True if pop freq is outside (0.0,1.0)
-                    pfreq_lteq_0,
-                    pfreq_gteq_1
+                    pfreq_lteq_0,   # mask for whether population freq <= 0.0
+                    pfreq_gteq_1    # mask for whether population freq >= 1.0
                 ),
                 pfreq_gteq_1        # else set True if pop freq is >= 1.0
             )
@@ -711,42 +753,196 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # (p,t).sum[0] -> (t,)
         pafd = (mkrwt * dist).sum(0)
 
-        # stack to make MOGS matrix
-        # (2,t)
-        mogs = numpy.stack([pau, pafd])
+        # concatenate to make MOGS matrix
+        # (t,) and (t,) -> (t + t,)
+        mogs = numpy.concatenate([pau, pafd])
 
-        # transform and return
-        return trans(mogs, **kwargs)
+        # apply transformations
+        if trans is not None:
+            mogs = trans(mogs, **kwargs)
 
-    @staticmethod
-    def calc_mkrwt(weight, beta):
-        if isinstance(weight, str):
-            weight = weight.lower()             # convert to lowercase
-            if weight == "magnitude":           # return abs(beta)
-                return numpy.absolute(beta)
-            elif weight == "equal":             # return 1s matrix
-                return numpy.full(beta.shape, 1.0, dtype='float64')
-            else:
-                raise ValueError("string value for 'weight' not recognized")
-        elif isinstance(weight, numpy.ndarray):
-            return weight
-        else:
-            raise TypeError("variable 'weight' must be a string or numpy.ndarray")
+        return mogs
 
     @staticmethod
-    def calc_tfreq(target, beta):
-        if isinstance(target, str):
-            target = target.lower()                 # convert to lowercase
-            if target == "positive":
-                return numpy.float64(beta >= 0.0)   # positive alleles are desired
-            elif target == "negative":
-                return numpy.float64(beta <= 0.0)   # negative alleles are desired
-            elif target == "stabilizing":
-                return 0.5                          # both alleles desired
-                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
-            else:
-                raise ValueError("string value for 'target' not recognized")
-        elif isinstance(target, numpy.ndarray):
-            return target
-        else:
-            raise TypeError("variable 'target' must be a string or numpy.ndarray")
+    def objfn_vec_static(sel, mat, ploidy, tfreq, mkrwt, trans, kwargs):
+        """
+        A vectorized multi-objective genomic selection objective function.
+
+        - The goal is to minimize all objectives for this function.
+        - This is a bare bones function. Minimal error checking is done.
+
+        Objectives: :math:`F(\\textbf{x})`
+
+        .. math::
+
+            F(\\textbf{x}) = {[f^{\\textup{PAU}}(\\textbf{x}), f^{\\textup{PAFD}}(\\textbf{x})]}'
+
+        Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
+
+        .. math::
+
+            f^{\\textup{PAU}}(\\textbf{x}) = \\textbf{w} \\cdot \\textbf{u}
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency.
+        From the selection allele frequencies and the target allele frequencies
+        ``tfreq``, determine if the target frequencies can be attained after
+        unlimited generations of selection. If the target allele frequency at a
+        locus cannot be attained, score locus as ``1``, otherwise score as
+        ``0``. Store this into a binary score vector :math:`\\textbf{u}`.
+        Take the dot product between the binary score vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAU}}(\\textbf{x})` and return the result.
+
+        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
+
+        .. math::
+            f^{\\textup{PAFD}}(\\textbf{x}) = \\textbf{w} \\cdot \\left | \\textbf{p}_{x} - \\textbf{p}_{t} \\right |
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency
+        :math:`\\textbf{p}_{x}`. From the selection allele frequencies and the
+        target allele frequencies :math:`\\textbf{p}_{t} =` ``tfreq``,
+        calculate the absolute value of the difference between the two vectors.
+        Finally, take the dot product between the difference vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAFD}}(\\textbf{x})` and return the result.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape ``(j,k)``.
+
+            Where:
+
+            - ``j`` is the number of configurations to score.
+            - ``k`` is the number of individuals to select.
+
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            ``sel`` cannot be ``None``.
+        mat : numpy.ndarray
+            A genotype matrix of shape ``(n,p)`` representing only biallelic
+            loci. One of the two alleles at a locus is coded using a ``1``. The
+            other allele is coded as a ``0``. ``mat`` holds the counts of the
+            allele coded by ``1``.
+
+            Where:
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
+
+            Example::
+
+                # matrix of shape (n = 3, p = 4)
+                mat = numpy.array([[0,2,1,0],
+                                   [2,2,1,1],
+                                   [0,1,0,2]])
+        ploidy : int
+            Number of phases that the genotype matrix ``mat`` represents.
+        tfreq : floating, numpy.ndarray
+            A target allele frequency matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Example::
+
+                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
+        mkrwt : numpy.ndarray
+            A marker weight coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Remarks:
+
+            - All values in ``mkrwt`` must be non-negative.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to ``trans`` function.
+
+        Returns
+        -------
+        mogs : numpy.ndarray
+            A MOGS score matrix of shape ``(j,t + t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
+            Where:
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
+
+            Matrix element ordering for un-transformed MOGS score matrix:
+
+            - The first set of ``t`` elements in the ``mogs`` output correspond
+              to the ``t`` PAU outputs for each trait.
+            - The second set of ``t`` elements in the ``mogs`` output correspond
+              to the ``t`` PAFD outputs for each trait.
+        """
+        # generate a view of the genotype matrix that only contains 'sel' rows.
+        # (n,p)[(j,k),:] -> (j,k,p)
+        sgeno = mat[sel,:]
+
+        # calculate reciprocal number of phases
+        # ploidy * number of individuals in 'sgeno'
+        rphase = 1.0 / (ploidy * sgeno.shape[2])
+
+        # calculate population frequencies; add axis for correct broadcast
+        # (j,k,p).sum(1) -> (j,p)
+        # (j,p) * scalar -> (j,p)
+        # (j,p)[:,None] -> (j,p,1)
+        # Remark: we need (j,p,1) for broadcasting with (p,t) arrays
+        pfreq = (sgeno.sum(1) * rphase)[:,None]
+
+        # calculate some inequalities for use multiple times
+        pfreq_lteq_0 = (pfreq <= 0.0)   # (j,p,1) is population freq <= 0.0
+        pfreq_gteq_1 = (pfreq >= 1.0)   # (j,p,1) is population freq >= 1.0
+
+        # calculate allele unavailability
+        # (j,p,t)
+        allele_unavail = numpy.where(
+            tfreq >= 1.0,           # (p,t) if target freq >= 1.0 (should always be 1.0)
+            pfreq_lteq_0,           # (j,p,1) then set True if sel has allele freq == 0
+            numpy.where(            # (j,p,t) else
+                tfreq > 0.0,        # (p,t) if 0.0 < target freq < 1.0
+                numpy.logical_or(   # (j,p,1) then set True if pop freq is outside (0.0,1.0)
+                    pfreq_lteq_0,   # (j,p,1) mask for whether population freq <= 0.0
+                    pfreq_gteq_1    # (j,p,1) mask for whether population freq >= 1.0
+                ),
+                pfreq_gteq_1        # (j,p,1) else set True if pop freq is >= 1.0
+            )
+        )
+
+        # calculate distance between target and population
+        # (p,t)-(j,p,1) -> (j,p,t)
+        dist = numpy.absolute(tfreq - pfreq)
+
+        # compute f_PAU(x)
+        # (p,t) * (j,p,t) -> (j,p,t)
+        # (j,p,t).sum[1] -> (j,t)
+        pau = (mkrwt * allele_unavail).sum(1)
+
+        # compute f_PAFD(x)
+        # (p,t) * (j,p,t) -> (j,p,t)
+        # (j,p,t).sum[1] -> (j,t)
+        pafd = (mkrwt * dist).sum(1)
+
+        # concatenate to make MOGS matrix
+        # (j,t) and (j,t) -> (j,t + t)
+        mogs = numpy.concatenate([pau, pafd], axis = 1)
+
+        # apply transformations
+        if trans is not None:
+            mogs = trans(mogs, **kwargs)
+
+        return mogs

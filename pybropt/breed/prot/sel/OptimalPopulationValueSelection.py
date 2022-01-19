@@ -1,40 +1,72 @@
 import numpy
+import types
 from sklearn.cluster import KMeans
 
 from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
+from pybropt.core.error import cond_check_is_callable
+from pybropt.core.error import cond_check_is_dict
 from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.util.haplo import calc_nhaploblk_chrom
+from pybropt.core.util.haplo import calc_haplobin
+from pybropt.core.util.haplo import calc_haplobin_bounds
 
-class OptimalPopulationValueParentSelection(SelectionProtocol):
-    """docstring for OptimalPopulationValueParentSelection."""
+class OptimalPopulationValueSelection(SelectionProtocol):
+    """docstring for OptimalPopulationValueSelection."""
 
-    def __init__(self, k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng = None, **kwargs):
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    def __init__(self, nparent, ncross, nprogeny, nhaploblk, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
-        k_p : int
-            Number of individuals to select (1/2 number of parents).
-        b_p : int
-            Number of haplotype blocks.
+        Constructor for optimal population value selection (OPV).
+
+        Parameters
+        ----------
+        nparent : int
+            Number of parents to select.
+        ncross : int
+            Number of crosses per configuration.
+        nprogeny : int
+            Number of progeny to derive from each cross.
+        nhaploblk : int
+            Number of haplotype blocks to divide the genome into.
+        objfn_trans : function, callable, None
+        objfn_trans_kwargs : dict, None
+        objfn_wt : float, numpy.ndarray
+        ndset_trans : function, callable, None
+        ndset_trans_kwargs : dict, None
+        ndset_wt : float
+        rng : numpy.Generator
         """
-        super(OptimalPopulationValueParentSelection, self).__init__(**kwargs)
+        super(OptimalPopulationValueSelection, self).__init__(**kwargs)
 
         # error checks
-        check_is_int(k_p, "k_p")
-        # TODO: check traitwt_p
-        check_is_int(b_p, "b_p")
+        check_is_int(nparent, "nparent")
         check_is_int(ncross, "ncross")
         check_is_int(nprogeny, "nprogeny")
-        # TODO: check algorithm
+        check_is_int(nhaploblk, "nhaploblk")
+        cond_check_is_callable(objfn_trans, "objfn_trans")
+        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
+        # TODO: check objfn_wt
+        cond_check_is_callable(ndset_trans, "ndset_trans")
+        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
+        # TODO: check ndset_wt
         cond_check_is_Generator(rng, "rng")
 
         # variable assignment
-        self.k_p = k_p
-        self.traitwt_p = traitwt_p
-        self.b_p = b_p
+        self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.algorithm = algorithm
+        self.nhaploblk = nhaploblk
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = pybropt.core.random if rng is None else rng
 
     ############################################################################
@@ -42,85 +74,30 @@ class OptimalPopulationValueParentSelection(SelectionProtocol):
     ############################################################################
 
     ############################################################################
-    ############################## Object Methods ##############################
+    ########################## Private Object Methods ##########################
     ############################################################################
-    def calc_nblk(self, genpos, chrgrp_stix, chrgrp_spix):
+    def _calc_hmat(self, gmat, mod):
         """
-        Determine the number of markers to give per chromosome
+        Calculate a haplotype matrix from a genome matrix and model.
+
+        Parameters
+        ----------
+            gmat : PhasedGenotypeMatrix
+                A genome matrix.
+            mod : AdditiveLinearGenomicModel
+                A genomic prediction model.
+
+        Returns
+        -------
+            hmat : numpy.ndarray
+                A haplotype effect matrix of shape ``(m,n,b,t)``.
         """
-        # calculate genetic lengths of each chromosome
-        genlen = genpos[chrgrp_spix-1] - genpos[chrgrp_stix]
-
-        # calculate ideal number of markers per chromosome
-        nblk_ideal = (self.b_p / genlen.sum()) * genlen
-
-        # get number of chromosomes
-        nchr = len(chrgrp_stix)
-
-        # calculate number of chromosome markers, assuming at least one per chromosome
-        nblk_int = numpy.ones(nchr, dtype = "int64")    # start with min of one
-
-        for i in range(self.b_p - nchr):    # forces conformance to self.b_p
-            diff = nblk_int - nblk_ideal    # take actual - ideal
-            ix = diff.argmin()              # get index of lowest difference
-            nblk_int[ix] += 1               # increment at lowest index
-
-        return nblk_int
-
-    def calc_hbin(self, nblk, genpos, chrgrp_stix, chrgrp_spix):
-        # initialize
-        hbin = numpy.empty(     # create empty array
-            len(genpos),        # same length as number of markers
-            dtype = "int64"     # force integer
-        )
-
-        # for each chromosome
-        k = 0                                   # group counter
-        for ixst,ixsp,m in zip(chrgrp_stix,chrgrp_spix,nblk):
-            if m == 1:                          # if only one group in chromosome
-                hbin[ixst:ixsp] = k             # set to k
-                k += m                          # increment k
-                continue                        # skip to next iteration
-            km = KMeans(                        # fit kmeans model
-                n_clusters = m                  # m clusters
-            ).fit(genpos[ixst:ixsp,None])       # reshape to (n,1)
-            hbin[ixst:ixsp] = k + km.labels_    # add k to groups and copy to haplotype bins
-            k += m                              # increment k
-
-        # sanitize output
-        k = 0                           # group counter
-        prev = hbin[0]                  # get previous group label
-        hbin[0] = k                     # set element to k
-        for i in range(1,len(hbin)):    # for each element
-            if hbin[i] != prev:         # if there is a label switch
-                k += 1                  # increment k
-                prev = hbin[i]          # overwrite the previous group label
-            hbin[i] = k                 # set element to k
-
-        return hbin
-
-    def calc_hbin_bounds(self, hbin):
-        hstix = [0]                     # starting indices
-        hspix = []                      # stopping indices
-        prev = hbin[0]                  # get first group label
-        for i in range(1,len(hbin)):    # for each group label
-            if hbin[i] != prev:         # if the label is different
-                hspix.append(i)         # add the stop index for prev
-                prev = hbin[i]          # get next label
-                hstix.append(i)         # add the start index for next prev
-        hspix.append(len(hbin))         # append last stop index
-        hstix = numpy.int64(hstix)      # convert to ndarray
-        hspix = numpy.int64(hspix)      # convert to ndarray
-        hlen = hspix - hstix            # get lengths of each haplotype group
-        return hstix, hspix, hlen
-
-    def calc_hmat(self, gmat, mod):
         mat         = gmat.mat              # get genotypes
         genpos      = gmat.vrnt_genpos      # get genetic positions
         chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
         chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
         chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        beta        = mod.beta              # get regression coefficients
+        u           = mod.u                 # get regression coefficients
 
         if (chrgrp_stix is None) or (chrgrp_spix is None):
             raise RuntimeError("markers are not sorted by chromosome position")
@@ -128,11 +105,11 @@ class OptimalPopulationValueParentSelection(SelectionProtocol):
         # get number of chromosomes
         nchr = len(chrgrp_stix)
 
-        if self.b_p < nchr:
+        if self.nhaploblk < nchr:
             raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
 
         # calculate number of marker blocks to assign to each chromosome
-        nblk = self.calc_nblk(genpos, chrgrp_stix, chrgrp_spix)
+        nblk = calc_nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # ensure there are enough markers per chromosome
         if numpy.any(nblk > chrgrp_len):
@@ -141,222 +118,467 @@ class OptimalPopulationValueParentSelection(SelectionProtocol):
             )
 
         # calculate haplotype bins
-        hbin = self.calc_hbin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+        hbin = calc_haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # define shape
-        s = (mat.shape[0], mat.shape[1], self.b_p, beta.shape[1]) # (m,n,b,t)
+        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1]) # (m,n,b,t)
 
         # allocate haplotype matrix
-        hmat = numpy.empty(s, dtype = beta.dtype)   # (m,n,b,t)
+        hmat = numpy.empty(s, dtype = u.dtype)   # (m,n,b,t)
 
         # get boundary indices
-        hstix, hspix, hlen = self.calc_hbin_bounds(hbin)
+        hstix, hspix, hlen = calc_haplobin_bounds(hbin)
 
         # OPTIMIZE: perhaps eliminate one loop using dot function
         # fill haplotype matrix
-        for i in range(hmat.shape[3]):                              # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):           # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(beta[st:sp,i])   # take dot product and fill
+        for i in range(hmat.shape[3]):                          # for each trait
+            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
+                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
 
         return hmat
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
 
         Parameters
         ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes (unphased most likely)
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
         t_cur : int
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        geno : dict
-            A dict containing genotypic data for all breeding populations.
-            Must have the following fields:
-                Field | Type                         | Description
-                ------+------------------------------+--------------------------
-                cand  | PhasedGenotypeMatrix         | Parental candidate breeding population
-                main  | PhasedGenotypeMatrix         | Main breeding population
-                queue | List of PhasedGenotypeMatrix | Breeding populations on queue
-                ""
-        bval : dict
-            A dict containing breeding value data.
-            Must have the following fields:
-                Field      | Type                        | Description
-                -----------+-----------------------------+----------------------
-                cand       | BreedingValueMatrix         | Parental candidate breeding population breeding values
-                cand_true  | BreedingValueMatrix         | Parental candidate population true breeding values
-                main       | BreedingValueMatrix         | Main breeding population breeding values
-                main_true  | BreedingValueMatrix         | Main breeding population true breeding values
-        gmod : dict
-            A dict containing genomic models.
-            Must have the following fields:
-                Field | Type                 | Description
-                ------+----------------------+----------------------------------
-                cand  | GenomicModel         | Parental candidate breeding population genomic model
-                main  | GenomicModel         | Main breeding population genomic model
-                true  | GenomicModel         | True genomic model for trait(s)
-        k : int
-        traitwt : numpy.ndarray
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        method : str
+            Options: "single", "pareto"
+        nparent : int
+        ncross : int
+        nprogeny : int
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgvmat, sel, ncross, nprogeny, misc)
-            pgvmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgvmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
-        """
-        # get parameters
-        if k is None:
-            k = self.k_p
-        if traitwt is None:
-            traitwt = self.traitwt_p
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
 
-        # get objective function
-        objfn = self.pobjfn(
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
+        """
+        # get default parameters if any are None
+        if nparent is None:
+            nparent = self.nparent
+        if ncross is None:
+            ncross = self.ncross
+        if nprogeny is None:
+            nprogeny = self.nprogeny
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+        if ndset_trans is None:
+            ndset_trans = self.ndset_trans
+        if ndset_trans_kwargs is None:
+            ndset_trans_kwargs = self.ndset_trans_kwargs
+        if ndset_wt is None:
+            ndset_wt = self.ndset_wt
+
+        # convert method string to lower
+        method = method.lower()
+
+        # single-objective method: objfn_trans returns a single value for each
+        # selection configuration
+        if method == "single":
+            # get number of taxa
+            ntaxa = pgmat.ntaxa
+
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # create optimization algorithm
+            soalgo = SteepestAscentSetHillClimber(
+                k = nparent,                    # number of parents to select
+                setspace = numpy.arange(ntaxa), # parental indices
+                rng = self.rng,                 # PRNG source
+                objwt = 1.0                     # maximizing function
+            )
+
+            # optimize using hill-climber algorithm
+            opt = soalgo.optimize(objfn)
+
+            # get best solution
+            sel = opt["soln"]
+
+            # add optimization details to miscellaneous output
+            if miscout is not None:     # if miscout was provided
+                miscout.update(opt)     # add dict to dict
+
+            return pgmat, sel, ncross, nprogeny
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
+        elif method == "pareto":
+            # get the pareto frontier
+            frontier, sel_config = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                miscout = miscout,
+                nparent = nparent,
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
+            )
+
+            # get scores for each of the points along the pareto frontier
+            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], ncross, nprogeny
+        else:
+            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
+
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+        """
+        Return a selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Input genome matrix.
+        gmat : GenotypeMatrix
+            Not used by this function.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
+        """
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get haplotype matrix
+        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t)
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_static.__code__,         # byte code pointer
+            self.objfn_static.__globals__,      # global variables
+            None,                               # new name for the function
+            (mat, trans, trans_kwargs),         # default values for arguments
+            self.objfn_static.__closure__       # closure byte code pointer
+        )
+
+        return outfn
+
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+        """
+        Return a vectorized selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Input genome matrix.
+        gmat : GenotypeMatrix
+            Not used by this function.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
+        """
+        # get default parameters if any are None
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
+
+        # get haplotype matrix
+        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t)
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_vec_static.__code__,     # byte code pointer
+            self.objfn_vec_static.__globals__,  # global variables
+            None,                               # new name for the function
+            (mat, trans, trans_kwargs),         # default values for arguments
+            self.objfn_vec_static.__closure__   # closure byte code pointer
+        )
+
+        return outfn
+
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+        """
+        Calculate a Pareto frontier for objectives.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
+        """
+        # process inputs, apply defaults as needed.
+        if nparent is None:
+            nparent = self.nparent
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
             t_cur = t_cur,
             t_max = t_max,
-            geno = geno,
-            bval = bval,
-            gmod = gmod,
-            traitwt = traitwt
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
         )
 
-        # optimize solution using algorithm
-        soln_dict = self.algorithm.optimize(
-            objfn,
-            k = k,
-            setspace = numpy.arange(geno["cand"].ntaxa),
-            objwt = 1.0
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
+            **kwargs
         )
 
-        # extract solution
-        sel = soln_dict["soln"]
+        # use multi-objective optimization to approximate Pareto front.
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
+        )
 
-        misc = {}
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
-        return geno["cand"], sel, self.ncross, self.nprogeny, misc
+        return frontier, sel_config
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    @staticmethod
+    def objfn_static(sel, mat, trans, kwargs):
         """
-        Return a parent selection objective function.
+        Score a population of individuals based on Optimal Population Value
+        Selection.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape ``(k,)``.
+
+            Where:
+
+            - ``k`` is the number of individuals to select.
+
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, use all individuals.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
+
+            Where:
+
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
+            - ``t`` is the number of traits.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to ``trans`` function.
+
+        Returns
+        -------
+        opv : numpy.ndarray
+            An OPV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
+            Where:
+
+            - ``t`` is the number of traits.
         """
-        # get haplotype matrix
-        mat = self.calc_hmat(geno["cand"], gmod["cand"])    # (t,m,n,h)
+        # get max haplotype value
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+        # (h,t).sum(0) -> (t,)
+        opv = mat[:,sel,:,:].max((0,1)).sum(0)
 
-        def objfn(sel, mat = mat, traitwt = traitwt):
-            """
-            Parameters
-            ----------
-            sel : numpy.ndarray, None
-                A selection indices matrix of shape (k,)
-                Where:
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A haplotype effect matrix of shape (m, n, b, t).
-                Where:
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'b' is the number of haplotype blocks.
-                    't' is the number of traits.
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of trait objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
+        # apply transformations
+        # (t,) ---trans---> (?,)
+        if trans is not None:
+            opv = trans(opv, **kwargs)
 
-            Returns
-            -------
-            cgs : numpy.ndarray
-                A GEBV matrix of shape (k, t) if objwt is None.
-                A GEBV matrix of shape (k,) if objwt shape is (t,)
-                Where:
-                    'k' is the number of individuals selected.
-                    't' is the number of traits.
-            """
-            # get max haplotype value
-            # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
-            # (m,k/2,2,h,t).max((0,1)) -> (h,t)
-            # (h,t).sum(0) -> (t,)
-            opv = mat[:,sel,:,:].max((0,1)).sum(0)
+        return opv
 
-            # apply objective weights
-            # (t,) dot (t,) -> scalar
-            if traitwt is not None:
-                opv = opv.dot(traitwt)
-
-            return opv
-
-        return objfn
-
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    @staticmethod
+    def objfn_vec_static(sel, mat, trans, kwargs):
         """
-        Return a parent selection objective function.
+        Score a population of individuals based on Optimal Population Value
+        Selection.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A selection indices matrix of shape ``(j,k)``.
+
+            Where:
+
+            - ``j`` is the number of configurations to score.
+            - ``k`` is the number of individuals to select.
+
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,h,t)``.
+
+            Where:
+
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
+            - ``t`` is the number of traits.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to ``trans`` function.
+
+        Returns
+        -------
+        opv : numpy.ndarray
+            An OPV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
+
+            Where:
+
+            - ``j`` is the number of selection configurations.
+            - ``t`` is the number of traits.
         """
-        # get haplotype matrix
-        mat = self.calc_hmat(geno["cand"], gmod["cand"])    # (t,m,n,h)
+        # get max haplotype value
+        # (m,n,h,t)[:,(j,k),:,:] -> (m,j,k,h,t)
+        # (m,j,k,h,t).max((0,2)) -> (j,h,t)
+        # (j,h,t).sum(1) -> (j,t)
+        opv = mat[:,sel,:,:].max((0,2)).sum(1)
 
-        def objfn(sel, mat = mat, traitwt = traitwt):
-            """
-            Parameters
-            ----------
-            sel : numpy.ndarray, None
-                A selection indices matrix of shape (j,k)
-                Where:
-                    'j' is the number of configurations to score.
-                    'k' is the number of individuals to select.
-                Each index indicates which individuals to select.
-                Each index in 'sel' represents a single individual's row.
-                If 'sel' is None, use all individuals.
-            mat : numpy.ndarray
-                A haplotype effect matrix of shape (t, m, n, b).
-                Where:
-                    't' is the number of traits.
-                    'm' is the number of chromosome phases (2 for diploid, etc.).
-                    'n' is the number of individuals.
-                    'b' is the number of haplotype blocks.
-            traitwt : numpy.ndarray, None
-                A trait objective coefficients matrix of shape (t,).
-                Where:
-                    't' is the number of trait objectives.
-                These are used to weigh objectives in the weight sum method.
-                If None, do not multiply GEBVs by a weight sum vector.
+        # apply objective weights
+        # (j,t) dot (t,) -> scalar
+        if traitwt is not None:
+            opv = opv.dot(traitwt)
 
-            Returns
-            -------
-            cgs : numpy.ndarray
-                A GEBV matrix of shape (j, t) if traitwt is None.
-                A GEBV matrix of shape (j,) if traitwt shape is (t,)
-                Where:
-                    'j' is the number of configurations to score.
-                    't' is the number of traits.
-            """
-            # get max haplotype value
-            # (m,n,h,t)[:,(j,k),:,:] -> (m,j,k,h,t)
-            # (m,j,k,h,t).max((0,2)) -> (j,h,t)
-            # (j,h,t).sum(1) -> (j,t)
-            opv = mat[:,sel,:,:].max((0,2)).sum(1)
-
-            # apply objective weights
-            # (j,t) dot (t,) -> scalar
-            if traitwt is not None:
-                opv = opv.dot(traitwt)
-
-            return opv
-
-        return objfn
+        return opv
