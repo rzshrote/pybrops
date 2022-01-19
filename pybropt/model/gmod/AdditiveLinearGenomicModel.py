@@ -27,8 +27,8 @@ from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseG
 
 class AdditiveLinearGenomicModel(LinearGenomicModel):
     """
-    The AdditiveLinearGenomicModel class represents a Multivariate Multiple Linear
-    Regression model.
+    The AdditiveLinearGenomicModel class represents a Multivariate Multiple
+    Linear Regression model.
 
     A Multivariate Multiple Linear Regression model is defined as:
 

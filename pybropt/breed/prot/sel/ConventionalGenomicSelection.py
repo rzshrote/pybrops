@@ -293,7 +293,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (mat, u, trans, trans_kwargs),   # default values for arguments
+            (mat, u, trans, trans_kwargs),      # default values for arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -383,9 +383,9 @@ class ConventionalGenomicSelection(SelectionProtocol):
             objfn_wt = objfn_wt             # weights to apply to each objective
         )
 
-        if miscout is not None:
-            for k,i in misc.items():
-                miscout[k] = i
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
         return frontier, sel_config
 
