@@ -8,7 +8,7 @@ from pybropt.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopula
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybropt.algo.opt import SteepestAscentSetHillClimber
+from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 
 ################################################################################
 ################################## Genotypes ###################################
@@ -136,7 +136,7 @@ def bvmat(glgmod, dpgvmat):
     yield glgmod.predict(dpgvmat)
 
 ################################################################################
-###################### OptimalPopulationValueParentSelection ######################
+###################### OptimalPopulationValueSelection ######################
 ################################################################################
 @pytest.fixture
 def k_p():
@@ -174,7 +174,7 @@ def algorithm(k_p, dpgvmat, rng):
 
 @pytest.fixture
 def opvps(k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng):
-    yield OptimalPopulationValueParentSelection(
+    yield OptimalPopulationValueSelection(
         k_p = k_p,
         traitwt_p = traitwt_p,
         b_p = b_p,

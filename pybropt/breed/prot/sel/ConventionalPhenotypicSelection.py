@@ -7,7 +7,7 @@ from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
-from pybropt.algo.opt import NSGA2SetGeneticAlgorithm
+from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class ConventionalPhenotypicSelection(SelectionProtocol):
     """docstring for ConventionalPhenotypicSelection."""

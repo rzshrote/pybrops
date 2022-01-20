@@ -10,7 +10,7 @@ from pybropt.core.error import cond_check_is_ndarray
 from pybropt.core.error import cond_check_is_Generator
 from pybropt.core.error import cond_check_is_callable
 from pybropt.core.error import cond_check_is_dict
-from pybropt.algo.opt import NSGA2SetGeneticAlgorithm
+from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class WeightedGenomicSelection(SelectionProtocol):
     """docstring for WeightedGenomicSelection."""

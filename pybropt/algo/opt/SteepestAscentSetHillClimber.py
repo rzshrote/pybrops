@@ -1,11 +1,12 @@
 import numpy
 
+import pybropt.core.random
 from pybropt.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 
 class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     """docstring for SteepestAscentSetHillClimber."""
 
-    def __init__(self, k, setspace, rng, objwt = 1.0, **kwargs):
+    def __init__(self, rng = None, **kwargs):
         """
         Constructor for a steepest ascent set hill-climber.
 
@@ -25,12 +26,9 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             Additional keyword arguments.
         """
         super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
-        self.k = k
-        self.setspace = setspace
-        self.rng = rng
-        self.objwt = objwt
+        self.rng = pybropt.core.random if rng is None else rng
 
-    def optimize(self, objfn, k = None, setspace = None, objwt = None, **kwargs):
+    def optimize(self, objfn, k, setspace, objfn_wt, **kwargs):
         """
         Optimize an objective function.
 

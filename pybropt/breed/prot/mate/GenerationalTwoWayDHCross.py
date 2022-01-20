@@ -85,9 +85,11 @@ class GenerationalTwoWayDHCross(TwoWayDHCross):
             nprogeny = nprogeny,
             miscout = miscout,
             s = s,
-            taxa_grp = taxa_grp,    # add taxa_grp as keyword argument
             **kwargs
         )
+
+        # alter metadata
+        progeny.taxa_grp = taxa_grp
 
         # group progeny taxa
         progeny.group_taxa()

@@ -7,8 +7,8 @@ import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
 
-class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
-    """docstring for TwoWayOptimalHaploidValueParentSelection."""
+class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
+    """docstring for TwoWayOptimalHaploidValueSelection."""
 
     def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
         """
@@ -30,7 +30,7 @@ class TwoWayOptimalHaploidValueParentSelection(SelectionProtocol):
         ndset_wt : float
         rng : numpy.Generator
         """
-        super(TwoWayOptimalHaploidValueParentSelection, self).__init__(**kwargs)
+        super(TwoWayOptimalHaploidValueSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(nparent, "nparent")

@@ -8,8 +8,10 @@ from pybropt.breed.prot.sel.MultiObjectiveGenomicSelection import MultiObjective
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybropt.algo.opt import SteepestAscentSetHillClimber
-from pybropt.algo.opt import StochasticAscentSetHillClimber
+from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybropt.algo.opt.StochasticAscentSetHillClimber import StochasticAscentSetHillClimber
+from pybropt.breed.prot.sel.transfn import trans_sum
+from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 
 ################################################################################
 ################################## Genotypes ###################################
@@ -146,7 +148,7 @@ def dpgvmat_big(mat_int8_big, mat_chrgrp_big, mat_phypos_big, mat_taxa_big):
 ################################ Genomic model #################################
 ################################################################################
 @pytest.fixture
-def mu():
+def beta():
     yield numpy.float64([
         [1.4],
         [2.5],
@@ -154,7 +156,7 @@ def mu():
     ])
 
 @pytest.fixture
-def beta():
+def u():
     yield numpy.float64([
         [-0.33,  2.08, -2.42],
         [-0.69, -1.87, -1.38],
@@ -169,7 +171,7 @@ def beta():
     ])
 
 @pytest.fixture
-def beta_big():
+def u_big():
     yield numpy.float64([
        [-0.87, -0.16, -0.04],
        [-0.03,  0.05, -0.15],
@@ -202,20 +204,20 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def glgmod(beta, u, trait, model_name, params):
     yield AdditiveLinearGenomicModel(
-        mu = mu,
         beta = beta,
+        u = u,
         trait = trait,
         model_name = model_name,
         params = params
     )
 
 @pytest.fixture
-def glgmod_big(mu, beta_big, trait, model_name, params):
+def glgmod_big(beta, u_big, trait, model_name, params):
     yield AdditiveLinearGenomicModel(
-        mu = mu,
-        beta = beta_big,
+        beta = beta,
+        u = u_big,
         trait = trait,
         model_name = model_name,
         params = params
@@ -253,7 +255,7 @@ def method():
 
 @pytest.fixture
 def objfn_trans():
-    yield MultiObjectiveGenomicSelection.traitsum_trans
+    yield trans_sum
 
 @pytest.fixture
 def objfn_wt():
@@ -261,7 +263,7 @@ def objfn_wt():
 
 @pytest.fixture
 def ndset_trans():
-    yield MultiObjectiveGenomicSelection.vecptdist_trans
+    yield trans_ndpt_to_vec_dist
 
 @pytest.fixture
 def ndset_trans_kwargs(objfn_wt):
@@ -310,74 +312,74 @@ def mogps(nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_wt, n
 ########################################
 ########### test calc_mkrwt ############
 ########################################
-def test_calc_mkrwt_magnitude(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_mkrwt("magnitude", beta_big)
-    b = numpy.absolute(beta_big)
+def test_calc_mkrwt_magnitude(u_big):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("magnitude", u_big)
+    b = numpy.absolute(u_big)
     assert numpy.all(a == b)
 
-def test_calc_mkrwt_equal(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_mkrwt("equal", beta_big)
+def test_calc_mkrwt_equal(u_big):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("equal", u_big)
     assert numpy.all(a == 1.0)
 
-def test_calc_mkrwt_str_case(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_mkrwt("mAgNiTuDe", beta_big)
-    b = numpy.absolute(beta_big)
+def test_calc_mkrwt_str_case(u_big):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("mAgNiTuDe", u_big)
+    b = numpy.absolute(u_big)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection.calc_mkrwt("Equal", beta_big)
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("Equal", u_big)
     assert numpy.all(a == 1.0)
 
-def test_calc_mkrwt_str_ValueError(beta_big):
+def test_calc_mkrwt_str_ValueError(u_big):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicSelection.calc_mkrwt("unknown", beta_big)
+        a = MultiObjectiveGenomicSelection._calc_mkrwt("unknown", u_big)
 
-def test_calc_mkrwt_ndarray(beta_big):
-    wt = numpy.random.normal(size = beta_big.shape)
-    a = MultiObjectiveGenomicSelection.calc_mkrwt(wt, beta_big)
+def test_calc_mkrwt_ndarray(u_big):
+    wt = numpy.random.normal(size = u_big.shape)
+    a = MultiObjectiveGenomicSelection._calc_mkrwt(wt, u_big)
     assert numpy.all(a == wt)
 
-def test_calc_mkrwt_type_TypeError(beta_big):
+def test_calc_mkrwt_type_TypeError(u_big):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicSelection.calc_mkrwt(None, beta_big)
+        a = MultiObjectiveGenomicSelection._calc_mkrwt(None, u_big)
 
 ########################################
 ########### test calc_tfreq ############
 ########################################
-def test_calc_tfreq_positive(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_tfreq("positive", beta_big)
-    b = numpy.float64(beta_big >= 0.0)
+def test_calc_tfreq_positive(u_big):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("positive", u_big)
+    b = numpy.float64(u_big >= 0.0)
     assert numpy.all(a == b)
 
-def test_calc_tfreq_negative(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_tfreq("negative", beta_big)
-    b = numpy.float64(beta_big <= 0.0)
+def test_calc_tfreq_negative(u_big):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("negative", u_big)
+    b = numpy.float64(u_big <= 0.0)
     assert numpy.all(a == b)
 
-def test_calc_tfreq_stabilizing(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_tfreq("stabilizing", beta_big)
+def test_calc_tfreq_stabilizing(u_big):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("stabilizing", u_big)
     assert numpy.all(a == 0.5)
 
-def test_calc_tfreq_str_case(beta_big):
-    a = MultiObjectiveGenomicSelection.calc_tfreq("PoSiTiVe", beta_big)
-    b = numpy.float64(beta_big >= 0.0)
+def test_calc_tfreq_str_case(u_big):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("PoSiTiVe", u_big)
+    b = numpy.float64(u_big >= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection.calc_tfreq("NEGATIVE", beta_big)
-    b = numpy.float64(beta_big <= 0.0)
+    a = MultiObjectiveGenomicSelection._calc_tfreq("NEGATIVE", u_big)
+    b = numpy.float64(u_big <= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection.calc_tfreq("Stabilizing", beta_big)
+    a = MultiObjectiveGenomicSelection._calc_tfreq("Stabilizing", u_big)
     assert numpy.all(a == 0.5)
 
-def test_calc_tfreq_str_ValueError(beta_big):
+def test_calc_tfreq_str_ValueError(u_big):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicSelection.calc_tfreq("unknown", beta_big)
+        a = MultiObjectiveGenomicSelection._calc_tfreq("unknown", u_big)
 
-def test_calc_tfreq_ndarray(beta_big):
-    wt = numpy.random.uniform(0, 1, size = beta_big.shape)
-    a = MultiObjectiveGenomicSelection.calc_tfreq(wt, beta_big)
+def test_calc_tfreq_ndarray(u_big):
+    wt = numpy.random.uniform(0, 1, size = u_big.shape)
+    a = MultiObjectiveGenomicSelection._calc_tfreq(wt, u_big)
     assert numpy.all(a == wt)
 
-def test_calc_tfreq_type_TypeError(beta_big):
+def test_calc_tfreq_type_TypeError(u_big):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicSelection.calc_tfreq(None, beta_big)
+        a = MultiObjectiveGenomicSelection._calc_tfreq(None, u_big)
 
 # test constructor
 def test_init(mogps):

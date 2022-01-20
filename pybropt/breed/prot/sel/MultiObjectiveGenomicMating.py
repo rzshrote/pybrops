@@ -21,20 +21,36 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, target = "positive", weight = "magnitude", ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5, rng = None, **kwargs):
+    def __init__(self,
+    nconfig, nparent, ncross, nprogeny, algorithm, method,
+    objfn_trans, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
+    soalgo = None, moalgo = None,
+    target = "positive", weight = "magnitude",
+    rng = None, **kwargs):
         """
         Constructor for MultiObjectiveGenomicSelection class.
 
         Parameters
         ----------
+        nconfig : int
+            Number of cross configurations to consider.
+
+            Examples:
+
+            - 20 two-way crosses would be: ``nconfig = 20``
+            - 20 three way crosses would be: ``nconfig = 20``
         nparent : int
-            Number of parents to select.
+            Number of parents to per configuration.
+
+            Example:
+
+            - 20 two-way crosses would be: ``nparent = 2``
+            - 20 three-way crosses would be: ``nparent = 3``
         ncross : int
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        algorithm : Algorithm
-            Optimization algorithm to optimize the objective function.
         method : str
             Method of selecting parents.
 
@@ -135,25 +151,30 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             +-----------------+------------------------------------------------+
             | ``"equal"``     | Assign weights equally.                        |
             +-----------------+------------------------------------------------+
-        ga_ngen : int
-            Number of generations to evolve multi-objective genetic algorithm.
-        ga_mu : int
-            Number of individuals in the main population for the multi-objective
-            genetic algorithm.
-        ga_lamb : int
-            Number of progenies to generate per generation for the multi-
-            objective genetic algorithm.
-        ga_M : float
-            Length of genetic map to simulate crossover. Units are in Morgans.
-            Number of recombinations follows a Poisson distribution meaning that
-            the mean number of recombinations per chromosome in the genetic
-            algorithm is 'ga_M'.
+        soalgo : OptimizationAlgorithm
+            Single-objective optimization algorithm to optimize the objective
+            function. If ``None``, use a SteepestAscentSetHillClimber with the
+            following parameters::
 
-            ONLY RELEVANT TO THE GENETIC ALGORITHM. DOES NOT AFFECT SIMULATION
-            OF GENETIC RECOMBINATIONS IN BREEDING SIMULATIONS.
+                soalgo = SteepestAscentSetHillClimber(
+                    rng = self.rng  # PRNG source
+                )
+        moalgo : OptimizationAlgorithm
+            Multi-objective optimization algorithm to optimize the objective
+            functions. If ``None``, use a NSGA2SetGeneticAlgorithm with the
+            following parameters::
+
+                moalgo = NSGA2SetGeneticAlgorithm(
+                    ngen = 250,     # number of generations to evolve
+                    mu = 100,       # number of parents in population
+                    lamb = 100,     # number of progeny to produce
+                    M = 1.5,        # algorithm crossover genetic map length
+                    rng = self.rng  # PRNG source
+                )
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
-            If 'rng' is None, use pybropt.core.random module (NOT THREAD SAFE!).
+            If ``rng`` is ``None``, use pybropt.core.random module
+            (NOT THREAD SAFE!).
         """
         super(MultiObjectiveGenomicSelection, self).__init__(**kwargs)
 
@@ -181,11 +202,22 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         self.ndset_wt = ndset_wt
         self.target = target
         self.weight = weight
-        self.ga_ngen = ga_ngen
-        self.ga_mu = ga_mu
-        self.ga_lamb = ga_lamb
-        self.ga_M = ga_M
         self.rng = pybropt.core.random if rng is None else rng
+
+        if soalgo is None:
+            soalgo = SteepestAscentSetHillClimber(
+                rng = self.rng  # PRNG source
+            )
+
+        if moalgo is None:
+            moalgo = NSGA2SetGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                mu = 100,       # number of parents in population
+                lamb = 100,     # number of progeny to produce
+                M = 1.5,        # algorithm crossover genetic map length
+                rng = self.rng  # PRNG source
+            )
+        self.moalgo = moalgo
 
     ############################################################################
     ############################ Object Properties #############################
@@ -357,7 +389,12 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             )
 
             # optimize using hill-climber algorithm
-            opt = soalgo.optimize(objfn)
+            opt = self.soalgo.optimize(
+                k = nparent,                    # number of parents to select
+                setspace = numpy.arange(ntaxa), # parental indices
+                rng = self.rng,                 # PRNG source
+                objwt = 1.0                     # maximizing function
+            )
 
             # get best solution
             sel = opt["soln"]
