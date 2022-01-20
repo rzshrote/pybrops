@@ -228,11 +228,11 @@ def glgmod_big(beta, u_big, trait, model_name, params):
 ################################################################################
 @pytest.fixture
 def bvmat(glgmod, dpgvmat):
-    yield glgmod.predict(dpgvmat)
+    yield glgmod.gebv(dpgvmat)
 
 @pytest.fixture
 def bvmat_big(glgmod_big, dpgvmat_big):
-    yield glgmod_big.predict(dpgvmat_big)
+    yield glgmod_big.gebv(dpgvmat_big)
 
 ################################################################################
 ##################### MultiObjectiveGenomicSelection #####################
@@ -281,21 +281,16 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def algorithm(nparent, dpgvmat, rng):
-    yield StochasticAscentSetHillClimber(
-        k = nparent,
-        setspace = numpy.arange(dpgvmat.ntaxa),
-        rng = rng,
-        objwt = 1.0,
-    )
+def soalgo(rng):
+    yield StochasticAscentSetHillClimber(rng = rng)
 
 @pytest.fixture
-def mogps(nparent, ncross, nprogeny, algorithm, method, objfn_trans, objfn_wt, ndset_trans, ndset_trans_kwargs, ndset_wt, rng):
+def mogps(nparent, ncross, nprogeny, soalgo, method, objfn_trans, objfn_wt, ndset_trans, ndset_trans_kwargs, ndset_wt, rng):
     yield MultiObjectiveGenomicSelection(
         nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
-        algorithm = algorithm,
+        soalgo = soalgo,
         method = method,
         objfn_trans = objfn_trans,
         objfn_wt = objfn_wt,
