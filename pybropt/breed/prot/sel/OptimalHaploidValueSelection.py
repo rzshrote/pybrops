@@ -1,26 +1,29 @@
+import types
 import numpy
-from sklearn.cluster import KMeans
-
-from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
-from pybropt.core.error import check_is_int
-from pybropt.core.error import check_is_Generator
+from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybropt.core.error import check_is_bool
-from pybropt.core.error import check_is_gt
 from pybropt.core.error import check_is_callable
 from pybropt.core.error import check_is_dict
+from pybropt.core.error import check_is_int
+from pybropt.core.error import check_is_gt
+from pybropt.core.error import check_is_str
+from pybropt.core.error import check_is_Generator
 from pybropt.core.util.arrayix import triuix
 from pybropt.core.util.arrayix import triudix
-from pybropt.core.util.haplo import calc_nhaploblk_chrom
 from pybropt.core.util.haplo import calc_haplobin
 from pybropt.core.util.haplo import calc_haplobin_bounds
-from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybropt.core.util.haplo import calc_nhaploblk_chrom
 
 class OptimalHaploidValueSelection(SelectionProtocol):
     """docstring for OptimalHaploidValueSelection."""
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self,
     nconfig, nparent, ncross, nprogeny, nhaploblk,
     unique_parents = True, method = "single",
@@ -392,7 +395,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
 
         # calculate number of marker blocks to assign to each chromosome
-        nblk = calc_nhaploblk_chrom(genpos, chrgrp_stix, chrgrp_spix)
+        nblk = calc_nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # ensure there are enough markers per chromosome
         if numpy.any(nblk > chrgrp_len):
@@ -464,7 +467,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -509,6 +512,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 Miscellaneous output (user defined).
         """
         # get selection parameters
+        nconfig = self.nconfig
         nparent = self.nparent
         ncross = self.ncross
         nprogeny = self.nprogeny
@@ -533,9 +537,12 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 **kwargs
             )
 
-            # get all OHVs for each individual
-            # (n,)
-            ohv = [objfn([i]) for i in range(gmat.ntaxa)]
+            # calculate xmap
+            xmap = self._calc_xmap(pgmat.ntaxa)
+
+            # get all OHVs for each configuration
+            # (s,)
+            ohv = [objfn([i]) for i in range(len(xmap))]
 
             # convert to numpy.ndarray
             ohv = numpy.array(ohv)
@@ -544,16 +551,24 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             # (n,) * scalar -> (n,)
             ohv = ohv * objfn_wt
 
-            # get indices of top nparent GEBVs
-            sel = ohv.argsort()[::-1][:nparent]
+            # get indices of top nconfig OHVs
+            sel = ohv.argsort()[::-1][:nconfig]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
 
+            # convert 'sel' to parent selections (ordered)
+            # (kd,)
+            sel = xmap[sel,:].flatten()
+
             # get GEBVs for reference
             misc = {"ohv" : ohv}
 
-            return pgmat, sel, ncross, nprogeny, misc
+            # add optimization details to miscellaneous output
+            if miscout is not None:     # if miscout was provided
+                miscout.update(misc)    # add dict to dict
+
+            return pgmat, sel, ncross, nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
@@ -600,7 +615,8 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
         """
-        xmap = self._calc_xmap()                # (s,p) get the cross map
+        ntaxa = pgmat.ntaxa                     # get number of taxa
+        xmap = self._calc_xmap(ntaxa)           # (s,p) get the cross map
         mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
         ploidy = pgmat.ploidy                   # (scalar) get ploidy
         trans = self.objfn_trans                # get transformation function
@@ -737,6 +753,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         if miscout is not None:     # if miscout is provided
             miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
+        # TODO: fix sel_config output format: currently in xmap indices format.
         return frontier, sel_config
 
     ############################################################################
