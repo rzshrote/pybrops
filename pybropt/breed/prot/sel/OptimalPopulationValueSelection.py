@@ -82,15 +82,15 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         Parameters
         ----------
-            gmat : PhasedGenotypeMatrix
-                A genome matrix.
-            mod : AdditiveLinearGenomicModel
-                A genomic prediction model.
+        gmat : PhasedGenotypeMatrix
+            A genome matrix.
+        mod : AdditiveLinearGenomicModel
+            A genomic prediction model.
 
         Returns
         -------
-            hmat : numpy.ndarray
-                A haplotype effect matrix of shape ``(m,n,b,t)``.
+        hmat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
         """
         mat         = gmat.mat              # get genotypes
         genpos      = gmat.vrnt_genpos      # get genetic positions
