@@ -5,8 +5,11 @@ from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
-from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_is_Generator
 from pybropt.core.error import check_is_bool
+from pybropt.core.error import check_is_gt
+from pybropt.core.error import check_is_callable
+from pybropt.core.error import check_is_dict
 from pybropt.core.util.arrayix import triuix
 from pybropt.core.util.arrayix import triudix
 from pybropt.core.util.haplo import calc_nhaploblk_chrom
@@ -17,8 +20,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     """docstring for OptimalHaploidValueSelection."""
 
     def __init__(self,
-    nconfig, nparent, ncross, nprogeny,
-    nblock, unique_parents = True,
+    nconfig, nparent, ncross, nprogeny, nhaploblk, unique_parents = True,
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
     rng = None, **kwargs):
@@ -45,7 +47,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Number of crosses to perform per configuration.
         nprogeny : int
             Number of progeny to derive from each cross configuration.
-        nblock : int
+        nhaploblk : int
             Number of haplotype blocks to segment the genome into.
         unique_parents : bool, default = True
             Whether to allow force unique parents or not.
@@ -62,39 +64,191 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         """
         super(OptimalHaploidValueSelection, self).__init__(**kwargs)
 
-        # error checks
-        check_is_int(nconfig, "nconfig")
-        check_is_int(nparent, "nparent")
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        check_is_int(nblock, "nblock")
-        check_is_bool(allow_selfing, "allow_selfing")
-        cond_check_is_callable(objfn_trans, "objfn_trans")
-        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
-        # TODO: check objfn_wt
-        cond_check_is_callable(ndset_trans, "ndset_trans")
-        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
-        # TODO: check ndset_wt
-        cond_check_is_Generator(rng, "rng")
-
-        # variable assignment
+        # error checks and assignments
         self.nconfig = nconfig
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nblock = nblock
-        self.allow_selfing = allow_selfing
+        self.nhaploblk = nhaploblk
+        self.unique_parents = unique_parents
         self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
         self.objfn_wt = objfn_wt
         self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
         self.ndset_wt = ndset_wt
-        self.rng = pybropt.core.random if rng is None else rng
+        self.rng = rng  # property replaces None with pybropt.core.random
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def nconfig():
+        doc = "The nconfig property."
+        def fget(self):
+            return self._nconfig
+        def fset(self, value):
+            check_is_int(value, "nconfig")      # must be int
+            check_is_gt(value, "nconfig", 0)    # int must be >0
+            self._nconfig = value
+        def fdel(self):
+            del self._nconfig
+        return locals()
+    nconfig = property(**nconfig())
+
+    def nparent():
+        doc = "The nparent property."
+        def fget(self):
+            return self._nparent
+        def fset(self, value):
+            check_is_int(value, "nparent")      # must be int
+            check_is_gt(value, "nparent", 0)    # int must be >0
+            self._nparent = value
+        def fdel(self):
+            del self._nparent
+        return locals()
+    nparent = property(**nparent())
+
+    def ncross():
+        doc = "The ncross property."
+        def fget(self):
+            return self._ncross
+        def fset(self, value):
+            check_is_int(value, "ncross")       # must be int
+            check_is_gt(value, "ncross", 0)     # int must be >0
+            self._ncross = value
+        def fdel(self):
+            del self._ncross
+        return locals()
+    ncross = property(**ncross())
+
+    def nprogeny():
+        doc = "The nprogeny property."
+        def fget(self):
+            return self._nprogeny
+        def fset(self, value):
+            check_is_int(value, "nprogeny")     # must be int
+            check_is_gt(value, "nprogeny", 0)   # int must be >0
+            self._nprogeny = value
+        def fdel(self):
+            del self._nprogeny
+        return locals()
+    nprogeny = property(**nprogeny())
+
+    def nhaploblk():
+        doc = "The nhaploblk property."
+        def fget(self):
+            return self._nhaploblk
+        def fset(self, value):
+            check_is_int(value, "nhaploblk")    # must be int
+            check_is_gt(value, "nhaploblk", 0)  # int must be >0
+            self._nhaploblk = value
+        def fdel(self):
+            del self._nhaploblk
+        return locals()
+    nhaploblk = property(**nhaploblk())
+
+    def unique_parents():
+        doc = "The unique_parents property."
+        def fget(self):
+            return self._unique_parents
+        def fset(self, value):
+            check_is_bool(value, "unique_parents")
+            self._unique_parents = value
+        def fdel(self):
+            del self._unique_parents
+        return locals()
+    unique_parents = property(**unique_parents())
+
+    def objfn_trans():
+        doc = "The objfn_trans property."
+        def fget(self):
+            return self._objfn_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "objfn_trans") # must be callable
+            self._objfn_trans = value
+        def fdel(self):
+            del self._objfn_trans
+        return locals()
+    objfn_trans = property(**objfn_trans())
+
+    def objfn_trans_kwargs():
+        doc = "The objfn_trans_kwargs property."
+        def fget(self):
+            return self._objfn_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+            self._objfn_trans_kwargs = value
+        def fdel(self):
+            del self._objfn_trans_kwargs
+        return locals()
+    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+
+    def objfn_wt():
+        doc = "The objfn_wt property."
+        def fget(self):
+            return self._objfn_wt
+        def fset(self, value):
+            self._objfn_wt = value
+        def fdel(self):
+            del self._objfn_wt
+        return locals()
+    objfn_wt = property(**objfn_wt())
+
+    def ndset_trans():
+        doc = "The ndset_trans property."
+        def fget(self):
+            return self._ndset_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "ndset_trans") # must be callable
+            self._ndset_trans = value
+        def fdel(self):
+            del self._ndset_trans
+        return locals()
+    ndset_trans = property(**ndset_trans())
+
+    def ndset_trans_kwargs():
+        doc = "The ndset_trans_kwargs property."
+        def fget(self):
+            return self._ndset_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+            self._ndset_trans_kwargs = value
+        def fdel(self):
+            del self._ndset_trans_kwargs
+        return locals()
+    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+
+    def ndset_wt():
+        doc = "The ndset_wt property."
+        def fget(self):
+            return self._ndset_wt
+        def fset(self, value):
+            self._ndset_wt = value
+        def fdel(self):
+            del self._ndset_wt
+        return locals()
+    ndset_wt = property(**ndset_wt())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            if value is None:               # if None
+                value = pybropt.core.random # use default random number generator
+                return                      # exit function
+            check_is_Generator(value, "rng")# check is numpy.Generator
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return locals()
+    rng = property(**rng())
 
     ############################################################################
     ########################## Private Object Methods ##########################
