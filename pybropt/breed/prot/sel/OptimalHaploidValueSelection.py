@@ -128,8 +128,9 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
         self.ndset_wt = ndset_wt
         self.rng = rng  # property replaces None with pybropt.core.random
-        self.soalgo = soalgo # MUST GO AFTER 'rng'; property provides default if None
-        self.moalgo = moalgo # MUST GO AFTER 'rng'; property provides default if None
+        # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
+        self.soalgo = soalgo
+        self.moalgo = moalgo
 
     ############################################################################
     ############################ Object Properties #############################
