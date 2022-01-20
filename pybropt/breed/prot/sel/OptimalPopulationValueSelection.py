@@ -6,12 +6,16 @@ from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybropt.core.random
 from pybropt.core.error import check_is_int
-from pybropt.core.error import cond_check_is_callable
-from pybropt.core.error import cond_check_is_dict
-from pybropt.core.error import cond_check_is_Generator
+from pybropt.core.error import check_is_callable
+from pybropt.core.error import check_is_dict
+from pybropt.core.error import check_is_Generator
+from pybropt.core.error import check_is_gt
+from pybropt.core.error import check_is_str
 from pybropt.core.util.haplo import calc_nhaploblk_chrom
 from pybropt.core.util.haplo import calc_haplobin
 from pybropt.core.util.haplo import calc_haplobin_bounds
+from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class OptimalPopulationValueSelection(SelectionProtocol):
     """docstring for OptimalPopulationValueSelection."""
@@ -19,7 +23,13 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, nhaploblk, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+    def __init__(self,
+    nparent, ncross, nprogeny, nhaploblk,
+    method = "single",
+    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
+    soalgo = None, moalgo = None,
+    rng = None, **kwargs):
         """
         Constructor for optimal population value selection (OPV).
 
@@ -43,35 +53,221 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         """
         super(OptimalPopulationValueSelection, self).__init__(**kwargs)
 
-        # error checks
-        check_is_int(nparent, "nparent")
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        check_is_int(nhaploblk, "nhaploblk")
-        cond_check_is_callable(objfn_trans, "objfn_trans")
-        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
-        # TODO: check objfn_wt
-        cond_check_is_callable(ndset_trans, "ndset_trans")
-        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
-        # TODO: check ndset_wt
-        cond_check_is_Generator(rng, "rng")
-
-        # variable assignment
+        # error checks and assignments (ORDER DEPENDENT!!!)
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.nhaploblk = nhaploblk
+        self.method = method
         self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
         self.objfn_wt = objfn_wt
         self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
         self.ndset_wt = ndset_wt
-        self.rng = pybropt.core.random if rng is None else rng
+        self.rng = rng  # property replaces None with pybropt.core.random
+        # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
+        self.soalgo = soalgo
+        self.moalgo = moalgo
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def nparent():
+        doc = "The nparent property."
+        def fget(self):
+            return self._nparent
+        def fset(self, value):
+            check_is_int(value, "nparent")      # must be int
+            check_is_gt(value, "nparent", 0)    # int must be >0
+            self._nparent = value
+        def fdel(self):
+            del self._nparent
+        return locals()
+    nparent = property(**nparent())
+
+    def ncross():
+        doc = "The ncross property."
+        def fget(self):
+            return self._ncross
+        def fset(self, value):
+            check_is_int(value, "ncross")       # must be int
+            check_is_gt(value, "ncross", 0)     # int must be >0
+            self._ncross = value
+        def fdel(self):
+            del self._ncross
+        return locals()
+    ncross = property(**ncross())
+
+    def nprogeny():
+        doc = "The nprogeny property."
+        def fget(self):
+            return self._nprogeny
+        def fset(self, value):
+            check_is_int(value, "nprogeny")     # must be int
+            check_is_gt(value, "nprogeny", 0)   # int must be >0
+            self._nprogeny = value
+        def fdel(self):
+            del self._nprogeny
+        return locals()
+    nprogeny = property(**nprogeny())
+
+    def nhaploblk():
+        doc = "The nhaploblk property."
+        def fget(self):
+            return self._nhaploblk
+        def fset(self, value):
+            check_is_int(value, "nhaploblk")    # must be int
+            check_is_gt(value, "nhaploblk", 0)  # int must be >0
+            self._nhaploblk = value
+        def fdel(self):
+            del self._nhaploblk
+        return locals()
+    nhaploblk = property(**nhaploblk())
+
+    def method():
+        doc = "The method property."
+        def fget(self):
+            return self._method
+        def fset(self, value):
+            check_is_str(value, "method")       # must be string
+            value = value.lower()               # convert to lowercase
+            options = ("single", "pareto")      # method options
+            if value not in options:            # if not method supported
+                raise ValueError(               # raise ValueError
+                    "Unsupported 'method'. Options are: " +
+                    ", ".join(map(str, options))
+                )
+            self._method = value
+        def fdel(self):
+            del self._method
+        return locals()
+    method = property(**method())
+
+    def objfn_trans():
+        doc = "The objfn_trans property."
+        def fget(self):
+            return self._objfn_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "objfn_trans") # must be callable
+            self._objfn_trans = value
+        def fdel(self):
+            del self._objfn_trans
+        return locals()
+    objfn_trans = property(**objfn_trans())
+
+    def objfn_trans_kwargs():
+        doc = "The objfn_trans_kwargs property."
+        def fget(self):
+            return self._objfn_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+            self._objfn_trans_kwargs = value
+        def fdel(self):
+            del self._objfn_trans_kwargs
+        return locals()
+    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+
+    def objfn_wt():
+        doc = "The objfn_wt property."
+        def fget(self):
+            return self._objfn_wt
+        def fset(self, value):
+            self._objfn_wt = value
+        def fdel(self):
+            del self._objfn_wt
+        return locals()
+    objfn_wt = property(**objfn_wt())
+
+    def ndset_trans():
+        doc = "The ndset_trans property."
+        def fget(self):
+            return self._ndset_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "ndset_trans") # must be callable
+            self._ndset_trans = value
+        def fdel(self):
+            del self._ndset_trans
+        return locals()
+    ndset_trans = property(**ndset_trans())
+
+    def ndset_trans_kwargs():
+        doc = "The ndset_trans_kwargs property."
+        def fget(self):
+            return self._ndset_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+            self._ndset_trans_kwargs = value
+        def fdel(self):
+            del self._ndset_trans_kwargs
+        return locals()
+    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+
+    def ndset_wt():
+        doc = "The ndset_wt property."
+        def fget(self):
+            return self._ndset_wt
+        def fset(self, value):
+            self._ndset_wt = value
+        def fdel(self):
+            del self._ndset_wt
+        return locals()
+    ndset_wt = property(**ndset_wt())
+
+    def soalgo():
+        doc = "The soalgo property."
+        def fget(self):
+            return self._soalgo
+        def fset(self, value):
+            if value is None:
+                value = SteepestAscentSetHillClimber(
+                    rng = self.rng  # PRNG source
+                )
+            self._soalgo = value
+        def fdel(self):
+            del self._soalgo
+        return locals()
+    soalgo = property(**soalgo())
+
+    def moalgo():
+        doc = "The moalgo property."
+        def fget(self):
+            return self._moalgo
+        def fset(self, value):
+            if value is None:
+                value = NSGA2SetGeneticAlgorithm(
+                    ngen = 250,     # number of generations to evolve
+                    mu = 100,       # number of parents in population
+                    lamb = 100,     # number of progeny to produce
+                    M = 1.5,        # algorithm crossover genetic map length
+                    rng = self.rng  # PRNG source
+                )
+            self._moalgo = value
+        def fdel(self):
+            del self._moalgo
+        return locals()
+    moalgo = property(**moalgo())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            if value is None:               # if None
+                value = pybropt.core.random # use default random number generator
+                return                      # exit function
+            check_is_Generator(value, "rng")# check is numpy.Generator
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return locals()
+    rng = property(**rng())
 
     ############################################################################
     ########################## Private Object Methods ##########################
@@ -140,7 +336,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Select individuals for breeding.
 
@@ -187,28 +383,17 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # get default parameters if any are None
-        if nparent is None:
-            nparent = self.nparent
-        if ncross is None:
-            ncross = self.ncross
-        if nprogeny is None:
-            nprogeny = self.nprogeny
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-        if ndset_trans is None:
-            ndset_trans = self.ndset_trans
-        if ndset_trans_kwargs is None:
-            ndset_trans_kwargs = self.ndset_trans_kwargs
-        if ndset_wt is None:
-            ndset_wt = self.ndset_wt
-
-        # convert method string to lower
-        method = method.lower()
+        # get selection parameters
+        nparent = self.nparent
+        ncross = self.ncross
+        nprogeny = self.nprogeny
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
+        objfn_wt = self.objfn_wt
+        ndset_trans = self.ndset_trans
+        ndset_trans_kwargs = self.ndset_trans_kwargs
+        ndset_wt = self.ndset_wt
+        method = self.method
 
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
@@ -231,14 +416,17 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
             # create optimization algorithm
             soalgo = SteepestAscentSetHillClimber(
-                k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
                 rng = self.rng,                 # PRNG source
-                objwt = 1.0                     # maximizing function
+                **kwargs
             )
 
             # optimize using hill-climber algorithm
-            opt = soalgo.optimize(objfn)
+            opt = soalgo.optimize(
+                objfn = objfn,                  # objective function
+                k = nparent,                    # number of parents to select
+                setspace = numpy.arange(ntaxa), # parental indices
+                objfn_wt = objfn_wt             # maximizing function
+            )
 
             # get best solution
             sel = opt["soln"]
@@ -280,10 +468,8 @@ class OptimalPopulationValueSelection(SelectionProtocol):
                 miscout["sel_config"] = sel_config
 
             return pgmat, sel_config[ix], ncross, nprogeny
-        else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return a selection objective function for the provided datasets.
 
@@ -305,14 +491,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         outfn : function
             A selection objective function for the specified problem.
         """
-        # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-
-        # get haplotype matrix
-        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t)
+        # get selection parameters
+        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t) get haplotype matrix
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -326,7 +508,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return a vectorized selection objective function for the provided datasets.
 
@@ -348,14 +530,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         outfn : function
             A vectorized selection objective function for the specified problem.
         """
-        # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-
-        # get haplotype matrix
-        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t)
+        # get selection parameters
+        mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t) get haplotype matrix
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -369,7 +547,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -415,18 +593,14 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # process inputs, apply defaults as needed.
-        if nparent is None:
-            nparent = self.nparent
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
+        # get selection parameters
+        nparent = self.nparent
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
+        objfn_wt = self.objfn_wt
 
         # get number of taxa
-        ntaxa = gmat.ntaxa
+        ntaxa = pgmat.ntaxa
 
         # create objective function
         objfn = self.objfn(
@@ -441,14 +615,8 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             trans_kwargs = objfn_trans_kwargs
         )
 
-        # create optimization algorithm
-        moalgo = NSGA2SetGeneticAlgorithm(
-            rng = self.rng,
-            **kwargs
-        )
-
         # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = moalgo.optimize(
+        frontier, sel_config, misc = self.moalgo.optimize(
             objfn = objfn,                  # objective function
             k = nparent,                    # vector length to optimize (sspace^k)
             sspace = numpy.arange(ntaxa),   # search space options

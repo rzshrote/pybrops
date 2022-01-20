@@ -18,7 +18,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             Array of shape (n,) where 'n' is the size of the set space.
         rng : numpy.Generator
             Random number generator.
-        objwt : float, numpy.ndarray
+        objfn_wt : float, numpy.ndarray
             Weight to apply to objective function.
             If the function is a maximizing function, provide a positive weight.
             If the function is a minimizing function, provide a negative weight.
@@ -48,8 +48,8 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             k = self.k
         if setspace is None:
             setspace = self.setspace
-        if objwt is None:
-            objwt = self.objwt
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
 
         # initialize
         wrkss = setspace.copy()    # copy set space
@@ -58,7 +58,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         # get starting solution and score
         gbest_soln = wrkss[:k].copy()                   # copy solution
         gbest_score = objfn(gbest_soln, **kwargs)       # score solution
-        gbest_wscore = numpy.dot(gbest_score, objwt)    # weight scores
+        gbest_wscore = numpy.dot(gbest_score, objfn_wt)    # weight scores
 
         # establish stopping criterion
         iterate = True
@@ -74,7 +74,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             score = numpy.apply_along_axis(objfn, 1, soln, **kwargs)
 
             # weight scores
-            wscore = numpy.dot(score, objwt)
+            wscore = numpy.dot(score, objfn_wt)
 
             # if any weighted scores are better than best score
             if numpy.any(wscore > gbest_score):

@@ -3,56 +3,117 @@ import pytest
 
 from numpy.random import Generator
 from numpy.random import PCG64
+from matplotlib import pyplot
+
+from pybropt.test import not_raises
+from pybropt.test import generic_assert_docstring
+from pybropt.test import generic_assert_abstract_method
+from pybropt.test import generic_assert_abstract_function
+from pybropt.test import generic_assert_abstract_property
+from pybropt.test import generic_assert_concrete_method
+from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopulationValueSelection
 from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybropt.breed.prot.sel.transfn import trans_sum
 
 ################################################################################
-################################## Genotypes ###################################
+################################ Test fixtures #################################
 ################################################################################
+
+############################################################
+######################## Genotypes #########################
+############################################################
 @pytest.fixture
 def mat_int8():
     yield numpy.int8([
-       [[1, 0, 0, 0, 0, 0, 1, 0, 1, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 1]],
-       [[0, 0, 1, 0, 1, 0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
-        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]]
+       [[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]],
+
+       [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0]]
     ])
 
 @pytest.fixture
 def mat_chrgrp():
-    yield numpy.int64([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    yield numpy.int64([
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+    ])
 
 @pytest.fixture
 def mat_phypos():
-    yield numpy.int64([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    yield numpy.int64([
+         1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+    ])
 
 @pytest.fixture
 def mat_genpos():
     yield numpy.float64([
-        0.31, 0.38, 0.66, 0.67, 0.73,
-        0.3 , 0.44, 0.58, 0.96, 0.99
+        0.13, 0.32, 0.53, 0.54, 0.55, 0.61, 0.63, 0.7 , 0.75, 0.96,
+        0.14, 0.16, 0.26, 0.31, 0.31, 0.68, 0.7 , 0.74, 0.75, 0.91
     ])
 
 @pytest.fixture
 def mat_taxa():
-    yield numpy.object_(["Line1", "Line2", "Line3", "Line4", "Line5"])
+    yield numpy.object_([
+        'Line01', 'Line02', 'Line03', 'Line04', 'Line05',
+        'Line06', 'Line07', 'Line08', 'Line09', 'Line10',
+        'Line11', 'Line12', 'Line13', 'Line14', 'Line15',
+        'Line16', 'Line17', 'Line18', 'Line19', 'Line20'
+    ])
 
 @pytest.fixture
 def mat_taxa_grp():
-    yield numpy.int64([1, 1, 2, 2, 2])
+    yield numpy.int64([
+        1, 1, 1, 1, 1,
+        2, 2, 2, 2, 2,
+        3, 3, 3, 3, 3,
+        4, 4, 4, 4, 4
+    ])
 
 @pytest.fixture
-def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
+def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
     out = DensePhasedGenotypeMatrix(
         mat = mat_int8,
         vrnt_chrgrp = mat_chrgrp,
@@ -64,51 +125,44 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp
     out.group()
     yield out
 
-################################################################################
-################################ Genomic model #################################
-################################################################################
+############################################################
+###################### Genomic model #######################
+############################################################
 @pytest.fixture
-def mu():
-    # yield numpy.float64([
-    #     [1.4]
-    # ])
+def beta():
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [14.1],
+        [25.6]
     ])
 
 @pytest.fixture
-def beta():
-    # yield numpy.float64([
-    #     [-0.33],
-    #     [-0.69],
-    #     [ 1.12],
-    #     [-1.44],
-    #     [ 0.88],
-    #     [ 1.23],
-    #     [ 0.19],
-    #     [-2.12],
-    #     [-0.87],
-    #     [ 0.06]
-    # ])
+def u():
     yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87, -1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
+        [-1.81,  0.64],
+        [-0.43,  0.19],
+        [-2.62, -1.09],
+        [ 0.3 , -1.14],
+        [-1.01,  1.05],
+        [ 0.07,  1.23],
+        [ 0.47,  0.41],
+        [-0.08, -0.53],
+        [-0.21,  0.17],
+        [ 0.29,  1.07],
+        [-0.89, -0.72],
+        [-1.96, -0.42],
+        [ 1.25, -0.48],
+        [ 1.49, -1.36],
+        [ 0.82,  0.37],
+        [ 0.35, -0.26],
+        [ 0.54,  0.04],
+        [-0.53,  0.86],
+        [-0.75,  0.99],
+        [-0.54, -1.49]
     ])
 
 @pytest.fixture
 def trait():
-    # yield numpy.object_(["protein"])
-    yield numpy.object_(["protein", "yield", "quality"])
+    yield numpy.object_(["protein", "yield"])
 
 @pytest.fixture
 def model_name():
@@ -119,37 +173,28 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
+def glgmod(beta, u, trait, model_name, params):
     yield AdditiveLinearGenomicModel(
-        mu = mu,
         beta = beta,
+        u = u,
         trait = trait,
         model_name = model_name,
         params = params
     )
 
-################################################################################
-############################ Breeding values model #############################
-################################################################################
+############################################################
+################## Breeding values model ###################
+############################################################
 @pytest.fixture
-def bvmat(glgmod, dpgvmat):
-    yield glgmod.predict(dpgvmat)
+def bvmat(glgmod, dpgmat):
+    yield glgmod.gebv(dpgmat)
 
-################################################################################
-###################### OptimalPopulationValueSelection ######################
-################################################################################
+############################################################
+############# OptimalPopulationValueSelection ##############
+############################################################
 @pytest.fixture
-def k_p():
-    yield 2
-
-@pytest.fixture
-def b_p():
-    yield 3
-
-@pytest.fixture
-def traitwt_p():
-    # yield numpy.float64([1.0])
-    yield numpy.float64([1.0, 1.0, 1.0])
+def nparent():
+    yield 4
 
 @pytest.fixture
 def ncross():
@@ -160,59 +205,145 @@ def nprogeny():
     yield 10
 
 @pytest.fixture
+def nhaploblk():
+    yield 4
+
+@pytest.fixture
+def objfn_trans():
+    yield trans_sum
+
+@pytest.fixture
+def objfn_wt():
+    yield 1.0
+
+@pytest.fixture
 def rng():
-    yield Generator(PCG64(192837465))
+    yield Generator(PCG64(549824248))
 
-@pytest.fixture
-def algorithm(k_p, dpgvmat, rng):
-    yield SteepestAscentSetHillClimber(
-        k = k_p,
-        setspace = numpy.arange(dpgvmat.ntaxa),
-        rng = rng,
-        objwt = 1.0,
-    )
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    generic_assert_docstring(OptimalPopulationValueSelection)
 
-@pytest.fixture
-def opvps(k_p, traitwt_p, b_p, ncross, nprogeny, algorithm, rng):
-    yield OptimalPopulationValueSelection(
-        k_p = k_p,
-        traitwt_p = traitwt_p,
-        b_p = b_p,
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+def test_init_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "__init__")
+
+def test_select_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "select")
+
+def test_objfn_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "objfn")
+
+def test_objfn_vec_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "objfn_vec")
+
+def test_pareto_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "pareto")
+
+def test_objfn_static_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "objfn_static")
+
+def test_objfn_vec_static_is_concrete():
+    generic_assert_concrete_method(OptimalPopulationValueSelection, "objfn_vec_static")
+
+################################################################################
+########################## Test Class Special Methods ##########################
+################################################################################
+
+################################################################################
+############################ Test Class Properties #############################
+################################################################################
+
+################################################################################
+###################### Test concrete method functionality ######################
+################################################################################
+def test_select_single(dpgmat, bvmat, glgmod, nparent, ncross, nprogeny, nhaploblk, objfn_trans, rng):
+    opvs = OptimalPopulationValueSelection(
+        nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
-        algorithm = algorithm,
+        nhaploblk = nhaploblk,
+        objfn_trans = objfn_trans,
+        method = "single",
         rng = rng
     )
-
-################################################################################
-#################################### Tests #####################################
-################################################################################
-def test_pselect(opvps, dpgvmat, bvmat, glgmod, ncross, nprogeny):
-    geno = {
-        "cand" : dpgvmat,
-        "main" : dpgvmat,
-        "queue" : [dpgvmat]
-    }
-    bval = {
-        "cand" : bvmat,
-        "cand_true" : bvmat,
-        "main" : bvmat,
-        "main_true" : bvmat
-    }
-    gmod = {
-        "cand" : glgmod,
-        "main" : glgmod,
-        "true" : glgmod
-    }
-
-    out_gmat, out_sel, out_ncross, out_nprogeny, out_misc = opvps.pselect(
+    miscout = {}
+    out_pgmat, out_sel, out_ncross, out_nprogeny = opvs.select(
+        pgmat = dpgmat,
+        gmat = None,
+        ptdf = None,
+        bvmat = None,
+        gpmod = glgmod,
         t_cur = 0,
         t_max = 20,
-        geno = geno,
-        bval = bval,
-        gmod = gmod
+        miscout = miscout
     )
 
-    assert numpy.all(out_sel == [1,3])
+    assert len(out_sel) == nparent
+    assert numpy.all(out_sel < dpgmat.ntaxa)
     assert out_ncross == ncross
     assert out_nprogeny == nprogeny
+
+def test_objfn_is_function(dpgmat, bvmat, glgmod, nparent, ncross, nprogeny, nhaploblk, objfn_trans, rng):
+    opvs = OptimalPopulationValueSelection(
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        nhaploblk = nhaploblk,
+        objfn_trans = objfn_trans,
+        method = "single",
+        rng = rng
+    )
+    objfn = opvs.objfn(
+        pgmat = dpgmat,
+        gmat = None,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20
+    )
+
+    assert callable(objfn)
+
+def test_pareto(dpgmat, bvmat, glgmod, nparent, ncross, nprogeny, nhaploblk, rng):
+    opvs = OptimalPopulationValueSelection(
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        nhaploblk = nhaploblk,
+        objfn_trans = None,
+        objfn_trans_kwargs = None,
+        objfn_wt = numpy.array([1.0, 1.0]),
+        rng = rng
+    )
+    frontier, sel_config = opvs.pareto(
+        pgmat = dpgmat,
+        gmat = None,
+        ptdf = None,
+        bvmat = bvmat,
+        gpmod = glgmod,
+        t_cur = 0,
+        t_max = 20,
+    )
+
+    xdata = frontier[:,0]
+    ydata = frontier[:,1]
+    # zdata = frontier[:,2]
+
+    xlabel = glgmod.trait[0]
+    ylabel = glgmod.trait[1]
+
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    ax.scatter(xdata, ydata)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title("Optimal Population Value Selection Test Pareto Frontier")
+    # ax = pyplot.axes(projection='3d')
+    # ax.scatter3D(xdata, ydata, zdata)
+    pyplot.savefig("OPV_2d_frontier.png", dpi = 250)
