@@ -2,16 +2,10 @@ import numpy
 import math
 import types
 
-from deap import algorithms
-from deap import base
-from deap import creator
-from deap import tools
-from deap import benchmarks
-
 import pybropt.core.random
-
+from pybropt.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 from pybropt.core.error import check_isinstance
 from pybropt.core.error import check_is_bool
 from pybropt.core.error import check_is_callable
@@ -323,7 +317,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     def weight():
         doc = "The weight property."
         def fget(self):
-            return self.weight
+            return self._weight
         def fset(self, value):
             check_isinstance(value, "weight", (str, numpy.ndarray))
             if isinstance(value, str):
@@ -334,9 +328,9 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
                         "Unsupported 'weight'. Options are: " +
                         ", ".join(map(str, options))
                     )
-            self.weight = value
+            self._weight = value
         def fdel(self):
-            del self.weight
+            del self._weight
         return locals()
     weight = property(**weight())
 
