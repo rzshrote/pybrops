@@ -54,15 +54,11 @@ class G_E_Phenotyping(PhenotypingProtocol):
             If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
         var_err : numeric, numpy.ndarray
             Error variance parameter.
-            --------------------------------------------------------------------
-            If numeric:
-                Broadcast 'var_err' to an array of shape (ntrait,)
-            If numpy.ndarray:
-                Must be of shape (ntrait,)
-            --------------------------------------------------------------------
 
-            If numeric, then broadcast ``var_err`` to an array of shape ``(ntrait,)``
-            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
+            If numeric, then broadcast ``var_err`` to an array of shape 
+            ``(ntrait,)``.
+
+            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``.
         """
         super(G_E_Phenotyping, self).__init__(**kwargs)
         # order dependent initialization!

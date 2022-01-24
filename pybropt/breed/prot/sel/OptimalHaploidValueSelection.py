@@ -487,29 +487,27 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        method : str
-            Options: "single", "pareto"
-        nparent : int
-        ncross : int
-        nprogeny : int
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing five objects: (pgmat, sel, ncross, nprogeny, misc)
-            pgmat : PhasedGenotypeMatrix
-                A PhasedGenotypeMatrix of parental candidates.
-            sel : numpy.ndarray
-                Array of indices specifying a cross pattern. Each index
-                corresponds to an individual in 'pgmat'.
-            ncross : numpy.ndarray
-                Number of crosses to perform per cross pattern.
-            nprogeny : numpy.ndarray
-                Number of progeny to generate per cross.
-            misc : dict
-                Miscellaneous output (user defined).
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         # get selection parameters
         nconfig = self.nconfig
