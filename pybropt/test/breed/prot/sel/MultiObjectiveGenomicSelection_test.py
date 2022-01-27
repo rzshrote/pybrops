@@ -14,7 +14,7 @@ from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.MultiObjectiveGenomicSelection import MultiObjectiveGenomicSelection
-from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybropt.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
@@ -182,7 +182,7 @@ def params():
 
 @pytest.fixture
 def glgmod(beta, u, trait, model_name, params):
-    yield AdditiveLinearGenomicModel(
+    yield DenseAdditiveLinearGenomicModel(
         beta = beta,
         u = u,
         trait = trait,

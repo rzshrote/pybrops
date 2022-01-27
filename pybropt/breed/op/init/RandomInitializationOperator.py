@@ -91,7 +91,7 @@ class RandomInitializationOperator(InitializationOperator):
         }
 
         # create the true genomic model
-        tgmod = AdditiveLinearGenomicModel(
+        tgmod = DenseAdditiveLinearGenomicModel(
             mu = self.rng.uniform(0,100,(self.ntrait,1)),
             beta = self.rng.normal(0,1,(self.nloci,self.ntrait)),
         )

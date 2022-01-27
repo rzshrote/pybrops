@@ -1,8 +1,8 @@
-from pybropt.model.gmod.LinearGenomicModel import LinearGenomicModel
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
-class AdditiveLinearGenomicModel(LinearGenomicModel):
+class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     """
-    The AdditiveLinearGenomicModel class represents an interface for a
+    The AdditiveDominanceLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
 
     A Multivariate Multiple Linear Regression model is defined as:
@@ -25,20 +25,22 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     matrices pertaining to different sets of effects:
 
     .. math::
-        \\mathbf{Z} = \\begin{bmatrix} \\mathbf{Z_{misc}} & \\mathbf{Z_{a}} \\end{bmatrix}
+        \\mathbf{Z} = \\begin{bmatrix} \\mathbf{Z_{misc}} & \\mathbf{Z_{a} & \\mathbf{Z_{d}} \\end{bmatrix}
 
     Where:
 
     - :math:`\\mathbf{Z_{misc}}` is a matrix of miscellaneous random effect predictors of shape ``(n,p_misc)``
     - :math:`\\mathbf{Z_{a}}` is a matrix of additive genomic marker predictors of shape ``(n,p_a)``
+    - :math:`\\mathbf{Z_{d}}` is a matrix of dominance genomic marker predictors of shape ``(n,p_d)``
 
     .. math::
-        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\end{bmatrix}
+        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\\\ \\mathbf{U_{d}} \\end{bmatrix}
 
     Where:
 
     - :math:`\\mathbf{U_{misc}}` is a matrix of miscellaneous random effects of shape ``(p_misc,t)``
     - :math:`\\mathbf{U_{a}}` is a matrix of additive genomic marker effects of shape ``(p_a,t)``
+    - :math:`\\mathbf{U_{d}}` is a matrix of dominance genomic marker effects of shape ``(p_d,t)``
 
     Shape definitions:
 
@@ -47,7 +49,8 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     - ``p`` is the number of random effect predictors.
     - ``p_misc`` is the number of miscellaneous random effect predictors.
     - ``p_a`` is the number of additive genomic marker predictors.
-    - The sum of ``p_misc`` and ``p_a`` equals ``p``.
+    - ``p_d`` is the number of dominance genomic marker predictors.
+    - The sum of ``p_misc``, ``p_a``, and ``p_d`` equals ``p``.
     - ``t`` is the number of traits
     """
 
@@ -56,21 +59,21 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     def __init__(self, **kwargs):
         """
-        Constructor for the abstract class AdditiveLinearGenomicModel.
+        Constructor for the abstract class AdditiveDominanceLinearGenomicModel.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(AdditiveLinearGenomicModel, self).__init__(**kwargs)
+        super(AdditiveDominanceLinearGenomicModel, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
 
-    def u_misc():
-        doc = "Miscellaneous random effects."
+    def u_d():
+        doc = "Dominance genomic marker effects."
         def fget(self):
             raise NotImplementedError("method is abstract")
         def fset(self, value):
@@ -78,27 +81,16 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             raise NotImplementedError("method is abstract")
         return locals()
-    u_misc = property(**u_misc())
-
-    def u_a():
-        doc = "Additive genomic marker effects."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return locals()
-    u_a = property(**u_a())
+    u_d = property(**u_d())
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveLinearGenomicModel(v):
+def is_AdditiveDominanceLinearGenomicModel(v):
     """
-    Determine whether an object is a AdditiveLinearGenomicModel.
+    Determine whether an object is a AdditiveDominanceLinearGenomicModel.
 
     Parameters
     ----------
@@ -108,13 +100,13 @@ def is_AdditiveLinearGenomicModel(v):
     Returns
     -------
     out : bool
-        True or False for whether v is a AdditiveLinearGenomicModel object instance.
+        True or False for whether v is a AdditiveDominanceLinearGenomicModel object instance.
     """
-    return isinstance(v, AdditiveLinearGenomicModel)
+    return isinstance(v, AdditiveDominanceLinearGenomicModel)
 
-def check_is_AdditiveLinearGenomicModel(v, vname):
+def check_is_AdditiveDominanceLinearGenomicModel(v, vname):
     """
-    Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
+    Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -123,12 +115,12 @@ def check_is_AdditiveLinearGenomicModel(v, vname):
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, AdditiveLinearGenomicModel):
-        raise TypeError("variable '{0}' must be a AdditiveLinearGenomicModel".format(vname))
+    if not isinstance(v, AdditiveDominanceLinearGenomicModel):
+        raise TypeError("variable '{0}' must be a AdditiveDominanceLinearGenomicModel".format(vname))
 
-def cond_check_is_AdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_AdditiveDominanceLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
     """
-    Conditionally check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
+    Conditionally check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -137,7 +129,7 @@ def cond_check_is_AdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not 
     varname : str
         Name of variable to print in TypeError message.
     cond : function
-        A function returning True/False for whether to test if is a AdditiveLinearGenomicModel.
+        A function returning True/False for whether to test if is a AdditiveDominanceLinearGenomicModel.
     """
     if cond(v):
-        check_is_AdditiveLinearGenomicModel(v, vname)
+        check_is_AdditiveDominanceLinearGenomicModel(v, vname)

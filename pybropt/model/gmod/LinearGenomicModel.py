@@ -10,16 +10,16 @@ class LinearGenomicModel(GenomicModel):
     A Multivariate Multiple Linear Regression model is defined as:
 
     .. math::
-        Y = X \\beta + Zu + e
+        Y = X \\Beta + ZU + e
 
     Where:
 
     - :math:`Y` is a matrix of response variables of shape ``(n,t)``.
     - :math:`X` is a matrix of fixed effect predictors of shape ``(n,q)``.
-    - :math:`\\beta` is a matrix of fixed effect regression coefficients of
+    - :math:`\\Beta` is a matrix of fixed effect regression coefficients of
       shape ``(q,t)``.
     - :math:`Z` is a matrix of random effect predictors of shape ``(n,p)``.
-    - :math:`u` is a matrix of random effect regression coefficients of shape
+    - :math:`U` is a matrix of random effect regression coefficients of shape
       ``(p,t)``.
     - :math:`e` is a matrix of error terms of shape ``(n,t)``.
 

@@ -370,7 +370,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         ----------
         gmat : PhasedGenotypeMatrix
             A genome matrix.
-        mod : AdditiveLinearGenomicModel
+        mod : DenseAdditiveLinearGenomicModel
             A genomic prediction model.
 
         Returns

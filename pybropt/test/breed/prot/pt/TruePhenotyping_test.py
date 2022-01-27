@@ -13,7 +13,7 @@ from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.pt.TruePhenotyping import TruePhenotyping
-from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybropt.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 
@@ -116,7 +116,7 @@ def params():
 
 @pytest.fixture
 def gpmod(beta, u, trait, model_name, params):
-    yield AdditiveLinearGenomicModel(
+    yield DenseAdditiveLinearGenomicModel(
         beta = beta,
         u = u,
         trait = trait,

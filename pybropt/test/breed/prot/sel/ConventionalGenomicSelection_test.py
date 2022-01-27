@@ -13,7 +13,7 @@ from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.ConventionalGenomicSelection import ConventionalGenomicSelection
-from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybropt.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybropt.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybropt.breed.prot.sel.transfn import trans_sum
@@ -118,7 +118,7 @@ def params():
 
 @pytest.fixture
 def glgmod(beta, u, trait, model_name, params):
-    yield AdditiveLinearGenomicModel(
+    yield DenseAdditiveLinearGenomicModel(
         beta = beta,
         u = u,
         trait = trait,
