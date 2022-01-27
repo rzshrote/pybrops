@@ -180,7 +180,7 @@ def glgmod(beta, u, trait, model_name, params):
 ############################################################
 @pytest.fixture
 def bvmat(glgmod, dpgmat):
-    yield glgmod.predict(dpgmat)
+    yield glgmod.gebv(dpgmat)
 
 ############################################################
 ##################### RandomSelection ######################

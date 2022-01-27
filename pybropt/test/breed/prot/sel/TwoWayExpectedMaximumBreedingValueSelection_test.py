@@ -140,7 +140,7 @@ def glgmod(beta, u, trait, model_name, params):
 ################################################################################
 @pytest.fixture
 def bvmat(glgmod, dpgvmat):
-    yield glgmod.predict(dpgvmat)
+    yield glgmod.gebv(dpgvmat)
 
 ################################################################################
 ###################### TwoWayExpectedMaximumBreedingValueSelection ######################
