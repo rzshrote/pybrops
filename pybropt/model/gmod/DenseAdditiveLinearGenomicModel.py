@@ -79,7 +79,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, beta, u, trait = None, model_name = None, params = None, **kwargs):
+    def __init__(self, beta, u_misc, u_a, trait = None, model_name = None, params = None, **kwargs):
         """
         Constructor for DenseAdditiveLinearGenomicModel class.
 
@@ -91,18 +91,28 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
             Where:
 
-            - ``q`` is the number of fixed effect predictors (e.g.
-              environments).
+            - ``q`` is the number of fixed effect predictors (e.g. environments).
             - ``t`` is the number of individuals.
-        u : numpy.ndarray
+        u_misc : numpy.ndarray, None
             A ``float64`` random effect regression coefficient matrix of shape
-            ``(p,t)``.
+            ``(p_misc,t)`` containing miscellaneous effects.
 
             Where:
 
-            - ``p`` is the number of random effect predictors (e.g. genomic
-              markers).
+            - ``p_misc`` is the number of miscellaneous random effect predictors.
             - ``t`` is the number of individuals.
+
+            If ``None``, then set to an empty array of shape ``(0,t)``.
+        u_a : numpy.ndarray, None
+            A ``float64`` random effect regression coefficient matrix of shape
+            ``(p_a,t)`` containing additive marker effects.
+
+            Where:
+
+            - ``p_a`` is the number of additive marker effect predictors.
+            - ``t`` is the number of individuals.
+
+            If ``None``, then set to an empty array of shape ``(0,t)``.
         trait : numpy.ndarray, None
             An ``object_`` array of shape ``(t,)``.
 
@@ -119,9 +129,10 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         super(DenseAdditiveLinearGenomicModel, self).__init__(**kwargs)
 
-        # set variables
+        # set variables (order dependent)
         self.beta = beta
-        self.u = u
+        self.u_misc = u_misc
+        self.u_a = u_a
         self.trait = trait
         self.model_name = model_name
         self.params = params
@@ -137,7 +148,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         out = self.__class__(
             beta = copy.copy(self.beta),
-            u = copy.copy(self.u),
+            u_misc = copy.copy(self.u_misc),
+            u_a = copy.copy(self.u_a),
             trait = copy.copy(self.trait),
             model_name = copy.copy(self.model_name),
             params = copy.copy(self.params)
@@ -160,7 +172,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         out = self.__class__(
             beta = copy.deepcopy(self.beta),
-            u = copy.deepcopy(self.u),
+            u_misc = copy.deepcopy(self.u_misc),
+            u_a = copy.deepcopy(self.u_a),
             trait = copy.deepcopy(self.trait),
             model_name = copy.deepcopy(self.model_name),
             params = copy.deepcopy(self.params)
@@ -194,18 +207,59 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         doc = "Random effect regression coefficients"
         def fget(self):
             """Get random effect regression coefficients"""
-            return self._u
+            out = numpy.concatenate(        # concatenate matrices
+                [self.u_misc, self.u_a],    # get random effects
+                axis = 0                    # concatenate along compatible axes
+            )
+            return out
         def fset(self, value):
             """Set random effect regression coefficients"""
-            check_is_ndarray(value, "u")
-            check_ndarray_ndim(value, "u", 2)
-            check_ndarray_dtype_is_float64(value, "u")
-            self._u = value
+            raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
         def fdel(self):
             """Delete random effect regression coefficients"""
-            del self._u
+            raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
         return locals()
     u = property(**u())
+
+    def u_misc():
+        doc = "Miscellaneous random effect regression coefficients"
+        def fget(self):
+            """Get miscellaneous random effect regression coefficients"""
+            return self._u_misc
+        def fset(self, value):
+            """Set miscellaneous random effect regression coefficients"""
+            if value is None:                                   # if value is None
+                t = self.beta.shape[1]                          # get number of traits
+                value = numpy.empty((0,t), dtype = "float64")   # make empty array of shape (0,t)
+            check_is_ndarray(value, "u_misc")
+            check_ndarray_ndim(value, "u_misc", 2)
+            check_ndarray_dtype_is_float64(value, "u_misc")
+            self._u_misc = value
+        def fdel(self):
+            """Delete miscellaneous random effect regression coefficients"""
+            del self._u_misc
+        return locals()
+    u_misc = property(**u_misc())
+
+    def u_a():
+        doc = "Additive genomic marker effects."
+        def fget(self):
+            """Get additive genomic marker effect regression coefficients"""
+            return self._u_a
+        def fset(self, value):
+            """Set additive genomic marker effect regression coefficients"""
+            if value is None:                                   # if value is None
+                t = self.beta.shape[1]                          # get number of traits
+                value = numpy.empty((0,t), dtype = "float64")   # make empty array of shape (0,t)
+            check_is_ndarray(value, "u_a")
+            check_ndarray_ndim(value, "u_a", 2)
+            check_ndarray_dtype_is_float64(value, "u_a")
+            self._u_a = value
+        def fdel(self):
+            """Delete additive genomic marker effect regression coefficients"""
+            del self._u_a
+        return locals()
+    u_a = property(**u_a())
 
     ################## Genomic Model Data ##################
     def model_name():
@@ -712,7 +766,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # (p,t)**2 * (p,1) * (p,1) -> (p,t)
         # (p,t).sum[0] -> (t,)
         # scalar * (t,) -> (t,)
-        out = (ploidy**2.0) * ((self.u**2) * p * (1.0 - p)).sum(0)
+        out = (ploidy**2.0) * ((self.u_a**2) * p * (1.0 - p)).sum(0)
 
         return out
 
@@ -850,7 +904,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # get maximum attainable genotype
         # (p,t) ? (p,1) : (p,1) -> (p,t)
         uslgeno = numpy.where(
-            self.u > 0.0,       # if the allele effect is positive
+            self.u_a > 0.0,       # if the allele effect is positive
             p > 0.0,            # +allele: 1 if we have at least one +allele
             p >= 1.0            # -allele: 1 if we have fixation for -allele
         )
@@ -858,7 +912,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # calculate usl value
         # scalar * (p,t) * (p,t) -> (p,t)
         # (p,t).sum[0] -> (t,)
-        out = (float(ploidy) * self.u * uslgeno).sum(0)
+        out = (float(ploidy) * self.u_a * uslgeno).sum(0)
 
         return out
 
@@ -918,7 +972,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # get minimum attainable genotype
         # (p,t) ? (p,1) : (p,1) -> (p,t)
         lslgeno = numpy.where(
-            self.u > 0.0,       # if the allele effect is positive
+            self.u_a > 0.0,       # if the allele effect is positive
             p >= 1.0,           # +allele: 1 if we have fixation for +allele
             p > 0.0             # -allele: 1 if we have at least one -allele
         )
@@ -926,7 +980,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # calculate lsl value
         # scalar * (p,t) * (p,t) -> (p,t)
         # (p,t).sum[0] -> (t,)
-        out = (float(ploidy) * self.u * lslgeno).sum(0)
+        out = (float(ploidy) * self.u_a * lslgeno).sum(0)
 
         return out
 
@@ -1000,13 +1054,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         ######################################################### read data
         data_dict = {                                           # output dictionary
             "beta": None,
-            "u" : None,
+            "u_misc" : None,
+            "u_a" : None,
             "trait": None,
             "model_name": None,
             "params": None
         }
         data_dict["beta"] = h5file[groupname + "beta"][()]      # read beta array
-        data_dict["u"] = h5file[groupname + "u"][()]            # read u array
+        data_dict["u_misc"] = h5file[groupname + "u_misc"][()]  # read u array
+        data_dict["u_a"] = h5file[groupname + "u_a"][()]        # read u array
         fieldname = groupname + "trait"                         # construct "groupname/trait"
         if fieldname in h5file:                                 # if "groupname/trait" in hdf5
             data_dict["trait"] = h5file[fieldname][()]          # read trait array
@@ -1026,8 +1082,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object
-        glgmod = DenseAdditiveLinearGenomicModel(**data_dict)         # create object from read data
-        return glgmod
+        dalgmod = DenseAdditiveLinearGenomicModel(**data_dict)  # create object from read data
+        return dalgmod
 
     def to_hdf5(self, filename, groupname = None):
         """
@@ -1053,7 +1109,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         ######################################################### populate HDF5 file
         data_dict = {                                           # data dictionary
             "beta": self.beta,
-            "u": self.u,
+            "u_misc": self.u_misc,
+            "u_a": self.u_a,
             "trait": self.trait,
             "model_name": self.model_name,
             "params": self.params
