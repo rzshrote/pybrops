@@ -1047,7 +1047,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         else:                                                   # else raise error
             raise TypeError("'groupname' must be of type str or None")
         ######################################################### check that we have all required fields
-        required_fields = ["beta", "u"]                         # all required arguments
+        required_fields = ["beta", "u_misc", "u_a"]             # all required arguments
         for field in required_fields:                           # for each required field
             fieldname = groupname + field                       # concatenate base groupname and field
             check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists

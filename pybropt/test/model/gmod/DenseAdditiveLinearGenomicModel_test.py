@@ -67,7 +67,7 @@ def params():
 def dalgmod(mat_beta, mat_u_misc, mat_u_a, mat_trait, model_name, params):
     yield DenseAdditiveLinearGenomicModel(
         beta = mat_beta,
-        u_misc = mat_u_misc
+        u_misc = mat_u_misc,
         u_a = mat_u_a,
         trait = mat_trait,
         model_name = model_name,
