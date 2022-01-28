@@ -2,7 +2,7 @@ import copy
 import numpy
 import h5py
 
-from pybropt.model.gmod.LinearGenomicModel import LinearGenomicModel
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
 from pybropt.core.error import check_file_exists
 from pybropt.core.error import check_group_in_hdf5
@@ -25,32 +25,54 @@ from pybropt.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybropt.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 from pybropt.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 
-class DenseLinearGenomicModel(LinearGenomicModel):
+class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     """
-    The DenseLinearGenomicModel class represents a Multivariate Multiple
+    The DenseAdditiveLinearGenomicModel class represents a Multivariate Multiple
     Linear Regression model.
 
     A Multivariate Multiple Linear Regression model is defined as:
 
     .. math::
-        Y = X \\beta + Zu + e
+        \\mathbf{Y} = \\mathbf{XB} + \\mathbf{ZU} + \\mathbf{E}
 
     Where:
 
-    - :math:`Y` is a matrix of response variables of shape ``(n,t)``.
-    - :math:`X` is a matrix of fixed effect predictors of shape ``(n,q)``.
-    - :math:`\\beta` is a matrix of fixed effect regression coefficients of
-      shape ``(q,t)``.
-    - :math:`Z` is a matrix of random effect predictors of shape ``(n,p)``.
-    - :math:`u` is a matrix of random effect regression coefficients of shape
-      ``(p,t)``.
-    - :math:`e` is a matrix of error terms of shape ``(n,t)``.
+    - :math:`\\mathbf{Y}` is a matrix of response variables of shape ``(n,t)``.
+    - :math:`\\mathbf{X}` is a matrix of fixed effect predictors of shape ``(n,q)``.
+    - :math:`\\mathbf{B}` is a matrix of fixed effect regression coefficients of shape ``(q,t)``.
+    - :math:`\\mathbf{Z}` is a matrix of random effect predictors of shape ``(n,p)``.
+    - :math:`\\mathbf{U}` is a matrix of random effect regression coefficients of shape ``(p,t)``.
+    - :math:`\\mathbf{E}` is a matrix of error terms of shape ``(n,t)``.
+
+    Block matrix modifications to :
+
+    :math:`\\mathbf{Z}` and :math:`\\mathbf{U}` can be decomposed into block
+    matrices pertaining to different sets of effects:
+
+    .. math::
+        \\mathbf{Z} = \\begin{bmatrix} \\mathbf{Z_{misc}} & \\mathbf{Z_{a}} \\end{bmatrix}
+
+    Where:
+
+    - :math:`\\mathbf{Z_{misc}}` is a matrix of miscellaneous random effect predictors of shape ``(n,p_misc)``
+    - :math:`\\mathbf{Z_{a}}` is a matrix of additive genomic marker predictors of shape ``(n,p_a)``
+
+    .. math::
+        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\end{bmatrix}
+
+    Where:
+
+    - :math:`\\mathbf{U_{misc}}` is a matrix of miscellaneous random effects of shape ``(p_misc,t)``
+    - :math:`\\mathbf{U_{a}}` is a matrix of additive genomic marker effects of shape ``(p_a,t)``
 
     Shape definitions:
 
     - ``n`` is the number of individuals
     - ``q`` is the number of fixed effect predictors (e.g. environments)
-    - ``p`` is the number of random effect predictors (e.g. genomic markers)
+    - ``p`` is the number of random effect predictors.
+    - ``p_misc`` is the number of miscellaneous random effect predictors.
+    - ``p_a`` is the number of additive genomic marker predictors.
+    - The sum of ``p_misc`` and ``p_a`` equals ``p``.
     - ``t`` is the number of traits
     """
 
@@ -59,7 +81,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     def __init__(self, beta, u, trait = None, model_name = None, params = None, **kwargs):
         """
-        Constructor for DenseLinearGenomicModel class.
+        Constructor for DenseAdditiveLinearGenomicModel class.
 
         Parameters
         ----------
@@ -95,7 +117,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(DenseLinearGenomicModel, self).__init__(**kwargs)
+        super(DenseAdditiveLinearGenomicModel, self).__init__(**kwargs)
 
         # set variables
         self.beta = beta
@@ -110,7 +132,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         Returns
         -------
-        out : DenseLinearGenomicModel
+        out : DenseAdditiveLinearGenomicModel
             A shallow copy of the model.
         """
         out = self.__class__(
@@ -133,7 +155,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         Returns
         -------
-        out : DenseLinearGenomicModel
+        out : DenseAdditiveLinearGenomicModel
             A deep copy of the model.
         """
         out = self.__class__(
@@ -260,7 +282,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise AttributeError("DenseLinearGenomicModel is read-only")
+        raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
     def fit(self, ptobj, cvobj, gtobj, **kwargs):
         """
@@ -281,7 +303,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise AttributeError("DenseLinearGenomicModel is read-only")
+        raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
     ######## methods for estimated breeding values #########
     def predict_numpy(self, X, Z, **kwargs):
@@ -1004,7 +1026,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object
-        glgmod = DenseLinearGenomicModel(**data_dict)         # create object from read data
+        glgmod = DenseAdditiveLinearGenomicModel(**data_dict)         # create object from read data
         return glgmod
 
     def to_hdf5(self, filename, groupname = None):
@@ -1045,9 +1067,9 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseLinearGenomicModel(v):
+def is_DenseAdditiveLinearGenomicModel(v):
     """
-    Determine whether an object is a DenseLinearGenomicModel.
+    Determine whether an object is a DenseAdditiveLinearGenomicModel.
 
     Parameters
     ----------
@@ -1057,13 +1079,13 @@ def is_DenseLinearGenomicModel(v):
     Returns
     -------
     out : bool
-        True or False for whether v is a DenseLinearGenomicModel object instance.
+        True or False for whether v is a DenseAdditiveLinearGenomicModel object instance.
     """
-    return isinstance(v, DenseLinearGenomicModel)
+    return isinstance(v, DenseAdditiveLinearGenomicModel)
 
-def check_is_DenseLinearGenomicModel(v, vname):
+def check_is_DenseAdditiveLinearGenomicModel(v, vname):
     """
-    Check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.
+    Check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -1072,12 +1094,12 @@ def check_is_DenseLinearGenomicModel(v, vname):
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, DenseLinearGenomicModel):
-        raise TypeError("variable '{0}' must be a DenseLinearGenomicModel".format(vname))
+    if not isinstance(v, DenseAdditiveLinearGenomicModel):
+        raise TypeError("variable '{0}' must be a DenseAdditiveLinearGenomicModel".format(vname))
 
-def cond_check_is_DenseLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
+def cond_check_is_DenseAdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
     """
-    Conditionally check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.
+    Conditionally check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -1086,7 +1108,7 @@ def cond_check_is_DenseLinearGenomicModel(v, vname, cond=(lambda s: s is not Non
     varname : str
         Name of variable to print in TypeError message.
     cond : function
-        A function returning True/False for whether to test if is a DenseLinearGenomicModel.
+        A function returning True/False for whether to test if is a DenseAdditiveLinearGenomicModel.
     """
     if cond(v):
-        check_is_DenseLinearGenomicModel(v, vname)
+        check_is_DenseAdditiveLinearGenomicModel(v, vname)
