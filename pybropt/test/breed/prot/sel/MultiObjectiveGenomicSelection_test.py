@@ -144,7 +144,11 @@ def beta():
     ])
 
 @pytest.fixture
-def u():
+def mat_u_misc():
+    yield None
+
+@pytest.fixture
+def mat_u_a():
     yield numpy.float64([
         [ 0.17],
         [-0.51],
@@ -181,10 +185,11 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(beta, u, trait, model_name, params):
+def dalgmod(beta, mat_u_misc, mat_u_a, trait, model_name, params):
     yield DenseAdditiveLinearGenomicModel(
         beta = beta,
-        u = u,
+        u_misc = mat_u_misc,
+        u_a = mat_u_a,
         trait = trait,
         model_name = model_name,
         params = params
@@ -194,8 +199,8 @@ def glgmod(beta, u, trait, model_name, params):
 ################## Breeding values model ###################
 ############################################################
 @pytest.fixture
-def bvmat(glgmod, dpgmat):
-    yield glgmod.gebv(dpgmat)
+def bvmat(dalgmod, dpgmat):
+    yield dalgmod.gebv(dpgmat)
 
 ############################################################
 ############# MultiObjectiveGenomicSelection ##############
@@ -269,79 +274,79 @@ def test_objfn_vec_static_is_concrete():
 ########################################
 ########### test calc_mkrwt ############
 ########################################
-def test_calc_mkrwt_magnitude(u):
-    a = MultiObjectiveGenomicSelection._calc_mkrwt("magnitude", u)
-    b = numpy.absolute(u)
+def test_calc_mkrwt_magnitude(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("magnitude", mat_u_a)
+    b = numpy.absolute(mat_u_a)
     assert numpy.all(a == b)
 
-def test_calc_mkrwt_equal(u):
-    a = MultiObjectiveGenomicSelection._calc_mkrwt("equal", u)
+def test_calc_mkrwt_equal(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("equal", mat_u_a)
     assert numpy.all(a == 1.0)
 
-def test_calc_mkrwt_str_case(u):
-    a = MultiObjectiveGenomicSelection._calc_mkrwt("mAgNiTuDe", u)
-    b = numpy.absolute(u)
+def test_calc_mkrwt_str_case(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("mAgNiTuDe", mat_u_a)
+    b = numpy.absolute(mat_u_a)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection._calc_mkrwt("Equal", u)
+    a = MultiObjectiveGenomicSelection._calc_mkrwt("Equal", mat_u_a)
     assert numpy.all(a == 1.0)
 
-def test_calc_mkrwt_str_ValueError(u):
+def test_calc_mkrwt_str_ValueError(mat_u_a):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicSelection._calc_mkrwt("unknown", u)
+        a = MultiObjectiveGenomicSelection._calc_mkrwt("unknown", mat_u_a)
 
-def test_calc_mkrwt_ndarray(u):
-    wt = numpy.random.normal(size = u.shape)
-    a = MultiObjectiveGenomicSelection._calc_mkrwt(wt, u)
+def test_calc_mkrwt_ndarray(mat_u_a):
+    wt = numpy.random.normal(size = mat_u_a.shape)
+    a = MultiObjectiveGenomicSelection._calc_mkrwt(wt, mat_u_a)
     assert numpy.all(a == wt)
 
-def test_calc_mkrwt_type_TypeError(u):
+def test_calc_mkrwt_type_TypeError(mat_u_a):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicSelection._calc_mkrwt(None, u)
+        a = MultiObjectiveGenomicSelection._calc_mkrwt(None, mat_u_a)
 
 ########################################
 ########### test calc_tfreq ############
 ########################################
-def test_calc_tfreq_positive(u):
-    a = MultiObjectiveGenomicSelection._calc_tfreq("positive", u)
-    b = numpy.float64(u >= 0.0)
+def test_calc_tfreq_positive(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("positive", mat_u_a)
+    b = numpy.float64(mat_u_a >= 0.0)
     assert numpy.all(a == b)
 
-def test_calc_tfreq_negative(u):
-    a = MultiObjectiveGenomicSelection._calc_tfreq("negative", u)
-    b = numpy.float64(u <= 0.0)
+def test_calc_tfreq_negative(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("negative", mat_u_a)
+    b = numpy.float64(mat_u_a <= 0.0)
     assert numpy.all(a == b)
 
-def test_calc_tfreq_stabilizing(u):
-    a = MultiObjectiveGenomicSelection._calc_tfreq("stabilizing", u)
+def test_calc_tfreq_stabilizing(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("stabilizing", mat_u_a)
     assert numpy.all(a == 0.5)
 
-def test_calc_tfreq_str_case(u):
-    a = MultiObjectiveGenomicSelection._calc_tfreq("PoSiTiVe", u)
-    b = numpy.float64(u >= 0.0)
+def test_calc_tfreq_str_case(mat_u_a):
+    a = MultiObjectiveGenomicSelection._calc_tfreq("PoSiTiVe", mat_u_a)
+    b = numpy.float64(mat_u_a >= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection._calc_tfreq("NEGATIVE", u)
-    b = numpy.float64(u <= 0.0)
+    a = MultiObjectiveGenomicSelection._calc_tfreq("NEGATIVE", mat_u_a)
+    b = numpy.float64(mat_u_a <= 0.0)
     assert numpy.all(a == b)
-    a = MultiObjectiveGenomicSelection._calc_tfreq("Stabilizing", u)
+    a = MultiObjectiveGenomicSelection._calc_tfreq("Stabilizing", mat_u_a)
     assert numpy.all(a == 0.5)
 
-def test_calc_tfreq_str_ValueError(u):
+def test_calc_tfreq_str_ValueError(mat_u_a):
     with pytest.raises(ValueError):
-        a = MultiObjectiveGenomicSelection._calc_tfreq("unknown", u)
+        a = MultiObjectiveGenomicSelection._calc_tfreq("unknown", mat_u_a)
 
-def test_calc_tfreq_ndarray(u):
-    wt = numpy.random.uniform(0, 1, size = u.shape)
-    a = MultiObjectiveGenomicSelection._calc_tfreq(wt, u)
+def test_calc_tfreq_ndarray(mat_u_a):
+    wt = numpy.random.uniform(0, 1, size = mat_u_a.shape)
+    a = MultiObjectiveGenomicSelection._calc_tfreq(wt, mat_u_a)
     assert numpy.all(a == wt)
 
-def test_calc_tfreq_type_TypeError(u):
+def test_calc_tfreq_type_TypeError(mat_u_a):
     with pytest.raises(TypeError):
-        a = MultiObjectiveGenomicSelection._calc_tfreq(None, u)
+        a = MultiObjectiveGenomicSelection._calc_tfreq(None, mat_u_a)
 
 ########################################
 ######### selection functions ##########
 ########################################
-def test_select_single(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, objfn_trans, rng):
+def test_select_single(dpgmat, dgmat, bvmat, dalgmod, nparent, ncross, nprogeny, objfn_trans, rng):
     mogs = MultiObjectiveGenomicSelection(
         nparent = nparent,
         ncross = ncross,
@@ -356,7 +361,7 @@ def test_select_single(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, 
         gmat = dgmat,
         ptdf = None,
         bvmat = None,
-        gpmod = glgmod,
+        gpmod = dalgmod,
         t_cur = 0,
         t_max = 20,
         miscout = miscout
@@ -367,7 +372,7 @@ def test_select_single(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, 
     assert out_ncross == ncross
     assert out_nprogeny == nprogeny
 
-def test_objfn_is_function(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, objfn_trans, rng):
+def test_objfn_is_function(dpgmat, dgmat, bvmat, dalgmod, nparent, ncross, nprogeny, objfn_trans, rng):
     mogs = MultiObjectiveGenomicSelection(
         nparent = nparent,
         ncross = ncross,
@@ -382,14 +387,14 @@ def test_objfn_is_function(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nproge
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
-        gpmod = glgmod,
+        gpmod = dalgmod,
         t_cur = 0,
         t_max = 20
     )
 
     assert callable(objfn)
 
-def test_pareto(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, rng):
+def test_pareto(dpgmat, dgmat, bvmat, dalgmod, nparent, ncross, nprogeny, rng):
     mogs = MultiObjectiveGenomicSelection(
         nparent = nparent,
         ncross = ncross,
@@ -405,7 +410,7 @@ def test_pareto(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, rng):
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
-        gpmod = glgmod,
+        gpmod = dalgmod,
         t_cur = 0,
         t_max = 20,
     )
@@ -414,8 +419,8 @@ def test_pareto(dpgmat, dgmat, bvmat, glgmod, nparent, ncross, nprogeny, rng):
     ydata = frontier[:,1]
     # zdata = frontier[:,2]
 
-    xlabel = glgmod.trait[0] + " PAU"
-    ylabel = glgmod.trait[0] + " PAFD"
+    xlabel = dalgmod.trait[0] + " PAU"
+    ylabel = dalgmod.trait[0] + " PAFD"
 
     fig = pyplot.figure()
     ax = pyplot.axes()

@@ -75,30 +75,17 @@ def dpgvmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_xoprob, mat_taxa, 
 ################################ Genomic model #################################
 ################################################################################
 @pytest.fixture
-def beta():
-    # yield numpy.float64([
-    #     [1.4]
-    # ])
+def mat_beta():
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [1.4, 2.5, 7.2]
     ])
 
 @pytest.fixture
-def u():
-    # yield numpy.float64([
-    #     [-0.33],
-    #     [-0.69],
-    #     [ 1.12],
-    #     [-1.44],
-    #     [ 0.88],
-    #     [ 1.23],
-    #     [ 0.19],
-    #     [-2.12],
-    #     [-0.87],
-    #     [ 0.06]
-    # ])
+def mat_u_misc():
+    yield None
+
+@pytest.fixture
+def mat_u_a():
     yield numpy.float64([
         [-0.33,  2.08, -2.42],
         [-0.69, -1.87, -1.38],
@@ -126,10 +113,11 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(beta, u, trait, model_name, params):
+def glgmod(mat_beta, mat_u_misc, mat_u_a, trait, model_name, params):
     yield DenseAdditiveLinearGenomicModel(
-        beta = beta,
-        u = u,
+        beta = mat_beta,
+        u_misc = mat_u_misc,
+        u_a = mat_u_a,
         trait = trait,
         model_name = model_name,
         params = params

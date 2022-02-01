@@ -125,15 +125,17 @@ def dpgmat(mat_int8, chrgrp_int64, phypos_int64, taxa_object, taxa_grp_int64):
 ###################### Genomic model #######################
 ############################################################
 @pytest.fixture
-def beta():
+def mat_beta():
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [1.4, 2.5, 7.2]
     ])
 
 @pytest.fixture
-def u():
+def mat_u_misc():
+    yield None
+
+@pytest.fixture
+def mat_u_a():
     yield numpy.float64([
        [-0.87, -0.16, -0.04],
        [-0.03,  0.05, -0.15],
@@ -166,10 +168,11 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(beta, u, trait, model_name, params):
+def glgmod(mat_beta, mat_u_misc, mat_u_a, trait, model_name, params):
     yield DenseAdditiveLinearGenomicModel(
-        beta = beta,
-        u = u,
+        beta = mat_beta,
+        u_misc = mat_u_misc,
+        u_a = mat_u_a,
         trait = trait,
         model_name = model_name,
         params = params
@@ -267,7 +270,7 @@ def test_nprogeny(rps, nprogeny):
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_objfn_multiobjective(rps, dpgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, u):
+def test_objfn_multiobjective(rps, dpgmat, bvmat, glgmod, ncross, nprogeny, mat_int8):
     objfn = rps.objfn(
         pgmat = dpgmat,
         gmat = dpgmat,
