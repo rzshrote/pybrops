@@ -225,7 +225,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -241,7 +241,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
         # get pointers to raw numpy.ndarray matrices
         mat = gmat.mat  # (n,p) get genotype matrix
-        u = gpmod.u     # (p,t) get regression coefficients
+        u = gpmod.u_a   # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -269,7 +269,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -285,7 +285,7 @@ class ConventionalGenomicSelection(SelectionProtocol):
 
         # get pointers to raw numpy.ndarray matrices
         mat = gmat.mat  # (n,p) get genotype matrix
-        u = gpmod.u     # (p,t) get regression coefficients
+        u = gpmod.u_a   # (p,t) get regression coefficients
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.

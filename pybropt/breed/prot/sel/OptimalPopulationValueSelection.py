@@ -293,7 +293,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
         chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
         chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        u           = mod.u                 # get regression coefficients
+        u           = mod.u_a               # get regression coefficients
 
         if (chrgrp_stix is None) or (chrgrp_spix is None):
             raise RuntimeError("markers are not sorted by chromosome position")

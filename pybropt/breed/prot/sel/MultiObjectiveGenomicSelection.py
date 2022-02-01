@@ -590,7 +590,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -607,7 +607,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # calculate default function parameters
         mat = gmat.mat                      # (n,p) get genotype matrix
         ploidy = gmat.ploidy                # (scalar) get number of phases
-        u = gpmod.u                         # (p,t) get regression coefficients
+        u = gpmod.u_a                       # (p,t) get regression coefficients
         mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
         tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
 
@@ -637,7 +637,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -654,7 +654,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # calculate default function parameters
         mat = gmat.mat                      # (n,p) get genotype matrix
         ploidy = gmat.ploidy                # (scalar) get number of phases
-        u = gpmod.u                         # (p,t) get regression coefficients
+        u = gpmod.u_a                       # (p,t) get regression coefficients
         mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
         tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
 

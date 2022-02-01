@@ -221,7 +221,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -237,7 +237,7 @@ class WeightedGenomicSelection(SelectionProtocol):
 
         # get pointers to raw numpy.ndarray matrices
         mat = gmat.mat  # (n,p) get genotype matrix
-        u = gpmod.u     # (p,t) get regression coefficients
+        u = gpmod.u_a   # (p,t) get regression coefficients
 
         # calculate weight adjustments for WGS
         afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
@@ -275,7 +275,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -290,8 +290,8 @@ class WeightedGenomicSelection(SelectionProtocol):
             trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat      # (n,p) get genotype matrix
-        u = gpmod.u   # (p,t) get regression coefficients
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u_a   # (p,t) get regression coefficients
 
         # calculate weight adjustments for WGS
         afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies

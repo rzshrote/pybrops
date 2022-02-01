@@ -219,8 +219,11 @@ def test_to_hdf5_is_concrete():
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
-def test_u_fget(dalgmod, mat_u_a):
-    assert numpy.all(dalgmod.u == mat_u_a)
+def test_u_misc_fget(dalgmod, mat_u_misc):
+    assert numpy.all(dalgmod.u_misc == mat_u_misc)
+
+def test_u_a_fget(dalgmod, mat_u_a):
+    assert numpy.all(dalgmod.u_a == mat_u_a)
 
 def test_beta_fget(dalgmod, mat_beta):
     assert numpy.all(dalgmod.beta == mat_beta)
@@ -335,13 +338,15 @@ def test_to_from_hdf5(dalgmod, shared_datadir):
 
     # test whether data was loaded properly
     assert numpy.all(dalgmod.beta == dalgmod1.beta)
-    assert numpy.all(dalgmod.u == dalgmod1.u)
+    assert numpy.all(dalgmod.u_misc == dalgmod1.u_misc)
+    assert numpy.all(dalgmod.u_a == dalgmod1.u_a)
     assert numpy.all(dalgmod.trait == dalgmod1.trait)
     assert dalgmod.model_name == dalgmod1.model_name
     assert dalgmod.params == dalgmod1.params
 
     assert numpy.all(dalgmod.beta == dalgmod2.beta)
-    assert numpy.all(dalgmod.u == dalgmod2.u)
+    assert numpy.all(dalgmod.u_misc == dalgmod2.u_misc)
+    assert numpy.all(dalgmod.u_a == dalgmod2.u_a)
     assert numpy.all(dalgmod.trait == dalgmod2.trait)
     assert dalgmod.model_name == dalgmod2.model_name
     assert dalgmod.params == dalgmod2.params
