@@ -1,12 +1,15 @@
 import numpy
 
 from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
+from pybropt.core.mat.DenseSquareMatrix import DenseSquareMatrix
 from pybropt.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 
 from pybropt.core.error import check_ndarray_at_least_2d
 from pybropt.core.error import error_readonly
+from pybropt.core.error import check_is_iterable
+from pybropt.core.error import check_is_array_like
 
-class DenseSquareTaxaMatrix(DenseTaxaMatrix,SquareTaxaMatrix):
+class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     """docstring for DenseSquareTaxaMatrix."""
 
     ############################################################################
@@ -45,135 +48,28 @@ class DenseSquareTaxaMatrix(DenseTaxaMatrix,SquareTaxaMatrix):
     ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_2d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return locals()
-    mat = property(**mat())
+    # mat inherited from DenseSquareMatrix
 
     ############## Square Metadata Properties ##############
-    def nsquare():
-        doc = "Number of axes that are square"
-        def fget(self):
-            """Get the number of axes that are square"""
-            return len(self.square_axes)
-        def fset(self, value):
-            """Set the number of axes that are square"""
-            error_readonly("nsquare")
-        def fdel(self):
-            """Delete the number of axes that are square"""
-            error_readonly("nsquare")
-        return locals()
-    nsquare = property(**nsquare())
+    # nsquare inherited from DenseSquareMatrix
 
-    def square_axes():
-        doc = "Axis indices for axes that are square"
-        def fget(self):
-            """Get axis indices for axes that are square"""
-            return (0, 1)
-        def fset(self, value):
-            """Set axis indices for axes that are square"""
-            error_readonly("square_axes")
-        def fdel(self):
-            """Delete axis indices for axes that are square"""
-            error_readonly("square_axes")
-        return locals()
-    square_axes = property(**square_axes())
+    # square_axes inherited from DenseSquareMatrix
 
-    def square_axes_len():
-        doc = "Axis lengths for axes that are square"
-        def fget(self):
-            """Get axis lengths for axes that are square"""
-            return tuple(self.mat_shape[ix] for ix in self.square_axes)
-        def fset(self, value):
-            """Set axis lengths for axes that are square"""
-            error_readonly("square_axes_len")
-        def fdel(self):
-            """Delete axis lengths for axes that are square"""
-            error_readonly("square_axes_len")
-        return locals()
-    square_axes_len = property(**square_axes_len())
+    # square_axes_len inherited from DenseSquareMatrix
 
     ################# Taxa Data Properites #################
 
     ############### Taxa Metadata Properites ###############
 
     ################### Fill data lookup ###################
-    # map dtypes to fill values
-    # fill values are the most extreme values from zero if integer, or NaN if floating
-    _fill_value = {
-        # strings
-        "int8": numpy.int8(numpy.iinfo("int8").min),        # -128
-        "int16": numpy.int16(numpy.iinfo("int16").min),     # -32768
-        "int32": numpy.int32(numpy.iinfo("int32").min),     # -2147483648
-        "int64": numpy.int64(numpy.iinfo("int64").min),     # -9223372036854775808
-        "int": numpy.int_(numpy.iinfo("int").min),          # system dependent
-        "int0": numpy.int0(numpy.iinfo("int0").min),        # system dependent
-
-        "uint8": numpy.uint8(numpy.iinfo("uint8").max),     # 255
-        "uint16": numpy.uint16(numpy.iinfo("uint16").max),  # 65535
-        "uint32": numpy.uint32(numpy.iinfo("uint32").max),  # 4294967295
-        "uint64": numpy.uint64(numpy.iinfo("uint64").max),  # 18446744073709551615
-        "uint": numpy.uint_(numpy.iinfo("uint").max),       # system dependent
-        "uint0": numpy.uint0(numpy.iinfo("uint0").max),     # system dependent
-
-        "float16": numpy.float16(numpy.nan),                # NaN
-        "float32": numpy.float32(numpy.nan),                # NaN
-        "float64": numpy.float64(numpy.nan),                # NaN
-        "float128": numpy.float128(numpy.nan),              # NaN
-        "float": numpy.float_(numpy.nan),                   # NaN
-
-        # actual dtypes
-        numpy.dtype("int8"): numpy.int8(numpy.iinfo("int8").min),       # -128
-        numpy.dtype("int16"): numpy.int16(numpy.iinfo("int16").min),    # -32768
-        numpy.dtype("int32"): numpy.int32(numpy.iinfo("int32").min),    # -2147483648
-        numpy.dtype("int64"): numpy.int64(numpy.iinfo("int64").min),    # -9223372036854775808
-        numpy.dtype("int"): numpy.int_(numpy.iinfo("int").min),         # system dependent
-        numpy.dtype("int0"): numpy.int0(numpy.iinfo("int0").min),       # system dependent
-
-        numpy.dtype("uint8"): numpy.uint8(numpy.iinfo("uint8").max),    # 255
-        numpy.dtype("uint16"): numpy.uint16(numpy.iinfo("uint16").max), # 65535
-        numpy.dtype("uint32"): numpy.uint32(numpy.iinfo("uint32").max), # 4294967295
-        numpy.dtype("uint64"): numpy.uint64(numpy.iinfo("uint64").max), # 18446744073709551615
-        numpy.dtype("uint"): numpy.uint_(numpy.iinfo("uint").max),      # system dependent
-        numpy.dtype("uint0"): numpy.uint0(numpy.iinfo("uint0").max),    # system dependent
-
-        numpy.dtype("float16"): numpy.float16(numpy.nan),               # NaN
-        numpy.dtype("float32"): numpy.float32(numpy.nan),               # NaN
-        numpy.dtype("float64"): numpy.float64(numpy.nan),               # NaN
-        numpy.dtype("float128"): numpy.float128(numpy.nan),             # NaN
-        numpy.dtype("float"): numpy.float_(numpy.nan),                  # NaN
-    }
+    # _fill_value inherited from DenseSquareMatrix
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
     #################### Square Methods ####################
-    def is_square(self):
-        """
-        Determine whether the axis lengths for the square axes are identical.
-
-        Returns
-        -------
-        out : bool
-            ``True`` if all square axes are the same length.
-            ``False`` if not all square axes are the same length.
-        """
-        siter = iter(self.square_axes_len)  # get iterator of axis lengths
-        try:                                # try next
-            e0 = next(siter)                # get the first element of siter
-        except StopIteration:               # catch StopIteration exception
-            return False                    # something is horribly wrong; no axes!
-        out = all(e0 == e for e in siter)   # determine if all are equal to e0
-        return out
+    # is_square inherited from DenseSquareMatrix
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
@@ -1027,7 +923,7 @@ class DenseSquareTaxaMatrix(DenseTaxaMatrix,SquareTaxaMatrix):
         # reorder arrays
         for axis in self.square_axes:           # for each taxa axis
             ix = tuple(                         # build a tuple to slice the matrix
-                indices if i == axis else slice(None) for i in self.mat_ndim
+                indices if i == axis else slice(None) for i in range(self.mat_ndim)
             )
             self._mat = self._mat[ix]           # reorder matrix
         if self._taxa is not None:                      # if we have taxa names
