@@ -1,36 +1,20 @@
-import copy
 import numpy
 
-from pybropt.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybropt.core.mat.TaxaMatrix import TaxaMatrix
+from pybropt.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
+from pybropt.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 
-from pybropt.core.error import check_is_array_like
-from pybropt.core.error import check_is_int
-from pybropt.core.error import check_is_iterable
-from pybropt.core.error import check_is_ndarray
-from pybropt.core.error import check_ndarray_dtype_is_int8
-from pybropt.core.error import check_ndarray_is_2d
-from pybropt.core.error import cond_check_is_ndarray
-from pybropt.core.error import cond_check_ndarray_axis_len
-from pybropt.core.error import cond_check_ndarray_dtype_is_bool
-from pybropt.core.error import cond_check_ndarray_dtype_is_int64
-from pybropt.core.error import cond_check_ndarray_dtype_is_float64
-from pybropt.core.error import cond_check_ndarray_dtype_is_object
-from pybropt.core.error import cond_check_ndarray_ndim
+from pybropt.core.error import check_ndarray_at_least_2d
 from pybropt.core.error import error_readonly
-from pybropt.core.error import generic_check_isinstance
-from pybropt.core.mat.util import get_axis
-from pybropt.core.error import check_ndarray_at_least_1d
 
-class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
-    """docstring for DenseTaxaMatrix."""
+class DenseSquareTaxaMatrix(DenseTaxaMatrix,SquareTaxaMatrix):
+    """docstring for DenseSquareTaxaMatrix."""
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
         """
-        Constructor for the concrete class DenseTaxaMatrix.
+        Constructor for the DenseSquareTaxaMatrix concrete class.
 
         Parameters
         ----------
@@ -43,7 +27,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseTaxaMatrix, self).__init__(
+        super(DenseSquareTaxaMatrix, self).__init__(
             mat = mat,
             **kwargs
         )
@@ -55,55 +39,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self.taxa_grp_len = None
 
     #################### Matrix copying ####################
-    def __copy__(self):
-        """
-        Make a shallow copy of the the matrix.
-
-        Returns
-        -------
-        out : Matrix
-        """
-        # create new object
-        out = self.__class__(
-            mat = copy.copy(self.mat),
-            taxa = copy.copy(self.taxa),
-            taxa_grp = copy.copy(self.taxa_grp)
-        )
-
-        # copy taxa metadata
-        out.taxa_grp_name = copy.copy(self.taxa_grp_name)
-        out.taxa_grp_stix = copy.copy(self.taxa_grp_stix)
-        out.taxa_grp_spix = copy.copy(self.taxa_grp_spix)
-        out.taxa_grp_len = copy.copy(self.taxa_grp_len)
-
-        return out
-
-    def __deepcopy__(self, memo):
-        """
-        Make a deep copy of the matrix.
-
-        Parameters
-        ----------
-        memo : dict
-
-        Returns
-        -------
-        out : Matrix
-        """
-        # create new object
-        out = self.__class__(
-            mat = copy.deepcopy(self.mat, memo),
-            taxa = copy.deepcopy(self.taxa, memo),
-            taxa_grp = copy.deepcopy(self.taxa_grp, memo)
-        )
-
-        # copy taxa metadata
-        out.taxa_grp_name = copy.deepcopy(self.taxa_grp_name, memo)
-        out.taxa_grp_stix = copy.deepcopy(self.taxa_grp_stix, memo)
-        out.taxa_grp_spix = copy.deepcopy(self.taxa_grp_spix, memo)
-        out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
-
-        return out
 
     ############################################################################
     ############################ Object Properties #############################
@@ -116,150 +51,129 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._mat
         def fset(self, value):
             check_is_ndarray(value, "mat")
-            check_ndarray_at_least_1d(value, "mat")
+            check_ndarray_at_least_2d(value, "mat")
             self._mat = value
         def fdel(self):
             del self._mat
         return locals()
     mat = property(**mat())
 
-    ################# Taxa Data Properites #################
-    def taxa():
-        doc = "Taxa label property."
+    ############## Square Metadata Properties ##############
+    def nsquare():
+        doc = "Number of axes that are square"
         def fget(self):
-            """Get taxa label array"""
-            return self._taxa
+            """Get the number of axes that are square"""
+            return len(self.square_axes)
         def fset(self, value):
-            """Set taxa label array"""
-            cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype_is_object(value, "taxa")
-            cond_check_ndarray_ndim(value, "taxa", 1)
-            cond_check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
-            self._taxa = value
+            """Set the number of axes that are square"""
+            error_readonly("nsquare")
         def fdel(self):
-            """Delete taxa label array"""
-            del self._taxa
+            """Delete the number of axes that are square"""
+            error_readonly("nsquare")
         return locals()
-    taxa = property(**taxa())
+    nsquare = property(**nsquare())
 
-    def taxa_grp():
-        doc = "Taxa group label property."
+    def square_axes():
+        doc = "Axis indices for axes that are square"
         def fget(self):
-            """Get taxa group label array"""
-            return self._taxa_grp
+            """Get axis indices for axes that are square"""
+            return (0, 1)
         def fset(self, value):
-            """Set taxa group label array"""
-            cond_check_is_ndarray(value, "taxa_grp")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp")
-            cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
-            self._taxa_grp = value
+            """Set axis indices for axes that are square"""
+            error_readonly("square_axes")
         def fdel(self):
-            """Delete taxa group label array"""
-            del self._taxa_grp
+            """Delete axis indices for axes that are square"""
+            error_readonly("square_axes")
         return locals()
-    taxa_grp = property(**taxa_grp())
+    square_axes = property(**square_axes())
+
+    def square_axes_len():
+        doc = "Axis lengths for axes that are square"
+        def fget(self):
+            """Get axis lengths for axes that are square"""
+            return tuple(self.mat_shape[ix] for ix in self.square_axes)
+        def fset(self, value):
+            """Set axis lengths for axes that are square"""
+            error_readonly("square_axes_len")
+        def fdel(self):
+            """Delete axis lengths for axes that are square"""
+            error_readonly("square_axes_len")
+        return locals()
+    square_axes_len = property(**square_axes_len())
+
+    ################# Taxa Data Properites #################
 
     ############### Taxa Metadata Properites ###############
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            return self._mat.shape[self.taxa_axis]
-        def fset(self, value):
-            """Set number of taxa"""
-            error_readonly("ntaxa")
-        def fdel(self):
-            """Delete number of taxa"""
-            error_readonly("ntaxa")
-        return locals()
-    ntaxa = property(**ntaxa())
 
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return locals()
-    taxa_axis = property(**taxa_axis())
+    ################### Fill data lookup ###################
+    # map dtypes to fill values
+    # fill values are the most extreme values from zero if integer, or NaN if floating
+    _fill_value = {
+        # strings
+        "int8": numpy.int8(numpy.iinfo("int8").min),        # -128
+        "int16": numpy.int16(numpy.iinfo("int16").min),     # -32768
+        "int32": numpy.int32(numpy.iinfo("int32").min),     # -2147483648
+        "int64": numpy.int64(numpy.iinfo("int64").min),     # -9223372036854775808
+        "int": numpy.int_(numpy.iinfo("int").min),          # system dependent
+        "int0": numpy.int0(numpy.iinfo("int0").min),        # system dependent
 
-    def taxa_grp_name():
-        doc = "Taxa group name property."
-        def fget(self):
-            """Get taxa group name array"""
-            return self._taxa_grp_name
-        def fset(self, value):
-            """Set taxa group name array"""
-            cond_check_is_ndarray(value, "taxa_grp_name")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_name")
-            cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            """Delete taxa group array"""
-            del self._taxa_grp_name
-        return locals()
-    taxa_grp_name = property(**taxa_grp_name())
+        "uint8": numpy.uint8(numpy.iinfo("uint8").max),     # 255
+        "uint16": numpy.uint16(numpy.iinfo("uint16").max),  # 65535
+        "uint32": numpy.uint32(numpy.iinfo("uint32").max),  # 4294967295
+        "uint64": numpy.uint64(numpy.iinfo("uint64").max),  # 18446744073709551615
+        "uint": numpy.uint_(numpy.iinfo("uint").max),       # system dependent
+        "uint0": numpy.uint0(numpy.iinfo("uint0").max),     # system dependent
 
-    def taxa_grp_stix():
-        doc = "Taxa group start index property."
-        def fget(self):
-            """Get taxa group start indices array"""
-            return self._taxa_grp_stix
-        def fset(self, value):
-            """Set taxa group start indices array"""
-            cond_check_is_ndarray(value, "taxa_grp_stix")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
-            cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            """Delete taxa group start indices array"""
-            del self._taxa_grp_stix
-        return locals()
-    taxa_grp_stix = property(**taxa_grp_stix())
+        "float16": numpy.float16(numpy.nan),                # NaN
+        "float32": numpy.float32(numpy.nan),                # NaN
+        "float64": numpy.float64(numpy.nan),                # NaN
+        "float128": numpy.float128(numpy.nan),              # NaN
+        "float": numpy.float_(numpy.nan),                   # NaN
 
-    def taxa_grp_spix():
-        doc = "Taxa group stop index property."
-        def fget(self):
-            """Get taxa group stop indices array"""
-            return self._taxa_grp_spix
-        def fset(self, value):
-            """Set taxa group stop indices array"""
-            cond_check_is_ndarray(value, "taxa_grp_spix")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
-            cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            """Delete taxa group stop indices array"""
-            del self._taxa_grp_spix
-        return locals()
-    taxa_grp_spix = property(**taxa_grp_spix())
+        # actual dtypes
+        numpy.dtype("int8"): numpy.int8(numpy.iinfo("int8").min),       # -128
+        numpy.dtype("int16"): numpy.int16(numpy.iinfo("int16").min),    # -32768
+        numpy.dtype("int32"): numpy.int32(numpy.iinfo("int32").min),    # -2147483648
+        numpy.dtype("int64"): numpy.int64(numpy.iinfo("int64").min),    # -9223372036854775808
+        numpy.dtype("int"): numpy.int_(numpy.iinfo("int").min),         # system dependent
+        numpy.dtype("int0"): numpy.int0(numpy.iinfo("int0").min),       # system dependent
 
-    def taxa_grp_len():
-        doc = "Taxa group length property."
-        def fget(self):
-            """Get taxa group length array"""
-            return self._taxa_grp_len
-        def fset(self, value):
-            """Set taxa group length array"""
-            cond_check_is_ndarray(value, "taxa_grp_len")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_len")
-            cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            """Delete taxa group length array"""
-            del self._taxa_grp_len
-        return locals()
-    taxa_grp_len = property(**taxa_grp_len())
+        numpy.dtype("uint8"): numpy.uint8(numpy.iinfo("uint8").max),    # 255
+        numpy.dtype("uint16"): numpy.uint16(numpy.iinfo("uint16").max), # 65535
+        numpy.dtype("uint32"): numpy.uint32(numpy.iinfo("uint32").max), # 4294967295
+        numpy.dtype("uint64"): numpy.uint64(numpy.iinfo("uint64").max), # 18446744073709551615
+        numpy.dtype("uint"): numpy.uint_(numpy.iinfo("uint").max),      # system dependent
+        numpy.dtype("uint0"): numpy.uint0(numpy.iinfo("uint0").max),    # system dependent
+
+        numpy.dtype("float16"): numpy.float16(numpy.nan),               # NaN
+        numpy.dtype("float32"): numpy.float32(numpy.nan),               # NaN
+        numpy.dtype("float64"): numpy.float64(numpy.nan),               # NaN
+        numpy.dtype("float128"): numpy.float128(numpy.nan),             # NaN
+        numpy.dtype("float"): numpy.float_(numpy.nan),                  # NaN
+    }
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    #################### Square Methods ####################
+    def is_square(self):
+        """
+        Determine whether the axis lengths for the square axes are identical.
+
+        Returns
+        -------
+        out : bool
+            ``True`` if all square axes are the same length.
+            ``False`` if not all square axes are the same length.
+        """
+        siter = iter(self.square_axes_len)  # get iterator of axis lengths
+        try:                                # try next
+            e0 = next(siter)                # get the first element of siter
+        except StopIteration:               # catch StopIteration exception
+            return False                    # something is horribly wrong; no axes!
+        out = all(e0 == e for e in siter)   # determine if all are equal to e0
+        return out
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
@@ -285,7 +199,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : DenseTaxaMatrix
+        out : DenseSquareTaxaMatrix
             A copy of mat with values appended to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """
@@ -293,7 +207,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         out = None                              # declare variable
 
         # dispatch functions to handle operations
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             out = self.adjoin_taxa(
                 values = values,
                 taxa = taxa,
@@ -332,22 +246,57 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if values.ndim != self.mat_ndim:
             raise ValueError("cannot adjoin: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
-            if (i != self.taxa_axis) and (j != k):
+            if (i not in self.square_axes) and (j != k):
                 raise ValueError("cannot adjoin: axis lengths incompatible for axis {0}".format(i))
         if (self._taxa is not None) and (taxa is None):
             taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object")   # fill with None
         if (self._taxa_grp is not None) and (taxa_grp is None):
             raise TypeError("cannot adjoin: 'taxa_grp' argument is required")
 
+        # calculate shape of new matrix to allocate
+        mshape = list(self.mat_shape)   # get matrix shape of self
+        vshape = values.shape           # get matrix shape of values
+        for ix in self.square_axes:     # for each square axis index
+            mshape[ix] += vshape[ix]    # add value axis length to self shape
+        mshape = tuple(mshape)          # convert list to tuple
+
+        # allocate memory and fill with default fill values
+        mat = numpy.empty(mshape, dtype = self._mat.dtype)
+        mat.fill(self._fill_value[mat.dtype])
+
+        # calculate indexing tuples for copying matrix values into 'mat'
+        nd = mat.ndim           # number of dimensions
+        sms = self.mat_shape    # matrix shape for self
+        ssa = self.square_axes  # tuple of square taxa axes
+        ms = mat.shape          # output matrix shape
+
+        # calculate indexing tuple for self._mat
+        # if axis is a square axis then
+        #     slice to select 0 to 'a' along axis (numpy: [...,0:a,...])
+        # else
+        #     slice everything (numpy: [...,:,...])
+        six = tuple(slice(0,sms[i]) if i in ssa else slice(None) for i in range(nd))
+
+        # calculate indexing tuple for self._mat
+        # if axis is a square axis then
+        #     slice to select 'a' to 'b' along axis (numpy: [...,a:b,...])
+        # else
+        #     slice everything (numpy: [...,:,...])
+        vix = tuple(slice(sms[i],ms[i]) if i in ssa else slice(None) for i in range(nd))
+
+        # adjoin values by copying
+        mat[six] = self._mat    # copy self into matrix
+        mat[vix] = values       # copy values into matrix
+
         # adjoin values
-        values = numpy.append(self._mat, values, axis = self.taxa_axis)
         if self._taxa is not None:
             taxa = numpy.append(self._taxa, taxa, axis = 0)
         if self._taxa_grp is not None:
             taxa_grp = numpy.append(self._taxa_grp, taxa_grp, axis = 0)
 
+        # create output
         out = self.__class__(
-            mat = values,
+            mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             **kwargs
@@ -378,7 +327,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         out = None                              # declare variable
 
         # dispatch functions to handle operations
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             out = self.delete_taxa(
                 obj = obj,
                 **kwargs
@@ -411,12 +360,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         taxa_grp = self._taxa_grp
 
         # delete values
-        mat = numpy.delete(mat, obj, axis = self.taxa_axis)
+        for axis in self.square_axes:
+            mat = numpy.delete(mat, obj, axis = axis)
         if taxa is not None:
             taxa = numpy.delete(taxa, obj, axis = 0)
         if taxa_grp is not None:
             taxa_grp = numpy.delete(taxa_grp, obj, axis = 0)
 
+        # create output
         out = self.__class__(
             mat = mat,
             taxa = taxa,
@@ -460,7 +411,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         out = None                              # declare variable
 
         # dispatch functions to handle operations
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             out = self.insert_taxa(
                 obj = obj,
                 values = values,
@@ -473,6 +424,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
+    # TODO: FIXME
     def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
         """
         Insert values along the taxa axis before the given indices.
@@ -511,13 +463,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if values.ndim != self.mat_ndim:
             raise ValueError("cannot insert: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
-            if (i != self.taxa_axis) and (j != k):
+            if (i not in self.square_axes) and (j != k):
                 raise ValueError("cannot insert: axis lengths incompatible for axis {0}".format(i))
         if (self._taxa is not None) and (taxa is None):
             taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object")   # fill with None
         if (self._taxa_grp is not None) and (taxa_grp is None):
             raise TypeError("cannot insert: 'taxa_grp' argument is required")
 
+        # TODO: # FIXME: figure out insertion logic
         # insert values
         values = numpy.insert(self._mat, obj, values, axis = self.taxa_axis)
         if self._taxa is not None:
@@ -558,7 +511,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         out = None                              # declare variable
 
         # dispatch functions to handle operations
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             out = self.select_taxa(indices = indices, **kwargs)
         else:
             raise ValueError("cannot select along axis {0}".format(axis))
@@ -591,12 +544,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         taxa_grp = self._taxa_grp
 
         # select values
-        mat = numpy.take(mat, indices, axis = self.taxa_axis)
+        for axis in self.square_axes:
+            mat = numpy.take(mat, indices, axis = axis)
         if taxa is not None:
             taxa = numpy.take(taxa, indices, axis = 0)
         if taxa_grp is not None:
             taxa_grp = numpy.take(taxa_grp, indices, axis = 0)
 
+        # create output
         out = self.__class__(
             mat = mat,
             taxa = taxa,
@@ -631,13 +586,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         out = None                                  # declare variable
 
         # dispatch items to worker functions
-        if axis == mats[0].taxa_axis:
+        if axis in mats[0].square_axes:
             out = cls.concat_taxa(mats, **kwargs)
         else:
             raise ValueError("cannot concat along axis {0}".format(axis))
 
         return out
 
+    # TODO: FIXME
     @classmethod
     def concat_taxa(cls, mats, **kwargs):
         """
@@ -735,7 +691,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         # dispatch functions
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.append_taxa(
                 values = values,
                 taxa = taxa,
@@ -774,15 +730,50 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if values.ndim != self.mat_ndim:
             raise ValueError("cannot append: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
-            if (i != self.taxa_axis) and (j != k):
+            if (i not in self.square_axes) and (j != k):
                 raise ValueError("cannot append: axis lengths incompatible for axis {0}".format(i))
         if (self._taxa is not None) and (taxa is None):
             taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object") # fill with None
         if (self._taxa_grp is not None) and (taxa_grp is None):
             raise TypeError("cannot append: 'taxa_grp' argument is required")
 
+        # calculate shape of new matrix to allocate
+        mshape = list(self.mat_shape)   # get matrix shape of self
+        vshape = values.shape           # get matrix shape of values
+        for ix in self.square_axes:     # for each square axis index
+            mshape[ix] += vshape[ix]    # add value axis length to self shape
+        mshape = tuple(mshape)          # convert list to tuple
+
+        # allocate memory and fill with default fill values
+        mat = numpy.empty(mshape, dtype = self._mat.dtype)
+        mat.fill(self._fill_value[mat.dtype])
+
+        # calculate indexing tuples for copying matrix values into 'mat'
+        nd = mat.ndim           # number of dimensions
+        sms = self.mat_shape    # matrix shape for self
+        ssa = self.square_axes  # tuple of square taxa axes
+        ms = mat.shape          # output matrix shape
+
+        # calculate indexing tuple for self._mat
+        # if axis is a square axis then
+        #     slice to select 0 to 'a' along axis (numpy: [...,0:a,...])
+        # else
+        #     slice everything (numpy: [...,:,...])
+        six = tuple(slice(0,sms[i]) if i in ssa else slice(None) for i in range(nd))
+
+        # calculate indexing tuple for self._mat
+        # if axis is a square axis then
+        #     slice to select 'a' to 'b' along axis (numpy: [...,a:b,...])
+        # else
+        #     slice everything (numpy: [...,:,...])
+        vix = tuple(slice(sms[i],ms[i]) if i in ssa else slice(None) for i in range(nd))
+
+        # append values by copying
+        mat[six] = self._mat    # copy self into matrix
+        mat[vix] = values       # copy values into matrix
+        self._mat = mat         # change pointer reference
+
         # append values
-        self._mat = numpy.append(self._mat, values, axis = self.taxa_axis)
         if self._taxa is not None:
             self._taxa = numpy.append(self._taxa, taxa, axis = 0)
         if self._taxa_grp is not None:
@@ -810,7 +801,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         # get axis
         axis = get_axis(axis, self.mat_ndim)
 
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.remove_taxa(obj = obj, **kwargs)
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
@@ -827,8 +818,8 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Additional keyword arguments.
         """
         # delete values
-        self._mat = numpy.delete(self._mat, obj, axis = self.taxa_axis)
-
+        for axis in self.square_axes:
+            self._mat = numpy.delete(self._mat, obj, axis = axis)
         if self._taxa is not None:
             self._taxa = numpy.delete(self._taxa, obj, axis = 0)
         if self._taxa_grp is not None:
@@ -859,7 +850,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         # get axis
         axis = get_axis(axis, self.mat_ndim)
 
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.incorp(
                 obj = obj,
                 values = values,
@@ -870,6 +861,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
+    # TODO: FIXME
     def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
         """
         Incorporate values along the taxa axis before the given indices.
@@ -902,14 +894,15 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if values.ndim != self.mat_ndim:
             raise ValueError("cannot incorp: 'values' must have ndim == {0}".format(self.mat_ndim))
         for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
-            if (i != self.taxa_axis) and (j != k):
+            if (i not in self.square_axes) and (j != k):
                 raise ValueError("cannot incorp: axis lengths incompatible for axis {0}".format(i))
         if (self._taxa is not None) and (taxa is None):
             taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object")  # fill with None
         if (self._taxa_grp is not None) and (taxa_grp is None):
             raise TypeError("cannot incorp: 'taxa_grp' argument is required")
 
-        # insert values
+        # TODO: # FIXME: figure out incorporation logic
+        # incorp values
         self._mat = numpy.insert(self._mat, obj, values, axis = self.taxa_axis)
 
         if self._taxa is not None:
@@ -945,7 +938,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         indices = None                          # declare variable
 
         # dispatch to correct function
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.lexsort_taxa(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
@@ -988,7 +981,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         # raise error if keys are of incompatible length
         if any(len(k) != self.ntaxa for k in keys):
             emess = "keys are not all length {0}".format(self.ntaxa)
-            raise ValueError("cannot lexsort on axis {0} (taxa axis): {1}".format(self.taxa_axis, emess))
+            raise ValueError(
+                "cannot lexsort on axes {0} (taxa axes): {1}".format(
+                    self.square_axes, emess
+                )
+            )
 
         # get indices
         indices = numpy.lexsort(keys)
@@ -1010,7 +1007,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.reorder(indices = indices, **kwargs)
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
@@ -1027,16 +1024,16 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         kwargs : dict
             Additional keyword arguments.
         """
-        # build a tuple to slice the matrix
-        ix = tuple(indices if i == self.taxa_axis else slice(None) for i in range(self.mat_ndim))
-
         # reorder arrays
-        self._mat = self._mat[ix]
-
-        if self._taxa is not None:
-            self._taxa = self._taxa[indices]                # reorder taxa array
-        if self._taxa_grp is not None:
-            self._taxa_grp = self._taxa_grp[indices]        # reorder taxa group array
+        for axis in self.square_axes:           # for each taxa axis
+            ix = tuple(                         # build a tuple to slice the matrix
+                indices if i == axis else slice(None) for i in self.mat_ndim
+            )
+            self._mat = self._mat[ix]           # reorder matrix
+        if self._taxa is not None:                      # if we have taxa names
+            self._taxa = self._taxa[indices]            # reorder taxa array
+        if self._taxa_grp is not None:                  # if we have taxa groups
+            self._taxa_grp = self._taxa_grp[indices]    # reorder taxa group array
 
     def sort(self, keys = None, axis = -1, **kwargs):
         """
@@ -1055,35 +1052,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         # dispatch functions
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.sort_taxa(keys = keys, **kwargs)
         else:
             raise ValueError("cannot sort along axis {0}".format(axis))
 
-    def sort_taxa(self, keys = None, **kwargs):
-        """
-        Sort slements of the Matrix along the taxa axis using a sequence of
-        keys. Note this modifies the Matrix in-place.
-
-        Parameters
-        ----------
-        keys : (k, N) array or tuple containing k (N,)-shaped sequences
-            The k different columns to be sorted. The last column (or row if
-            keys is a 2D array) is the primary sort key.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        # reset taxa group metadata
-        self.taxa_grp_name = None
-        self.taxa_grp_stix = None
-        self.taxa_grp_spix = None
-        self.taxa_grp_len = None
-
-        # get indices for sort
-        indices = self.lexsort_taxa(keys, **kwargs)
-
-        # reorder internals
-        self.reorder_taxa(indices, **kwargs)
+    # sort_taxa is unaltered
 
     ################### Grouping Methods ###################
     def group(self, axis = -1, **kwargs):
@@ -1094,31 +1068,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         # dispatch functions
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             self.group_taxa(**kwargs)
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
 
-    def group_taxa(self, **kwargs):
-        """
-        Sort the Matrix along the taxa axis, then populate grouping indices for
-        the taxa axis.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        # sort taxa using default keys
-        self.sort_taxa()
-
-        if self._taxa_grp is not None:
-            # get unique taxa group names, starting indices, group lengths
-            uniq = numpy.unique(self._taxa_grp, return_index = True, return_counts = True)
-            # make assignments to instance data
-            self._taxa_grp_name, self._taxa_grp_stix, self._taxa_grp_len = uniq
-            # calculate stop indices
-            self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
+    # group_taxa is unaltered
 
     def is_grouped(self, axis = -1, **kwargs):
         """
@@ -1133,44 +1088,23 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)    # transform axis number to an index
         grouped = False                         # default output
 
-        if axis == self.taxa_axis:
+        if axis in self.square_axes:
             grouped = self.is_grouped_taxa(**kwargs)
         else:
             raise ValueError("cannot test for grouping along axis {0}".format(axis))
 
         return grouped
 
-    def is_grouped_taxa(self, **kwargs):
-        """
-        Determine whether the Matrix has been sorted and grouped along the taxa
-        axis.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        grouped : bool
-            True or False indicating whether the Matrix has been sorted and
-            grouped.
-        """
-        return (
-            (self._taxa_grp_name is not None) and
-            (self._taxa_grp_stix is not None) and
-            (self._taxa_grp_spix is not None) and
-            (self._taxa_grp_len is not None)
-        )
+    # is_grouped_taxa is unaltered
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaMatrix(v):
+def is_DenseSquareTaxaMatrix(v):
     """
-    Determine whether an object is a DenseTaxaMatrix.
+    Determine whether an object is a DenseSquareTaxaMatrix.
 
     Parameters
     ----------
@@ -1180,13 +1114,13 @@ def is_DenseTaxaMatrix(v):
     Returns
     -------
     out : bool
-        True or False for whether v is a DenseTaxaMatrix object instance.
+        True or False for whether v is a DenseSquareTaxaMatrix object instance.
     """
-    return isinstance(v, DenseTaxaMatrix)
+    return isinstance(v, DenseSquareTaxaMatrix)
 
-def check_is_DenseTaxaMatrix(v, varname):
+def check_is_DenseSquareTaxaMatrix(v, varname):
     """
-    Check if object is of type DenseTaxaMatrix. Otherwise raise TypeError.
+    Check if object is of type DenseSquareTaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -1195,12 +1129,12 @@ def check_is_DenseTaxaMatrix(v, varname):
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTaxaMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaMatrix".format(varname))
+    if not is_DenseSquareTaxaMatrix(v):
+        raise TypeError("'{0}' must be a DenseSquareTaxaMatrix".format(varname))
 
-def cond_check_is_DenseTaxaMatrix(v, varname, cond=(lambda s: s is not None)):
+def cond_check_is_DenseSquareTaxaMatrix(v, varname, cond=(lambda s: s is not None)):
     """
-    Conditionally check if object is of type DenseTaxaMatrix. Otherwise raise
+    Conditionally check if object is of type DenseSquareTaxaMatrix. Otherwise raise
     TypeError.
 
     Parameters
@@ -1211,7 +1145,7 @@ def cond_check_is_DenseTaxaMatrix(v, varname, cond=(lambda s: s is not None)):
         Name of variable to print in TypeError message.
     cond : function
         A function returning True/False for whether to test if is a
-        DenseTaxaMatrix.
+        DenseSquareTaxaMatrix.
     """
     if cond(v):
-        check_is_DenseTaxaMatrix(v, varname)
+        check_is_DenseSquareTaxaMatrix(v, varname)
