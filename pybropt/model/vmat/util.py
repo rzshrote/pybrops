@@ -1,3 +1,5 @@
+import numpy
+
 def rprob_filial(r, k):
     """
     Calculate the expected observed recombination rate between two loci at

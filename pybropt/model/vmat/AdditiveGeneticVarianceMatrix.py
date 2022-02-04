@@ -25,6 +25,10 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
     @classmethod
     def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem):
         """
@@ -32,8 +36,8 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
 
         Parameters
         ----------
-        gmod : GenomicModel
-            GenomicModel with which to estimate genetic variances.
+        algmod : AdditiveLinearGenomicModel
+            AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
         ncross : int
