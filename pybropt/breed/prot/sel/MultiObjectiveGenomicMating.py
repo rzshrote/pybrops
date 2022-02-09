@@ -14,6 +14,11 @@ from pybropt.core.error import check_is_gt
 from pybropt.core.error import check_is_int
 from pybropt.core.error import check_is_str
 from pybropt.core.error import check_is_Generator
+from pybropt.core.error import check_is_type
+from pybropt.core.error import check_inherits
+from pybropt.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
+from pybropt.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
+from pybropt.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class MultiObjectiveGenomicMating(SelectionProtocol):
     """docstring for MultiObjectiveGenomicMating."""
@@ -22,7 +27,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self,
-    nconfig, nparent, ncross, nprogeny,
+    nconfig, nparent, ncross, nprogeny, vmatcls, s, gmapfn, mem = 1024,
     unique_parents = True, method = "single",
     target = "positive", weight = "magnitude",
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
@@ -52,6 +57,40 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
+        vmatcls : class type
+            Variance matrix class name from which to construct additive
+            variance matrices from
+        s : int
+            Used for 'vmatcls' matrix construction.
+            Number of selfing generations post-cross pattern before 'nprogeny'
+            individuals are simulated.
+
+            +-------------+-------------------------+
+            | Example     | Description             |
+            +=============+=========================+
+            | ``s = 0``   | Derive gametes from F1  |
+            +-------------+-------------------------+
+            | ``s = 1``   | Derive gametes from F2  |
+            +-------------+-------------------------+
+            | ``s = 2``   | Derive gametes from F3  |
+            +-------------+-------------------------+
+            | ``...``     | etc.                    |
+            +-------------+-------------------------+
+            | ``s = inf`` | Derive gametes from SSD |
+            +-------------+-------------------------+
+        gmapfn : GeneticMapFunction
+            Used for 'vmatcls' matrix construction.
+            GeneticMapFunction to use to estimate covariance induced by
+            recombination.
+        mem : int, default = 1024
+            Used for 'vmatcls' matrix construction.
+            Memory chunk size to use during matrix operations. If ``None``,
+            then memory chunk size is not limited.
+
+            WARNING: Setting ``mem = None`` might result in memory allocation
+            errors! For reference, ``mem = 1024`` refers to a matrix of size
+            1024x1024, which needs about 8.5 MB of storage. Matrices of course
+            need a quadratic amount of memory: :math:`O(n^2)`.
         unique_parents : bool, default = True
             Whether to allow force unique parents or not.
             If ``True``, all parents in the mating configuration must be unique.
@@ -189,6 +228,10 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.vmatcls = vmatcls
+        self.s = s
+        self.gmapfn = gmapfn
+        self.mem = mem
         self.unique_parents = unique_parents
         self.method = method
         self.target = target
@@ -203,6 +246,48 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
         self.soalgo = soalgo
         self.moalgo = moalgo
+
+    ############################################################################
+    ########################## Private Object Methods ##########################
+    ############################################################################
+    def _calc_xmap(self, ntaxa):
+        """
+        Calculate the cross map.
+
+        Parameters
+        ----------
+        ntaxa : int
+            Number of taxa.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(s,d)`` containing cross map indices.
+
+            Where:
+
+            - ``s`` is the number of elements in the upper triangle, including
+              or not including the diagonal (depending on ``unique_parents``).
+            - ``d`` is the number of parents in the cross.
+        """
+        if self.unique_parents:         # if we want unique parents
+            return numpy.array(         # create a numpy.ndarray
+                list(                   # convert to list
+                    triudix(            # generator for indices without diagonal
+                        ntaxa,          # number of taxa
+                        self.nparent    # number of parents
+                    )
+                )
+            )
+        else:                           # otherwise we don't want unique parents
+            return numpy.array(         # create a numpy.ndarray
+                list(                   # convert to list
+                    triuix(             # generator for indices with diagonal
+                        ntaxa,          # number of taxa
+                        self.nparent    # number of parents
+                    )
+                )
+            )
 
     ############################################################################
     ############################ Object Properties #############################
@@ -258,6 +343,64 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             del self._nprogeny
         return locals()
     nprogeny = property(**nprogeny())
+
+    def vmatcls():
+        doc = "The vmatcls property."
+        def fget(self):
+            return self._vmatcls
+        def fset(self, value):
+            # make sure is of type 'type'
+            check_is_type(value, "vmatcls")
+
+            # make sure class inherits from Additive Genetic/Genic
+            check_inherits(
+                value,
+                "vmatcls",
+                (AdditiveGeneticVarianceMatrix, AdditiveGenicVarianceMatrix)
+            )
+
+            # make assignment to private variable
+            self._vmatcls = value
+        def fdel(self):
+            del self._vmatcls
+        return locals()
+    vmatcls = property(**vmatcls())
+
+    def s():
+        doc = "The s property."
+        def fget(self):
+            return self._s
+        def fset(self, value):
+            check_is_int(value, "s")
+            self._s = value
+        def fdel(self):
+            del self._s
+        return locals()
+    s = property(**s())
+
+    def gmapfn():
+        doc = "The gmapfn property."
+        def fget(self):
+            return self._gmapfn
+        def fset(self, value):
+            check_isinstance(value, "gmapfn", GeneticMapFunction)
+            self._gmapfn = value
+        def fdel(self):
+            del self._gmapfn
+        return locals()
+    gmapfn = property(**gmapfn())
+
+    def mem():
+        doc = "The mem property."
+        def fget(self):
+            return self._mem
+        def fset(self, value):
+            check_is_int(value, "mem")
+            self._mem = value
+        def fdel(self):
+            del self._mem
+        return locals()
+    mem = property(**mem())
 
     def unique_parents():
         doc = "The unique_parents property."
@@ -653,7 +796,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
-            Not used by this function.
+            Phased genotype matrix.
         gmat : GenotypeMatrix
             Input genotype matrix.
         ptdf : PhenotypeDataFrame
@@ -674,21 +817,43 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
         # calculate default function parameters
         mat = gmat.mat                      # (n,p) get genotype matrix
+        ntaxa = pgmat.ntaxa                 # get number of taxa
         ploidy = gmat.ploidy                # (scalar) get number of phases
         u = gpmod.u_a                       # (p,t) get regression coefficients
+        xmap = self._calc_xmap(ntaxa)       # (s,p) get the cross map
         mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
         tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
+        # generate variance matrix
+        if AdditiveGeneticVarianceMatrix in self.vmatcls.__mro__:
+            vmat = self.vmatcls.from_algmod(
+                algmod = gpmod,
+                pgmat = pgmat,
+                ncross = self.ncross,
+                nprogeny = self.nprogeny,
+                s = self.s,
+                gmapfn = self.gmapfn,
+                mem = self.mem
+            )
+        elif AdditiveGenicVarianceMatrix in self.vmatcls.__mro__:
+            vmat = self.vmatcls.from_algmod(
+                algmod = gpmod,
+                pgmat = pgmat,
+                nprogeny = self.nprogeny,
+                mem = self.mem
+            )
+
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_static.__code__,                         # byte code pointer
-            self.objfn_static.__globals__,                      # global variables
-            None,                                               # new name for the function
-            (mat, ploidy, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
-            self.objfn_static.__closure__                       # closure byte code pointer
+            self.objfn_static.__code__,         # byte code pointer
+            self.objfn_static.__globals__,      # global variables
+            None,                               # new name for the function
+            (xmap, mat, ploidy, tfreq, mkrwt,
+            vmat, trans, trans_kwargs),         # default values for arguments
+            self.objfn_static.__closure__       # closure byte code pointer
         )
 
         return outfn
@@ -721,21 +886,43 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
         # calculate default function parameters
         mat = gmat.mat                      # (n,p) get genotype matrix
+        ntaxa = pgmat.ntaxa                 # get number of taxa
         ploidy = gmat.ploidy                # (scalar) get number of phases
         u = gpmod.u_a                       # (p,t) get regression coefficients
+        xmap = self._calc_xmap(ntaxa)       # (s,p) get the cross map
         mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
         tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
+        # generate variance matrix
+        if AdditiveGeneticVarianceMatrix in self.vmatcls.__mro__:
+            vmat = self.vmatcls.from_algmod(
+                algmod = gpmod,
+                pgmat = pgmat,
+                ncross = self.ncross,
+                nprogeny = self.nprogeny,
+                s = self.s,
+                gmapfn = self.gmapfn,
+                mem = self.mem
+            )
+        elif AdditiveGenicVarianceMatrix in self.vmatcls.__mro__:
+            vmat = self.vmatcls.from_algmod(
+                algmod = gpmod,
+                pgmat = pgmat,
+                nprogeny = self.nprogeny,
+                mem = self.mem
+            )
+
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,                     # byte code pointer
-            self.objfn_vec_static.__globals__,                  # global variables
-            None,                                               # new name for the function
-            (mat, ploidy, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
-            self.objfn_vec_static.__closure__                   # closure byte code pointer
+            self.objfn_vec_static.__code__,     # byte code pointer
+            self.objfn_vec_static.__globals__,  # global variables
+            None,                               # new name for the function
+            (xmap, mat, ploidy, tfreq, mkrwt,
+            vmat, trans, trans_kwargs),         # default values for arguments
+            self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
         return outfn

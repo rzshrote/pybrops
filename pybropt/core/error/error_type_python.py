@@ -6,6 +6,29 @@ from . import generic_default_cond
 from . import generic_cond_check_isinstance
 
 ################################################################################
+###################### basic inheritance check functions #######################
+################################################################################
+def check_inherits(obj, objname, objtype):
+    """
+    Generic check of inheritance using method resolution order metadata.
+
+    Parameters
+    ----------
+    obj : object
+        Python object to check.
+    objname : str
+        Name associated with the object variable.
+    objtype : type
+        Object type from which 'obj' must inherit.
+    """
+    if isinstance(objtype, type) and (objname not in obj.__mro__):
+        raise TypeError("variable '{0}' must inherit from '{1}'".format(objname, objtype))
+    elif isinstance(objtype, tuple) and (all(e not in obj.__mro__ for e in objtype)):
+        raise TypeError("variable '{0}' must inherit from one of '{1}'".format(objname, objtype))
+    else:
+        raise TypeError("'objtype' must be of type 'type' or 'tuple'")
+
+################################################################################
 ################## basic check functions for basic data types ##################
 ################################################################################
 def check_isinstance(v, vname, vtype):
@@ -78,6 +101,10 @@ def check_is_str(v, vname):
 
 def check_is_tuple(v, vname):
     generic_check_isinstance(v, vname, tuple)
+
+def check_is_type(obj, objname):
+    if not isinstance(obj, type):
+        raise TypeError("variable '{0}' must be of type 'type'".format(objname))
 
 def check_is_Number(v, vname):
     generic_check_isinstance(v, vname, numbers.Number)
