@@ -285,7 +285,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : DensePhasedGenotypeMatrix
+        out : DenseTaxaMatrix
             A copy of mat with values appended to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """

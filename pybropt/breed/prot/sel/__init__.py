@@ -20,5 +20,4 @@ from . import OptimalContributionSelection
 from . import OptimalPopulationValueSelection
 from . import RandomSelection
 from . import TwoWayExpectedMaximumBreedingValueSelection
-from . import TwoWayOptimalHaploidValueSelection
 from . import WeightedGenomicSelection

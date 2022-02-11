@@ -1,5 +1,7 @@
 from pybropt.model.gmod.GenomicModel import GenomicModel
 
+# TODO: change how linear models are defined so that they are inclusive of
+#       dominance and epistatic genetic control architectures
 class LinearGenomicModel(GenomicModel):
     """
     The LinearGenomicModel class represents a Multivariate Multiple Linear
@@ -7,21 +9,26 @@ class LinearGenomicModel(GenomicModel):
 
     A Multivariate Multiple Linear Regression model is defined as:
 
-        Y = Xβ + Zu + e
+    .. math::
+        Y = X \\Beta + ZU + e
 
-        Where:
-            Y is a matrix of response variables of shape (n,t)
-            X is a matrix of fixed effect predictors of shape (n,q)
-            β is a matrix of fixed effect regression coefficients of shape (q,t)
-            Z is a matrix of random effect predictors of shape (n,p)
-            u is a matrix of random effect regression coefficients of shape (p,t)
-            e is a matrix of error terms of shape (n, t)
+    Where:
 
-        Shape definitions:
-            n = the number of individuals
-            q = the number of fixed effect predictors (e.g. environments)
-            p = the number of random effect predictors (e.g. genomic markers)
-            t = the number of traits
+    - :math:`Y` is a matrix of response variables of shape ``(n,t)``.
+    - :math:`X` is a matrix of fixed effect predictors of shape ``(n,q)``.
+    - :math:`\\Beta` is a matrix of fixed effect regression coefficients of
+      shape ``(q,t)``.
+    - :math:`Z` is a matrix of random effect predictors of shape ``(n,p)``.
+    - :math:`U` is a matrix of random effect regression coefficients of shape
+      ``(p,t)``.
+    - :math:`e` is a matrix of error terms of shape ``(n,t)``.
+
+    Shape definitions:
+
+    - ``n`` is the number of individuals
+    - ``q`` is the number of fixed effect predictors (e.g. environments)
+    - ``p`` is the number of random effect predictors (e.g. genomic markers)
+    - ``t`` is the number of traits
     """
 
     ############################################################################

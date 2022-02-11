@@ -12,7 +12,7 @@ from pybropt.test import generic_assert_concrete_method
 from pybropt.test import generic_assert_concrete_function
 
 from pybropt.breed.prot.sel.RandomSelection import RandomSelection
-from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybropt.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
@@ -125,15 +125,17 @@ def dpgmat(mat_int8, chrgrp_int64, phypos_int64, taxa_object, taxa_grp_int64):
 ###################### Genomic model #######################
 ############################################################
 @pytest.fixture
-def mu():
+def mat_beta():
     yield numpy.float64([
-        [1.4],
-        [2.5],
-        [7.2]
+        [1.4, 2.5, 7.2]
     ])
 
 @pytest.fixture
-def beta():
+def mat_u_misc():
+    yield None
+
+@pytest.fixture
+def mat_u_a():
     yield numpy.float64([
        [-0.87, -0.16, -0.04],
        [-0.03,  0.05, -0.15],
@@ -166,10 +168,11 @@ def params():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mu, beta, trait, model_name, params):
-    yield AdditiveLinearGenomicModel(
-        mu = mu,
-        beta = beta,
+def glgmod(mat_beta, mat_u_misc, mat_u_a, trait, model_name, params):
+    yield DenseAdditiveLinearGenomicModel(
+        beta = mat_beta,
+        u_misc = mat_u_misc,
+        u_a = mat_u_a,
         trait = trait,
         model_name = model_name,
         params = params
@@ -180,7 +183,7 @@ def glgmod(mu, beta, trait, model_name, params):
 ############################################################
 @pytest.fixture
 def bvmat(glgmod, dpgmat):
-    yield glgmod.predict(dpgmat)
+    yield glgmod.gebv(dpgmat)
 
 ############################################################
 ##################### RandomSelection ######################
@@ -267,7 +270,7 @@ def test_nprogeny(rps, nprogeny):
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_objfn_multiobjective(rps, dpgmat, bvmat, glgmod, ncross, nprogeny, mat_int8, beta):
+def test_objfn_multiobjective(rps, dpgmat, bvmat, glgmod, ncross, nprogeny, mat_int8):
     objfn = rps.objfn(
         pgmat = dpgmat,
         gmat = dpgmat,

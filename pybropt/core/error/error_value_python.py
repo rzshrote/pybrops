@@ -35,6 +35,14 @@ def check_all_equal(v, vname):
 def check_is_positive(v, vname):
     generic_check_gteq(v, vname, 0)
 
+def check_is_gt(obj, objname, value):
+    """Raise error if ``obj`` is not greater than ``value``."""
+    if not (obj > value):
+        raise ValueError(
+            "variable '{0}' is not greater than {1}".format(objname, value)
+        )
+
+
 ##################################################
 ########### Dictionary check functions ###########
 ##################################################

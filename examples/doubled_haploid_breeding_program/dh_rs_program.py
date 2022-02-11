@@ -3,24 +3,24 @@
 import numpy
 import pandas
 import pybropt.core.random
-from pybropt.breed.arch import RecurrentSelectionBreedingProgram
-from pybropt.breed.op.init import InitializationOperator
-from pybropt.breed.op.psel import ParentSelectionOperator
-from pybropt.breed.op.mate import MatingOperator
-from pybropt.breed.op.eval import EvaluationOperator
-from pybropt.breed.op.ssel import SurvivorSelectionOperator
-from pybropt.breed.prot.bv import MeanPhenotypicBreedingValue
-from pybropt.breed.prot.gt import DenseUnphasedGenotyping
-from pybropt.breed.prot.mate import TwoWayDHCross
-from pybropt.breed.prot.pt import G_E_Phenotyping
-from pybropt.breed.prot.sel import FamilyPhenotypicSelection
-from pybropt.breed.prot.sel import ConventionalPhenotypicSelection
+from pybropt.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
+from pybropt.breed.op.init.InitializationOperator import InitializationOperator
+from pybropt.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
+from pybropt.breed.op.mate.MatingOperator import MatingOperator
+from pybropt.breed.op.eval.EvaluationOperator import EvaluationOperator
+from pybropt.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
+from pybropt.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBreedingValue
+from pybropt.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
+from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
+from pybropt.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
+from pybropt.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
+from pybropt.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybropt.breed.prot.sel.transfn import trans_sum
-from pybropt.model.gmod import GenericLinearGenomicModel
-from pybropt.popgen.gmat import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmap import ExtendedGeneticMap
-from pybropt.popgen.gmap import HaldaneMapFunction
-from pybropt.breed.op.log import Logbook
+from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybropt.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
+from pybropt.breed.op.log.Logbook import Logbook
 
 # seed python random and numpy random
 pybropt.core.random.seed(941)
@@ -394,7 +394,7 @@ dpgmat.group_vrnt()                                                             
 dpgmat.interp_xoprob(gmap, gmapfn)                                              # interpolate crossover probabilies
 
 ################# Construct genomic model ##################
-gmod_true = GenericLinearGenomicModel(                                          # create model
+gmod_true = AdditiveLinearGenomicModel(                                          # create model
     beta = numpy.float64([[10.0]]),                                            # model intercepts
     u = pybropt.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),                  # random marker weights
     trait = numpy.object_(["yield"]),                                           # trait names

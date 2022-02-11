@@ -6,13 +6,12 @@ Module containing genomic prediction models.
 # utilities
 
 # abstract classes
-# level 1
 from . import GenomicModel
-
-# level 2
-from . import LinearGenomicModel
 from . import NonlinearGenomicModel
+from . import LinearGenomicModel
+from . import AdditiveLinearGenomicModel
+from . import AdditiveDominanceLinearGenomicModel
+from . import AdditiveDominanceEpistaticLinearGenomicModel
 
 # concrete classes
-# level 3
-from . import AdditiveLinearGenomicModel
+from . import DenseAdditiveLinearGenomicModel

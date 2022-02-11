@@ -5,10 +5,10 @@ from pybropt.breed.prot.sel.SelectionProtocol import SelectionProtocol
 import pybropt.core.random
 from pybropt.core.error import check_is_int
 from pybropt.core.error import cond_check_is_Generator
-from pybropt.breed.prot.mate import TwoWayDHCross
+from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 
-class TwoWayExpectedMaximumBreedingValueParentSelection(SelectionProtocol):
-    """docstring for TwoWayExpectedMaximumBreedingValueParentSelection."""
+class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
+    """docstring for TwoWayExpectedMaximumBreedingValueSelection."""
 
     def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs):
         """
@@ -17,7 +17,7 @@ class TwoWayExpectedMaximumBreedingValueParentSelection(SelectionProtocol):
         nrep : int
             Number of simulation replicates
         """
-        super(TwoWayExpectedMaximumBreedingValueParentSelection, self).__init__(**kwargs)
+        super(TwoWayExpectedMaximumBreedingValueSelection, self).__init__(**kwargs)
 
         # error checks
         check_is_int(k_p, "k_p")
