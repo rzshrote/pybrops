@@ -5,7 +5,7 @@
 # 	python3 -m build
 #
 # install:
-# 	pip3 install -U dist/PyBrOpt-1.0.0.tar.gz
+# 	pip3 install -U dist/pybrops-1.0.0.tar.gz
 
 # instructions for creating a virtual environment for local testing
 # Line 1: if a virtual environment has not been created, create it

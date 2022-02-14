@@ -6,7 +6,7 @@ import setuptools
 setup_location = "." # pathlib.Path(__file__).parents[1]
 
 # package metadata: general descriptors
-pybropt_name = "PyBrOpt"
+pybropt_name = "PyBrOpS"
 pybropt_version = "1.0.0"
 pybropt_author = "Robert Z. Shrote"
 pybropt_author_email = "shrotero@msu.edu"
@@ -16,9 +16,9 @@ with open("README.md", "r", encoding = "utf-8") as readme_file:
     pybropt_description_long_type = "text/markdown"
 
 # package metadata: project URLs
-pybropt_url = "https://github.com/rzshrote/PyBrOpt"
+pybropt_url = "https://github.com/rzshrote/pybrops"
 pybropt_project_url = {
-    "Bug Tracker": "https://github.com/rzshrote/PyBrOpt/issues",
+    "Bug Tracker": "https://github.com/rzshrote/pybrops/issues",
 }
 
 # package metadata: licensing and classifiers

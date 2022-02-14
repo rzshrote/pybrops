@@ -42,15 +42,15 @@ party libraries would be documented in the website.
 * The cause was unknown. I couldn't effectively isolate it.
 
 ## Potential causes of the bug:
-* Sphinx might have searched the `PyBrOpt/dist/` directory, found the built
+* Sphinx might have searched the `PyBrOpS/dist/` directory, found the built
   package and generated documentation, erroneously.
     * Highly suspect since there were 3 duplicated documentation files generated
       (`source`, `dist`, `build`).
-* Sphinx might have searched the `PyBrOpt/build/` directory, found the files
+* Sphinx might have searched the `PyBrOpS/build/` directory, found the files
   built for packaging and generated documentation for these, erroneously.
     * Highly suspect since there were 3 duplicated documentation files generated
       (`source`, `dist`, `build`).
-* `PyBrOpt/doc/source/conf.py` might have had order dependent settings.
+* `PyBrOpS/doc/source/conf.py` might have had order dependent settings.
     * Low probability of cause. Files were almost identical.
 * The `.egg-info` directory might have caused the problem.
     * Low probability of cause since the packaging tutorial repo had an
@@ -64,6 +64,6 @@ party libraries would be documented in the website.
 Things that are definitely known NOT to cause the bug:
 * The source code. There are warnings generated about malformated docstrings,
   but in isolated directories, they cause no duplication problems.
-* Location of the `PyBrOpt` directory on the user file system. I thought I might
-  have modified a `PATH`-type setting that was dependent on the `PyBrOpt`
+* Location of the `PyBrOpS` directory on the user file system. I thought I might
+  have modified a `PATH`-type setting that was dependent on the `PyBrOpS`
   directory location, but this proved not to be an issue.
