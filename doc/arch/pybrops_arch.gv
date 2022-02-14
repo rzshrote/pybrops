@@ -1,4 +1,4 @@
-digraph pybropt_arch {
+digraph pybrops_arch {
 	dpi=300
 	subgraph cluster_0 {
 		color=lightgrey label="core.io" style=filled

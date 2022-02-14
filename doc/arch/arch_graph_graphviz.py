@@ -13,7 +13,7 @@ rm_utility = True
 rm_any = rm_external | rm_utility
 
 # create graph object
-G = graphviz.Digraph('pybropt_arch', filename='pybropt_arch.gv', format='png')
+G = graphviz.Digraph('pybrops_arch', filename='pybrops_arch.gv', format='png')
 # G.attr(size='20,20!')
 G.attr(dpi = "300")
 

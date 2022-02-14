@@ -8,4 +8,4 @@ To install PyBrOpS, use pip3:
 
 .. code-block:: console
 
-    $ pip3 install pybropt
+    $ pip3 install pybrops
