@@ -1,4 +1,4 @@
-# List of things that would be nice to include in PyBrOpt
+# List of things that would be nice to include in PyBrOpS
 
 1. Pedigrees - including kinship calculation
   * Represent as a directed graph

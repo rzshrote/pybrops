@@ -1,5 +1,5 @@
 """
-PyBrOpt: a software package for numerical optimization and simulation of
+PyBrOpS: a software package for numerical optimization and simulation of
 breeding programs.
 """
 

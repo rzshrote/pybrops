@@ -1,5 +1,6 @@
-# PyBrOpt
-Python Breeding Optimizer: A python library for optimizing breeding-related problems.
+# PyBrOpS
+Python Breeding Optimizer and Simulator: A python library for simulating
+breeding programs and optimizing breeding-related problems.
 
 ## Dependencies
 1) `numpy 1.18.1+`
