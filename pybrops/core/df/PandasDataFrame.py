@@ -1,3 +1,7 @@
+"""
+Module implementing a Pandas DataFrame and associated error checking routines.
+"""
+
 from pybrops.core.df.DataFrame import DataFrame
 
 from pybrops.core.error import check_is_pandas_df

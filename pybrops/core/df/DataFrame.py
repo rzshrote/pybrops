@@ -1,3 +1,7 @@
+"""
+Module defining DataFrame interfaces and associated error checking routines.
+"""
+
 class DataFrame:
     """docstring for DataFrame."""
 

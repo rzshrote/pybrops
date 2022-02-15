@@ -1,5 +1,5 @@
 """
-Module providing base matrix functionality.
+Module providing basic matrix functionality.
 """
 
 # order dependent!

@@ -1,3 +1,7 @@
+"""
+Module implementing a Dictionary DataFrame and associated error checking routines.
+"""
+
 import numpy
 import numbers
 import pandas
