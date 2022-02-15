@@ -304,7 +304,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         doc = "Number of traits predicted by the model"
         def fget(self):
             """Get the number of traits predicted by the model"""
-            return len(self._trait)
+            return self._beta.shape[1]
         def fset(self, value):
             """Set the number of traits predicted by the model"""
             error_readonly("ntrait")
@@ -880,7 +880,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, **kwargs):
+    def usl_numpy(self, p, ploidy, descale = False, **kwargs):
         """
         Calculate the upper selection limit for a population.
 
@@ -914,9 +914,40 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # (p,t).sum[0] -> (t,)
         out = (float(ploidy) * self.u_a * uslgeno).sum(0)
 
+        # make descale adjustments if desired
+        if descale:
+            # construct contrast (X*) to take cell means assuming that the first
+            # column in X is a corner (first fixed effect is the intercept)
+
+            # determine the number of fixed effects: 'q'
+            nfixed = self.beta.shape[0]
+
+            # allocate contrast matrix (X*)
+            # (1,q)
+            Xstar = numpy.empty(            # empty matrix
+                (1, nfixed),                # (1,q)
+                dtype = self.beta.dtype     # same dtype as beta
+            )
+
+            # fill first column with 1 since we assume it is the intercept
+            Xstar[0,0] = 1
+
+            # fill remaining columns with 1/q to calculate mean across all
+            # fixed effects
+            Xstar[0,1:] = 1 / nfixed
+
+            # calculate intercepts (location)
+            # (1,q) @ (q,t) -> (1,t)
+            location = Xstar @ self.beta
+
+            # add location to usl
+            # (1,t) --ravel--> (t,)
+            # (t,) + (t,) -> (t,)
+            out += location.ravel()
+
         return out
 
-    def usl(self, gtobj, ploidy = None, **kwargs):
+    def usl(self, gtobj, ploidy = None, descale = False, **kwargs):
         """
         Calculate the upper selection limit for a population.
 
@@ -944,11 +975,11 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             raise TypeError("must be GenotypeMatrix, ndarray")
 
         # calculate genic variance
-        out = self.usl_numpy(p, ploidy, **kwargs)
+        out = self.usl_numpy(p, ploidy, descale, **kwargs)
 
         return out
 
-    def lsl_numpy(self, p, ploidy, **kwargs):
+    def lsl_numpy(self, p, ploidy, descale = False, **kwargs):
         """
         Calculate the lower selection limit for a population.
 
@@ -982,9 +1013,40 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # (p,t).sum[0] -> (t,)
         out = (float(ploidy) * self.u_a * lslgeno).sum(0)
 
+        # make descale adjustments if desired
+        if descale:
+            # construct contrast (X*) to take cell means assuming that the first
+            # column in X is a corner (first fixed effect is the intercept)
+
+            # determine the number of fixed effects: 'q'
+            nfixed = self.beta.shape[0]
+
+            # allocate contrast matrix (X*)
+            # (1,q)
+            Xstar = numpy.empty(            # empty matrix
+                (1, nfixed),                # (1,q)
+                dtype = self.beta.dtype     # same dtype as beta
+            )
+
+            # fill first column with 1 since we assume it is the intercept
+            Xstar[0,0] = 1
+
+            # fill remaining columns with 1/q to calculate mean across all
+            # fixed effects
+            Xstar[0,1:] = 1 / nfixed
+
+            # calculate intercepts (location)
+            # (1,q) @ (q,t) -> (1,t)
+            location = Xstar @ self.beta
+
+            # add location to usl
+            # (1,t) --ravel--> (t,)
+            # (t,) + (t,) -> (t,)
+            out += location.ravel()
+
         return out
 
-    def lsl(self, gtobj, ploidy = None, **kwargs):
+    def lsl(self, gtobj, ploidy = None, descale = False, **kwargs):
         """
         Calculate the lower selection limit for a population.
 
@@ -1012,7 +1074,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             raise TypeError("must be GenotypeMatrix, ndarray")
 
         # calculate genic variance
-        out = self.lsl_numpy(p, ploidy, **kwargs)
+        out = self.lsl_numpy(p, ploidy, descale, **kwargs)
 
         return out
 

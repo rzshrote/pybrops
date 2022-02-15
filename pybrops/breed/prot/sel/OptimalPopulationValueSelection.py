@@ -1,6 +1,5 @@
 import numpy
 import types
-from sklearn.cluster import KMeans
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 

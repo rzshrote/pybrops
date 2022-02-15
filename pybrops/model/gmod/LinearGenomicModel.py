@@ -1,7 +1,5 @@
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
-# TODO: change how linear models are defined so that they are inclusive of
-#       dominance and epistatic genetic control architectures
 class LinearGenomicModel(GenomicModel):
     """
     The LinearGenomicModel class represents a Multivariate Multiple Linear

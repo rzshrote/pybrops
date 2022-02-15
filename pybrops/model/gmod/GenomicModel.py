@@ -445,7 +445,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, **kwargs):
+    def usl_numpy(self, p, ploidy, descale, **kwargs):
         """
         Calculate the upper selection limit for a population.
 
@@ -464,7 +464,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def usl(self, gtobj, ploidy, **kwargs):
+    def usl(self, gtobj, ploidy, descale, **kwargs):
         """
         Calculate the upper selection limit for a population.
 
@@ -484,7 +484,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl_numpy(self, p, ploidy, **kwargs):
+    def lsl_numpy(self, p, ploidy, descale, **kwargs):
         """
         Calculate the lower selection limit for a population.
 
@@ -503,7 +503,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl(self, gtobj, ploidy, **kwargs):
+    def lsl(self, gtobj, ploidy, descale, **kwargs):
         """
         Calculate the lower selection limit for a population.
 

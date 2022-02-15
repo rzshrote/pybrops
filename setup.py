@@ -35,13 +35,11 @@ pybropt_requirements_install = [
     "numpy",
     "pandas",
     "cyvcf2",
-    "igraph",
     "rpy2",
     "h5py",
     "deap",
     "scipy",
     "cvxpy",
-    "sklearn",
     "matplotlib",
     "pytest",
     "pytest-datadir"
