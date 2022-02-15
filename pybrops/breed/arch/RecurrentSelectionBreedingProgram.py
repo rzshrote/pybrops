@@ -369,7 +369,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self.gmod = copy.deepcopy(self.start_gmod)      # reset genomic model container
         self.t_cur = 0                                  # reset time
 
-    def advance(self, ngen, lbook, **kwargs):
+    def advance(self, ngen, lbook, verbose = False, **kwargs):
         """
         Advance the breeding program by a specified number of generations.
 
@@ -384,6 +384,10 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """
         # iterate through main breeding loop for ngen generations
         for _ in range(ngen):
+            # display verobse messages if needed
+            if verbose:
+                print("Simulating rep {0}: gen {1} of {2}".format(lbook.rep, _+1, ngen,))
+
             ####################################################################
             ########################## select parents ##########################
             ####################################################################
@@ -562,6 +566,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             self.advance(
                 ngen = ngen,
                 lbook = lbook,
+                verbose = verbose,
                 **kwargs
             )
 

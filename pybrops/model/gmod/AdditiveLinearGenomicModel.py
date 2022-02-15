@@ -68,7 +68,6 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def u_misc():
         doc = "Miscellaneous random effects."
         def fget(self):
