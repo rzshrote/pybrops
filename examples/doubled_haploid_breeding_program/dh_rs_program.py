@@ -2,28 +2,28 @@
 
 import numpy
 import pandas
-import pybropt.core.random
-from pybropt.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
-from pybropt.breed.op.init.InitializationOperator import InitializationOperator
-from pybropt.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
-from pybropt.breed.op.mate.MatingOperator import MatingOperator
-from pybropt.breed.op.eval.EvaluationOperator import EvaluationOperator
-from pybropt.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
-from pybropt.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBreedingValue
-from pybropt.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
-from pybropt.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
-from pybropt.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
-from pybropt.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
-from pybropt.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
-from pybropt.breed.prot.sel.transfn import trans_sum
-from pybropt.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybropt.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybropt.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
-from pybropt.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
-from pybropt.breed.op.log.Logbook import Logbook
+import pybrops.core.random
+from pybrops.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
+from pybrops.breed.op.init.InitializationOperator import InitializationOperator
+from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
+from pybrops.breed.op.mate.MatingOperator import MatingOperator
+from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
+from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
+from pybrops.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBreedingValue
+from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
+from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
+from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
+from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
+from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.transfn import trans_sum
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
+from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
+from pybrops.breed.op.log.Logbook import Logbook
 
 # seed python random and numpy random
-pybropt.core.random.seed(941)
+pybrops.core.random.seed(941)
 
 class MyInitParentSelectionOperator(ParentSelectionOperator):
     def __init__(self):
@@ -396,7 +396,7 @@ dpgmat.interp_xoprob(gmap, gmapfn)                                              
 ################# Construct genomic model ##################
 gmod_true = AdditiveLinearGenomicModel(                                          # create model
     beta = numpy.float64([[10.0]]),                                            # model intercepts
-    u = pybropt.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),                  # random marker weights
+    u = pybrops.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),                  # random marker weights
     trait = numpy.object_(["yield"]),                                           # trait names
     model_name = "yield_model",
     params = None
@@ -416,7 +416,7 @@ fps_ncross = 1
 fps_nprogeny = 80
 
 #################### Determine founders ####################
-sel = pybropt.core.random.choice(dpgmat.ntaxa, nfounder, replace = False)       # get random selections (pselect)
+sel = pybrops.core.random.choice(dpgmat.ntaxa, nfounder, replace = False)       # get random selections (pselect)
 sel.sort()                                                                      # sort indices for random founder selections
 dpgmat = dpgmat.select_taxa(sel)                                                # select founder individuals
 
@@ -443,7 +443,7 @@ fndr_gmod =   {"cand":gmod_true, "main":gmod_true, "true":gmod_true}
 ################ Build founder populations #################
 sel = numpy.arange(dpgmat.ntaxa)                                                # create indices [0,1,...,nfounder-1]
 for _ in range(gqlen):                                                          # fill queue with random matings of founders
-    pybropt.core.random.shuffle(sel)                                            # randomly shuffle indices
+    pybrops.core.random.shuffle(sel)                                            # randomly shuffle indices
     pgmat = mateprot.mate(dpgmat, sel, fndr_ncross, fndr_nprogeny)              # mate random selections (mate)
     fndr_genome["queue"].append(pgmat)                                          # add progeny to queue
     gmat = gtprot.genotype(pgmat = pgmat)                                       # genotype progeny

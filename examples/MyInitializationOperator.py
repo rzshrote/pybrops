@@ -1,13 +1,13 @@
-import pybropt.core.random
-from pybropt.breed.op.init import InitializationOperator
-from pybropt.breed.op.psel import ParentSelectionOperator
-from pybropt.breed.op.mate import MatingOperator
-from pybropt.breed.op.eval import EvaluationOperator
-from pybropt.breed.op.ssel import SurvivorSelectionOperator
+import pybrops.core.random
+from pybrops.breed.op.init import InitializationOperator
+from pybrops.breed.op.psel import ParentSelectionOperator
+from pybrops.breed.op.mate import MatingOperator
+from pybrops.breed.op.eval import EvaluationOperator
+from pybrops.breed.op.ssel import SurvivorSelectionOperator
 
-from pybropt.breed.prot.sel import ConventionalPhenotypicSelection
-from pybropt.breed.prot.sel.transfn import trans_sum
-from pybropt.breed.prot.mate import GenerationalTwoWayDHCross
+from pybrops.breed.prot.sel import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.transfn import trans_sum
+from pybrops.breed.prot.mate import GenerationalTwoWayDHCross
 
 class MyInitParentSelectionOperator(ParentSelectionOperator):
     def __init__(self, nparent, ncross, nprogeny, **kwargs):
@@ -73,7 +73,7 @@ class MyInitializationOperator(InitializationOperator):
         check_is_int(gqlen, "gqlen")
         check_is_GenomicModel(gmod_true, "gmod_true")
         check_is_int(burnin, "burnin")
-        rng = pybropt.core.random
+        rng = pybrops.core.random
 
         ####################################################
         ### step 1: count available taxa ###
