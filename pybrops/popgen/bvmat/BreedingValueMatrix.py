@@ -254,21 +254,6 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def descale(self):
-        """
-        Transform values within the BreedingValueMatrix back to their de-scaled
-        and de-centered values.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of shape (n,t) containing de-scaled and de-centered values.
-            Where:
-                'n' is the number of taxa.
-                't' is the number of traits.
-        """
-        raise NotImplementedError("method is abstract")
-
 
 
 ################################################################################
