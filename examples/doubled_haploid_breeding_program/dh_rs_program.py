@@ -16,7 +16,7 @@ from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
 from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
 from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
@@ -127,7 +127,7 @@ class MyInitializationOperator(InitializationOperator):
         self.sselop = sselop
         self.burnin = burnin
         self.t_cur = -burnin
-    def initialize(self, miscout = None, **kwargs):
+    def initialize(self, miscout = None, verbose = True, **kwargs):
         for _ in range(self.burnin): # iterate through main breeding loop for burnin generations
             mcfg, self.genome, self.geno, self.pheno, self.bval, self.gmod = self.pselop.pselect(
                 genome = self.genome,
@@ -171,7 +171,8 @@ class MyInitializationOperator(InitializationOperator):
                 miscout = None
             )
             self.t_cur += 1     # increment time variables
-            print("Burn-in generation {0} of {1}".format(_+1, self.burnin))
+            if verbose:
+                print("Burn-in generation {0} of {1}".format(_+1, self.burnin))
         return self.genome, self.geno, self.pheno, self.bval, self.gmod
 
 class MyParentSelectionOperator(ParentSelectionOperator):
@@ -295,25 +296,25 @@ class MyLogbook(Logbook):
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
         self.data["cand_mehe"].append(genome["cand"].mehe())
-        self.data["cand_mean"].append(bval["cand"].location[0])
-        self.data["cand_true_mean"].append(cand_bval_true.location[0])
-        self.data["cand_std"].append(bval["cand"].scale[0])
-        self.data["cand_true_std"].append(cand_bval_true.scale[0])
+        self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
+        self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
+        self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
+        self.data["cand_true_std"].append(cand_bval_true.tstd(descale = True)[0])
         self.data["cand_true_var_A"].append(gpmod.var_A(genome["cand"])[0])
         self.data["cand_true_var_a"].append(gpmod.var_a(genome["cand"])[0])
         self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
-        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"])[0])
-        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"])[0])
+        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
+        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
         self.data["main_mehe"].append(genome["main"].mehe())
-        self.data["main_mean"].append(bval["main"].location[0])
-        self.data["main_true_mean"].append(main_bval_true.location[0])
-        self.data["main_std"].append(bval["main"].scale[0])
-        self.data["main_true_std"].append(main_bval_true.scale[0])
+        self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
+        self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
+        self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
+        self.data["main_true_std"].append(main_bval_true.tstd(descale = True)[0])
         self.data["main_true_var_A"].append(gpmod.var_A(genome["main"])[0])
         self.data["main_true_var_a"].append(gpmod.var_a(genome["main"])[0])
         self.data["main_true_bulmer"].append(gpmod.bulmer(genome["main"])[0])
-        self.data["main_true_usl"].append(gpmod.usl(genome["main"])[0])
-        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"])[0])
+        self.data["main_true_usl"].append(gpmod.usl(genome["main"], descale = True)[0])
+        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"], descale = True)[0])
     def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         pass
     def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
@@ -327,25 +328,25 @@ class MyLogbook(Logbook):
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
         self.data["cand_mehe"].append(genome["cand"].mehe())
-        self.data["cand_mean"].append(bval["cand"].location[0])
-        self.data["cand_true_mean"].append(cand_bval_true.location[0])
-        self.data["cand_std"].append(bval["cand"].scale[0])
-        self.data["cand_true_std"].append(cand_bval_true.scale[0])
+        self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
+        self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
+        self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
+        self.data["cand_true_std"].append(cand_bval_true.tstd(descale = True)[0])
         self.data["cand_true_var_A"].append(gpmod.var_A(genome["cand"])[0])
         self.data["cand_true_var_a"].append(gpmod.var_a(genome["cand"])[0])
         self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
-        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"])[0])
-        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"])[0])
+        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
+        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
         self.data["main_mehe"].append(genome["main"].mehe())
-        self.data["main_mean"].append(bval["main"].location[0])
-        self.data["main_true_mean"].append(main_bval_true.location[0])
-        self.data["main_std"].append(bval["main"].scale[0])
-        self.data["main_true_std"].append(main_bval_true.scale[0])
+        self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
+        self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
+        self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
+        self.data["main_true_std"].append(main_bval_true.tstd(descale = True)[0])
         self.data["main_true_var_A"].append(gpmod.var_A(genome["main"])[0])
         self.data["main_true_var_a"].append(gpmod.var_a(genome["main"])[0])
         self.data["main_true_bulmer"].append(gpmod.bulmer(genome["main"])[0])
-        self.data["main_true_usl"].append(gpmod.usl(genome["main"])[0])
-        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"])[0])
+        self.data["main_true_usl"].append(gpmod.usl(genome["main"], descale = True)[0])
+        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"], descale = True)[0])
     def reset(self):
         self.data = {
             "rep": [],
@@ -381,52 +382,61 @@ class MyLogbook(Logbook):
 ################################################################################
 
 ##################### Read genetic map #####################
-gmap = ExtendedGeneticMap.from_egmap("McMullen_2009_US_NAM_corrected.M.egmap")  # read from file
-gmap.group()                                                                    # group markers
-gmap.build_spline()                                                             # construct spline
+gmap = ExtendedGeneticMap.from_egmap(                           # read from file
+    "McMullen_2009_US_NAM_corrected.M.egmap"
+)
+gmap.group()                                                    # group markers
+gmap.build_spline()                                             # construct spline
 
 ############### Create genetic map function ################
-gmapfn = HaldaneMapFunction()                                                   # use generic Haldane function
+gmapfn = HaldaneMapFunction()                                   # use generic Haldane function
 
 #################### Load genetic data #####################
-dpgmat = DensePhasedGenotypeMatrix.from_vcf("widiv_2000SNPs_imputed_chr1-10_APGv4_noNA_noHet_q0.2_Q0.8.vcf.gz") # read from file
-dpgmat.group_vrnt()                                                             # group markers
-dpgmat.interp_xoprob(gmap, gmapfn)                                              # interpolate crossover probabilies
+dpgmat = DensePhasedGenotypeMatrix.from_vcf(                    # read from file
+    "widiv_2000SNPs_imputed_chr1-10_APGv4_noNA_noHet_q0.2_Q0.8.vcf.gz"
+)
+dpgmat.group_vrnt()                                             # group markers
+dpgmat.interp_xoprob(gmap, gmapfn)                              # interpolate crossover probabilies
 
 ################# Construct genomic model ##################
-gmod_true = AdditiveLinearGenomicModel(                                          # create model
-    beta = numpy.float64([[10.0]]),                                            # model intercepts
-    u = pybrops.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),                  # random marker weights
-    trait = numpy.object_(["yield"]),                                           # trait names
-    model_name = "yield_model",
+gmod_true = DenseAdditiveLinearGenomicModel(                    # create model
+    beta = numpy.float64([[10.0]]),                             # model intercepts
+    u_misc = None,                                              # miscellaneous random effects
+    u_a = pybrops.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),# random marker effects
+    trait = numpy.object_(["yield"]),                           # trait names
+    model_name = "yield_model",                                 # name of the model
     params = None
 )
 
 ################### Founding parameters ####################
-fndr_heritability = 0.3                                                      # heritability of founder lines
-burnin = 20
-t_cur = -burnin                                                                 # set t_cur
-t_max = 0                                                                       # set t_max
-gqlen = 6
-nfounder = 40
-fndr_ncross = 1
+fndr_heritability = 0.3                                         # heritability of founder lines
+burnin = 20                                                     # number of burnin generations
+t_cur = -burnin                                                 # set t_cur
+t_max = 0                                                       # set t_max
+gqlen = 6                                                       # breeding pipeline queue length
+nfounder = 40                                                   # number of random founders to select
+fndr_ncross = 1                                                 # number of founder crosses
 fndr_nprogeny = 80
 fps_nparent = 4
 fps_ncross = 1
 fps_nprogeny = 80
 
 #################### Determine founders ####################
-sel = pybrops.core.random.choice(dpgmat.ntaxa, nfounder, replace = False)       # get random selections (pselect)
-sel.sort()                                                                      # sort indices for random founder selections
-dpgmat = dpgmat.select_taxa(sel)                                                # select founder individuals
+sel = pybrops.core.random.choice(                               # get random selections (pselect)
+    dpgmat.ntaxa,
+    nfounder,
+    replace = False
+)
+sel.sort()                                                      # sort indices for random founder selections
+dpgmat = dpgmat.select_taxa(sel)                                # select founder individuals
 
 ################ Build founder populations #################
-mateprot = TwoWayDHCross()                                                      # make mating protocol
-gtprot = DenseUnphasedGenotyping()                                              # genotyping protocols
-ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                                   # make phenotyping protocol
-ptprot.set_h2(fndr_heritability, dpgmat)                                        # set heritability
-bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])                         # make breeding value protocol
-sselprot = FamilyPhenotypicSelection(
+mateprot = TwoWayDHCross()                                      # make mating protocol
+gtprot = DenseUnphasedGenotyping()                              # genotyping protocols
+ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                   # make phenotyping protocol
+ptprot.set_h2(fndr_heritability, dpgmat)                        # set heritability
+bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])         # make breeding value protocol
+sselprot = FamilyPhenotypicSelection(                           # family-based survivor selection
     nparent = fps_nparent,
     ncross = fps_ncross,
     nprogeny = fps_nprogeny,
@@ -517,6 +527,6 @@ rsprog = RecurrentSelectionBreedingProgram(
 )
 
 # evolve the population
-rsprog.evolve(nrep = 20, ngen = 20, lbook = lbook, verbose = True)
+rsprog.evolve(nrep = 2, ngen = 20, lbook = lbook, verbose = True)
 
 lbook.write("dh_rs_program.csv")
