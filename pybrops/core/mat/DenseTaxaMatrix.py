@@ -1,13 +1,16 @@
+"""
+Module defining implementing dense matrices with taxa metadata and associated
+error checking routines.
+"""
+
 import copy
 import numpy
-
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_at_least_1d
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
 from pybrops.core.error import cond_check_is_ndarray
@@ -20,10 +23,17 @@ from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import check_ndarray_at_least_1d
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
-    """docstring for DenseTaxaMatrix."""
+    """
+    A concrete class for dense matrices with taxa metadata.
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix taxa metadata.
+        2) Dense matrix taxa routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -111,14 +121,17 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
     ##################### Matrix Data ######################
     def mat():
-        doc = "The mat property."
+        doc = "Pointer to raw matrix object."
         def fget(self):
+            """Get pointer to raw matrix object"""
             return self._mat
         def fset(self, value):
+            """Set pointer to raw matrix object"""
             check_is_ndarray(value, "mat")
             check_ndarray_at_least_1d(value, "mat")
             self._mat = value
         def fdel(self):
+            """Delete raw matrix object"""
             del self._mat
         return locals()
     mat = property(**mat())

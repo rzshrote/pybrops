@@ -409,7 +409,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(                    # create model
 )
 
 ################### Founding parameters ####################
-fndr_heritability = 0.3                                         # heritability of founder lines
+fndr_heritability = 0.4                                         # heritability of founder lines
 burnin = 20                                                     # number of burnin generations
 t_cur = -burnin                                                 # set t_cur
 t_max = 0                                                       # set t_max
@@ -527,6 +527,6 @@ rsprog = RecurrentSelectionBreedingProgram(
 )
 
 # evolve the population
-rsprog.evolve(nrep = 2, ngen = 20, lbook = lbook, verbose = True)
+rsprog.evolve(nrep = 4, ngen = 20, lbook = lbook, verbose = True)
 
 lbook.write("dh_rs_program.csv")

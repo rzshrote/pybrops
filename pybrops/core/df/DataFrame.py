@@ -3,7 +3,14 @@ Module defining DataFrame interfaces and associated error checking routines.
 """
 
 class DataFrame:
-    """docstring for DataFrame."""
+    """
+    An abstract class for data frame wrapper objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Data frame row and column access
+        2) Data extraction from a data frame
+        3) Data frame conversion
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

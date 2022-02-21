@@ -1,6 +1,6 @@
 """
-Module for providing abstract interfaces and functions pertaining to square
-matrices.
+Module defining interfaces and associated error checking routines for matrices
+with axes that are square.
 """
 
 from pybrops.core.mat.Matrix import Matrix

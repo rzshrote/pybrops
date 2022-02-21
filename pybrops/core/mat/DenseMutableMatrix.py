@@ -9,8 +9,17 @@ from pybrops.core.mat.DenseMatrix import is_DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class DenseMutableMatrix(DenseMatrix,MutableMatrix):
-    """docstring for DenseMutableMatrix."""
+    """
+    A concrete class for dense mutable matrices.
+    Dense mutable matrices utilize numpy.ndarray's for data storage.
 
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix in-place matrix shape changing routines.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, mat, **kwargs):
         """
         Constructor for DenseMutableMatrix

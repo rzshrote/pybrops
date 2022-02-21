@@ -1,3 +1,7 @@
+"""
+Module with utility functions for generating matrix indices.
+"""
+
 import numpy
 
 __all__ = ["sqarrayix", "triuix", "triuix"]

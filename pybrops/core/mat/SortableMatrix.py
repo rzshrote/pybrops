@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+that can have their axes sorted.
+"""
+
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class SortableMatrix(MutableMatrix):

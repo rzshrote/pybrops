@@ -1,3 +1,7 @@
+"""
+Module containing utility functions for handling HDF5 files.
+"""
+
 import numpy
 import h5py
 

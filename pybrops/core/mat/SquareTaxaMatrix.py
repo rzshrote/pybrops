@@ -1,14 +1,23 @@
 """
-Module for providing abstract interfaces and functions pertaining to square taxa
-matrices.
+Module defining interfaces and associated error checking routines for matrices
+with axes that are square and with taxa metadata.
 """
 
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
 class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
-    """Abstract class for SquareMatrix + TaxaMatrix fusion."""
+    """
+    An abstract class for matrix wrapper objects with taxa and trait metadata.
 
+    The purpose of this abstract class is to merge the following interfaces:
+        1) SquareMatrix
+        2) TaxaMatrix
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, **kwargs):
         """
         Constructor for the SquareTaxaMatrix abstract class.

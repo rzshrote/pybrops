@@ -1,18 +1,23 @@
 import numpy
 import copy
 
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_at_least_2d
+from pybrops.core.error import error_readonly
+from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
-from pybrops.core.mat.util import get_axis
-from pybrops.core.error import generic_check_isinstance
-from pybrops.core.error import error_readonly
-from pybrops.core.error import check_ndarray_at_least_2d
-from pybrops.core.error import check_is_ndarray
-
 class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatrix):
-    """docstring for DenseTaxaVariantMatrix."""
+    """
+    A concrete class for dense matrices with taxa and variant metadata.
+
+    The purpose of this concrete class is to implement functionality for:
+        1)
+        2)
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

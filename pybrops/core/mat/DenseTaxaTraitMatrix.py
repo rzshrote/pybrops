@@ -1,15 +1,27 @@
+"""
+Module defining implementing dense matrices with taxa and trait metadata and
+associated error checking routines.
+"""
+
 import numpy
 import copy
 
+from pybrops.core.error import error_readonly
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-from pybrops.core.mat.util import get_axis
-from pybrops.core.error import error_readonly
-
 class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
-    """docstring for DenseTaxaTraitMatrix."""
+    """
+    A concrete class for dense matrices with taxa and trait metadata.
+
+    The purpose of this concrete class is to merge the following implementations
+    and interfaces:
+        1) DenseTaxaMatrix
+        2) DenseTraitMatrix
+        3) TaxaTraitMatrix
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

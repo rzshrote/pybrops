@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+with variant metadata.
+"""
+
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 
 class VariantMatrix(GroupableMatrix):

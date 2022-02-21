@@ -1,10 +1,13 @@
+"""
+Module implementing a dense matrix with variant metadata and associated error
+checking routines.
+"""
+
 import copy
 import numpy
 
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.VariantMatrix import VariantMatrix
-
 from pybrops.core.error import check_is_int
+from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
@@ -18,7 +21,8 @@ from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import check_is_iterable
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.VariantMatrix import VariantMatrix
 
 class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     """docstring for DenseVariantMatrix."""
@@ -53,7 +57,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self.vrnt_hapalt = vrnt_hapalt
         self.vrnt_hapref = vrnt_hapref
         self.vrnt_mask = vrnt_mask
-
+        # set variant metadata to None
         self.vrnt_chrgrp_name = None
         self.vrnt_chrgrp_stix = None
         self.vrnt_chrgrp_spix = None

@@ -1,3 +1,7 @@
+"""
+Module defining basal Matrix interfaces and associated error checking routines.
+"""
+
 class Matrix:
     """
     An abstract class for matrix wrapper objects.
@@ -553,6 +557,7 @@ class Matrix:
             a new Matrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
+
 
 
 ################################################################################

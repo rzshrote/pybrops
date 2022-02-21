@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+with trait metadata.
+"""
+
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
 class TraitMatrix(SortableMatrix):

@@ -1,17 +1,21 @@
+"""
+Module implementing a dense matrix with trait metadata and associated error
+checking routines.
+"""
+
 import numpy
 import copy
 
-from pybrops.core.mat.TraitMatrix import TraitMatrix
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-
+from pybrops.core.error import check_is_iterable
 from pybrops.core.error import cond_check_is_ndarray
 from pybrops.core.error import cond_check_ndarray_axis_len
 from pybrops.core.error import cond_check_ndarray_dtype_is_object
 from pybrops.core.error import cond_check_ndarray_ndim
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import generic_check_isinstance
 from pybrops.core.error import error_readonly
+from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.TraitMatrix import TraitMatrix
 
 class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     """docstring for DenseTraitMatrix."""
