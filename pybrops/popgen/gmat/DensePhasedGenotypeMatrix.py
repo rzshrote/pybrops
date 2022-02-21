@@ -1,30 +1,42 @@
+"""
+Module providing implementations of dense phased genotype matrices and
+associated error checking routines.
+"""
+
 import copy
-import numpy
 import cyvcf2
+import numpy
 
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
-from pybrops.core.mat.util import get_axis
-
+from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_3d
 from pybrops.core.error import cond_check_is_ndarray
+from pybrops.core.error import cond_check_ndarray_axis_len
+from pybrops.core.error import cond_check_ndarray_dtype_is_bool
+from pybrops.core.error import cond_check_ndarray_dtype_is_float64
+from pybrops.core.error import cond_check_ndarray_dtype_is_int64
 from pybrops.core.error import cond_check_ndarray_dtype_is_object
 from pybrops.core.error import cond_check_ndarray_ndim
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_int64
-from pybrops.core.error import cond_check_ndarray_dtype_is_float64
-from pybrops.core.error import cond_check_ndarray_dtype_is_bool
-from pybrops.core.error import check_is_int
 from pybrops.core.error import error_readonly
-
+from pybrops.core.mat.util import get_axis
+from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
 from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
+from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
-    """docstring for DensePhasedGenotypeMatrix."""
+    """
+    A concrete class for phased genoypte matrix objects.
+
+    The purpose of this concrete class is to implement functionality for:
+        1) Genotype matrix ploidy and phase metadata.
+        2) Genotype matrix format conversion.
+        3) Genotype matrix allele counting routines.
+        4) Genotype matrix genotype counting routines.
+        5) Loading phased genotype matrices from VCF and HDF5.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -35,11 +47,46 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         ----------
         mat : numpy.ndarray
             An int8 haplotype matrix. Must be {0,1,2} format.
-        ploidy : int
-            The ploidy represented by the haplotype matrix. This only represents
-            ploidy of the reproductive habit. If the organism represented is an
-            allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
-            reproduces in a diploid manner.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+        vrnt_chrgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            group labels. If ``None``, do not store any variant chromosome group
+            label information.
+        vrnt_phypos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            physical positions. If ``None``, do not store any variant chromosome
+            physical position information.
+        vrnt_name : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant names.
+            If ``None``, do not store any variant names.
+        vrnt_genpos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            genetic positions. If ``None``, do not store any variant chromosome
+            genetic position information.
+        vrnt_xoprob : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant crossover
+            probabilities. If ``None``, do not store any variant crossover
+            probabilities.
+        vrnt_hapgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant haplotype
+            group labels. If ``None``, do not store any variant haplotype group
+            label information.
+        vrnt_hapalt : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant alternative
+            alleles. If ``None``, do not store any variant alternative allele
+            information.
+        vrnt_hapref : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant reference
+            alleles. If ``None``, do not store any variant reference allele
+            information.
+        vrnt_mask : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing a variant mask.
+            If ``None``, do not store any variant mask information.
         """
         # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         super(DensePhasedGenotypeMatrix, self).__init__(
@@ -292,15 +339,14 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         Parameters
         ----------
-        dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
 
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (n, p) containing allele counts of the
-            allele coded as 1 for all 'n' individuals, for all 'p' loci.
+            A numpy.ndarray of shape ``(n,p)`` containing allele counts of the
+            allele coded as ``1`` for all ``n`` individuals, for all ``p`` loci.
         """
         out = self._mat.sum(self.phase_axis)    # take sum across the phase axis
         if dtype is not None:                   # if dtype is specified
@@ -315,15 +361,15 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         Parameters
         ----------
-        dtype : dtype, optional
-            The type of the returned array and of the accumulator in which the
-            elements are summed.
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
 
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (n, p) containing allele frequencies of the
-            allele coded as 1 for all 'n' individuals, for all 'p' loci.
+            A numpy.ndarray of shape ``(n,p)`` containing allele frequencies of
+            the allele coded as ``1`` for all ``n`` individuals, for all ``p``
+            loci.
         """
         rnphase = 1.0 / self.ploidy                     # take the reciprocal of the ploidy number
         out = rnphase * self._mat.sum(self.phase_axis)  # take sum across the phase axis (0) and divide by ploidy
@@ -337,11 +383,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         """
         Allele count of the non-zero allele across all taxa.
 
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele counts of the allele
-            coded as 1 for all 'p' loci.
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the
+            allele coded as ``1`` for all ``p`` loci.
         """
         out = self._mat.sum((self.phase_axis,self.taxa_axis))   # take sum across the phase and taxa axis
         if dtype is not None:                                   # if dtype is specified
@@ -354,11 +405,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         """
         Allele frequency of the non-zero allele across all taxa.
 
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p) containing allele frequencies of the
-            allele coded as 1 for all 'p' loci.
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of
+            the allele coded as ``1`` for all ``p`` loci.
         """
         rnphase = 1.0 / (self.ploidy * self.ntaxa)                      # take 1 / (ploidy * ntaxa)
         out = rnphase * self._mat.sum((self.phase_axis,self.taxa_axis)) # take sum across the taxa axis (0) and divide by nphase
@@ -372,36 +428,56 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         """
         Minor allele frequency across all taxa.
 
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape (p,) containing allele frequencies for the
-            minor allele.
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies for
+            the minor allele.
         """
         out = self.afreq(dtype)     # get allele frequencies
         mask = out > 0.5            # create mask of allele frequencies > 0.5
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def mehe(self):
+    def mehe(self, dtype = None):
         """
         Mean expected heterozygosity across all taxa.
 
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
         Returns
         -------
-        mehe : numpy.float64
-            A 64-bit floating point representing the mean expected
-            heterozygosity.
+        out : numpy.float64, other
+            A number representing the mean expected heterozygous.
+            If ``dtype`` is ``None``, then a native 64-bit floating point is
+            returned. Otherwise, of type specified by ``dtype``.
         """
         p = self.afreq()                    # get haplotype frequency (p)
         out = (p * (1.0 - p)).sum()         # take p*(1-p) across all loci and sum the products
-        out *= (self.ploidy / self.nvrnt)   # multiply summation by (nphase / nvrnt)
-        return numpy.float64(out)
+        out *= (self.ploidy / self.nvrnt)   # multiply summation by (ploidy / nvrnt)
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
+        return out
 
-    def gtcount(self):
+    def gtcount(self, dtype = None):
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
+
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
 
         Returns
         -------
@@ -431,9 +507,14 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         for i in range(ngt):
             out[i] = (mat == i).sum(axis)   # record counts for genotype 'i'
 
+        if dtype is not None:               # if dtype is specified
+            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
+            if out.dtype != dtype:          # if output dtype and desired are different
+                out = dtype.type(out)       # convert to correct dtype
+
         return out
 
-    def gtfreq(self):
+    def gtfreq(self, dtype = None):
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
@@ -454,8 +535,19 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         """
         recip = 1.0 / self.ntaxa        # get reciprocal of number of taxa
         out = recip * self.gtcount()    # calculate genotype frequencies
+        if dtype is not None:           # if dtype is specified
+            dtype = numpy.dtype(dtype)  # ensure conversion to dtype class
+            if out.dtype != dtype:      # if output dtype and desired are different
+                out = dtype.type(out)   # convert to correct dtype
         return out
 
+    ################### Matrix File I/O ####################
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+
+    ################### Matrix File I/O ####################
     @classmethod
     def from_vcf(cls, fname):
         """
