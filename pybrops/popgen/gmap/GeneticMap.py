@@ -1,5 +1,19 @@
+"""
+Module defining basal genetic map interfaces and associated error checking routines.
+"""
+
 class GeneticMap:
-    """docstring for GeneticMap."""
+    """
+    An abstract class for genetic map objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Genetic map representation.
+        2) Genetic map metadata.
+        3) Genetic map routines.
+        4) Genetic map interpolation spline construction.
+        5) Genetic map spline interpolation.
+        6) Import and export of genetic maps.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

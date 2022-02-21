@@ -1,28 +1,57 @@
+"""
+Module implementing a custom, extended genetic map format and associated error
+checking routines.
+"""
+
 import numpy
 import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_ndim
-from pybrops.core.error import cond_check_ndarray_dtype
-from pybrops.core.error import cond_check_is_dict
 from pybrops.core.error import check_is_not_None
-from pybrops.core.error import cond_check_is_str
+from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_size
+from pybrops.core.error import check_ndarray_dtype
+from pybrops.core.error import cond_check_is_dict
+from pybrops.core.error import cond_check_is_ndarray
+from pybrops.core.error import cond_check_is_str
+from pybrops.core.error import cond_check_ndarray_dtype
 from pybrops.core.error import cond_check_ndarray_dtype_is_object
+from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 class ExtendedGeneticMap(GeneticMap):
-    """docstring for ExtendedGeneticMap."""
+    """
+    A concrete class for representing an extended genetic map format.
+
+    The purpose of this concrete class is to implement functionality for:
+        1) Extended genetic map representation.
+        2) Extended genetic map metadata.
+        3) Extended genetic map routines.
+        4) Extended genetic map interpolation spline construction.
+        5) Extended genetic map spline interpolation.
+        6) Import and export of extended genetic maps.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_genpos, vrnt_name = None, vrnt_fncode = None, **kwargs):
+        """
+        Constructor for the concrete class ExtendedGeneticMap.
+
+        Parameters
+        ----------
+        vrnt_chrgrp : numpy.ndarray
+        vrnt_phypos : numpy.ndarray
+        vrnt_stop : numpy.ndarray
+        vrnt_genpos : numpy.ndarray
+        vrnt_name : numpy.ndarray, None
+        vrnt_fncode : numpy.ndarray, None
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(ExtendedGeneticMap, self).__init__(**kwargs)
         self.vrnt_chrgrp = vrnt_chrgrp
         self.vrnt_phypos = vrnt_phypos
@@ -36,6 +65,7 @@ class ExtendedGeneticMap(GeneticMap):
         self.group()
 
     def __len__(self):
+        """Get the number of markers in the genetic map."""
         return len(self._vrnt_genpos)
 
     ############################################################################
@@ -915,12 +945,11 @@ class ExtendedGeneticMap(GeneticMap):
             index = False
         )
 
-
     ############################################################################
-    ############################# Static Methods ###############################
+    ############################## Class Methods ###############################
     ############################################################################
-    @staticmethod
-    def from_pandas_df(pandas_df, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
+    @classmethod
+    def from_pandas_df(cls, pandas_df, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
         """
         Read genetic map data from a Pandas DataFrame.
 
@@ -1016,7 +1045,7 @@ class ExtendedGeneticMap(GeneticMap):
         vrnt_fncode = numpy.object_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
 
         # construct the gmap object
-        genetic_map = ExtendedGeneticMap(
+        genetic_map = cls(
             vrnt_chrgrp = vrnt_chrgrp,
             vrnt_phypos = vrnt_phypos,
             vrnt_stop = vrnt_stop,
@@ -1027,8 +1056,8 @@ class ExtendedGeneticMap(GeneticMap):
 
         return genetic_map
 
-    @staticmethod
-    def from_csv(fpath, sep = ',', header=0, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
+    @classmethod
+    def from_csv(cls, fpath, sep = ',', header=0, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
         """
         Create an ExtendedGeneticMap object from a csv or delimited file.
 
@@ -1068,7 +1097,7 @@ class ExtendedGeneticMap(GeneticMap):
             header=header
         )
 
-        genetic_map = ExtendedGeneticMap.from_pandas_df(
+        genetic_map = cls.from_pandas_df(
             pandas_df = df,
             vrnt_chrgrp_ix = vrnt_chrgrp_ix,
             vrnt_phypos_ix = vrnt_phypos_ix,
@@ -1080,8 +1109,8 @@ class ExtendedGeneticMap(GeneticMap):
 
         return genetic_map
 
-    @staticmethod
-    def from_egmap(fpath):
+    @classmethod
+    def from_egmap(cls, fpath):
         """
         Read an extended genetic map file (\*.egmap).
 
@@ -1156,7 +1185,7 @@ class ExtendedGeneticMap(GeneticMap):
             header = 0      # there is a header
         )
 
-        genetic_map = ExtendedGeneticMap.from_pandas_df(
+        genetic_map = cls.from_pandas_df(
             pandas_df = df,
             vrnt_chrgrp_ix = 0,
             vrnt_phypos_ix = 1,
