@@ -33,9 +33,16 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-        taxa : numpy.ndarray
-        taxa_grp : numpy.ndarray
-        trait : numpy.ndarray
+            A numpy.ndarray used to construct the object.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+        trait : numpy.ndarray, None
+            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
         kwargs : dict
             Additional keyword arguments.
         """

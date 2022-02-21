@@ -18,7 +18,13 @@ from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 
 class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
-    """docstring for DenseTraitMatrix."""
+    """
+    A concrete class for dense matrices with trait metadata.
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix trait metadata.
+        2) Dense matrix trait routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -30,9 +36,10 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Matrix used to construct the object.
-        trait : numpy.ndarray
-            Trait names.
+            A numpy.ndarray used to construct the object.
+        trait : numpy.ndarray, None
+            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
         kwargs : dict
             Additional keyword arguments.
         """

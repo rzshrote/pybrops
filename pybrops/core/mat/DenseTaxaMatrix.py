@@ -45,11 +45,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Matrix used to construct the object.
-        taxa : numpy.ndarray
-            Taxa names.
-        taxa_grp : numpy.ndarray
-            Taxa groupings.
+            A numpy.ndarray used to construct the object.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -282,7 +284,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         Parameters
         ----------
         values : DensePhasedGenotypeMatrix, numpy.ndarray
-            Values are appended to append to the Matrix.
+            Values to be appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
         taxa : numpy.ndarray
@@ -320,6 +322,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
     def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
         """
+        Add additional elements to the end of the TaxaMatrix along the taxa
+        axis. Copy-on-manipulation routine.
+
+        Parameters
+        ----------
+        values : DensePhasedGenotypeMatrix, numpy.ndarray
+            Values to be appended to append to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
@@ -330,6 +339,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseTaxaMatrix
+            A copy of the TaxaMatrix with values appended to the taxa axis
+            Note that adjoin does not occur in-place: a new Matrix is allocated
+            and filled.
         """
         # extract mat values
         if isinstance(values, self.__class__):

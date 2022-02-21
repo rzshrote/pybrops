@@ -14,20 +14,69 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     """
     A concrete class for dense matrices with taxa and variant metadata.
 
-    The purpose of this concrete class is to implement functionality for:
-        1)
-        2)
+    The purpose of this concrete class is to merge the following implementations
+    and interfaces:
+        1) DenseTaxaMatrix (implementation)
+        2) DenseVariantMatrix (implementation)
+        3) TaxaVariantMatrix (interface)
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None,
+    vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None,
+    vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None,
+    vrnt_hapref = None, vrnt_mask = None, **kwargs):
         """
+        Constructor for creating dense matrices with taxa and variant metadata.
+
         Parameters
         ----------
         mat : numpy.ndarray
-            An int8 haplotype matrix. Must be {0,1,2} format.
+            A numpy.ndarray used to construct the object.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+        vrnt_chrgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            group labels. If ``None``, do not store any variant chromosome group
+            label information.
+        vrnt_phypos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            physical positions. If ``None``, do not store any variant chromosome
+            physical position information.
+        vrnt_name : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant names.
+            If ``None``, do not store any variant names.
+        vrnt_genpos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            genetic positions. If ``None``, do not store any variant chromosome
+            genetic position information.
+        vrnt_xoprob : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant crossover
+            probabilities. If ``None``, do not store any variant crossover
+            probabilities.
+        vrnt_hapgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant haplotype
+            group labels. If ``None``, do not store any variant haplotype group
+            label information.
+        vrnt_hapalt : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant alternative
+            alleles. If ``None``, do not store any variant alternative allele
+            information.
+        vrnt_hapref : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant reference
+            alleles. If ``None``, do not store any variant reference allele
+            information.
+        vrnt_mask : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing a variant mask.
+            If ``None``, do not store any variant mask information.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # cannot use super constructor since DenseTaxaMatrix and DenseVariantMatrix
         # constructors have overlapping arguments
