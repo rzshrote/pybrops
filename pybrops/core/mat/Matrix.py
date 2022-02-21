@@ -6,7 +6,7 @@ class Matrix:
     """
     An abstract class for matrix wrapper objects.
 
-    The purpose of this abstract class is to provide base functionality for:
+    The purpose of this abstract class is to define base functionality for:
         1) Matrix mathematical operators
         2) Matrix logical & bitwise operators
         3) Matrix container operators

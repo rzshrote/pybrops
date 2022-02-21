@@ -1,3 +1,7 @@
+"""
+Module containing miscellaneous genetic map subroutines.
+"""
+
 def cM2d(cM):
     """
     Convert centiMorgan units to genetic map distance units (equivalent to
