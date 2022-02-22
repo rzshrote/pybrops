@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding program survivor selection operators.
+"""
+
 class SurvivorSelectionOperator:
-    """docstring for SurvivorSelectionOperator."""
+    """
+    Abstract class defining interfaces for survivor selection within an entire
+    breeding program.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Survivor selection for an entire breeding program.
+    """
 
     def __init__(self, **kwargs):
         """
