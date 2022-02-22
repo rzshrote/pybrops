@@ -1,5 +1,10 @@
-from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
+"""
+Module defining basal matrix interfaces and associated error checking routines
+for breeding value matrices.
+"""
+
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
 class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     """
@@ -24,7 +29,6 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
     .. math::
         X = \\sigma BV + \\mu
-
     """
 
     ############################################################################
@@ -32,7 +36,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################################################################
     def __init__(self, **kwargs):
         """
-        BreedingValueMatrix constructor
+        Constructor for the abstract class BreedingValueMatrix.
 
         Parameters
         ----------
@@ -260,15 +264,49 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 ################################## Utilities ###################################
 ################################################################################
 def is_BreedingValueMatrix(v):
-    """Return whether an object is a BreedingValueMatrix or not"""
+    """
+    Determine whether an object is a BreedingValueMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a BreedingValueMatrix object instance.
+    """
     return isinstance(v, BreedingValueMatrix)
 
 def check_is_BreedingValueMatrix(v, vname):
-    """Raise TypeError if object is not a BreedingValueMatrix"""
+    """
+    Check if object is of type BreedingValueMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, BreedingValueMatrix):
         raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
 
 def cond_check_is_BreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a BreedingValueMatrix"""
+    """
+    Conditionally check if object is of type BreedingValueMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        BreedingValueMatrix.
+    """
     if cond(v):
         check_is_BreedingValueMatrix(v, vname)
