@@ -1,7 +1,18 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+storing additive genic variance estimates.
+"""
+
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 
 class AdditiveGenicVarianceMatrix(GenicVarianceMatrix):
-    """docstring for AdditiveGenicVarianceMatrix."""
+    """
+    An abstract class for additive genetic variance matrices.
+
+    The purpose of this abstract interface is to provide functionality for:
+        1) Estimation of additive genic variance from an additive linear
+           genomic model.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

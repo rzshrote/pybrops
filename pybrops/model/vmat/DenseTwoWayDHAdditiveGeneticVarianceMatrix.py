@@ -1,3 +1,9 @@
+"""
+Module implementing classes and associated error checking routines for matrices
+storing dense additive genetic variance estimates calculated using two-way DH
+formulae.
+"""
+
 import numpy
 
 from pybrops.core.util.subroutines import srange
@@ -6,7 +12,13 @@ from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveG
 
 # TODO: implement me
 class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
-    """docstring for DenseTwoWayDHAdditiveGeneticVarianceMatrix."""
+    """
+    A concrete class for dense additive genetic variance matrices calculated
+    for two-way DH progenies.
+
+    The purpose of this concrete class is to implement functionality for:
+        1) Genetic variance estimation for two-way DH progenies.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

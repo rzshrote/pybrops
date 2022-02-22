@@ -1,4 +1,10 @@
+"""
+Module containing utility functions for variance estimations.
+"""
+
 import numpy
+
+__all__ = ["rprob_filial", "cov_D1s", "cov_D2s", "cov_D1st", "cov_D2st"]
 
 def rprob_filial(r, k):
     """
