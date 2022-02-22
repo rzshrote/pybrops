@@ -1,21 +1,28 @@
+"""
+Module implementing phenotyping protocols for simulating phenotyping with no GxE
+interaction.
+"""
+
 import numpy
 import numbers
 import pandas
 
 import pybrops.core.random
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
-
 from pybrops.core.error import check_is_positive
-from pybrops.core.error import check_ndarray_is_1d
-from pybrops.core.error import check_ndarray_size
 from pybrops.core.error import check_is_Integral
+from pybrops.core.error import check_ndarray_is_1d
 from pybrops.core.error import check_ndarray_is_positive
 from pybrops.core.error import check_ndarray_dtype_is_integer
+from pybrops.core.error import check_ndarray_size
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 
 class G_E_Phenotyping(PhenotypingProtocol):
-    """docstring for G_E_Phenotyping."""
+    """
+    Class implementing phenotyping protocols for simulating phenotyping with no
+    GxE interaction.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -55,7 +62,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         var_err : numeric, numpy.ndarray
             Error variance parameter.
 
-            If numeric, then broadcast ``var_err`` to an array of shape 
+            If numeric, then broadcast ``var_err`` to an array of shape
             ``(ntrait,)``.
 
             If ``numpy.ndarray``, then must be of shape ``(ntrait,)``.

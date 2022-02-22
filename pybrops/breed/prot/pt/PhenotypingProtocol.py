@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated protocols for phenotyping protocols.
+"""
+
 class PhenotypingProtocol:
-    """docstring for PhenotypingProtocol."""
+    """
+    Abstract class defining interfaces for phenotyping protocols.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Genomic model metadata.
+        2) Phenotype simulation.
+        3) Manipulation and setting of environmental variance metadata.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
