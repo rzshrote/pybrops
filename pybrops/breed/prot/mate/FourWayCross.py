@@ -1,14 +1,21 @@
+"""
+Module implementing mating protocols for four-way crosses.
+"""
+
 import numpy
+
 import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.util import mat_dh
+from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import cond_check_is_Generator
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class FourWayCross(MatingProtocol):
-    """docstring for FourWayCross."""
+    """
+    Class implementing mating protocols for four-way crosses.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

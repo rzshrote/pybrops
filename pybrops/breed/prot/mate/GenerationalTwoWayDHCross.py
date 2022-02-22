@@ -1,10 +1,18 @@
+"""
+Module implementing mating protocols for two-way DH crosses and storing family
+information.
+"""
+
 import numpy
 
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.core.error import check_is_int
 
 class GenerationalTwoWayDHCross(TwoWayDHCross):
-    """docstring for GenerationalTwoWayDHCross."""
+    """
+    Class implementing mating protocols for two-way DH crosses while storing
+    family information in the resulting genotype matrix.
+    """
 
     def __init__(self, gmult, rng = None, **kwargs):
         """
