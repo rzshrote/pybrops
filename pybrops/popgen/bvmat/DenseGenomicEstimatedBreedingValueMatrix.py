@@ -7,7 +7,30 @@ from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatr
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
 class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
-    """docstring for DenseGenomicEstimatedBreedingValueMatrix."""
+    """
+    The DenseGenomicEstimatedBreedingValueMatrix class uses a dense matrix to
+    represent a Multivariate Breeding Value.
+
+    Notes
+    -----
+    All elements within a BreedingValueMatrix are mean-centered and scaled to
+    unit variance for each trait.
+
+    .. math::
+        BV = \\frac{X - \\mu}{\\sigma}
+
+    Where:
+
+    - :math:`BV` is the breeding value.
+    - :math:`X` is the phenotype value.
+    - :math:`\\mu` is the mean (location) for :math:`X`.
+    - :math:`\\sigma` is the standard deviation (scale) for :math:`X`.
+
+    Phenotype values can be reconstituted using:
+
+    .. math::
+        X = \\sigma BV + \\mu
+    """
 
     def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs):
         """
