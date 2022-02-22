@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and error checking routines for genomic models that
+are linear in nature.
+"""
+
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class LinearGenomicModel(GenomicModel):

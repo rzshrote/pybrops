@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and error checking routines for genomic prediction
+models that incorporate genomic additive, dominance, and epistatic effects.
+"""
+
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 
 class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel):
@@ -32,17 +37,17 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     - :math:`\\mathbf{Z_{misc}}` is a matrix of miscellaneous random effect predictors of shape ``(n,p_misc)``
     - :math:`\\mathbf{Z_{a}}` is a matrix of additive genomic marker predictors of shape ``(n,p_a)``
     - :math:`\\mathbf{Z_{d}}` is a matrix of dominance genomic marker predictors of shape ``(n,p_d)``
-    - :math:`\\mathbf{Z_{e}}` is a matrix of epistatic genomic marker predictors of shape ``(n,p_e)``
+    - :math:`\\mathbf{Z_{i}}` is a matrix of epistatic genomic marker predictors of shape ``(n,p_i)``
 
     .. math::
-        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\\\ \\mathbf{U_{d}} \\\\ \\mathbf{U_{e}} \\end{bmatrix}
+        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\\\ \\mathbf{U_{d}} \\\\ \\mathbf{U_{i}} \\end{bmatrix}
 
     Where:
 
     - :math:`\\mathbf{U_{misc}}` is a matrix of miscellaneous random effects of shape ``(p_misc,t)``
     - :math:`\\mathbf{U_{a}}` is a matrix of additive genomic marker effects of shape ``(p_a,t)``
     - :math:`\\mathbf{U_{d}}` is a matrix of dominance genomic marker effects of shape ``(p_d,t)``
-    - :math:`\\mathbf{U_{e}}` is a matrix of epistatic genomic marker effects of shape ``(p_e,t)``
+    - :math:`\\mathbf{U_{i}}` is a matrix of epistatic genomic marker effects of shape ``(p_i,t)``
 
     Shape definitions:
 
@@ -52,8 +57,8 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     - ``p_misc`` is the number of miscellaneous random effect predictors.
     - ``p_a`` is the number of additive genomic marker predictors.
     - ``p_d`` is the number of dominance genomic marker predictors.
-    - ``p_e`` is the number of epistatic genomic marker predictors.
-    - The sum of ``p_misc``, ``p_a``, ``p_d``, and ``p_e`` equals ``p``.
+    - ``p_i`` is the number of epistatic genomic marker predictors.
+    - The sum of ``p_misc``, ``p_a``, ``p_d``, and ``p_i`` equals ``p``.
     - ``t`` is the number of traits
     """
 
@@ -75,16 +80,19 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     ############################ Object Properties #############################
     ############################################################################
 
-    def u_d():
-        doc = "Dominance genomic marker effects."
+    def u_i():
+        doc = "Epistatic genomic marker effects."
         def fget(self):
+            """Get epistatic genomic marker effects"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set epistatic genomic marker effects"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete epistatic genomic marker effects"""
             raise NotImplementedError("method is abstract")
         return locals()
-    u_d = property(**u_d())
+    u_i = property(**u_i())
 
 
 

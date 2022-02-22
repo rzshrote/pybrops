@@ -1,7 +1,18 @@
+"""
+Module defining interfaces and error checking routines for genomic models that
+are non-linear in nature.
+"""
+
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class NonlinearGenomicModel(GenomicModel):
-    """docstring for NonlinearGenomicModel."""
+    """
+    An abstract class for non-linear genomic models.
+
+    The purpose for this abstract interface is to provide an interface through
+    which non-linear models (e.g. neural networks) may be incorporated into
+    PyBrOpS.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

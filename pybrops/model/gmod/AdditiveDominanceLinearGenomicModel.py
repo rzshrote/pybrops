@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and error checking routines for genomic prediction
+models that incorporate genomic additive and dominance effects.
+"""
+
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
 class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
@@ -75,10 +80,13 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     def u_d():
         doc = "Dominance genomic marker effects."
         def fget(self):
+            """Get dominance genomic marker effects"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set dominance genomic marker effects"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete dominance genomic marker effects"""
             raise NotImplementedError("method is abstract")
         return locals()
     u_d = property(**u_d())
