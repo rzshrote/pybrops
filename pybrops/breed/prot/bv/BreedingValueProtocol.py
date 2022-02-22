@@ -1,5 +1,15 @@
+"""
+Module defining interfaces and associated error checking methods for breeding
+value calculation protocols.
+"""
+
 class BreedingValueProtocol:
-    """docstring for BreedingValueProtocol."""
+    """
+    Abstract class defining interfaces for breeding value calculation protocols.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Estimation of breeding values from phenotype values.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
