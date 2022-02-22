@@ -1,19 +1,36 @@
+"""
+Module implementing mating protocols for three-way crosses.
+"""
+
 import numpy
+
 import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.util import mat_dh
+from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import cond_check_is_Generator
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 class ThreeWayCross(MatingProtocol):
-    """docstring for ThreeWayCross."""
+    """
+    Class implementing mating protocols for three-way crosses.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, rng = None, **kwargs):
+        """
+        Constructor for the concrete class ThreeWayCross.
+
+        Parameters
+        ----------
+        rng : numpy.Generator
+            Random number source.
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(ThreeWayCross, self).__init__(**kwargs)
 
         # check data types
