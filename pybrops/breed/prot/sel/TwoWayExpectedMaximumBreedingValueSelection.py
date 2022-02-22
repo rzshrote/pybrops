@@ -1,15 +1,29 @@
+"""
+UNDER CONSTRUCTION!
+Module implementing selection protocols for two-way expected maximum breeding
+value selection.
+"""
+
 import numpy
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 import pybrops.core.random
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import cond_check_is_Generator
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 
 class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
-    """docstring for TwoWayExpectedMaximumBreedingValueSelection."""
+    """
+    UNDER CONSTRUCTION!
+    Class implementing selection protocols for two-way expected maximum breeding
+    value selection.
 
+    # TODO: add formulae for methodology.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs):
         """
         k_p : int

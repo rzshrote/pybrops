@@ -1,3 +1,7 @@
+"""
+Module implementing selection protocols for optimal haploid value selection.
+"""
+
 import types
 import numpy
 
@@ -19,7 +23,11 @@ from pybrops.core.util.haplo import calc_haplobin_bounds
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 
 class OptimalHaploidValueSelection(SelectionProtocol):
-    """docstring for OptimalHaploidValueSelection."""
+    """
+    Class implementing selection protocols for optimal haploid value selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

@@ -1,18 +1,25 @@
+"""
+Module implementing selection protocols for optimal contribution selection.
+"""
+
 import cvxpy
 import math
 import numpy
 import warnings
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 import pybrops.core.random
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import cond_check_is_ndarray
 from pybrops.core.error import cond_check_is_Generator
 
 class OptimalContributionSelection(SelectionProtocol):
-    """docstring for OptimalContributionSelection."""
+    """
+    Class implementing selection protocols for optimal contribution selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

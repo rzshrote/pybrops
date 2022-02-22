@@ -1,23 +1,30 @@
+"""
+Module implementing selection protocols for optimal population value selection.
+"""
+
 import numpy
 import types
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 import pybrops.core.random
-from pybrops.core.error import check_is_int
+from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_Generator
+from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
+from pybrops.core.error import check_is_Generator
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class OptimalPopulationValueSelection(SelectionProtocol):
-    """docstring for OptimalPopulationValueSelection."""
+    """
+    Class implementing selection protocols for optimal population value selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

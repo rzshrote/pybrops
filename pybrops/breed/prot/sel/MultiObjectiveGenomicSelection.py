@@ -1,3 +1,7 @@
+"""
+Module implementing selection protocols for multi-objective genomic selection.
+"""
+
 import numpy
 import math
 import types
@@ -17,7 +21,11 @@ from pybrops.core.error import check_is_Generator
 from pybrops.core.util.pareto import is_pareto_efficient
 
 class MultiObjectiveGenomicSelection(SelectionProtocol):
-    """docstring for MultiObjectiveGenomicSelection."""
+    """
+    Class implementing selection protocols for multi-objective genomic selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

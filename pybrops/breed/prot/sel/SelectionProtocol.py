@@ -1,5 +1,17 @@
+"""
+Module defining interfaces and error checking routines for selection protocols.
+"""
+
 class SelectionProtocol:
-    """docstring for SelectionProtocol."""
+    """
+    Abstract class defining interfaces for selection protocols.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Selection (both single- and multi-objective) of genotypes.
+        2) Construction of fast objective functions.
+        3) Mapping of the Pareto frontier for the selection protocol.
+        4) Access to static objective functions for the selection protocol.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

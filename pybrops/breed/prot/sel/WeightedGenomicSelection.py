@@ -1,19 +1,26 @@
+"""
+Module implementing selection protocols for weighted genomic selection.
+"""
+
 import numpy
 import types
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 import pybrops.core.random
+from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.core.error import cond_check_is_ndarray
+from pybrops.core.error import cond_check_is_Generator
 
 class WeightedGenomicSelection(SelectionProtocol):
-    """docstring for WeightedGenomicSelection."""
+    """
+    Class implementing selection protocols for weighted genomic selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
