@@ -1,10 +1,17 @@
-from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
+"""
+Module implementing unphased genotyping for dense genotype matrices.
+"""
 
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class DenseUnphasedGenotyping(GenotypingProtocol):
-    """docstring for DenseUnphasedGenotyping."""
+    """
+    Class implementing unphased genotyping for dense genotype matrices. This
+    converts a DensePhasedGenotypeMatrix to a DenseGenotypeMatrix containing
+    genotype values.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
