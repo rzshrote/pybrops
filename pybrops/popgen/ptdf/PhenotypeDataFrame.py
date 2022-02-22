@@ -1,7 +1,16 @@
+"""
+Module defining phenotype dataframe interfaces and associated error checking routines.
+"""
+
 from pybrops.core.df.DataFrame import DataFrame
 
 class PhenotypeDataFrame(DataFrame):
-    """Abstract class for phenotype dataframe objects."""
+    """
+    An abstract class for phenotype data frame objects.
+
+    The purpose of this abstract class is to provide base functionality for:
+        1) Data frame column analysis and effect types
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
