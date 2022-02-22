@@ -1,7 +1,17 @@
+"""
+Module defining interfaces and associated error checking routines for
+germplasm bank representation.
+"""
+
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class GermplasmBank(BreedingNode):
-    """docstring for GermplasmBank."""
+    """
+    Abstract class defining a germplasm bank.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Container storage for the germplasm bank.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

@@ -1,5 +1,19 @@
+"""
+Module defining interfaces and associated error checking routines for breeding
+graphs. Breeding program graphs represent breeding programs with multiple sub-
+populations. Germplasm and information is passed between breeding nodes through
+breeding edges.
+"""
+
 class BreedingGraph:
-    """docstring for BreedingGraph."""
+    """
+    Abstract class defining interfaces for breeding graphs. Breeding graphs
+    represent breeding programs with multiple subpopulations. Germplasm and
+    information is passed between breeding nodes through breeding edges.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Graph representation of the entire breeding graph.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

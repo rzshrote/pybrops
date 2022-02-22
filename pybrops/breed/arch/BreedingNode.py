@@ -1,5 +1,19 @@
+"""
+Module defining basal interfaces and associated error checking routines for
+breeding nodes. Breeding nodes compose complex breeding programs in a graph-like
+structure. They are points were germplasm and information are located.
+"""
+
 class BreedingNode:
-    """docstring for BreedingNode."""
+    """
+    Abstract class defining a breeding node. Breeding nodes compose complex
+    breeding programs in a graph-like structure. They are points were germplasm
+    and information are located.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Container storage for germplasm and information.
+        2) Time related information.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

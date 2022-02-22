@@ -1,7 +1,17 @@
+"""
+Module defining interfaces and associated error checking routines for
+emigration operators.
+"""
+
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 
 class EmigrationOperator(BreedingEdge):
-    """docstring for EmigrationOperator."""
+    """
+    Abstract class defining immigration operators.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Protocols for emigration between different breeding nodes.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

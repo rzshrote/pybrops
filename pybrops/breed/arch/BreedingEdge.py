@@ -1,5 +1,14 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding edges. Breeding edges define how information and germplasm flows
+between breeding nodes.
+"""
+
 class BreedingEdge:
-    """docstring for BreedingEdge."""
+    """
+    Abstract class defining interfaces for breeding edges. Breeding edges define
+    how information and germplasm flows between breeding nodes.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

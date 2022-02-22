@@ -1,19 +1,25 @@
+"""
+Module implementing recurrent selection.
+"""
+
 import copy
 import numpy
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
-
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_keys_in_dict
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
-from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
-from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
 from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
+from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
+from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_int
+from pybrops.core.error import check_keys_in_dict
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
-    """docstring for RecurrentSelectionBreedingProgram."""
+    """
+    Class implementing recurrent selection. This class is very generic and
+    highly modular to facilitate rapid prototyping.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -26,7 +32,12 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
         Parameters
         ----------
-        initop :
+        initop : InitializationOperator
+        pselop : ParentSelectionOperator
+        mateop : MatingOperator
+        evalop : EvaluationOperator
+        sselop : SurvivorSelectionOperator
+        t_max : int
         """
         super(RecurrentSelectionBreedingProgram, self).__init__(**kwargs)
 
