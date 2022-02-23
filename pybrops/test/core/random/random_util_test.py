@@ -3,54 +3,7 @@ import pytest
 import numpy
 from numpy.random import Generator
 
-from pybrops.core.random import (
-    default_BitGenerator,
-    seed_nbytes,
-    beta,
-    binomial,
-    bytes,
-    chisquare,
-    choice,
-    dirichlet,
-    exponential,
-    f,
-    gamma,
-    geometric,
-    gumbel,
-    hypergeometric,
-    integers,
-    laplace,
-    logistic,
-    lognormal,
-    logseries,
-    multinomial,
-    multivariate_hypergeometric,
-    multivariate_normal,
-    negative_binomial,
-    noncentral_chisquare,
-    noncentral_f,
-    normal,
-    pareto,
-    permutation,
-    poisson,
-    power,
-    random,
-    rayleigh,
-    seed,
-    shuffle,
-    spawn,
-    standard_cauchy,
-    standard_exponential,
-    standard_gamma,
-    standard_normal,
-    standard_t,
-    triangular,
-    uniform,
-    vonmises,
-    wald,
-    weibull,
-    zipf,
-)
+from pybrops.core.random import *
 
 ################################################################################
 ############################# Assert import usage ##############################
@@ -70,9 +23,6 @@ def test_pybrops_core_random_import():
 ################################################################################
 ##################### Test that all functions are callable #####################
 ################################################################################
-
-def test_default_BitGenerator_callable():
-    assert callable(default_BitGenerator)
 
 def test_beta_callable():
     assert callable(beta)
@@ -110,9 +60,6 @@ def test_gumbel_callable():
 def test_hypergeometric_callable():
     assert callable(hypergeometric)
 
-def test_integers_callable():
-    assert callable(integers)
-
 def test_laplace_callable():
     assert callable(laplace)
 
@@ -127,9 +74,6 @@ def test_logseries_callable():
 
 def test_multinomial_callable():
     assert callable(multinomial)
-
-def test_multivariate_hypergeometric_callable():
-    assert callable(multivariate_hypergeometric)
 
 def test_multivariate_normal_callable():
     assert callable(multivariate_normal)
