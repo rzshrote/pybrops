@@ -1,14 +1,27 @@
-from pybrops.core.df.DataFrame import DataFrame
+"""
+Module implementing a Pandas DataFrame and associated error checking routines.
+"""
 
+from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.error import check_is_pandas_df
 
 class PandasDataFrame(DataFrame):
-    """docstring for PandasDataFrame."""
+    """
+    A concrete class for data frame objects utilizing Pandas DataFrames as a
+    storage container.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs):
+        """
+        Constructor for the concrete class PandasDataFrame.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+        """
         super(PandasDataFrame, self).__init__(**kwargs)
         self.df = df
         if col_name is not None:

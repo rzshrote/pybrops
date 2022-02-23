@@ -1,3 +1,7 @@
+"""
+Module containing matrix utilities.
+"""
+
 def get_axis(axis, ndim):
     """
     Return an index (unsigned) from a provided axis integer (signed)

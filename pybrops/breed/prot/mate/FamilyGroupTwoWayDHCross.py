@@ -1,11 +1,22 @@
+"""
+Module implementing mating protocols for two-way DH crosses and storing family
+information.
+"""
+
 import numpy
 
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.core.error import check_is_int
 
 class FamilyGroupTwoWayDHCross(TwoWayDHCross):
-    """docstring for FamilyGroupTwoWayDHCross."""
+    """
+    Class implementing mating protocols for two-way DH crosses while storing
+    family information in the resulting genotype matrix.
+    """
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, counter = 0, rng = None, **kwargs):
         """
         Parameters
@@ -21,6 +32,9 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
         # make assignments
         self.counter = counter
 
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
     def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
         """
         Mate individuals according to a 2-way mate selection scheme.

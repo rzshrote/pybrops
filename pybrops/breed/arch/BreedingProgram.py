@@ -1,7 +1,20 @@
+"""
+Module defining interfaces and associated error checking routines for
+germplasm bank representation.
+"""
+
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class BreedingProgram(BreedingNode):
-    """docstring for BreedingProgram."""
+    """
+    Abstract class defining a breeding program.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Container storage for the breeding program.
+        2) Contain breeding operators used in the breeding program.
+        3) Initialization routines for the breeding program.
+        4) Advancement of simulations for the breeding program.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

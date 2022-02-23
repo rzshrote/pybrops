@@ -1,8 +1,11 @@
-# TODO: figure out how rpy2 works and write a good, fast converter
+"""
+Module providing utility functions for conversion of Python objects to
+R objects.
+"""
 
+# TODO: figure out how rpy2 works and write a good, fast converter
 # from rpy2 import robjects
 # from rpy2.robjects.robject import RObjectMixin
-
 # from rpy2.robjects.vectors import Array
 # from rpy2.robjects.vectors import ByteArray
 # from rpy2.robjects.vectors import ByteMatrix

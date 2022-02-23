@@ -1,10 +1,12 @@
+"""
+Module implementing selection protocols for random selection.
+"""
+
 import numpy
 import types
 
 import pybrops.core.random
-
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-
 from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_int
 from pybrops.core.error import cond_check_is_Generator
@@ -12,7 +14,11 @@ from pybrops.core.error import cond_check_is_dict
 from pybrops.core.error import cond_check_is_callable
 
 class RandomSelection(SelectionProtocol):
-    """Perform random parent selection"""
+    """
+    Class implementing selection protocols for random selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

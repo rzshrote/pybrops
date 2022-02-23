@@ -1,3 +1,8 @@
+"""
+Module defining basal matrix interfaces and associated error checking routines
+for phased genotype matrices.
+"""
+
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -8,7 +13,13 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 # I think a situation is caused where TaxaVariantMatrix is needed to be imported
 # before itself due to its ranking in the MRO algorithm for multiple inheritance
 class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
-    """docstring for PhasedGenotypeMatrix."""
+    """
+    An abstract class for phased genoypte matrix objects.
+
+    The purpose of this abstract class is to merge the following interfaces:
+        1) GenotypeMatrix
+        2) PhasedTaxaVariantMatrix
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -16,6 +27,12 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class PhasedGenotypeMatrix.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(PhasedGenotypeMatrix, self).__init__(**kwargs)
 

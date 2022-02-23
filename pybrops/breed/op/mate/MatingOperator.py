@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding program mating operators.
+"""
+
 class MatingOperator:
-    """docstring for MatingOperator."""
+    """
+    Abstract class defining interfaces for the mating of an entire breeding
+    program.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Mating of an entire breeding program.
+    """
 
     def __init__(self, **kwargs):
         """

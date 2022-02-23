@@ -1,10 +1,13 @@
+"""
+Module implementing a dense matrix with variant metadata and associated error
+checking routines.
+"""
+
 import copy
 import numpy
 
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.VariantMatrix import VariantMatrix
-
 from pybrops.core.error import check_is_int
+from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
@@ -18,26 +21,66 @@ from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import check_is_iterable
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.VariantMatrix import VariantMatrix
 
 class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
-    """docstring for DenseVariantMatrix."""
+    """
+    A concrete class for dense matrices with variant metadata.
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix variant metadata.
+        2) Dense matrix variant routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
+    vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
+    vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
+    vrnt_mask = None, **kwargs):
         """
         Parameters
         ----------
         mat : numpy.ndarray
-            An int8 haplotype matrix. Must be {0,1,2} format.
-        ploidy : int
-            The ploidy represented by the haplotype matrix. This only represents
-            ploidy of the reproductive habit. If the organism represented is an
-            allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
-            reproduces in a diploid manner.
-        # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
+            A numpy.ndarray used to construct the object.
+        vrnt_chrgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            group labels. If ``None``, do not store any variant chromosome group
+            label information.
+        vrnt_phypos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            physical positions. If ``None``, do not store any variant chromosome
+            physical position information.
+        vrnt_name : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant names.
+            If ``None``, do not store any variant names.
+        vrnt_genpos : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant chromosome
+            genetic positions. If ``None``, do not store any variant chromosome
+            genetic position information.
+        vrnt_xoprob : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant crossover
+            probabilities. If ``None``, do not store any variant crossover
+            probabilities.
+        vrnt_hapgrp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant haplotype
+            group labels. If ``None``, do not store any variant haplotype group
+            label information.
+        vrnt_hapalt : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant alternative
+            alleles. If ``None``, do not store any variant alternative allele
+            information.
+        vrnt_hapref : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing variant reference
+            alleles. If ``None``, do not store any variant reference allele
+            information.
+        vrnt_mask : numpy.ndarray, None
+            A numpy.ndarray of shape ``(p,)`` containing a variant mask.
+            If ``None``, do not store any variant mask information.
+        kwargs : dict
+            Additional keyword arguments.
         """
         super(DenseVariantMatrix, self).__init__(
             mat = mat,
@@ -53,7 +96,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self.vrnt_hapalt = vrnt_hapalt
         self.vrnt_hapref = vrnt_hapref
         self.vrnt_mask = vrnt_mask
-
+        # set variant metadata to None
         self.vrnt_chrgrp_name = None
         self.vrnt_chrgrp_stix = None
         self.vrnt_chrgrp_spix = None

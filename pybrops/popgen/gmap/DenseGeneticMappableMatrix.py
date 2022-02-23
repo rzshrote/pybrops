@@ -1,14 +1,54 @@
-from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
-from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
+"""
+Module implementing dense matrices that can have their variants placed on a
+genetic map and associated error checking routines.
+"""
 
+from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
-    """docstring for DenseGeneticMappableMatrix."""
+    """
+    Concrete class for dense variant matrices that can be interpolated using a
+    GeneticMap.
+    """
 
-    def __init__(self, **kwargs):
-        super(DenseGeneticMappableMatrix, self).__init__()
+    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
+    vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
+    vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
+    vrnt_mask = None, **kwargs):
+        """
+        Constructor for the concrete class DenseGeneticMappableMatrix
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+        vrnt_chrgrp : numpy.ndarray, None
+        vrnt_phypos : numpy.ndarray, None
+        vrnt_name : numpy.ndarray, None
+        vrnt_genpos : numpy.ndarray, None
+        vrnt_xoprob : numpy.ndarray, None
+        vrnt_hapgrp : numpy.ndarray, None
+        vrnt_hapalt : numpy.ndarray, None
+        vrnt_hapref : numpy.ndarray, None
+        vrnt_mask : numpy.ndarray, None
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        super(DenseGeneticMappableMatrix, self).__init__(
+            mat = mat,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_hapalt = vrnt_hapalt,
+            vrnt_hapref = vrnt_hapref,
+            vrnt_mask = vrnt_mask
+            **kwargs
+        )
 
     ################# Interpolation Methods ################
     def interp_genpos(self, gmap, **kwargs):

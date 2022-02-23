@@ -1,3 +1,7 @@
+"""
+Module implementing selection protocols for multi-objective genomic mating.
+"""
+
 import numpy
 import math
 import types
@@ -7,21 +11,25 @@ from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
+from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator
 from pybrops.core.error import check_is_type
-from pybrops.core.error import check_inherits
+from pybrops.core.error import check_is_Generator
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class MultiObjectiveGenomicMating(SelectionProtocol):
-    """docstring for MultiObjectiveGenomicMating."""
+    """
+    Class implementing selection protocols for multi-objective genomic mating.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

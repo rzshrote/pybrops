@@ -1,8 +1,8 @@
 """
 Module containing general utility functions.
 """
-# order dependent imports
 
+# order dependent imports
 from . import subroutines
 from . import arrayix
 from . import pareto

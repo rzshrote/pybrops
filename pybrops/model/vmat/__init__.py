@@ -22,5 +22,5 @@ from . import GenicVarianceMatrix
 from . import AdditiveGenicVarianceMatrix
 from . import DenseGenicVarianceMatrix
 from . import DenseAdditiveGenicVarianceMatrix
-from . import DenseTwoWayAdditiveGenicVarianceMatrix
+# from . import DenseTwoWayAdditiveGenicVarianceMatrix
 from . import DenseTwoWayDHAdditiveGenicVarianceMatrix

@@ -1,11 +1,18 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+that can be pruned along an axis.
+"""
+
 from pybrops.core.mat.Matrix import Matrix
 
+# TODO: is this class even necessary?
 class PrunableMatrix(Matrix):
     """
     An abstract class for prunable matrix wrapper objects.
 
     The purpose of this abstract class is to provide base functionality for:
         1) Matrix column and row pruning
+        2) Provide backwards compatibility for previous software iterations.
 
     The shape of a PrunableMatrix should be immutable.
     """

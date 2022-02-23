@@ -1,19 +1,30 @@
+"""
+Module implementing a dense phased matrix and associated error checking routines.
+"""
+
 import copy
 import numpy
 
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.PhasedMatrix import PhasedMatrix
-
+from pybrops.core.error import check_is_array_like
+from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_3d
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_array_like
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
 class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
-    """docstring for DensePhasedMatrix."""
+    """
+    A concrete class implementing dense phased matrices.
+    A phased matrix is defined as a matrix with a third dimension.
+
+    Dense phased matrices utilize numpy.ndarray's for data storage.
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix phase manipulation routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

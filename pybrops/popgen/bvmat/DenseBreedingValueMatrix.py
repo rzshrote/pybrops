@@ -1,19 +1,47 @@
+"""
+Module implementing matrix routines and associated error checking routines
+for dense breeding value matrices.
+"""
+
 import copy
 import numpy
 import h5py
 
-from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.util.h5py import save_dict_to_hdf5
-from pybrops.core.error import check_ndarray_std_is_approx
-from pybrops.core.error import check_ndarray_mean_is_approx
-from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_is_array_like
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_ndarray_mean_is_approx
+from pybrops.core.error import check_ndarray_ndim
+from pybrops.core.error import check_ndarray_std_is_approx
+from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
+from pybrops.core.util.h5py import save_dict_to_hdf5
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
-    """Dense breeding value matrix implementation."""
+    """
+    The DenseBreedingValueMatrix class uses a dense matrix to represent a
+    Multivariate Breeding Value.
+
+    Notes
+    -----
+    All elements within a BreedingValueMatrix are mean-centered and scaled to
+    unit variance for each trait.
+
+    .. math::
+        BV = \\frac{X - \\mu}{\\sigma}
+
+    Where:
+
+    - :math:`BV` is the breeding value.
+    - :math:`X` is the phenotype value.
+    - :math:`\\mu` is the mean (location) for :math:`X`.
+    - :math:`\\sigma` is the standard deviation (scale) for :math:`X`.
+
+    Phenotype values can be reconstituted using:
+
+    .. math::
+        X = \\sigma BV + \\mu
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -25,17 +53,20 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            A float64 matrix of breeding values of shape (n,t).
+            A float64 matrix of breeding values of shape ``(n,t)``.
         location : numpy.ndarray
-            An array of breeding value locations of shape (t,).
+            A numpy.ndarray of shape ``(t,)`` containing breeding value locations.
         scale : numpy.ndarray
-            An array of breeding value scales of shape (t,).
-        taxa : numpy.ndarray
-            An array of taxa names.
-        taxa_grp : numpy.ndarray
-            An array of taxa groups.
-        trait : numpy.ndarray
-            An array of trait names.
+            A numpy.ndarray of shape ``(t,)`` containing breeding value scales.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+        trait : numpy.ndarray, None
+            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
         kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
@@ -573,15 +604,49 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseBreedingValueMatrix(v):
-    """Return whether an object is a DenseBreedingValueMatrix or not"""
+    """
+    Determine whether an object is a DenseBreedingValueMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseBreedingValueMatrix object instance.
+    """
     return isinstance(v, DenseBreedingValueMatrix)
 
-def check_is_DenseBreedingValueMatrix(v, varname):
-    """Raise TypeError if object is not a DenseBreedingValueMatrix"""
-    if not isinstance(v, DenseBreedingValueMatrix):
-        raise TypeError("'%s' must be a DenseBreedingValueMatrix." % varname)
+def check_is_DenseBreedingValueMatrix(v, vname):
+    """
+    Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.
 
-def cond_check_is_DenseBreedingValueMatrix(v, varname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a DenseBreedingValueMatrix"""
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, DenseBreedingValueMatrix):
+        raise TypeError("variable '{0}' must be a DenseBreedingValueMatrix".format(vname))
+
+def cond_check_is_DenseBreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DenseBreedingValueMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DenseBreedingValueMatrix.
+    """
     if cond(v):
-        check_is_DenseBreedingValueMatrix(v, varname)
+        check_is_DenseBreedingValueMatrix(v, vname)

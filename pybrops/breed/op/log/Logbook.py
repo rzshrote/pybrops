@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding program logbook operators.
+"""
+
 class Logbook:
-    """docstring for Logbook."""
+    """
+    Abstract class defining interfaces for logging statistics about an entire
+    breeding program.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Logging data on an entire breeding program.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

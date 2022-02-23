@@ -1,10 +1,22 @@
+"""
+Module implementing a stochastic ascent hill climber algorithm adapted for
+subset selection optimization.
+"""
+
 import numpy
 
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 
 class StochasticAscentSetHillClimber(OptimizationAlgorithm):
-    """docstring for StochasticAscentSetHillClimber."""
+    """
+    Class implementing a stochastic ascent hill climber algorithm adapted for
+    subset selection optimization. The search space is discrete and nominal in
+    nature.
+    """
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, k, setspace, rng, objwt = 1.0, **kwargs):
         """
         Constructor for a stochastic ascent set hill-climber.
@@ -30,6 +42,9 @@ class StochasticAscentSetHillClimber(OptimizationAlgorithm):
         self.rng = rng
         self.objwt = objwt
 
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
     def optimize(self, objfn, k = None, setspace = None, objwt = None, **kwargs):
         """
         Optimize an objective function.
@@ -95,6 +110,3 @@ class StochasticAscentSetHillClimber(OptimizationAlgorithm):
         }
 
         return out
-
-    def optimize_vec(fn):
-        raise NotImplementedError("method is abstract")

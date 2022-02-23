@@ -1,3 +1,6 @@
+"""
+Module containing general error checking routines.
+"""
 # order dependent import
 
 # generic

@@ -14,7 +14,6 @@ from . import MatingProtocol
 from . import SelfCross
 from . import TwoWayCross
 from . import TwoWayDHCross
-from . import GenerationalTwoWayDHCross
 from . import FamilyGroupTwoWayDHCross
 from . import ThreeWayCross
 from . import ThreeWayDHCross

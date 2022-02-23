@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding program parental selection operators.
+"""
+
 class ParentSelectionOperator:
-    """docstring for ParentSelectionOperator."""
+    """
+    Abstract class defining interfaces for parental selection within an entire
+    breeding program.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Parental selection for an entire breeding program.
+    """
 
     def __init__(self, **kwargs):
         """

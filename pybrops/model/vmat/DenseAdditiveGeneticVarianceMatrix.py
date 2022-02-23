@@ -1,9 +1,22 @@
+"""
+Module implementing classes and associated error checking routines for matrices
+storing dense additive genetic variance estimates.
+"""
+
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
 # TODO: implement me
 class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
-    """docstring for DenseAdditiveGeneticVarianceMatrix."""
+    """
+    A semi-concrete class for dense additive genetic variance matrices.
+
+    The purpose of this semi-concrete class is to provide functionality for:
+        1) Object construction of dense additive genetic variance matrices.
+
+    Methods responsible for estimating genetic variances from genomic models
+    remain abstract and must be implemented by inheriting classes.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -29,7 +42,7 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             taxa_grp = taxa_grp,
             **kwargs
         )
-    
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################

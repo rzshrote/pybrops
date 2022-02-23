@@ -1,10 +1,17 @@
+"""
+Module implementing a phenotype dataframe using Pandas DataFrames and its
+associated error checking routines.
+"""
+
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 from pybrops.core.df.PandasDataFrame import PandasDataFrame
-
 from pybrops.core.error import check_is_pandas_df
 
 class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
-    """docstring for PandasPhenotypeDataFrame."""
+    """
+    A concrete class for data frame objects utilizing Pandas DataFrames as a
+    storage container.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -188,12 +195,47 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
 ################################## Utilities ###################################
 ################################################################################
 def is_PandasPhenotypeDataFrame(v):
+    """
+    Determine whether an object is a PandasPhenotypeDataFrame.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a PandasPhenotypeDataFrame object instance.
+    """
     return isinstance(v, PandasPhenotypeDataFrame)
 
 def check_is_PandasPhenotypeDataFrame(v, vname):
+    """
+    Check if object is of type PandasPhenotypeDataFrame. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, PandasPhenotypeDataFrame):
         raise TypeError("variable '{0}' must be a PandasPhenotypeDataFrame".format(vname))
 
 def cond_check_is_PandasPhenotypeDataFrame(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type PandasPhenotypeDataFrame. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a PandasPhenotypeDataFrame.
+    """
     if cond(v):
         check_is_PandasPhenotypeDataFrame(v, vname)

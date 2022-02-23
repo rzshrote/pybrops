@@ -1,5 +1,15 @@
+"""
+Module defining interfaces and associated error checking routines for mating
+mating protocols.
+"""
+
 class MatingProtocol:
-    """docstring for MatingProtocol."""
+    """
+    Abstract class for mating protocols.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Mating simulation and progeny generation from genotype matrices.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

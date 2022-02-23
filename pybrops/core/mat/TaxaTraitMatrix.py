@@ -1,9 +1,23 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+with taxa and trait metadata.
+"""
+
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 
 class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
-    """Abstract class for TaxaMatrix + TraitMatrix fusion."""
+    """
+    An abstract class for matrix wrapper objects with taxa and trait metadata.
 
+    The purpose of this abstract class is to merge the following interfaces:
+        1) TaxaMatrix
+        2) TraitMatrix
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class TaxaTraitMatrix.

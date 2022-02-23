@@ -1,45 +1,96 @@
+"""
+Module containing miscellaneous utility subroutines.
+"""
+
 import numpy
 import math
 
 __all__ = [
-    "cond_str_lower",
-    "cond_seed_rng",
     "srange",
     "matrix_is_sorted",
-    "cond_len",
     "slice_to_range",
     "slice_to_list",
     "human2bytes"
 ]
 
-def cond_str_lower(s, cond=(lambda s: isinstance(s, str))):
-    return s.lower() if cond(s) else s
-
-def cond_seed_rng(seed, cond=(lambda s: s is not None)):
-    if cond(seed):
-        numpy.random.seed(seed)
-
 def srange(start, stop, step):
+    """
+    Stop range generator. Similar to a normal ``range`` generator object, but
+    also yields the stop index as its final output.
+
+    Parameters
+    ----------
+    start : int
+        Starting index.
+    stop : int
+        Stopping index.
+    step : int
+        Step to advance.
+
+    Yields
+    ------
+    out : int
+        The next index.
+    """
     yield from range(start, stop, step)
     yield stop
 
 def matrix_is_sorted(mat):
+    """
+    Determine if a matrix is sorted in ascending order.
+
+    Parameters
+    ----------
+    mat : numpy.ndarray
+        Input matrix.
+
+    Returns
+    -------
+    out : bool
+        ``True`` if the matrix is sorted in ascending order, otherwise
+        ``False``.
+    """
     for i in range(mat.size-1):
         if mat[i] > mat[i+1]:
             return False
     return True
 
-def cond_len(var, cond=(lambda var: hasattr(var, "__len__"))):
-    if cond(var):
-        return len(var)
-    return None
-
 def slice_to_range(s, end):
+    """
+    Convert a ``slice`` object to a ``range`` object.
+
+    Parameters
+    ----------
+    s : slice
+        Slice to convert.
+    end : int
+        End index.
+
+    Returns
+    -------
+    out : range
+        A ``range`` object representing the slice.
+    """
     ifnone = lambda x, y: y if x is None else x
     r = range(ifnone(s.start, 0), ifnone(s.end, end), ifnone(s.step, 1))
     return r
 
 def slice_to_list(s, end):
+    """
+    Convert a ``slice`` object to a ``list`` object.
+
+    Parameters
+    ----------
+    s : slice
+        Slice to convert.
+    end : int
+        End index.
+
+    Returns
+    -------
+    out : list
+        A ``list`` object representing the slice.
+    """
     l = list(e for e in slice_to_range(s, end))
     return
 
@@ -62,6 +113,20 @@ HUMAN2BYTES_DICT = {
 }
 
 def human2bytes(s):
+    """
+    Convert a human readable string representing a memory size to an integer
+    number of bytes.
+
+    Parameters
+    ----------
+    s : str
+        Human readable string representing a memory size. (e.g. 10 MB)
+
+    Returns
+    -------
+    out : int
+        Number of bytes that the human readable string represents.
+    """
     # strip any white space before or after
     s = s.strip()
 

@@ -1,19 +1,30 @@
+"""
+Module providing a dense coancestry matrix implementation for identity by state
+and associated error checking routines.
+"""
+
 import numpy
 
+from pybrops.core.error import check_all_equal
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_dtype
+from pybrops.core.error import check_ndarray_ndim
+from pybrops.core.error import cond_check_is_ndarray
+from pybrops.core.error import cond_check_ndarray_axis_len
+from pybrops.core.error import cond_check_ndarray_dtype
+from pybrops.core.error import cond_check_ndarray_dtype_is_object
+from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_ndim
-from pybrops.core.error import cond_check_ndarray_dtype
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import check_all_equal
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
-    """docstring for DenseMolecularCoancestryMatrix."""
+    """
+    A concrete class for a dense coancestry matrix calculated using molecular
+    coancestry (identity by state). Coancestry matrices are square.
+
+    The purpose of this concrete class is to implement functionality for:
+        1) Dense coancestry matrix value calculation.
+        2) Dense coancestry matrix value access.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -249,7 +260,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################## Static Methods ##############################
     ############################################################################
     @classmethod
-    def from_gmat(cls, gmat):
+    def from_gmat(cls, gmat, **kwargs):
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 

@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+that can have variant positions placed on a genetic map.
+"""
+
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 
 class GeneticMappableMatrix(VariantMatrix):
@@ -10,6 +15,15 @@ class GeneticMappableMatrix(VariantMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, **kwargs):
+        """
+        Constructor for the abstract class GeneticMappableMatrix.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
+        """
         super(GeneticMappableMatrix, self).__init__(**kwargs)
 
     ############################################################################
@@ -26,6 +40,8 @@ class GeneticMappableMatrix(VariantMatrix):
         gmap : GeneticMap
             A genetic map from which to interopolate genetic map postions for
             loci within the VariantMatrix.
+        kwargs : dict
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
@@ -42,6 +58,8 @@ class GeneticMappableMatrix(VariantMatrix):
         gmapfn : GeneticMapFunction
             A genetic map function from which to interpolate crossover
             probabilities for loci within the VariantMatrix.
+        kwargs : dict
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 

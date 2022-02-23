@@ -1,13 +1,19 @@
+"""
+Module implementing phenotyping protocols for extracting true breeding values.
+"""
+
 import numpy
 
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.core.error import error_readonly
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class TruePhenotyping(PhenotypingProtocol):
-    """docstring for TruePhenotyping."""
+    """
+    Class implementing phenotyping protocols for extracting true breeding values.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

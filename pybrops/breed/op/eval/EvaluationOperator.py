@@ -1,5 +1,16 @@
+"""
+Module defining interfaces and associated error checking routines for
+breeding program evaluation operators.
+"""
+
 class EvaluationOperator:
-    """docstring for EvaluationOperator."""
+    """
+    Abstract class defining interfaces for the evaluation of an entire breeding
+    program.
+
+    The purpose of this abstract class is to provide functionality for:
+        1) Evaluation of an entire breeding program.
+    """
 
     def __init__(self, **kwargs):
         """

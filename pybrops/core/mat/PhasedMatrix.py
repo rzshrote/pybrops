@@ -1,11 +1,18 @@
+"""
+Module defining phased matrix interfaces and associated error checking routines.
+"""
+
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class PhasedMatrix(MutableMatrix):
     """
     An abstract class for phased matrix wrapper objects.
 
+    A phased matrix is defined as a matrix with a third dimension. This
+    interface mostly pertains to phased genotype matrices.
+
     The purpose of this abstract class is to provide base functionality for:
-        1) phase manipulation routines.
+        1) Matrix phase manipulation routines.
     """
 
     ############################################################################

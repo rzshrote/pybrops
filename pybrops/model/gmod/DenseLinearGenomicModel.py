@@ -1,8 +1,11 @@
+"""
+Module implementing classes and error checking routines for genomic prediction
+models that incorporate linear genomic effects.
+"""
+
 import copy
 import numpy
 import h5py
-
-from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5
@@ -17,13 +20,13 @@ from pybrops.core.error import cond_check_ndarray_axis_len
 from pybrops.core.error import cond_check_ndarray_dtype_is_object
 from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
-
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.core.util.numpy import is_ndarray
-from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 
 class DenseLinearGenomicModel(LinearGenomicModel):
     """

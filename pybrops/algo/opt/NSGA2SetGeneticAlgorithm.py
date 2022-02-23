@@ -1,3 +1,8 @@
+"""
+Module implementing an NSGA-II genetic algorithm adapted for subset selection
+optimization.
+"""
+
 import numpy
 import math
 from deap import algorithms
@@ -7,13 +12,18 @@ from deap import tools
 from deap import benchmarks
 
 import pybrops.core.random
-
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 
 class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
-    """docstring for NSGA2SetGeneticAlgorithm."""
+    """
+    Class implementing an NSGA-II genetic algorithm adapted for subset selection
+    optimization. The search space is discrete and nominal in nature.
+    """
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = None, **kwargs):
         """
         Constructor for NSGA-II set optimization algorithm.
@@ -39,6 +49,10 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         self.lamb = lamb
         self.M = M
         self.rng = pybrops.core.random if rng is None else rng
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
 
     # define set crossover operator
     def cxSet(self, ind1, ind2, indpb):

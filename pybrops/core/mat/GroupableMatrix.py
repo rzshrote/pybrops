@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+that can have their axes grouped.
+"""
+
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
 class GroupableMatrix(SortableMatrix):
@@ -5,7 +10,7 @@ class GroupableMatrix(SortableMatrix):
     An abstract class for groupable matrix wrapper objects.
 
     The purpose of this abstract class is to provide base functionality for:
-        1) Matrix in-place matrix grouping routines.
+        1) Matrix in-place matrix axis grouping routines.
     """
 
     ############################################################################

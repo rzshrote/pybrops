@@ -1,16 +1,24 @@
+"""
+Module implementing selection protocols for conventional genomic selection.
+"""
+
 import numpy
 import types
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 
 import pybrops.core.random
+from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_Generator
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.core.error import cond_check_is_Generator
 
 class ConventionalGenomicSelection(SelectionProtocol):
-    """Perform conventional genomic selection"""
+    """
+    Class implementing selection protocols for conventional genomic selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

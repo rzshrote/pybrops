@@ -1,16 +1,26 @@
+"""
+Module implementing a dense matrix and associated error checking routines.
+"""
+
 import copy
 import numpy
-from pybrops.core.mat.Matrix import Matrix
 
 from pybrops.core.error import error_readonly
 from pybrops.core.error import check_is_ndarray
+from pybrops.core.mat.Matrix import Matrix
 
+# TODO: implement the HDF5InputOutput interface
 class DenseMatrix(Matrix):
     """
-    DenseMatrix class.
+    A concrete class for dense matrices.
+    Dense matrices utilize numpy.ndarray's for data storage.
 
-    The purpose of this class is to provide dense matrix math operators, and
-    copy on manipulation subroutines.
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix mathematical operators
+        2) Dense matrix logical & bitwise operators
+        3) Dense matrix container operators
+        4) Dense matrix copy operators
+        5) Dense matrix read-only matrix shape changing routines.
     """
 
     ############################################################################
@@ -508,15 +518,47 @@ class DenseMatrix(Matrix):
 ################################## Utilities ###################################
 ################################################################################
 def is_DenseMatrix(v):
-    """Return whether an object is a DenseMatrix or not"""
+    """
+    Determine whether an object is a DenseMatrix.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseMatrix object instance.
+    """
     return isinstance(v, DenseMatrix)
 
 def check_is_DenseMatrix(v, varname):
-    """Raise TypeError if object is not a DenseMatrix"""
+    """
+    Check if object is of type DenseMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, DenseMatrix):
         raise TypeError("'%s' must be a DenseMatrix." % varname)
 
 def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a DenseMatrix"""
+    """
+    Conditionally check if object is of type DenseMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a DenseMatrix.
+    """
     if cond(v):
         check_is_DenseMatrix(v, varname)

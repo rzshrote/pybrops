@@ -1,11 +1,23 @@
+"""
+Module implementing a steepest ascent hill climber algorithm adapted for subset
+selection optimization.
+"""
+
 import numpy
 
 import pybrops.core.random
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 
 class SteepestAscentSetHillClimber(OptimizationAlgorithm):
-    """docstring for SteepestAscentSetHillClimber."""
+    """
+    Class implementing a steepest ascent hill climber algorithm adapted for
+    subset selection optimization. The search space is discrete and nominal in
+    nature.
+    """
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, rng = None, **kwargs):
         """
         Constructor for a steepest ascent set hill-climber.
@@ -28,6 +40,9 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
         self.rng = pybrops.core.random if rng is None else rng
 
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
     def optimize(self, objfn, k, setspace, objfn_wt, **kwargs):
         """
         Optimize an objective function.

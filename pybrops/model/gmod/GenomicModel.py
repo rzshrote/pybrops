@@ -1,7 +1,21 @@
+"""
+Module defining basal interfaces and error checking routines for genomic models.
+"""
+
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 
 class GenomicModel(HDF5InputOutput):
-    """docstring for GenomicModel."""
+    """
+    An abstract class for genomic models.
+
+    The purpose for this abstract interface is to provide base functionality for:
+        1) Model metadata storage.
+        2) Model fitting.
+        3) Model prediction.
+        4) Model scoring.
+        5) Genetic variance estimation using the model.
+        6) Estimation of upper and lower selection limits using the model.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

@@ -1,13 +1,16 @@
+"""
+Module defining implementing dense matrices with taxa metadata and associated
+error checking routines.
+"""
+
 import copy
 import numpy
-
-from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_at_least_1d
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
 from pybrops.core.error import cond_check_is_ndarray
@@ -20,10 +23,17 @@ from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import check_ndarray_at_least_1d
+from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
+from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
-    """docstring for DenseTaxaMatrix."""
+    """
+    A concrete class for dense matrices with taxa metadata.
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Dense matrix taxa metadata.
+        2) Dense matrix taxa routines.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -35,11 +45,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Matrix used to construct the object.
-        taxa : numpy.ndarray
-            Taxa names.
-        taxa_grp : numpy.ndarray
-            Taxa groupings.
+            A numpy.ndarray used to construct the object.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -111,14 +123,17 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
     ##################### Matrix Data ######################
     def mat():
-        doc = "The mat property."
+        doc = "Pointer to raw matrix object."
         def fget(self):
+            """Get pointer to raw matrix object"""
             return self._mat
         def fset(self, value):
+            """Set pointer to raw matrix object"""
             check_is_ndarray(value, "mat")
             check_ndarray_at_least_1d(value, "mat")
             self._mat = value
         def fdel(self):
+            """Delete raw matrix object"""
             del self._mat
         return locals()
     mat = property(**mat())
@@ -269,7 +284,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         Parameters
         ----------
         values : DensePhasedGenotypeMatrix, numpy.ndarray
-            Values are appended to append to the Matrix.
+            Values to be appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
         taxa : numpy.ndarray
@@ -307,6 +322,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
     def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
         """
+        Add additional elements to the end of the TaxaMatrix along the taxa
+        axis. Copy-on-manipulation routine.
+
+        Parameters
+        ----------
+        values : DensePhasedGenotypeMatrix, numpy.ndarray
+            Values to be appended to append to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
@@ -317,6 +339,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseTaxaMatrix
+            A copy of the TaxaMatrix with values appended to the taxa axis
+            Note that adjoin does not occur in-place: a new Matrix is allocated
+            and filled.
         """
         # extract mat values
         if isinstance(values, self.__class__):

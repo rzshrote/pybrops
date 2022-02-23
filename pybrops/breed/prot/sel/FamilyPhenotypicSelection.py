@@ -1,17 +1,25 @@
+"""
+Module implementing selection protocols for family-based phenotypic selection.
+"""
+
 import numpy
 import types
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 import pybrops.core.random
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_Generator
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import check_isinstance
 from pybrops.core.error import cond_check_is_float
+from pybrops.core.error import cond_check_is_Generator
 
 class FamilyPhenotypicSelection(SelectionProtocol):
-    """docstring for FamilyPhenotypicSelection."""
+    """
+    Class implementing selection protocols for family-based phenotypic selection.
+
+    # TODO: add formulae for methodology.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

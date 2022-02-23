@@ -1,12 +1,27 @@
+"""
+Module implementing the extraction of true breeding value.
+"""
+
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 
 class TrueBreedingValue(BreedingValueProtocol):
-    """docstring for TrueBreedingValue."""
+    """
+    Class implementing the extraction of true breeding value.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, gpmod, **kwargs):
+        """
+        Constructor for the concrete class TrueBreedingValue.
+
+        Parameters
+        ----------
+        gpmod : GenomicModel
+            A true genomic prediction model from which to calculate true
+            breeding values.
+        """
         super(TrueBreedingValue, self).__init__(**kwargs)
         self.gpmod = gpmod
 

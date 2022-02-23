@@ -1,12 +1,21 @@
-from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
+"""
+Module providing dense coancestry matrix implementations and associated error checking routines.
+"""
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_is_2d
 from pybrops.core.error import check_ndarray_is_square
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
+from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
-    """docstring for DenseCoancestryMatrix."""
+    """
+    A concrete class for dense coancestry matrices. Coancestry matrices are square.
+
+    The purpose of this concrete class is to implement functionality for:
+        1) Dense coancestry matrix value calculation.
+        2) Dense coancestry matrix value access.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -23,6 +32,10 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             Where:
 
             - ``n`` is the number of taxa.
+        taxa : numpy.ndarray, None
+        taxa_grp : numpy.ndarray, None
+        kwargs : dict
+            Additional keyword arguments.
         """
         # call constructor for DenseTaxaMatrix
         super(DenseCoancestryMatrix, self).__init__(

@@ -1,3 +1,8 @@
+"""
+Module containing utility functions for determining Pareto efficiency
+(non-dominated points).
+"""
+
 import numpy
 
 __all__ = ["is_pareto_efficient"]

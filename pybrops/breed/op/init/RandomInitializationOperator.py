@@ -1,14 +1,19 @@
+"""
+Module implementing random initializatio of a breeding program.
+"""
+
 import numpy
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
-
 from pybrops.core import random as pbo_rng
 from pybrops.core.error import cond_check_is_Generator
 from pybrops.core.error import check_is_int
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 class RandomInitializationOperator(InitializationOperator):
-    """docstring for RandomInitializationOperator."""
+    """
+    Class implementing random initializatio of a breeding program.
+    """
 
     def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng = None, **kwargs):
         """

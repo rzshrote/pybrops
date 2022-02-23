@@ -1,18 +1,29 @@
+"""
+Module for estimating breeding values in situations where there is no GxE and
+there are replications nested within an environment.
+"""
+
 from rpy2 import robjects
+from rpy2.robjects import globalenv
 from rpy2.robjects import vectors
+from rpy2.robjects.vectors import DataFrame as rpy2_DataFrame
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.core.util.rpy2 import numpy_to_R_BoolVector
 from pybrops.core.util.rpy2 import numpy_to_R_FloatVector
 from pybrops.core.util.rpy2 import numpy_to_R_IntFactorVector
 from pybrops.core.util.rpy2 import numpy_to_R_IntVector
-from rpy2.robjects.vectors import DataFrame as rpy2_DataFrame
-from rpy2.robjects import globalenv
-from rpy2 import robjects
 
 class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
-    """Estimate breeding values using."""
+    """
+    Class implementing protocols for estimating breeding values in situations
+    where there is no GxE and there are replications nested within an
+    environment. This class interfaces with R and lme4 to estimate effects.
+    """
 
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, G_efct = "fixed", E_efct = "random", RnE_efct = "random", **kwargs):
         """
         Get estimated breeding values for an additive model of:

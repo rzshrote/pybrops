@@ -1,7 +1,17 @@
+"""
+Module defining interfaces and associated error checking routines for matrices
+storing genetic variance estimates.
+"""
+
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 
 class GeneticVarianceMatrix(SquareTaxaMatrix):
-    """docstring for GeneticVarianceMatrix."""
+    """
+    An abstract class for additive genetic variance matrices.
+
+    The purpose of this abstract interface is to provide functionality for:
+        1) Estimation of genetic variance from a genomic model.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

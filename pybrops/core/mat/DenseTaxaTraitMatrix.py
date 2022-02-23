@@ -1,15 +1,27 @@
+"""
+Module defining implementing dense matrices with taxa and trait metadata and
+associated error checking routines.
+"""
+
 import numpy
 import copy
 
+from pybrops.core.error import error_readonly
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-from pybrops.core.mat.util import get_axis
-from pybrops.core.error import error_readonly
-
 class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
-    """docstring for DenseTaxaTraitMatrix."""
+    """
+    A concrete class for dense matrices with taxa and trait metadata.
+
+    The purpose of this concrete class is to merge the following implementations
+    and interfaces:
+        1) DenseTaxaMatrix
+        2) DenseTraitMatrix
+        3) TaxaTraitMatrix
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -21,9 +33,16 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-        taxa : numpy.ndarray
-        taxa_grp : numpy.ndarray
-        trait : numpy.ndarray
+            A numpy.ndarray used to construct the object.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+        trait : numpy.ndarray, None
+            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
         kwargs : dict
             Additional keyword arguments.
         """

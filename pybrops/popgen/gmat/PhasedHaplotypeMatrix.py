@@ -1,8 +1,19 @@
+"""
+Module defining basal matrix interfaces and associated error checking routines
+for phased haplotype matrices.
+"""
+
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 
-class PhasedHaplotypeMatrix(PhasedTaxaVariantMatrix,HaplotypeMatrix):
-    """docstring for PhasedHaplotypeMatrix."""
+class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix):
+    """
+    An abstract class for phased genoypte matrix objects.
+
+    The purpose of this abstract class is to merge the following interfaces:
+        1) HaplotypeMatrix
+        2) PhasedTaxaVariantMatrix
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -10,6 +21,12 @@ class PhasedHaplotypeMatrix(PhasedTaxaVariantMatrix,HaplotypeMatrix):
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class PhasedHaplotypeMatrix.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(PhasedHaplotypeMatrix, self).__init__(**kwargs)
 

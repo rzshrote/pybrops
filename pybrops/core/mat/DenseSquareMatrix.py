@@ -1,16 +1,52 @@
-import numpy
+"""
+Module implementing a dense matrix with axes that are square and associated
+error checking routines.
+"""
 
-from pybrops.core.mat.SquareMatrix import SquareMatrix
-from pybrops.core.mat.DenseMatrix import DenseMatrix
+import numpy
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_at_least_2d
 from pybrops.core.error import error_readonly
+from pybrops.core.mat.DenseMatrix import DenseMatrix
+from pybrops.core.mat.SquareMatrix import SquareMatrix
 
 class DenseSquareMatrix(DenseMatrix,SquareMatrix):
-    """docstring for DenseSquareMatrix."""
+    """
+    A concrete class for dense square matrices. A "square matrix" is defined as
+    a matrix that has the same axis metadata associated with two or more axes.
+    For example::
 
+        This is a square matrix since metadata applies to axes 0 and 1:
+               taxa
+             +-------+
+        taxa | (n,n) |
+             +-------+
+
+        This is not a square matrix since unique metadata applies to each axis:
+               vrnt
+             +-------+
+        taxa | (n,p) |  Where: n == p
+             +-------+
+
+    The purpose of this concrete class is to implement base functionality for:
+        1) Square matrix axis metadata.
+        2) Determination of square matrix conformity.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, mat, **kwargs):
+        """
+        Constructor for the concrete class DenseSquareMatrix.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
+        """
         super(DenseSquareMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -22,14 +58,17 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
 
     ##################### Matrix Data ######################
     def mat():
-        doc = "The mat property."
+        doc = "Pointer to raw matrix object."
         def fget(self):
+            """Get pointer to raw matrix object"""
             return self._mat
         def fset(self, value):
+            """Set pointer to raw matrix object"""
             check_is_ndarray(value, "mat")
             check_ndarray_at_least_2d(value, "mat")
             self._mat = value
         def fdel(self):
+            """Delete raw matrix object"""
             del self._mat
         return locals()
     mat = property(**mat())

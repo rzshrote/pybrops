@@ -1,12 +1,33 @@
+"""
+Module defining matrix interfaces and associated error checking routines for
+matrices with phase, variant, and taxa metadata.
+"""
+
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
 class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
-    """Abstract class for TaxaVariantMatrix + PhasedMatrix fusion."""
+    """
+    An abstract class for matrix wrapper objects with phase, variant, and taxa
+    metadata.
 
+    The purpose of this abstract class is to merge the following interfaces:
+        1) TaxaVariantMatrix
+        2) PhasedMatrix
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class PhasedTaxaVariantMatrix.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(PhasedTaxaVariantMatrix, self).__init__(**kwargs)
 

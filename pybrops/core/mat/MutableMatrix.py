@@ -1,3 +1,7 @@
+"""
+Module defining mutable matrix interfaces and associated error checking routines.
+"""
+
 from pybrops.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):

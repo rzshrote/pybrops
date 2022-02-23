@@ -1,7 +1,10 @@
 """
-Module containing haplotype utility functions
+Module containing haplotype calculation utility functions.
 """
+
 import numpy
+
+__all__ = ["calc_nhaploblk_chrom", "calc_haplobin", "calc_haplobin_bounds"]
 
 def calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix):
     """

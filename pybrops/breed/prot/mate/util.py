@@ -4,6 +4,8 @@ Module containing mating utilities.
 
 import numpy
 
+__all__ = ["mat_meiosis", "mat_dh", "mat_mate"]
+
 def mat_meiosis(geno, sel, xoprob, rng):
     """
     Perform meiosis on matrix inputs.

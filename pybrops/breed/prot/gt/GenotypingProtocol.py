@@ -3,7 +3,12 @@ Module containing the abstract class GenotypingProtocol and its service function
 """
 
 class GenotypingProtocol:
-    """docstring for GenotypingProtocol."""
+    """
+    Abstract class defining genotyping protocols.
+
+    The purpose of this abstract class is to define functionality for:
+        1) Genotyping of individuals (converting a genome matrix to genotype matrix).
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

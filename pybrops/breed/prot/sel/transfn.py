@@ -1,4 +1,10 @@
+"""
+Module containing functions for transforming objective function outputs.
+"""
+
 import numpy
+
+__all__ = ["trans_ndpt_to_vec_dist", "trans_sum", "trans_dot", "trans_flatten"]
 
 def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
     """

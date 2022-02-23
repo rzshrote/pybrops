@@ -1,5 +1,17 @@
+"""
+Module defining basal genetic map function interfaces and associated error
+checking routines.
+"""
+
 class GeneticMapFunction:
-    """docstring for GeneticMapFunction."""
+    """
+    An abstract class for genetic map function objects.
+
+    The purpose of this abstract class is to define base functionality for:
+        1) Converting genetic distance to recombination probability.
+        2) Converting recombination probability to genetic distance.
+        3) Converting physical distance to recombination probability.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
@@ -7,6 +19,12 @@ class GeneticMapFunction:
     def __init__(self, **kwargs):
         """
         Constructor for the abstract class GeneticMapFunction.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(GeneticMapFunction, self).__init__()
 
@@ -58,10 +76,12 @@ class GeneticMapFunction:
         Calculate sequential recombination probabilities using genetic distances.
         Calculate recombination probabilities between successive entries along
         a chromosome. Supply 0.5 across chromosomes.
-        Example:
-            vrnt_chrgrp = [1,  1,  2,  2,  2,  3,  3]
-            vrnt_genpos = ...
-            xo         = [.5, .2, .2, .1, .3, .5, .2]
+
+        Example::
+
+            vrnt_chrgrp = [ 1,  1,  2,  2,  2,  3,  3]
+            vrnt_genpos = [...]
+            xo          = [.5, .2, .5, .1, .3, .5, .2]
 
         Parameters
         ----------
@@ -72,11 +92,12 @@ class GeneticMapFunction:
             An array assigning chromosomes to groups. Must be sorted.
         vrnt_genpos : numpy.ndarray
             An array of genetic positions. Must be sorted and correspond with
-            vrnt_chrgrp.
+            ``vrnt_chrgrp``.
 
         Returns
         -------
         r : numpy.ndarray
+            A 1D array of recombination probabilities.
         """
         raise NotImplementedError("method is abstract")
 
@@ -87,14 +108,14 @@ class GeneticMapFunction:
 
         Parameters
         ----------
+        gmap : GeneticMap
+            GeneticMap object for calculating genetic distances between successive
+            entries along a chromosome.
         vrnt_chrgrp : numpy.ndarray
             An array assigning chromosomes to groups. Must be sorted.
         vrnt_genpos : numpy.ndarray
             An array of genetic positions. Must be sorted and correspond with
-            vrnt_chrgrp.
-        key : tuple
-            A tuple of array calculation regions. Supply these if only a section
-            of the final recombination matrix is desired.
+            ``vrnt_chrgrp``.
 
         Returns
         -------
@@ -106,12 +127,44 @@ class GeneticMapFunction:
     def rprob1p(self, gmap, vrnt_chrgrp, vrnt_phypos):
         """
         Calculate sequential recombination probabilities using physical distances.
+
+        Parameters
+        ----------
+        gmap : GeneticMap
+            GeneticMap object for calculating genetic distances between successive
+            entries along a chromosome.
+        vrnt_chrgrp : numpy.ndarray
+            An array assigning chromosomes to groups. Must be sorted.
+        vrnt_phypos : numpy.ndarray
+            An array of physical positions. Must be sorted and correspond with
+            ``vrnt_chrgrp``.
+
+        Returns
+        -------
+        r : numpy.ndarray
+            A 1D array of recombination probabilities.
         """
         raise NotImplementedError("method is abstract")
 
     def rprob2p(self, gmap, vrnt_chrgrp, vrnt_phypos):
         """
         Calculate pairwise recombination probabilities using physical distances.
+
+        Parameters
+        ----------
+        gmap : GeneticMap
+            GeneticMap object for calculating genetic distances between successive
+            entries along a chromosome.
+        vrnt_chrgrp : numpy.ndarray
+            An array assigning chromosomes to groups. Must be sorted.
+        vrnt_phypos : numpy.ndarray
+            An array of physical positions. Must be sorted and correspond with
+            ``vrnt_chrgrp``.
+
+        Returns
+        -------
+        r : numpy.ndarray
+            A 2D array of recombination probabilities.
         """
         raise NotImplementedError("method is abstract")
 

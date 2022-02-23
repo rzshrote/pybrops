@@ -1,24 +1,55 @@
+"""
+Module implementing a dense matrix with phase, taxa, and variant metadata
+and associated error checking routines.
+"""
+
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_at_least_3d
+from pybrops.core.error import error_readonly
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 
-from pybrops.core.mat.util import get_axis
-from pybrops.core.error import error_readonly
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_3d
-
 class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,PhasedTaxaVariantMatrix):
-    """docstring for DensePhasedTaxaVariantMatrix."""
+    """
+    A concrete class implementing dense matrices with phase, taxa, and variant
+    metadata.
+
+    The purpose of this concrete class is to merge the following classes and
+    interfaces:
+        1) DenseTaxaVariantMatrix
+        2) DensePhasedMatrix
+        3) PhasedTaxaVariantMatrix
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def __init__(self, mat,
+    taxa = None, taxa_grp = None,
+    vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None,
+    vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None,
+    vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
         """
         Parameters
         ----------
         mat : numpy.ndarray
             An int8 haplotype matrix. Must be {0,1,2} format.
+        taxa : numpy.ndarray, None
+        taxa_grp : numpy.ndarray, None
+        vrnt_chrgrp : numpy.ndarray, None
+        vrnt_phypos : numpy.ndarray, None
+        vrnt_name : numpy.ndarray, None
+        vrnt_genpos : numpy.ndarray, None
+        vrnt_xoprob : numpy.ndarray, None
+        vrnt_hapgrp : numpy.ndarray, None
+        vrnt_hapalt : numpy.ndarray, None
+        vrnt_hapref : numpy.ndarray, None
+        vrnt_mask : numpy.ndarray, None
+        kwargs : dict
+            Used for cooperative inheritance. Dictionary passing unused
+            arguments to the parent class constructor.
         """
         super(DensePhasedTaxaVariantMatrix, self).__init__(
             mat = mat,

@@ -1,15 +1,22 @@
+"""
+Module implementing a phenotype dataframe using dictionaries and its associated
+error checking routines.
+"""
+
 import numpy
 import copy
 
 from pybrops.core.df.DictDataFrame import DictDataFrame
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
-
 from pybrops.core.error import check_keys_in_dict
 from pybrops.core.error import check_values_in_dict_all_type
 from pybrops.core.error import check_len
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
-    """Concrete class for phenotype dataframe objects."""
+    """
+    A concrete class for phenotype data frame objects utilizing Python
+    dictionaries as a storage container.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

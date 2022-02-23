@@ -1,7 +1,17 @@
-from pybrops.core.mat.TaxaMatrix import TaxaMatrix
+"""
+Module defining basal coancestry matrix interfaces and associated error checking routines.
+"""
 
-class CoancestryMatrix(TaxaMatrix):
-    """docstring for CoancestryMatrix."""
+from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+
+class CoancestryMatrix(SquareTaxaMatrix):
+    """
+    An abstract class for coancestry matrices. Coancestry matrices are square.
+
+    The purpose of this abstract class is to define base functionality for:
+        1) Coancestry matrix value calculation.
+        2) Coancestry matrix value access.
+    """
 
     ############################################################################
     ########################## Special Object Methods ##########################

@@ -1,3 +1,8 @@
+"""
+Module defining interfaces and error checking routines for genomic prediction
+models that incorporate genomic coancestry effects.
+"""
+
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class CoancestryLinearGenomicModel(LinearGenomicModel):
@@ -33,12 +38,12 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
     - :math:`\\mathbf{Z_{c}}` is a matrix of coancestry predictors of shape ``(n,p_c)``
 
     .. math::
-        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\end{bmatrix}
+        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{c}} \\end{bmatrix}
 
     Where:
 
     - :math:`\\mathbf{U_{misc}}` is a matrix of miscellaneous random effects of shape ``(p_misc,t)``
-    - :math:`\\mathbf{U_{a}}` is a matrix of coancestry effects of shape ``(p_c,t)``
+    - :math:`\\mathbf{U_{c}}` is a matrix of coancestry effects of shape ``(p_c,t)``
 
     Shape definitions:
 
@@ -68,25 +73,30 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
     def u_misc():
         doc = "Miscellaneous random effects."
         def fget(self):
+            """Get miscellaneous random effects"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set miscellaneous random effects"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete miscellaneous random effects"""
             raise NotImplementedError("method is abstract")
         return locals()
     u_misc = property(**u_misc())
 
     def u_c():
-        doc = "Additive genomic marker effects."
+        doc = "Genomic coancestry effects."
         def fget(self):
+            """Get genomic coancestry effects"""
             raise NotImplementedError("method is abstract")
         def fset(self, value):
+            """Set genomic coancestry effects"""
             raise NotImplementedError("method is abstract")
         def fdel(self):
+            """Delete genomic coancestry effects"""
             raise NotImplementedError("method is abstract")
         return locals()
     u_c = property(**u_c())

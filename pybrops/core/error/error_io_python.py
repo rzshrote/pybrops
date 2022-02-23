@@ -1,13 +1,47 @@
+"""
+Module containing error subroutines related to generic file and paths.
+"""
+
 import os.path
 
 def check_path_exists(path):
+    """
+    Subroutine to check whether a given path exists.
+    If the path does not exist, raise an FileNotFoundError with a custom error
+    message.
+
+    Parameters
+    ----------
+    path : str, path-like object
+        Path to check.
+    """
     if not os.path.exists(path):
         raise FileNotFoundError("{0} does not exist".format(path))
 
 def check_file_exists(fname):
+    """
+    Subroutine to check whether a given file exists.
+    If the file does not exist, raise an FileNotFoundError with a custom error
+    message.
+
+    Parameters
+    ----------
+    path : str, path-like object
+        Path to check.
+    """
     if not os.path.isfile(fname):
         raise FileNotFoundError("{0} does not exist".format(fname))
 
 def check_directory_exists(path):
+    """
+    Subroutine to check whether a given directory exists.
+    If the directory does not exist, raise an NotADirectoryError with a custom
+    error message.
+
+    Parameters
+    ----------
+    path : str, path-like object
+        Path to check.
+    """
     if not os.path.exists(path):
         raise NotADirectoryError("{0} does not exist".format(path))
