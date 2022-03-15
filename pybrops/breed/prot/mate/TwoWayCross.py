@@ -9,7 +9,7 @@ from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_ndarray_len_is_multiple_of_2
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
@@ -27,7 +27,7 @@ class TwoWayCross(MatingProtocol):
 
         Parameters
         ----------
-        rng : numpy.Generator
+        rng : numpy.random.Generator, numpy.random.RandomState
             Random number source.
         kwargs : dict
             Additional keyword arguments.
@@ -35,7 +35,7 @@ class TwoWayCross(MatingProtocol):
         super(TwoWayCross, self).__init__(**kwargs)
 
         # check data types
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # make assignments
         self.rng = pybrops.core.random if rng is None else rng

@@ -6,7 +6,7 @@ import numpy
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
 from pybrops.core import random as pbo_rng
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.error import check_is_int
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
@@ -38,7 +38,7 @@ class RandomInitializationOperator(InitializationOperator):
         check_is_int(nchr, "nchr")
         check_is_int(ntrait, "ntrait")
         check_is_int(nburn, "nburn")
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # make assignments
         self.gqlen = gqlen

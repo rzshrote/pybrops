@@ -30,7 +30,7 @@ def generic_check_isinstance(v, vname, vtype):
                     tname += ", or "
         else:
             tname = vtype.__name__
-        raise TypeError("variable '{0}' must of type {1}".format(vname, tname))
+        raise TypeError("variable '{0}' must be of type {1}".format(vname, tname))
 
 def generic_check_hasattr(v, vname, vattr):
     """

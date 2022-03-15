@@ -19,7 +19,7 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_type
-from pybrops.core.error import check_is_Generator
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -603,7 +603,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             if value is None:               # if None
                 value = pybrops.core.random # use default random number generator
                 return                      # exit function
-            check_is_Generator(value, "rng")# check is numpy.Generator
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng

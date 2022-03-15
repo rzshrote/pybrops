@@ -27,7 +27,7 @@ class StochasticAscentSetHillClimber(OptimizationAlgorithm):
             Number of states to select in set space. Select n choose k.
         setspace : numpy.ndarray
             Array of shape (n,) where 'n' is the size of the set space.
-        rng : numpy.Generator
+        rng : numpy.random.Generator, numpy.random.RandomState
             Random number generator.
         objwt : float, numpy.ndarray
             Weight to apply to objective function.

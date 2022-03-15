@@ -13,7 +13,7 @@ from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
 from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 
 class WeightedGenomicSelection(SelectionProtocol):
     """
@@ -47,7 +47,7 @@ class WeightedGenomicSelection(SelectionProtocol):
         cond_check_is_callable(ndset_trans, "ndset_trans")
         cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
         # TODO: check ndset_wt
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # variable assignment
         self.nparent = nparent

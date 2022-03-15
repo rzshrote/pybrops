@@ -17,7 +17,7 @@ from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.util.pareto import is_pareto_efficient
 
 class MultiObjectiveGenomicSelection(SelectionProtocol):
@@ -415,7 +415,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             if value is None:               # if None
                 value = pybrops.core.random # use default random number generator
                 return                      # exit function
-            check_is_Generator(value, "rng")# check is numpy.Generator
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng

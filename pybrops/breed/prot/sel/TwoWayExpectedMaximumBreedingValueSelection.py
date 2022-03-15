@@ -9,7 +9,7 @@ import numpy
 import pybrops.core.random
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 
 class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
@@ -40,7 +40,7 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
         check_is_int(nprogeny, "nprogeny")
         check_is_int(nrep, "nrep")
         # TODO: check selfing
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # variable assignment
         self.k_p = k_p

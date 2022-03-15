@@ -12,7 +12,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
 from pybrops.core.error import cond_check_is_float
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 
 class FamilyPhenotypicSelection(SelectionProtocol):
     """
@@ -45,7 +45,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Weight given to the transformed non-dominated set objective function.
             Setting to ``1.0`` yields a maximization problem.
             Setting to ``-1.0`` yields a minimization problem.
-        rng : numpy.Generator
+        rng : numpy.random.Generator, numpy.random.RandomState
         """
         super(FamilyPhenotypicSelection, self).__init__(**kwargs)
 
@@ -60,7 +60,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         cond_check_is_callable(ndset_trans, "ndset_trans")
         cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
         cond_check_is_float(ndset_wt, "ndset_wt")
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # variable assignment
         self.nparent = nparent

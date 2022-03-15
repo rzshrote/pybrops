@@ -18,7 +18,7 @@ def mat_meiosis(geno, sel, xoprob, rng):
         Selection configuration array.
     xoprob : numpy.ndarray
         Crossover porbability array.
-    rng : numpy.Generator
+    rng : numpy.random.Generator, numpy.random.RandomState
         Random number generator instance
 
     Returns

@@ -17,6 +17,12 @@ def check_is_ndarray(v, vname):
 def check_is_Generator(v, vname):
     generic_check_isinstance(v, vname, numpy.random.Generator)
 
+def check_is_RandomState(v, vname):
+    generic_check_isinstance(v, vname, numpy.random.RandomState)
+
+def check_is_Generator_or_RandomState(v, vname):
+    generic_check_isinstance(v, vname, (numpy.random.Generator,numpy.random.RandomState))
+
 ################################################################################
 #################### conditional isinstance check functions ####################
 ################################################################################
@@ -25,6 +31,12 @@ def cond_check_is_ndarray(v, vname, cond = generic_default_cond):
 
 def cond_check_is_Generator(v, vname, cond = generic_default_cond):
     generic_cond_check_isinstance(v, vname, numpy.random.Generator, cond)
+
+def cond_check_is_RandomState(v, vname, cond = generic_default_cond):
+    generic_cond_check_isinstance(v, vname, numpy.random.RandomState, cond)
+
+def cond_check_is_Generator_or_RandomState(v, vname, cond = generic_default_cond):
+    generic_cond_check_isinstance(v, vname, (numpy.random.Generator,numpy.random.RandomState), cond)
 
 ################################################################################
 ############################ dtype check functions #############################
