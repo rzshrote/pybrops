@@ -17,6 +17,7 @@ from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSel
 from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
+from pybrops.breed.prot.sel.transfn import trans_dot
 from pybrops.core.random import global_prng
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
@@ -34,6 +35,7 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
             nparent = 40,
             ncross = 1,
             nprogeny = 80,
+            method = "pareto",
             objfn_trans = None,
             objfn_trans_kwargs = None,
             objfn_wt = numpy.array([1.0, 1.0]),
@@ -42,7 +44,8 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
                 "objfn_wt": numpy.array([1.0, 1.0]),    # all objectives maximizing
                 "wt": numpy.array([0.5, 0.5])           # 1/2; equal weight to all
             },
-            ndset_wt = -1.0
+            ndset_wt = -1.0,
+            moalgo = None
         )
     def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         pgmat, sel, ncross, nprogeny = self.pselprot.select(
@@ -53,8 +56,7 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
             gpmod = gmod["cand"],
             t_cur = t_cur,
             t_max = t_max,
-            miscout = miscout,
-            method = "single"
+            miscout = miscout
         )
         mcfg = {
             "pgmat": pgmat,
@@ -85,7 +87,7 @@ class MyInitEvaluationOperator(EvaluationOperator):
             nenv = 4,
             var_err = var_err
         )
-        self.bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])
+        self.bvprot = MeanPhenotypicBreedingValue("taxa", ["syn1","syn2"])
     def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         geno["queue"].append(self.gtprot.genotype(genome["queue"][-1]))         # genotype incoming inbreds
         genome["queue"].pop(0)                                                  # remove oldest inbreds
@@ -101,9 +103,12 @@ class MyInitSurvivorSelectionOperator(SurvivorSelectionOperator):
         super(MyInitSurvivorSelectionOperator, self).__init__()
         self.sselprot = FamilyPhenotypicSelection(
             nparent = 4,
-            ncross = fps_ncross,
-            nprogeny = fps_nprogeny,
-            objfn_trans = trans_sum
+            ncross = 1,
+            nprogeny = 80,
+            method = "single",
+            objfn_trans = trans_dot, # transform biobjective into single via dot product
+            objfn_trans_kwargs = {"wt": numpy.array([0.5, 0.5])}, # dot product weights
+            objfn_wt = 1.0  # maximize the dot product
         )
     def sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         pgmat, sel, ncross, nprogeny = self.sselprot.select(
@@ -114,8 +119,7 @@ class MyInitSurvivorSelectionOperator(SurvivorSelectionOperator):
             gpmod = gmod["main"],
             t_cur = t_cur,
             t_max = t_max,
-            miscout = miscout,
-            method = "single"
+            miscout = miscout
         )
         sel.sort()                                          # sort selection indices
         genome["cand"] = genome["main"].select_taxa(sel)    # select parent candidates
@@ -457,7 +461,7 @@ mateprot = TwoWayDHCross()                                      # make mating pr
 gtprot = DenseUnphasedGenotyping()                              # genotyping protocols
 ptprot = G_E_Phenotyping(gmod_true, nenv = 4)                   # make phenotyping protocol
 ptprot.set_h2(fndr_heritability, dpgmat)                        # set heritability
-bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])         # make breeding value protocol
+bvprot = MeanPhenotypicBreedingValue("taxa", ["syn1","syn2"])   # make breeding value protocol
 sselprot = FamilyPhenotypicSelection(                           # family-based survivor selection
     nparent = fps_nparent,
     ncross = fps_ncross,
@@ -549,6 +553,6 @@ rsprog = RecurrentSelectionBreedingProgram(
 )
 
 # evolve the population
-rsprog.evolve(nrep = 4, ngen = 20, lbook = lbook, verbose = True)
+rsprog.evolve(nrep = 1, ngen = 20, lbook = lbook, verbose = True)
 
-lbook.write("dh_rs_program.csv")
+lbook.write("dh_mocgsrs_program.csv")
