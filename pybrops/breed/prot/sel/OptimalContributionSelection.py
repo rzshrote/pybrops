@@ -6,7 +6,9 @@ import cvxpy
 import math
 import numpy
 import warnings
+import types
 
+from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_inherits
 from pybrops.core.error import check_isinstance
@@ -17,6 +19,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_str
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import cond_check_is_ndarray
 from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
@@ -181,10 +184,18 @@ class OptimalContributionSelection(SelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.inbfn = inbfn
         self.cmatcls = cmatcls
         self.bvtype = bvtype
-        self.inbfn = inbfn
-        self.rng = pybrops.core.random if rng is None else rng
+        self.method = method
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
+        self.rng = rng
+        self.moalgo = moalgo    # must go after rng initialization!!!
 
     ############################################################################
     ############################ Object Properties #############################
@@ -373,7 +384,7 @@ class OptimalContributionSelection(SelectionProtocol):
         def fset(self, value):
             if value is None:
                 value = NSGA3UnityConstraintGeneticAlgorithm(
-                    ngen = 250,             # number of generations to evolve
+                    ngen = 600,             # number of generations to evolve
                     mu = 100,               # number of parents in population
                     lamb = 100,             # number of progeny to produce
                     cxeta = 30.0,           # crossover variance parameter
@@ -605,7 +616,10 @@ class OptimalContributionSelection(SelectionProtocol):
             if self.objfn_trans:
                 # for each row (individual), transform the row to a single objective
                 # (n,t) --transform--> (n,)
-                bv = numpy.array([self.objfn_trans(e, **objfn_trans_kwargs) for e in bv])
+                bv = numpy.array([self.objfn_trans(e, **self.objfn_trans_kwargs) for e in bv])
+
+            if bv.ndim > 1:
+                raise RuntimeError("objfn_trans does not return a scalar value")
 
             # calculate kinship matrix (ndarray)
             K = self._calc_K(pgmat, gmat)   # (n,n)
@@ -647,7 +661,7 @@ class OptimalContributionSelection(SelectionProtocol):
             if miscout is not None:
                 miscout["contrib"] = contrib
 
-            return pgmat, sel, ncross, nprogeny
+            return pgmat, sel, self.ncross, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
@@ -665,7 +679,7 @@ class OptimalContributionSelection(SelectionProtocol):
             )
 
             # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
 
             # get index of maximum score
             ix = score.argmax()
@@ -675,7 +689,7 @@ class OptimalContributionSelection(SelectionProtocol):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], ncross, nprogeny
+            return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
@@ -809,12 +823,17 @@ class OptimalContributionSelection(SelectionProtocol):
             t_max = t_max
         )
 
+        # create search space
+        sspace = numpy.stack(
+            [numpy.repeat(0.0, ntaxa), numpy.repeat(1.0, ntaxa)]
+        )
+
         # use multi-objective optimization to approximate Pareto front.
         frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt,            # weights to apply to each objective
+            objfn = objfn,          # objective function
+            k = ntaxa,              # vector length to optimize (sspace^k)
+            sspace = sspace,        # search space options
+            objfn_wt = objfn_wt,    # weights to apply to each objective
             **kwargs
         )
 

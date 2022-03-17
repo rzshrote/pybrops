@@ -1,11 +1,17 @@
-from math import factorial
+import numpy
+from deap import algorithms
+from deap import base
+from deap import benchmarks
+from deap import creator
 from deap import tools
+from math import factorial
 
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
+from pybrops.core.util.pareto import is_pareto_efficient
 
 class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     """
@@ -68,6 +74,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         self.cxeta = cxeta
         self.muteta = muteta
         self.refpnts = refpnts
+        self.save_logbook = save_logbook
         self.rng = rng
 
     ############################################################################
@@ -99,9 +106,10 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         if refpnts is None:                                 # if no reference points provided
             H0 = self.mu - 4                                # permit 4 individuals not assigned to a reference point
             x = 1                                           # start with 1 per dimension
-            while _calc_H(k, x) < H0:                       # iterate through x until we exceed H0
+            while self._calc_H(k, x) < H0:                  # iterate through x until we exceed H0
                 x += 1                                      # increment x
             refpnts = tools.uniform_reference_points(k, x)  # create uniform reference points
+            # refpnts = refpnts.T                             # transpose for correct broadcast by NSGA-III selection
         elif refpnts.shape[1] != k:                         # make sure our reference point dimensionality is compatible
             raise ValueError(
                 "provided reference points are of incorrect dimensionality for problem: {0} != {1}".format(refpnts.shape[1], k)
@@ -127,19 +135,14 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
 
         Returns
         -------
-        out : list
-            An individual represented as a list.
+        out : numpy.ndarray
+            An individual represented as a numpy.ndarray.
         """
         # sample from uniform search space
-        out = list(self.rng.uniform(low, up))
+        out = self.rng.uniform(low, up)
 
         ### perform unity sum repair on the individual
-        # calculate the inverse sum
-        invsum = 1.0 / sum(out)
-
-        # loop through and adjust chromosomes to sum to one
-        for i in range(len(out)):
-            out[i] *= invsum
+        out *= (1.0 / out.sum())
 
         # return individual wrapped in tuple
         return out
@@ -152,9 +155,9 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
 
         Parameters
         ----------
-        ind1 : Sequence
+        ind1 : numpy.ndarray
             The first individual participating in the crossover.
-        ind2 : Sequence
+        ind2 : numpy.ndarray
             The second individual participating in the crossover.
         eta : float
             Crowding degree of the crossover. A high eta will produce children
@@ -173,20 +176,9 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         # perform bounded simulated binary crossover
         out1, out2 = tools.cxSimulatedBinaryBounded(ind1, ind2, eta, low, up)
 
-        ### perform unity sum repair on the individual
-        # calculate the inverse sum for first individual
-        invsum = 1.0 / sum(out1)
-
-        # loop through and adjust chromosomes to sum to one for first individual
-        for i in range(len(out1)):
-            out1[i] *= invsum
-
-        # calculate the inverse sum for second individual
-        invsum = 1.0 / sum(out2)
-
-        # loop through and adjust chromosomes to sum to one for second individual
-        for i in range(len(out2)):
-            out2[i] *= invsum
+        # perform unity sum repair on individuals
+        out1 *= (1.0 / out1.sum())
+        out2 *= (1.0 / out2.sum())
 
         # return individuals wrapped in tuple
         return out1, out2
@@ -199,7 +191,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
 
         Parameters
         ----------
-        individual : Sequence
+        ind : numpy.ndarray
             Individual to be mutated.
         eta : float
             Crowding degree of the mutation. A high eta will produce a mutant
@@ -214,19 +206,14 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
 
         Returns
         -------
-        out : Sequence
+        out : numpy.ndarray
             A mutated individual.
         """
         # perform bounded polynomial mutation
         out, = tools.mutPolynomialBounded(ind, eta, low, up, indpb)
 
-        ### perform unity sum repair on the individual
-        # calculate the inverse sum
-        invsum = 1.0 / sum(out)
-
-        # loop through and adjust chromosomes to sum to one
-        for i in range(len(out)):
-            out[i] *= invsum
+        # perform unity sum repair on the individual
+        out *= (1.0 / out.sum())
 
         # return individual wrapped in tuple
         return out
@@ -234,7 +221,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objwt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
         """
         Optimize an objective function.
 
@@ -250,7 +237,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
             represents the lower bound to search. The second row represents the
             upper bound to search. The first row must have elements all equal to
             ``0.0``, and the second row must have elements all equal to ``1.0``.
-        objwt : numpy.ndarray
+        objfn_wt : numpy.ndarray
             Weight(s) applied to output(s) from the objfn.
 
         Returns
@@ -271,7 +258,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         )
 
         # create an individual, which is a list representation
-        creator.create("Individual", list, fitness=creator.FitnessMax)
+        creator.create("Individual", numpy.ndarray, fitness=creator.FitnessMax)
 
         # create a toolbox
         toolbox = base.Toolbox()
@@ -280,8 +267,8 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         toolbox.register(
             "attr_float",           # create a floating point representation
             self.unifUnitySample,   # random uniform sampling
-            low = sspace[0],        # search space lower bounds
-            up = sspace[1]          # search space upper bounds
+            low = list(sspace[0]),  # search space lower bounds
+            up = list(sspace[1])    # search space upper bounds
         )
 
         # register individual creation protocol
@@ -311,8 +298,8 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
             "mate",                             # name of function
             self.cxUnitySimulatedBinaryBounded, # crossover function to execute
             eta = self.cxeta,                   # variance parameter
-            low = sspace[0],                    # search space lower bounds
-            up = sspace[1]                      # search space upper bounds
+            low = list(sspace[0,:]),                    # search space lower bounds
+            up = list(sspace[1,:])                      # search space upper bounds
         )
 
         # register the mutation operator
@@ -320,16 +307,9 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
             "mutate",                       # name of function
             self.mutUnityPolynomialBounded, # custom mutation operator
             eta = self.cxeta,               # variance parameter
-            low = sspace[0],                # search space lower bounds
-            up = sspace[1],                 # search space upper bounds
+            low = list(sspace[0]),                # search space lower bounds
+            up = list(sspace[1]),                 # search space upper bounds
             indpb = 1.0 / k                 # probability of mutation
-        )
-
-        # register the selection operator
-        toolbox.register(
-            "select",                           # name of the function
-            tools.selNSGA3,                     # use NSGA-III selection operator
-            ref_points = self._get_refpnts(k)   # reference point grid
         )
 
         # register logbook statistics to take
@@ -341,23 +321,30 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
 
         # create logbook
         logbook = None
-        if save_logbook:
+        if self.save_logbook:
             logbook = tools.Logbook()
             logbook.header = ("gen", "evals", "min", "max", "avg", "std")
 
         # create population
         pop = toolbox.population(n = self.mu)
 
-        # evaluate individuals with an invalid fitness
+        # evaluate individuals with an invalid fitness (done for all, since just generated)
         invalid_ind = [ind for ind in pop if not ind.fitness.valid]
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
             ind.fitness.values = fit
 
-        # assign crowding distances (no actual selection is done)
-        pop = toolbox.select(pop, len(pop))
+        # get number of objectives from fitness of first individual in population
+        nobj = len(pop[0].fitness.values)
 
-        if save_logbook:                # optionally save logbook
+        # register the selection operator
+        toolbox.register(
+            "select",                               # name of the function
+            tools.selNSGA3,                         # use NSGA-III selection operator
+            ref_points = self._get_refpnts(nobj)    # reference point grid
+        )
+
+        if self.save_logbook:                # optionally save logbook
             record = stats.compile(pop) # compile population statistics
             logbook.record(             # record statistics in logbook
                 gen = 0,
@@ -391,7 +378,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
             pop = toolbox.select(pop + offspring, self.mu)
 
             # save logs
-            if save_logbook:                # optionally save logbook
+            if self.save_logbook:                # optionally save logbook
                 record = stats.compile(pop) # compile population statistics
                 logbook.record(             # record statistics in logbook
                     gen = gen,

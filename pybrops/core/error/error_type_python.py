@@ -21,10 +21,12 @@ def check_inherits(obj, objname, objtype):
     objtype : type
         Object type from which 'obj' must inherit.
     """
-    if isinstance(objtype, type) and (objname not in obj.__mro__):
-        raise TypeError("variable '{0}' must inherit from '{1}'".format(objname, objtype))
-    elif isinstance(objtype, tuple) and (all(e not in obj.__mro__ for e in objtype)):
-        raise TypeError("variable '{0}' must inherit from one of '{1}'".format(objname, objtype))
+    if isinstance(objtype, type):
+        if objtype not in obj.__mro__:
+            raise TypeError("variable '{0}' must inherit from '{1}'".format(objname, objtype))
+    elif isinstance(objtype, tuple):
+        if all(e not in obj.__mro__ for e in objtype):
+            raise TypeError("variable '{0}' must inherit from all of '{1}'".format(objname, objtype))
     else:
         raise TypeError("'objtype' must be of type 'type' or 'tuple'")
 
