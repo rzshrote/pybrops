@@ -275,48 +275,64 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_select_single(cps, dgmat, bvmat, dalgmod, nparent, ncross, nprogeny, mat_int8, mat_u_a):
-    pgmat, sel, ncross, nprogeny = cps.select(
+def test_select_single(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
+    # create selection object
+    obj = ConventionalPhenotypicSelection(
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        method = "single",
+        objfn_trans = trans_sum,
+        objfn_trans_kwargs = {"axis": None},
+        objfn_wt = 1.0,
+        ndset_trans = None,
+        ndset_trans_kwargs = None,
+        ndset_wt = None,
+        rng = rng,
+        moalgo = None
+    )
+
+    # make selections
+    pgmat, sel, ncross, nprogeny = obj.select(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
         gpmod = dalgmod,
         t_cur = 0,
-        t_max = 20,
-        method = "single",
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        objfn_trans = trans_sum,
-        objfn_trans_kwargs = {"axis": None},
-        objfn_wt = None,
-        ndset_trans = None,
-        ndset_trans_kwargs = None,
-        ndset_wt = None
+        t_max = 20
     )
 
     assert sel.ndim == 1
 
-def test_select_pareto(cps, dgmat, bvmat, dalgmod, nparent, ncross, nprogeny, objfn_wt):
-    pgmat, sel, ncross, nprogeny = cps.select(
+def test_select_pareto(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod):
+    # create selection object
+    obj = ConventionalPhenotypicSelection(
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        method = "pareto",
+        objfn_trans = None,
+        objfn_trans_kwargs = None,
+        objfn_wt = numpy.array([1.0, 1.0]),
+        ndset_trans = trans_ndpt_to_vec_dist,
+        ndset_trans_kwargs = {
+            "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
+            "wt": numpy.array([.5,.5])
+        },
+        ndset_wt = -1.0,
+        rng = rng,
+        moalgo = None
+    )
+
+    pgmat, sel, ncross, nprogeny = obj.select(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
         gpmod = dalgmod,
         t_cur = 0,
-        t_max = 20,
-        method = "pareto",
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        objfn_trans = None,
-        objfn_trans_kwargs = None,
-        objfn_wt = objfn_wt,
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {"objfn_wt": numpy.array(objfn_wt), "wt": numpy.array([.5,.5])},
-        ndset_wt = 1.0
+        t_max = 20
     )
 
     assert sel.ndim == 1
@@ -382,16 +398,34 @@ def test_objfn_vec_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a)
             objfn_vec([[i],[i]])
         )
 
-def test_pareto(cps, dgmat, bvmat, dalgmod, objfn_wt):
-    frontier, sel_config = cps.pareto(
+def test_pareto(nparent, ncross, nprogeny, dgmat, bvmat, dalgmod, rng):
+    # create selection object
+    obj = ConventionalPhenotypicSelection(
+        nparent = nparent,
+        ncross = ncross,
+        nprogeny = nprogeny,
+        method = "pareto",
+        objfn_trans = None,
+        objfn_trans_kwargs = None,
+        objfn_wt = numpy.array([1.0, 1.0]),
+        ndset_trans = trans_ndpt_to_vec_dist,
+        ndset_trans_kwargs = {
+            "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
+            "wt": numpy.array([.5,.5])
+        },
+        ndset_wt = -1.0,
+        rng = rng,
+        moalgo = None
+    )
+
+    frontier, sel_config = obj.pareto(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
         gpmod = dalgmod,
         t_cur = 0,
-        t_max = 20,
-        objfn_wt = objfn_wt
+        t_max = 20
     )
 
     xdata = frontier[:,0]

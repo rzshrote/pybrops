@@ -9,9 +9,15 @@ import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
+from pybrops.core.error import check_is_gt
+from pybrops.core.error import check_is_str
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
 from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.random import global_prng
 
 class ConventionalPhenotypicSelection(SelectionProtocol):
     """
@@ -23,7 +29,11 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny,
+    method = "single",
+    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
+    rng = global_prng, moalgo = None, **kwargs):
         """
         Constructor for Conventional Phenotypic Selection (CPS)
 
@@ -42,38 +52,194 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         """
         super(ConventionalPhenotypicSelection, self).__init__(**kwargs)
 
-        # error checks
-        check_is_int(nparent, "nparent")
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        cond_check_is_callable(objfn_trans, "objfn_trans")
-        cond_check_is_dict(objfn_trans_kwargs, "objfn_trans_kwargs")
-        # TODO: check objfn_wt
-        cond_check_is_callable(ndset_trans, "ndset_trans")
-        cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
-        # TODO: check ndset_wt
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.method = method
         self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = {} if objfn_trans_kwargs is None else objfn_trans_kwargs
+        self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
         self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = {} if ndset_trans_kwargs is None else ndset_trans_kwargs
+        self.ndset_trans_kwargs = ndset_trans_kwargs
         self.ndset_wt = ndset_wt
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
+        self.moalgo = moalgo
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def nparent():
+        doc = "The nparent property."
+        def fget(self):
+            return self._nparent
+        def fset(self, value):
+            check_is_int(value, "nparent")      # must be int
+            check_is_gt(value, "nparent", 0)    # int must be >0
+            self._nparent = value
+        def fdel(self):
+            del self._nparent
+        return locals()
+    nparent = property(**nparent())
+
+    def ncross():
+        doc = "The ncross property."
+        def fget(self):
+            return self._ncross
+        def fset(self, value):
+            check_is_int(value, "ncross")       # must be int
+            check_is_gt(value, "ncross", 0)     # int must be >0
+            self._ncross = value
+        def fdel(self):
+            del self._ncross
+        return locals()
+    ncross = property(**ncross())
+
+    def nprogeny():
+        doc = "The nprogeny property."
+        def fget(self):
+            return self._nprogeny
+        def fset(self, value):
+            check_is_int(value, "nprogeny")     # must be int
+            check_is_gt(value, "nprogeny", 0)   # int must be >0
+            self._nprogeny = value
+        def fdel(self):
+            del self._nprogeny
+        return locals()
+    nprogeny = property(**nprogeny())
+
+    def method():
+        doc = "The method property."
+        def fget(self):
+            return self._method
+        def fset(self, value):
+            check_is_str(value, "method")       # must be string
+            value = value.lower()               # convert to lowercase
+            options = ("single", "pareto")      # method options
+            if value not in options:            # if not method supported
+                raise ValueError(               # raise ValueError
+                    "Unsupported 'method'. Options are: " +
+                    ", ".join(map(str, options))
+                )
+            self._method = value
+        def fdel(self):
+            del self._method
+        return locals()
+    method = property(**method())
+
+    def objfn_trans():
+        doc = "The objfn_trans property."
+        def fget(self):
+            return self._objfn_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "objfn_trans") # must be callable
+            self._objfn_trans = value
+        def fdel(self):
+            del self._objfn_trans
+        return locals()
+    objfn_trans = property(**objfn_trans())
+
+    def objfn_trans_kwargs():
+        doc = "The objfn_trans_kwargs property."
+        def fget(self):
+            return self._objfn_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+            self._objfn_trans_kwargs = value
+        def fdel(self):
+            del self._objfn_trans_kwargs
+        return locals()
+    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+
+    def objfn_wt():
+        doc = "The objfn_wt property."
+        def fget(self):
+            return self._objfn_wt
+        def fset(self, value):
+            self._objfn_wt = value
+        def fdel(self):
+            del self._objfn_wt
+        return locals()
+    objfn_wt = property(**objfn_wt())
+
+    def ndset_trans():
+        doc = "The ndset_trans property."
+        def fget(self):
+            return self._ndset_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "ndset_trans") # must be callable
+            self._ndset_trans = value
+        def fdel(self):
+            del self._ndset_trans
+        return locals()
+    ndset_trans = property(**ndset_trans())
+
+    def ndset_trans_kwargs():
+        doc = "The ndset_trans_kwargs property."
+        def fget(self):
+            return self._ndset_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+            self._ndset_trans_kwargs = value
+        def fdel(self):
+            del self._ndset_trans_kwargs
+        return locals()
+    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+
+    def ndset_wt():
+        doc = "The ndset_wt property."
+        def fget(self):
+            return self._ndset_wt
+        def fset(self, value):
+            self._ndset_wt = value
+        def fdel(self):
+            del self._ndset_wt
+        return locals()
+    ndset_wt = property(**ndset_wt())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            if value is None:               # if rng is None
+                value = global_prng         # use default random number generator
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return locals()
+    rng = property(**rng())
+
+    def moalgo():
+        doc = "The moalgo property."
+        def fget(self):
+            return self._moalgo
+        def fset(self, value):
+            if value is None:
+                value = NSGA2SetGeneticAlgorithm(
+                    ngen = 250,     # number of generations to evolve
+                    mu = 100,       # number of parents in population
+                    lamb = 100,     # number of progeny to produce
+                    M = 1.5,        # algorithm crossover genetic map length
+                    rng = self.rng  # PRNG source
+                )
+            self._moalgo = value
+        def fdel(self):
+            del self._moalgo
+        return locals()
+    moalgo = property(**moalgo())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -120,32 +286,9 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # get default parameters if any are None
-        if nparent is None:
-            nparent = self.nparent
-        if ncross is None:
-            ncross = self.ncross
-        if nprogeny is None:
-            nprogeny = self.nprogeny
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-        if ndset_trans is None:
-            ndset_trans = self.ndset_trans
-        if ndset_trans_kwargs is None:
-            ndset_trans_kwargs = self.ndset_trans_kwargs
-        if ndset_wt is None:
-            ndset_wt = self.ndset_wt
-
-        # convert method string to lower
-        method = method.lower()
-
         # single objective method: objfn_trans returns a single value for each
         # selection configuration
-        if method == "single":
+        if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
                 pgmat = pgmat,
@@ -155,8 +298,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                trans = objfn_trans,
-                trans_kwargs = objfn_trans_kwargs
+                **kwargs
             )
 
             # get all EBVs for each individual
@@ -168,10 +310,10 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
-            ebv = ebv * objfn_wt
+            ebv = ebv * self.objfn_wt
 
-            # get indices of top nparent GEBVs
-            sel = ebv.argsort()[::-1][:nparent]
+            # get indices of top nparent EBVs
+            sel = ebv.argsort()[::-1][:self.nparent]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
@@ -180,11 +322,11 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             if miscout is not None:
                 miscout["ebv"] = ebv
 
-            return pgmat, sel, ncross, nprogeny
+            return pgmat, sel, self.ncross, self.nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
-        elif method == "pareto":
+        elif self.method == "pareto":
             # get the pareto frontier
             frontier, sel_config = self.pareto(
                 pgmat = pgmat,
@@ -194,15 +336,11 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                miscout = miscout,
-                nparent = nparent,
-                objfn_trans = objfn_trans,
-                objfn_trans_kwargs = objfn_trans_kwargs,
-                objfn_wt = objfn_wt
+                **kwargs
             )
 
             # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
 
             # get index of maximum score
             ix = score.argmax()
@@ -212,13 +350,13 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], ncross, nprogeny
+            return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
         # raise error since method is not supported
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return an objective function for the provided datasets.
 
@@ -241,10 +379,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             A selection objective function for the specified problem.
         """
         # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
         mat = bvmat.mat     # (n,t) get breeding value matrix
@@ -261,7 +397,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return a vectorized objective function for the provided datasets.
 
@@ -284,10 +420,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # get pointers to raw numpy.ndarray matrices
         mat = bvmat.mat     # (n,t) get breeding value matrix
@@ -304,7 +438,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -350,15 +484,6 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        if nparent is None:
-            nparent = self.nparent
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-
         # get number of taxa
         ntaxa = bvmat.ntaxa
 
@@ -371,26 +496,19 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             gpmod = gpmod,
             t_cur = t_cur,
             t_max = t_max,
-            trans = objfn_trans,
-            trans_kwargs = objfn_trans_kwargs
-        )
-
-        # create optimization algorithm
-        moalgo = NSGA2SetGeneticAlgorithm(
-            rng = self.rng,
             **kwargs
         )
 
-        frontier, sel_config, misc = moalgo.optimize(
+        frontier, sel_config, misc = self.moalgo.optimize(
             objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
+            k = self.nparent,               # vector length to optimize (sspace^k)
             sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt             # weights to apply to each objective
+            objfn_wt = self.objfn_wt        # weights to apply to each objective
         )
 
-        if miscout is not None:
-            for k,i in misc.items():
-                miscout[k] = i
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
         return frontier, sel_config
 
