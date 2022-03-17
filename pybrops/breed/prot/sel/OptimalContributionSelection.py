@@ -6,13 +6,25 @@ import cvxpy
 import math
 import numpy
 import warnings
+import types
 
-import pybrops.core.random
+from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.core.error import check_inherits
+from pybrops.core.error import check_isinstance
+from pybrops.core.error import check_is_bool
+from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
+from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_is_str
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.random import global_prng
+from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
+from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 
 class OptimalContributionSelection(SelectionProtocol):
     """
@@ -24,14 +36,24 @@ class OptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, inbfn, cmatcls, bvtype = "gebv", rng = None, **kwargs):
+    def __init__(self,
+    nparent, ncross, nprogeny, inbfn,
+    cmatcls = DenseMolecularCoancestryMatrix, bvtype = "gebv", method = "single",
+    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
+    moalgo = None,
+    rng = global_prng, **kwargs):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
         Parameters
         ----------
-        cmatcls : class
-            The class name of a CoancestryMatrix to generate.
+        nparent : int
+            Number of parents to select.
+        ncross : int
+            Number of crosses per configuration.
+        nprogeny : int
+            Number of progeny to derive from each cross.
         inbfn : function
             Inbreeding control function: ``inbfn(t_cur, t_max)``.
 
@@ -51,6 +73,8 @@ class OptimalContributionSelection(SelectionProtocol):
             - :math:`f^{\\textup{Inb}}` is ``inbfn``.
             - :math:`t_{cur}` is the current time.
             - :math:`t_{max}` is the deadline time.
+        cmatcls : class
+            The class name of a CoancestryMatrix to generate.
         bvtype : str
             Whether to use GEBVs or phenotypic EBVs.
 
@@ -61,31 +85,338 @@ class OptimalContributionSelection(SelectionProtocol):
             +------------+-------------+
             | ``"ebv"``  | Use EBVs    |
             +------------+-------------+
+        method : str
+            Optimization strategy.
+
+            +--------+---------------------------------------------------------+
+            | Option | Description                                             |
+            +========+=========================================================+
+            | single | Transform all breeding values into a single overall     |
+            |        | breeding value using the function ``objfn_trans``. Then |
+            |        | solve for OCS with a diversity constraint using         |
+            |        | transformed breeding values.                            |
+            +--------+---------------------------------------------------------+
+            | pareto | Treat inbreeding and each trait as different            |
+            |        | objectives. Transform this list of objectives using     |
+            |        | ``objfn_trans`` to get a list of transformed            |
+            |        | objectives. Approximate the Pareto by identifying a set |
+            |        | of non-dominated points along each transformed          |
+            |        | objective. Then apply ``ndset_trans`` to score the      |
+            |        | non-dominated points.                                   |
+            +--------+---------------------------------------------------------+
+        objfn_trans : function or callable
+            Function to transform the OCS objective function.
+
+            If method = "single", this function must accept an array of length
+            ``(t,)`` and return a scalar, where ``t`` is the number of trait
+            breeding values for an individual.
+
+            If method = "pareto", this function must accept an array of length
+            ``(1+t,)`` and return a numpy.ndarray, where ``t`` is the number of
+            trait breeding values for an individual. The first element of the
+            input array is the mean inbreeding coefficient for the selection.
+
+            General function definition::
+
+                objfn_trans(obj, **kwargs):
+                    Parameters
+                        obj : scalar, numpy.ndarray
+                            Objective scalar or vector to be transformed
+                        kwargs : dict
+                            Additional keyword arguments
+                    Returns
+                        out : scalar, numpy.ndarray
+                            Transformed objective scalar or vector.
+        objfn_trans_kwargs : dict
+            Dictionary of keyword arguments to be passed to 'objfn_trans'.
+        objfn_wt : float, numpy.ndarray
+            Weight applied to transformed objective function. Indicates whether
+            a function is maximizing or minimizing:
+
+            - ``1.0`` for maximizing function.
+            - ``-1.0`` for minimizing function.
+        ndset_trans : numpy.ndarray
+            Function to transform nondominated points along the Pareto frontier
+            into a single score for each point.
+
+            Function definition::
+
+                ndset_trans(ndset, **kwargs):
+                    Parameters
+                        ndset : numpy.ndarray
+                            Array of shape (j,o) containing nondominated points.
+                            Where 'j' is the number of nondominated points and
+                            'o' is the number of objectives.
+                        kwargs : dict
+                            Additional keyword arguments.
+                    Returns
+                        out : numpy.ndarray
+                            Array of shape (j,) containing transformed Pareto
+                            frontier points.
+        ndset_trans_kwargs : dict
+            Dictionary of keyword arguments to be passed to 'ndset_trans'.
+        ndset_wt : float
+            Weight applied to transformed nondominated points along Pareto
+            frontier. Indicates whether a function is maximizing or minimizing.
+                1.0 for maximizing function.
+                -1.0 for minimizing function.
+        moalgo : OptimizationAlgorithm
+            Multi-objective optimization algorithm to optimize the objective
+            functions. If ``None``, use a NSGA3UnityConstraintGeneticAlgorithm
+            with the following parameters::
+
+                moalgo = NSGA3UnityConstraintGeneticAlgorithm(
+                    ngen = 250,             # number of generations to evolve
+                    mu = 100,               # number of parents in population
+                    lamb = 100,             # number of progeny to produce
+                    cxeta = 30.0,           # crossover variance parameter
+                    muteta = 20.0,          # mutation crossover parameter
+                    refpnts = None,         # hyperplane reference points
+                    save_logbook = False,   # whether to save logs or not
+                    rng = self.rng          # PRNG source
+                )
+        rng : numpy.random.Generator or None
+            A random number generator source. Used for optimization algorithms.
         """
         super(OptimalContributionSelection, self).__init__(**kwargs)
-
-        # error checks
-        check_is_int(nparent, "nparent")
-        # TODO: check inbfn
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        # TODO: check cmatcls
-        # TODO: check bvtype
-        cond_check_is_Generator(rng, "rng")
 
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.inbfn = inbfn
         self.cmatcls = cmatcls
         self.bvtype = bvtype
-        self.inbfn = inbfn
-        self.rng = pybrops.core.random if rng is None else rng
+        self.method = method
+        self.objfn_trans = objfn_trans
+        self.objfn_trans_kwargs = objfn_trans_kwargs
+        self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
+        self.rng = rng
+        self.moalgo = moalgo    # must go after rng initialization!!!
 
     ############################################################################
-    ############################## Object Methods ##############################
+    ############################ Object Properties #############################
     ############################################################################
-    def get_bv(self, pgmat, gmat, bvmat, gpmod, bvtype = None):
+    def nparent():
+        doc = "The nparent property."
+        def fget(self):
+            return self._nparent
+        def fset(self, value):
+            check_is_int(value, "nparent")      # must be int
+            check_is_gt(value, "nparent", 0)    # int must be >0
+            self._nparent = value
+        def fdel(self):
+            del self._nparent
+        return locals()
+    nparent = property(**nparent())
+
+    def ncross():
+        doc = "The ncross property."
+        def fget(self):
+            return self._ncross
+        def fset(self, value):
+            check_is_int(value, "ncross")       # must be int
+            check_is_gt(value, "ncross", 0)     # int must be >0
+            self._ncross = value
+        def fdel(self):
+            del self._ncross
+        return locals()
+    ncross = property(**ncross())
+
+    def nprogeny():
+        doc = "The nprogeny property."
+        def fget(self):
+            return self._nprogeny
+        def fset(self, value):
+            check_is_int(value, "nprogeny")     # must be int
+            check_is_gt(value, "nprogeny", 0)   # int must be >0
+            self._nprogeny = value
+        def fdel(self):
+            del self._nprogeny
+        return locals()
+    nprogeny = property(**nprogeny())
+
+    def inbfn():
+        doc = "Inbreeding control function."
+        def fget(self):
+            return self._inbfn
+        def fset(self, value):
+            check_is_callable(value, "inbfn")
+            self._inbfn = value
+        def fdel(self):
+            del self._inbfn
+        return locals()
+    inbfn = property(**inbfn())
+
+    def cmatcls():
+        doc = "Coancestry matrix class."
+        def fget(self):
+            return self._cmatcls
+        def fset(self, value):
+            check_inherits(value, "cmatcls", CoancestryMatrix)
+            self._cmatcls = value
+        def fdel(self):
+            del self._cmatcls
+        return locals()
+    cmatcls = property(**cmatcls())
+
+    def bvtype():
+        doc = "Breeding value matrix type."
+        def fget(self):
+            return self._bvtype
+        def fset(self, value):
+            check_is_str(value, "bvtype")   # must be string
+            value = value.lower()           # convert to lowercase
+            options = ("gebv", "ebv")       # method options
+            if value not in options:            # if not method supported
+                raise ValueError(               # raise ValueError
+                    "Unsupported 'method'. Options are: " +
+                    ", ".join(map(str, options))
+                )
+            self._bvtype = value
+        def fdel(self):
+            del self._bvtype
+        return locals()
+    bvtype = property(**bvtype())
+
+    def method():
+        doc = "The method property."
+        def fget(self):
+            return self._method
+        def fset(self, value):
+            check_is_str(value, "method")       # must be string
+            value = value.lower()               # convert to lowercase
+            options = ("single", "pareto")      # method options
+            if value not in options:            # if not method supported
+                raise ValueError(               # raise ValueError
+                    "Unsupported 'method'. Options are: " +
+                    ", ".join(map(str, options))
+                )
+            self._method = value
+        def fdel(self):
+            del self._method
+        return locals()
+    method = property(**method())
+
+    def objfn_trans():
+        doc = "The objfn_trans property."
+        def fget(self):
+            return self._objfn_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "objfn_trans") # must be callable
+            self._objfn_trans = value
+        def fdel(self):
+            del self._objfn_trans
+        return locals()
+    objfn_trans = property(**objfn_trans())
+
+    def objfn_trans_kwargs():
+        doc = "The objfn_trans_kwargs property."
+        def fget(self):
+            return self._objfn_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+            self._objfn_trans_kwargs = value
+        def fdel(self):
+            del self._objfn_trans_kwargs
+        return locals()
+    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+
+    def objfn_wt():
+        doc = "The objfn_wt property."
+        def fget(self):
+            return self._objfn_wt
+        def fset(self, value):
+            self._objfn_wt = value
+        def fdel(self):
+            del self._objfn_wt
+        return locals()
+    objfn_wt = property(**objfn_wt())
+
+    def ndset_trans():
+        doc = "The ndset_trans property."
+        def fget(self):
+            return self._ndset_trans
+        def fset(self, value):
+            if value is not None:                       # if given object
+                check_is_callable(value, "ndset_trans") # must be callable
+            self._ndset_trans = value
+        def fdel(self):
+            del self._ndset_trans
+        return locals()
+    ndset_trans = property(**ndset_trans())
+
+    def ndset_trans_kwargs():
+        doc = "The ndset_trans_kwargs property."
+        def fget(self):
+            return self._ndset_trans_kwargs
+        def fset(self, value):
+            if value is None:                           # if given None
+                value = {}                              # set default to empty dict
+            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+            self._ndset_trans_kwargs = value
+        def fdel(self):
+            del self._ndset_trans_kwargs
+        return locals()
+    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+
+    def ndset_wt():
+        doc = "The ndset_wt property."
+        def fget(self):
+            return self._ndset_wt
+        def fset(self, value):
+            self._ndset_wt = value
+        def fdel(self):
+            del self._ndset_wt
+        return locals()
+    ndset_wt = property(**ndset_wt())
+
+    def moalgo():
+        doc = "The moalgo property."
+        def fget(self):
+            return self._moalgo
+        def fset(self, value):
+            if value is None:
+                value = NSGA3UnityConstraintGeneticAlgorithm(
+                    ngen = 600,             # number of generations to evolve
+                    mu = 100,               # number of parents in population
+                    lamb = 100,             # number of progeny to produce
+                    cxeta = 30.0,           # crossover variance parameter
+                    muteta = 20.0,          # mutation crossover parameter
+                    refpnts = None,         # hyperplane reference points
+                    save_logbook = False,   # whether to save logs or not
+                    rng = self.rng          # PRNG source
+                )
+            self._moalgo = value
+        def fdel(self):
+            del self._moalgo
+        return locals()
+    moalgo = property(**moalgo())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            if value is None:               # if rng is None
+                value = global_prng         # use default random number generator
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return locals()
+    rng = property(**rng())
+
+    ############################################################################
+    ########################## Private Object Methods ##########################
+    ############################################################################
+    def _get_bv(self, pgmat, gmat, bvmat, gpmod):
         """
         Calculate breeding value matrix for use in optimization.
 
@@ -99,19 +430,14 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``n`` is the number of individuals.
             - ``t`` is the number of traits.
         """
-        if bvtype is None:                  # if no bvtype provided
-            bvtype = self.bvtype            # get default option
-        bvtype = bvtype.lower()             # convert bvtype to lowercase
-        if bvtype == "gebv":                # use GEBVs estimated from genomic model
+        if self.bvtype == "gebv":                # use GEBVs estimated from genomic model
             return gpmod.gebv(gmat).mat     # calculate GEBVs
-        elif bvtype == "ebv":               # use EBVs estimated by some means
+        elif self.bvtype == "ebv":               # use EBVs estimated by some means
             return bvmat.mat                # get breeding values
-        elif bvtype == "tbv":               # use true BVs
+        elif self.bvtype == "tbv":               # use true BVs
             return gpmod.predict(pgmat).mat # calculate true BVs
-        else:
-            raise ValueError("unknown bvtype: options are 'gebv', 'ebv', 'tbv'")
 
-    def calc_K(self, pgmat, gmat, cmatcls = None, bvtype = None):
+    def _calc_K(self, pgmat, gmat):
         """
         Returns
         -------
@@ -122,24 +448,15 @@ class OptimalContributionSelection(SelectionProtocol):
 
             - ``n`` is the number of individuals.
         """
-        # set default parameters
-        if cmatcls is None:                     # if no cmatcls provided
-            cmatcls = self.cmatcls              # get default
-        if bvtype is None:                      # if no bvtype provided
-            bvtype = self.bvtype                # get default option
-        bvtype = bvtype.lower()                 # convert bvtype to lowercase
-        kmat = None                             # decalre kinship matrix variable
-        if bvtype == "gebv":                    # use GEBVs estimated from genomic model
-            return cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif bvtype == "ebv":                   # use EBVs estimated by some means
+        if self.bvtype == "gebv":                    # use GEBVs estimated from genomic model
+            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
+        elif self.bvtype == "ebv":                   # use EBVs estimated by some means
             # TODO: implement pedigree or something
-            return cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif bvtype == "tbv":                   # use true BVs
-            return cmatcls.from_gmat(pgmat).mat # calculate true kinship
-        else:
-            raise ValueError("unknown bvtype: options are 'gebv', 'ebv', 'tbv'")
+            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
+        elif self.bvtype == "tbv":                   # use true BVs
+            return self.cmatcls.from_gmat(pgmat).mat # calculate true kinship
 
-    def solve_OCS(self, bv, C, inbmax):
+    def _solve_OCS(self, bv, C, inbmax):
         """
         Define and solve OCS using CVXPY.
 
@@ -195,7 +512,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
         return contrib
 
-    def sus(self, k, contrib):
+    def _sus(self, k, contrib):
         """
         Perform stochastic universal sampling.
 
@@ -228,7 +545,7 @@ class OptimalContributionSelection(SelectionProtocol):
         sel = numpy.array(sel)                          # convert to ndarray
         return sel
 
-    def outcross_shuffle(self, sel):
+    def _outcross_shuffle(self, sel):
         """
         Shuffle individuals ensuring they do not mate with themselves.
         """
@@ -241,7 +558,10 @@ class OptimalContributionSelection(SelectionProtocol):
                 j += 1                                  # increment beyond index
         return sel
 
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, inbfn = None, cmatcls = None, bvtype = None, **kwargs):
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Select parents individuals for breeding.
 
@@ -265,28 +585,6 @@ class OptimalContributionSelection(SelectionProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).
             If ``None``, user defined output is not calculated or stored.
-        method : str
-            Optimization strategy.
-
-            +--------+---------------------------------------------------------+
-            | Option | Description                                             |
-            +========+=========================================================+
-            | single | Transform all breeding values into a single overall     |
-            |        | breeding value using the function ``objfn_trans``. Then |
-            |        | solve for OCS with a diversity constraint using         |
-            |        | transformed breeding values.                            |
-            +--------+---------------------------------------------------------+
-            | pareto | Treat inbreeding and each trait as different            |
-            |        | objectives. Transform this list of objectives using     |
-            |        | ``objfn_trans`` to get a list of transformed            |
-            |        | objectives. Approximate the Pareto by identifying a set |
-            |        | of non-dominated points along each transformed          |
-            |        | objective. Then apply ``ndset_trans`` to score the      |
-            |        | non-dominated points.                                   |
-            +--------+---------------------------------------------------------+
-        nparent : int
-        ncross : int
-        nprogeny : int
         kwargs : dict
             Additional keyword arguments.
 
@@ -305,55 +603,29 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # get parameters
-        if nparent is None:
-            nparent = self.nparent
-        if ncross is None:
-            ncross = self.ncross
-        if nprogeny is None:
-            nprogeny = self.nprogeny
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-        if ndset_trans is None:
-            ndset_trans = self.ndset_trans
-        if ndset_trans_kwargs is None:
-            ndset_trans_kwargs = self.ndset_trans_kwargs
-        if ndset_wt is None:
-            ndset_wt = self.ndset_wt
-        if inbfn is None:
-            inbfn = self.inbfn
-        if cmatcls is None:
-            cmatcls = self.cmatcls
-        if bvtype is None:
-            bvtype = self.bvtype
-
-        # convert method string to lower
-        method = method.lower()
-
         # Solve OCS using linear programming
-        if method == "single":
+        if self.method == "single":
             ##############################
             # Optimization problem setup #
             ##############################
 
             # get breeding values
-            bv = self.get_bv(pgmat, gmat, bvmat, gpmod)     # (n,t)
+            bv = self._get_bv(pgmat, gmat, bvmat, gpmod)     # (n,t)
 
             # apply transformation to each breeding value weight
-            if objfn_trans:
+            if self.objfn_trans:
                 # for each row (individual), transform the row to a single objective
                 # (n,t) --transform--> (n,)
-                bv = numpy.array([objfn_trans(e, **objfn_trans_kwargs) for e in bv])
+                bv = numpy.array([self.objfn_trans(e, **self.objfn_trans_kwargs) for e in bv])
+
+            if bv.ndim > 1:
+                raise RuntimeError("objfn_trans does not return a scalar value")
 
             # calculate kinship matrix (ndarray)
-            K = self.calc_K(pgmat, gmat, cmatcls, bvtype)   # (n,n)
+            K = self._calc_K(pgmat, gmat)   # (n,n)
 
             # get sqrt(max inbreeding)
-            inbmax = math.sqrt(inbfn(t_cur, t_max))         # sqrt(max inbreeding)
+            inbmax = math.sqrt(self.inbfn(t_cur, t_max))         # sqrt(max inbreeding)
 
             # declare contributions variable
             contrib = None
@@ -363,7 +635,7 @@ class OptimalContributionSelection(SelectionProtocol):
             # ||Cx||_2 <= sqrt(inbfn)
             try:
                 C = numpy.linalg.cholesky(K).T              # (n,n)
-                contrib = self.solve_OCS(bv, C, inbmax)     # solve OCS
+                contrib = self._solve_OCS(bv, C, inbmax)     # solve OCS
             except numpy.linalg.LinAlgError:
                 warnings.warn(
                     "Unable to decompose kinship matrix using Cholesky decomposition: Kinship matrix is not positive definite.\n"+
@@ -380,19 +652,19 @@ class OptimalContributionSelection(SelectionProtocol):
             ##################
 
             # sample selections using stochastic universal sampling
-            sel = self.sus(nparent, contrib)                # sample indices
+            sel = self._sus(self.nparent, contrib)                # sample indices
 
             # make sure parents are forced to outbreed
-            sel = self.outcross_shuffle(sel)
+            sel = self._outcross_shuffle(sel)
 
             # pack contribution proportions into output dictionary
             if miscout is not None:
                 miscout["contrib"] = contrib
 
-            return pgmat, sel, ncross, nprogeny
+            return pgmat, sel, self.ncross, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
-        elif method == "pareto":
+        elif self.method == "pareto":
             # get the pareto frontier
             frontier, sel_config = self.pareto(
                 pgmat = pgmat,
@@ -403,14 +675,11 @@ class OptimalContributionSelection(SelectionProtocol):
                 t_cur = t_cur,
                 t_max = t_max,
                 miscout = miscout,
-                nparent = nparent,
-                objfn_trans = objfn_trans,
-                objfn_trans_kwargs = objfn_trans_kwargs,
-                objfn_wt = objfn_wt
+                **kwargs
             )
 
             # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
 
             # get index of maximum score
             ix = score.argmax()
@@ -420,13 +689,9 @@ class OptimalContributionSelection(SelectionProtocol):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], ncross, nprogeny
+            return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-        # raise error otherwise
-        else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, cmatcls = None, bvtype = None, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return an objective function for the provided datasets.
 
@@ -448,19 +713,15 @@ class OptimalContributionSelection(SelectionProtocol):
         outfn : function
             A selection objective function for the specified problem.
         """
-        # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-        if cmatcls is None:
-            cmatcls = self.cmatcls
-        if bvtype is None:
-            bvtype = self.bvtype
+        # get default parameters
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
+        cmatcls = self.cmatcls
+        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
-        mat = self.get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
-        K = self.calc_K(pgmat, gmat, cmatcls, bvtype)   # (n,n) get kinship matrix
+        mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
+        K = self._calc_K(pgmat, gmat)   # (n,n) get kinship matrix
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -474,23 +735,19 @@ class OptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, cmatcls = None, bvtype = None, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
         """
         Return a vectorized objective function.
         """
         # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-        if cmatcls is None:
-            cmatcls = self.cmatcls
-        if bvtype is None:
-            bvtype = self.bvtype
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
+        cmatcls = self.cmatcls
+        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
-        mat = self.get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
-        K = self.calc_K(pgmat, gmat, cmatcls, bvtype)   # (n,n) get kinship matrix
+        mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
+        K = self._calc_K(pgmat, gmat)   # (n,n) get kinship matrix
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -504,7 +761,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -546,7 +803,45 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        raise NotImplementedError("method is abstract")
+        # get selection parameters
+        nparent = self.nparent
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
+        objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max
+        )
+
+        # create search space
+        sspace = numpy.stack(
+            [numpy.repeat(0.0, ntaxa), numpy.repeat(1.0, ntaxa)]
+        )
+
+        # use multi-objective optimization to approximate Pareto front.
+        frontier, sel_config, misc = self.moalgo.optimize(
+            objfn = objfn,          # objective function
+            k = ntaxa,              # vector length to optimize (sspace^k)
+            sspace = sspace,        # search space options
+            objfn_wt = objfn_wt,    # weights to apply to each objective
+            **kwargs
+        )
+
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
+
+        return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################

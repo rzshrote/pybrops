@@ -11,7 +11,7 @@ from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_Generator
+from pybrops.core.error import cond_check_is_Generator_or_RandomState
 
 class ConventionalPhenotypicSelection(SelectionProtocol):
     """
@@ -38,7 +38,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         ndset_trans : function, callable, None
         ndset_trans_kwargs : dict, None
         ndset_wt : float
-        rng : numpy.Generator
+        rng : numpy.random.Generator, numpy.random.RandomState
         """
         super(ConventionalPhenotypicSelection, self).__init__(**kwargs)
 
@@ -52,7 +52,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         cond_check_is_callable(ndset_trans, "ndset_trans")
         cond_check_is_dict(ndset_trans_kwargs, "ndset_trans_kwargs")
         # TODO: check ndset_wt
-        cond_check_is_Generator(rng, "rng")
+        cond_check_is_Generator_or_RandomState(rng, "rng")
 
         # variable assignment
         self.nparent = nparent

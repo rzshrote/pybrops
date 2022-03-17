@@ -15,7 +15,7 @@ from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
 from pybrops.core.util.haplo import calc_haplobin
@@ -120,7 +120,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                     M = 1.5,        # algorithm crossover genetic map length
                     rng = self.rng  # PRNG source
                 )
-        rng : numpy.Generator
+        rng : numpy.random.Generator, numpy.random.RandomState
         """
         super(OptimalHaploidValueSelection, self).__init__(**kwargs)
 
@@ -326,7 +326,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             if value is None:               # if None
                 value = pybrops.core.random # use default random number generator
                 return                      # exit function
-            check_is_Generator(value, "rng")# check is numpy.Generator
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng

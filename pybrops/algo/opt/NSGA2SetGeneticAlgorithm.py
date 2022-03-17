@@ -38,7 +38,7 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
             Number of progeny to generate.
         M : float
             Length of the chromosome genetic map, in Morgans.
-        rng : numpy.Generator, None
+        rng : numpy.random.Generator, numpy.random.RandomState, None
             Random number generator source.
         kwargs : dict
             Additional keyword arguments.

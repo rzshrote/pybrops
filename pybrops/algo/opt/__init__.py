@@ -10,3 +10,4 @@ from . import OptimizationAlgorithm
 from . import SteepestAscentSetHillClimber
 from . import StochasticAscentSetHillClimber
 from . import NSGA2SetGeneticAlgorithm
+from . import NSGA3UnityConstraintGeneticAlgorithm

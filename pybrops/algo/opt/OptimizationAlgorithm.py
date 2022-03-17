@@ -28,7 +28,7 @@ class OptimizationAlgorithm:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objwt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
         """
         Optimize an objective function.
 
@@ -41,7 +41,7 @@ class OptimizationAlgorithm:
             A vector is formed as sspace^k
         sspace : numpy.ndarray
             Search space that the OptimizationAlgorithm searches in.
-        objwt : numpy.ndarray
+        objfn_wt : numpy.ndarray
             Weight(s) applied to output(s) from the objfn.
 
         Returns
