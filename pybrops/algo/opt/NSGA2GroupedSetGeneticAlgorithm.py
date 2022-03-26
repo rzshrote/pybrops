@@ -134,9 +134,9 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
 
         Parameters
         ----------
-        ind1 : numpy.ndarray
+        ind1 : array_like
             Chromosome of the first parent (modified in place).
-        ind2 : numpy.ndarray
+        ind2 : array_like
             Chromosome of the second parent (modified in place).
         indpb : float
             Probability of initiating a crossover at a specific chromosome
@@ -147,11 +147,13 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         out : tuple
             A tuple of length 2 containing progeny resulting from the crossover.
         """
-        mab = ~numpy.isin(ind1,ind2)        # get mask for ind1 not in ind2
-        mba = ~numpy.isin(ind2,ind1)        # get mask for ind2 not in ind1
-        ap = ind1[mab]                      # get reduced ind1 chromosome
-        bp = ind2[mba]                      # get reduced ind2 chromosome
-        clen = min(len(ap), len(bp))        # get minimum chromosome length
+        a = numpy.array(ind1)           # convert ind1 to numpy.ndarray
+        b = numpy.array(ind2)           # convert ind2 to numpy.ndarray
+        mab = ~numpy.isin(a,b)          # get mask for ind1 not in ind2
+        mba = ~numpy.isin(b,a)          # get mask for ind2 not in ind1
+        ap = a[mab]                     # get reduced ind1 chromosome
+        bp = b[mba]                     # get reduced ind2 chromosome
+        clen = min(len(ap), len(bp))    # get minimum chromosome length
         # crossover algorithm
         p = 0                               # get starting individual phase index
         for i in range(clen):               # for each point in the chromosome
@@ -159,8 +161,13 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
                 p = 1 - p                   # switch parent
             if p == 1:                      # if using second parent
                 ap[i], bp[i] = bp[i], ap[i] # exchange alleles
-        ind1[mab] = ap                      # copy over exchanges
-        ind2[mba] = bp                      # copy over exchanges
+        a[mab] = ap                         # copy over exchanges
+        b[mba] = bp                         # copy over exchanges
+        # copy to original arrays
+        for i in range(len(ind1)):
+            ind1[i] = a[i]
+        for i in range(len(ind2)):
+            ind2[i] = b[i]
         return ind1, ind2
 
     # define set mutation operator
@@ -170,9 +177,9 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
 
         Parameters
         ----------
-        ind : numpy.ndarray
+        ind : array_like
             Individual chromosome to mutate (modified in place).
-        sspace : numpy.ndarray
+        sspace : array_like
             Array representing the set search space.
         indpb : float
             Probability of mutation at a single locus.
@@ -182,13 +189,14 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         ind : array_like
             A mutated chromosome.
         """
+        a = numpy.array(sspace)
         for i in range(len(ind)):
             if self.rng.random() < indpb:
-                mab = ~numpy.isin(sspace,ind)
-                ind[i] = self.rng.choice(sspace[mab], 1, False)[0]
+                mab = ~numpy.isin(a,ind)
+                ind[i] = self.rng.choice(a[mab], 1, False)[0]
         return ind
 
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, grplen = None, grpname = None, grplabel = None, **kwargs):
         """
         Optimize an objective function.
 
@@ -203,6 +211,16 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
             Search space that the OptimizationAlgorithm searches in.
         objfn_wt : numpy.ndarray
             Weight(s) applied to output(s) from the objfn.
+        grplen : numpy.ndarray, None
+            An array of groups. If ``None``, it is assumed that a single group
+            of length ``k`` exists.
+        grpname : numpy.ndarray, None
+            An array of group names of the same shape as ``grplen``. If
+            ``None``, it is assumed
+        grplabel : numpy.ndarray, None
+            An array of the same shape as ``sspace`` containing of group name
+            labels for the search space. If ``None``, it is assumed that all
+            elements in ``sspace`` are part of the same grouping.
 
         Returns
         -------
@@ -229,7 +247,7 @@ class NSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
         )
 
         # create an individual, which is a list representation
-        creator.create("Individual", numpy.ndarray, fitness=creator.FitnessMax)
+        creator.create("Individual", list, fitness=creator.FitnessMax)
 
         # create a toolbox
         toolbox = base.Toolbox()

@@ -15,6 +15,7 @@ from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
 from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
 from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.ConventionalGenomicSelection import ConventionalGenomicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.transfn import trans_dot
@@ -194,11 +195,21 @@ class MyParentSelectionOperator(ParentSelectionOperator):
         super(MyParentSelectionOperator, self).__init__()
         self.pselprot = pselprot
         if self.pselprot is None:
-            self.pselprot = ConventionalPhenotypicSelection(
+            self.pselprot = ConventionalGenomicSelection(
                 nparent = 40,
                 ncross = 1,
                 nprogeny = 80,
-                objfn_trans = trans_sum
+                method = "pareto",
+                objfn_trans = None,
+                objfn_trans_kwargs = None,
+                objfn_wt = numpy.array([1.0, 1.0]),
+                ndset_trans = trans_ndpt_to_vec_dist,
+                ndset_trans_kwargs = {
+                    "objfn_wt": numpy.array([1.0, 1.0]),    # all objectives maximizing
+                    "wt": numpy.array([0.5, 0.5])           # 1/2; equal weight to all
+                },
+                ndset_wt = -1.0,
+                moalgo = None
             )
     def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         pgmat, sel, ncross, nprogeny = self.pselprot.select(
@@ -209,8 +220,7 @@ class MyParentSelectionOperator(ParentSelectionOperator):
             gpmod = gmod["cand"],
             t_cur = t_cur,
             t_max = t_max,
-            miscout = miscout,
-            method = "single"
+            miscout = miscout
         )
         mcfg = {
             "pgmat": pgmat,
@@ -241,7 +251,7 @@ class MyEvaluationOperator(EvaluationOperator):
             nenv = 4,
             var_err = var_err
         )
-        self.bvprot = MeanPhenotypicBreedingValue("taxa", ["yield"])
+        self.bvprot = MeanPhenotypicBreedingValue("taxa", ["syn1","syn2"])
     def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
         geno["queue"].append(self.gtprot.genotype(genome["queue"][-1]))         # genotype incoming inbreds
         genome["queue"].pop(0)                                                  # remove oldest inbreds
@@ -309,28 +319,90 @@ class MyLogbook(Logbook):
         main_bval_true = gpmod.gebv(genome["main"])
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
+        ################ candidate mean expected heterozygosity ################
         self.data["cand_mehe"].append(genome["cand"].mehe())
-        self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
-        self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
-        self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
-        self.data["cand_true_std"].append(cand_bval_true.tstd(descale = True)[0])
-        self.data["cand_true_var_A"].append(gpmod.var_A(genome["cand"])[0])
-        self.data["cand_true_var_a"].append(gpmod.var_a(genome["cand"])[0])
-        self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
-        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
-        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
+        ########################### candidate means ############################
+        tmp = bval["cand"].tmean(descale = True)
+        self.data["cand_mean_syn1"].append(tmp[0])
+        self.data["cand_mean_syn2"].append(tmp[1])
+        ######################### candidate true means #########################
+        tmp = cand_bval_true.tmean(descale = True)
+        self.data["cand_true_mean_syn1"].append(tmp[0])
+        self.data["cand_true_mean_syn2"].append(tmp[1])
+        #################### candidate standard deviations #####################
+        tmp = bval["cand"].tstd(descale = True)
+        self.data["cand_std_syn1"].append(tmp[0])
+        self.data["cand_std_syn2"].append(tmp[1])
+        ################## candidate true standard deviations ##################
+        tmp = cand_bval_true.tstd(descale = True)
+        self.data["cand_true_std_syn1"].append(tmp[0])
+        self.data["cand_true_std_syn2"].append(tmp[1])
+        ############### candidate true additive genetic variance ###############
+        tmp = gpmod.var_A(genome["cand"])
+        self.data["cand_true_var_A_syn1"].append(tmp[0])
+        self.data["cand_true_var_A_syn2"].append(tmp[1])
+        ################ candidate true additive genic variance ################
+        tmp = gpmod.var_a(genome["cand"])
+        self.data["cand_true_var_a_syn1"].append(tmp[0])
+        self.data["cand_true_var_a_syn2"].append(tmp[1])
+        ##################### candidate true bulmer ratio ######################
+        tmp = gpmod.bulmer(genome["cand"])
+        self.data["cand_true_bulmer_syn1"].append(tmp[0])
+        self.data["cand_true_bulmer_syn2"].append(tmp[1])
+        ################# candidate true upper selection limit #################
+        tmp = gpmod.usl(genome["cand"], descale = True)
+        self.data["cand_true_usl_syn1"].append(tmp[0])
+        self.data["cand_true_usl_syn2"].append(tmp[1])
+        ################# candidate true lower selection limit #################
+        tmp = gpmod.lsl(genome["cand"], descale = True)
+        self.data["cand_true_lsl_syn1"].append(tmp[0])
+        self.data["cand_true_lsl_syn2"].append(tmp[1])
+        ########################################################################
+        ################## main mean expected heterozygosity ###################
         self.data["main_mehe"].append(genome["main"].mehe())
-        self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
-        self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
-        self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
-        self.data["main_true_std"].append(main_bval_true.tstd(descale = True)[0])
-        self.data["main_true_var_A"].append(gpmod.var_A(genome["main"])[0])
-        self.data["main_true_var_a"].append(gpmod.var_a(genome["main"])[0])
-        self.data["main_true_bulmer"].append(gpmod.bulmer(genome["main"])[0])
-        self.data["main_true_usl"].append(gpmod.usl(genome["main"], descale = True)[0])
-        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"], descale = True)[0])
+        ############################## main means ##############################
+        tmp = bval["main"].tmean(descale = True)
+        self.data["main_mean_syn1"].append(tmp[0])
+        self.data["main_mean_syn2"].append(tmp[1])
+        ########################### main true means ############################
+        tmp = main_bval_true.tmean(descale = True)
+        self.data["main_true_mean_syn1"].append(tmp[0])
+        self.data["main_true_mean_syn2"].append(tmp[1])
+        ####################### main standard deviations #######################
+        tmp = bval["main"].tstd(descale = True)
+        self.data["main_std_syn1"].append(tmp[0])
+        self.data["main_std_syn2"].append(tmp[1])
+        #################### main true standard deviations #####################
+        tmp = main_bval_true.tstd(descale = True)
+        self.data["main_true_std_syn1"].append(tmp[0])
+        self.data["main_true_std_syn2"].append(tmp[1])
+        ##################### main true genetic variances ######################
+        tmp = gpmod.var_A(genome["main"])
+        self.data["main_true_var_A_syn1"].append(tmp[0])
+        self.data["main_true_var_A_syn2"].append(tmp[1])
+        ###################### main true genic variances #######################
+        tmp = gpmod.var_a(genome["main"])
+        self.data["main_true_var_a_syn1"].append(tmp[0])
+        self.data["main_true_var_a_syn2"].append(tmp[1])
+        ####################### main true bulmer ratios ########################
+        tmp = gpmod.bulmer(genome["main"])
+        self.data["main_true_bulmer_syn1"].append(tmp[0])
+        self.data["main_true_bulmer_syn2"].append(tmp[1])
+        ################### main true lower selection limits ###################
+        tmp = gpmod.usl(genome["main"], descale = True)
+        self.data["main_true_usl_syn1"].append(tmp[0])
+        self.data["main_true_usl_syn2"].append(tmp[1])
+        ################### main true lower selection limits ###################
+        tmp = gpmod.lsl(genome["main"], descale = True)
+        self.data["main_true_lsl_syn1"].append(tmp[0])
+        self.data["main_true_lsl_syn2"].append(tmp[1])
     def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
-        pass
+        self.data_frontier["rep"].append(self.rep)
+        self.data_frontier["t_cur"].append(t_cur)
+        if "frontier" in kwargs:
+            self.data_frontier["frontier"].append(kwargs["frontier"])
+        else:
+            self.data_frontier["frontier"].append(None)
     def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
         pass
     def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
@@ -341,54 +413,145 @@ class MyLogbook(Logbook):
         main_bval_true = gpmod.gebv(genome["main"])
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
+        ################ candidate mean expected heterozygosity ################
         self.data["cand_mehe"].append(genome["cand"].mehe())
-        self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
-        self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
-        self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
-        self.data["cand_true_std"].append(cand_bval_true.tstd(descale = True)[0])
-        self.data["cand_true_var_A"].append(gpmod.var_A(genome["cand"])[0])
-        self.data["cand_true_var_a"].append(gpmod.var_a(genome["cand"])[0])
-        self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
-        self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
-        self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
+        ########################### candidate means ############################
+        tmp = bval["cand"].tmean(descale = True)
+        self.data["cand_mean_syn1"].append(tmp[0])
+        self.data["cand_mean_syn2"].append(tmp[1])
+        ######################### candidate true means #########################
+        tmp = cand_bval_true.tmean(descale = True)
+        self.data["cand_true_mean_syn1"].append(tmp[0])
+        self.data["cand_true_mean_syn2"].append(tmp[1])
+        #################### candidate standard deviations #####################
+        tmp = bval["cand"].tstd(descale = True)
+        self.data["cand_std_syn1"].append(tmp[0])
+        self.data["cand_std_syn2"].append(tmp[1])
+        ################## candidate true standard deviations ##################
+        tmp = cand_bval_true.tstd(descale = True)
+        self.data["cand_true_std_syn1"].append(tmp[0])
+        self.data["cand_true_std_syn2"].append(tmp[1])
+        ############### candidate true additive genetic variance ###############
+        tmp = gpmod.var_A(genome["cand"])
+        self.data["cand_true_var_A_syn1"].append(tmp[0])
+        self.data["cand_true_var_A_syn2"].append(tmp[1])
+        ################ candidate true additive genic variance ################
+        tmp = gpmod.var_a(genome["cand"])
+        self.data["cand_true_var_a_syn1"].append(tmp[0])
+        self.data["cand_true_var_a_syn2"].append(tmp[1])
+        ##################### candidate true bulmer ratio ######################
+        tmp = gpmod.bulmer(genome["cand"])
+        self.data["cand_true_bulmer_syn1"].append(tmp[0])
+        self.data["cand_true_bulmer_syn2"].append(tmp[1])
+        ################# candidate true upper selection limit #################
+        tmp = gpmod.usl(genome["cand"], descale = True)
+        self.data["cand_true_usl_syn1"].append(tmp[0])
+        self.data["cand_true_usl_syn2"].append(tmp[1])
+        ################# candidate true lower selection limit #################
+        tmp = gpmod.lsl(genome["cand"], descale = True)
+        self.data["cand_true_lsl_syn1"].append(tmp[0])
+        self.data["cand_true_lsl_syn2"].append(tmp[1])
+        ########################################################################
+        ################## main mean expected heterozygosity ###################
         self.data["main_mehe"].append(genome["main"].mehe())
-        self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
-        self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
-        self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
-        self.data["main_true_std"].append(main_bval_true.tstd(descale = True)[0])
-        self.data["main_true_var_A"].append(gpmod.var_A(genome["main"])[0])
-        self.data["main_true_var_a"].append(gpmod.var_a(genome["main"])[0])
-        self.data["main_true_bulmer"].append(gpmod.bulmer(genome["main"])[0])
-        self.data["main_true_usl"].append(gpmod.usl(genome["main"], descale = True)[0])
-        self.data["main_true_lsl"].append(gpmod.lsl(genome["main"], descale = True)[0])
+        ############################## main means ##############################
+        tmp = bval["main"].tmean(descale = True)
+        self.data["main_mean_syn1"].append(tmp[0])
+        self.data["main_mean_syn2"].append(tmp[1])
+        ########################### main true means ############################
+        tmp = main_bval_true.tmean(descale = True)
+        self.data["main_true_mean_syn1"].append(tmp[0])
+        self.data["main_true_mean_syn2"].append(tmp[1])
+        ####################### main standard deviations #######################
+        tmp = bval["main"].tstd(descale = True)
+        self.data["main_std_syn1"].append(tmp[0])
+        self.data["main_std_syn2"].append(tmp[1])
+        #################### main true standard deviations #####################
+        tmp = main_bval_true.tstd(descale = True)
+        self.data["main_true_std_syn1"].append(tmp[0])
+        self.data["main_true_std_syn2"].append(tmp[1])
+        ##################### main true genetic variances ######################
+        tmp = gpmod.var_A(genome["main"])
+        self.data["main_true_var_A_syn1"].append(tmp[0])
+        self.data["main_true_var_A_syn2"].append(tmp[1])
+        ###################### main true genic variances #######################
+        tmp = gpmod.var_a(genome["main"])
+        self.data["main_true_var_a_syn1"].append(tmp[0])
+        self.data["main_true_var_a_syn2"].append(tmp[1])
+        ####################### main true bulmer ratios ########################
+        tmp = gpmod.bulmer(genome["main"])
+        self.data["main_true_bulmer_syn1"].append(tmp[0])
+        self.data["main_true_bulmer_syn2"].append(tmp[1])
+        ################### main true lower selection limits ###################
+        tmp = gpmod.usl(genome["main"], descale = True)
+        self.data["main_true_usl_syn1"].append(tmp[0])
+        self.data["main_true_usl_syn2"].append(tmp[1])
+        ################### main true lower selection limits ###################
+        tmp = gpmod.lsl(genome["main"], descale = True)
+        self.data["main_true_lsl_syn1"].append(tmp[0])
+        self.data["main_true_lsl_syn2"].append(tmp[1])
     def reset(self):
         self.data = {
             "rep": [],
             "t_cur": [],
             "cand_mehe": [],
-            "cand_mean": [],
-            "cand_true_mean": [],
-            "cand_std": [],
-            "cand_true_std": [],
-            "cand_true_var_A": [],
-            "cand_true_var_a": [],
-            "cand_true_bulmer": [],
-            "cand_true_usl": [],
-            "cand_true_lsl": [],
+            "cand_mean_syn1": [],
+            "cand_mean_syn2": [],
+            "cand_true_mean_syn1": [],
+            "cand_true_mean_syn2": [],
+            "cand_std_syn1": [],
+            "cand_std_syn2": [],
+            "cand_true_std_syn1": [],
+            "cand_true_std_syn2": [],
+            "cand_true_var_A_syn1": [],
+            "cand_true_var_A_syn2": [],
+            "cand_true_var_a_syn1": [],
+            "cand_true_var_a_syn2": [],
+            "cand_true_bulmer_syn1": [],
+            "cand_true_bulmer_syn2": [],
+            "cand_true_usl_syn1": [],
+            "cand_true_usl_syn2": [],
+            "cand_true_lsl_syn1": [],
+            "cand_true_lsl_syn2": [],
             "main_mehe": [],
-            "main_mean": [],
-            "main_true_mean": [],
-            "main_std": [],
-            "main_true_std": [],
-            "main_true_var_A": [],
-            "main_true_var_a": [],
-            "main_true_bulmer": [],
-            "main_true_usl": [],
-            "main_true_lsl": [],
+            "main_mean_syn1": [],
+            "main_mean_syn2": [],
+            "main_true_mean_syn1": [],
+            "main_true_mean_syn2": [],
+            "main_std_syn1": [],
+            "main_std_syn2": [],
+            "main_true_std_syn1": [],
+            "main_true_std_syn2": [],
+            "main_true_var_A_syn1": [],
+            "main_true_var_A_syn2": [],
+            "main_true_var_a_syn1": [],
+            "main_true_var_a_syn2": [],
+            "main_true_bulmer_syn1": [],
+            "main_true_bulmer_syn2": [],
+            "main_true_usl_syn1": [],
+            "main_true_usl_syn2": [],
+            "main_true_lsl_syn1": [],
+            "main_true_lsl_syn2": [],
+        }
+        self.data_frontier = {
+            "rep": [],
+            "t_cur": [],
+            "frontier": [],
         }
         self.rep = 0
     def write(self, fname):
         pandas_df = pandas.DataFrame(self.data)
+        pandas_df.to_csv(fname, index = False)
+    def write_frontier(self, fname):
+        tmp_df_ls = []
+        for i in range(len(self.data_frontier["frontier"])):
+            tmp_df = pandas.DataFrame(
+                data = self.data_frontier["frontier"][i],
+                columns = ["syn1", "syn2"],
+            )
+            tmp_df["t_cur"] = self.data["t_cur"][i]
+            tmp_df_ls.append(tmp_df)
+        pandas_df = pandas.concat(tmp_df_ls)
         pandas_df.to_csv(fname, index = False)
 
 ################################################################################
@@ -436,7 +599,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(    # create model
 
 ################### Founding parameters ####################
 fndr_heritability = numpy.array([0.4, 0.6])                     # heritability of founder lines
-burnin = 20                                                     # number of burnin generations
+burnin = 10                                                     # number of burnin generations
 t_cur = -burnin                                                 # set t_cur
 t_max = 0                                                       # set t_max
 gqlen = 6                                                       # breeding pipeline queue length
@@ -553,6 +716,7 @@ rsprog = RecurrentSelectionBreedingProgram(
 )
 
 # evolve the population
-rsprog.evolve(nrep = 1, ngen = 20, lbook = lbook, verbose = True)
+rsprog.evolve(nrep = 1, ngen = 10, lbook = lbook, verbose = True)
 
 lbook.write("dh_mocgsrs_program.csv")
+lbook.write_frontier("dh_mocgsrs_program_frontier.csv")
