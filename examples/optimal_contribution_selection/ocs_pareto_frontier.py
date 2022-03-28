@@ -121,7 +121,7 @@ zlabel = dalgmod.trait[1]
 fig = pyplot.figure()
 ax = pyplot.axes(projection = '3d')
 ax.scatter3D(xdata, ydata, zdata)
-ax.set_title("Optimal Contribution Selection Test Pareto Frontier")
+ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
 ax.set_xlabel(xlabel)
 ax.set_ylabel(ylabel)
 ax.set_zlabel(zlabel)
@@ -133,7 +133,7 @@ ax = pyplot.axes(projection = '3d')
 
 def init():
     ax.scatter3D(xdata, ydata, zdata)
-    ax.set_title("Optimal Contribution Selection Test Pareto Frontier")
+    ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_zlabel(zlabel)
