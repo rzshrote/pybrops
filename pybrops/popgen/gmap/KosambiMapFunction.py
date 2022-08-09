@@ -2,6 +2,7 @@
 Module implementing the Kosambi genetic map function and associated error checking routines.
 """
 
+import numpy
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class KosambiMapFunction(GeneticMapFunction):
