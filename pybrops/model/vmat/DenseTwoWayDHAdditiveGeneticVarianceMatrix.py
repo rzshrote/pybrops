@@ -5,7 +5,7 @@ formulae.
 """
 
 import numpy
-
+import pandas
 from pybrops.core.util.subroutines import srange
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
@@ -18,6 +18,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
 
     The purpose of this concrete class is to implement functionality for:
         1) Genetic variance estimation for two-way DH progenies.
+        2) I/O for two-way DH progeny variance matrices.
     """
 
     ############################################################################
@@ -67,6 +68,33 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+    def to_csv(self, fname):
+        # get names for taxa and traits
+        taxa = [str(e) for e in range(self.mat_shape[0])] if self.taxa is None else self.taxa
+        trait = [str(e) for e in range(self.mat_shape[2])]
+
+        # make dictionary to store output columns
+        out_dict = {
+            "Female": [],
+            "Male": [],
+            "Trait": [],
+            "Variance": []
+        }
+
+        # construct columns element by element
+        for femaleix in range(self.mat_shape[0]):
+            for maleix in range(self.mat_shape[1]):
+                for traitix in range(self.mat_shape[2]):
+                    out_dict["Female"].append(taxa[femaleix])
+                    out_dict["Male"].append(taxa[maleix])
+                    out_dict["Trait"].append(trait[traitix])
+                    out_dict["Variance"].append(self[femaleix,maleix,traitix])
+
+        # create a pandas DataFrame from the data
+        out_df = pandas.DataFrame(out_dict)
+
+        # write DataFrame to file
+        out_df.to_csv(fname, index = False)
 
     ############################################################################
     ############################## Class Methods ###############################
@@ -140,7 +168,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         chrgrp_stix = pgmat.vrnt_chrgrp_stix    # (g,) chromosome group start indices
         chrgrp_spix = pgmat.vrnt_chrgrp_spix    # (g,) chromosome group stop indices
         genpos = pgmat.vrnt_genpos              # (p,) marker genetic positions
-        u = algmod.u                            # (p,t) marker effect coefficients
+        u = algmod.u_a                          # (p,t) marker effect coefficients
 
         # allocate a square matrix for each pairwise variance
         var_A = numpy.zeros(

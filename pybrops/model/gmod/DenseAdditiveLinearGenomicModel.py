@@ -95,7 +95,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Where:
 
             - ``q`` is the number of fixed effect predictors (e.g. environments).
-            - ``t`` is the number of individuals.
+            - ``t`` is the number of traits.
         u_misc : numpy.ndarray, None
             A ``float64`` random effect regression coefficient matrix of shape
             ``(p_misc,t)`` containing miscellaneous effects.
@@ -103,7 +103,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Where:
 
             - ``p_misc`` is the number of miscellaneous random effect predictors.
-            - ``t`` is the number of individuals.
+            - ``t`` is the number of traits.
 
             If ``None``, then set to an empty array of shape ``(0,t)``.
         u_a : numpy.ndarray, None
@@ -113,7 +113,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Where:
 
             - ``p_a`` is the number of additive marker effect predictors.
-            - ``t`` is the number of individuals.
+            - ``t`` is the number of traits.
 
             If ``None``, then set to an empty array of shape ``(0,t)``.
         trait : numpy.ndarray, None

@@ -917,7 +917,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
         if axis in self.square_axes:
-            self.reorder(indices = indices, **kwargs)
+            self.reorder_taxa(indices = indices, **kwargs)
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 

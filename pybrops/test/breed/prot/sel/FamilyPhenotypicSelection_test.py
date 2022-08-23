@@ -12,14 +12,13 @@ from pybrops.test import generic_assert_abstract_property
 from pybrops.test import generic_assert_concrete_method
 from pybrops.test import generic_assert_concrete_function
 
-from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -202,7 +201,7 @@ def bvmat(dalgmod, dgmat):
     yield dalgmod.gebv(dgmat)
 
 ############################################################
-############### ConventionalPhenotypicSelection ###############
+############### FamilyPhenotypicSelection ###############
 ############################################################
 @pytest.fixture
 def nparent():
@@ -221,8 +220,8 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def cps(nparent, ncross, nprogeny, rng):
-    yield ConventionalPhenotypicSelection(
+def fps(nparent, ncross, nprogeny, rng):
+    yield FamilyPhenotypicSelection(
         nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
@@ -238,31 +237,31 @@ def objfn_wt():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(ConventionalPhenotypicSelection)
+    generic_assert_docstring(FamilyPhenotypicSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "__init__")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "select")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn_vec")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "objfn_vec")
 
-def test_pareto_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "pareto")
+# def test_pareto_is_concrete():
+#     generic_assert_concrete_method(FamilyPhenotypicSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn_static")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(ConventionalPhenotypicSelection, "objfn_vec_static")
+    generic_assert_concrete_method(FamilyPhenotypicSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -277,7 +276,7 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 def test_select_single(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
     # create selection object
-    obj = ConventionalPhenotypicSelection(
+    obj = FamilyPhenotypicSelection(
         nparent = nparent,
         ncross = ncross,
         nprogeny = nprogeny,
@@ -305,40 +304,40 @@ def test_select_single(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod, ma
 
     assert sel.ndim == 1
 
-def test_select_pareto(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod):
-    # create selection object
-    obj = ConventionalPhenotypicSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        method = "pareto",
-        objfn_trans = None,
-        objfn_trans_kwargs = None,
-        objfn_wt = numpy.array([1.0, 1.0]),
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
-            "wt": numpy.array([.5,.5])
-        },
-        ndset_wt = -1.0,
-        rng = rng,
-        moalgo = None
-    )
+# def test_select_pareto(nparent, ncross, nprogeny, rng, dgmat, bvmat, dalgmod):
+#     # create selection object
+#     obj = FamilyPhenotypicSelection(
+#         nparent = nparent,
+#         ncross = ncross,
+#         nprogeny = nprogeny,
+#         method = "pareto",
+#         objfn_trans = None,
+#         objfn_trans_kwargs = None,
+#         objfn_wt = numpy.array([1.0, 1.0]),
+#         ndset_trans = trans_ndpt_to_vec_dist,
+#         ndset_trans_kwargs = {
+#             "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
+#             "wt": numpy.array([.5,.5])
+#         },
+#         ndset_wt = -1.0,
+#         rng = rng,
+#         moalgo = None
+#     )
+#
+#     pgmat, sel, ncross, nprogeny = obj.select(
+#         pgmat = None,
+#         gmat = dgmat,
+#         ptdf = None,
+#         bvmat = bvmat,
+#         gpmod = dalgmod,
+#         t_cur = 0,
+#         t_max = 20
+#     )
+#
+#     assert sel.ndim == 1
 
-    pgmat, sel, ncross, nprogeny = obj.select(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    assert sel.ndim == 1
-
-def test_objfn_is_function(cps, dgmat, bvmat, dalgmod):
-    objfn = cps.objfn(
+def test_objfn_is_function(fps, dgmat, bvmat, dalgmod):
+    objfn = fps.objfn(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -350,8 +349,8 @@ def test_objfn_is_function(cps, dgmat, bvmat, dalgmod):
 
     assert callable(objfn)
 
-def test_objfn_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
-    objfn = cps.objfn(
+def test_objfn_multiobjective(fps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
+    objfn = fps.objfn(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -366,8 +365,8 @@ def test_objfn_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
     for i,taxon_bv in enumerate(Y):
         numpy.testing.assert_almost_equal(taxon_bv, objfn([i]))
 
-def test_objfn_vec_is_callable(cps, dgmat, bvmat, dalgmod):
-    objfn_vec = cps.objfn_vec(
+def test_objfn_vec_is_callable(fps, dgmat, bvmat, dalgmod):
+    objfn_vec = fps.objfn_vec(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -379,8 +378,8 @@ def test_objfn_vec_is_callable(cps, dgmat, bvmat, dalgmod):
 
     assert callable(objfn_vec)
 
-def test_objfn_vec_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
-    objfn_vec = cps.objfn_vec(
+def test_objfn_vec_multiobjective(fps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
+    objfn_vec = fps.objfn_vec(
         pgmat = None,
         gmat = dgmat,
         ptdf = None,
@@ -398,67 +397,67 @@ def test_objfn_vec_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a)
             objfn_vec([[i],[i]])
         )
 
-def test_pareto(nparent, ncross, nprogeny, dgmat, bvmat, dalgmod, rng):
-    # create selection object
-    obj = ConventionalPhenotypicSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        method = "pareto",
-        objfn_trans = None,
-        objfn_trans_kwargs = None,
-        objfn_wt = numpy.array([1.0, 1.0]),
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
-            "wt": numpy.array([.5,.5])
-        },
-        ndset_wt = -1.0,
-        rng = rng,
-        moalgo = None
-    )
+# def test_pareto(nparent, ncross, nprogeny, dgmat, bvmat, dalgmod, rng):
+#     # create selection object
+#     obj = FamilyPhenotypicSelection(
+#         nparent = nparent,
+#         ncross = ncross,
+#         nprogeny = nprogeny,
+#         method = "pareto",
+#         objfn_trans = None,
+#         objfn_trans_kwargs = None,
+#         objfn_wt = numpy.array([1.0, 1.0]),
+#         ndset_trans = trans_ndpt_to_vec_dist,
+#         ndset_trans_kwargs = {
+#             "objfn_wt": numpy.array([1.0, 1.0]), # both maximizing functions
+#             "wt": numpy.array([.5,.5])
+#         },
+#         ndset_wt = -1.0,
+#         rng = rng,
+#         moalgo = None
+#     )
+#
+#     frontier, sel_config = obj.pareto(
+#         pgmat = None,
+#         gmat = dgmat,
+#         ptdf = None,
+#         bvmat = bvmat,
+#         gpmod = dalgmod,
+#         t_cur = 0,
+#         t_max = 20
+#     )
+#
+#     xdata = frontier[:,0]
+#     ydata = frontier[:,1]
+#     # zdata = frontier[:,2]
+#
+#     xlabel = dalgmod.trait[0]
+#     ylabel = dalgmod.trait[1]
+#
+#     fig = pyplot.figure()
+#     ax = pyplot.axes()
+#     ax.scatter(xdata, ydata)
+#     ax.set_xlabel(xlabel)
+#     ax.set_ylabel(ylabel)
+#     ax.set_title("Conventional Phenotypic Selection Test Pareto Frontier")
+#     # ax = pyplot.axes(projection='3d')
+#     # ax.scatter3D(xdata, ydata, zdata)
+#     pyplot.savefig("CPS_2d_frontier.png", dpi = 250)
 
-    frontier, sel_config = obj.pareto(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    xdata = frontier[:,0]
-    ydata = frontier[:,1]
-    # zdata = frontier[:,2]
-
-    xlabel = dalgmod.trait[0]
-    ylabel = dalgmod.trait[1]
-
-    fig = pyplot.figure()
-    ax = pyplot.axes()
-    ax.scatter(xdata, ydata)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    ax.set_title("Conventional Phenotypic Selection Test Pareto Frontier")
-    # ax = pyplot.axes(projection='3d')
-    # ax.scatter3D(xdata, ydata, zdata)
-    pyplot.savefig("CPS_2d_frontier.png", dpi = 250)
-
-def test_objfn_static_multiobjective(cps, bvmat):
+def test_objfn_static_multiobjective(fps, bvmat):
     Y = bvmat.mat # (n,t) values
 
     for i,taxon_bv in enumerate(Y):
         numpy.testing.assert_almost_equal(
             taxon_bv,
-            cps.objfn_static([i], Y, None, None)
+            fps.objfn_static([i], Y, None, None)
         )
 
-def test_objfn_vec_static_multiobjective(cps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
+def test_objfn_vec_static_multiobjective(fps, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
     Y = bvmat.mat # (n,t) values
 
     for i,taxon_bv in enumerate(Y):
         numpy.testing.assert_almost_equal(
             numpy.stack([taxon_bv, taxon_bv]),
-            cps.objfn_vec_static([[i],[i]], Y, None, None)
+            fps.objfn_vec_static([[i],[i]], Y, None, None)
         )
