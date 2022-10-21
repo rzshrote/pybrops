@@ -1,27 +1,50 @@
-from . import generic_check_is_not
-from . import generic_check_dict_keys
-from . import generic_check_len_eq
-from . import generic_check_gteq
+from typing import Any
 
 from . import generic_default_cond
 from . import generic_cond_check_is_not
 from . import generic_cond_check_dict_keys
+from . import generic_cond_check_len
 from . import generic_cond_check_len_eq
 from . import generic_cond_check_gteq
-from . import generic_check_keys_in_dict_all
 
 ################################################################################
 ############################### check functions ################################
 ################################################################################
-def check_is_not_None(v, vname):
-    generic_check_is_not(v, vname, None, "None")
+def check_is_not_None(v: Any, vname: str) -> None:
+    """
+    Check if an object is not None.
+    Raise error if object is None.
 
-def check_len(v, vname, n):
-    if len(v) != n:
-        raise ValueError("the length of '{0}' is not equal to {1}".format(vname,n))
+    Parameters
+    ----------
+    v : object
+        Any Python object
+    vname : str
+        Name of the Python object for use in the error message.
+    """
+    if v is None:
+        raise ValueError("variable '{0}' is not 'None'".format(vname))
 
-def check_len_eq(v, vname, w, wname):
-    generic_check_len_eq(v, vname, w, wname)
+def check_len(v: Any, vname: str, vlen: int) -> None:
+    """
+    Check if an object has a length equal to a provided value.
+    Raise error if object length is not equal to provided value.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object
+    vname : str
+        Name of the Python object for use in the error message.
+    vlen : int
+        Expected length of the Python object.
+    """
+    if len(v) != vlen:
+        raise ValueError("the length of '{0}' is not equal to {1}".format(vname,vlen))
+
+def check_len_eq(v: Any, vname: str, w: Any, wname: str) -> None:
+    if len(v) != len(w):
+        raise ValueError("the lengths of '{0}' and '{1}' are not equivalent".format(vname, wname))
 
 def check_all_equal(v, vname):
     viter = iter(v)
@@ -32,8 +55,19 @@ def check_all_equal(v, vname):
     if any(e0 != e for e in viter):
         raise ValueError("not all elements in {0} are equal to {1}".format(vname, e0))
 
-def check_is_positive(v, vname):
-    generic_check_gteq(v, vname, 0)
+def check_is_positive(v: Any, vname: str):
+    """
+    Check if a Python object is positive. Raise error if it is not.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object,
+    vname : str
+        Name of the Python object for use in the error message.
+    """
+    if v < 0:
+        raise ValueError("variable '{0}' must be positive".format(vname))
 
 def check_is_gt(obj, objname, value):
     """Raise error if ``obj`` is not greater than ``value``."""
@@ -42,6 +76,30 @@ def check_is_gt(obj, objname, value):
             "variable '{0}' is not greater than {1}".format(objname, value)
         )
 
+def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> None:
+    """
+    Check if a floating point value is in the provided range.
+    
+    Parameters
+    ----------
+    v : float
+        Input floating point value.
+    vname : str
+        Name of the variable of which to test.
+    vmin : float
+        Minimum value for the input floating point value.
+    vmax : float
+        Maximum value for the input floating point value.
+    
+    Returns
+    -------
+    out : outtype
+        outdesc
+    """
+    if (v < vmin) or (v > vmax):
+        raise ValueError(
+            "variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax)
+        )
 
 ##################################################
 ########### Dictionary check functions ###########

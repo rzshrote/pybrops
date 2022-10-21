@@ -1,9 +1,11 @@
+from typing import Any
+
 # generic subroutines for other error subroutines
 
 ################################################################################
 ############################### check functions ################################
 ################################################################################
-def generic_check_isinstance(v, vname, vtype):
+def generic_check_isinstance(v: Any, vname, vtype):
     """
     Generic check type function.
 
