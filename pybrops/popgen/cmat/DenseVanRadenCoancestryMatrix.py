@@ -218,7 +218,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
         # multiply p_anc by ploidy level to get mean number of alleles we expect
         # (p,) -> (1,p)
         # (1,p) * scalar -> (1,p)
-        M = p_anc[None,:] * gmat.ploidy
+        M = p_anc[None,:] * float(gmat.ploidy)
 
         # get the genotype matrix
         X = gmat.mat_asformat("{0,1,2}")
@@ -228,7 +228,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 
         # calculate the scaling coefficient for ZZ'
         # 1 / (2p(1-p))
-        G_scale = 1.0 / (2.0 * p_anc.dot(1.0 - p_anc))
+        G_scale = 1.0 / (float(gmat.ploidy) * p_anc.dot(1.0 - p_anc))
 
         # calculate the G matrix:
         # G = G_scale * ZZ'
@@ -244,4 +244,55 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 
         return out
 
-        
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_DenseVanRadenCoancestryMatrix(v):
+    """
+    Determine whether an object is a DenseVanRadenCoancestryMatrix.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        True or False for whether v is a DenseVanRadenCoancestryMatrix object instance.
+    """
+    return isinstance(v, DenseVanRadenCoancestryMatrix)
+
+def check_is_DenseVanRadenCoancestryMatrix(v, vname):
+    """
+    Check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, DenseVanRadenCoancestryMatrix):
+        raise TypeError("variable '{0}' must be a DenseVanRadenCoancestryMatrix".format(vname))
+
+def cond_check_is_DenseVanRadenCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
+    """
+    Conditionally check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise
+    TypeError.
+
+    Parameters
+    ----------
+    v : any object
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    cond : function
+        A function returning True/False for whether to test if is a
+        DenseVanRadenCoancestryMatrix.
+    """
+    if cond(v):
+        check_is_DenseVanRadenCoancestryMatrix(v, vname)
