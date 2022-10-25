@@ -3,6 +3,7 @@ Module defining basal coancestry matrix interfaces and associated error checking
 """
 
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class CoancestryMatrix(SquareTaxaMatrix):
     """
@@ -88,13 +89,52 @@ class CoancestryMatrix(SquareTaxaMatrix):
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+    
+    def is_positive_semidefinite(self, eigvaltol: float):
+        """
+        Determine whether the coancestry matrix is positive semidefinite.
+        
+        Parameters
+        ----------
+        eigvaltol : float
+            Eigenvalue tolerance for determining positive semidefiniteness.
+
+        Returns
+        -------
+        out : bool
+            Whether the coancestry matrix is positive semidefinite.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def apply_jitter(self, eigvaltol: float, minjitter: float, maxjitter: float):
+        """
+        Add a random jitter value to the diagonal of the coancestry matrix until 
+        all eigenvalues exceed the provided eigenvalue tolerance.
+        This ensures that a matrix can be decomposed using the Cholesky decomposition.
+        This routine attempts to apply a jitter 100 times before giving up.
+
+        Parameters
+        ----------
+        eigvaltol : float
+            Eigenvalue tolerance.
+        minjitter : float
+            Minimum jitter value applied to a diagonal element.
+        maxjitter : float
+            Maximum jitter value applied to a diagonal element.
+        
+        Returns
+        -------
+        out : bool
+            Whether the jitter was successfully applied.
+        """
+        raise NotImplementedError("method is abstract")
 
 
     ############################################################################
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmat(cls, gmat, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs):
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 

@@ -3,6 +3,7 @@ Module providing dense coancestry matrix implementations and associated error ch
 """
 
 import numpy
+import warnings
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_all_equal
@@ -217,6 +218,62 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             Additional keyword arguments.
         """
         return 0.5 * self._mat[args]
+
+    def is_positive_semidefinite(self, eigvaltol = 2e-14):
+        """
+        Determine whether the coancestry matrix is positive semidefinite.
+        
+        Parameters
+        ----------
+        eigvaltol : float
+            Eigenvalue tolerance for determining positive semidefiniteness.
+
+        Returns
+        -------
+        out : bool
+            Whether the coancestry matrix is positive semidefinite.
+        """
+        return numpy.all(numpy.linalg.eigvals(self._mat) >= eigvaltol)
+    
+    def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6):
+        """
+        Add a random jitter value to the diagonal of the coancestry matrix until 
+        all eigenvalues exceed the provided eigenvalue tolerance.
+        This ensures that a matrix can be decomposed using the Cholesky decomposition.
+        This routine attempts to apply a jitter 100 times before giving up.
+
+        Parameters
+        ----------
+        eigvaltol : float
+            Eigenvalue tolerance.
+        minjitter : float
+            Minimum jitter value applied to a diagonal element.
+        maxjitter : float
+            Maximum jitter value applied to a diagonal element.
+        
+        Returns
+        -------
+        out : bool
+            Whether the jitter was successfully applied.
+        """
+        diagix = numpy.diag_indices_from(self._mat)
+        mat_diag_old = self._mat[diagix].copy()
+        counter = 0
+        is_not_posdef = not self.is_positive_semidefinite(eigvaltol)
+
+        # attempt to apply jitter in 100 or less attempts
+        while (is_not_posdef) and (counter < 100):
+            self._mat[diagix] = mat_diag_old + numpy.random.uniform(minjitter, maxjitter, len(mat_diag_old))
+            is_not_posdef = not self.is_positive_semidefinite(eigvaltol)
+            counter += 1
+        
+        # if we still weren't able to find appropriate jitter, then give old diagonals and warn
+        if is_not_posdef:
+            self._mat[diagix] = mat_diag_old
+            warnings.warn("Unable to successfully apply jitter to meet eigenvalue tolerance")
+            return False
+        
+        return True
 
 
 

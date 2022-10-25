@@ -185,10 +185,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         # test ploidy level and apply appropriate coancestry calculation
         if ploidy == 1:
             Y = 1 - X                                   # calculate complement to X
-            mat = rnvrnt * ((X @ X.T) + (Y @ Y.T))      # (1/m)(XX' + YY')
+            mat = (2.0 * rnvrnt) * ((X @ X.T) + (Y @ Y.T))  # (2/m)(XX' + YY')
         elif ploidy == 2:
             X -= 1                                      # {-1,0,1} format
-            mat = 0.5 * (1.0 + (rnvrnt * (X @ X.T)))    # (1/2)(1+((1/m)XX'))
+            mat = (1.0 + (rnvrnt * (X @ X.T)))          # (1+((1/m)XX'))
         ####################################################
 
         ####################################################

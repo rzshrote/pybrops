@@ -2,12 +2,15 @@
 Module implementing selection protocols for optimal contribution selection.
 """
 
+from optparse import Option
 import cvxpy
 import math
 import numpy
 import warnings
 import types
 from typing import Callable
+from typing import Union
+from typing import Optional
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -21,6 +24,10 @@ from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class OptimalContributionSelection(SelectionProtocol):
     """
@@ -412,7 +419,13 @@ class OptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _get_bv(self, pgmat, gmat, bvmat, gpmod):
+    def _get_bv(
+            self, 
+            pgmat: Optional[PhasedGenotypeMatrix], 
+            gmat: Optional[GenotypeMatrix], 
+            bvmat: Optional[BreedingValueMatrix], 
+            gpmod: Optional[GenomicModel]
+        ) -> BreedingValueMatrix:
         """
         Calculate breeding value matrix for use in optimization.
 
@@ -426,31 +439,44 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``n`` is the number of individuals.
             - ``t`` is the number of traits.
         """
-        if self.bvtype == "gebv":           # use GEBVs estimated from genomic model
-            return gpmod.gebv(gmat).mat     # calculate GEBVs
-        elif self.bvtype == "ebv":          # use EBVs estimated by some means
-            return bvmat.mat                # get breeding values
-        elif self.bvtype == "tbv":          # use true BVs
-            return gpmod.predict(pgmat).mat # calculate true BVs
+        if self.bvtype == "gebv":       # use GEBVs estimated from genomic model
+            return gpmod.gebv(gmat)     # calculate GEBVs
+        elif self.bvtype == "ebv":      # use EBVs estimated by some means
+            return bvmat                # get breeding values
+        elif self.bvtype == "tbv":      # use true BVs
+            return gpmod.gebv(pgmat)    # calculate true BVs
 
-    def _calc_K(self, pgmat, gmat):
+    def _calc_G(
+            self, 
+            pgmat: Optional[PhasedGenotypeMatrix], 
+            gmat: Optional[GenotypeMatrix]
+        ) -> CoancestryMatrix:
         """
+        Calculate a kinship matrix from a genotype matrix.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix, None
+            True phased genome matrix.
+        gmat : GenotypeMatrix, None
+            Genotype matrix.
+
         Returns
         -------
-        out : numpy.ndarray
-            A kinship matrix of shape ``(n,n)``.
+        out : CoancestryMatrix
+            A coancestry matrix of shape ``(n,n)``.
 
             Where:
 
             - ``n`` is the number of individuals.
         """
-        if self.bvtype == "gebv":                    # use GEBVs estimated from genomic model
-            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif self.bvtype == "ebv":                   # use EBVs estimated by some means
+        if self.bvtype == "gebv":                   # use GEBVs estimated from genomic model
+            return self.cmatcls.from_gmat(gmat)     # calculate kinship using gmat
+        elif self.bvtype == "ebv":                  # use EBVs estimated by some means
             # TODO: implement pedigree or something
-            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif self.bvtype == "tbv":                   # use true BVs
-            return self.cmatcls.from_gmat(pgmat).mat # calculate true kinship
+            return self.cmatcls.from_gmat(gmat)     # calculate kinship using gmat
+        elif self.bvtype == "tbv":                  # use true BVs
+            return self.cmatcls.from_gmat(pgmat)    # calculate true kinship
 
     def _solve_OCS(self, bv, C, inbmax):
         """
@@ -605,8 +631,8 @@ class OptimalContributionSelection(SelectionProtocol):
             # Optimization problem setup #
             ##############################
 
-            # get breeding values (n,t)
-            bv = self._get_bv(pgmat, gmat, bvmat, gpmod)     # (n,t)
+            # get breeding values: (n,t)
+            bv = self._get_bv(pgmat, gmat, bvmat, gpmod).mat
 
             # apply transformation to each breeding value weight
             if self.objfn_trans:
@@ -617,31 +643,31 @@ class OptimalContributionSelection(SelectionProtocol):
             if bv.ndim > 1:
                 raise RuntimeError("objfn_trans does not return a scalar value")
 
-            # calculate kinship matrix (ndarray)
-            K = self._calc_K(pgmat, gmat)   # (n,n)
-
-            # get sqrt(max inbreeding)
-            inbmax = math.sqrt(self.inbfn(t_cur, t_max))         # sqrt(max inbreeding)
+            # get genomic relationship matrix: (n,n)
+            G = self._calc_G(pgmat, gmat)
 
             # declare contributions variable
             contrib = None
 
-            # cholesky decompose K into K = C'C
-            # needed to decompose x'Kx <= inbfn to:
-            # ||Cx||_2 <= sqrt(inbfn)
-            try:
-                C = numpy.linalg.cholesky(K).T              # (n,n)
-                contrib = self._solve_OCS(bv, C, inbmax)     # solve OCS
-            except numpy.linalg.LinAlgError:
+            # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+            # if we successfully were able to apply the jitter, then perform optimization.
+            if G.apply_jitter():
+                inbmax = math.sqrt(self.inbfn(t_cur, t_max))    # sqrt(max inbreeding)
+                K = G.mat_asformat("kinship")                   # convert G to (1/2)G (kinship analogue): (n,n)
+                C = numpy.linalg.cholesky(K).T                  # cholesky decomposition of K matrix: (n,n)
+                contrib = self._solve_OCS(bv, C, inbmax)        # solve OCS
+            
+            # else we revert to fitness proportional or uniform selection
+            else:
                 warnings.warn(
                     "Unable to decompose kinship matrix using Cholesky decomposition: Kinship matrix is not positive definite.\n"+
                     "    This could be caused by lack of genetic diversity.\n"+
                     "Reverting to windowed fitness proportional or uniform selection..."
                 )
-                ntaxa = len(bv)                             # get number of taxa
-                contrib = bv - bv.min()                     # window fitnesses
-                if contrib.sum() < 1e-10:                   # if everything is near identical
-                    contrib = numpy.repeat(1/ntaxa, ntaxa)  # default to equal chance
+                ntaxa = len(bv)                                 # get number of taxa
+                contrib = bv - bv.min()                         # window fitnesses
+                if contrib.sum() < 1e-10:                       # if everything is near identical
+                    contrib = numpy.repeat(1/ntaxa, ntaxa)      # default to equal chance
 
             ##################
             # select parents #
@@ -712,12 +738,11 @@ class OptimalContributionSelection(SelectionProtocol):
         # get default parameters
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
-        mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
-        K = self._calc_K(pgmat, gmat)   # (n,n) get kinship matrix
+        mat = self._get_bv(pgmat, gmat, bvmat, gpmod).mat   # (n,t) get breeding values
+        G = self._calc_G(pgmat, gmat)                       # (n,n) get genomic relationship matrix
+        K = G.mat_asformat("kinship")                       # (n,n) kinship matrix
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -738,12 +763,11 @@ class OptimalContributionSelection(SelectionProtocol):
         # get default parameters if any are None
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
-        mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
-        K = self._calc_K(pgmat, gmat)   # (n,n) get kinship matrix
+        mat = self._get_bv(pgmat, gmat, bvmat, gpmod).mat   # (n,t) get breeding values
+        G = self._calc_G(pgmat, gmat)                       # (n,n) get genomic relationship matrix
+        K = G.mat_asformat("kinship")                       # (n,n) kinship matrix
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -800,9 +824,6 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``k`` is the number of search space decision variables.
         """
         # get selection parameters
-        nparent = self.nparent
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
 
         # get number of taxa
