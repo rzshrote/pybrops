@@ -7,6 +7,10 @@ from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 class CoancestryMatrix(SquareTaxaMatrix):
     """
     An abstract class for coancestry matrices. Coancestry matrices are square.
+    Coancestry matrices are related to kinship matrices in the following manner:
+
+    ..math:
+        \\mathbf{K} = \\frac{1}{2}\\mathbf{A}
 
     The purpose of this abstract class is to define base functionality for:
         1) Coancestry matrix value calculation.
@@ -41,7 +45,24 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################## Object Methods ##############################
     ############################################################################
 
-    ################## Coancestry Methods ##################
+    ################## Matrix conversion ###################
+    def mat_asformat(self, format: str):
+        """
+        Get matrix in a specific format.
+        
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            Matrix in the desired output format.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ############## Coancestry/kinship Methods ##############
     def coancestry(self, *args, **kwargs):
         """
         Retrieve the coancestry between individuals.
@@ -54,6 +75,20 @@ class CoancestryMatrix(SquareTaxaMatrix):
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+
+    def kinship(self, *args, **kwargs):
+        """
+        Retrieve the kinship between individuals.
+
+        Parameters
+        ----------
+        args : tuple
+            A tuple of matrix indices to access the kinship.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
 
     ############################################################################
     ############################## Class Methods ###############################
@@ -69,6 +104,11 @@ class CoancestryMatrix(SquareTaxaMatrix):
             Input genotype matrix from which to calculate coancestry.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : cls
+            A coancestry matrix.
         """
         raise NotImplementedError("class method is abstract")
 

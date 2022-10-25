@@ -220,8 +220,8 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
         # (1,p) * scalar -> (1,p)
         M = p_anc[None,:] * float(gmat.ploidy)
 
-        # get the genotype matrix
-        X = gmat.mat_asformat("{0,1,2}")
+        # get the genotype matrix as {0,1,2,...}
+        X = gmat.tacount()
         
         # subtract mean from genotype matrix
         Z = X - M
@@ -242,6 +242,13 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
 
+        # copy taxa metadata if available
+        out.taxa_grp_name = gmat.taxa_grp_name
+        out.taxa_grp_stix = gmat.taxa_grp_stix
+        out.taxa_grp_spix = gmat.taxa_grp_spix
+        out.taxa_grp_len = gmat.taxa_grp_len
+
+        # return matrix
         return out
 
 

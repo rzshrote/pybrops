@@ -7,28 +7,24 @@ import math
 import numpy
 import warnings
 import types
+from typing import Callable
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_inherits
-from pybrops.core.error import check_isinstance
-from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
-from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
+from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
 
 class OptimalContributionSelection(SelectionProtocol):
     """
-    Class implementing selection protocols for optimal contribution selection.
+    Class implementing selection protocols for genomic optimal contribution selection.
 
     # TODO: add formulae for methodology.
     """
@@ -37,8 +33,8 @@ class OptimalContributionSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self,
-    nparent, ncross, nprogeny, inbfn,
-    cmatcls = DenseMolecularCoancestryMatrix, bvtype = "gebv", method = "single",
+    nparent: int, ncross: int, nprogeny: int, inbfn: Callable,
+    cmatcls: type = DenseVanRadenCoancestryMatrix, bvtype = "gebv", method = "single",
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
     moalgo = None,
@@ -430,11 +426,11 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``n`` is the number of individuals.
             - ``t`` is the number of traits.
         """
-        if self.bvtype == "gebv":                # use GEBVs estimated from genomic model
+        if self.bvtype == "gebv":           # use GEBVs estimated from genomic model
             return gpmod.gebv(gmat).mat     # calculate GEBVs
-        elif self.bvtype == "ebv":               # use EBVs estimated by some means
+        elif self.bvtype == "ebv":          # use EBVs estimated by some means
             return bvmat.mat                # get breeding values
-        elif self.bvtype == "tbv":               # use true BVs
+        elif self.bvtype == "tbv":          # use true BVs
             return gpmod.predict(pgmat).mat # calculate true BVs
 
     def _calc_K(self, pgmat, gmat):
@@ -609,7 +605,7 @@ class OptimalContributionSelection(SelectionProtocol):
             # Optimization problem setup #
             ##############################
 
-            # get breeding values
+            # get breeding values (n,t)
             bv = self._get_bv(pgmat, gmat, bvmat, gpmod)     # (n,t)
 
             # apply transformation to each breeding value weight
