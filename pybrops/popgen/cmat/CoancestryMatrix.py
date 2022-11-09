@@ -106,7 +106,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def apply_jitter(self, eigvaltol: float, minjitter: float, maxjitter: float):
+    def apply_jitter(self, eigvaltol: float, minjitter: float, maxjitter: float, nattempt: int):
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
         all eigenvalues exceed the provided eigenvalue tolerance.
@@ -121,6 +121,8 @@ class CoancestryMatrix(SquareTaxaMatrix):
             Minimum jitter value applied to a diagonal element.
         maxjitter : float
             Maximum jitter value applied to a diagonal element.
+        nattempt : int
+            Number of jitter application attempts.
         
         Returns
         -------

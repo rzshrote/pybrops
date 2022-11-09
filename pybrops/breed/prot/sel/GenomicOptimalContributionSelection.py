@@ -2,6 +2,7 @@
 Module implementing selection protocols for optimal contribution selection.
 """
 
+from distutils.log import warn
 from optparse import Option
 import cvxpy
 import math
@@ -28,6 +29,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
 
 class OptimalContributionSelection(SelectionProtocol):
     """
@@ -478,62 +480,6 @@ class OptimalContributionSelection(SelectionProtocol):
         elif self.bvtype == "tbv":                  # use true BVs
             return self.cmatcls.from_gmat(pgmat)    # calculate true kinship
 
-    def _solve_OCS(self, bv, C, inbmax):
-        """
-        Define and solve OCS using CVXPY.
-
-        Parameters
-        ----------
-        bv : numpy.ndarray
-            Array of shape ``(n,)`` containing breeding values for each parent.
-        C : numpy.ndarray
-            Array of shape ``(n,n)`` containing the Cholesky decomposition of
-            the kinship matrix. Must be an upper triangle matrix.
-        inbmax : float
-            Maximum mean inbreeding allowed.
-
-        Returns
-        -------
-        contrib : numpy.ndarray
-            A contribution vector of shape ``(n,)`` defining each parent's
-            relative contribution.
-        """
-        # get the number of taxa
-        ntaxa = len(bv)
-
-        # define vector variable to optimize
-        x = cvxpy.Variable(ntaxa)                   # (n,)
-
-        # define the objective function
-        soc_objfn = cvxpy.Maximize(bv @ x)          # max (bv)'(sel)
-
-        # define constraints
-        soc_constraints = [
-            cvxpy.SOC(inbmax, C @ x),               # ||C @ x||_2 <= inbmax
-            cvxpy.sum(x) == 1.0,                    # sum(x_i) == 1
-            x >= 0.0                                # x_i >= 0 for all i
-        ]
-
-        # define problem
-        prob = cvxpy.Problem(
-            soc_objfn,                              # maximize yield
-            soc_constraints                         # diversity constraint
-        )
-
-        # solve the problem
-        sol = prob.solve()
-
-        # calculate contributions based on the state of the problem
-        contrib = None
-        if prob.status != "optimal":                    # if the problem is not optimal, use windowed fitness proportional selection
-            contrib = bv - bv.min()                     # window fitnesses
-            if contrib.sum() < 1e-10:                   # if everything is near identical
-                contrib = numpy.repeat(1/ntaxa, ntaxa)  # default to equal chance
-        else:                                           # else, problem has been solved
-            contrib = numpy.array(x.value)              # convert solution to numpy.ndarray
-
-        return contrib
-
     def _sus(self, k, contrib):
         """
         Perform stochastic universal sampling.
@@ -625,7 +571,7 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # Solve OCS using linear programming
+        # Solve OCS using second order cone programming
         if self.method == "single":
             ##############################
             # Optimization problem setup #
@@ -640,6 +586,7 @@ class OptimalContributionSelection(SelectionProtocol):
                 # (n,t) --transform--> (n,)
                 bv = numpy.array([self.objfn_trans(e, **self.objfn_trans_kwargs) for e in bv])
 
+            # make sure transformation is done correctly.
             if bv.ndim > 1:
                 raise RuntimeError("objfn_trans does not return a scalar value")
 
@@ -652,18 +599,70 @@ class OptimalContributionSelection(SelectionProtocol):
             # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
             # if we successfully were able to apply the jitter, then perform optimization.
             if G.apply_jitter():
-                inbmax = math.sqrt(self.inbfn(t_cur, t_max))    # sqrt(max inbreeding)
                 K = G.mat_asformat("kinship")                   # convert G to (1/2)G (kinship analogue): (n,n)
+                K_inv = numpy.linalg.inv(K)                     # get K^-1 needed for bounds check
+
+                inb_target = self.inbfn(t_cur, t_max)           # get target inbreeding level
+                inb_min = 1.0 / K_inv.sum()                     # 1 / (1'K^(-1)1)
+                inb_max = numpy.max(numpy.trace(K))             # max(trace(K))
+
+                # test for infeasibility
+                if inb_target < inb_min:
+                    warnings.warn(
+                        "Provided inbreeding target of {0} is infeasible.\n".format(inb_target) +
+                        "Increasing inbreeding target to {0} which is in feasible region...".format(inb_min + 1e-6)
+                    )
+                    # give some wiggle room for numerical inaccuracies due to matrix
+                    # inversion, which is by nature unstable.
+                    inb_target = inb_min + 1e-6
+                if inb_target > inb_max:
+                    warnings.warn(
+                        "Provided inbreeding target of {0} is infeasible.\n".format(inb_target) +
+                        "Decreasing inbreeding target to {0} which is in feasible region...".format(inb_max)
+                    )
+                    inb_target = inb_max
+
+                # calculate constants for optimization
                 C = numpy.linalg.cholesky(K).T                  # cholesky decomposition of K matrix: (n,n)
-                contrib = self._solve_OCS(bv, C, inbmax)        # solve OCS
-            
-            # else we revert to fitness proportional or uniform selection
+
+                # get the number of taxa
+                ntaxa = len(bv)
+
+                # define vector variable to optimize
+                solution = cvxpy.Variable(ntaxa)                    # (n,)
+
+                # define the objective function
+                soc_objfn = cvxpy.Maximize(bv @ solution)           # max (bv)'(sel)
+
+                # define constraints
+                soc_constraints = [
+                    cvxpy.SOC(math.sqrt(inb_target), C @ solution), # ||C @ x||_2 <= sqrt(max inbreeding)
+                    cvxpy.sum(solution) == 1.0,                     # sum(x_i) == 1
+                    solution >= 0.0                                 # x_i >= 0 for all i
+                ]
+
+                # define problem
+                problem = cvxpy.Problem(
+                    soc_objfn,                              # maximize yield
+                    soc_constraints                         # diversity constraint
+                )
+
+                # solve the problem
+                problem.solve()
+
+                # store solution results
+                if problem.status == "optimal":
+                    contrib = numpy.array(solution.value)       # convert solution to numpy.ndarray
+                else:
+                    warnings.warn("Problem.status == {0}\n".format(problem.status))
             else:
                 warnings.warn(
-                    "Unable to decompose kinship matrix using Cholesky decomposition: Kinship matrix is not positive definite.\n"+
-                    "    This could be caused by lack of genetic diversity.\n"+
-                    "Reverting to windowed fitness proportional or uniform selection..."
+                    "Unable to solve SOCP: Kinship matrix is not positive definite.\n"+
+                    "    This could be caused by lack of genetic diversity.\n"
                 )
+            
+            if contrib is None:
+                warnings.warn("Reverting to windowed fitness proportional or uniform selection...")
                 ntaxa = len(bv)                                 # get number of taxa
                 contrib = bv - bv.min()                         # window fitnesses
                 if contrib.sum() < 1e-10:                       # if everything is near identical
@@ -674,7 +673,8 @@ class OptimalContributionSelection(SelectionProtocol):
             ##################
 
             # sample selections using stochastic universal sampling
-            sel = self._sus(self.nparent, contrib)                # sample indices
+            sel = stochastic_universal_sampling(self.nparent, contrib, self.rng)
+            # sel = self._sus(self.nparent, contrib)                # sample indices
 
             # make sure parents are forced to outbreed
             sel = self._outcross_shuffle(sel)

@@ -6,6 +6,7 @@ Module containing selection protocols.
 
 # import utilities
 from . import transfn
+from . import sampling
 
 # abstract classes
 from . import SelectionProtocol

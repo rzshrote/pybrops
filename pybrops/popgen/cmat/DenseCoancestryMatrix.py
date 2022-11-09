@@ -235,7 +235,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         """
         return numpy.all(numpy.linalg.eigvals(self._mat) >= eigvaltol)
     
-    def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6):
+    def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6, nattempt = 100):
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
         all eigenvalues exceed the provided eigenvalue tolerance.
@@ -250,6 +250,8 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             Minimum jitter value applied to a diagonal element.
         maxjitter : float
             Maximum jitter value applied to a diagonal element.
+        nattempt : int
+            Number of jitter application attempts.
         
         Returns
         -------
@@ -261,8 +263,8 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         counter = 0
         is_not_posdef = not self.is_positive_semidefinite(eigvaltol)
 
-        # attempt to apply jitter in 100 or less attempts
-        while (is_not_posdef) and (counter < 100):
+        # attempt to apply jitter in nattempt or less attempts
+        while (is_not_posdef) and (counter < nattempt):
             self._mat[diagix] = mat_diag_old + numpy.random.uniform(minjitter, maxjitter, len(mat_diag_old))
             is_not_posdef = not self.is_positive_semidefinite(eigvaltol)
             counter += 1

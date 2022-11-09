@@ -2,7 +2,6 @@
 Module implementing selection protocols for optimal mean expected heterozygosit selection.
 """
 
-from email.charset import QP
 import cvxpy
 import math
 import numpy
