@@ -14,14 +14,8 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_bool
-from pybrops.core.error import cond_check_ndarray_dtype_is_float64
-from pybrops.core.error import cond_check_ndarray_dtype_is_int64
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
+from pybrops.core.error import check_ndarray_in_interval
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -43,10 +37,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None,
-    vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None,
-    vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None,
-    vrnt_hapref = None, vrnt_mask = None, ploidy = 2, **kwargs):
+    def __init__(self, mat: numpy.ndarray, 
+        taxa:        numpy.ndarray = None, taxa_grp:    numpy.ndarray = None, vrnt_chrgrp: numpy.ndarray = None,
+        vrnt_phypos: numpy.ndarray = None, vrnt_name:   numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None,
+        vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None,
+        vrnt_hapref: numpy.ndarray = None, vrnt_mask:   numpy.ndarray = None, ploidy:      int = 2, **kwargs):
         """
         Parameters
         ----------
@@ -98,6 +93,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
             reproduces in a diploid manner.
         """
+        # set ploidy
+        check_is_int(ploidy, "ploidy")
+        self._ploidy = ploidy
+
         # TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.
         super(DenseGenotypeMatrix, self).__init__(
             mat = mat,
@@ -114,9 +113,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_mask = vrnt_mask,
             **kwargs
         )
-        # set ploidy
-        check_is_int(ploidy, "ploidy")
-        self._ploidy = ploidy
 
     #################### Matrix copying ####################
     def __copy__(self):
@@ -213,6 +209,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             check_is_ndarray(value, "mat")
             check_ndarray_dtype_is_int8(value, "mat")
             check_ndarray_is_2d(value, "mat")
+            # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
             self._mat = value
         def fdel(self):
             del self._mat

@@ -31,7 +31,7 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
 
-class OptimalContributionSelection(SelectionProtocol):
+class ContinuousOptimalContributionSelection(SelectionProtocol):
     """
     Class implementing selection protocols for genomic optimal contribution selection.
 
@@ -183,7 +183,7 @@ class OptimalContributionSelection(SelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(OptimalContributionSelection, self).__init__(**kwargs)
+        super(ContinuousOptimalContributionSelection, self).__init__(**kwargs)
 
         # variable assignment
         self.nparent = nparent

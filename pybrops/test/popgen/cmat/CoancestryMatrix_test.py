@@ -43,8 +43,20 @@ def test_init_is_concrete():
 def test_coancestry_is_abstract():
     generic_assert_abstract_method(CoancestryMatrix, "coancestry")
 
+def test_kinship_is_abstract():
+    generic_assert_abstract_method(CoancestryMatrix, "kinship")
+
+def test_is_positive_semidefinite_is_abstract():
+    generic_assert_abstract_method(CoancestryMatrix, "is_positive_semidefinite")
+
+def test_apply_jitter_is_abstract():
+    generic_assert_abstract_method(CoancestryMatrix, "apply_jitter")
+
+def test_from_gmat_is_abstract():
+    generic_assert_abstract_method(CoancestryMatrix, "from_gmat")
+
 ################################################################################
-################### Test for conrete class utility functions ###################
+################## Test for concrete class utility functions ###################
 ################################################################################
 def test_is_CoancestryMatrix_is_concrete():
     generic_assert_concrete_function(is_CoancestryMatrix)

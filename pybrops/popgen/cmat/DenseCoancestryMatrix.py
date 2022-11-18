@@ -185,12 +185,16 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         out : numpy.ndarray
             Matrix in the desired output format.
         """
-        if format == "coancestry":
+        # input type check
+        if not isinstance(format, str):
+            raise TypeError("'format' argument must be of type 'str'")
+        # process string
+        if format.lower() == "coancestry":
             return self._mat.copy()
-        elif format == "kinship":
+        elif format.lower() == "kinship":
             return 0.5 * self._mat
         else:
-            raise ValueError('Format not recognized. Options are ""coancestry", "kinship".')
+            raise ValueError('Format not recognized. Options are "coancestry" or "kinship"')
 
     ############## Coancestry/kinship Methods ##############
     def coancestry(self, *args, **kwargs):
@@ -227,12 +231,17 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         ----------
         eigvaltol : float
             Eigenvalue tolerance for determining positive semidefiniteness.
+            If provided eigenvalue tolerance is less than zero, the tolerance
+            is set to 0.0.
 
         Returns
         -------
         out : bool
             Whether the coancestry matrix is positive semidefinite.
         """
+        # if tolerance is less than zero, set to zero
+        if eigvaltol < 0.0:
+            eigvaltol = 0.0
         return numpy.all(numpy.linalg.eigvals(self._mat) >= eigvaltol)
     
     def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6, nattempt = 100):
@@ -245,7 +254,9 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         Parameters
         ----------
         eigvaltol : float
-            Eigenvalue tolerance.
+            Eigenvalue tolerance for determining positive semidefiniteness.
+            If provided eigenvalue tolerance is less than zero, the tolerance
+            is set to 0.0.
         minjitter : float
             Minimum jitter value applied to a diagonal element.
         maxjitter : float
