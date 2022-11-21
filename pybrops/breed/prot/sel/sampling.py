@@ -48,3 +48,26 @@ def stochastic_universal_sampling(k: int, contrib: numpy.ndarray, rng = None):
         sel.append(indices[ix])                     # append index with element
     sel = numpy.array(sel)                          # convert to ndarray
     return sel
+
+def two_way_outcross_shuffle(sel, rng):
+    """
+    Shuffle individuals ensuring they do not mate with themselves.
+
+    Parameters
+    ----------
+    sel : numpy.ndarray
+        Array of indices of individuals to select.
+    rng: Any
+        Random number source. If None, use default rng.
+    """
+    if rng is None:                                 # if no rng provided
+        rng = global_prng                           # set to global rng
+    rng.shuffle(sel)                                # start with random shuffle
+    for st in range(0, len(sel), 2):                # for each female
+        sp = st+1                                   # get stop index (male)
+        j = st+2                                    # get one beyond stop index
+        while (sel[st]==sel[sp]) and (j<len(sel)):  # if female == male && within array bounds
+            sel[sp], sel[j] = sel[j], sel[sp]       # exchange with next entry
+            j += 1                                  # increment beyond index
+    return sel
+
