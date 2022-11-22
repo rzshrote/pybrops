@@ -1,30 +1,21 @@
 """
-Module implementing selection protocols for minimum mean expected heterozygosity selection.
+Module implementing selection protocols for maximum mean expected heterozygosity selection.
 """
 
 import cvxpy
-import math
 import numpy
 import warnings
 import types
-from scipy.linalg import sqrtm
 from typing import Optional
 from typing import Callable
 
-from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_inherits
-from pybrops.core.error import check_isinstance
-from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
@@ -37,16 +28,14 @@ class ContinuousMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
     """
     Class implementing selection protocols for optimal mean expected heterozygosity selection.
 
-    Optimal Mean Expected Heterozygosity Selection (OMEHS) is defined as:
+    Maximum Mean Expected Heterozygosity Selection (MMEHS) is defined as:
 
     .. math::
-        \\max_{\mathbf{x}}(\mathbf{x}) = \\mathbf{ebv'x}
+        \\max_{\\mathbf{x}} f_{MMEHS}(\\mathbf{x}) = 1 - \\mathbf{x'Kx}
 
     With constraints:
 
     .. math::
-        \\frac{1}{2} \\mathbf{x'Px} - \\mathbf{q'x} + mh_{t+1} \\leq 0
-
         \\mathbf{1_{n}'x} = 1
 
         \\mathbf{x} \\in \\mathbb{R}^n

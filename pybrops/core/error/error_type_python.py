@@ -1,6 +1,7 @@
 import numbers
 from typing import Any
 from typing import Union
+import inspect
 
 from . import generic_default_cond
 from . import generic_cond_check_isinstance
@@ -81,6 +82,10 @@ def check_is_bool(v: Any, vname: str) -> None:
 
 # def check_is_bytes(v, vname):
 #     generic_check_isinstance(v, vname, bytes)
+
+def check_is_class(v, vname):
+    if not inspect.isclass(v):
+        raise TypeError("variable '{0}' must be a class name".format(vname))
 
 # def check_is_complex(v, vname):
 #     generic_check_isinstance(v, vname, complex)
