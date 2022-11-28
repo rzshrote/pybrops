@@ -1,5 +1,5 @@
 """
-Module implementing selection protocols for optimal contribution selection.
+Module implementing selection protocols for optimal mean expected heterozygosit selection.
 """
 
 import cvxpy
@@ -7,6 +7,7 @@ import math
 import numpy
 import warnings
 import types
+from scipy.linalg import sqrtm
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -26,19 +27,32 @@ from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 
-class OptimalContributionSelection(SelectionProtocol):
+class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
     """
-    Class implementing selection protocols for optimal contribution selection.
+    Class implementing selection protocols for optimal mean expected heterozygosity selection.
 
-    # TODO: add formulae for methodology.
+    Optimal Mean Expected Heterozygosity Selection (OMEHS) is defined as:
+
+    .. math::
+        \\max_{\mathbf{x}}(\mathbf{x}) = \\mathbf{ebv'x}
+
+    With constraints:
+
+    .. math::
+        \\frac{1}{2} \\mathbf{x'Px} - \\mathbf{q'x} + mh_{t+1} \\leq 0
+
+        \\mathbf{1_{n}'x} = 1
+
+        \\mathbf{x} \\in \\mathbb{R}^n
+
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self,
-    nparent, ncross, nprogeny, inbfn,
-    cmatcls = DenseMolecularCoancestryMatrix, bvtype = "gebv", method = "single",
+    nparent, ncross, nprogeny, mehfn,
+    bvtype = "gebv", method = "single",
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
     moalgo = None,
@@ -54,25 +68,10 @@ class OptimalContributionSelection(SelectionProtocol):
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        inbfn : function
-            Inbreeding control function: ``inbfn(t_cur, t_max)``.
+        mehfn : function
+            Mean expected heterozygosity control function: ``mehfn(t_cur, t_max)``.
 
-            Returns constraint for mean population inbreeding defined as:
-
-            .. math::
-
-                \\frac{1}{2} \\textbf{x}' \\textbf{A} \\textbf{x} =
-                \\textbf{x}' \\textbf{K} \\textbf{x} =
-                f^{\\textup{Inb}}(t_{cur}, t_{max})
-
-            Where:
-
-            - :math:`x` is the parental contribution vector.
-            - :math:`A` is the additive relationship matrix.
-            - :math:`K` is the kinship relationship matrix.
-            - :math:`f^{\\textup{Inb}}` is ``inbfn``.
-            - :math:`t_{cur}` is the current time.
-            - :math:`t_{max}` is the deadline time.
+            Returns constraint for mean expected heterozygosity. 
         cmatcls : class
             The class name of a CoancestryMatrix to generate.
         bvtype : str
@@ -178,14 +177,13 @@ class OptimalContributionSelection(SelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(OptimalContributionSelection, self).__init__(**kwargs)
-
+        super(OptimalMeanExpectedHeterozygositySelection, self).__init__(**kwargs)
+        
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.inbfn = inbfn
-        self.cmatcls = cmatcls
+        self.mehfn = mehfn
         self.bvtype = bvtype
         self.method = method
         self.objfn_trans = objfn_trans
@@ -210,7 +208,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     nparent = property(**nparent())
 
     def ncross():
@@ -223,7 +221,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     ncross = property(**ncross())
 
     def nprogeny():
@@ -236,32 +234,20 @@ class OptimalContributionSelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     nprogeny = property(**nprogeny())
 
-    def inbfn():
-        doc = "Inbreeding control function."
+    def mehfn():
+        doc = "Mean expected heterozygosity control function."
         def fget(self):
-            return self._inbfn
+            return self._mehfn
         def fset(self, value):
-            check_is_callable(value, "inbfn")
-            self._inbfn = value
+            check_is_callable(value, "mehfn")
+            self._mehfn = value
         def fdel(self):
-            del self._inbfn
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    inbfn = property(**inbfn())
-
-    def cmatcls():
-        doc = "Coancestry matrix class."
-        def fget(self):
-            return self._cmatcls
-        def fset(self, value):
-            check_inherits(value, "cmatcls", CoancestryMatrix)
-            self._cmatcls = value
-        def fdel(self):
-            del self._cmatcls
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    cmatcls = property(**cmatcls())
+            del self._mehfn
+        return locals()
+    mehfn = property(**mehfn())
 
     def bvtype():
         doc = "Breeding value matrix type."
@@ -279,7 +265,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._bvtype = value
         def fdel(self):
             del self._bvtype
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     bvtype = property(**bvtype())
 
     def method():
@@ -298,7 +284,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     method = property(**method())
 
     def objfn_trans():
@@ -311,7 +297,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -325,7 +311,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -336,7 +322,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -349,7 +335,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -363,7 +349,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -374,7 +360,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     ndset_wt = property(**ndset_wt())
 
     def moalgo():
@@ -396,7 +382,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     moalgo = property(**moalgo())
 
     def rng():
@@ -410,7 +396,7 @@ class OptimalContributionSelection(SelectionProtocol):
             self._rng = value
         def fdel(self):
             del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+        return locals()
     rng = property(**rng())
 
     ############################################################################
@@ -437,26 +423,33 @@ class OptimalContributionSelection(SelectionProtocol):
         elif self.bvtype == "tbv":               # use true BVs
             return gpmod.predict(pgmat).mat # calculate true BVs
 
-    def _calc_K(self, pgmat, gmat):
+    def _calc_P_q(self, gmat):
         """
+        Calculate the P matrix and q vector for the mean expected heterozygosity constraint.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Input genotype matrix from which to calculate heterozygosity constraints.
+        
         Returns
         -------
-        out : numpy.ndarray
-            A kinship matrix of shape ``(n,n)``.
-
-            Where:
-
-            - ``n`` is the number of individuals.
+        out : tuple
+            A tuple containing two numpy.ndarray's: (P, q). The first numpy.ndarray is the P matrix.
+            The second numpy.ndarray is the q vector
         """
-        if self.bvtype == "gebv":                    # use GEBVs estimated from genomic model
-            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif self.bvtype == "ebv":                   # use EBVs estimated by some means
-            # TODO: implement pedigree or something
-            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
-        elif self.bvtype == "tbv":                   # use true BVs
-            return self.cmatcls.from_gmat(pgmat).mat # calculate true kinship
+        # get the matrix in {0,1,2} format as required by the matrix calculations
+        X = gmat.mat_asformat("{0,1,2}")
 
-    def _solve_OCS(self, bv, C, inbmax):
+        # calculate P = X @ X'
+        P = X.dot(X.T)
+
+        # calculate q = X @ 1
+        q = X.sum(1)
+
+        return (P,q)
+
+    def _solve_OMEHS(self, bv, P_sqrtm, P_invsqrtm, P_inv, q, nvrnt, hetmin):
         """
         Define and solve OCS using CVXPY.
 
@@ -464,11 +457,18 @@ class OptimalContributionSelection(SelectionProtocol):
         ----------
         bv : numpy.ndarray
             Array of shape ``(n,)`` containing breeding values for each parent.
-        C : numpy.ndarray
-            Array of shape ``(n,n)`` containing the Cholesky decomposition of
-            the kinship matrix. Must be an upper triangle matrix.
-        inbmax : float
-            Maximum mean inbreeding allowed.
+        P_sqrtm : numpy.ndarray
+            Array of shape ``(n,n)`` containing the square root of the P matrix.
+        P_invsqrtm : numpy.ndarray
+            Array of shape ``(n,n)`` containing the inverse square root of the P matrix.
+        P_inv : numpy.ndarray
+            Array of shape ``(n,n)`` containing the inverse of the P matrix.
+        q : numpy.ndarray
+            Array of shape ``(n,)`` containing the q vector.
+        nvrnt : int
+            Number of markers.
+        hetmin : float
+            Minimum mean expected heterozyosity allowed.
 
         Returns
         -------
@@ -476,6 +476,17 @@ class OptimalContributionSelection(SelectionProtocol):
             A contribution vector of shape ``(n,)`` defining each parent's
             relative contribution.
         """
+        # calculate P^(-1/2) @ q
+        Pq = P_invsqrtm.dot(q)
+
+        # calculate q @ P^(-1) @ q
+        qPq = q.dot(P_inv).dot(q)
+
+        # calculate 2 * m * h_(t+1)
+        tmh = 2.0 * nvrnt * hetmin
+
+        hetconst = math.sqrt(qPq - tmh) if qPq > tmh else 0.0
+
         # get the number of taxa
         ntaxa = len(bv)
 
@@ -487,7 +498,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
         # define constraints
         soc_constraints = [
-            cvxpy.SOC(inbmax, C @ x),               # ||C @ x||_2 <= inbmax
+            cvxpy.SOC(hetconst, P_sqrtm @ x - Pq),  # ||P^(1/2) @ x - P^(-1/2) @ q||_2 <= sqrt(q' @ P @ q - 2 * m * h_(t+1))
             cvxpy.sum(x) == 1.0,                    # sum(x_i) == 1
             x >= 0.0                                # x_i >= 0 for all i
         ]

@@ -15,17 +15,50 @@ from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import is_DenseMolecular
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import check_is_DenseMolecularCoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import cond_check_is_DenseMolecularCoancestryMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def cmat(shared_datadir):
+def cmat_sample(shared_datadir):
     # data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
     data_path = shared_datadir / "sample.vcf"
     gmat = DensePhasedGenotypeMatrix.from_vcf(data_path)
     out = DenseMolecularCoancestryMatrix.from_gmat(gmat)
     yield out
+
+@pytest.fixture
+def Z_mat_int8():
+    Z = numpy.array(
+       [[-1,  1,  0,  0, -1, -1,  0, -1,  0, -1, -1,  1, -1,  0,  1, -1],
+        [-1,  1, -1, -1,  0,  1,  0,  0,  0, -1,  0,  1,  0,  0,  0,  1],
+        [ 1,  1,  1,  0,  0,  1,  1, -1, -1,  0,  0,  1, -1, -1, -1, -1],
+        [-1,  1,  1, -1,  1,  1,  1,  0,  1,  1,  0,  1,  1, -1, -1,  1],
+        [ 1,  1,  1, -1,  0,  0,  0, -1, -1,  1, -1,  0,  1,  0, -1, -1],
+        [-1, -1,  1,  0, -1,  0,  1, -1, -1,  0, -1,  1,  0, -1, -1,  1],
+        [ 0,  0,  0,  1, -1,  0,  1, -1,  1,  0, -1,  1, -1,  0, -1,  0],
+        [-1,  1,  0, -1,  0,  1,  1,  0,  0, -1, -1,  1, -1, -1,  0, -1]], 
+        dtype = "int8"
+    )
+    yield Z
+
+@pytest.fixture
+def X_mat_int8(Z_mat_int8):
+    yield Z_mat_int8 + 1
+
+@pytest.fixture
+def A_mat_float64(Z_mat_int8):
+    A = ((1.0/Z_mat_int8.shape[1]) * (Z_mat_int8.dot(Z_mat_int8.T))) + 1.0
+    yield A
+
+@pytest.fixture
+def cmat_numpy(A_mat_float64):
+    yield DenseMolecularCoancestryMatrix(A_mat_float64)
+
+@pytest.fixture
+def gmat_numpy(X_mat_int8):
+    yield DenseGenotypeMatrix(X_mat_int8, ploidy = 2)
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -42,18 +75,24 @@ def test_init_is_concrete():
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
-def test_mat_fget(cmat):
+def test_mat_fget(cmat_sample):
     # test matrix properties
-    assert numpy.all(cmat >= 0.0)   # completely different individuals
-    assert numpy.all(cmat <= 1.0)   # identical individuals
-    n = cmat.mat.shape[0]
+    assert numpy.all(cmat_sample >= 0.0)   # completely different individuals have coancestry == 0
+    assert numpy.all(cmat_sample <= 2.0)   # identical individuals have coancestry == 2
+    # test matrix symmetry
+    n = cmat_sample.mat.shape[0]
     for i in range(n):
         for j in range(i,n):
-            assert cmat[i,j] == cmat[j,i]
+            assert cmat_sample[i,j] == cmat_sample[j,i]
 
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
+
+# from GenotypeMatrix
+def test_from_gmat(cmat_numpy, gmat_numpy, A_mat_float64):
+    assert numpy.all(cmat_numpy == A_mat_float64)
+    assert numpy.all(cmat_numpy == DenseMolecularCoancestryMatrix.from_gmat(gmat_numpy))
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
@@ -70,11 +109,11 @@ def test_cond_check_is_DenseMolecularCoancestryMatrix_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseMolecularCoancestryMatrix(cmat):
-    assert is_DenseMolecularCoancestryMatrix(cmat)
+def test_is_DenseMolecularCoancestryMatrix(cmat_sample):
+    assert is_DenseMolecularCoancestryMatrix(cmat_sample)
 
-def test_check_is_DenseMolecularCoancestryMatrix(cmat):
+def test_check_is_DenseMolecularCoancestryMatrix(cmat_sample):
     with not_raises(TypeError):
-        check_is_DenseMolecularCoancestryMatrix(cmat, "cmat")
+        check_is_DenseMolecularCoancestryMatrix(cmat_sample, "cmat_sample")
     with pytest.raises(TypeError):
-        check_is_DenseMolecularCoancestryMatrix(None, "cmat")
+        check_is_DenseMolecularCoancestryMatrix(None, "cmat_sample")

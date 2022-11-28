@@ -20,6 +20,12 @@ from . import generic_check_ndarray_ndim_gteq
 ############################### check functions ################################
 ################################################################################
 
+def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: float, vmax: float):
+    if numpy.any(v < vmin) or numpy.any(v > vmax):
+        raise ValueError(
+            "variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax)
+        )
+
 ################# generic_check_ndarray_eq #################
 def check_ndarray_eq(v, vname, w, wname):
     generic_check_ndarray_eq(v, vname, w, wname)

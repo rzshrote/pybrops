@@ -19,22 +19,28 @@ from pybrops.popgen.cmat.DenseCoancestryMatrix import cond_check_is_DenseCoances
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def mat_float64():
-    a = numpy.float64([
-        [0.57, 0.18, 0.54, 0.45, 0.09, 0.6 , 0.63, 0.4 ],
-        [0.18, 0.77, 0.8 , 0.53, 0.89, 0.34, 0.41, 0.71],
-        [0.54, 0.8 , 0.46, 0.52, 0.65, 0.85, 0.21, 0.68],
-        [0.45, 0.53, 0.52, 0.73, 0.54, 0.64, 0.41, 0.64],
-        [0.09, 0.89, 0.65, 0.54, 0.3 , 0.62, 0.51, 0.74],
-        [0.6 , 0.34, 0.85, 0.64, 0.62, 0.96, 0.53, 0.45],
-        [0.63, 0.41, 0.21, 0.41, 0.51, 0.53, 0.45, 0.38],
-        [0.4 , 0.71, 0.68, 0.64, 0.74, 0.45, 0.38, 0.65]
-    ])
-    yield a
+def X_mat_int8():
+    X = numpy.array(
+       [[-1,  1,  0,  0, -1, -1,  0, -1,  0, -1, -1,  1, -1,  0,  1, -1],
+        [-1,  1, -1, -1,  0,  1,  0,  0,  0, -1,  0,  1,  0,  0,  0,  1],
+        [ 1,  1,  1,  0,  0,  1,  1, -1, -1,  0,  0,  1, -1, -1, -1, -1],
+        [-1,  1,  1, -1,  1,  1,  1,  0,  1,  1,  0,  1,  1, -1, -1,  1],
+        [ 1,  1,  1, -1,  0,  0,  0, -1, -1,  1, -1,  0,  1,  0, -1, -1],
+        [-1, -1,  1,  0, -1,  0,  1, -1, -1,  0, -1,  1,  0, -1, -1,  1],
+        [ 0,  0,  0,  1, -1,  0,  1, -1,  1,  0, -1,  1, -1,  0, -1,  0],
+        [-1,  1,  0, -1,  0,  1,  1,  0,  0, -1, -1,  1, -1, -1,  0, -1]], 
+        dtype = "int8"
+    )
+    return X
 
 @pytest.fixture
-def cmat(mat_float64):
-    yield DenseCoancestryMatrix(mat_float64)
+def A_mat_float64(X_mat_int8):
+    A = ((1.0/X_mat_int8.shape[1]) * (X_mat_int8.dot(X_mat_int8.T))) + 1.0
+    yield A
+
+@pytest.fixture
+def cmat(A_mat_float64):
+    yield DenseCoancestryMatrix(A_mat_float64)
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -51,27 +57,42 @@ def test_init_is_concrete():
 def test_coancestry_is_concrete():
     generic_assert_concrete_method(DenseCoancestryMatrix, "coancestry")
 
+def test_kinship_is_concrete():
+    generic_assert_concrete_method(DenseCoancestryMatrix, "kinship")
+
+def test_is_positive_semidefinite_is_concrete():
+    generic_assert_concrete_method(DenseCoancestryMatrix, "is_positive_semidefinite")
+
+def test_apply_jitter_is_concrete():
+    generic_assert_concrete_method(DenseCoancestryMatrix, "apply_jitter")
+
+################################################################################
+############################# Test abstract methods ############################
+################################################################################
+def test_from_gmat_is_abstract():
+    generic_assert_abstract_method(DenseCoancestryMatrix, "from_gmat")
+
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
 
 ################ General matrix properties #################
-def test_mat_fget(cmat, mat_float64):
-    assert numpy.all(cmat == mat_float64)
+def test_mat_fget(cmat, A_mat_float64):
+    assert numpy.all(cmat == A_mat_float64)
 
-def test_mat_fset_TypeError(cmat, mat_float64):
+def test_mat_fset_TypeError(cmat, A_mat_float64):
     with pytest.raises(TypeError):
-        cmat.mat = list(mat_float64.flatten())
+        cmat.mat = list(A_mat_float64.flatten())
 
-def test_mat_fset_ValueError(cmat, mat_float64):
+def test_mat_fset_ValueError(cmat, A_mat_float64):
     with pytest.raises(ValueError):
-        cmat.mat = mat_float64.flatten()
+        cmat.mat = A_mat_float64.flatten()
 
-def test_mat_fset(cmat, mat_float64):
-    cmat.mat = mat_float64
-    assert numpy.all(cmat.mat == mat_float64)
+def test_mat_fset(cmat, A_mat_float64):
+    cmat.mat = A_mat_float64
+    assert numpy.all(cmat.mat == A_mat_float64)
 
-def test_mat_fdel(cmat, mat_float64):
+def test_mat_fdel(cmat, A_mat_float64):
     del cmat.mat
     with pytest.raises(AttributeError):
         cmat.mat
@@ -79,31 +100,86 @@ def test_mat_fdel(cmat, mat_float64):
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_coancestry_2tuple(cmat, mat_float64):
-    n = mat_float64.shape[0]
+
+# matrix conversion
+def test_mat_asformat_TypeError(cmat):
+    with pytest.raises(TypeError):
+        K = cmat.mat_asformat([])
+
+def test_mat_asformat_ValueError(cmat):
+    with pytest.raises(ValueError):
+        K = cmat.mat_asformat("unknown")
+
+def test_mat_asformat(cmat, A_mat_float64):
+    A = cmat.mat_asformat("coancestry")
+    assert numpy.all(A == A_mat_float64)
+    K = cmat.mat_asformat("kinship")
+    assert numpy.all(K == (0.5 * A_mat_float64))
+
+# coancestry function
+def test_coancestry_2tuple(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
     for i in range(n):
         for j in range(n):
-            assert cmat.coancestry(i,j) == mat_float64[i,j]
+            assert cmat.coancestry(i,j) == A_mat_float64[i,j]
 
-def test_coancestry_1tuple(cmat, mat_float64):
-    n = mat_float64.shape[0]
+def test_coancestry_1tuple(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(i) == mat_float64[i])
+        assert numpy.all(cmat.coancestry(i) == A_mat_float64[i])
 
-def test_coancestry_row_slice(cmat, mat_float64):
-    n = mat_float64.shape[0]
+def test_coancestry_row_slice(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(i,slice(None)) == mat_float64[i,:])
+        assert numpy.all(cmat.coancestry(i,slice(None)) == A_mat_float64[i,:])
 
-def test_coancestry_col_slice(cmat, mat_float64):
-    n = mat_float64.shape[0]
+def test_coancestry_col_slice(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(slice(None),i) == mat_float64[:,i])
+        assert numpy.all(cmat.coancestry(slice(None),i) == A_mat_float64[:,i])
 
-def test_coancestry_list_tuple(cmat, mat_float64):
+def test_coancestry_list_tuple(cmat, A_mat_float64):
     a = [2,3,5]
     b = [1,4,6]
-    assert numpy.all(cmat.coancestry(a,b) == mat_float64[a,b])
+    assert numpy.all(cmat.coancestry(a,b) == A_mat_float64[a,b])
+
+# kinship function
+def test_kinship_2tuple(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
+    for i in range(n):
+        for j in range(n):
+            assert cmat.kinship(i,j) == (0.5 * A_mat_float64[i,j])
+
+def test_kinship_1tuple(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
+    for i in range(n):
+        assert numpy.all(cmat.kinship(i) == (0.5 * A_mat_float64[i]))
+
+def test_kinship_row_slice(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
+    for i in range(n):
+        assert numpy.all(cmat.kinship(i,slice(None)) == (0.5 * A_mat_float64[i,:]))
+
+def test_kinship_col_slice(cmat, A_mat_float64):
+    n = A_mat_float64.shape[0]
+    for i in range(n):
+        assert numpy.all(cmat.kinship(slice(None),i) == (0.5 * A_mat_float64[:,i]))
+
+def test_kinship_list_tuple(cmat, A_mat_float64):
+    a = [2,3,5]
+    b = [1,4,6]
+    assert numpy.all(cmat.kinship(a,b) == (0.5 * A_mat_float64[a,b]))
+
+# postitive definite checks
+def test_is_positive_semidefinite(cmat):
+    assert cmat.is_positive_semidefinite()
+
+def test_is_positive_semidefinite_eigvaltol(cmat):
+    assert cmat.is_positive_semidefinite(-1.0)
+
+# jitter function checks
+def test_apply_jitter(cmat):
+    assert cmat.apply_jitter()
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
