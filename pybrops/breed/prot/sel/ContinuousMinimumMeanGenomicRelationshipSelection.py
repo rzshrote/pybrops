@@ -655,13 +655,13 @@ class ContinuousMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
         Returns
         -------
-        meh : numpy.ndarray
+        mgr : numpy.ndarray
             A matrix of shape (1,) if ``trans`` is ``None``.
 
             The first index in the array is the mean expected heterozygosity:
 
             .. math::
-                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
+                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
@@ -670,14 +670,14 @@ class ContinuousMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
-        meh = numpy.array([1.0 - numpy.linalg.norm(C.dot(sel), ord = 2)])
+        # calculate MGR
+        mgr = numpy.array([1.0 - numpy.linalg.norm(C.dot(sel), ord = 2)])
         
         # apply transformations if needed
         if trans:
-            meh = trans(meh, **kwargs)
+            mgr = trans(mgr, **kwargs)
         
-        return meh
+        return mgr
 
     @staticmethod
     def objfn_vec_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
@@ -711,13 +711,13 @@ class ContinuousMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
         Returns
         -------
-        meh : numpy.ndarray
+        mgr : numpy.ndarray
             A matrix of shape (1,) if ``trans`` is ``None``.
 
             The first index in the array is the mean expected heterozygosity:
 
             .. math::
-                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
+                MGR = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
@@ -726,13 +726,13 @@ class ContinuousMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
+        # calculate MGR
         # (n,n) * (n,j) -> (n,j)
-        # norm((n,j),0) -> (j,)
-        meh = 1.0 - numpy.linalg.norm(C.dot(sel.T), ord = 2, axis = 0)
+        # norm((n,j),0)[:,None] -> (j,1)
+        mgr = 1.0 - numpy.linalg.norm(C.dot(sel.T), ord = 2, axis = 0)[:,None]
         
         # apply transformations if needed
         if trans:
-            meh = trans(meh, **kwargs)
+            mgr = trans(mgr, **kwargs)
         
-        return meh
+        return mgr

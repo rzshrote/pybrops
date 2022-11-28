@@ -196,10 +196,13 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
         """
         # check input datatypes
         check_is_GenotypeMatrix(gmat, "gmat")
-        check_isinstance(p_anc, "p_anc", (numpy.ndarray,numbers.Number,None))
 
+        # if None, calculate allele frequencies from provided matrix.
+        if p_anc is None:
+            p_anc = gmat.afreq()                    # (n,p) -> (p,)
+        
         # if p_anc is numpy.ndarray, check for correct shape, and value ranges 
-        if isinstance(p_anc, numpy.ndarray):
+        elif isinstance(p_anc, numpy.ndarray):
             # check values
             check_ndarray_ndim(p_anc, "p_anc", 1)
             check_ndarray_axis_len(p_anc, "p_anc", 0, gmat.nvrnt)
@@ -211,10 +214,10 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
             check_float_in_interval(p_anc, "p_anc", 0.0, 1.0)
             p_anc = numpy.repeat(p_anc, gmat.nvrnt) # scalar -> (p,)
         
-        # if None, calculate allele frequencies from provided matrix.
-        elif isinstance(p_anc, None):
-            p_anc = gmat.afreq()                    # (n,p) -> (p,)
-        
+        # raise error for incorrect types
+        else:
+            raise TypeError("p_anc must be of type 'numpy.ndarray', 'numbers.Number', or None")
+
         # multiply p_anc by ploidy level to get mean number of alleles we expect
         # (p,) -> (1,p)
         # (1,p) * scalar -> (1,p)

@@ -704,7 +704,7 @@ class ContinuousMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         Returns
         -------
         meh : numpy.ndarray
-            A matrix of shape (1,) if ``trans`` is ``None``.
+            A matrix of shape (j,1) if ``trans`` is ``None``.
 
             The first index in the array is the mean expected heterozygosity:
 
@@ -720,8 +720,8 @@ class ContinuousMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         """
         # calculate MEH
         # (n,n) * (n,j) -> (n,j)
-        # norm((n,j),0) -> (j,)
-        meh = 1.0 - numpy.linalg.norm(C.dot(sel.T), ord = 2, axis = 0)
+        # norm((n,j),0)[:,None] -> (j,1)
+        meh = 1.0 - numpy.linalg.norm(C.dot(sel.T), ord = 2, axis = 0)[:,None]
         
         # apply transformations if needed
         if trans:
