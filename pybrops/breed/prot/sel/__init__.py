@@ -22,3 +22,6 @@ from . import OptimalPopulationValueSelection
 from . import RandomSelection
 from . import TwoWayExpectedMaximumBreedingValueSelection
 from . import WeightedGenomicSelection
+from . import ContinuousGenomicOptimalContributionSelection
+from . import ContinuousMaximumMeanExpectedHeterozygositySelection
+from . import ContinuousMinimumMeanGenomicRelationshipSelection
