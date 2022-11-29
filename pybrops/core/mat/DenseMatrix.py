@@ -8,6 +8,7 @@ import numpy
 from pybrops.core.error import error_readonly
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.mat.Matrix import Matrix
+from pybrops.core.mat.util import get_axis
 
 # TODO: implement the HDF5InputOutput interface
 class DenseMatrix(Matrix):
@@ -508,7 +509,7 @@ class DenseMatrix(Matrix):
         mat = numpy.concatenate(mat_tp, axis)
 
         # create new output
-        out = self.__class__(mat = mat, **kwargs)
+        out = mats[0].__class__(mat = mat, **kwargs)
 
         return out
 
