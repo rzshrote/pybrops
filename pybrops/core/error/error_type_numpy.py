@@ -1,4 +1,5 @@
 import numpy
+from typing import Any
 
 from . import generic_check_dtype_issubdtype
 from . import generic_check_isinstance
@@ -11,16 +12,16 @@ from . import generic_cond_check_ndarray_dtype_issubdtype
 ################################################################################
 ########################## isinstance check functions ##########################
 ################################################################################
-def check_is_ndarray(v, vname):
+def check_is_ndarray(v: Any, vname: str):
     generic_check_isinstance(v, vname, numpy.ndarray)
 
-def check_is_Generator(v, vname):
+def check_is_Generator(v: Any, vname: str):
     generic_check_isinstance(v, vname, numpy.random.Generator)
 
-def check_is_RandomState(v, vname):
+def check_is_RandomState(v: Any, vname: str):
     generic_check_isinstance(v, vname, numpy.random.RandomState)
 
-def check_is_Generator_or_RandomState(v, vname):
+def check_is_Generator_or_RandomState(v: Any, vname: str):
     generic_check_isinstance(v, vname, (numpy.random.Generator,numpy.random.RandomState))
 
 ################################################################################
