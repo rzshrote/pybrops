@@ -6,18 +6,14 @@ checking routines.
 import copy
 import numpy
 
-from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_2d
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_bool
-from pybrops.core.error import cond_check_ndarray_dtype_is_int64
-from pybrops.core.error import cond_check_ndarray_dtype_is_float64
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_ndarray_dtype_is_bool
+from pybrops.core.error import check_ndarray_dtype_is_int64
+from pybrops.core.error import check_ndarray_dtype_is_float64
+from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
@@ -179,10 +175,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_chrgrp
         def fset(self, value):
             """Set variant chromosome group lable array"""
-            cond_check_is_ndarray(value, "vrnt_chrgrp")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_chrgrp")
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp")
+                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp")
+                check_ndarray_ndim(value, "vrnt_chrgrp", 1)
+                check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
             self._vrnt_chrgrp = value
         def fdel(self):
             """Delete variant chromosome group lable array"""
@@ -197,10 +194,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_phypos
         def fset(self, value):
             """Set variant physical position array"""
-            cond_check_is_ndarray(value, "vrnt_phypos")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_phypos")
-            cond_check_ndarray_ndim(value, "vrnt_phypos", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_phypos")
+                check_ndarray_dtype_is_int64(value, "vrnt_phypos")
+                check_ndarray_ndim(value, "vrnt_phypos", 1)
+                check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
             self._vrnt_phypos = value
         def fdel(self):
             """Delete variant physical position array"""
@@ -215,10 +213,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_name
         def fset(self, value):
             """Set variant name array"""
-            cond_check_is_ndarray(value, "vrnt_name")
-            cond_check_ndarray_dtype_is_object(value, "vrnt_name")
-            cond_check_ndarray_ndim(value, "vrnt_name", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_name", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_name")
+                check_ndarray_dtype_is_object(value, "vrnt_name")
+                check_ndarray_ndim(value, "vrnt_name", 1)
+                check_ndarray_axis_len(value, "vrnt_name", 0, self.nvrnt)
             self._vrnt_name = value
         def fdel(self):
             """Delete variant name array"""
@@ -233,10 +232,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_genpos
         def fset(self, value):
             """Set variant genetic position array"""
-            cond_check_is_ndarray(value, "vrnt_genpos")
-            cond_check_ndarray_dtype_is_float64(value, "vrnt_genpos")
-            cond_check_ndarray_ndim(value, "vrnt_genpos", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_genpos", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_genpos")
+                check_ndarray_dtype_is_float64(value, "vrnt_genpos")
+                check_ndarray_ndim(value, "vrnt_genpos", 1)
+                check_ndarray_axis_len(value, "vrnt_genpos", 0, self.nvrnt)
             self._vrnt_genpos = value
         def fdel(self):
             """Delete variant genetic position array"""
@@ -251,10 +251,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_xoprob
         def fset(self, value):
             """Set variant crossover sequential probability array"""
-            cond_check_is_ndarray(value, "vrnt_xoprob")
-            cond_check_ndarray_dtype_is_float64(value, "vrnt_xoprob")
-            cond_check_ndarray_ndim(value, "vrnt_xoprob", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_xoprob", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_xoprob")
+                check_ndarray_dtype_is_float64(value, "vrnt_xoprob")
+                check_ndarray_ndim(value, "vrnt_xoprob", 1)
+                check_ndarray_axis_len(value, "vrnt_xoprob", 0, self.nvrnt)
             self._vrnt_xoprob = value
         def fdel(self):
             """Delete variant crossover sequential probability array"""
@@ -269,10 +270,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_hapgrp
         def fset(self, value):
             """Set variant haplotype group label array"""
-            cond_check_is_ndarray(value, "vrnt_hapgrp")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_hapgrp")
-            cond_check_ndarray_ndim(value, "vrnt_hapgrp", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_hapgrp")
+                check_ndarray_dtype_is_int64(value, "vrnt_hapgrp")
+                check_ndarray_ndim(value, "vrnt_hapgrp", 1)
+                check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
             self._vrnt_hapgrp = value
         def fdel(self):
             """Delete variant haplotype group label array"""
@@ -287,10 +289,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_hapalt
         def fset(self, value):
             """Set variant haplotype sequence"""
-            cond_check_is_ndarray(value, "vrnt_hapalt")
-            cond_check_ndarray_dtype_is_object(value, "vrnt_hapalt")
-            cond_check_ndarray_ndim(value, "vrnt_hapalt", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_hapalt", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_hapalt")
+                check_ndarray_dtype_is_object(value, "vrnt_hapalt")
+                check_ndarray_ndim(value, "vrnt_hapalt", 1)
+                check_ndarray_axis_len(value, "vrnt_hapalt", 0, self.nvrnt)
             self._vrnt_hapalt = value
         def fdel(self):
             """Delete variant haplotype sequence"""
@@ -305,10 +308,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_hapref
         def fset(self, value):
             """Set variant reference haplotype sequence"""
-            cond_check_is_ndarray(value, "vrnt_hapref")
-            cond_check_ndarray_dtype_is_object(value, "vrnt_hapref")
-            cond_check_ndarray_ndim(value, "vrnt_hapref", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_hapref", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_hapref")
+                check_ndarray_dtype_is_object(value, "vrnt_hapref")
+                check_ndarray_ndim(value, "vrnt_hapref", 1)
+                check_ndarray_axis_len(value, "vrnt_hapref", 0, self.nvrnt)
             self._vrnt_hapref = value
         def fdel(self):
             """Delete variant reference haplotype sequence"""
@@ -323,10 +327,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_mask
         def fset(self, value):
             """Set variant mask"""
-            cond_check_is_ndarray(value, "vrnt_mask")
-            cond_check_ndarray_dtype_is_bool(value, "vrnt_mask")
-            cond_check_ndarray_ndim(value, "vrnt_mask", 1)
-            cond_check_ndarray_axis_len(value, "vrnt_mask", 0, self.nvrnt)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_mask")
+                check_ndarray_dtype_is_bool(value, "vrnt_mask")
+                check_ndarray_ndim(value, "vrnt_mask", 1)
+                check_ndarray_axis_len(value, "vrnt_mask", 0, self.nvrnt)
             self._vrnt_mask = value
         def fdel(self):
             """Delete variant mask"""
@@ -370,9 +375,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_chrgrp_name
         def fset(self, value):
             """Set variant chromosome group name array"""
-            cond_check_is_ndarray(value, "vrnt_chrgrp_name")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_name")
+                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
+                check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
             self._vrnt_chrgrp_name = value
         def fdel(self):
             """Delete variant chromosome group name array"""
@@ -387,9 +393,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_chrgrp_stix
         def fset(self, value):
             """Set variant chromosome group start indices array"""
-            cond_check_is_ndarray(value, "vrnt_chrgrp_stix")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_stix")
+                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
+                check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
             self._vrnt_chrgrp_stix = value
         def fdel(self):
             """Delete variant chromosome group start indices array"""
@@ -404,9 +411,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_chrgrp_spix
         def fset(self, value):
             """Set variant chromosome group stop indices array"""
-            cond_check_is_ndarray(value, "vrnt_chrgrp_spix")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_spix")
+                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
+                check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
             self._vrnt_chrgrp_spix = value
         def fdel(self):
             """Delete variant chromosome group stop indices array"""
@@ -421,9 +429,10 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             return self._vrnt_chrgrp_len
         def fset(self, value):
             """Set variant chromosome group length array"""
-            cond_check_is_ndarray(value, "vrnt_chrgrp_len")
-            cond_check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_len")
+                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
+                check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
             self._vrnt_chrgrp_len = value
         def fdel(self):
             """Delete variant chromosome group length array"""

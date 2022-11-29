@@ -8,6 +8,7 @@ import numpy
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
 from pybrops.core.mat.util import get_axis
+from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix

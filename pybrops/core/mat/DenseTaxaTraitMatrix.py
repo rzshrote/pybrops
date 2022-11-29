@@ -3,7 +3,6 @@ Module defining implementing dense matrices with taxa and trait metadata and
 associated error checking routines.
 """
 
-import numpy
 import copy
 
 from pybrops.core.error import error_readonly

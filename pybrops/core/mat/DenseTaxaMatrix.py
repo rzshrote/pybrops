@@ -7,19 +7,13 @@ import copy
 import numpy
 
 from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_at_least_1d
-from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_2d
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_bool
-from pybrops.core.error import cond_check_ndarray_dtype_is_int64
-from pybrops.core.error import cond_check_ndarray_dtype_is_float64
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_ndarray_dtype_is_int64
+from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
@@ -146,10 +140,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa
         def fset(self, value):
             """Set taxa label array"""
-            cond_check_is_ndarray(value, "taxa")
-            cond_check_ndarray_dtype_is_object(value, "taxa")
-            cond_check_ndarray_ndim(value, "taxa", 1)
-            cond_check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
+            if value is not None:
+                check_is_ndarray(value, "taxa")
+                check_ndarray_dtype_is_object(value, "taxa")
+                check_ndarray_ndim(value, "taxa", 1)
+                check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
             self._taxa = value
         def fdel(self):
             """Delete taxa label array"""
@@ -164,10 +159,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa_grp
         def fset(self, value):
             """Set taxa group label array"""
-            cond_check_is_ndarray(value, "taxa_grp")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp")
-            cond_check_ndarray_ndim(value, "taxa_grp", 1)
-            cond_check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
+            if value is not None:
+                check_is_ndarray(value, "taxa_grp")
+                check_ndarray_dtype_is_int64(value, "taxa_grp")
+                check_ndarray_ndim(value, "taxa_grp", 1)
+                check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
             self._taxa_grp = value
         def fdel(self):
             """Delete taxa group label array"""
@@ -211,9 +207,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa_grp_name
         def fset(self, value):
             """Set taxa group name array"""
-            cond_check_is_ndarray(value, "taxa_grp_name")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_name")
-            cond_check_ndarray_ndim(value, "taxa_grp_name", 1)
+            if value is not None:
+                check_is_ndarray(value, "taxa_grp_name")
+                check_ndarray_dtype_is_int64(value, "taxa_grp_name")
+                check_ndarray_ndim(value, "taxa_grp_name", 1)
             self._taxa_grp_name = value
         def fdel(self):
             """Delete taxa group array"""
@@ -228,9 +225,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa_grp_stix
         def fset(self, value):
             """Set taxa group start indices array"""
-            cond_check_is_ndarray(value, "taxa_grp_stix")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
-            cond_check_ndarray_ndim(value, "taxa_grp_stix", 1)
+            if value is not None:
+                check_is_ndarray(value, "taxa_grp_stix")
+                check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
+                check_ndarray_ndim(value, "taxa_grp_stix", 1)
             self._taxa_grp_stix = value
         def fdel(self):
             """Delete taxa group start indices array"""
@@ -245,9 +243,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa_grp_spix
         def fset(self, value):
             """Set taxa group stop indices array"""
-            cond_check_is_ndarray(value, "taxa_grp_spix")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
-            cond_check_ndarray_ndim(value, "taxa_grp_spix", 1)
+            if value is not None:
+                check_is_ndarray(value, "taxa_grp_spix")
+                check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
+                check_ndarray_ndim(value, "taxa_grp_spix", 1)
             self._taxa_grp_spix = value
         def fdel(self):
             """Delete taxa group stop indices array"""
@@ -262,9 +261,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             return self._taxa_grp_len
         def fset(self, value):
             """Set taxa group length array"""
-            cond_check_is_ndarray(value, "taxa_grp_len")
-            cond_check_ndarray_dtype_is_int64(value, "taxa_grp_len")
-            cond_check_ndarray_ndim(value, "taxa_grp_len", 1)
+            if value is not None:
+                check_is_ndarray(value, "taxa_grp_len")
+                check_ndarray_dtype_is_int64(value, "taxa_grp_len")
+                check_ndarray_ndim(value, "taxa_grp_len", 1)
             self._taxa_grp_len = value
         def fdel(self):
             """Delete taxa group length array"""

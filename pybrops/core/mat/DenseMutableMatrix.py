@@ -4,6 +4,8 @@ Module implementing a dense mutable matrix and associated error checking routine
 Mutable refers to the ability of adding/removing rows and columns from the matrix.
 """
 
+import numpy
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.DenseMatrix import is_DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
@@ -145,19 +147,3 @@ def check_is_DenseMutableMatrix(v, varname):
     """
     if not isinstance(v, DenseMutableMatrix):
         raise TypeError("'%s' must be a DenseMutableMatrix." % varname)
-
-def cond_check_is_DenseMutableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HDF5InputOutput. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HDF5InputOutput.
-    """
-    if cond(v):
-        check_is_DenseMutableMatrix(v, varname)

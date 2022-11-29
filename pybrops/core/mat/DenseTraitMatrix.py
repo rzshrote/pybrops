@@ -7,10 +7,10 @@ import numpy
 import copy
 
 from pybrops.core.error import check_is_iterable
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
@@ -98,10 +98,11 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             return self._trait
         def fset(self, value):
             """Set trait label array"""
-            cond_check_is_ndarray(value, "trait")
-            cond_check_ndarray_dtype_is_object(value, "trait")
-            cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_axis_len(value, "trait", 0, self.ntrait)
+            if value is not None:
+                check_is_ndarray(value, "trait")
+                check_ndarray_dtype_is_object(value, "trait")
+                check_ndarray_ndim(value, "trait", 1)
+                check_ndarray_axis_len(value, "trait", 0, self.ntrait)
             self._trait = value
         def fdel(self):
             """Delete trait label array"""

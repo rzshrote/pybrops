@@ -547,19 +547,3 @@ def check_is_DenseMatrix(v, varname):
     """
     if not isinstance(v, DenseMatrix):
         raise TypeError("'%s' must be a DenseMatrix." % varname)
-
-def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseMatrix. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DenseMatrix.
-    """
-    if cond(v):
-        check_is_DenseMatrix(v, varname)

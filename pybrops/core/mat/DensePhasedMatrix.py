@@ -7,11 +7,9 @@ import numpy
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_3d
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
@@ -653,21 +651,3 @@ def check_is_DensePhasedMatrix(v, varname):
     """
     if not isinstance(v, DensePhasedMatrix):
         raise TypeError("'%s' must be a DensePhasedMatrix." % varname)
-
-def cond_check_is_DensePhasedMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DensePhasedMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DensePhasedMatrix.
-    """
-    if cond(v):
-        check_is_DensePhasedMatrix(v, varname)

@@ -1,10 +1,8 @@
-import numpy
 import copy
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_at_least_2d
 from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
