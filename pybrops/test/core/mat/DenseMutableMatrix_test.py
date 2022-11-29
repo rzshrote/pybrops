@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.DenseMutableMatrix import is_DenseMutableMatrix
 from pybrops.core.mat.DenseMutableMatrix import check_is_DenseMutableMatrix
-from pybrops.core.mat.DenseMutableMatrix import cond_check_is_DenseMutableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -59,6 +58,3 @@ def test_check_is_DenseMutableMatrix(mat):
         check_is_DenseMutableMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseMutableMatrix(None, "mat")
-
-def test_cond_check_is_DenseMutableMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseMutableMatrix)
