@@ -5,6 +5,8 @@ error checking routines.
 
 import copy
 import numpy
+from typing import Optional
+from typing import Any
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
@@ -32,7 +34,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(
+        self, 
+        mat: numpy.ndarray, 
+        taxa: Optional[numpy.ndarray] = None, 
+        taxa_grp: Optional[numpy.ndarray] = None, 
+        **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseTaxaMatrix.
 
@@ -1197,7 +1205,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaMatrix(v):
+def is_DenseTaxaMatrix(v: Any):
     """
     Determine whether an object is a DenseTaxaMatrix.
 
@@ -1213,7 +1221,7 @@ def is_DenseTaxaMatrix(v):
     """
     return isinstance(v, DenseTaxaMatrix)
 
-def check_is_DenseTaxaMatrix(v, varname):
+def check_is_DenseTaxaMatrix(v: Any, vname: str):
     """
     Check if object is of type DenseTaxaMatrix. Otherwise raise TypeError.
 
@@ -1225,22 +1233,4 @@ def check_is_DenseTaxaMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not is_DenseTaxaMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaMatrix".format(varname))
-
-def cond_check_is_DenseTaxaMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseTaxaMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseTaxaMatrix.
-    """
-    if cond(v):
-        check_is_DenseTaxaMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseTaxaMatrix".format(vname))

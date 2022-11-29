@@ -4,6 +4,7 @@ Module implementing a dense phased matrix and associated error checking routines
 
 import copy
 import numpy
+from typing import Any
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
@@ -27,7 +28,11 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(
+        self, 
+        mat: numpy.ndarray, 
+        **kwargs: dict
+        ):
         """
         Constructor for the concrete class DensePhasedMatrix.
 
@@ -622,7 +627,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedMatrix(v):
+def is_DensePhasedMatrix(v: Any):
     """
     Determine whether an object is a DensePhasedMatrix.
 
@@ -638,7 +643,7 @@ def is_DensePhasedMatrix(v):
     """
     return isinstance(v, DensePhasedMatrix)
 
-def check_is_DensePhasedMatrix(v, varname):
+def check_is_DensePhasedMatrix(v: Any, vname: str):
     """
     Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.
 
@@ -650,4 +655,4 @@ def check_is_DensePhasedMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DensePhasedMatrix):
-        raise TypeError("'%s' must be a DensePhasedMatrix." % varname)
+        raise TypeError("'%s' must be a DensePhasedMatrix." % vname)

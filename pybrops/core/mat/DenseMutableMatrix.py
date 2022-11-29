@@ -22,7 +22,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat: numpy.ndarray, **kwargs: dict):
         """
         Constructor for DenseMutableMatrix
 

@@ -5,6 +5,8 @@ checking routines.
 
 import copy
 import numpy
+from typing import Any
+from typing import Optional
 
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
@@ -32,10 +34,20 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
-    vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
-    vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
-    vrnt_mask = None, **kwargs):
+    def __init__(
+        self, 
+        mat: numpy.ndarray, 
+        vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+        vrnt_phypos: Optional[numpy.ndarray] = None,
+        vrnt_name: Optional[numpy.ndarray] = None, 
+        vrnt_genpos: Optional[numpy.ndarray] = None, 
+        vrnt_xoprob: Optional[numpy.ndarray] = None,
+        vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+        vrnt_hapalt: Optional[numpy.ndarray] = None, 
+        vrnt_hapref: Optional[numpy.ndarray] = None,
+        vrnt_mask: Optional[numpy.ndarray] = None, 
+        **kwargs: dict
+        ):
         """
         Parameters
         ----------
@@ -1799,7 +1811,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVariantMatrix(v):
+def is_DenseVariantMatrix(v: Any):
     """
     Determine whether an object is a DenseVariantMatrix.
 
@@ -1815,7 +1827,7 @@ def is_DenseVariantMatrix(v):
     """
     return isinstance(v, DenseVariantMatrix)
 
-def check_is_DenseVariantMatrix(v, varname):
+def check_is_DenseVariantMatrix(v: Any, vname: str):
     """
     Check if object is of type DenseVariantMatrix. Otherwise raise TypeError.
 
@@ -1827,22 +1839,4 @@ def check_is_DenseVariantMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not is_DenseVariantMatrix(v):
-        raise TypeError("'{0}' must be a DenseVariantMatrix".format(varname))
-
-def cond_check_is_DenseVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseVariantMatrix.
-    """
-    if cond(v):
-        check_is_DenseVariantMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseVariantMatrix".format(vname))

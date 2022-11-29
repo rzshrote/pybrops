@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.DenseVariantMatrix import is_DenseVariantMatrix
 from pybrops.core.mat.DenseVariantMatrix import check_is_DenseVariantMatrix
-from pybrops.core.mat.DenseVariantMatrix import cond_check_is_DenseVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -760,6 +759,3 @@ def test_check_is_DenseVariantMatrix(mat):
         check_is_DenseVariantMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseVariantMatrix(None, "mat")
-
-def test_cond_check_is_DenseVariantMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseVariantMatrix)

@@ -3,7 +3,10 @@ Module defining implementing dense matrices with taxa and trait metadata and
 associated error checking routines.
 """
 
+import numpy
 import copy
+from typing import Optional
+from typing import Any
 
 from pybrops.core.error import error_readonly
 from pybrops.core.mat.util import get_axis
@@ -25,7 +28,14 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(
+        self, 
+        mat: numpy.ndarray, 
+        taxa: Optional[numpy.ndarray] = None, 
+        taxa_grp: Optional[numpy.ndarray] = None, 
+        trait: Optional[numpy.ndarray] = None, 
+        **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseTaxaTraitMatrix.
 
@@ -937,7 +947,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaTraitMatrix(v):
+def is_DenseTaxaTraitMatrix(v: Any):
     """
     Determine whether an object is a DenseTaxaTraitMatrix.
 
@@ -953,7 +963,7 @@ def is_DenseTaxaTraitMatrix(v):
     """
     return isinstance(v, DenseTaxaTraitMatrix)
 
-def check_is_DenseTaxaTraitMatrix(v, varname):
+def check_is_DenseTaxaTraitMatrix(v: Any, vname: str):
     """
     Check if object is of type DenseTaxaTraitMatrix. Otherwise raise TypeError.
 
@@ -965,22 +975,4 @@ def check_is_DenseTaxaTraitMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not is_DenseTaxaTraitMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaTraitMatrix".format(varname))
-
-def cond_check_is_DenseTaxaTraitMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseTaxaTraitMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseTaxaTraitMatrix.
-    """
-    if cond(v):
-        check_is_DenseTaxaTraitMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseTaxaTraitMatrix".format(vname))

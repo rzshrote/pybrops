@@ -5,6 +5,8 @@ checking routines.
 
 import numpy
 import copy
+from typing import Any
+from typing import Optional
 
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
@@ -29,7 +31,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, trait = None, **kwargs):
+    def __init__(
+        self, 
+        mat: numpy.ndarray, 
+        trait: Optional[numpy.ndarray] = None, 
+        **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseTraitMatrix.
 
@@ -887,7 +894,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTraitMatrix(v):
+def is_DenseTraitMatrix(v: Any):
     """
     Determine whether an object is a DenseTraitMatrix.
 
@@ -903,7 +910,7 @@ def is_DenseTraitMatrix(v):
     """
     return isinstance(v, DenseTraitMatrix)
 
-def check_is_DenseTraitMatrix(v, varname):
+def check_is_DenseTraitMatrix(v: Any, vname: str):
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
 
@@ -915,22 +922,4 @@ def check_is_DenseTraitMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not is_DenseTraitMatrix(v):
-        raise TypeError("'{0}' must be a DenseTraitMatrix".format(varname))
-
-def cond_check_is_DenseTraitMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseTraitMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseTraitMatrix.
-    """
-    if cond(v):
-        check_is_DenseTraitMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseTraitMatrix".format(vname))

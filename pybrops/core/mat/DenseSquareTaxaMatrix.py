@@ -28,7 +28,13 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(
+        self, 
+        mat, 
+        taxa = None, 
+        taxa_grp = None, 
+        **kwargs
+        ):
         """
         Constructor for the DenseSquareTaxaMatrix concrete class.
 
