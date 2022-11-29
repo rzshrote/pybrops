@@ -1,3 +1,9 @@
-from . import decode
-from . import encode
-from . import gen
+"""
+Module containing interfaces and implementations of chromosomes.
+"""
+
+# interfaces
+from . import Chromosome
+
+# implementations
+from . import DenseChromosome
