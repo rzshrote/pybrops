@@ -10,6 +10,7 @@ from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_ndarray
 from pybrops.core.random import global_prng
 from pybrops.core.util.pareto import is_pareto_efficient
 

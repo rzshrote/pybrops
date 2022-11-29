@@ -26,7 +26,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         ----------
         k : int
             Number of states to select in set space. Select n choose k.
-        setspace : numpy.ndarray
+        sspace : numpy.ndarray
             Array of shape (n,) where 'n' is the size of the set space.
         rng : numpy.random.Generator, numpy.random.RandomState
             Random number generator.
@@ -43,7 +43,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, setspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
         """
         Optimize an objective function.
 
@@ -61,13 +61,13 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         # get parameters for optimization
         if k is None:
             k = self.k
-        if setspace is None:
-            setspace = self.setspace
+        if sspace is None:
+            sspace = self.sspace
         if objfn_wt is None:
             objfn_wt = self.objfn_wt
 
         # initialize
-        wrkss = setspace.copy()    # copy set space
+        wrkss = sspace.copy()    # copy set space
         self.rng.shuffle(wrkss)    # shuffle search space
 
         # get starting solution and score
@@ -99,8 +99,8 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
                 gbest_wscore = wscore[gbest_ix]         # get best weighted score
                 # reorder and update the working set space
                 wrkss[:k] = gbest_soln
-                mask = ~numpy.in1d(setspace, gbest_soln)    # invert
-                wrkss[k:] = setspace[mask]
+                mask = ~numpy.in1d(sspace, gbest_soln)    # invert
+                wrkss[k:] = sspace[mask]
             else:
                 iterate = False     # no better results; found a local optima
 
@@ -111,7 +111,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             "objfn_weval" : gbest_wscore
         }
 
-        return out
+        return gbest_score, gbest_soln, out
 
     def optimize_vec(fn):
         raise NotImplementedError("method is abstract")
