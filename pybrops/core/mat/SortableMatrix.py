@@ -121,21 +121,3 @@ def check_is_SortableMatrix(v, varname):
     """
     if not isinstance(v, SortableMatrix):
         raise TypeError("'%s' must be a SortableMatrix." % varname)
-
-def cond_check_is_SortableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type SortableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        SortableMatrix.
-    """
-    if cond(v):
-        check_is_SortableMatrix(v, varname)

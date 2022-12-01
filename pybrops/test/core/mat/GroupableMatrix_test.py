@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.GroupableMatrix import is_GroupableMatrix
 from pybrops.core.mat.GroupableMatrix import check_is_GroupableMatrix
-from pybrops.core.mat.GroupableMatrix import cond_check_is_GroupableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -59,6 +58,3 @@ def test_check_is_GroupableMatrix(mat):
         check_is_GroupableMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_GroupableMatrix(None, "mat")
-
-def test_cond_check_is_GroupableMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_GroupableMatrix)

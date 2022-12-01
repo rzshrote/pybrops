@@ -116,21 +116,3 @@ def check_is_MutableMatrix(v, varname):
     """
     if not isinstance(v, MutableMatrix):
         raise TypeError("'%s' must be a MutableMatrix." % varname)
-
-def cond_check_is_MutableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type MutableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        MutableMatrix.
-    """
-    if cond(v):
-        check_is_MutableMatrix(v, varname)

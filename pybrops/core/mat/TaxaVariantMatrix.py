@@ -63,21 +63,3 @@ def check_is_TaxaVariantMatrix(v, varname):
     """
     if not is_TaxaVariantMatrix(v):
         raise TypeError("'{0}' must be a TaxaVariantMatrix".format(varname))
-
-def cond_check_is_TaxaVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type TaxaVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        TaxaVariantMatrix.
-    """
-    if cond(v):
-        check_is_TaxaVariantMatrix(v, varname)

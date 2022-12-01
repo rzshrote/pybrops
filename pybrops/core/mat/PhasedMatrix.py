@@ -2,6 +2,8 @@
 Module defining phased matrix interfaces and associated error checking routines.
 """
 
+from typing import Any
+
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class PhasedMatrix(MutableMatrix):
@@ -216,7 +218,7 @@ class PhasedMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedMatrix(v):
+def is_PhasedMatrix(v: Any):
     """
     Determine whether an object is a PhasedMatrix.
 
@@ -232,7 +234,7 @@ def is_PhasedMatrix(v):
     """
     return isinstance(v, PhasedMatrix)
 
-def check_is_PhasedMatrix(v, varname):
+def check_is_PhasedMatrix(v: Any, vname: str):
     """
     Check if object is of type PhasedMatrix. Otherwise raise TypeError.
 
@@ -244,22 +246,4 @@ def check_is_PhasedMatrix(v, varname):
         Name of variable to print in TypeError message.
     """
     if not is_PhasedMatrix(v):
-        raise TypeError("'{0}' must be a PhasedMatrix".format(varname))
-
-def cond_check_is_PhasedMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhasedMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        PhasedMatrix.
-    """
-    if cond(v):
-        check_is_PhasedMatrix(v, varname)
+        raise TypeError("'{0}' must be a PhasedMatrix".format(vname))

@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 from pybrops.core.mat.PhasedMatrix import is_PhasedMatrix
 from pybrops.core.mat.PhasedMatrix import check_is_PhasedMatrix
-from pybrops.core.mat.PhasedMatrix import cond_check_is_PhasedMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -83,6 +82,3 @@ def test_check_is_PhasedMatrix(mat):
         check_is_PhasedMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_PhasedMatrix(None, "mat")
-
-def test_cond_check_is_PhasedMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_PhasedMatrix)

@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.PhasedTaxaVariantMatrix import is_PhasedTaxaVariantMatrix
 from pybrops.core.mat.PhasedTaxaVariantMatrix import check_is_PhasedTaxaVariantMatrix
-from pybrops.core.mat.PhasedTaxaVariantMatrix import cond_check_is_PhasedTaxaVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -50,6 +49,3 @@ def test_check_is_PhasedTaxaVariantMatrix(mat):
         check_is_PhasedTaxaVariantMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_PhasedTaxaVariantMatrix(None, "mat")
-
-def test_cond_check_is_PhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_PhasedTaxaVariantMatrix)

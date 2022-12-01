@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import is_TaxaVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import check_is_TaxaVariantMatrix
-from pybrops.core.mat.TaxaVariantMatrix import cond_check_is_TaxaVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -50,6 +49,3 @@ def test_check_is_TaxaVariantMatrix(mat):
         check_is_TaxaVariantMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_TaxaVariantMatrix(None, "mat")
-
-def test_cond_check_is_TaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_TaxaVariantMatrix)

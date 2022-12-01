@@ -592,19 +592,3 @@ def check_is_Matrix(v, varname):
     """
     if not is_Matrix(v):
         raise TypeError("'{0}' must be of type Matrix.".format(varname))
-
-def cond_check_is_Matrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type Matrix. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a Matrix.
-    """
-    if cond(v):
-        check_is_Matrix(v, varname)

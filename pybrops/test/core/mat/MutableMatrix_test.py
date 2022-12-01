@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 from pybrops.core.mat.MutableMatrix import is_MutableMatrix
 from pybrops.core.mat.MutableMatrix import check_is_MutableMatrix
-from pybrops.core.mat.MutableMatrix import cond_check_is_MutableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -62,6 +61,3 @@ def test_check_is_MutableMatrix(mat):
         check_is_MutableMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_MutableMatrix(None, "mat")
-
-def test_cond_check_is_MutableMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_MutableMatrix)

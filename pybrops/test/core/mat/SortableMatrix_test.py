@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 from pybrops.core.mat.SortableMatrix import is_SortableMatrix
 from pybrops.core.mat.SortableMatrix import check_is_SortableMatrix
-from pybrops.core.mat.SortableMatrix import cond_check_is_SortableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -62,6 +61,3 @@ def test_check_is_SortableMatrix(mat):
         check_is_SortableMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_SortableMatrix(None, "mat")
-
-def test_cond_check_is_SortableMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_SortableMatrix)

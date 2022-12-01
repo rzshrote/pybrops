@@ -65,21 +65,3 @@ def check_is_PhasedTaxaVariantMatrix(v, varname):
     """
     if not is_PhasedTaxaVariantMatrix(v):
         raise TypeError("'{0}' must be a PhasedTaxaVariantMatrix".format(varname))
-
-def cond_check_is_PhasedTaxaVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhasedTaxaVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        PhasedTaxaVariantMatrix.
-    """
-    if cond(v):
-        check_is_PhasedTaxaVariantMatrix(v, varname)

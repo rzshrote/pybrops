@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.core.mat.VariantMatrix import is_VariantMatrix
 from pybrops.core.mat.VariantMatrix import check_is_VariantMatrix
-from pybrops.core.mat.VariantMatrix import cond_check_is_VariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -137,6 +136,3 @@ def test_check_is_VariantMatrix(mat):
         check_is_VariantMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_VariantMatrix(None, "mat")
-
-def test_cond_check_is_VariantMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_VariantMatrix)
