@@ -4,6 +4,7 @@ checking routines.
 """
 
 import numpy
+import math
 import pandas
 import warnings
 from scipy.interpolate import interp1d
@@ -13,12 +14,9 @@ from pybrops.core.error import check_is_not_None
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_size
 from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_str
-from pybrops.core.error import cond_check_ndarray_dtype
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_str
+from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 class ExtendedGeneticMap(GeneticMap):
@@ -134,9 +132,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_name
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_name")
-            cond_check_ndarray_dtype_is_object(value, "vrnt_name")
-            cond_check_ndarray_ndim(value, "vrnt_name", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_name")
+                check_ndarray_dtype_is_object(value, "vrnt_name")
+                check_ndarray_ndim(value, "vrnt_name", 1)
             self._vrnt_name = value
         def fdel(self):
             del self._vrnt_name
@@ -148,9 +147,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_fncode
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_fncode")
-            cond_check_ndarray_dtype_is_object(value, "vrnt_fncode")
-            cond_check_ndarray_ndim(value, "vrnt_fncode", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_fncode")
+                check_ndarray_dtype_is_object(value, "vrnt_fncode")
+                check_ndarray_ndim(value, "vrnt_fncode", 1)
             self._vrnt_fncode = value
         def fdel(self):
             del self._vrnt_fncode
@@ -163,9 +163,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_name
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_chrgrp_name")
-            cond_check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_name")
+                check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
+                check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
             self._vrnt_chrgrp_name = value
         def fdel(self):
             del self._vrnt_chrgrp_name
@@ -177,9 +178,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_stix
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_chrgrp_stix")
-            cond_check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_stix")
+                check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
+                check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
             self._vrnt_chrgrp_stix = value
         def fdel(self):
             del self._vrnt_chrgrp_stix
@@ -191,9 +193,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_spix
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_chrgrp_spix")
-            cond_check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_spix")
+                check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
+                check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
             self._vrnt_chrgrp_spix = value
         def fdel(self):
             del self._vrnt_chrgrp_spix
@@ -205,9 +208,10 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._vrnt_chrgrp_len
         def fset(self, value):
-            cond_check_is_ndarray(value, "vrnt_chrgrp_len")
-            cond_check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
-            cond_check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
+            if value is not None:
+                check_is_ndarray(value, "vrnt_chrgrp_len")
+                check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
+                check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
             self._vrnt_chrgrp_len = value
         def fdel(self):
             del self._vrnt_chrgrp_len
@@ -220,7 +224,8 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline
         def fset(self, value):
-            cond_check_is_dict(value, "spline")
+            if value is not None:
+                check_is_dict(value, "spline")
             self._spline = value
         def fdel(self):
             del self._spline
@@ -233,7 +238,8 @@ class ExtendedGeneticMap(GeneticMap):
         def fget(self):
             return self._spline_kind
         def fset(self, value):
-            cond_check_is_str(value, "spline_kind")
+            if value is not None:
+                check_is_str(value, "spline_kind")
             self._spline_kind = value
         def fdel(self):
             del self._spline_kind
@@ -448,7 +454,7 @@ class ExtendedGeneticMap(GeneticMap):
             raise ValueError("'nt' and 'M' cannot both be None")
 
         # if not grouped, sort and group
-        if not is_grouped():
+        if not self.is_grouped():
             self.group()
 
         # make empty index list to store selected marker indices
@@ -615,7 +621,7 @@ class ExtendedGeneticMap(GeneticMap):
         mask = self.congruence()
 
         # if all are concordant, exit this function
-        if( numpy.all(concordancy) ):
+        if( numpy.all(mask) ):
             return
 
         # select (and group) only sites that are congruent
