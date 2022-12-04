@@ -12,7 +12,6 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import cond_check_is_callable
 from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_ndarray
 from pybrops.core.error import cond_check_is_Generator_or_RandomState
 
 class WeightedGenomicSelection(SelectionProtocol):

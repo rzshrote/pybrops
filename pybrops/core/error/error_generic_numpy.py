@@ -2,86 +2,9 @@ import numpy
 
 from . import generic_default_cond
 
-def generic_check_dtype_issubdtype(v, vname, vdtype):
-    """
-    Generic check ndarray subdtype function.
-
-    Parameters
-    ----------
-    v : dtype
-        Reference to dtype variable.
-    vname : str
-        Name associated with the dtype variable.
-    vdtype : dtype, str, tuple
-        type : numpy.dtype or dtype string associated with the object variable.
-        tuple : Tuple of numpy.dtype or dtype strings (logical or) for the object variable.
-    """
-    istuple = isinstance(vdtype, tuple)
-    logic = any(numpy.issubdtype(v, e) for e in vdtype) if istuple else numpy.issubdtype(v, vdtype)
-    if not logic:
-        mname = ""
-        if istuple:
-            l = len(vdtype)
-            for i in range(l):
-                mname += str(vdtype[i])
-                if i < l - 2:
-                    mname += ", "
-                elif i < l - 1:
-                    mname += ", or "
-        else:
-            mname = str(vdtype)
-        raise TypeError("variable '{0}' must be of dtype {1}".format(vname, mname))
-
-def generic_cond_check_dtype_issubdtype(v, vname, vdtype, cond = generic_default_cond):
-    """
-    Generic check ndarray subdtype function.
-
-    Parameters
-    ----------
-    v : dtype
-        Reference to dtype variable.
-    vname : str
-        Name associated with the dtype variable.
-    vdtype : dtype, str, tuple
-        type : numpy.dtype or dtype string associated with the object variable.
-        tuple : Tuple of numpy.dtype or dtype strings (logical or) for the object variable.
-    """
-    if cond(v):
-        generic_check_dtype_issubdtype(v, vname, vdtype)
-
 ################################################################################
 ########################### ndarray check functions ############################
 ################################################################################
-def generic_check_ndarray_dtype_issubdtype(v, vname, vdtype):
-    """
-    Generic check ndarray subdtype function.
-
-    Parameters
-    ----------
-    v : object
-        Reference to object variable.
-    vname : str
-        Name associated with the object variable.
-    vdtype : dtype, str, tuple
-        type : numpy.dtype or dtype string associated with the object variable.
-        tuple : Tuple of numpy.dtype or dtype strings (logical or) for the object variable.
-    """
-    istuple = isinstance(vdtype, tuple)
-    logic = any(numpy.issubdtype(v.dtype, e) for e in vdtype) if istuple else numpy.issubdtype(v.dtype, vdtype)
-    if not logic:
-        mname = ""
-        if istuple:
-            l = len(vdtype)
-            for i in range(l):
-                mname += str(vdtype[i])
-                if i < l - 2:
-                    mname += ", "
-                elif i < l - 1:
-                    mname += ", or "
-        else:
-            mname = str(vdtype)
-        raise TypeError("variable '{0}' must be of dtype {1}".format(vname, mname))
-
 def generic_check_ndarray_eq(v, vname, w, wname):
     """
     Generic check ndarray value function.
@@ -211,24 +134,6 @@ def generic_check_ndarray_is_square(v, vname):
 ################################################################################
 ##################### conditional ndarray check functions ######################
 ################################################################################
-def generic_cond_check_ndarray_dtype_issubdtype(v, vname, vdtype, cond = generic_default_cond):
-    """
-    Generic conditional check ndarray subdtype function.
-
-    Parameters
-    ----------
-    v : object
-        Reference to object variable.
-    vname : str
-        Name associated with the object variable.
-    vdtype : dtype, str, tuple
-        type : numpy.dtype or dtype string associated with the object variable.
-        tuple : Tuple of numpy.dtype or dtype strings (logical or) for the object variable.
-    cond : callable
-    """
-    if cond(v):
-        generic_check_ndarray_dtype_issubdtype(v, vname, vdtype)
-
 def generic_cond_check_ndarray_eq(v, vname, w, wname, cond = generic_default_cond):
     """
     Generic check ndarray value function.

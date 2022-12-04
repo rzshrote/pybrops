@@ -27,20 +27,22 @@ def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: float, vmax: f
         )
 
 ################# generic_check_ndarray_eq #################
-def check_ndarray_eq(v, vname, w, wname):
-    generic_check_ndarray_eq(v, vname, w, wname)
+def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str):
+    if not numpy.all(v == w):
+        raise ValueError("variable '{0}' must have values equal to {1}".format(vname, wname))
 
-def check_ndarray_is_binary(v, vname):
+def check_ndarray_is_binary(v: numpy.ndarray, vname: str):
     if not numpy.all((v == 0) | (v == 1)):
         raise ValueError("variable '{0}' must have values equal to 0 or 1".format(vname))
 
-def check_ndarray_is_positive(v, vname):
+def check_ndarray_is_positive(v: numpy.ndarray, vname: str):
     if numpy.any(v < 0):
         raise ValueError("variable '{0}' must have all positive values".format(vname))
 
 ################ generic_check_ndarray_ndim ################
-def check_ndarray_ndim(v, vname, vndim):
-    generic_check_ndarray_ndim(v, vname, vndim)
+def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int):
+    if v.ndim != vndim:
+        raise ValueError("variable '{0}' must have dimension equal to {1}".format(vname, vndim))
 
 def check_ndarray_ndim_gteq(v, vname, vndim):
     generic_check_ndarray_ndim_gteq(v, vname, vndim)
@@ -71,13 +73,13 @@ def check_ndarray_size(v, vname, vsize):
 def check_ndarray_sum(v, vname, vsum, vaxis):
     generic_check_ndarray_sum(v, vname, vsum, vaxis)
 
-def check_ndarray_mean_is_approx(v, vname, vmean, vaxis = None, rtol = 1e-5, atol = 1e-8):
+def check_ndarray_mean_is_approx(v: numpy.ndarray, vname: str, vmean: float, vaxis: int = None, rtol: float = 1e-5, atol: float = 1e-8):
     if not numpy.allclose(v.mean(vaxis), vmean, rtol = rtol, atol = atol):
         raise ValueError("'{0}' must have a mean of {1} along axis {2}".format(vname,vmean,vaxis))
 
 def check_ndarray_std_is_approx(v, vname, vstd, vaxis = None, rtol = 1e-5, atol = 1e-8):
     if not numpy.allclose(v.std(vaxis), vstd, rtol = rtol, atol = atol):
-        raise ValueError("'{0}' must have a standard deviation of {1} along axis {2}".format(vname,vmean,vaxis))
+        raise ValueError("'{0}' must have a standard deviation of {1} along axis {2}".format(vname,vstd,vaxis))
 
 ############### generic_check_ndarray_shape ################
 def check_ndarray_shape(v, vname, vshape, vaxis = None):

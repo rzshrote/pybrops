@@ -9,9 +9,10 @@ from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_ndarray_len_is_multiple_of_3
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 class ThreeWayDHCross(MatingProtocol):
     """
@@ -34,11 +35,29 @@ class ThreeWayDHCross(MatingProtocol):
         """
         super(ThreeWayDHCross, self).__init__(**kwargs)
 
-        # check data types
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # make assignments
         self.rng = pybrops.core.random if rng is None else rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is None:
+                check_is_Generator_or_RandomState(value, "rng")
+            else:
+                value = global_prng
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################

@@ -9,16 +9,12 @@ import h5py
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5
+from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_is_str
 from pybrops.core.error import check_ndarray_dtype_is_float64
+from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_str
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.core.util.numpy import is_ndarray
@@ -194,7 +190,8 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fget(self):
             return self._model_name
         def fset(self, value):
-            cond_check_is_str(value, "model_name")
+            if value is not None:
+                check_is_str(value, "model_name")
             self._model_name = value
         def fdel(self):
             del self._model_name
@@ -206,7 +203,8 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fget(self):
             return self._params
         def fset(self, value):
-            cond_check_is_dict(value, "params")
+            if value is not None:
+                check_is_dict(value, "params")
             self._params = value
         def fdel(self):
             del self._params
@@ -218,9 +216,10 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fget(self):
             return self._trait
         def fset(self, value):
-            cond_check_is_ndarray(value, "trait")
-            cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_dtype_is_object(value, "trait")
+            if value is not None:
+                check_is_ndarray(value, "trait")
+                check_ndarray_ndim(value, "trait", 1)
+                check_ndarray_dtype_is_object(value, "trait")
             self._trait = value
         def fdel(self):
             del self._trait
