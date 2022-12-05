@@ -14,9 +14,6 @@ from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import cond_check_is_callable
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 
 class ConventionalPhenotypicSelection(SelectionProtocol):

@@ -2,10 +2,6 @@ import numpy
 from typing import Any
 from typing import Union
 
-from . import generic_check_isinstance
-from . import generic_default_cond
-from . import generic_cond_check_isinstance
-
 ################################################################################
 ########################## isinstance check functions ##########################
 ################################################################################
@@ -24,18 +20,6 @@ def check_is_RandomState(v: Any, vname: str):
 def check_is_Generator_or_RandomState(v: Any, vname: str):
     if not (isinstance(v, numpy.random.Generator) or isinstance(v, numpy.random.RandomState)):
         raise TypeError("variable '{0}' must be of type 'numpy.random.Generator' or 'numpy.random.RandomState'".format(vname))
-
-################################################################################
-#################### conditional isinstance check functions ####################
-################################################################################
-def cond_check_is_Generator(v, vname, cond = generic_default_cond):
-    generic_cond_check_isinstance(v, vname, numpy.random.Generator, cond)
-
-def cond_check_is_RandomState(v, vname, cond = generic_default_cond):
-    generic_cond_check_isinstance(v, vname, numpy.random.RandomState, cond)
-
-def cond_check_is_Generator_or_RandomState(v, vname, cond = generic_default_cond):
-    generic_cond_check_isinstance(v, vname, (numpy.random.Generator,numpy.random.RandomState), cond)
 
 ################################################################################
 ############################ dtype check functions #############################

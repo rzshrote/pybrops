@@ -9,15 +9,12 @@ from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_callable
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_float
+from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class FamilyPhenotypicSelection(SelectionProtocol):

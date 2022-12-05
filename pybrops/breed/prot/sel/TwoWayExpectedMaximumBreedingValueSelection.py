@@ -6,11 +6,12 @@ value selection.
 
 import numpy
 
-import pybrops.core.random
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_bool
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
+from pybrops.core.random.prng import global_prng
 
 class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
     """
@@ -33,15 +34,6 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
         """
         super(TwoWayExpectedMaximumBreedingValueSelection, self).__init__(**kwargs)
 
-        # error checks
-        check_is_int(k_p, "k_p")
-        # TODO: check traitwt_p
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        check_is_int(nrep, "nrep")
-        # TODO: check selfing
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # variable assignment
         self.k_p = k_p
         self.traitwt_p = traitwt_p
@@ -49,11 +41,118 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
         self.nprogeny = nprogeny
         self.nrep = nrep
         self.selfing = selfing
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    def k_p():
+        doc = "The k_p property."
+        def fget(self):
+            """Get value for k_p."""
+            return self._k_p
+        def fset(self, value):
+            """Set value for k_p."""
+            check_is_int(value, "k_p")
+            self._k_p = value
+        def fdel(self):
+            """Delete value for k_p."""
+            del self._k_p
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    k_p = property(**k_p())
+
+    # TODO: error checks
+    def traitwt_p():
+        doc = "The traitwt_p property."
+        def fget(self):
+            """Get value for traitwt_p."""
+            return self._traitwt_p
+        def fset(self, value):
+            """Set value for traitwt_p."""
+            self._traitwt_p = value
+        def fdel(self):
+            """Delete value for traitwt_p."""
+            del self._traitwt_p
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    traitwt_p = property(**traitwt_p())
+
+    def ncross():
+        doc = "The ncross property."
+        def fget(self):
+            """Get value for ncross."""
+            return self._ncross
+        def fset(self, value):
+            """Set value for ncross."""
+            check_is_int(value, "ncross")
+            self._ncross = value
+        def fdel(self):
+            """Delete value for ncross."""
+            del self._ncross
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    ncross = property(**ncross())
+
+    def nprogeny():
+        doc = "The nprogeny property."
+        def fget(self):
+            """Get value for nprogeny."""
+            return self._nprogeny
+        def fset(self, value):
+            """Set value for nprogeny."""
+            check_is_int(value, "nprogeny")
+            self._nprogeny = value
+        def fdel(self):
+            """Delete value for nprogeny."""
+            del self._nprogeny
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    nprogeny = property(**nprogeny())
+
+    def nrep():
+        doc = "The nrep property."
+        def fget(self):
+            """Get value for nrep."""
+            return self._nrep
+        def fset(self, value):
+            """Set value for nrep."""
+            check_is_int(value, "nrep")
+            self._nrep = value
+        def fdel(self):
+            """Delete value for nrep."""
+            del self._nrep
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    nrep = property(**nrep())
+
+    def selfing():
+        doc = "The selfing property."
+        def fget(self):
+            """Get value for selfing."""
+            return self._selfing
+        def fset(self, value):
+            """Set value for selfing."""
+            check_is_bool(value, "selfing")
+            self._selfing = value
+        def fdel(self):
+            """Delete value for selfing."""
+            del self._selfing
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    selfing = property(**selfing())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is not None:
+                check_is_Generator_or_RandomState(value, "rng")
+            else:
+                value = global_prng
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
