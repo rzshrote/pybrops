@@ -6,14 +6,6 @@ from . import generic_check_ndarray_ndim
 from . import generic_check_ndarray_size
 from . import generic_check_ndarray_shape
 from . import generic_check_ndarray_is_square
-
-from . import generic_default_cond
-from . import generic_cond_check_ndarray_eq
-from . import generic_cond_check_ndarray_sum
-from . import generic_cond_check_ndarray_ndim
-from . import generic_cond_check_ndarray_size
-from . import generic_cond_check_ndarray_shape
-from . import generic_cond_check_ndarray_is_square
 from . import generic_check_ndarray_ndim_gteq
 
 ################################################################################
@@ -105,47 +97,3 @@ def check_ndarray_len_is_multiple_of_3(v, vname):
 
 def check_ndarray_len_is_multiple_of_4(v, vname):
     check_ndarray_len_is_multiple_of(v, vname, 4)
-
-################################################################################
-######################### conditional check functions ##########################
-################################################################################
-
-################# generic_check_ndarray_eq #################
-def cond_check_ndarray_eq(v, vname, w, wname, cond = generic_default_cond):
-    generic_cond_check_ndarray_eq(v, vname, w, wname, cond)
-
-def cond_check_ndarray_is_binary(v, vname, cond = generic_default_cond):
-    if cond(v):
-        check_ndarray_is_binary(v, vname)
-
-################ generic_check_ndarray_ndim ################
-def cond_check_ndarray_ndim(v, vname, vndim, cond = generic_default_cond):
-    generic_cond_check_ndarray_ndim(v, vname, vndim, cond)
-
-def cond_check_ndarray_is_1d(v, vname, cond = generic_default_cond):
-    generic_cond_check_ndarray_ndim(v, vname, 1, cond)
-
-def cond_check_ndarray_is_2d(v, vname, cond = generic_default_cond):
-    generic_cond_check_ndarray_ndim(v, vname, 2, cond)
-
-def cond_check_ndarray_is_3d(v, vname, cond = generic_default_cond):
-    generic_cond_check_ndarray_ndim(v, vname, 3, cond)
-
-################ generic_check_ndarray_size ################
-def cond_check_ndarray_size(v, vname, vsize, cond = generic_default_cond):
-    generic_cond_check_ndarray_size(v, vname, vsize, cond)
-
-################ generic_check_ndarray_sum #################
-def cond_check_ndarray_sum(v, vname, vsum, vaxis, cond = generic_default_cond):
-    generic_cond_check_ndarray_sum(v, vname, vsum, vaxis, cond)
-
-############# generic_cond_check_ndarray_shape #############
-def cond_check_ndarray_shape(v, vname, vshape, vaxis = None, cond = generic_default_cond):
-    generic_cond_check_ndarray_shape(v, vname, vshape, vaxis, cond)
-
-def cond_check_ndarray_axis_len(v, vname, vaxis, vlen, cond = generic_default_cond):
-    generic_cond_check_ndarray_shape(v, vname, vlen, vaxis, cond)
-
-########### generic_cond_check_ndarray_is_square ###########
-def check_ndarray_is_square(v, vname, cond = generic_default_cond):
-    generic_cond_check_ndarray_is_square(v, vname, cond)

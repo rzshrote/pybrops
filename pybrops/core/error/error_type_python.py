@@ -3,9 +3,6 @@ from typing import Any
 from typing import Union
 import inspect
 
-from . import generic_default_cond
-from . import generic_cond_check_isinstance
-
 ################################################################################
 ###################### basic inheritance check functions #######################
 ################################################################################
@@ -276,58 +273,3 @@ def check_is_list_or_tuple(v: Any, vname: str) -> None:
     """
     if not isinstance(v, (list,tuple)):
         raise TypeError("variable '{0}' must be of type 'list' or 'tuple'".format(vname))
-
-
-################################################################################
-######################### conditional check functions ##########################
-################################################################################
-def cond_check_is_bool(v, vname):
-    generic_cond_check_isinstance(v, vname, bool)
-
-# def cond_check_is_bytearray(v, vname):
-#     generic_cond_check_isinstance(v, vname, bytearray)
-
-# def cond_check_is_bytes(v, vname):
-#     generic_cond_check_isinstance(v, vname, bytes)
-
-# def cond_check_is_complex(v, vname):
-#     generic_cond_check_isinstance(v, vname, complex)
-
-def cond_check_is_dict(v, vname):
-    generic_cond_check_isinstance(v, vname, dict)
-
-def cond_check_is_float(v, vname):
-    generic_cond_check_isinstance(v, vname, float)
-
-# def cond_check_is_frozenset(v, vname):
-#     generic_cond_check_isinstance(v, vname, frozenset)
-
-def cond_check_is_int(v, vname):
-    generic_cond_check_isinstance(v, vname, int)
-
-def cond_check_is_list(v, vname):
-    generic_cond_check_isinstance(v, vname, list)
-
-# def cond_check_is_memoryview(v, vname):
-#     generic_cond_check_isinstance(v, vname, memoryview)
-
-def cond_check_is_range(v, vname):
-    generic_cond_check_isinstance(v, vname, range)
-
-def cond_check_is_set(v, vname):
-    generic_cond_check_isinstance(v, vname, set)
-
-def cond_check_is_str(v, vname):
-    generic_cond_check_isinstance(v, vname, str)
-
-def cond_check_is_tuple(v, vname):
-    generic_cond_check_isinstance(v, vname, tuple)
-
-
-################################################################################
-########## conditional compound check functions for basic data types ###########
-################################################################################
-
-def cond_check_is_str_or_iterable(v, vname, cond = generic_default_cond):
-    if cond(v):
-        check_is_str_or_iterable(v, vname)
