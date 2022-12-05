@@ -48,9 +48,8 @@ class SelfCross(MatingProtocol):
         def fset(self, value):
             """Set value for rng."""
             if value is None:
-                check_is_Generator_or_RandomState(value, "rng")
-            else:
                 value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
             self._rng = value
         def fdel(self):
             """Delete value for rng."""
