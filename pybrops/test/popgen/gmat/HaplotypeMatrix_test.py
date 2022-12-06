@@ -65,8 +65,8 @@ def test_hfreq_is_abstract():
 def test_mhf_is_abstract():
     generic_assert_abstract_method(HaplotypeMatrix, "mhf")
 
-def test_mehe_is_abstract():
-    generic_assert_abstract_method(HaplotypeMatrix, "mehe")
+def test_meh_is_abstract():
+    generic_assert_abstract_method(HaplotypeMatrix, "meh")
 
 def test_gtcount_is_abstract():
     generic_assert_abstract_method(HaplotypeMatrix, "gtcount")

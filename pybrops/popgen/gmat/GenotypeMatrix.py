@@ -171,6 +171,23 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    def apoly(self, dtype):
+        """
+        Allele polymorphism presence or absense across all loci.
+
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing indicator variables for
+            whether the locus is polymorphic.
+        """
+        raise NotImplementedError("method is abstract")
+
     def maf(self, dtype):
         """
         Minor allele frequency across all taxa.
@@ -188,7 +205,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def mehe(self, dtype):
+    def meh(self, dtype):
         """
         Mean expected heterozygosity across all taxa.
 

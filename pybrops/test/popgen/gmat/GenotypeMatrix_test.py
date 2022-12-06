@@ -67,8 +67,8 @@ def test_afreq_is_abstract():
 def test_maf_is_abstract():
     generic_assert_abstract_method(GenotypeMatrix, "maf")
 
-def test_mehe_is_abstract():
-    generic_assert_abstract_method(GenotypeMatrix, "mehe")
+def test_meh_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "meh")
 
 def test_gtcount_is_abstract():
     generic_assert_abstract_method(GenotypeMatrix, "gtcount")

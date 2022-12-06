@@ -246,8 +246,8 @@ def test_afreq_is_concrete():
 def test_maf_is_concrete():
     generic_assert_concrete_method(DenseGenotypeMatrix, "maf")
 
-def test_mehe_is_concrete():
-    generic_assert_concrete_method(DenseGenotypeMatrix, "mehe")
+def test_meh_is_concrete():
+    generic_assert_concrete_method(DenseGenotypeMatrix, "meh")
 
 def test_gtcount_is_concrete():
     generic_assert_concrete_method(DenseGenotypeMatrix, "gtcount")
@@ -779,15 +779,15 @@ def test_maf_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
-def test_mehe_None(mat, mat_int8, mat_ploidy):
-    a = mat.mehe(dtype = None)
+def test_meh_None(mat, mat_int8, mat_ploidy):
+    a = mat.meh(dtype = None)
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b = (mat_ploidy / mat_int8.shape[1]) * numpy.dot(b, 1.0 - b)
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
-def test_mehe_float32(mat, mat_int8, mat_ploidy):
-    a = mat.mehe(dtype = "float32")
+def test_meh_float32(mat, mat_int8, mat_ploidy):
+    a = mat.meh(dtype = "float32")
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b = numpy.float32((mat_ploidy / mat_int8.shape[1]) * numpy.dot(b, 1.0 - b))
     assert numpy.all(a == b)

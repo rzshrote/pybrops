@@ -173,13 +173,13 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def mehe(self):
+    def meh(self):
         """
         Mean expected heterozygosity across all taxa.
 
         Returns
         -------
-        mehe : numpy.float64
+        meh : numpy.float64
             A 64-bit floating point representing the mean expected
             heterozygosity.
         """

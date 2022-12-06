@@ -414,6 +414,38 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
                 out = dtype.type(out)                                   # convert to correct dtype
         return out
 
+    def apoly(self, dtype = None):
+        """
+        Allele polymorphism presence or absense across all loci.
+
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing indicator variables for
+            whether the locus is polymorphic.
+        """
+        # find any loci that are monomorphic for 0 allele
+        min_mask = numpy.all(self.mat == 0, axis = (self.phase_axis,self.taxa_axis))
+
+        # find any loci that are monomorphic for 1 allele
+        max_mask = numpy.all(self.mat == 1, axis = (self.phase_axis,self.taxa_axis))
+
+        # logical or results and take logical not
+        out = numpy.logical_not(min_mask | max_mask)
+
+        # convert to specific dtype if needed
+        if dtype is not None:                           # if dtype is specified
+            dtype = numpy.dtype(dtype)                  # ensure conversion to dtype class
+            if out.dtype != dtype:                      # if output dtype and desired are different
+                out = dtype.type(out)                   # convert to correct dtype
+
+        return out
+
     def maf(self, dtype = None):
         """
         Minor allele frequency across all taxa.
@@ -434,7 +466,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def mehe(self, dtype = None):
+    def meh(self, dtype = None):
         """
         Mean expected heterozygosity across all taxa.
 
