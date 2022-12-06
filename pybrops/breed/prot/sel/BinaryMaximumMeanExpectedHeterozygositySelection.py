@@ -2,9 +2,7 @@
 Module implementing selection protocols for maximum mean expected heterozygosity selection.
 """
 
-import cvxpy
 import numpy
-import warnings
 import types
 from typing import Optional
 from typing import Callable
@@ -56,7 +54,8 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         objfn_wt = 1.0,
         rng = global_prng, 
         soalgo = None,
-        **kwargs):
+        **kwargs
+        ):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -424,7 +423,7 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # Solve problem using quadratic programming
+        # Solve problem using a single objective method
         if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
@@ -728,9 +727,10 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         Cx = (1.0 / sel.shape[1]) * C[:,sel].sum(2)
         
         # norm2( (n,j), axis=0 ) -> (j,)
-        dist = numpy.linalg.norm(Cx, ord = 2, axis = 1)
+        # (j,)[:,None] -> (j,1)
+        dist = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
 
-        # scalar - (j,) -> (j,)
+        # scalar - (j,1) -> (j,1)
         meh = 1.0 - dist
 
         # apply transformations if needed

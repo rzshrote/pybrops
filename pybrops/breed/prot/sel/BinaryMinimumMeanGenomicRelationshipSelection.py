@@ -25,6 +25,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
 from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
+from pybrops.algo.opt.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
 class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     """
@@ -47,10 +48,20 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent: int, ncross: int, nprogeny: int,
-        gtype: str = "gmat", gcls = DenseVanRadenCoancestryMatrix, method: str = "single",
-        objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-        rng = global_prng, **kwargs):
+    def __init__(self, 
+        nparent: int, 
+        ncross: int, 
+        nprogeny: int,
+        gtype: str = "gmat", 
+        gcls: type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
+        method: str = "single",
+        objfn_trans: Callable = None, 
+        objfn_trans_kwargs: dict = None, 
+        objfn_wt = -1.0,
+        rng = global_prng, 
+        soalgo = None, 
+        **kwargs: dict
+        ):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -180,6 +191,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
         self.rng = rng
+        self.soalgo = soalgo
 
     ############################################################################
     ############################ Object Properties #############################
@@ -322,6 +334,28 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         return locals()
     rng = property(**rng())
 
+    def soalgo():
+        doc = "The soalgo property."
+        def fget(self):
+            """Get value for soalgo."""
+            return self._soalgo
+        def fset(self, value):
+            """Set value for soalgo."""
+            if value is None:
+                value = MemeticSetGeneticAlgorithm(
+                    ngen = 100,
+                    mu = 100,
+                    lamb = 100,
+                    M = 1.5,
+                    rng = self.rng
+                )
+            self._soalgo = value
+        def fdel(self):
+            """Delete value for soalgo."""
+            del self._soalgo
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    soalgo = property(**soalgo())
+
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
@@ -403,78 +437,34 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         """
         # Solve problem using quadratic programming
         if self.method == "single":
-            ##############################
-            # Optimization problem setup #
-            ##############################
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max
+            )
 
-            # all we care about are inbreeding relationships
-            G = self._calc_G(pgmat, gmat)
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
+                **kwargs
+            )
 
-            # declare contributions variable
-            contrib = None
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
-            # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-            # if we successfully were able to apply the jitter, then perform optimization.
-            if G.apply_jitter():
-                K = G.mat_asformat("kinship")                   # convert G to (1/2)G (kinship analogue): (n,n)
-
-                # calculate constants for optimization
-                C = numpy.linalg.cholesky(K).T                  # cholesky decomposition of K matrix: (n,n)
-
-                # get the number of taxa
-                ntaxa = G.ntaxa
-
-                # define vector variable to optimize
-                solution = cvxpy.Variable(ntaxa)                    # (n,)
-
-                # define the objective function
-                soc_objfn = cvxpy.Minimize(
-                    cvxpy.norm2(C @ solution)                       # min Cx
-                )
-
-                # define constraints
-                soc_constraints = [
-                    cvxpy.sum(solution) == 1.0,                     # sum(x_i) == 1
-                    solution >= 0.0                                 # x_i >= 0 for all i
-                ]
-
-                # define problem
-                problem = cvxpy.Problem(
-                    soc_objfn,                              # maximize diversity
-                    soc_constraints                         # summation constraint
-                )
-
-                # solve the problem
-                problem.solve()
-
-                # store solution results
-                if problem.status == "optimal":
-                    contrib = numpy.array(solution.value)       # convert solution to numpy.ndarray
-                else:
-                    warnings.warn("Problem.status == {0}\n".format(problem.status))
-            else:
-                warnings.warn(
-                    "Unable to solve SOCP: Kinship matrix is not positive definite.\n"+
-                    "    This could be caused by lack of genetic diversity.\n"
-                )
-            
-            if contrib is None:
-                warnings.warn("Reverting to uniform selection...")
-                contrib = numpy.repeat(1/ntaxa, ntaxa)          # equal chance of selection
-
-            ##################
-            # select parents #
-            ##################
-
-            # sample selections using stochastic universal sampling
-            sel = stochastic_universal_sampling(self.nparent, contrib, self.rng)
-
-            # make sure parents are forced to outbreed
-            sel = two_way_outcross_shuffle(sel, self._rng)
-
-            # pack contribution proportions into output dictionary
+            # add optimization details to miscellaneous output
             if miscout is not None:
-                miscout["contrib"] = contrib
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, self.ncross, self.nprogeny
 
@@ -627,7 +617,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean expected heterozygosity.
+        Score a parent contribution vector according to its mean genomic relationship.
 
         Parameters
         ----------
@@ -658,7 +648,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         mgr : numpy.ndarray
             A matrix of shape (1,) if ``trans`` is ``None``.
 
-            The first index in the array is the mean expected heterozygosity:
+            The first index in the array is the mean genomic relationship:
 
             .. math::
                 MGR = || \\textbf{C} \\textbf{(sel)} ||_2
@@ -671,7 +661,15 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
             - ``t`` is the number of traits.
         """
         # calculate MGR
-        mgr = numpy.array([1.0 - numpy.linalg.norm(C.dot(sel), ord = 2)])
+        # (n,n)[:,(k,)] -> (n,k)
+        # (1/k) * (n,k).sum(1) -> (n,)
+        Cx = (1.0 / sel.shape[0]) * C[:,sel].sum(1)
+
+        # norm2( (n,) ) -> scalar
+        mgr = numpy.linalg.norm(Cx, ord = 2)
+
+        # [scalar] -> (1,)
+        mgr = numpy.array([mgr])
         
         # apply transformations if needed
         if trans:
@@ -682,20 +680,24 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     @staticmethod
     def objfn_vec_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean expected heterozygosity.
+        Score a parent contribution vector according to its mean genomic relationship.
 
         Parameters
         ----------
         sel : numpy.ndarray
-            A parent contribution vector of shape ``(j,n)`` and floating dtype.
+            A selection indices matrix of shape ``(j,k)``.
 
             Where:
 
-            - ``j`` is the number of selection configurations.
-            - ``n`` is the number of individuals.
+            - ``j`` is the number of configurations to score.
+            - ``k`` is the number of individuals to select.
+
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            ``sel`` cannot be ``None``.
         C : numpy.ndarray
             An upper triangle matrix of shape (n,n) resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            decomposition of half a genomic relationship matrix: (1/2)G = C'C.
 
             Where:
 
@@ -712,9 +714,9 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         Returns
         -------
         mgr : numpy.ndarray
-            A matrix of shape (1,) if ``trans`` is ``None``.
+            A matrix of shape (j,1) if ``trans`` is ``None``.
 
-            The first index in the array is the mean expected heterozygosity:
+            The first index in the array is the mean genomic relationship:
 
             .. math::
                 MGR = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
@@ -726,11 +728,15 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
             - ``t`` is the number of traits.
         """
-        # calculate MGR
-        # (n,n) * (n,j) -> (n,j)
-        # norm((n,j),0)[:,None] -> (j,1)
-        mgr = 1.0 - numpy.linalg.norm(C.dot(sel.T), ord = 2, axis = 0)[:,None]
+        # calculate MEH
+        # (n,n)[:,(j,k)] -> (n,j,k)
+        # (n,j,k).sum(2) -> (n,j)
+        Cx = (1.0 / sel.shape[1]) * C[:,sel].sum(2)
         
+        # norm2( (n,j), axis=0 ) -> (j,)
+        # (j,)[:,None] -> (j,1)
+        mgr = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
+
         # apply transformations if needed
         if trans:
             mgr = trans(mgr, **kwargs)
