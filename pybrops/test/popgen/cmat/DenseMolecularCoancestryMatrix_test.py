@@ -16,16 +16,37 @@ from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import check_is_DenseMol
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import cond_check_is_DenseMolecularCoancestryMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def cmat_sample(shared_datadir):
-    # data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
+def pgmat_sample(shared_datadir):
     data_path = shared_datadir / "sample.vcf"
-    gmat = DensePhasedGenotypeMatrix.from_vcf(data_path)
-    out = DenseMolecularCoancestryMatrix.from_gmat(gmat)
+    pgmat = DensePhasedGenotypeMatrix.from_vcf(data_path)
+    yield pgmat
+
+@pytest.fixture
+def gmat_sample(pgmat_sample):
+    tmp = DenseUnphasedGenotyping()
+    out = tmp.genotype(pgmat_sample)
+    yield out
+
+@pytest.fixture
+def cmat_pgmat_sample(pgmat_sample):
+    out = DenseMolecularCoancestryMatrix.from_gmat(pgmat_sample)
+    yield out
+
+@pytest.fixture
+def cmat_gmat_sample(gmat_sample):
+    out = DenseMolecularCoancestryMatrix.from_gmat(gmat_sample)
+    yield out
+
+@pytest.fixture
+def cmat_sample(pgmat_sample):
+    # data_path = shared_datadir / "Song_2016_phased_chr_1000.vcf"
+    out = DenseMolecularCoancestryMatrix.from_gmat(pgmat_sample)
     yield out
 
 @pytest.fixture
@@ -93,6 +114,9 @@ def test_mat_fget(cmat_sample):
 def test_from_gmat(cmat_numpy, gmat_numpy, A_mat_float64):
     assert numpy.all(cmat_numpy == A_mat_float64)
     assert numpy.all(cmat_numpy == DenseMolecularCoancestryMatrix.from_gmat(gmat_numpy))
+
+def test_from_gmat_pgmat_vs_gmat(cmat_pgmat_sample, cmat_gmat_sample):
+    assert numpy.all(cmat_pgmat_sample.mat == cmat_gmat_sample.mat)
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

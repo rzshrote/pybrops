@@ -765,6 +765,22 @@ def test_afreq_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
+def test_apoly_None(mat, mat_int8, mat_ploidy):
+    a = mat.apoly(dtype = None)
+    mask1 = numpy.all(mat_int8 == 0, axis=0)
+    mask2 = numpy.all(mat_int8 == mat_ploidy, axis=0)
+    b = numpy.logical_not(mask1 | mask2)
+    assert numpy.all(a == b)
+    assert a.dtype == b.dtype
+
+def test_afreq_float32(mat, mat_int8, mat_ploidy):
+    a = mat.apoly(dtype = "float32")
+    mask1 = numpy.all(mat_int8 == 0, axis=0)
+    mask2 = numpy.all(mat_int8 == mat_ploidy, axis=0)
+    b = numpy.float32(numpy.logical_not(mask1 | mask2))
+    assert numpy.all(a == b)
+    assert a.dtype == b.dtype
+
 def test_maf_None(mat, mat_int8, mat_ploidy):
     a = mat.maf(dtype = None)
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))

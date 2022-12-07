@@ -109,7 +109,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The dtype of the accumulator and returned array.
+            If ``None``, use the native accumulator type (int or float).
 
         Returns
         -------

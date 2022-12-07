@@ -148,6 +148,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
+    # FIXME: there is a bug here. gmat with phased and unphased matrices return different values.
     @classmethod
     def from_gmat(cls, gmat, **kwargs):
         """
@@ -176,8 +177,8 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         if ploidy not in [1,2]:
             raise RuntimeError("Genotype ploidy level {0} not supported".format(ploidy))
 
-        # get genotype matrix
-        X = gmat.tacount()
+        # get genotype matrix as a native integer type
+        X = gmat.tacount(int)
 
         # declare pointer to matrix
         mat = None

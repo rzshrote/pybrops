@@ -658,7 +658,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The dtype of the accumulator and returned array.
+            If ``None``, use the native accumulator type (int or float).
 
         Returns
         -------
@@ -666,11 +667,16 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             A numpy.ndarray of shape ``(n,p)`` containing allele counts of the
             allele coded as ``1`` for all ``n`` individuals, for all ``p`` loci.
         """
-        out = self._mat.copy()              # mat == thcount in this case
-        if dtype is not None:               # if dtype is specified
-            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
-            if out.dtype != dtype:          # if output dtype and desired are different
-                out = dtype.type(out)       # convert to correct dtype
+        # get accumulator type
+        if dtype is None:
+            if numpy.issubdtype(self._mat.dtype, numpy.integer):
+                dtype = int
+            elif numpy.issubdtype(self._mat.dtype, numpy.floating):
+                dtype = float
+            else:
+                raise ValueError("No default accumulator type for GenotypeMatrix dtype {0}".format(self._mat.dtype))
+        # calculate the taxa allele sums
+        out = self._mat.astype(dtype)
         return out
 
     def tafreq(self, dtype = None):
@@ -743,26 +749,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)                   # convert to correct dtype
         return out
 
-    def maf(self, dtype = None):
-        """
-        Minor allele frequency across all taxa.
-
-        Parameters
-        ----------
-        dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele frequencies for
-            the minor allele.
-        """
-        out = self.afreq(dtype)     # get allele frequencies
-        mask = out > 0.5            # create mask of allele frequencies > 0.5
-        out[mask] = 1.0 - out[mask] # take 1 - allele frequency
-        return out
-
     def apoly(self, dtype = None):
         """
         Allele polymorphism presence or absense across all loci.
@@ -793,6 +779,26 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             if out.dtype != dtype:                      # if output dtype and desired are different
                 out = dtype.type(out)                   # convert to correct dtype
 
+        return out
+
+    def maf(self, dtype = None):
+        """
+        Minor allele frequency across all taxa.
+
+        Parameters
+        ----------
+        dtype : dtype, None
+            The dtype of the returned array. If ``None``, use the native type.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies for
+            the minor allele.
+        """
+        out = self.afreq(dtype)     # get allele frequencies
+        mask = out > 0.5            # create mask of allele frequencies > 0.5
+        out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
     def meh(self, dtype = None):

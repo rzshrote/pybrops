@@ -64,6 +64,9 @@ def test_acount_is_abstract():
 def test_afreq_is_abstract():
     generic_assert_abstract_method(GenotypeMatrix, "afreq")
 
+def test_apoly_is_abstract():
+    generic_assert_abstract_method(GenotypeMatrix, "apoly")
+
 def test_maf_is_abstract():
     generic_assert_abstract_method(GenotypeMatrix, "maf")
 

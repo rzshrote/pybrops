@@ -330,7 +330,8 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The dtype of the accumulator and returned array.
+            If ``None``, use the native accumulator type (int or float).
 
         Returns
         -------
@@ -338,11 +339,19 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             A numpy.ndarray of shape ``(n,p)`` containing allele counts of the
             allele coded as ``1`` for all ``n`` individuals, for all ``p`` loci.
         """
-        out = self._mat.sum(self.phase_axis)    # take sum across the phase axis
-        if dtype is not None:                   # if dtype is specified
-            dtype = numpy.dtype(dtype)          # ensure conversion to dtype class
-            if out.dtype != dtype:              # if output dtype and desired are different
-                out = dtype.type(out)           # convert to correct dtype
+        # get accumulator type
+        if dtype is None:
+            if numpy.issubdtype(self._mat.dtype, numpy.integer):
+                dtype = int
+            elif numpy.issubdtype(self._mat.dtype, numpy.floating):
+                dtype = float
+            else:
+                raise ValueError("No default accumulator type for GenotypeMatrix dtype {0}".format(self._mat.dtype))
+        # calculate the taxa allele sums
+        out = self._mat.sum(
+            axis = self.phase_axis, 
+            dtype = dtype
+        )
         return out
 
     def tafreq(self, dtype = None):
