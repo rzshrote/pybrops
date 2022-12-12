@@ -62,12 +62,27 @@ def check_is_positive(v: Any, vname: str):
     if v < 0:
         raise ValueError("variable '{0}' must be positive".format(vname))
 
-def check_is_gt(obj, objname, value):
+def check_is_gt(v, vname, value):
     """Raise error if ``obj`` is not greater than ``value``."""
-    if not (obj > value):
-        raise ValueError(
-            "variable '{0}' is not greater than {1}".format(objname, value)
-        )
+    if v <= value:
+        raise ValueError("variable '{0}' is not greater than {1}".format(vname, value))
+
+def check_is_gteq(v, vname, value):
+    """Raise error if ``obj`` is not greater than ``value``."""
+    if v < value:
+        raise ValueError("variable '{0}' is not greater than {1}".format(vname, value))
+
+def check_is_lt(v, vname, value):
+    """Raise error if ``v`` is not less than ``value``."""
+    if v >= value:
+        raise ValueError("variable '{0}' is not less than {1}".format(vname, value))
+
+def check_is_lteq(v, vname, value):
+    """Raise error if ``v`` is not less than ``value``."""
+    if v > value:
+        raise ValueError("variable '{0}' is not less than or equal to {1}".format(vname, value))
+
+
 
 def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> None:
     """

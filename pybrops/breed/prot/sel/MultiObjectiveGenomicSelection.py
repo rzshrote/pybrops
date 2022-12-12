@@ -5,6 +5,7 @@ Module implementing selection protocols for multi-objective genomic selection.
 import numpy
 import math
 import types
+from typing import Union
 
 import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
@@ -19,6 +20,8 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.util.pareto import is_pareto_efficient
+from pybrops.core.random.prng import global_prng
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
 class MultiObjectiveGenomicSelection(SelectionProtocol):
     """
@@ -30,13 +33,25 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nparent, ncross, nprogeny,
-    target = "positive", weight = "magnitude", method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = -1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    def __init__(
+        self,
+        nparent: int, 
+        ncross: int, 
+        nprogeny: int,
+        target: Union[str,numpy.ndarray] = "positive", 
+        weight: Union[str,numpy.ndarray] = "magnitude", 
+        method: str = "single",
+        objfn_trans = None, 
+        objfn_trans_kwargs = None, 
+        objfn_wt = -1.0,
+        ndset_trans = None, 
+        ndset_trans_kwargs = None, 
+        ndset_wt = -1.0,
+        soalgo = None, 
+        moalgo = None,
+        rng = global_prng, 
+        **kwargs
+        ):
         """
         Constructor for MultiObjectiveGenomicSelection class.
 
@@ -412,10 +427,9 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         def fget(self):
             return self._rng
         def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
-            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng
@@ -425,36 +439,33 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    @staticmethod
-    def _calc_mkrwt(weight, u):
-        if isinstance(weight, str):
-            weight = weight.lower()             # convert to lowercase
-            if weight == "magnitude":           # return abs(u)
-                return numpy.absolute(u)
-            elif weight == "equal":             # return 1s matrix
-                return numpy.full(u.shape, 1.0, dtype='float64')
+    def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel):
+        if isinstance(self.weight, str):
+            if self.weight == "magnitude":
+                return numpy.absolute(gpmod.u_a)
+            elif self.weight == "equal":
+                return 1.0
+                # return numpy.full(gpmod.u_a.shape, 1.0, dtype = "float64")
             else:
                 raise ValueError("string value for 'weight' not recognized")
-        elif isinstance(weight, numpy.ndarray):
-            return weight
+        elif isinstance(self.weight, numpy.ndarray):
+            return self.weight
         else:
             raise TypeError("variable 'weight' must be a string or numpy.ndarray")
 
-    @staticmethod
-    def _calc_tfreq(target, u):
-        if isinstance(target, str):
-            target = target.lower()                 # convert to lowercase
-            if target == "positive":
-                return numpy.float64(u >= 0.0)   # positive alleles are desired
-            elif target == "negative":
-                return numpy.float64(u <= 0.0)   # negative alleles are desired
-            elif target == "stabilizing":
+    def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel):
+        if isinstance(self.target, str):
+            if self.target == "positive":
+                return numpy.float64(gpmod.u_a >= 0.0)   # positive alleles are desired
+            elif self.target == "negative":
+                return numpy.float64(gpmod.u_a <= 0.0)   # negative alleles are desired
+            elif self.target == "stabilizing":
                 return 0.5                          # both alleles desired
                 # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
             else:
                 raise ValueError("string value for 'target' not recognized")
-        elif isinstance(target, numpy.ndarray):
-            return target
+        elif isinstance(self.target, numpy.ndarray):
+            return self.target
         else:
             raise TypeError("variable 'target' must be a string or numpy.ndarray")
 
@@ -609,15 +620,12 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         # get selection parameters
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        weight = self.weight
-        target = self.target
 
         # calculate default function parameters
         mat = gmat.mat                      # (n,p) get genotype matrix
         ploidy = gmat.ploidy                # (scalar) get number of phases
-        u = gpmod.u_a                       # (p,t) get regression coefficients
-        mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
-        tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
+        mkrwt = self._calc_mkrwt(gpmod)     # (p,t) get marker weights
+        tfreq = self._calc_tfreq(gpmod)     # (p,t) get target allele frequencies
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -726,8 +734,6 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         """
         # get selection parameters
         nparent = self.nparent
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
 
         # get number of taxa
