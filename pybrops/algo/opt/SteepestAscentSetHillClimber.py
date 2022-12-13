@@ -7,6 +7,8 @@ import numpy
 
 import pybrops.core.random
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.core.random.prng import global_prng
+from pybrops.core.error import check_is_Generator_or_RandomState
 
 class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     """
@@ -18,7 +20,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = global_prng, **kwargs):
         """
         Constructor for a steepest ascent set hill-climber.
 
@@ -38,71 +40,62 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             Additional keyword arguments.
         """
         super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "Random number generator source."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return locals()
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
-        """
-        Optimize an objective function.
+        # randomly initialize a solution
+        gbest_soln = self.rng.choice(sspace, (k,))
+        wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, gbest_soln))]     # get search space elements not in chromosome
 
-        Parameters
-        ----------
-        objfn : callable
-            Objective function to optimize.
+        # get starting solution score
+        gbest_score = objfn(gbest_soln)
+        gbest_score = gbest_score if hasattr(gbest_score, "__iter__") else (gbest_score,)
+        objfn_wt = objfn_wt if hasattr(objfn_wt, "__iter__") else (objfn_wt,)
+        gbest_wscore = numpy.dot(gbest_score, objfn_wt)
 
-        Returns
-        -------
-        out : dict
-            A dictionary containing the best solution and its objective
-            function evaluation.
-        """
-        # get parameters for optimization
-        if k is None:
-            k = self.k
-        if sspace is None:
-            sspace = self.sspace
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-
-        # initialize
-        wrkss = sspace.copy()    # copy set space
-        self.rng.shuffle(wrkss)    # shuffle search space
-
-        # get starting solution and score
-        gbest_soln = wrkss[:k].copy()                   # copy solution
-        gbest_score = objfn(gbest_soln, **kwargs)       # score solution
-        gbest_wscore = numpy.dot(gbest_score, objfn_wt)    # weight scores
-
-        # establish stopping criterion
-        iterate = True
-
-        # main loop
-        while iterate:
-            exchlen = len(wrkss) - k                        # exchange length
-            soln = numpy.tile(gbest_soln, (k*exchlen,1))    # tile new solutions
-            for i in range(k):                              # for each dimension
-                soln[i*exchlen:(i+1)*exchlen,i] = wrkss[k:] # exchange values
-
-            # score new configurations using objfn
-            score = numpy.apply_along_axis(objfn, 1, soln, **kwargs)
-
-            # weight scores
-            wscore = numpy.dot(score, objfn_wt)
-
-            # if any weighted scores are better than best score
-            if numpy.any(wscore > gbest_score):
-                gbest_ix = wscore.argmax()              # get best index
-                gbest_soln = soln[gbest_ix,:].copy()    # get best solution
-                gbest_score = score[gbest_ix]           # get best score
-                gbest_wscore = wscore[gbest_ix]         # get best weighted score
-                # reorder and update the working set space
-                wrkss[:k] = gbest_soln
-                mask = ~numpy.in1d(sspace, gbest_soln)    # invert
-                wrkss[k:] = sspace[mask]
-            else:
-                iterate = False     # no better results; found a local optima
+        # hillclimber
+        while True:
+            best_i = None
+            best_j = None
+            best_score = gbest_soln
+            best_wscore = gbest_wscore
+            for i in range(len(gbest_soln)):
+                for j in range(len(wrkss)):
+                    gbest_soln[i], wrkss[j] = wrkss[j], gbest_soln[i] # exchange values
+                    score = objfn(gbest_soln)
+                    score = score if hasattr(score, "__iter__") else (score,)
+                    wscore = numpy.dot(score, objfn_wt)
+                    if wscore > best_wscore:
+                        best_i = i
+                        best_j = j
+                        best_score = score
+                        best_wscore = wscore
+                    gbest_soln[i], wrkss[j] = wrkss[j], gbest_soln[i] # exchange values back to original
+            if (best_i is None) or (best_j is None):
+                break
+            gbest_soln[best_i], wrkss[best_j] = wrkss[best_j], gbest_soln[best_i] # exchange values
+            gbest_score = best_score
+            gbest_wscore = best_wscore
 
         # return results
         out = {

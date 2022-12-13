@@ -21,7 +21,7 @@ from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_lteq
 from pybrops.core.error import check_is_Generator_or_RandomState
 
-class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
+class SteepestAscentSetGeneticAlgorithm(OptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -30,7 +30,7 @@ class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, meme = 10, rng = global_prng, **kwargs):
+    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, meme = 1, rng = global_prng, **kwargs):
         """
         Constructor for NSGA-II set optimization algorithm.
 
@@ -49,7 +49,7 @@ class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(MemeticSetGeneticAlgorithm, self).__init__(**kwargs)
+        super(SteepestAscentSetGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.mu = mu
         self.lamb = lamb
@@ -277,6 +277,48 @@ class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
             inds[i] = self.memeStratifiedSteepestAscentSet(inds[i], sspace, objfn, objwt, lociix[i])
         return inds
 
+    def memeSteepestAscentHillClimber(self, ind, sspace, objfn, objwt):
+        """
+        Perform set steepest ascent hillclimb.  
+        """
+        # initialize
+        wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, ind))]     # get search space elements not in chromosome
+        self.rng.shuffle(wrkss)                     # shuffle working space
+
+        # if individual fitness values are not assigned, calculate and assign them
+        if not ind.fitness.valid:
+            tmp = objfn(ind)
+            ind.fitness.values = tmp if hasattr(tmp, "__iter__") else (tmp,)
+
+        # get starting solution and score
+        ind_score = ind.fitness.values
+        ind_wscore = numpy.dot(ind_score, objwt)
+
+        # hillclimber
+        while True:
+            best_i = None
+            best_j = None
+            best_score = ind.fitness.values
+            best_wscore = numpy.dot(best_score, objwt)
+            for i in range(len(ind)):
+                for j in range(len(wrkss)):
+                    ind[i], wrkss[j] = wrkss[j], ind[i] # exchange values
+                    score = objfn(ind)
+                    score = score if hasattr(score, "__iter__") else (score,)
+                    wscore = numpy.dot(score, objwt)
+                    if wscore > best_wscore:
+                        best_i = i
+                        best_j = j
+                        best_score = score
+                        best_wscore = wscore
+                    ind[i], wrkss[j] = wrkss[j], ind[i] # exchange values back to original
+            if (best_i is None) and (best_j is None):
+                break
+            ind[best_i], wrkss[best_j] = wrkss[best_j], ind[best_i] # exchange values
+            ind.fitness.values = best_score
+        
+        return ind
+
     def selRandomReplacement(self, individuals, k):
         sel = []
         while len(sel) + len(individuals) <= k:
@@ -391,7 +433,7 @@ class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
         # register the memetic operator
         toolbox.register(
             "memetic",
-            self.memeStratifiedSteepestAscentSet_pop,
+            self.memeSteepestAscentHillClimber,
             sspace = sspace, 
             objfn = toolbox.evaluate, 
             objwt = tuple(objfn_wt) if hasattr(objfn_wt, "__iter__") else (objfn_wt,)
@@ -448,14 +490,16 @@ class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
                 ind.fitness.values = fit if hasattr(fit, "__iter__") else (fit,)
 
             # Select the next generation population
-            # this is where the selection pressure occurs
-            # pop = self.selTournamentReplacement(pop + offspring, self.mu, 2, "fitness")
-            # pop = tools.selBest(pop + offspring, self.mu)
-            pop = self.selTournamentReplacement(pop + offspring, self.mu, 2, "fitness")
-            toolbox.memetic(pop)
+            
+            # add offspring to main population
+            pop += offspring
 
-            # # memetic mutate worst parents before next round
-            # toolbox.memetic(tools.selWorst(pop, self.meme))
+            # get worst solution and improve it via hillclimbing
+            for ind in tools.selWorst(pop, self.meme):
+                toolbox.memetic(ind)
+
+            # select survivors using tournament selection
+            pop = self.selTournamentReplacement(pop, self.mu, 2, "fitness")
 
             # save logs
             record = stats.compile(pop)
