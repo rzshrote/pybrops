@@ -19,7 +19,7 @@ class HDF5InputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self: Self, **kwargs: dict):
+    def __init__(self, **kwargs: dict):
         """
         Constructor for the abstract class HDF5InputOutput.
 
@@ -36,7 +36,7 @@ class HDF5InputOutput:
     ############################################################################
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self: Self, filename: str, groupname: Optional[str]) -> None:
+    def to_hdf5(self, filename: str, groupname: Optional[str]) -> None:
         """
         Write object to an HDF5 file.
 

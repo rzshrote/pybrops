@@ -428,7 +428,7 @@ class Matrix(HDF5InputOutput):
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self: Self):
+    def copy(self):
         """
         Make a shallow copy of the Matrix.
 
@@ -439,7 +439,7 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def deepcopy(self: Self, memo: dict):
+    def deepcopy(self, memo: dict):
         """
         Make a deep copy of the Matrix.
 
@@ -456,7 +456,7 @@ class Matrix(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self: Self, values: Union['Matrix',numpy.ndarray], axis: int, **kwargs: dict):
+    def adjoin(self, values: Union['Matrix',numpy.ndarray], axis: int, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -477,7 +477,7 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete(self: Self, obj: Union[slice,int,Sequence], axis: int, **kwargs: dict):
+    def delete(self, obj: Union[slice,int,Sequence], axis: int, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -498,7 +498,7 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert(self: Self, obj: Union[int,slice,Sequence], values: ArrayLike, axis: int, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: ArrayLike, axis: int, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -522,7 +522,7 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def select(self: Self, indices: ArrayLike, axis: int, **kwargs: dict):
+    def select(self, indices: ArrayLike, axis: int, **kwargs: dict):
         """
         Select certain values from the matrix.
 

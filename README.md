@@ -66,3 +66,12 @@ source env/bin/activate
 Now that the virtual environment is activated, you can access `pybrops`
 through the `python3` command-line interface prompt and through script
 execution.
+
+# Documentation generation
+
+Non-exhaustive list for building
+```
+source env/bin/activate
+
+pip3 install sphinx-autodoc-typehints sphinx_rtd_theme pydata_sphinx_theme
+```

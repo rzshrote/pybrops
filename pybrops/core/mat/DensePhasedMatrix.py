@@ -30,7 +30,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self: Self, 
+        self, 
         mat: numpy.ndarray, 
         **kwargs: dict
         ):
@@ -50,7 +50,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         )
 
     #################### Matrix copying ####################
-    def __copy__(self: Self):
+    def __copy__(self):
         """
         Make a shallow copy of the the matrix.
 
@@ -65,7 +65,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def __deepcopy__(self: Self, memo: dict):
+    def __deepcopy__(self, memo: dict):
         """
         Make a deep copy of the matrix.
 
