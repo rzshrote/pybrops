@@ -5,7 +5,7 @@ Module implementing a dense phased matrix and associated error checking routines
 import copy
 import numpy
 from typing import Any
-from typing import Self
+
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable

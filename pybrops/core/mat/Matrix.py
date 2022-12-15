@@ -4,7 +4,7 @@ Module defining basal Matrix interfaces and associated error checking routines.
 
 import numpy
 from typing import Union
-from typing import Self
+
 from typing import Sequence
 from numpy.typing import ArrayLike
 

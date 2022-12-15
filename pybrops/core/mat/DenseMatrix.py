@@ -7,7 +7,7 @@ import numpy
 import h5py
 from typing import Optional
 from typing import Type
-from typing import Self
+
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5

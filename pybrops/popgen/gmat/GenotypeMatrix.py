@@ -5,7 +5,7 @@ for genotype matrices.
 
 import numpy
 from numpy.typing import DTypeLike
-from typing import Self
+
 from typing import Optional
 
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput

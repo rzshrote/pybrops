@@ -4,7 +4,7 @@ Module defining HDF5 I/O interfaces and associated error checking routines.
 
 from typing import Optional
 from typing import Type
-from typing import Self
+
 
 class HDF5InputOutput:
     """
