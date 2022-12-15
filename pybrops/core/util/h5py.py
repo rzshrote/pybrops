@@ -9,7 +9,7 @@ __all__ = ["save_dict_to_hdf5"]
 
 # ruthlessly stolen/based on:
 # https://codereview.stackexchange.com/questions/120802/recursively-save-python-dictionaries-to-hdf5-files-using-h5py/121308
-def save_dict_to_hdf5(h5file, groupname, in_dict):
+def save_dict_to_hdf5(h5file: h5py.File, groupname: str, in_dict: dict):
     """
     Recursively save dictionary contents to an open HDF5 file.
 

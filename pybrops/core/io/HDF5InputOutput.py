@@ -2,6 +2,10 @@
 Module defining HDF5 I/O interfaces and associated error checking routines.
 """
 
+from typing import Optional
+from typing import Type
+from typing import Self
+
 class HDF5InputOutput:
     """
     Abstract class for defining HDF5 input/output functionality.
@@ -15,7 +19,7 @@ class HDF5InputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self: Self, **kwargs: dict):
         """
         Constructor for the abstract class HDF5InputOutput.
 
@@ -32,7 +36,7 @@ class HDF5InputOutput:
     ############################################################################
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename, groupname):
+    def to_hdf5(self: Self, filename: str, groupname: Optional[str]) -> None:
         """
         Write object to an HDF5 file.
 
@@ -52,7 +56,7 @@ class HDF5InputOutput:
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename, groupname):
+    def from_hdf5(cls: Type[Self], filename: str, groupname: Optional[str]) -> Type[Self]:
         """
         Read object from an HDF5 file.
 

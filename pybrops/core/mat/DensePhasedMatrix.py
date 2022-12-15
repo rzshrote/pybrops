@@ -5,6 +5,7 @@ Module implementing a dense phased matrix and associated error checking routines
 import copy
 import numpy
 from typing import Any
+from typing import Self
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
@@ -29,7 +30,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self, 
+        self: Self, 
         mat: numpy.ndarray, 
         **kwargs: dict
         ):
@@ -49,7 +50,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         )
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(self: Self):
         """
         Make a shallow copy of the the matrix.
 
@@ -64,7 +65,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self: Self, memo: dict):
         """
         Make a deep copy of the matrix.
 

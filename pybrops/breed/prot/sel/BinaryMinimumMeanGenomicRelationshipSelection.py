@@ -8,6 +8,7 @@ import warnings
 import types
 from typing import Optional
 from typing import Callable
+from typing import Type
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
@@ -53,7 +54,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         ncross: int, 
         nprogeny: int,
         gtype: str = "gmat", 
-        gcls: type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
+        gcls: Type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
         method: str = "single",
         objfn_trans: Callable = None, 
         objfn_trans_kwargs: dict = None, 

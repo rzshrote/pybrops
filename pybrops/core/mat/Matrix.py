@@ -2,7 +2,15 @@
 Module defining basal Matrix interfaces and associated error checking routines.
 """
 
-class Matrix:
+import numpy
+from typing import Union
+from typing import Self
+from typing import Sequence
+from numpy.typing import ArrayLike
+
+from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+
+class Matrix(HDF5InputOutput):
     """
     An abstract class for matrix wrapper objects.
 
@@ -420,7 +428,7 @@ class Matrix:
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(self: Self):
         """
         Make a shallow copy of the Matrix.
 
@@ -431,7 +439,7 @@ class Matrix:
         """
         raise NotImplementedError("method is abstract")
 
-    def deepcopy(self, memo):
+    def deepcopy(self: Self, memo: dict):
         """
         Make a deep copy of the Matrix.
 
@@ -448,7 +456,7 @@ class Matrix:
         raise NotImplementedError("method is abstract")
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis, **kwargs):
+    def adjoin(self: Self, values: Union['Matrix',numpy.ndarray], axis: int, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -469,7 +477,7 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete(self, obj, axis, **kwargs):
+    def delete(self: Self, obj: Union[slice,int,Sequence], axis: int, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -490,7 +498,7 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert(self, obj, values, axis, **kwargs):
+    def insert(self: Self, obj: Union[int,slice,Sequence], values: ArrayLike, axis: int, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -514,7 +522,7 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def select(self, indices, axis, **kwargs):
+    def select(self: Self, indices: ArrayLike, axis: int, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -536,7 +544,7 @@ class Matrix:
         raise NotImplementedError("method is abstract")
 
     @staticmethod
-    def concat(mats, axis, **kwargs):
+    def concat(mats: ArrayLike, axis: int, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 

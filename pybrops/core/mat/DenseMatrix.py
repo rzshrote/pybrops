@@ -4,13 +4,19 @@ Module implementing a dense matrix and associated error checking routines.
 
 import copy
 import numpy
+import h5py
+from typing import Optional
+from typing import Type
+from typing import Self
 
+from pybrops.core.error import check_file_exists
+from pybrops.core.error import check_group_in_hdf5
 from pybrops.core.error import error_readonly
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
+from pybrops.core.util.h5py import save_dict_to_hdf5
 
-# TODO: implement the HDF5InputOutput interface
 class DenseMatrix(Matrix):
     """
     A concrete class for dense matrices.
@@ -27,7 +33,7 @@ class DenseMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, **kwargs: dict):
+    def __init__(self: Self, mat: numpy.ndarray, **kwargs: dict):
         """
         Parameters
         ----------
@@ -40,205 +46,205 @@ class DenseMatrix(Matrix):
         self.mat = mat
 
     ############## Forward numeric operators ###############
-    def __add__(self, value):
+    def __add__(self: Self, value):
         """Elementwise add matrices"""
         return self._mat + value
 
-    def __sub__(self, value):
+    def __sub__(self: Self, value):
         """Elementwise subtract matrices"""
         return self._mat - value
 
-    def __mul__(self, value):
+    def __mul__(self: Self, value):
         """Elementwise multiply matrices"""
         return self._mat * value
 
-    def __matmul__(self, value):
+    def __matmul__(self: Self, value):
         """Multiply matrices"""
         return self._mat @ value
 
-    def __truediv__(self, value):
+    def __truediv__(self: Self, value):
         """Elementwise divide matrices"""
         return self._mat / value
 
-    def __floordiv__(self, value):
+    def __floordiv__(self: Self, value):
         """Elementwise floor divide matrices"""
         return self._mat // value
 
-    def __mod__(self, value):
+    def __mod__(self: Self, value):
         """Elementwise modulus matrices"""
         return self._mat % value
 
-    def __divmod__(self, value):
+    def __divmod__(self: Self, value):
         """Elementwise divmod matrices"""
         return divmod(self._mat, value)
 
-    def __pow__(self, value):
+    def __pow__(self: Self, value):
         """Elementwise exponent matrices"""
         return self._mat ** value
 
-    def __lshift__(self, value):
+    def __lshift__(self: Self, value):
         """Elementwise bitwise left shift matrices"""
         return self._mat << value
 
-    def __rshift__(self, value):
+    def __rshift__(self: Self, value):
         """Elementwise bitwise right shift matrices"""
         return self._mat >> value
 
-    def __and__(self, value):
+    def __and__(self: Self, value):
         """Elementwise bitwise and matrices"""
         return self._mat & value
 
-    def __xor__(self, value):
+    def __xor__(self: Self, value):
         """Elementwise bitwise xor matrices"""
         return self._mat ^ value
 
-    def __or__(self, value):
+    def __or__(self: Self, value):
         """Elementwise bitwise or matrices"""
         return self._mat | value
 
     ############# Backwards numeric operators ##############
-    def __radd__(self, value):
+    def __radd__(self: Self, value):
         """Reverse elementwise add matrices"""
         return value + self._mat
 
-    def __rsub__(self, value):
+    def __rsub__(self: Self, value):
         """Reverse elementwise subtract matrices"""
         return value - self._mat
 
-    def __rmul__(self, value):
+    def __rmul__(self: Self, value):
         """Reverse elementwise multiply matrices"""
         return value * self._mat
 
-    def __rmatmul__(self, value):
+    def __rmatmul__(self: Self, value):
         """Reverse multiply matrices"""
         return value @ self._mat
 
-    def __rtruediv__(self, value):
+    def __rtruediv__(self: Self, value):
         """Reverse elementwise divide matrices"""
         return value / self._mat
 
-    def __rfloordiv__(self, value):
+    def __rfloordiv__(self: Self, value):
         """Reverse elementwise floor divide matrices"""
         return value // self._mat
 
-    def __rmod__(self, value):
+    def __rmod__(self: Self, value):
         """Reverse elementwise modulus matrices"""
         return value % self._mat
 
-    def __rdivmod__(self, value):
+    def __rdivmod__(self: Self, value):
         """Reverse elementwise divmod matrices"""
         return divmod(value, self._mat)
 
-    def __rlshift__(self, value):
+    def __rlshift__(self: Self, value):
         """Reverse elementwise bitwise left shift matrices"""
         return value << self._mat
 
-    def __rrshift__(self, value):
+    def __rrshift__(self: Self, value):
         """Reverse elementwise bitwise right shift matrices"""
         return value >> self._mat
 
-    def __rand__(self, value):
+    def __rand__(self: Self, value):
         """Reverse elementwise bitwise and matrices"""
         return value & self._mat
 
-    def __rxor__(self, value):
+    def __rxor__(self: Self, value):
         """Reverse elementwise bitwise xor matrices"""
         return value ^ self._mat
 
-    def __ror__(self, value):
+    def __ror__(self: Self, value):
         """Reverse elementwise bitwise or matrices"""
         return value | self._mat
 
     ############# Augmented numeric operators ##############
-    def __iadd__(self, value):
+    def __iadd__(self: Self, value):
         """Elementwise add assign matrices"""
         self._mat += value
 
-    def __isub__(self, value):
+    def __isub__(self: Self, value):
         """Elementwise subtract assign matrices"""
         self._mat -= value
 
-    def __imul__(self, value):
+    def __imul__(self: Self, value):
         """Elementwise multiply assign matrices"""
         self._mat *= value
 
-    def __imatmul__(self, value):
+    def __imatmul__(self: Self, value):
         """Multiply assign matrices"""
         self._mat @= value
 
-    def __itruediv__(self, value):
+    def __itruediv__(self: Self, value):
         """Elementwise true divide assign matrices"""
         self._mat /= value
 
-    def __ifloordiv__(self, value):
+    def __ifloordiv__(self: Self, value):
         """Elementwise floor divide assign matrices"""
         self._mat //= value
 
-    def __imod__(self, value):
+    def __imod__(self: Self, value):
         """Elementwise modulus assign matrices"""
         self._mat %= value
 
-    def __ipow__(self, value):
+    def __ipow__(self: Self, value):
         """Elementwise exponent assign matrices"""
         self._mat **= value
 
-    def __ilshift__(self, value):
+    def __ilshift__(self: Self, value):
         """Elementwise left shift assign matrices"""
         self._mat <<= value
 
-    def __irshift__(self, value):
+    def __irshift__(self: Self, value):
         """Elementwise right shift assign matrices"""
         self._mat >>= value
 
-    def __iand__(self, value):
+    def __iand__(self: Self, value):
         """Elementwise bitwise and assign matrices"""
         self._mat &= value
 
-    def __ixor__(self, value):
+    def __ixor__(self: Self, value):
         """Elementwise bitwise xor assign matrices"""
         self._mat ^= value
 
-    def __ior__(self, value):
+    def __ior__(self: Self, value):
         """Elementwise bitwise or assign matrices"""
         self._mat |= value
 
     ################## Logical operators ###################
-    def __lt__(self, value):
+    def __lt__(self: Self, value):
         return self._mat < value
 
-    def __le__(self, value):
+    def __le__(self: Self, value):
         return self._mat <= value
 
-    def __eq__(self, value):
+    def __eq__(self: Self, value):
         return self._mat == value
 
-    def __ne__(self, value):
+    def __ne__(self: Self, value):
         return self._mat != value
 
-    def __gt__(self, value):
+    def __gt__(self: Self, value):
         return self._mat > value
 
-    def __ge__(self, value):
+    def __ge__(self: Self, value):
         return self._mat >= value
 
     ################# Container operators ##################
-    def __len__(self):
+    def __len__(self: Self):
         return len(self._mat)
 
-    def __getitem__(self, key):
+    def __getitem__(self: Self, key):
         return self._mat[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self: Self, key, value):
         self._mat[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self: Self, key):
         del self._mat[key]
 
-    def __iter__(self):
+    def __iter__(self: Self):
         return iter(self._mat)
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(self: Self):
         """
         Make a shallow copy of the the matrix.
 
@@ -250,7 +256,7 @@ class DenseMatrix(Matrix):
             mat = copy.copy(self.mat)
         )
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self: Self, memo):
         """
         Make a deep copy of the matrix.
 
@@ -273,27 +279,27 @@ class DenseMatrix(Matrix):
     ##################### Matrix Data ######################
     def mat():
         doc = "The mat property."
-        def fget(self):
+        def fget(self: Self):
             return self._mat
-        def fset(self, value):
+        def fset(self: Self, value):
             # The only assumption is that mat is a numpy.ndarray matrix.
             # Let the user decide whether to overwrite error checks.
             check_is_ndarray(value, "mat")
             self._mat = value
-        def fdel(self):
+        def fdel(self: Self):
             del self._mat
         return locals()
     mat = property(**mat())
 
     def mat_ndim():
         doc = "Number of dimensions of the raw matrix property."
-        def fget(self):
+        def fget(self: Self):
             """Get number of dimensions of the raw matrix"""
             return self._mat.ndim
-        def fset(self, value):
+        def fset(self: Self, value):
             """Set number of dimensions of the raw matrix"""
             error_readonly("mat_ndim")
-        def fdel(self):
+        def fdel(self: Self):
             """Delete number of dimensions of the raw matrix"""
             error_readonly("mat_ndim")
         return locals()
@@ -301,13 +307,13 @@ class DenseMatrix(Matrix):
 
     def mat_shape():
         doc = "Shape of the raw matrix property."
-        def fget(self):
+        def fget(self: Self):
             """Get the shape of the raw matrix"""
             return self._mat.shape
-        def fset(self, value):
+        def fset(self: Self, value):
             """Set the shape of the raw matrix"""
             error_readonly("mat_shape")
-        def fdel(self):
+        def fdel(self: Self):
             """Delete the shape of the raw matrix"""
             error_readonly("mat_shape")
         return locals()
@@ -318,7 +324,7 @@ class DenseMatrix(Matrix):
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(self: Self):
         """
         Make a shallow copy of the Matrix.
 
@@ -329,7 +335,7 @@ class DenseMatrix(Matrix):
         """
         return copy.copy(self)
 
-    def deepcopy(self, memo = None):
+    def deepcopy(self: Self, memo = None):
         """
         Make a deep copy of the Matrix.
 
@@ -346,7 +352,7 @@ class DenseMatrix(Matrix):
         return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, **kwargs):
+    def adjoin(self: Self, values, axis = -1, **kwargs):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -382,7 +388,7 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self: Self, obj, axis = -1, **kwargs):
         """
         Delete sub-arrays along an axis.
 
@@ -412,7 +418,7 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, **kwargs):
+    def insert(self: Self, obj, values, axis = -1, **kwargs):
         """
         Insert values along the given axis before the given indices.
 
@@ -451,7 +457,7 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self: Self, indices, axis = -1, **kwargs):
         """
         Select certain values from the matrix.
 
@@ -512,6 +518,89 @@ class DenseMatrix(Matrix):
         out = mats[0].__class__(mat = mat, **kwargs)
 
         return out
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(self: Self, filename: str, groupname: Optional[str] = None):
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(cls: Type[Self], filename: str, groupname: Optional[str] = None) -> Type[Self]:
+        """
+        Read GenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : GenotypeMatrix
+            A genotype matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
 
 
