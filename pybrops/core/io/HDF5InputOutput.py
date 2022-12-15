@@ -56,7 +56,7 @@ class HDF5InputOutput:
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls: Type[Self], filename: str, groupname: Optional[str]) -> Type[Self]:
+    def from_hdf5(cls, filename: str, groupname: Optional[str]):
         """
         Read object from an HDF5 file.
 
