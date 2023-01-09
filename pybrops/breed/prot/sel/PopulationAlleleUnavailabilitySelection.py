@@ -524,8 +524,6 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
         ncross = self.ncross
         nprogeny = self.nprogeny
         method = self.method
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
         ndset_trans = self.ndset_trans
         ndset_trans_kwargs = self.ndset_trans_kwargs
@@ -549,7 +547,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             )
 
             # optimize using hill-climber algorithm
-            opt = self.soalgo.optimize(
+            sel_score, sel, misc = self.soalgo.optimize(
                 objfn,                          # objective function
                 k = nparent,                    # number of parents to select
                 sspace = numpy.arange(ntaxa),   # parental indices
@@ -557,12 +555,14 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
                 **kwargs
             )
 
-            # get best solution
-            sel = opt["soln"]
+            # shuffle selection to ensure random mating
+            self.rng.shuffle(sel)
 
             # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(opt)     # add dict to dict
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, ncross, nprogeny
 
