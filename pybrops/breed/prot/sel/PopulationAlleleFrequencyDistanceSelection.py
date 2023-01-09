@@ -548,7 +548,7 @@ class PopulationAlleleFrequencyDistanceSelection(SelectionProtocol):
             opt = self.soalgo.optimize(
                 objfn,                          # objective function
                 k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
+                sspace = numpy.arange(ntaxa),   # parental indices
                 objfn_wt = objfn_wt,            # maximizing function
                 **kwargs
             )

@@ -749,7 +749,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             # optimize using hill-climber algorithm
             opt = self.soalgo.optimize(
                 k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
+                sspace = numpy.arange(ntaxa),   # parental indices
                 rng = self.rng,                 # PRNG source
                 objwt = objfn_wt                # maximizing function
             )
