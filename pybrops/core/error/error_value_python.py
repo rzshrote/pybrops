@@ -1,3 +1,4 @@
+import numbers
 from typing import Any
 
 ################################################################################
@@ -82,8 +83,6 @@ def check_is_lteq(v, vname, value):
     if v > value:
         raise ValueError("variable '{0}' is not less than or equal to {1}".format(vname, value))
 
-
-
 def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> None:
     """
     Check if a floating point value is in the provided range.
@@ -98,6 +97,31 @@ def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> N
         Minimum value for the input floating point value.
     vmax : float
         Maximum value for the input floating point value.
+    
+    Returns
+    -------
+    out : outtype
+        outdesc
+    """
+    if (v < vmin) or (v > vmax):
+        raise ValueError(
+            "variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax)
+        )
+
+def check_number_in_interval(v: numbers.Number, vname: str, vmin: numbers.Number, vmax: numbers.Number):
+    """
+    Check if a number is in the provided range.
+    
+    Parameters
+    ----------
+    v : float
+        Input numeric value.
+    vname : str
+        Name of the variable of which to test.
+    vmin : float
+        Minimum value for the input numeric value (inclusive).
+    vmax : float
+        Maximum value for the input numeric value (inclusive).
     
     Returns
     -------

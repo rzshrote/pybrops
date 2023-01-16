@@ -3,23 +3,19 @@ Module implementing selection protocols for multi-objective genomic selection.
 """
 
 import numpy
-import math
 import types
 from typing import Union
 
-import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
-from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
@@ -524,8 +520,6 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         ncross = self.ncross
         nprogeny = self.nprogeny
         method = self.method
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
         ndset_trans = self.ndset_trans
         ndset_trans_kwargs = self.ndset_trans_kwargs

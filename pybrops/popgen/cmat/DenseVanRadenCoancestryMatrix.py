@@ -20,7 +20,6 @@ from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
-# TODO: implement VanRaden methods
 class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     """
     A concrete class for a dense coancestry matrix calculated using the VanRaden
