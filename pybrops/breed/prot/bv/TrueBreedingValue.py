@@ -3,6 +3,8 @@ Module implementing the extraction of true breeding value.
 """
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class TrueBreedingValue(BreedingValueProtocol):
     """
@@ -75,7 +77,7 @@ class TrueBreedingValue(BreedingValueProtocol):
             A matrix of breeding values.
         """
         # check inputs
-        check_is_PhasedGenotypeMatrix(gmat, "gmat")
+        check_is_PhasedGenotypeMatrix(gtobj, "gmat")
 
         # get default parameters
         if gpmod is None:
@@ -84,6 +86,6 @@ class TrueBreedingValue(BreedingValueProtocol):
             check_is_GenomicModel(gpmod, "gpmod")
 
         # calculate true breeding values
-        bvmat = gpmod.gebv(gmat)
+        bvmat = gpmod.gebv(gtobj)
 
         return bvmat

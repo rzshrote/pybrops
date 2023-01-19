@@ -13,6 +13,8 @@ from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_ndarray_mean_is_approx
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_std_is_approx
+from pybrops.core.error import check_group_in_hdf5
+from pybrops.core.error import check_file_exists
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix

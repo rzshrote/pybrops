@@ -279,7 +279,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             return self._params
         def fset(self, value):
             if value is None:
-                check_is_dict(value, "params")
+                value = {}
+            check_is_dict(value, "params")
             self._params = value
         def fdel(self):
             del self._params
