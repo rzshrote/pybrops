@@ -873,7 +873,42 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         )
 
         return out
-    
+
+    def faavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get boolean mask of favorable alleles that are available
+        out = (facount != 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
     def fafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
         """
         Determine whether a favorable allele is fixed across all taxa.
@@ -980,6 +1015,41 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         return out
     
+    def daavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native boolean type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        facount = self.dacount(gmat)
+
+        # get boolean mask of deleterious alleles that are available
+        out = (facount != 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
     def dafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is fixed across all taxa.
@@ -1003,13 +1073,13 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             dtype = bool
         dtype = numpy.dtype(dtype)
 
-        # get favorable allele counts
+        # get deleterious allele counts
         dacount = self.dacount(gmat)
 
-        # get maximum number of favorable alleles
+        # get maximum number of deleterious alleles
         maxdel = gmat.ploidy * gmat.ntaxa
 
-        # get boolean mask of favorable alleles that are fixed
+        # get boolean mask of deleterious alleles that are fixed
         out = (dacount == maxdel)
 
         # convert datatype if needed

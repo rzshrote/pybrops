@@ -1082,7 +1082,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ############ methods for allele attributes #############
-    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Favorable allele count across all taxa.
 
@@ -1118,10 +1118,112 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    # fafreq does not need to be overridden
-    # fafixed does not need to be overridden
-    
-    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def fafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele frequencies
+        out = numpy.multiply(
+            1.0 / (gmat.ploidy * gmat.ntaxa),
+            self.facount(gmat), # favorable allele counts
+            dtype = dtype
+        )
+
+        return out
+
+    def faavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get boolean mask of favorable alleles that are available
+        out = (facount != 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def fafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get maximum number of favorable alleles
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of favorable alleles that are fixed
+        out = (facount == maxfav)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Deleterious allele count across all taxa.
 
@@ -1157,8 +1259,110 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    # dafreq does not need to be overridden
-    # dafixed does not need to be overridden
+    def dafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele frequencies
+        out = numpy.multiply(
+            1.0 / gmat.ploidy,
+            self.dacount(gmat), # favorable allele counts
+            dtype = dtype
+        )
+
+        return out
+    
+    def daavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native boolean type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        facount = self.dacount(gmat)
+
+        # get boolean mask of deleterious alleles that are available
+        out = (facount != 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def dafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        dacount = self.dacount(gmat)
+
+        # get maximum number of deleterious alleles
+        maxdel = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of deleterious alleles that are fixed
+        out = (dacount == maxdel)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
 
     ################### File I/O methods ###################
     @staticmethod
