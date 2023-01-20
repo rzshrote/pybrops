@@ -1177,7 +1177,43 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         facount = self.facount(gmat)
 
         # get boolean mask of favorable alleles that are available
-        out = (facount != 0)
+        out = (facount > 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def faavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of favorable alleles which are available.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine available favorable allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is available, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of favorable alleles which are fixed
+        faavail = self.faavail(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = faavail * self.u_a
 
         # convert datatype if needed
         if dtype != out.dtype:
@@ -1216,6 +1252,42 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         # get boolean mask of favorable alleles that are fixed
         out = (facount == maxfav)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def fafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of favorable alleles which have been fixed.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine fixed favorable allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of favorable alleles which are fixed
+        fafixed = self.fafixed(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = fafixed * self.u_a
 
         # convert datatype if needed
         if dtype != out.dtype:
@@ -1318,7 +1390,43 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         facount = self.dacount(gmat)
 
         # get boolean mask of deleterious alleles that are available
-        out = (facount != 0)
+        out = (facount > 0)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def daavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of deleterious alleles which are available.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine available deleterious allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a deleterious allele if it is available, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of deleterious alleles which are fixed
+        daavail = self.daavail(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = daavail * self.u_a
 
         # convert datatype if needed
         if dtype != out.dtype:
@@ -1357,6 +1465,79 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         # get boolean mask of deleterious alleles that are fixed
         out = (dacount == maxdel)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def dafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of deleterious alleles which have been fixed.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine fixed deleterious allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of deleterious alleles which are fixed
+        dafixed = self.dafixed(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = dafixed * self.u_a
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def polyval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Get the value available at polymorphic allele sites.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine polymorphic allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean mask of alleles which are polymorphic
+        # (p,)[:,None] -> (p,1)
+        apoly = gmat.apoly()[:,None]
+
+        # multiply polymorphic status by its value
+        # (p,1) * (p,t) -> (p,t)
+        out = apoly * self.u_a
 
         # convert datatype if needed
         if dtype != out.dtype:
