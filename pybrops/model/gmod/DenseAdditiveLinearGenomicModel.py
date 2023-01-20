@@ -1248,7 +1248,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         # construct a binary vector where values are {0,ploidy} where 0 is deleterious
         # scalar * (p,t) -> (p,t)
-        maxdel = dtype.type(gmat.ploidy) * (self.u_a > 0.0)
+        maxdel = dtype.type(gmat.ploidy * gmat.ntaxa) * (self.u_a > 0.0)
 
         # get allele counts for the genotype matrix
         # (p,) -> (p,1)
@@ -1284,7 +1284,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         # get favorable allele frequencies
         out = numpy.multiply(
-            1.0 / gmat.ploidy,
+            1.0 / (gmat.ploidy * gmat.ntaxa),
             self.dacount(gmat), # favorable allele counts
             dtype = dtype
         )

@@ -386,7 +386,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
         if descale:
             out *= self._scale
-            out += self._location
         return out
 
     def tstd(self, descale = False):
