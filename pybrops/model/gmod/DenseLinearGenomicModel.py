@@ -4,6 +4,7 @@ models that incorporate linear genomic effects.
 """
 
 import copy
+from typing import Union
 import numpy
 import h5py
 
@@ -20,7 +21,7 @@ from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, is_GenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 
 class DenseLinearGenomicModel(LinearGenomicModel):
@@ -802,6 +803,219 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         # calculate Bulmer effect
         out = self.bulmer_numpy(Z, p, ploidy, **kwargs)
 
+        return out
+
+    ############ methods for allele attributes #############
+    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count favorable alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct a binary vector where values are {0,ploidy*ntaxa} where 0 is favorable
+        # scalar * (p,t) -> (p,t)
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa) * (self.u < 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+        
+        # take the difference to get the favorable allele count
+        out = maxfav - acount
+
+        return out
+
+    def fafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele frequencies
+        out = numpy.multiply(
+            1.0 / (gmat.ploidy * gmat.ntaxa),
+            self.facount(gmat), # favorable allele counts
+            dtype = dtype
+        )
+
+        return out
+    
+    def fafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get maximum number of favorable alleles
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of favorable alleles that are fixed
+        out = (facount == maxfav)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
+        return out
+
+    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count deleterious alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+        """
+        # convert data type
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct a binary vector where values are {0,ploidy} where 0 is deleterious
+        # scalar * (p,t) -> (p,t)
+        maxdel = dtype.type(gmat.ploidy) * (self.u > 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+        
+        # take the difference to get the favorable allele count
+        out = maxdel - acount
+
+        return out
+
+    def dafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele frequencies
+        out = numpy.multiply(
+            1.0 / gmat.ploidy,
+            self.dacount(gmat), # favorable allele counts
+            dtype = dtype
+        )
+
+        return out
+    
+    def dafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        dacount = self.dacount(gmat)
+
+        # get maximum number of favorable alleles
+        maxdel = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of favorable alleles that are fixed
+        out = (dacount == maxdel)
+
+        # convert datatype if needed
+        if dtype != out.dtype:
+            out = dtype.type(out)
+        
         return out
 
     ############# methods for selection limits #############

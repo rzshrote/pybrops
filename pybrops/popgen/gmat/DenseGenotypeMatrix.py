@@ -710,7 +710,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The dtype of the accumulator and returned array. If ``None``, use the native integer type.
 
         Returns
         -------
@@ -718,11 +718,14 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             A numpy.ndarray of shape ``(p,)`` containing allele counts of the
             allele coded as ``1`` for all ``p`` loci.
         """
-        out = self._mat.sum(self.taxa_axis) # take sum across the taxa axis
-        if dtype is not None:               # if dtype is specified
-            dtype = numpy.dtype(dtype)      # ensure conversion to dtype class
-            if out.dtype != dtype:          # if output dtype and desired are different
-                out = dtype.type(out)       # convert to correct dtype
+        # process dtype
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # take sum across the taxa axis
+        out = self._mat.sum(self.taxa_axis, dtype = dtype)
+        
         return out
 
     def afreq(self, dtype = None):

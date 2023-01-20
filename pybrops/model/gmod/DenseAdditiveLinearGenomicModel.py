@@ -4,6 +4,7 @@ models that incorporate genomic additive effects.
 """
 
 import copy
+from typing import Union
 import h5py
 import numpy
 
@@ -18,7 +19,7 @@ from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.core.error import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, is_GenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
@@ -1079,6 +1080,85 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = self.lsl_numpy(p, ploidy, descale, **kwargs)
 
         return out
+
+    ############ methods for allele attributes #############
+    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count favorable alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct a binary vector where values are {0,ploidy*ntaxa} where 0 is favorable
+        # scalar * (p,t) -> (p,t)
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa) * (self.u_a < 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+        
+        # take the difference to get the favorable allele count
+        out = maxfav - acount
+
+        return out
+
+    # fafreq does not need to be overridden
+    # fafixed does not need to be overridden
+    
+    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count deleterious alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+        """
+        # convert data type
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct a binary vector where values are {0,ploidy} where 0 is deleterious
+        # scalar * (p,t) -> (p,t)
+        maxdel = dtype.type(gmat.ploidy) * (self.u_a > 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+        
+        # take the difference to get the favorable allele count
+        out = maxdel - acount
+
+        return out
+
+    # dafreq does not need to be overridden
+    # dafixed does not need to be overridden
 
     ################### File I/O methods ###################
     @staticmethod
