@@ -5,7 +5,6 @@ Module implementing selection protocols for optimal haploid value selection.
 import types
 import numpy
 
-import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -16,6 +15,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
 from pybrops.core.util.haplo import calc_haplobin
@@ -32,13 +32,26 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nconfig, nparent, ncross, nprogeny, nhaploblk,
-    unique_parents = True, method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    def __init__(
+            self,
+            nconfig: int, 
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            nhaploblk: int,
+            unique_parents = True, 
+            method = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0,
+            rng = None, 
+            soalgo = None, 
+            moalgo = None,
+            **kwargs : dict
+        ):
         """
         Constructor for Optimal Haploid Value Selection (OHV).
 
@@ -323,9 +336,9 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         def fget(self):
             return self._rng
         def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
+            # if None, use default random number generator
+            if value is None:
+                value = global_prng
             check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
