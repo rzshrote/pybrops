@@ -1105,16 +1105,21 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             dtype = int
         dtype = numpy.dtype(dtype)
 
-        # construct a binary vector where values are {0,ploidy*ntaxa} where 0 is favorable
-        # scalar * (p,t) -> (p,t)
-        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa) * (self.u_a < 0.0)
+        # construct mask for beneficial alleles
+        # (p,t)
+        mask = (self.u_a > 0.0)
 
         # get allele counts for the genotype matrix
         # (p,) -> (p,1)
         acount = gmat.acount(dtype = dtype)[:,None]
-        
-        # take the difference to get the favorable allele count
-        out = maxfav - acount
+
+        # get maximum number of favorable alleles
+        # scalar
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
+
+        # calculate favorable allele counts
+        # (p,t)
+        out = numpy.where(mask, acount, maxfav - acount)
 
         return out
 
@@ -1318,16 +1323,21 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             dtype = int
         dtype = numpy.dtype(dtype)
 
-        # construct a binary vector where values are {0,ploidy} where 0 is deleterious
-        # scalar * (p,t) -> (p,t)
-        maxdel = dtype.type(gmat.ploidy * gmat.ntaxa) * (self.u_a > 0.0)
+        # construct mask for deleterious alleles
+        # (p,t)
+        mask = (self.u_a < 0.0)
 
         # get allele counts for the genotype matrix
         # (p,) -> (p,1)
         acount = gmat.acount(dtype = dtype)[:,None]
-        
-        # take the difference to get the favorable allele count
-        out = maxdel - acount
+
+        # get maximum number of favorable alleles
+        # scalar
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
+
+        # calculate favorable allele counts
+        # (p,t)
+        out = numpy.where(mask, acount, maxfav - acount)
 
         return out
 
