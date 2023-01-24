@@ -15,6 +15,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.random.prng import global_prng
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
@@ -29,13 +30,24 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nparent, ncross, nprogeny, nhaploblk,
-    method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    def __init__(
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            nhaploblk: int,
+            method = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0,
+            soalgo = None, 
+            moalgo = None,
+            rng = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for optimal population value selection (OPV).
 
@@ -265,9 +277,9 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         def fget(self):
             return self._rng
         def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
+            # if None, use default random number generator
+            if value is None:
+                value = global_prng
             check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
@@ -404,9 +416,6 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
         if method == "single":
-            # get number of taxa
-            ntaxa = pgmat.ntaxa
-
             # get vectorized objective function
             objfn = self.objfn(
                 pgmat = pgmat,
@@ -420,26 +429,23 @@ class OptimalPopulationValueSelection(SelectionProtocol):
                 trans_kwargs = objfn_trans_kwargs
             )
 
-            # create optimization algorithm
-            soalgo = SteepestAscentSetHillClimber(
-                rng = self.rng,                 # PRNG source
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
                 **kwargs
             )
 
-            # optimize using hill-climber algorithm
-            opt = soalgo.optimize(
-                objfn = objfn,                  # objective function
-                k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
-                objfn_wt = objfn_wt             # maximizing function
-            )
-
-            # get best solution
-            sel = opt["soln"]
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
             # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(opt)     # add dict to dict
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, ncross, nprogeny
 
@@ -752,7 +758,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         # apply objective weights
         # (j,t) dot (t,) -> scalar
-        if traitwt is not None:
-            opv = opv.dot(traitwt)
+        if trans is not None:
+            opv = trans(opv, **kwargs)
 
         return opv
