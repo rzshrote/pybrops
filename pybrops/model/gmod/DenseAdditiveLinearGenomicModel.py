@@ -1132,7 +1132,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         gmat : GenotypeMatrix
             Genotype matrix for which to determine favorable allele frequencies.
         dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
+            Datatype of the returned array. If ``None``, use the native float type.
         kwargs : dict
             Additional keyword arguments.
         
@@ -1147,24 +1147,24 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         dtype = numpy.dtype(dtype)
 
         # get favorable allele frequencies
-        out = numpy.multiply(
-            1.0 / (gmat.ploidy * gmat.ntaxa),
-            self.facount(gmat), # favorable allele counts
-            dtype = dtype
-        )
+        out = (1.0 / (gmat.ploidy * gmat.ntaxa)) * self.facount(gmat)
 
+        # convert datatypes if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
         return out
 
     def faavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
         """
-        Determine whether a favorable allele is available in the present taxa.
+        Determine which favorable alleles are available in an input set of taxa.
         
         Parameters
         ----------
         gmat : GenotypeMatrix
             Genotype matrix for which to determine favorable allele frequencies.
         dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
+            Datatype of the returned array. If ``None``, use the native bool type.
         kwargs : dict
             Additional keyword arguments.
         
@@ -1185,14 +1185,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = (facount > 0)
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
     def faavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Calculate the value of favorable alleles which are available.
+        This is not a very helpful metric.
 
         Parameters
         ----------
@@ -1221,8 +1222,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = faavail * self.u_a
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
@@ -1259,14 +1260,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = (facount == maxfav)
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
     def fafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Calculate the value of favorable alleles which have been fixed.
+        This is not a very helpful metric.
 
         Parameters
         ----------
@@ -1295,8 +1297,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = fafixed * self.u_a
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
@@ -1364,12 +1366,12 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             dtype = float
         dtype = numpy.dtype(dtype)
 
-        # get favorable allele frequencies
-        out = numpy.multiply(
-            1.0 / (gmat.ploidy * gmat.ntaxa),
-            self.dacount(gmat), # favorable allele counts
-            dtype = dtype
-        )
+        # get deleterious allele frequencies
+        out = (1.0 / (gmat.ploidy * gmat.ntaxa)) * self.dacount(gmat)
+
+        # convert datatypes if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
 
         return out
     
@@ -1403,14 +1405,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = (facount > 0)
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
     def daavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Calculate the value of deleterious alleles which are available.
+        This is not a very helpful metric.
 
         Parameters
         ----------
@@ -1439,8 +1442,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = daavail * self.u_a
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
@@ -1477,14 +1480,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = (dacount == maxdel)
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
     def dafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Calculate the value of deleterious alleles which have been fixed.
+        This is not a very helpful metric.
 
         Parameters
         ----------
@@ -1513,14 +1517,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = dafixed * self.u_a
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
     def polyval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
         """
         Get the value available at polymorphic allele sites.
+        This is not a very helpful metric.
 
         Parameters
         ----------
@@ -1550,8 +1555,8 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out = apoly * self.u_a
 
         # convert datatype if needed
-        if dtype != out.dtype:
-            out = dtype.type(out)
+        if out.dtype != dtype:
+            out = out.astype(dtype)
         
         return out
 
