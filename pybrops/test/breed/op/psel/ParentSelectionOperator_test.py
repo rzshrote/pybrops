@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import is_ParentSelectionOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
-from pybrops.breed.op.psel.ParentSelectionOperator import cond_check_is_ParentSelectionOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_ParentSelectionOperator_is_concrete():
 
 def test_check_is_ParentSelectionOperator_is_concrete():
     generic_assert_concrete_function(check_is_ParentSelectionOperator)
-
-def test_cond_check_is_ParentSelectionOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_ParentSelectionOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -2,9 +2,9 @@
 Module implementing mating protocols for three-way DH crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
@@ -219,13 +219,13 @@ class TwoWayDHCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TwoWayDHCross(v):
+def is_TwoWayDHCross(v: Any) -> bool:
     """
     Determine whether an object is a TwoWayDHCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -235,32 +235,16 @@ def is_TwoWayDHCross(v):
     """
     return isinstance(v, TwoWayDHCross)
 
-def check_is_TwoWayDHCross(v, varname):
+def check_is_TwoWayDHCross(v: Any, varname: str) -> None:
     """
     Check if object is of type TwoWayDHCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TwoWayDHCross):
         raise TypeError("'%s' must be a TwoWayDHCross." % varname)
-
-def cond_check_is_TwoWayDHCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type TwoWayDHCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a TwoWayDHCross.
-    """
-    if cond(v):
-        check_is_TwoWayDHCross(v, varname)

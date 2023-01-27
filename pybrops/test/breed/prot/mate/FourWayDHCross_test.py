@@ -18,7 +18,6 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.FourWayDHCross import FourWayDHCross
 from pybrops.breed.prot.mate.FourWayDHCross import is_FourWayDHCross
 from pybrops.breed.prot.mate.FourWayDHCross import check_is_FourWayDHCross
-from pybrops.breed.prot.mate.FourWayDHCross import cond_check_is_FourWayDHCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -103,6 +102,3 @@ def test_check_is_FourWayDHCross(mprot):
         check_is_FourWayDHCross(mprot, "mprot")
     with pytest.raises(TypeError):
         check_is_FourWayDHCross(None, "mprot")
-
-def test_cond_check_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_FourWayDHCross)

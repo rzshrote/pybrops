@@ -3,6 +3,7 @@ Module implementing recurrent selection.
 """
 
 import copy
+from typing import Any
 import numpy
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
@@ -586,13 +587,13 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_RecurrentSelectionBreedingProgram(v):
+def is_RecurrentSelectionBreedingProgram(v: Any) -> bool:
     """
     Determine whether an object is a RecurrentSelectionBreedingProgram.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -602,32 +603,16 @@ def is_RecurrentSelectionBreedingProgram(v):
     """
     return isinstance(v, RecurrentSelectionBreedingProgram)
 
-def check_is_RecurrentSelectionBreedingProgram(v, varname):
+def check_is_RecurrentSelectionBreedingProgram(v: Any, varname: str) -> None:
     """
     Check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, RecurrentSelectionBreedingProgram):
         raise TypeError("'%s' must be a RecurrentSelectionBreedingProgram." % varname)
-
-def cond_check_is_RecurrentSelectionBreedingProgram(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a RecurrentSelectionBreedingProgram.
-    """
-    if cond(v):
-        check_is_RecurrentSelectionBreedingProgram(v, varname)

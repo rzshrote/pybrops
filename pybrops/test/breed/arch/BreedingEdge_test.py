@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 from pybrops.breed.arch.BreedingEdge import is_BreedingEdge
 from pybrops.breed.arch.BreedingEdge import check_is_BreedingEdge
-from pybrops.breed.arch.BreedingEdge import cond_check_is_BreedingEdge
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_BreedingEdge_is_concrete():
 
 def test_check_is_BreedingEdge_is_concrete():
     generic_assert_concrete_function(check_is_BreedingEdge)
-
-def test_cond_check_is_BreedingEdge_is_concrete():
-    generic_assert_concrete_function(cond_check_is_BreedingEdge)
 
 ################################################################################
 ######################### Test class utility functions #########################

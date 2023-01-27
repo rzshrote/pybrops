@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
+from typing import Any
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class BreedingProgram(BreedingNode):
@@ -256,13 +257,13 @@ class BreedingProgram(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingProgram(v):
+def is_BreedingProgram(v: Any) -> bool:
     """
     Determine whether an object is a BreedingProgram.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -272,32 +273,16 @@ def is_BreedingProgram(v):
     """
     return isinstance(v, BreedingProgram)
 
-def check_is_BreedingProgram(v, varname):
+def check_is_BreedingProgram(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingProgram. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingProgram):
         raise TypeError("'%s' must be a BreedingProgram." % varname)
-
-def cond_check_is_BreedingProgram(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingProgram. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingProgram.
-    """
-    if cond(v):
-        check_is_BreedingProgram(v, varname)

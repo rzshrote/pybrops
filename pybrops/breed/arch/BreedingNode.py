@@ -4,6 +4,9 @@ breeding nodes. Breeding nodes compose complex breeding programs in a graph-like
 structure. They are points were germplasm and information are located.
 """
 
+from typing import Any
+
+
 class BreedingNode:
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
@@ -142,13 +145,13 @@ class BreedingNode:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingNode(v):
+def is_BreedingNode(v: Any) -> bool:
     """
     Determine whether an object is a BreedingNode.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -158,32 +161,16 @@ def is_BreedingNode(v):
     """
     return isinstance(v, BreedingNode)
 
-def check_is_BreedingNode(v, varname):
+def check_is_BreedingNode(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingNode. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingNode):
         raise TypeError("'%s' must be a BreedingNode." % varname)
-
-def cond_check_is_BreedingNode(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingNode. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingNode.
-    """
-    if cond(v):
-        check_is_BreedingNode(v, varname)

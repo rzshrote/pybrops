@@ -2,10 +2,9 @@
 Module implementing mating protocols for self-fertilization.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_is_Generator_or_RandomState
@@ -163,13 +162,13 @@ class SelfCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SelfCross(v):
+def is_SelfCross(v: Any) -> bool:
     """
     Determine whether an object is a SelfCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -179,32 +178,16 @@ def is_SelfCross(v):
     """
     return isinstance(v, SelfCross)
 
-def check_is_SelfCross(v, varname):
+def check_is_SelfCross(v: Any, varname: str) -> None:
     """
     Check if object is of type SelfCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SelfCross):
         raise TypeError("'%s' must be a SelfCross." % varname)
-
-def cond_check_is_SelfCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type SelfCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a SelfCross.
-    """
-    if cond(v):
-        check_is_SelfCross(v, varname)

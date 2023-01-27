@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import is_SurvivorSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
-from pybrops.breed.op.ssel.SurvivorSelectionOperator import cond_check_is_SurvivorSelectionOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_SurvivorSelectionOperator_is_concrete():
 
 def test_check_is_SurvivorSelectionOperator_is_concrete():
     generic_assert_concrete_function(check_is_SurvivorSelectionOperator)
-
-def test_cond_check_is_SurvivorSelectionOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_SurvivorSelectionOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

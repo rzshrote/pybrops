@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program evaluation operators.
 """
 
+from typing import Any
+
+
 class EvaluationOperator:
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
@@ -70,13 +73,13 @@ class EvaluationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_EvaluationOperator(v):
+def is_EvaluationOperator(v: Any) -> bool:
     """
     Determine whether an object is a EvaluationOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -86,32 +89,16 @@ def is_EvaluationOperator(v):
     """
     return isinstance(v, EvaluationOperator)
 
-def check_is_EvaluationOperator(v, varname):
+def check_is_EvaluationOperator(v: Any, varname: str) -> None:
     """
     Check if object is of type EvaluationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EvaluationOperator):
         raise TypeError("'%s' must be a EvaluationOperator." % varname)
-
-def cond_check_is_EvaluationOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type EvaluationOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a EvaluationOperator.
-    """
-    if cond(v):
-        check_is_EvaluationOperator(v, varname)

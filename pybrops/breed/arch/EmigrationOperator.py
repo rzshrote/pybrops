@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for
 emigration operators.
 """
 
+from typing import Any
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 
 class EmigrationOperator(BreedingEdge):
@@ -52,13 +53,13 @@ class EmigrationOperator(BreedingEdge):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_EmigrationOperator(v):
+def is_EmigrationOperator(v: Any) -> bool:
     """
     Determine whether an object is a EmigrationOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -68,32 +69,16 @@ def is_EmigrationOperator(v):
     """
     return isinstance(v, EmigrationOperator)
 
-def check_is_EmigrationOperator(v, varname):
+def check_is_EmigrationOperator(v: Any, varname: str) -> None:
     """
     Check if object is of type EmigrationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EmigrationOperator):
         raise TypeError("'%s' must be a EmigrationOperator." % varname)
-
-def cond_check_is_EmigrationOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type EmigrationOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a EmigrationOperator.
-    """
-    if cond(v):
-        check_is_EmigrationOperator(v, varname)

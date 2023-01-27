@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program logbook operators.
 """
 
+from typing import Any
+
+
 class Logbook:
     """
     Abstract class defining interfaces for logging statistics about an entire
@@ -213,13 +216,13 @@ class Logbook:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Logbook(v):
+def is_Logbook(v: Any) -> bool:
     """
     Determine whether an object is a Logbook.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -229,32 +232,16 @@ def is_Logbook(v):
     """
     return isinstance(v, Logbook)
 
-def check_is_Logbook(v, varname):
+def check_is_Logbook(v: Any, varname: str) -> None:
     """
     Check if object is of type Logbook. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, Logbook):
         raise TypeError("'%s' must be a Logbook." % varname)
-
-def cond_check_is_Logbook(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type Logbook. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a Logbook.
-    """
-    if cond(v):
-        check_is_Logbook(v, varname)

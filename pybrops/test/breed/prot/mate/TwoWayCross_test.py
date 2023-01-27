@@ -18,7 +18,6 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.TwoWayCross import TwoWayCross
 from pybrops.breed.prot.mate.TwoWayCross import is_TwoWayCross
 from pybrops.breed.prot.mate.TwoWayCross import check_is_TwoWayCross
-from pybrops.breed.prot.mate.TwoWayCross import cond_check_is_TwoWayCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -103,6 +102,3 @@ def test_check_is_TwoWayCross(mprot):
         check_is_TwoWayCross(mprot, "mprot")
     with pytest.raises(TypeError):
         check_is_TwoWayCross(None, "mprot")
-
-def test_cond_check_is_TwoWayCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_TwoWayCross)

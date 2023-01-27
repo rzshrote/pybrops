@@ -2,9 +2,9 @@
 Module implementing mating protocols for three-way DH crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
@@ -36,7 +36,7 @@ class ThreeWayDHCross(MatingProtocol):
         super(ThreeWayDHCross, self).__init__(**kwargs)
 
         # make assignments
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
 
     ############################################################################
     ############################ Object Properties #############################
@@ -170,13 +170,13 @@ class ThreeWayDHCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayDHCross(v):
+def is_ThreeWayDHCross(v: Any) -> bool:
     """
     Determine whether an object is a ThreeWayDHCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -186,32 +186,16 @@ def is_ThreeWayDHCross(v):
     """
     return isinstance(v, ThreeWayDHCross)
 
-def check_is_ThreeWayDHCross(v, varname):
+def check_is_ThreeWayDHCross(v: Any, varname: str) -> None:
     """
     Check if object is of type ThreeWayDHCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ThreeWayDHCross):
         raise TypeError("'%s' must be a ThreeWayDHCross." % varname)
-
-def cond_check_is_ThreeWayDHCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ThreeWayDHCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a ThreeWayDHCross.
-    """
-    if cond(v):
-        check_is_ThreeWayDHCross(v, varname)

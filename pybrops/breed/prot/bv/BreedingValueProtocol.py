@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking methods for breeding
 value calculation protocols.
 """
 
+from typing import Any
+
+
 class BreedingValueProtocol:
     """
     Abstract class defining interfaces for breeding value calculation protocols.
@@ -57,13 +60,13 @@ class BreedingValueProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingValueProtocol(v):
+def is_BreedingValueProtocol(v: Any) -> bool:
     """
     Determine whether an object is a BreedingValueProtocol.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -73,32 +76,16 @@ def is_BreedingValueProtocol(v):
     """
     return isinstance(v, BreedingValueProtocol)
 
-def check_is_BreedingValueProtocol(v, varname):
+def check_is_BreedingValueProtocol(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingValueProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueProtocol):
         raise TypeError("'%s' must be a BreedingValueProtocol." % varname)
-
-def cond_check_is_BreedingValueProtocol(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingValueProtocol. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingValueProtocol.
-    """
-    if cond(v):
-        check_is_BreedingValueProtocol(v, varname)

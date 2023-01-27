@@ -2,9 +2,9 @@
 Module implementing mating protocols for four-way crosses.
 """
 
+from typing import Any
 import numpy
 
-from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_is_Generator_or_RandomState
@@ -151,13 +151,9 @@ class FourWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_FourWayCross(v):
+def is_FourWayCross(v: Any) -> bool:
     return isinstance(v, FourWayCross)
 
-def check_is_FourWayCross(v, varname):
+def check_is_FourWayCross(v: Any, varname: str) -> None:
     if not isinstance(v, FourWayCross):
         raise TypeError("'%s' must be a FourWayCross." % varname)
-
-def cond_check_is_FourWayCross(v, varname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_FourWayCross(v, varname)

@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
 from pybrops.breed.op.init.InitializationOperator import is_InitializationOperator
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
-from pybrops.breed.op.init.InitializationOperator import cond_check_is_InitializationOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_InitializationOperator_is_concrete():
 
 def test_check_is_InitializationOperator_is_concrete():
     generic_assert_concrete_function(check_is_InitializationOperator)
-
-def test_cond_check_is_InitializationOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_InitializationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

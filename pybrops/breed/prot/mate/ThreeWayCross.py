@@ -2,10 +2,9 @@
 Module implementing mating protocols for three-way crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_is_Generator_or_RandomState
@@ -158,13 +157,9 @@ class ThreeWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayCross(v):
+def is_ThreeWayCross(v: Any) -> bool:
     return isinstance(v, ThreeWayCross)
 
-def check_is_ThreeWayCross(v, varname):
+def check_is_ThreeWayCross(v: Any, varname: str) -> None:
     if not isinstance(v, ThreeWayCross):
         raise TypeError("'%s' must be a ThreeWayCross." % varname)
-
-def cond_check_is_ThreeWayCross(v, varname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_ThreeWayCross(v, varname)

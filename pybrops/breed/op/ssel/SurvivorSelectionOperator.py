@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program survivor selection operators.
 """
 
+from typing import Any
+
+
 class SurvivorSelectionOperator:
     """
     Abstract class defining interfaces for survivor selection within an entire
@@ -70,13 +73,13 @@ class SurvivorSelectionOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SurvivorSelectionOperator(v):
+def is_SurvivorSelectionOperator(v: Any) -> bool:
     """
     Determine whether an object is a SurvivorSelectionOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -86,32 +89,16 @@ def is_SurvivorSelectionOperator(v):
     """
     return isinstance(v, SurvivorSelectionOperator)
 
-def check_is_SurvivorSelectionOperator(v, varname):
+def check_is_SurvivorSelectionOperator(v: Any, varname: str) -> None:
     """
     Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SurvivorSelectionOperator):
         raise TypeError("'%s' must be a SurvivorSelectionOperator." % varname)
-
-def cond_check_is_SurvivorSelectionOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a SurvivorSelectionOperator.
-    """
-    if cond(v):
-        check_is_SurvivorSelectionOperator(v, varname)

@@ -5,6 +5,9 @@ populations. Germplasm and information is passed between breeding nodes through
 breeding edges.
 """
 
+from typing import Any
+
+
 class BreedingGraph:
     """
     Abstract class defining interfaces for breeding graphs. Breeding graphs
@@ -54,13 +57,13 @@ class BreedingGraph:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingGraph(v):
+def is_BreedingGraph(v: Any) -> bool:
     """
     Determine whether an object is a BreedingGraph.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -70,32 +73,16 @@ def is_BreedingGraph(v):
     """
     return isinstance(v, BreedingGraph)
 
-def check_is_BreedingGraph(v, varname):
+def check_is_BreedingGraph(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingGraph. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingGraph):
         raise TypeError("'%s' must be a BreedingGraph." % varname)
-
-def cond_check_is_BreedingGraph(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingGraph. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingGraph.
-    """
-    if cond(v):
-        check_is_BreedingGraph(v, varname)
