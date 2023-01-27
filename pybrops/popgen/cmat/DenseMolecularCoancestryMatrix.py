@@ -195,8 +195,12 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         ####################################################
         ### Construct DenseMolecularCoancestryMatrix
         # copy taxa data if available
-        taxa = numpy.object_(gmat.taxa) if gmat.taxa is not None else None
-        taxa_grp = numpy.int64(gmat.taxa_grp) if gmat.taxa_grp is not None else None
+        taxa = gmat.taxa.copy() if gmat.taxa is not None else None
+        taxa_grp = gmat.taxa_grp.copy() if gmat.taxa_grp is not None else None
+        taxa_grp_name = gmat.taxa_grp_name.copy() if gmat.taxa_grp_name is not None else None
+        taxa_grp_stix = gmat.taxa_grp_stix.copy() if gmat.taxa_grp_stix is not None else None
+        taxa_grp_spix = gmat.taxa_grp_spix.copy() if gmat.taxa_grp_spix is not None else None
+        taxa_grp_len = gmat.taxa_grp_len.copy() if gmat.taxa_grp_len is not None else None
 
         # construct basic object
         out = cls(
@@ -205,11 +209,11 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             taxa_grp = taxa_grp
         )
 
-        # copy taxa metadata if available
-        out.taxa_grp_name = gmat.taxa_grp_name
-        out.taxa_grp_stix = gmat.taxa_grp_stix
-        out.taxa_grp_spix = gmat.taxa_grp_spix
-        out.taxa_grp_len = gmat.taxa_grp_len
+        # apply taxa metadata
+        out.taxa_grp_name = taxa_grp_name
+        out.taxa_grp_stix = taxa_grp_stix
+        out.taxa_grp_spix = taxa_grp_spix
+        out.taxa_grp_len = taxa_grp_len
 
         # return matrix
         return out
