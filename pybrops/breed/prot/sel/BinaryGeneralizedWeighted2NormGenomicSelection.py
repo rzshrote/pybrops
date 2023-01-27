@@ -32,23 +32,23 @@ class BinaryGeneralizedWeighted2NormGenomicSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self, 
-        nparent: int,
-        ncross: int,
-        nprogeny: int,
-        weight: Union[numpy.ndarray,Callable] = weight_absolute,
-        target: Union[numpy.ndarray,Callable] = target_positive,
-        method: str = "single",
-        objfn_trans = None,
-        objfn_trans_kwargs = None, 
-        objfn_wt = -1.0,
-        ndset_trans = None, 
-        ndset_trans_kwargs = None, 
-        ndset_wt = -1.0,
-        rng = global_prng, 
-        soalgo = None, 
-        moalgo = None,
-        **kwargs
+            self, 
+            nparent: int,
+            ncross: int,
+            nprogeny: int,
+            weight: Union[numpy.ndarray,Callable] = weight_absolute,
+            target: Union[numpy.ndarray,Callable] = target_positive,
+            method: str = "single",
+            objfn_trans = None,
+            objfn_trans_kwargs = None, 
+            objfn_wt = -1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = -1.0,
+            rng = global_prng, 
+            soalgo = None, 
+            moalgo = None,
+            **kwargs
         ):
         """
         Constructor for BinaryGeneralizedWeighted2NormGenomicSelection.
