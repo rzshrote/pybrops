@@ -10,7 +10,7 @@ from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_in_interval
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error.error_value_python import check_float_in_interval, check_number_in_interval
+from pybrops.core.error.error_value_python import check_number_in_interval
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
@@ -74,8 +74,8 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
         
         Returns
         -------
-        out : outtype
-            outdesc
+        out : DenseGeneralizedWeightedCoancestryMatrix
+            A dense generalized weighted coancestry matrix.
         """
         # check input datatypes
         check_is_GenotypeMatrix(gmat, "gmat")
