@@ -61,8 +61,16 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
         
         Parameters
         ----------
-        gmat : argtype
-            argdesc
+        gmat : GenotypeMatrix
+            Input genotype matrix.
+        mkrwt : numpy.ndarray, numbers.Number, None
+            Marker weights to apply to the genotype matrix.
+            If None, markers weights are assumed to be 1.
+        afreq : numpy.ndarray, numbers.Number, None
+            Allele frequency of the mean point.
+            If None, allele frequencies are assumed to equal the allele frequency of the input GenotypeMatrix.
+        kwargs : dict
+            Additional keyword arguments.
         
         Returns
         -------
@@ -112,8 +120,10 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
         Z = X - M
 
         # calculate the G matrix:
-        # G = ZZ'
-        G = Z.dot(Z.T)
+        # G = ZDZ'
+        # (n,p) * (1,p) -> (n,p)
+        # (n,p) @ (p,n) -> (n,n)
+        G = (Z * mkrwt[None,:]).dot(Z.T)
 
         # create output
         out = cls(
