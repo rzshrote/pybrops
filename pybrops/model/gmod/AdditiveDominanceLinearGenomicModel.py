@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive and dominance effects.
 """
 
+from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
 class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
@@ -96,13 +97,13 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveDominanceLinearGenomicModel(v):
+def is_AdditiveDominanceLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a AdditiveDominanceLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -112,32 +113,16 @@ def is_AdditiveDominanceLinearGenomicModel(v):
     """
     return isinstance(v, AdditiveDominanceLinearGenomicModel)
 
-def check_is_AdditiveDominanceLinearGenomicModel(v, vname):
+def check_is_AdditiveDominanceLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveDominanceLinearGenomicModel):
         raise TypeError("variable '{0}' must be a AdditiveDominanceLinearGenomicModel".format(vname))
-
-def cond_check_is_AdditiveDominanceLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a AdditiveDominanceLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_AdditiveDominanceLinearGenomicModel(v, vname)

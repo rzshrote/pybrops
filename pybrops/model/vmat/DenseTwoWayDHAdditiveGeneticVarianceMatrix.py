@@ -6,6 +6,7 @@ formulae.
 
 import numpy
 import pandas
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.subroutines import srange
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix

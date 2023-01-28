@@ -634,7 +634,7 @@ def is_DensePhasedMatrix(v: Any):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -650,7 +650,7 @@ def check_is_DensePhasedMatrix(v: Any, vname: str):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

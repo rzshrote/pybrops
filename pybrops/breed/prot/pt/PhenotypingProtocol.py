@@ -2,6 +2,9 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
+from typing import Any
+
+
 class PhenotypingProtocol:
     """
     Abstract class defining interfaces for phenotyping protocols.
@@ -120,13 +123,13 @@ class PhenotypingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypingProtocol(v):
+def is_PhenotypingProtocol(v: Any) -> bool:
     """
     Determine whether an object is a PhenotypingProtocol.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -136,32 +139,16 @@ def is_PhenotypingProtocol(v):
     """
     return isinstance(v, PhenotypingProtocol)
 
-def check_is_PhenotypingProtocol(v, varname):
+def check_is_PhenotypingProtocol(v: Any, varname: str) -> None:
     """
     Check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypingProtocol):
         raise TypeError("'%s' must be a PhenotypingProtocol." % varname)
-
-def cond_check_is_PhenotypingProtocol(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a PhenotypingProtocol.
-    """
-    if cond(v):
-        check_is_PhenotypingProtocol(v, varname)

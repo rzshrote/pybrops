@@ -2,6 +2,7 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
+from typing import Any
 import numpy
 import warnings
 
@@ -293,13 +294,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseCoancestryMatrix(v):
+def is_DenseCoancestryMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseCoancestryMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -309,34 +310,16 @@ def is_DenseCoancestryMatrix(v):
     """
     return isinstance(v, DenseCoancestryMatrix)
 
-def check_is_DenseCoancestryMatrix(v, vname):
+def check_is_DenseCoancestryMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseCoancestryMatrix(v, vname)

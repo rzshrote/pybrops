@@ -2,6 +2,9 @@
 Module defining DataFrame interfaces and associated error checking routines.
 """
 
+from typing import Any
+
+
 class DataFrame:
     """
     An abstract class for data frame wrapper objects.
@@ -217,13 +220,13 @@ class DataFrame:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DataFrame(v):
+def is_DataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -233,32 +236,16 @@ def is_DataFrame(v):
     """
     return isinstance(v, DataFrame)
 
-def check_is_DataFrame(v, vname):
+def check_is_DataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DataFrame):
         raise TypeError("variable '{0}' must be a DataFrame".format(vname))
-
-def cond_check_is_DataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DataFrame.
-    """
-    if cond(v):
-        check_is_DataFrame(v, vname)

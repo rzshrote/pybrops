@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 
 class TaxaMatrix(GroupableMatrix):
@@ -397,13 +398,13 @@ class TaxaMatrix(GroupableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TaxaMatrix(v):
+def is_TaxaMatrix(v: Any) -> bool:
     """
     Determine whether an object is a TaxaMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -413,16 +414,16 @@ def is_TaxaMatrix(v):
     """
     return isinstance(v, TaxaMatrix)
 
-def check_is_TaxaMatrix(v, varname):
+def check_is_TaxaMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type TaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_TaxaMatrix(v):
+    if not isinstance(v, TaxaMatrix):
         raise TypeError("'{0}' must be a TaxaMatrix".format(varname))

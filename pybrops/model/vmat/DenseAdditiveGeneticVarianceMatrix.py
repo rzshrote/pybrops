@@ -3,6 +3,7 @@ Module implementing classes and associated error checking routines for matrices
 storing dense additive genetic variance estimates.
 """
 
+from typing import Any
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
@@ -69,13 +70,13 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveGeneticVarianceMatrix(obj):
+def is_DenseAdditiveGeneticVarianceMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``DenseAdditiveGeneticVarianceMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -83,36 +84,18 @@ def is_DenseAdditiveGeneticVarianceMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``DenseAdditiveGeneticVarianceMatrix`` object instance.
     """
-    return isinstance(obj, DenseAdditiveGeneticVarianceMatrix)
+    return isinstance(v, DenseAdditiveGeneticVarianceMatrix)
 
-def check_is_DenseAdditiveGeneticVarianceMatrix(obj, objname):
+def check_is_DenseAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, DenseAdditiveGeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a DenseAdditiveGeneticVarianceMatrix".format(objname))
-
-def cond_check_is_DenseAdditiveGeneticVarianceMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``DenseAdditiveGeneticVarianceMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``DenseAdditiveGeneticVarianceMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, DenseAdditiveGeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a DenseAdditiveGeneticVarianceMatrix".format(objname))
+    if not isinstance(v, DenseAdditiveGeneticVarianceMatrix):
+        raise TypeError("'{0}' must be a DenseAdditiveGeneticVarianceMatrix".format(vname))

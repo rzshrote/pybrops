@@ -4,7 +4,7 @@ models that incorporate linear genomic effects.
 """
 
 import copy
-from typing import Union
+from typing import Any, Union
 import numpy
 import h5py
 
@@ -1340,13 +1340,13 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseLinearGenomicModel(v):
+def is_DenseLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a DenseLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -1356,32 +1356,16 @@ def is_DenseLinearGenomicModel(v):
     """
     return isinstance(v, DenseLinearGenomicModel)
 
-def check_is_DenseLinearGenomicModel(v, vname):
+def check_is_DenseLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseLinearGenomicModel):
         raise TypeError("variable '{0}' must be a DenseLinearGenomicModel".format(vname))
-
-def cond_check_is_DenseLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DenseLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_DenseLinearGenomicModel(v, vname)

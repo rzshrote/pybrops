@@ -3,6 +3,7 @@ Module providing a dense coancestry matrix implementation for identity by state
 and associated error checking routines.
 """
 
+from typing import Any
 import numpy
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
@@ -223,13 +224,13 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMolecularCoancestryMatrix(v):
+def is_DenseMolecularCoancestryMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseMolecularCoancestryMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -239,34 +240,16 @@ def is_DenseMolecularCoancestryMatrix(v):
     """
     return isinstance(v, DenseMolecularCoancestryMatrix)
 
-def check_is_DenseMolecularCoancestryMatrix(v, vname):
+def check_is_DenseMolecularCoancestryMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMolecularCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseMolecularCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseMolecularCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseMolecularCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseMolecularCoancestryMatrix(v, vname)

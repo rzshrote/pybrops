@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 that can have variant positions placed on a genetic map.
 """
 
+from typing import Any
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 
 class GeneticMappableMatrix(VariantMatrix):
@@ -68,13 +69,13 @@ class GeneticMappableMatrix(VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMappableMatrix(v):
+def is_GeneticMappableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a GeneticMappableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -84,34 +85,16 @@ def is_GeneticMappableMatrix(v):
     """
     return isinstance(v, GeneticMappableMatrix)
 
-def check_is_GeneticMappableMatrix(v, varname):
+def check_is_GeneticMappableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type GeneticMappableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_GeneticMappableMatrix(v):
+    if not isinstance(v, GeneticMappableMatrix):
         raise TypeError("'{0}' must be a GeneticMappableMatrix".format(varname))
-
-def cond_check_is_GeneticMappableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type GeneticMappableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        GeneticMappableMatrix.
-    """
-    if cond(v):
-        check_is_GeneticMappableMatrix(v, varname)

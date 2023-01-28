@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import is_DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import check_is_DenseGenotypeMatrix
-from pybrops.popgen.gmat.DenseGenotypeMatrix import cond_check_is_DenseGenotypeMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -833,6 +832,3 @@ def test_check_is_DenseGenotypeMatrix(mat):
         check_is_DenseGenotypeMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseGenotypeMatrix(None, "mat")
-
-def test_cond_check_is_DenseGenotypeMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseGenotypeMatrix)

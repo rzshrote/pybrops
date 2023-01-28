@@ -2,7 +2,7 @@
 Module defining HDF5 I/O interfaces and associated error checking routines.
 """
 
-from typing import Optional
+from typing import Any, Optional
 from typing import Type
 
 
@@ -80,13 +80,13 @@ class HDF5InputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HDF5InputOutput(v):
+def is_HDF5InputOutput(v: Any) -> bool:
     """
     Determine whether an object is a HDF5InputOutput.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -96,32 +96,16 @@ def is_HDF5InputOutput(v):
     """
     return isinstance(v, HDF5InputOutput)
 
-def check_is_HDF5InputOutput(v, vname):
+def check_is_HDF5InputOutput(v: Any, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HDF5InputOutput):
         raise TypeError("variable '{0}' must be a HDF5InputOutput".format(vname))
-
-def cond_check_is_HDF5InputOutput(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HDF5InputOutput. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HDF5InputOutput.
-    """
-    if cond(v):
-        check_is_HDF5InputOutput(v, vname)

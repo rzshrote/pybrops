@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 storing genic variance estimates.
 """
 
+from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 
 class GenicVarianceMatrix(SquareTaxaMatrix):
@@ -62,13 +63,13 @@ class GenicVarianceMatrix(SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenicVarianceMatrix(obj):
+def is_GenicVarianceMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``GenicVarianceMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -76,36 +77,18 @@ def is_GenicVarianceMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``GenicVarianceMatrix`` object instance.
     """
-    return isinstance(obj, GenicVarianceMatrix)
+    return isinstance(v, GenicVarianceMatrix)
 
-def check_is_GenicVarianceMatrix(obj, objname):
+def check_is_GenicVarianceMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``GenicVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, GenicVarianceMatrix):
-        raise TypeError("'{0}' must be a GenicVarianceMatrix".format(objname))
-
-def cond_check_is_GenicVarianceMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``GenicVarianceMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``GenicVarianceMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, GenicVarianceMatrix):
-        raise TypeError("'{0}' must be a GenicVarianceMatrix".format(objname))
+    if not isinstance(v, GenicVarianceMatrix):
+        raise TypeError("'{0}' must be a GenicVarianceMatrix".format(vname))

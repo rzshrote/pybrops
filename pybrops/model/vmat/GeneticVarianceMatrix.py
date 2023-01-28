@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 storing genetic variance estimates.
 """
 
+from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 
 class GeneticVarianceMatrix(SquareTaxaMatrix):
@@ -72,13 +73,13 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticVarianceMatrix(obj):
+def is_GeneticVarianceMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``GeneticVarianceMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -86,36 +87,18 @@ def is_GeneticVarianceMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``GeneticVarianceMatrix`` object instance.
     """
-    return isinstance(obj, GeneticVarianceMatrix)
+    return isinstance(v, GeneticVarianceMatrix)
 
-def check_is_GeneticVarianceMatrix(obj, objname):
+def check_is_GeneticVarianceMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``GeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, GeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a GeneticVarianceMatrix".format(objname))
-
-def cond_check_is_GeneticVarianceMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``GeneticVarianceMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``GeneticVarianceMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, GeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a GeneticVarianceMatrix".format(objname))
+    if not isinstance(v, GeneticVarianceMatrix):
+        raise TypeError("'{0}' must be a GeneticVarianceMatrix".format(vname))

@@ -5,7 +5,6 @@ import numpy
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.ExtendedGeneticMap import is_ExtendedGeneticMap
 from pybrops.popgen.gmap.ExtendedGeneticMap import check_is_ExtendedGeneticMap
-from pybrops.popgen.gmap.ExtendedGeneticMap import cond_check_is_ExtendedGeneticMap
 
 ################################################################################
 ################################### Fixtures ###################################
@@ -29,10 +28,6 @@ def test_is_ExtendedGeneticMap(egmap):
 def test_check_is_ExtendedGeneticMap():
     with pytest.raises(TypeError):
         check_is_ExtendedGeneticMap(None, "None")
-
-def test_cond_check_is_ExtendedGeneticMap():
-    with pytest.raises(TypeError):
-        cond_check_is_ExtendedGeneticMap(0, "0")
 
 def test_len(egmap):
     assert len(egmap) == 1122

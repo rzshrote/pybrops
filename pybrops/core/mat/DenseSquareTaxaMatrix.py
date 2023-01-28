@@ -3,6 +3,7 @@ Module implementing a dense matrix with taxa metadata and axes that are square
 and associated error checking routines.
 """
 
+from typing import Any
 import numpy
 
 from pybrops.core.error import check_is_array_like
@@ -1017,13 +1018,13 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseSquareTaxaMatrix(v):
+def is_DenseSquareTaxaMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseSquareTaxaMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -1033,34 +1034,16 @@ def is_DenseSquareTaxaMatrix(v):
     """
     return isinstance(v, DenseSquareTaxaMatrix)
 
-def check_is_DenseSquareTaxaMatrix(v, varname):
+def check_is_DenseSquareTaxaMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseSquareTaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseSquareTaxaMatrix(v):
-        raise TypeError("'{0}' must be a DenseSquareTaxaMatrix".format(varname))
-
-def cond_check_is_DenseSquareTaxaMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseSquareTaxaMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseSquareTaxaMatrix.
-    """
-    if cond(v):
-        check_is_DenseSquareTaxaMatrix(v, varname)
+    if not isinstance(v, DenseSquareTaxaMatrix):
+        raise TypeError("'{0}' must be a DenseSquareTaxaMatrix".format(vname))

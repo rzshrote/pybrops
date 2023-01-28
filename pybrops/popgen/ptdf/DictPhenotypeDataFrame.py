@@ -3,6 +3,7 @@ Module implementing a phenotype dataframe using dictionaries and its associated
 error checking routines.
 """
 
+from typing import Any
 import numpy
 import copy
 
@@ -257,13 +258,13 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictPhenotypeDataFrame(v):
+def is_DictPhenotypeDataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DictPhenotypeDataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -273,32 +274,16 @@ def is_DictPhenotypeDataFrame(v):
     """
     return isinstance(v, DictPhenotypeDataFrame)
 
-def check_is_DictPhenotypeDataFrame(v, vname):
+def check_is_DictPhenotypeDataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DictPhenotypeDataFrame):
         raise TypeError("variable '{0}' must be a DictPhenotypeDataFrame".format(vname))
-
-def cond_check_is_DictPhenotypeDataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DictPhenotypeDataFrame.
-    """
-    if cond(v):
-        check_is_DictPhenotypeDataFrame(v, vname)

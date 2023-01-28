@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 from pybrops.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
-from pybrops.popgen.ptdf.PhenotypeDataFrame import cond_check_is_PhenotypeDataFrame
 
 
 ################################################################################
@@ -56,9 +55,6 @@ def test_is_PhenotypeDataFrame_is_concrete():
 
 def test_check_is_PhenotypeDataFrame_is_concrete():
     generic_assert_concrete_function(check_is_PhenotypeDataFrame)
-
-def test_cond_check_is_PhenotypeDataFrame_is_concrete():
-    generic_assert_concrete_function(cond_check_is_PhenotypeDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

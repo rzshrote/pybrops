@@ -2,6 +2,7 @@
 Module implementing the Kosambi genetic map function and associated error checking routines.
 """
 
+from typing import Any
 import numpy
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
@@ -184,13 +185,13 @@ class KosambiMapFunction(GeneticMapFunction):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_KosambiMapFunction(v):
+def is_KosambiMapFunction(v: Any) -> bool:
     """
     Determine whether an object is a KosambiMapFunction.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -200,32 +201,16 @@ def is_KosambiMapFunction(v):
     """
     return isinstance(v, KosambiMapFunction)
 
-def check_is_KosambiMapFunction(v, varname):
+def check_is_KosambiMapFunction(v: Any, varname: str) -> None:
     """
     Check if object is of type KosambiMapFunction. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_KosambiMapFunction(v):
+    if not isinstance(v, KosambiMapFunction):
         raise TypeError("'{0}' must be of type KosambiMapFunction.".format(varname))
-
-def cond_check_is_KosambiMapFunction(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type KosambiMapFunction. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a KosambiMapFunction.
-    """
-    if cond(v):
-        check_is_KosambiMapFunction(v, varname)

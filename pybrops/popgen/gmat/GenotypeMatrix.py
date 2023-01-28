@@ -6,7 +6,7 @@ for genotype matrices.
 import numpy
 from numpy.typing import DTypeLike
 
-from typing import Optional
+from typing import Any, Optional
 
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
@@ -286,16 +286,11 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenotypeMatrix(v):
+def is_GenotypeMatrix(v: Any) -> bool:
     """Return whether an object is a GenotypeMatrix or not"""
     return isinstance(v, GenotypeMatrix)
 
-def check_is_GenotypeMatrix(v, varname):
+def check_is_GenotypeMatrix(v: Any, varname: str) -> None:
     """Raise TypeError if object is not a GenotypeMatrix"""
     if not isinstance(v, GenotypeMatrix):
         raise TypeError("'%s' must be a GenotypeMatrix." % varname)
-
-def cond_check_is_GenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a GenotypeMatrix"""
-    if cond(v):
-        check_is_GenotypeMatrix(v, varname)

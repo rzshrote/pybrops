@@ -2,6 +2,9 @@
 Module defining basal genetic map interfaces and associated error checking routines.
 """
 
+from typing import Any
+
+
 class GeneticMap:
     """
     An abstract class for genetic map objects.
@@ -537,13 +540,13 @@ class GeneticMap:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMap(v):
+def is_GeneticMap(v: Any) -> bool:
     """
     Determine whether an object is a GeneticMap.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -553,34 +556,16 @@ def is_GeneticMap(v):
     """
     return isinstance(v, GeneticMap)
 
-def check_is_GeneticMap(v, vname):
+def check_is_GeneticMap(v: Any, vname: str) -> None:
     """
     Check if object is of type GeneticMap. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GeneticMap):
         raise TypeError("variable '{0}' must be a GeneticMap".format(vname))
-
-def cond_check_is_GeneticMap(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type GeneticMap. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        GeneticMap.
-    """
-    if cond(v):
-        check_is_GeneticMap(v, vname)

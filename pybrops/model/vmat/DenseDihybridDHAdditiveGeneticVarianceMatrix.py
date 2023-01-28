@@ -6,6 +6,7 @@ formulae.
 
 import numpy
 import pandas
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.subroutines import srange
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.util import cov_D2s
@@ -39,7 +40,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseFourWayDHAdditiveGeneticVarianceMatrix, self).__init__(
+        super(DenseDihybridDHAdditiveGeneticVarianceMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -177,7 +178,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         )
 
         # for each linkage group
-        for lst, lsp in zip(gmap.chr_grp_stix, gmap.chr_grp_spix):
+        for lst, lsp in zip(chrgrp_stix, chrgrp_spix):
             # determine memory chunk step (for iterators)
             step = (lsp - lst) if mem is None else mem
             # for each computational chunk
@@ -210,7 +211,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
                     #   2 = female phase 1
                     #   3 = male phase 2
                     #   4 = male phase 1
-                    for female in range(0,n_indiv):     # varA row index
+                    for female in range(0,ntaxa):       # varA row index
                         for male in range(0,female):    # varA col index
                             # calculate genotype differences for row, col
                             rdgeno21 = geno[0,female,rst:rsp] - geno[1,female,rst:rsp] # (rb,)
@@ -234,11 +235,11 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
                             reffect32 = rdgeno32 * ru # (rb,)*(t,rb) -> (t,rb)
                             ceffect32 = cdgeno32 * cu # (cb,)*(t,cb) -> (t,cb)
                             reffect41 = rdgeno41 * ru # (rb,)*(t,rb) -> (t,rb)
-                            ceffect41 = rdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
+                            ceffect41 = cdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
                             reffect42 = rdgeno42 * ru # (rb,)*(t,rb) -> (t,rb)
-                            ceffect42 = rdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
+                            ceffect42 = cdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
                             reffect43 = rdgeno43 * ru # (rb,)*(t,rb) -> (t,rb)
-                            ceffect43 = rdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
+                            ceffect43 = cdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
 
                             # calculate varA part for female2-male
                             # (t,rb)x(rb,cb) -> (t,cb)

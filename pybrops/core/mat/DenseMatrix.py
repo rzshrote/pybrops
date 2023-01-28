@@ -5,7 +5,7 @@ Module implementing a dense matrix and associated error checking routines.
 import copy
 import numpy
 import h5py
-from typing import Optional
+from typing import Any, Optional
 from typing import Type
 
 
@@ -607,13 +607,13 @@ class DenseMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMatrix(v):
+def is_DenseMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseMatrix.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -623,13 +623,13 @@ def is_DenseMatrix(v):
     """
     return isinstance(v, DenseMatrix)
 
-def check_is_DenseMatrix(v, varname):
+def check_is_DenseMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type DenseMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

@@ -3,6 +3,7 @@ Module implementing dense matrices that can have their variants placed on a
 genetic map and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
@@ -100,13 +101,13 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGeneticMappableMatrix(v):
+def is_DenseGeneticMappableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseGeneticMappableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -116,34 +117,16 @@ def is_DenseGeneticMappableMatrix(v):
     """
     return isinstance(v, DenseGeneticMappableMatrix)
 
-def check_is_DenseGeneticMappableMatrix(v, varname):
+def check_is_DenseGeneticMappableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type DenseGeneticMappableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseGeneticMappableMatrix(v):
+    if not isinstance(v, DenseGeneticMappableMatrix):
         raise TypeError("'{0}' must be a DenseGeneticMappableMatrix".format(varname))
-
-def cond_check_is_DenseGeneticMappableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseGeneticMappableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseGeneticMappableMatrix.
-    """
-    if cond(v):
-        check_is_DenseGeneticMappableMatrix(v, varname)

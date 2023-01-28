@@ -14,7 +14,6 @@ from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmap.HaldaneMapFunction import is_HaldaneMapFunction
 from pybrops.popgen.gmap.HaldaneMapFunction import check_is_HaldaneMapFunction
-from pybrops.popgen.gmap.HaldaneMapFunction import cond_check_is_HaldaneMapFunction
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -82,9 +81,6 @@ def test_is_HaldaneMapFunction_is_concrete():
 
 def test_check_is_HaldaneMapFunction_is_concrete():
     generic_assert_concrete_function(check_is_HaldaneMapFunction)
-
-def test_cond_check_is_HaldaneMapFunction_is_concrete():
-    generic_assert_concrete_function(cond_check_is_HaldaneMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

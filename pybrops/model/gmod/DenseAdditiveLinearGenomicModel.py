@@ -4,7 +4,7 @@ models that incorporate genomic additive effects.
 """
 
 import copy
-from typing import Union
+from typing import Any, Union
 import h5py
 import numpy
 
@@ -1668,13 +1668,13 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveLinearGenomicModel(v):
+def is_DenseAdditiveLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a DenseAdditiveLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -1684,32 +1684,16 @@ def is_DenseAdditiveLinearGenomicModel(v):
     """
     return isinstance(v, DenseAdditiveLinearGenomicModel)
 
-def check_is_DenseAdditiveLinearGenomicModel(v, vname):
+def check_is_DenseAdditiveLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseAdditiveLinearGenomicModel):
         raise TypeError("variable '{0}' must be a DenseAdditiveLinearGenomicModel".format(vname))
-
-def cond_check_is_DenseAdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DenseAdditiveLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_DenseAdditiveLinearGenomicModel(v, vname)

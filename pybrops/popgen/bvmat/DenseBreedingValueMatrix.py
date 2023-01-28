@@ -4,6 +4,7 @@ for dense breeding value matrices.
 """
 
 import copy
+from typing import Any
 import numpy
 import h5py
 
@@ -604,13 +605,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseBreedingValueMatrix(v):
+def is_DenseBreedingValueMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseBreedingValueMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -620,34 +621,16 @@ def is_DenseBreedingValueMatrix(v):
     """
     return isinstance(v, DenseBreedingValueMatrix)
 
-def check_is_DenseBreedingValueMatrix(v, vname):
+def check_is_DenseBreedingValueMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseBreedingValueMatrix):
         raise TypeError("variable '{0}' must be a DenseBreedingValueMatrix".format(vname))
-
-def cond_check_is_DenseBreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseBreedingValueMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseBreedingValueMatrix.
-    """
-    if cond(v):
-        check_is_DenseBreedingValueMatrix(v, vname)

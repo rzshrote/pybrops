@@ -4,6 +4,7 @@ checking routines.
 """
 
 import copy
+from typing import Any
 import cyvcf2
 import h5py
 import numpy
@@ -1116,16 +1117,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenotypeMatrix(v):
+def is_DenseGenotypeMatrix(v: Any) -> bool:
     """Return whether an object is a DenseGenotypeMatrix or not"""
     return isinstance(v, DenseGenotypeMatrix)
 
-def check_is_DenseGenotypeMatrix(v, varname):
+def check_is_DenseGenotypeMatrix(v: Any, varname: str) -> None:
     """Raise TypeError if object is not a DenseGenotypeMatrix"""
     if not isinstance(v, DenseGenotypeMatrix):
         raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(varname))
-
-def cond_check_is_DenseGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a DenseGenotypeMatrix"""
-    if cond(v):
-        check_is_DenseGenotypeMatrix(v, varname)

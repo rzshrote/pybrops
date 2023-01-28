@@ -2,6 +2,7 @@
 Module defining mutable matrix interfaces and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):
@@ -87,13 +88,13 @@ class MutableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MutableMatrix(v):
+def is_MutableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a MutableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -103,13 +104,13 @@ def is_MutableMatrix(v):
     """
     return isinstance(v, MutableMatrix)
 
-def check_is_MutableMatrix(v, varname):
+def check_is_MutableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

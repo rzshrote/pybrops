@@ -37,7 +37,7 @@ def check_isinstance(v: Any, vname: str, vtype: Union[type,tuple]) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -66,7 +66,7 @@ def check_is_bool(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -74,17 +74,17 @@ def check_is_bool(v: Any, vname: str) -> None:
     if not isinstance(v, bool):
         raise TypeError("variable '{0}' must be of type 'bool'".format(vname))
 
-# def check_is_bytearray(v, vname):
+# def check_is_bytearray(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, bytearray)
 
-# def check_is_bytes(v, vname):
+# def check_is_bytes(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, bytes)
 
-def check_is_class(v, vname):
+def check_is_class(v: Any, vname: str) -> None:
     if not inspect.isclass(v):
         raise TypeError("variable '{0}' must be a class name".format(vname))
 
-# def check_is_complex(v, vname):
+# def check_is_complex(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, complex)
 
 def check_is_dict(v: Any, vname: str) -> None:
@@ -93,7 +93,7 @@ def check_is_dict(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -107,7 +107,7 @@ def check_is_float(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -115,7 +115,7 @@ def check_is_float(v: Any, vname: str) -> None:
     if not isinstance(v, float):
         raise TypeError("variable '{0}' must be of type 'float'".format(vname))
 
-# def check_is_frozenset(v, vname):
+# def check_is_frozenset(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, frozenset)
 
 def check_is_int(v: Any, vname: str) -> None:
@@ -124,7 +124,7 @@ def check_is_int(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -138,7 +138,7 @@ def check_is_list(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -146,7 +146,7 @@ def check_is_list(v: Any, vname: str) -> None:
     if not isinstance(v, list):
         raise TypeError("variable '{0}' must be of type 'list'".format(vname))
 
-# def check_is_memoryview(v, vname):
+# def check_is_memoryview(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, memoryview)
 
 def check_is_range(v: Any, vname: str) -> None:
@@ -155,7 +155,7 @@ def check_is_range(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -169,7 +169,7 @@ def check_is_set(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -183,7 +183,7 @@ def check_is_str(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -197,7 +197,7 @@ def check_is_tuple(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -211,7 +211,7 @@ def check_is_type(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -225,7 +225,7 @@ def check_is_Number(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -239,7 +239,7 @@ def check_is_Integral(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -266,7 +266,7 @@ def check_is_list_or_tuple(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.

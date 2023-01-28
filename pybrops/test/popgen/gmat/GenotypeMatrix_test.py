@@ -12,8 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import cond_check_is_GenotypeMatrix
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -87,9 +85,6 @@ def test_is_GenotypeMatrix_is_concrete():
 
 def test_check_is_GenotypeMatrix_is_concrete():
     generic_assert_concrete_function(check_is_GenotypeMatrix)
-
-def test_cond_check_is_GenotypeMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_GenotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

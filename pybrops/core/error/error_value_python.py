@@ -11,7 +11,7 @@ def check_is_not_None(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object
     vname : str
         Name of the Python object for use in the error message.
@@ -26,7 +26,7 @@ def check_len(v: Any, vname: str, vlen: int) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object
     vname : str
         Name of the Python object for use in the error message.
@@ -40,7 +40,7 @@ def check_len_eq(v: Any, vname: str, w: Any, wname: str) -> None:
     if len(v) != len(w):
         raise ValueError("the lengths of '{0}' and '{1}' are not equivalent".format(vname, wname))
 
-def check_all_equal(v, vname):
+def check_all_equal(v: Any, vname: str) -> None:
     viter = iter(v)
     try:
         e0 = next(viter)
@@ -55,7 +55,7 @@ def check_is_positive(v: Any, vname: str):
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object,
     vname : str
         Name of the Python object for use in the error message.
@@ -149,7 +149,7 @@ def check_values_in_dict_all_type(v, vname, vtype):
     if any(not isinstance(e, vtype) for e in v.values()):
         raise ValueError("not all values in dict '{0}' are of type {1}".format(vname, str(vtype)))
 
-def check_values_in_dict_equal_len(v, vname):
+def check_values_in_dict_equal_len(v: Any, vname: str) -> None:
     viter = iter(v.values())
     try:
         e0 = next(viter)

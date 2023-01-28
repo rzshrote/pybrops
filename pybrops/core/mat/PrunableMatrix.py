@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 that can be pruned along an axis.
 """
 
+from typing import Any
 from pybrops.core.mat.Matrix import Matrix
 
 # TODO: is this class even necessary?
@@ -58,13 +59,13 @@ class PrunableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PrunableMatrix(v):
+def is_PrunableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a PrunableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -74,13 +75,13 @@ def is_PrunableMatrix(v):
     """
     return isinstance(v, PrunableMatrix)
 
-def check_is_PrunableMatrix(v, varname):
+def check_is_PrunableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type PrunableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

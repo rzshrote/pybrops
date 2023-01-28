@@ -3,6 +3,7 @@ Module implementing a dense matrix with axes that are square and associated
 error checking routines.
 """
 
+from typing import Any
 import numpy
 
 from pybrops.core.error import check_is_ndarray
@@ -191,13 +192,13 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseSquareMatrix(obj):
+def is_DenseSquareMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``DenseSquareMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -205,36 +206,18 @@ def is_DenseSquareMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``DenseSquareMatrix`` object instance.
     """
-    return isinstance(obj, DenseSquareMatrix)
+    return isinstance(v, DenseSquareMatrix)
 
-def check_is_DenseSquareMatrix(obj, objname):
+def check_is_DenseSquareMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``DenseSquareMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : object
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, DenseSquareMatrix):
-        raise TypeError("'{0}' must be a DenseSquareMatrix".format(objname))
-
-def cond_check_is_DenseSquareMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``DenseSquareMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``DenseSquareMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, DenseSquareMatrix):
-        raise TypeError("'{0}' must be a DenseSquareMatrix".format(objname))
+    if not isinstance(v, DenseSquareMatrix):
+        raise TypeError("'{0}' must be a DenseSquareMatrix".format(vname))

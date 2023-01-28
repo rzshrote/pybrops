@@ -2,6 +2,7 @@
 Module implementing the Haldane genetic map function and associated error checking routines.
 """
 
+from typing import Any
 import numpy
 
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -187,13 +188,13 @@ class HaldaneMapFunction(GeneticMapFunction):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HaldaneMapFunction(v):
+def is_HaldaneMapFunction(v: Any) -> bool:
     """
     Determine whether an object is a HaldaneMapFunction.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -203,32 +204,16 @@ def is_HaldaneMapFunction(v):
     """
     return isinstance(v, HaldaneMapFunction)
 
-def check_is_HaldaneMapFunction(v, varname):
+def check_is_HaldaneMapFunction(v: Any, varname: str) -> None:
     """
     Check if object is of type HaldaneMapFunction. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_HaldaneMapFunction(v):
+    if not isinstance(v, HaldaneMapFunction):
         raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(varname))
-
-def cond_check_is_HaldaneMapFunction(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HaldaneMapFunction. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HaldaneMapFunction.
-    """
-    if cond(v):
-        check_is_HaldaneMapFunction(v, varname)

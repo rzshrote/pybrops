@@ -2,7 +2,7 @@
 Module defining basal interfaces and error checking routines for genomic models.
 """
 
-from typing import Union
+from typing import Any, Union
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
@@ -666,13 +666,13 @@ class GenomicModel(HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenomicModel(v):
+def is_GenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a GenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -682,32 +682,16 @@ def is_GenomicModel(v):
     """
     return isinstance(v, GenomicModel)
 
-def check_is_GenomicModel(v, vname):
+def check_is_GenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type GenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GenomicModel):
         raise TypeError("variable '{0}' must be a GenomicModel".format(vname))
-
-def cond_check_is_GenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type GenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a GenomicModel.
-    """
-    if cond(v):
-        check_is_GenomicModel(v, vname)

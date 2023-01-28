@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic coancestry effects.
 """
 
+from typing import Any
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class CoancestryLinearGenomicModel(LinearGenomicModel):
@@ -106,13 +107,13 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CoancestryLinearGenomicModel(v):
+def is_CoancestryLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a CoancestryLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -122,32 +123,16 @@ def is_CoancestryLinearGenomicModel(v):
     """
     return isinstance(v, CoancestryLinearGenomicModel)
 
-def check_is_CoancestryLinearGenomicModel(v, vname):
+def check_is_CoancestryLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CoancestryLinearGenomicModel):
         raise TypeError("variable '{0}' must be a CoancestryLinearGenomicModel".format(vname))
-
-def cond_check_is_CoancestryLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a CoancestryLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_CoancestryLinearGenomicModel(v, vname)

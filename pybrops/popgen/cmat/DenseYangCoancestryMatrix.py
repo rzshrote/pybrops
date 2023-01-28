@@ -271,7 +271,7 @@ def is_DenseYangCoancestryMatrix(v: Any) -> bool:
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -287,28 +287,10 @@ def check_is_DenseYangCoancestryMatrix(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseYangCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseYangCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseYangCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseYangCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseYangCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseYangCoancestryMatrix(v, vname)

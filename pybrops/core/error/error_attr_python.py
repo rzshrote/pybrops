@@ -27,7 +27,7 @@ def check_is_callable(v: Any, vname: str):
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object variable.
     vname : str
         Name of the Python object variable.
@@ -45,7 +45,7 @@ def check_is_iterable(v: Any, vname: str):
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object variable.
     vname : str
         Name of the Python object variable.

@@ -4,6 +4,7 @@ associated error checking routines.
 """
 
 import copy
+from typing import Any
 import cyvcf2
 import numpy
 
@@ -640,13 +641,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedGenotypeMatrix(v):
+def is_DensePhasedGenotypeMatrix(v: Any) -> bool:
     return isinstance(v, DensePhasedGenotypeMatrix)
 
-def check_is_DensePhasedGenotypeMatrix(v, varname):
+def check_is_DensePhasedGenotypeMatrix(v: Any, varname: str) -> None:
     if not isinstance(v, DensePhasedGenotypeMatrix):
         raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(varname))
-
-def cond_check_is_DensePhasedGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_DensePhasedGenotypeMatrix(v, varname)

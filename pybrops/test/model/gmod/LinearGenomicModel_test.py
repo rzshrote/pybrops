@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.model.gmod.LinearGenomicModel import is_LinearGenomicModel
 from pybrops.model.gmod.LinearGenomicModel import check_is_LinearGenomicModel
-from pybrops.model.gmod.LinearGenomicModel import cond_check_is_LinearGenomicModel
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -54,9 +53,6 @@ def test_is_LinearGenomicModel_is_concrete():
 
 def test_check_is_LinearGenomicModel_is_concrete():
     generic_assert_concrete_function(check_is_LinearGenomicModel)
-
-def test_cond_check_is_LinearGenomicModel_is_concrete():
-    generic_assert_concrete_function(cond_check_is_LinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

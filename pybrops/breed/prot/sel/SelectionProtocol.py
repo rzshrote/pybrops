@@ -2,6 +2,9 @@
 Module defining interfaces and error checking routines for selection protocols.
 """
 
+from typing import Any
+
+
 class SelectionProtocol:
     """
     Abstract class defining interfaces for selection protocols.
@@ -252,13 +255,9 @@ class SelectionProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SelectionProtocol(v):
+def is_SelectionProtocol(v: Any) -> bool:
     return isinstance(v, SelectionProtocol)
 
-def check_is_SelectionProtocol(v, vname):
+def check_is_SelectionProtocol(v: Any, vname: str) -> None:
     if not isinstance(v, SelectionProtocol):
         raise TypeError("variable '{0}' must be a SelectionProtocol".format(vname))
-
-def cond_check_is_SelectionProtocol(v, vname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_SelectionProtocol(v, vname)

@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import is_DenseBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import check_is_DenseBreedingValueMatrix
-from pybrops.popgen.bvmat.DenseBreedingValueMatrix import cond_check_is_DenseBreedingValueMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -277,6 +276,3 @@ def test_check_is_DenseBreedingValueMatrix(bvmat):
         check_is_DenseBreedingValueMatrix(bvmat, "bvmat")
     with pytest.raises(TypeError):
         check_is_DenseBreedingValueMatrix(None, "bvmat")
-
-def test_cond_check_is_DenseBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseBreedingValueMatrix)

@@ -754,7 +754,7 @@ def is_DensePhasedTaxaVariantMatrix(v: Any):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -770,10 +770,10 @@ def check_is_DensePhasedTaxaVariantMatrix(v: Any, vname: str):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DensePhasedTaxaVariantMatrix(v):
+    if not isinstance(v, DensePhasedTaxaVariantMatrix):
         raise TypeError("'{0}' must be a DensePhasedTaxaVariantMatrix".format(vname))

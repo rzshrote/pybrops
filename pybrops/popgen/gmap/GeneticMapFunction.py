@@ -3,6 +3,9 @@ Module defining basal genetic map function interfaces and associated error
 checking routines.
 """
 
+from typing import Any
+
+
 class GeneticMapFunction:
     """
     An abstract class for genetic map function objects.
@@ -173,16 +176,11 @@ class GeneticMapFunction:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMapFunction(v):
+def is_GeneticMapFunction(v: Any) -> bool:
     """Return whether an object is a GeneticMapFunction or not"""
     return isinstance(v, GeneticMapFunction)
 
-def check_is_GeneticMapFunction(v, vname):
+def check_is_GeneticMapFunction(v: Any, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):
         raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))
-
-def cond_check_is_GeneticMapFunction(v, vname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a GeneticMapFunction"""
-    if cond(v):
-        check_is_GeneticMapFunction(v, vname)

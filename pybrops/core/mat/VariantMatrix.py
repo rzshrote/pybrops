@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with variant metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 
 class VariantMatrix(GroupableMatrix):
@@ -582,13 +583,13 @@ class VariantMatrix(GroupableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_VariantMatrix(v):
+def is_VariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a VariantMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -598,16 +599,16 @@ def is_VariantMatrix(v):
     """
     return isinstance(v, VariantMatrix)
 
-def check_is_VariantMatrix(v, varname):
+def check_is_VariantMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type VariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_VariantMatrix(v):
+    if not isinstance(v, VariantMatrix):
         raise TypeError("'{0}' must be a VariantMatrix".format(varname))

@@ -114,7 +114,7 @@ def generic_check_ndarray_shape(v, vname, vshape, vaxis = None):
     if error:
         raise ValueError("variable '{0}' must have shape equal to {1} along axis {2}".format(vname, vshape, vaxis))
 
-def generic_check_ndarray_is_square(v, vname):
+def generic_check_ndarray_is_square(v: Any, vname: str) -> None:
     """
     Generic check that an ndarray is square.
 

@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with trait metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
 class TraitMatrix(SortableMatrix):
@@ -288,13 +289,13 @@ class TraitMatrix(SortableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TraitMatrix(v):
+def is_TraitMatrix(v: Any) -> bool:
     """
     Determine whether an object is a TraitMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -304,16 +305,16 @@ def is_TraitMatrix(v):
     """
     return isinstance(v, TraitMatrix)
 
-def check_is_TraitMatrix(v, varname):
+def check_is_TraitMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type TraitMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_TraitMatrix(v):
+    if not isinstance(v, TraitMatrix):
         raise TypeError("'{0}' must be a TraitMatrix".format(varname))

@@ -13,8 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import is_HaplotypeMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import check_is_HaplotypeMatrix
-from pybrops.popgen.gmat.HaplotypeMatrix import cond_check_is_HaplotypeMatrix
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -82,9 +80,6 @@ def test_is_HaplotypeMatrix_is_concrete():
 
 def test_check_is_HaplotypeMatrix_is_concrete():
     generic_assert_concrete_function(check_is_HaplotypeMatrix)
-
-def test_cond_check_is_HaplotypeMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_HaplotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

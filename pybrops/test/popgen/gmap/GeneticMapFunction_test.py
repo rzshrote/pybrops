@@ -12,8 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmap.GeneticMapFunction import is_GeneticMapFunction
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
-from pybrops.popgen.gmap.GeneticMapFunction import cond_check_is_GeneticMapFunction
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -67,9 +65,6 @@ def test_is_GeneticMapFunction_is_concrete():
 
 def test_check_is_GeneticMapFunction_is_concrete():
     generic_assert_concrete_function(check_is_GeneticMapFunction)
-
-def test_cond_check_is_GeneticMapFunction_is_concrete():
-    generic_assert_concrete_function(cond_check_is_GeneticMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

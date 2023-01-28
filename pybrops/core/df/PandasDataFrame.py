@@ -2,6 +2,7 @@
 Module implementing a Pandas DataFrame and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.error import check_is_pandas_df
 
@@ -277,13 +278,9 @@ class PandasDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasDataFrame(v):
+def is_PandasDataFrame(v: Any) -> bool:
     return isinstance(v, PandasDataFrame)
 
-def check_is_PandasDataFrame(v, vname):
+def check_is_PandasDataFrame(v: Any, vname: str) -> None:
     if not isinstance(v, PandasDataFrame):
         raise TypeError("variable '{0}' must be a PandasDataFrame".format(vname))
-
-def cond_check_is_PandasDataFrame(v, vname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_PandasDataFrame(v, vname)

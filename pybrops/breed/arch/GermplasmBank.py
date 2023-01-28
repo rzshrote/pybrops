@@ -47,7 +47,7 @@ def is_GermplasmBank(v: Any) -> bool:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -63,7 +63,7 @@ def check_is_GermplasmBank(v: Any, varname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

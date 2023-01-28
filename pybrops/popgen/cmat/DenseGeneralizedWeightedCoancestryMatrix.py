@@ -4,7 +4,7 @@ Module providing an implementation for a dense generalized weighted genomic rela
 
 import math
 import numbers
-from typing import Union
+from typing import Any, Union
 import numpy
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_in_interval
@@ -150,3 +150,38 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
 
         # return matrix
         return out
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def is_DenseGeneralizedWeightedCoancestryMatrix(v: Any) -> bool:
+    """
+    Determine whether an object is a ``DenseGeneralizedWeightedCoancestryMatrix``.
+
+    Parameters
+    ----------
+    v : Any
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        ``True`` or ``False`` for whether ``v`` is a ``DenseGeneralizedWeightedCoancestryMatrix`` object instance.
+    """
+    return isinstance(v, DenseGeneralizedWeightedCoancestryMatrix)
+
+def check_is_DenseGeneralizedWeightedCoancestryMatrix(v: Any, vname: str) -> None:
+    """
+    Check if object is of type ``DenseGeneralizedWeightedCoancestryMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : Any
+        Any Python object to test.
+    varname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, DenseGeneralizedWeightedCoancestryMatrix):
+        raise TypeError("variable '{0}' must be a DenseGeneralizedWeightedCoancestryMatrix".format(vname))

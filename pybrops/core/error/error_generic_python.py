@@ -11,7 +11,7 @@ def generic_check_isinstance(v: Any, vname, vtype):
 
     Parameters
     ----------
-    v : object
+    v : Any
         Reference to object variable.
     vname : str
         Name associated with the object variable.
@@ -40,7 +40,7 @@ def generic_check_hasattr(v, vname, vattr):
 
     Parameters
     ----------
-    v : object
+    v : Any
         Reference to object variable.
     vname : str
         Name associated with the object variable.

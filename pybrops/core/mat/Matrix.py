@@ -3,7 +3,7 @@ Module defining basal Matrix interfaces and associated error checking routines.
 """
 
 import numpy
-from typing import Union
+from typing import Any, Union
 
 from typing import Sequence
 from numpy.typing import ArrayLike
@@ -571,13 +571,13 @@ class Matrix(HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Matrix(v):
+def is_Matrix(v: Any) -> bool:
     """
     Determine whether an object is a Matrix.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -587,16 +587,16 @@ def is_Matrix(v):
     """
     return isinstance(v, Matrix)
 
-def check_is_Matrix(v, varname):
+def check_is_Matrix(v: Any, varname: str) -> None:
     """
     Check if object is of type Matrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_Matrix(v):
+    if not isinstance(v, Matrix):
         raise TypeError("'{0}' must be of type Matrix.".format(varname))

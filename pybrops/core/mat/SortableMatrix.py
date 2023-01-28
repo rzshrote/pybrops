@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes sorted.
 """
 
+from typing import Any
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class SortableMatrix(MutableMatrix):
@@ -92,13 +93,13 @@ class SortableMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SortableMatrix(v):
+def is_SortableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a SortableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -108,13 +109,13 @@ def is_SortableMatrix(v):
     """
     return isinstance(v, SortableMatrix)
 
-def check_is_SortableMatrix(v, varname):
+def check_is_SortableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

@@ -5,7 +5,7 @@ method and associated error checking routines.
 
 import numpy
 import numbers
-from typing import Union
+from typing import Any, Union
 
 from pybrops.core.error import check_all_equal
 from pybrops.core.error import check_is_ndarray
@@ -258,13 +258,13 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVanRadenCoancestryMatrix(v):
+def is_DenseVanRadenCoancestryMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseVanRadenCoancestryMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -274,34 +274,16 @@ def is_DenseVanRadenCoancestryMatrix(v):
     """
     return isinstance(v, DenseVanRadenCoancestryMatrix)
 
-def check_is_DenseVanRadenCoancestryMatrix(v, vname):
+def check_is_DenseVanRadenCoancestryMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseVanRadenCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseVanRadenCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseVanRadenCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseVanRadenCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseVanRadenCoancestryMatrix(v, vname)

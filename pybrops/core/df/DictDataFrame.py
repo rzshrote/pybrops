@@ -4,6 +4,7 @@ Module implementing a Dictionary DataFrame and associated error checking routine
 
 import copy
 import numbers
+from typing import Any
 import numpy
 import pandas
 
@@ -409,13 +410,13 @@ class DictDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictDataFrame(v):
+def is_DictDataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DictDataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -425,32 +426,16 @@ def is_DictDataFrame(v):
     """
     return isinstance(v, DictDataFrame)
 
-def check_is_DictDataFrame(v, vname):
+def check_is_DictDataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DictDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DictDataFrame):
         raise TypeError("variable '{0}' must be a DictDataFrame".format(vname))
-
-def cond_check_is_DictDataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DictDataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DictDataFrame.
-    """
-    if cond(v):
-        check_is_DictDataFrame(v, vname)

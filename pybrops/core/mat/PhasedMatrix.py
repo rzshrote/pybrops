@@ -224,7 +224,7 @@ def is_PhasedMatrix(v: Any):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -240,10 +240,10 @@ def check_is_PhasedMatrix(v: Any, vname: str):
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_PhasedMatrix(v):
+    if not isinstance(v, PhasedMatrix):
         raise TypeError("'{0}' must be a PhasedMatrix".format(vname))
