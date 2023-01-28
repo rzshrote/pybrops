@@ -78,7 +78,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genomes for individuals in the breeding program"""
             del self._start_genome
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_genome = property(**start_genome())
 
     def start_geno():
@@ -94,7 +94,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genotypes for individuals in the breeding program"""
             del self._start_geno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_geno = property(**start_geno())
 
     def start_pheno():
@@ -110,7 +110,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting phenotypes for individuals in the breeding program"""
             del self._start_pheno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_pheno = property(**start_pheno())
 
     def start_bval():
@@ -126,7 +126,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting breeding values for individuals in the breeding program"""
             del self._start_bval
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_bval = property(**start_bval())
 
     def start_gmod():
@@ -142,7 +142,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genomic models for individuals in the breeding program"""
             del self._start_gmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_gmod = property(**start_gmod())
 
     ############ Program information containers ############
@@ -158,7 +158,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genomes for individuals in the breeding program"""
             del self._genome
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     genome = property(**genome())
 
     def geno():
@@ -173,7 +173,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genotypes for individuals in the breeding program"""
             del self._geno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     geno = property(**geno())
 
     def pheno():
@@ -188,7 +188,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete phenotypes for individuals in the breeding program"""
             del self._pheno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pheno = property(**pheno())
 
     def bval():
@@ -203,7 +203,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete breeding values for individuals in the breeding program"""
             del self._bval
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     bval = property(**bval())
 
     def gmod():
@@ -218,7 +218,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genomic models for individuals in the breeding program"""
             del self._gmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gmod = property(**gmod())
 
     ######### Breeding program operator properties #########
@@ -234,7 +234,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the initialization operator"""
             del self._initop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     initop = property(**initop())
 
     def pselop():
@@ -249,7 +249,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the parent selection operator"""
             del self._pselop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pselop = property(**pselop())
 
     def mateop():
@@ -264,7 +264,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the mating operator"""
             del self._mateop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mateop = property(**mateop())
 
     def evalop():
@@ -279,7 +279,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the evaluation operator"""
             del self._evalop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     evalop = property(**evalop())
 
     def sselop():
@@ -294,7 +294,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the survivor selection operator"""
             del self._sselop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     sselop = property(**sselop())
 
     ############# Generation number properties #############
@@ -310,7 +310,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the current time for the breeding program"""
             del self._t_cur
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_cur = property(**t_cur())
 
     def t_max():
@@ -325,7 +325,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the maximum time for the breeding program"""
             del self._t_max
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_max = property(**t_max())
 
     ############################################################################

@@ -3,6 +3,7 @@ Module defining basal matrix interfaces and associated error checking routines
 for genotype matrices.
 """
 
+import numbers
 import numpy
 from numpy.typing import DTypeLike
 
@@ -54,7 +55,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete ploidy level"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ploidy = property(**ploidy())
 
     def nphase():
@@ -68,7 +69,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete number of phases represented by the genotype matrix"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nphase = property(**nphase())
 
     def mat_format():
@@ -82,7 +83,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete matrix representation format"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_format = property(**mat_format())
 
     ############################################################################
@@ -107,7 +108,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype: Optional[DTypeLike]):
+    def tacount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Allele count of the non-zero allele within each taxon.
 
@@ -125,7 +126,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tafreq(self, dtype: Optional[DTypeLike]):
+    def tafreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele within each taxon.
 
@@ -143,7 +144,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def acount(self, dtype: Optional[DTypeLike]):
+    def acount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Allele count of the non-zero allele across all taxa.
 
@@ -160,7 +161,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def afreq(self, dtype: Optional[DTypeLike]):
+    def afreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele across all taxa.
 
@@ -177,7 +178,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def apoly(self, dtype: Optional[DTypeLike]):
+    def apoly(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Allele polymorphism presence or absense across all loci.
 
@@ -194,7 +195,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def maf(self, dtype: Optional[DTypeLike]):
+    def maf(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Minor allele frequency across all taxa.
 
@@ -211,7 +212,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def meh(self, dtype: Optional[DTypeLike]):
+    def meh(self, dtype: Optional[DTypeLike]) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -222,14 +223,14 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 
         Returns
         -------
-        out : numpy.float64, other
+        out : numbers.Number
             A number representing the mean expected heterozygous.
             If ``dtype`` is ``None``, then a native 64-bit floating point is
             returned. Otherwise, of type specified by ``dtype``.
         """
         raise NotImplementedError("method is abstract")
 
-    def gtcount(self, dtype: Optional[DTypeLike]):
+    def gtcount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -255,14 +256,14 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gtfreq(self, dtype: Optional[DTypeLike]):
+    def gtfreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
 
         Parameters
         ----------
-        dtype : dtype, None
+        dtype : DTypeLike, None
             The dtype of the returned array. If ``None``, use the native type.
 
         Returns
@@ -287,10 +288,31 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 ################################## Utilities ###################################
 ################################################################################
 def is_GenotypeMatrix(v: Any) -> bool:
-    """Return whether an object is a GenotypeMatrix or not"""
+    """
+    Determine whether an object is a ``GenotypeMatrix``.
+
+    Parameters
+    ----------
+    v : Any
+        Any Python object to test.
+
+    Returns
+    -------
+    out : bool
+        ``True`` or ``False`` for whether ``v`` is a ``GenotypeMatrix`` object instance.
+    """
     return isinstance(v, GenotypeMatrix)
 
 def check_is_GenotypeMatrix(v: Any, varname: str) -> None:
-    """Raise TypeError if object is not a GenotypeMatrix"""
+    """
+    Check if object is of type ``GenotypeMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : Any
+        Any Python object to test.
+    varname : str
+        Name of variable to print in ``TypeError`` message.
+    """
     if not isinstance(v, GenotypeMatrix):
         raise TypeError("'%s' must be a GenotypeMatrix." % varname)

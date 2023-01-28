@@ -63,7 +63,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         def fdel(self):
             """Delete axis indices for axes that are square"""
             error_readonly("square_axes")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     ############################################################################

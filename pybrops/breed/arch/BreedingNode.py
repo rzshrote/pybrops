@@ -48,7 +48,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     genome = property(**genome())
 
     def geno():
@@ -62,7 +62,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     geno = property(**geno())
 
     def pheno():
@@ -76,7 +76,7 @@ class BreedingNode:
         def fdel(self):
             """Delete phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pheno = property(**pheno())
 
     def bval():
@@ -90,7 +90,7 @@ class BreedingNode:
         def fdel(self):
             """Delete breeding values for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     bval = property(**bval())
 
     def gmod():
@@ -104,7 +104,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gmod = property(**gmod())
 
     ############# Generation number properties #############
@@ -119,7 +119,7 @@ class BreedingNode:
         def fdel(self):
             """Delete the current time for the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_cur = property(**t_cur())
 
     def t_max():
@@ -133,7 +133,7 @@ class BreedingNode:
         def fdel(self):
             """Delete the maximum time for the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_max = property(**t_max())
 
     ############################################################################

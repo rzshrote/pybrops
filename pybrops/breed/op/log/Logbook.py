@@ -43,7 +43,7 @@ class Logbook:
         def fdel(self):
             """Delete Logbook data"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     def rep():
@@ -57,7 +57,7 @@ class Logbook:
         def fdel(self):
             """Delete replicate number"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rep = property(**rep())
 
     ############################################################################

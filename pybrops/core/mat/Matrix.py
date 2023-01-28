@@ -392,7 +392,7 @@ class Matrix(HDF5InputOutput):
         def fdel(self):
             """Delete raw matrix object"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def mat_ndim():
@@ -406,7 +406,7 @@ class Matrix(HDF5InputOutput):
         def fdel(self):
             """Delete number of dimensions of the raw matrix"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_ndim = property(**mat_ndim())
 
     def mat_shape():
@@ -420,7 +420,7 @@ class Matrix(HDF5InputOutput):
         def fdel(self):
             """Delete the shape of the raw matrix"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_shape = property(**mat_shape())
 
     ############################################################################

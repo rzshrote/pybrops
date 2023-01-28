@@ -44,7 +44,7 @@ class TrueBreedingValue(BreedingValueProtocol):
         def fdel(self):
             """Delete genomic prediction model"""
             del self._gpmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gpmod = property(**gpmod())
 
     ############################################################################

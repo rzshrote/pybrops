@@ -137,7 +137,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete raw matrix object"""
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     ################# Taxa Data Properites #################
@@ -157,7 +157,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa label array"""
             del self._taxa
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa = property(**taxa())
 
     def taxa_grp():
@@ -176,7 +176,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa group label array"""
             del self._taxa_grp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_grp = property(**taxa_grp())
 
     ############### Taxa Metadata Properites ###############
@@ -191,7 +191,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete number of taxa"""
             error_readonly("ntaxa")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntaxa = property(**ntaxa())
 
     def taxa_axis():
@@ -205,7 +205,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa axis number"""
             error_readonly("taxa_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_axis = property(**taxa_axis())
 
     def taxa_grp_name():
@@ -223,7 +223,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa group array"""
             del self._taxa_grp_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_grp_name = property(**taxa_grp_name())
 
     def taxa_grp_stix():
@@ -241,7 +241,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa group start indices array"""
             del self._taxa_grp_stix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_grp_stix = property(**taxa_grp_stix())
 
     def taxa_grp_spix():
@@ -259,7 +259,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa group stop indices array"""
             del self._taxa_grp_spix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_grp_spix = property(**taxa_grp_spix())
 
     def taxa_grp_len():
@@ -277,7 +277,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         def fdel(self):
             """Delete taxa group length array"""
             del self._taxa_grp_len
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_grp_len = property(**taxa_grp_len())
 
     ############################################################################

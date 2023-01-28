@@ -196,7 +196,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant chromosome group lable array"""
             del self._vrnt_chrgrp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -215,7 +215,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant physical position array"""
             del self._vrnt_phypos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_name():
@@ -234,7 +234,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant name array"""
             del self._vrnt_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_name = property(**vrnt_name())
 
     def vrnt_genpos():
@@ -253,7 +253,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant genetic position array"""
             del self._vrnt_genpos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     def vrnt_xoprob():
@@ -272,7 +272,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant crossover sequential probability array"""
             del self._vrnt_xoprob
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_xoprob = property(**vrnt_xoprob())
 
     def vrnt_hapgrp():
@@ -291,7 +291,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant haplotype group label array"""
             del self._vrnt_hapgrp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapgrp = property(**vrnt_hapgrp())
 
     def vrnt_hapalt():
@@ -310,7 +310,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant haplotype sequence"""
             del self._vrnt_hapalt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapalt = property(**vrnt_hapalt())
 
     def vrnt_hapref():
@@ -329,7 +329,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant reference haplotype sequence"""
             del self._vrnt_hapref
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapref = property(**vrnt_hapref())
 
     def vrnt_mask():
@@ -348,7 +348,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant mask"""
             del self._vrnt_mask
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_mask = property(**vrnt_mask())
 
     ############# Variant Metadata Properites ##############
@@ -363,7 +363,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete number of variants"""
             error_readonly("nvrnt")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nvrnt = property(**nvrnt())
 
     def vrnt_axis():
@@ -377,7 +377,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant axis"""
             error_readonly("vrnt_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_axis = property(**vrnt_axis())
 
     def vrnt_chrgrp_name():
@@ -395,7 +395,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant chromosome group name array"""
             del self._vrnt_chrgrp_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
@@ -413,7 +413,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant chromosome group start indices array"""
             del self._vrnt_chrgrp_stix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
@@ -431,7 +431,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant chromosome group stop indices array"""
             del self._vrnt_chrgrp_spix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
@@ -449,7 +449,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         def fdel(self):
             """Delete variant chromosome group length array"""
             del self._vrnt_chrgrp_len
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
     ############################################################################

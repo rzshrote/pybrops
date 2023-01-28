@@ -56,7 +56,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################

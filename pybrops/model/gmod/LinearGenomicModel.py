@@ -66,7 +66,7 @@ class LinearGenomicModel(GenomicModel):
         def fdel(self):
             """Delete fixed effect regression coefficients"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     beta = property(**beta())
 
     def u():
@@ -80,7 +80,7 @@ class LinearGenomicModel(GenomicModel):
         def fdel(self):
             """Delete random effect regression coefficients"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u = property(**u())
 
     ############################################################################

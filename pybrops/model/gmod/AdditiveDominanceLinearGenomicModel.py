@@ -89,7 +89,7 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete dominance genomic marker effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_d = property(**u_d())
 
 

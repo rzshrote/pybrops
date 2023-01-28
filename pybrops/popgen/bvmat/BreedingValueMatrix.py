@@ -61,7 +61,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete the mean of the phenotype values used to calculate breeding values"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     location = property(**location())
 
     def scale():
@@ -75,7 +75,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete the standard deviation of the phenotype values used to calculate breeding values"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     scale = property(**scale())
 
     ############################################################################

@@ -199,7 +199,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete fixed effect regression coefficients"""
             del self._beta
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     beta = property(**beta())
 
     def u():
@@ -217,7 +217,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete random effect regression coefficients"""
             raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u = property(**u())
 
     def u_misc():
@@ -237,7 +237,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete miscellaneous random effect regression coefficients"""
             del self._u_misc
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_misc = property(**u_misc())
 
     def u_a():
@@ -257,7 +257,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete additive genomic marker effect regression coefficients"""
             del self._u_a
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_a = property(**u_a())
 
     ################## Genomic Model Data ##################
@@ -271,7 +271,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             self._model_name = value
         def fdel(self):
             del self._model_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     model_name = property(**model_name())
 
     def params():
@@ -285,7 +285,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             self._params = value
         def fdel(self):
             del self._params
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     params = property(**params())
 
     def trait():
@@ -300,7 +300,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             self._trait = value
         def fdel(self):
             del self._trait
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     def ntrait():
@@ -314,7 +314,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete the number of traits predicted by the model"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     ############################################################################

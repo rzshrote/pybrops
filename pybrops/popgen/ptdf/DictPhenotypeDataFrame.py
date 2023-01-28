@@ -117,7 +117,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable type array"""
             del self._col_analysis_type
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_type = property(**col_analysis_type())
 
     def col_analysis_effect():
@@ -148,7 +148,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable effect type array"""
             del self._col_analysis_effect
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_effect = property(**col_analysis_effect())
 
     ############################################################################

@@ -52,7 +52,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -66,7 +66,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant physical position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_genpos():
@@ -80,7 +80,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant genetic position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     ################# Metadata Properites ##################
@@ -95,7 +95,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
@@ -109,7 +109,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
@@ -123,7 +123,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
@@ -137,7 +137,7 @@ class GeneticMap:
         def fdel(self):
             """Delete variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
     ################## Spline Properites ###################
@@ -152,7 +152,7 @@ class GeneticMap:
         def fdel(self):
             """Delete interpolation spline(s)"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline = property(**spline())
 
     ############# Spline Metadata Properites ###############
@@ -167,7 +167,7 @@ class GeneticMap:
         def fdel(self):
             """Delete the spline kind"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline_kind = property(**spline_kind())
 
     def spline_fill_value():
@@ -181,7 +181,7 @@ class GeneticMap:
         def fdel(self):
             """Delete the spline fill value"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline_fill_value = property(**spline_fill_value())
 
     ############################################################################

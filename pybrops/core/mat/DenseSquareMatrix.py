@@ -71,7 +71,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete raw matrix object"""
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     ############## Square Metadata Properties ##############
@@ -86,7 +86,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete the number of axes that are square"""
             error_readonly("nsquare")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nsquare = property(**nsquare())
 
     def square_axes():
@@ -100,7 +100,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete axis indices for axes that are square"""
             error_readonly("square_axes")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     def square_axes_len():
@@ -114,7 +114,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete axis lengths for axes that are square"""
             error_readonly("square_axes_len")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes_len = property(**square_axes_len())
 
     ################### Fill data lookup ###################

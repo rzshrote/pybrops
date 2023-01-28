@@ -75,7 +75,7 @@ class GenomicModel(HDF5InputOutput):
         def fdel(self):
             """Delete the name of the model"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     model_name = property(**model_name())
 
     def params():
@@ -89,7 +89,7 @@ class GenomicModel(HDF5InputOutput):
         def fdel(self):
             """Delete the model parameters"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     params = property(**params())
 
     def trait():
@@ -103,7 +103,7 @@ class GenomicModel(HDF5InputOutput):
         def fdel(self):
             """Delete the names of the traits predicted by the model"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     def ntrait():
@@ -117,7 +117,7 @@ class GenomicModel(HDF5InputOutput):
         def fdel(self):
             """Delete the number of traits predicted by the model"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     ############################################################################

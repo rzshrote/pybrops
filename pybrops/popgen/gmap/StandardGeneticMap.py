@@ -63,7 +63,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_chrgrp = value
         def fdel(self):
             del self._vrnt_chrgrp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -77,7 +77,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_phypos = value
         def fdel(self):
             del self._vrnt_phypos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_genpos():
@@ -91,7 +91,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_genpos = value
         def fdel(self):
             del self._vrnt_genpos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     ############################################################################

@@ -45,7 +45,7 @@ class BreedingGraph:
             raise NotImplementedError("method is abstract")
         def fdel(self):
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     graph = property(**graph())
 
     ############################################################################

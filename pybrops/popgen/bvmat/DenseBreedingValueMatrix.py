@@ -165,7 +165,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete raw matrix"""
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def location():
@@ -182,7 +182,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete the mean of the phenotype values used to calculate breeding values"""
             del self._location
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     location = property(**location())
 
     def scale():
@@ -199,7 +199,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete the standard deviation of the phenotype values used to calculate breeding values"""
             del self._scale
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     scale = property(**scale())
 
     ############################################################################

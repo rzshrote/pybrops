@@ -45,7 +45,7 @@ class PhenotypingProtocol:
         def fdel(self):
             """Delete genomic prediction model"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gpmod = property(**gpmod())
 
     ################ Stochastic Parameters #################
@@ -60,7 +60,7 @@ class PhenotypingProtocol:
         def fdel(self):
             """Delete error variance"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_err = property(**var_err())
 
     ############################################################################

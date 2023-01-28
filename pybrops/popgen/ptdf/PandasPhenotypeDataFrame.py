@@ -49,7 +49,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete column types"""
             del self._col_ctype
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_ctype = property(**col_ctype())
 
     def col_atype():
@@ -71,7 +71,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable type array"""
             del self._col_atype
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_atype = property(**col_atype())
 
     def col_aefct():
@@ -90,7 +90,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable effect type array"""
             del self._col_aefct
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_aefct = property(**col_aefct())
 
     ############################################################################

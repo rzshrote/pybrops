@@ -99,7 +99,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete dataframe"""
             del self._data
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     ################## Column attributes ###################
@@ -114,7 +114,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete number of columns"""
             error_readonly("ncol")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -128,7 +128,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column axis index"""
             error_readonly("col_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -166,7 +166,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column data types"""
             error_readonly("col_dtype")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -203,7 +203,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column names"""
             error_readonly("col_name")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_grp():
@@ -231,7 +231,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column groups"""
             del self._col_grp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_grp = property(**col_grp())
 
     #################### Row attributes ####################
@@ -250,7 +250,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete number of rows"""
             error_readonly("nrow")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -264,7 +264,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete row axis index"""
             error_readonly("row_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -294,7 +294,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete row names"""
             del self._row_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################

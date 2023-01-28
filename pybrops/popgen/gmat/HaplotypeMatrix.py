@@ -47,7 +47,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete matrix ploidy number"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ploidy = property(**ploidy())
 
     # REMARK: this property is defined in PhasedMatrix as well. the purpose of
@@ -64,7 +64,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete number of phases"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nphase = property(**nphase())
 
     def mat_format():
@@ -78,7 +78,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete matrix representation format"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_format = property(**mat_format())
 
     ############################################################################

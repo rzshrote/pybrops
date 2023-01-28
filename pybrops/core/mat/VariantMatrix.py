@@ -46,7 +46,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -60,7 +60,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant physical position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_name():
@@ -74,7 +74,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant name array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_name = property(**vrnt_name())
 
     def vrnt_genpos():
@@ -88,7 +88,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant genetic position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     def vrnt_xoprob():
@@ -102,7 +102,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant crossover sequential probability array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_xoprob = property(**vrnt_xoprob())
 
     def vrnt_hapgrp():
@@ -116,7 +116,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant haplotype group label array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapgrp = property(**vrnt_hapgrp())
 
     def vrnt_hapalt():
@@ -130,7 +130,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant haplotype sequence"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapalt = property(**vrnt_hapalt())
 
     def vrnt_hapref():
@@ -144,7 +144,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant reference haplotype sequence"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapref = property(**vrnt_hapref())
 
     def vrnt_mask():
@@ -158,7 +158,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant mask"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_mask = property(**vrnt_mask())
 
     ############# Variant Metadata Properites ##############
@@ -173,7 +173,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete number of variants"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nvrnt = property(**nvrnt())
 
     def vrnt_axis():
@@ -187,7 +187,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant axis"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_axis = property(**vrnt_axis())
 
     def vrnt_chrgrp_name():
@@ -201,7 +201,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
@@ -215,7 +215,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
@@ -229,7 +229,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
@@ -243,7 +243,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
     ############################################################################

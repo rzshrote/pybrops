@@ -92,7 +92,7 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
         def fdel(self):
             """Delete epistatic genomic marker effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_i = property(**u_i())
 
 

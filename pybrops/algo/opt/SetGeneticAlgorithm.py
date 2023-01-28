@@ -68,7 +68,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             self._ngen = value
         def fdel(self):
             del self._ngen
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ngen = property(**ngen())
 
     def mu():
@@ -81,7 +81,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             self._mu = value
         def fdel(self):
             del self._mu
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mu = property(**mu())
 
     def lamb():
@@ -94,7 +94,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             self._lamb = value
         def fdel(self):
             del self._lamb
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     lamb = property(**lamb())
 
     def M():
@@ -107,7 +107,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             self._M = value
         def fdel(self):
             del self._M
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     M = property(**M())
 
     def rng():
@@ -121,7 +121,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################

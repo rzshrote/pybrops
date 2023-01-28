@@ -46,7 +46,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete dataframe"""
             del self._df
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     df = property(**df())
 
     ################## Column attributes ###################
@@ -61,7 +61,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete number of columns"""
             error_readonly("ncol")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -75,7 +75,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column axis index"""
             error_readonly("col_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -98,7 +98,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column data types"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -112,7 +112,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column names"""
             del self._df.columns
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_ctype():
@@ -128,7 +128,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column types"""
             del self._col_ctype
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_ctype = property(**col_ctype())
 
     #################### Row attributes ####################
@@ -143,7 +143,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete number of rows"""
             error_readonly("nrow")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -157,7 +157,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete row axis index"""
             error_readonly("row_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -171,7 +171,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete row names"""
             del self._df.index
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################

@@ -37,7 +37,7 @@ class PhenotypeDataFrame(DataFrame):
         def fdel(self):
             """Delete analysis variable type array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_type = property(**col_analysis_type())
 
     # TODO: maybe eliminate these. it seems like this information should go in other modules
@@ -52,7 +52,7 @@ class PhenotypeDataFrame(DataFrame):
         def fdel(self):
             """Delete analysis variable effect type array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_effect = property(**col_analysis_effect())
 
 

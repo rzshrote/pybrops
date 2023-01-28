@@ -114,7 +114,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         def fdel(self):
             """Delete trait label array"""
             del self._trait
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     #################### Trait metadata ####################
@@ -129,7 +129,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         def fdel(self):
             """Delete number of traits"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     def trait_axis():
@@ -143,7 +143,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         def fdel(self):
             """Delete trait axis number"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait_axis = property(**trait_axis())
 
     ######### Matrix element copy-on-manipulation ##########

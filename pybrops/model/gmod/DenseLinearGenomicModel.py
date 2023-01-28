@@ -164,7 +164,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete fixed effect regression coefficients"""
             del self._beta
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     beta = property(**beta())
 
     def u():
@@ -181,7 +181,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete random effect regression coefficients"""
             del self._u
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u = property(**u())
 
     ################## Genomic Model Data ##################
@@ -195,7 +195,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             self._model_name = value
         def fdel(self):
             del self._model_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     model_name = property(**model_name())
 
     def params():
@@ -208,7 +208,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             self._params = value
         def fdel(self):
             del self._params
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     params = property(**params())
 
     def trait():
@@ -223,7 +223,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             self._trait = value
         def fdel(self):
             del self._trait
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     def ntrait():
@@ -237,7 +237,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete the number of traits predicted by the model"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     ############################################################################

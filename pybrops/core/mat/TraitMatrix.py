@@ -46,7 +46,7 @@ class TraitMatrix(SortableMatrix):
         def fdel(self):
             """Delete trait label array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     #################### Trait metadata ####################
@@ -61,7 +61,7 @@ class TraitMatrix(SortableMatrix):
         def fdel(self):
             """Delete number of traits"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     def trait_axis():
@@ -75,7 +75,7 @@ class TraitMatrix(SortableMatrix):
         def fdel(self):
             """Delete trait axis number"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait_axis = property(**trait_axis())
 
     ############################################################################

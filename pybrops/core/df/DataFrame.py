@@ -67,7 +67,7 @@ class DataFrame:
         def fdel(self):
             """Delete dataframe"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     ################## Column attributes ###################
@@ -82,7 +82,7 @@ class DataFrame:
         def fdel(self):
             """Delete number of columns"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -96,7 +96,7 @@ class DataFrame:
         def fdel(self):
             """Delete column axis index"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -110,7 +110,7 @@ class DataFrame:
         def fdel(self):
             """Delete column data types"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -124,7 +124,7 @@ class DataFrame:
         def fdel(self):
             """Delete column names"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_grp():
@@ -138,7 +138,7 @@ class DataFrame:
         def fdel(self):
             """Delete column groups"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_grp = property(**col_grp())
 
     #################### Row attributes ####################
@@ -153,7 +153,7 @@ class DataFrame:
         def fdel(self):
             """Delete number of rows"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -167,7 +167,7 @@ class DataFrame:
         def fdel(self):
             """Delete row axis index"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -181,7 +181,7 @@ class DataFrame:
         def fdel(self):
             """Delete row names"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################

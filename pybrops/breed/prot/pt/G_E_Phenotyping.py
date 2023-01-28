@@ -95,7 +95,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete genomic prediction model"""
             del self._gpmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gpmod = property(**gpmod())
 
     ################ Stochastic Parameters #################
@@ -129,7 +129,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete variance across environments"""
             del self._var_env
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_env = property(**var_env())
 
     def var_rep():
@@ -163,7 +163,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete replicate variance"""
             del self._var_rep
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_rep = property(**var_rep())
 
     def var_err():
@@ -196,7 +196,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete error variance"""
             del self._var_err
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_err = property(**var_err())
 
     ################ Replication Parameters ################
@@ -212,7 +212,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete number of environments"""
             del self._nenv
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nenv = property(**nenv())
 
     def nrep():
@@ -236,7 +236,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete number of replications per environment"""
             del self._nrep
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrep = property(**nrep())
 
     ############################################################################

@@ -288,7 +288,7 @@ class DenseMatrix(Matrix):
             self._mat = value
         def fdel(self):
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def mat_ndim():
@@ -302,7 +302,7 @@ class DenseMatrix(Matrix):
         def fdel(self):
             """Delete number of dimensions of the raw matrix"""
             error_readonly("mat_ndim")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_ndim = property(**mat_ndim())
 
     def mat_shape():
@@ -316,7 +316,7 @@ class DenseMatrix(Matrix):
         def fdel(self):
             """Delete the shape of the raw matrix"""
             error_readonly("mat_shape")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_shape = property(**mat_shape())
 
     ############################################################################

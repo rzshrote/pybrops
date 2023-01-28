@@ -66,7 +66,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._ngen = value
         def fdel(self):
             del self._ngen
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ngen = property(**ngen())
 
     def mu():
@@ -79,7 +79,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._mu = value
         def fdel(self):
             del self._mu
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mu = property(**mu())
 
     def lamb():
@@ -92,7 +92,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._lamb = value
         def fdel(self):
             del self._lamb
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     lamb = property(**lamb())
 
     def rng():
@@ -106,7 +106,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################

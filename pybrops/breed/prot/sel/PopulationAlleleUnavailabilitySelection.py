@@ -220,7 +220,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -233,7 +233,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -246,7 +246,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def target():
@@ -270,7 +270,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._target = value
         def fdel(self):
             del self._target
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     target = property(**target())
 
     def weight():
@@ -290,7 +290,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._weight = value
         def fdel(self):
             del self._weight
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     weight = property(**weight())
 
     def method():
@@ -309,7 +309,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def objfn_trans():
@@ -322,7 +322,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -336,7 +336,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -347,7 +347,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -360,7 +360,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -374,7 +374,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -385,7 +385,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def soalgo():
@@ -400,7 +400,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._soalgo = value
         def fdel(self):
             del self._soalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     soalgo = property(**soalgo())
 
     def moalgo():
@@ -419,7 +419,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     def rng():
@@ -433,7 +433,7 @@ class PopulationAlleleUnavailabilitySelection(SelectionProtocol):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################

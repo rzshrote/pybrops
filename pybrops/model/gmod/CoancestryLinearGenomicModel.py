@@ -85,7 +85,7 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete miscellaneous random effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_misc = property(**u_misc())
 
     def u_c():
@@ -99,7 +99,7 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete genomic coancestry effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_c = property(**u_c())
 
 

@@ -59,7 +59,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete the number of axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nsquare = property(**nsquare())
 
     def square_axes():
@@ -73,7 +73,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete axis indices for axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     def square_axes_len():
@@ -87,7 +87,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete axis lengths for axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes_len = property(**square_axes_len())
 
     ############################################################################

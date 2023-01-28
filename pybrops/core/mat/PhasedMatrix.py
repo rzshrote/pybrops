@@ -48,7 +48,7 @@ class PhasedMatrix(MutableMatrix):
         def fdel(self):
             """Delete number of phases"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nphase = property(**nphase())
 
     def phase_axis():
@@ -62,7 +62,7 @@ class PhasedMatrix(MutableMatrix):
         def fdel(self):
             """Delete phase axis number"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     phase_axis = property(**phase_axis())
 
     ############################################################################

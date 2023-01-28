@@ -100,7 +100,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         def fdel(self):
             """Delete number of phases"""
             error_readonly("nphase")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nphase = property(**nphase())
 
     def phase_axis():
@@ -114,7 +114,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         def fdel(self):
             """Delete phase axis number"""
             error_readonly("phase_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     phase_axis = property(**phase_axis())
 
     ############################################################################

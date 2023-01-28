@@ -47,7 +47,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_genome = property(**start_genome())
 
     def start_geno():
@@ -61,7 +61,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_geno = property(**start_geno())
 
     def start_pheno():
@@ -75,7 +75,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_pheno = property(**start_pheno())
 
     def start_bval():
@@ -89,7 +89,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting breeding values for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_bval = property(**start_bval())
 
     def start_gmod():
@@ -103,7 +103,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_gmod = property(**start_gmod())
 
     ######### Breeding program operator properties #########
@@ -118,7 +118,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the initialization operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     initop = property(**initop())
 
     def pselop():
@@ -132,7 +132,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the parent selection operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pselop = property(**pselop())
 
     def mateop():
@@ -146,7 +146,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the mating operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mateop = property(**mateop())
 
     def evalop():
@@ -160,7 +160,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the evaluation operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     evalop = property(**evalop())
 
     def sselop():
@@ -174,7 +174,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the survivor selection operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     sselop = property(**sselop())
 
     ############################################################################

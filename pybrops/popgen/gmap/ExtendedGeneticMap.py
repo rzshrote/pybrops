@@ -83,7 +83,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_chrgrp = value
         def fdel(self):
             del self._vrnt_chrgrp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -97,7 +97,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_phypos = value
         def fdel(self):
             del self._vrnt_phypos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_genpos():
@@ -111,7 +111,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_genpos = value
         def fdel(self):
             del self._vrnt_genpos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     def vrnt_stop():
@@ -125,7 +125,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_stop = value
         def fdel(self):
             del self._vrnt_stop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_stop = property(**vrnt_stop())
 
     def vrnt_name():
@@ -140,7 +140,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_name = value
         def fdel(self):
             del self._vrnt_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_name = property(**vrnt_name())
 
     def vrnt_fncode():
@@ -155,7 +155,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_fncode = value
         def fdel(self):
             del self._vrnt_fncode
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_fncode = property(**vrnt_fncode())
 
     ################# Metadata Properites ##################
@@ -171,7 +171,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_chrgrp_name = value
         def fdel(self):
             del self._vrnt_chrgrp_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
@@ -186,7 +186,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_chrgrp_stix = value
         def fdel(self):
             del self._vrnt_chrgrp_stix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
@@ -201,7 +201,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_chrgrp_spix = value
         def fdel(self):
             del self._vrnt_chrgrp_spix
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
@@ -216,7 +216,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._vrnt_chrgrp_len = value
         def fdel(self):
             del self._vrnt_chrgrp_len
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
     ################## Spline Properites ###################
@@ -230,7 +230,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._spline = value
         def fdel(self):
             del self._spline
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline = property(**spline())
 
     ############# Spline Metadata Properites ###############
@@ -244,7 +244,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._spline_kind = value
         def fdel(self):
             del self._spline_kind
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline_kind = property(**spline_kind())
 
     def spline_fill_value():
@@ -255,7 +255,7 @@ class ExtendedGeneticMap(GeneticMap):
             self._spline_fill_value = value
         def fdel(self):
             del self._spline_fill_value
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     spline_fill_value = property(**spline_fill_value())
 
     ############################################################################
