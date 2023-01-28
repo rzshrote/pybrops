@@ -5,9 +5,9 @@ Module implementing a dense matrix and associated error checking routines.
 import copy
 import numpy
 import h5py
-from typing import Any, Optional
+from typing import Any, Optional, Sequence, Union
 from typing import Type
-
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5
@@ -352,13 +352,18 @@ class DenseMatrix(Matrix):
         return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, **kwargs):
+    def adjoin(
+            self, 
+            values: Union['DenseMatrix',numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
         Parameters
         ----------
-        values : DenseMatrix or numpy.ndarray
+        values : DenseMatrix, numpy.ndarray
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are appended.
@@ -388,13 +393,18 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -403,9 +413,9 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseMatrix
+            A ``DenseMatrix`` with deleted elements. Note that concat does not occur
+            in-place: a new ``DenseMatrix`` is allocated and filled.
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
@@ -418,7 +428,13 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, **kwargs):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Insert values along the given axis before the given indices.
 
@@ -444,7 +460,7 @@ class DenseMatrix(Matrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -457,13 +473,18 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Select certain values from the matrix.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
@@ -472,9 +493,9 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            The output matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseMatrix
+            A ``DenseMatrix`` with values selected. Note that select does not
+            occur in-place: a new ``DenseMatrix`` is allocated and filled.
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
@@ -488,13 +509,13 @@ class DenseMatrix(Matrix):
         return out
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(mats: ArrayLike, axis: int, **kwargs: dict) -> 'DenseMatrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : ArrayLike of DenseMatrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -505,8 +526,8 @@ class DenseMatrix(Matrix):
         Returns
         -------
         out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+            A concatenated ``DenseMatrix``. Note that concat does not occur in-place:
+            a new ``DenseMatrix`` is allocated and filled.
         """
         # gather raw matrices
         mat_tp = tuple(m.mat for m in mats)
@@ -520,7 +541,7 @@ class DenseMatrix(Matrix):
         return out
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename: str, groupname: Optional[str] = None):
+    def to_hdf5(self, filename: str, groupname: Optional[str] = None) -> None:
         """
         Write GenotypeMatrix to an HDF5 file.
 
@@ -529,8 +550,8 @@ class DenseMatrix(Matrix):
         filename : str
             HDF5 file name to which to write.
         groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is written to the base HDF5 group.
+            HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
         """
         h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
         ######################################################### process groupname argument

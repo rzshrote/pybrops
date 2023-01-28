@@ -30,9 +30,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self, 
-        mat: numpy.ndarray, 
-        **kwargs: dict
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
         ):
         """
         Constructor for the concrete class DensePhasedMatrix.

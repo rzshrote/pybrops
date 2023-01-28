@@ -2,7 +2,9 @@
 Module defining mutable matrix interfaces and associated error checking routines.
 """
 
-from typing import Any
+from typing import Any, Sequence, Union
+
+import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):
@@ -18,7 +20,7 @@ class MutableMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         MutableMatrix constructor
 
@@ -35,7 +37,12 @@ class MutableMatrix(Matrix):
     ############################################################################
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis, **kwargs):
+    def append(
+            self, 
+            values: numpy.ndarray, 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix.
 
@@ -50,7 +57,12 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove(self, obj, axis, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
@@ -65,7 +77,13 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp(self, obj, values, axis, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: numpy.ndarray, 
+            axis: int = -1, 
+            **kwargs
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
@@ -74,7 +92,7 @@ class MutableMatrix(Matrix):
         obj: int, slice, or sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
-        values : array_like
+        values : numpy.ndarray
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.

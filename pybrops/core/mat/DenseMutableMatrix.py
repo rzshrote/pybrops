@@ -4,7 +4,7 @@ Module implementing a dense mutable matrix and associated error checking routine
 Mutable refers to the ability of adding/removing rows and columns from the matrix.
 """
 
-from typing import Any
+from typing import Any, Sequence, Union
 import numpy
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
@@ -44,7 +44,12 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     ############################################################################
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, **kwargs):
+    def append(
+            self, 
+            values: Union[DenseMatrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
@@ -67,13 +72,18 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ):
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : slice, int, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -86,7 +96,13 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis)
 
-    def incorp(self, obj, values, axis = -1, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[DenseMatrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
@@ -95,7 +111,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         obj: int, slice, or sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
-        values : array_like
+        values : DenseMatrix or numpy.ndarray
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
@@ -106,7 +122,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")

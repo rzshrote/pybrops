@@ -456,7 +456,12 @@ class Matrix(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values: Union['Matrix',numpy.ndarray], axis: int, **kwargs: dict):
+    def adjoin(
+            self, 
+            values: Union['Matrix',numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -477,13 +482,18 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete(self, obj: Union[slice,int,Sequence], axis: int, **kwargs: dict):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -498,16 +508,22 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert(self, obj: Union[int,slice,Sequence], values: ArrayLike, axis: int, **kwargs: dict):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Insert values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : array_like
+        values : ArrayLike
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
@@ -522,13 +538,18 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("static method is abstract")
 
-    def select(self, indices: ArrayLike, axis: int, **kwargs: dict):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Select certain values from the matrix.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
@@ -543,14 +564,17 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
     @staticmethod
-    def concat(mats: ArrayLike, axis: int, **kwargs: dict):
+    def concat(mats: ArrayLike, axis: int, **kwargs: dict) -> 'Matrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : ArrayLike of matrices
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
