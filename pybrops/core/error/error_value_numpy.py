@@ -1,3 +1,4 @@
+from typing import Any
 import numpy
 
 from . import generic_check_ndarray_eq
