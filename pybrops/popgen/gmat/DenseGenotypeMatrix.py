@@ -666,7 +666,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             raise ValueError('Format not recognized. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".')
 
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def tacount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Allele count of the non-zero allele within each taxon.
 
@@ -694,7 +694,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = self._mat.astype(dtype)
         return out
 
-    def tafreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def tafreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele within each taxon.
 
@@ -718,7 +718,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def acount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def acount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Allele count of the non-zero allele across all taxa.
 
@@ -743,7 +743,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         
         return out
 
-    def afreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def afreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele across all taxa.
 
@@ -767,7 +767,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)                   # convert to correct dtype
         return out
 
-    def apoly(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def apoly(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Allele polymorphism presence or absense across all loci.
 
@@ -799,7 +799,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def maf(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def maf(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Minor allele frequency across all taxa.
 
@@ -819,7 +819,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def meh(self, dtype: Optional[DTypeLike]) -> numbers.Number:
+    def meh(self, dtype: Optional[DTypeLike] = None) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -846,7 +846,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def gtcount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def gtcount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -891,7 +891,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def gtfreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def gtfreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
