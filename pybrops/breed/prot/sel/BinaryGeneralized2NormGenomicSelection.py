@@ -23,9 +23,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class BinaryGeneralizedWeighted2NormGenomicSelection(SelectionProtocol):
+class BinaryGeneralized2NormGenomicSelection(SelectionProtocol):
     """
-    docstring for BinaryGeneralizedWeighted2NormGenomicSelection.
+    docstring for BinaryGeneralized2NormGenomicSelection.
     """
 
     ############################################################################
@@ -51,14 +51,14 @@ class BinaryGeneralizedWeighted2NormGenomicSelection(SelectionProtocol):
             **kwargs
         ):
         """
-        Constructor for BinaryGeneralizedWeighted2NormGenomicSelection.
+        Constructor for BinaryGeneralized2NormGenomicSelection.
         
         Parameters
         ----------
         nparent : int
             Number of parents to select.
         """
-        super(BinaryGeneralizedWeighted2NormGenomicSelection, self).__init__(**kwargs)
+        super(BinaryGeneralized2NormGenomicSelection, self).__init__(**kwargs)
 
         self.nparent = nparent
         self.ncross = ncross
