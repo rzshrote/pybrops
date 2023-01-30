@@ -284,8 +284,16 @@ class BinaryWeightedGeneralized2NormGenomicSelection(SelectionProtocol):
         # w = |u_a| / sqrt( (p^t) * (1-p)^(1-t) )
         # w = |u_a| * p^(-t/2) * (1-p)^((t-1)/2)
         # u_a = marker effects; p = allele frequencies; t = target allele frequencies
-        # shape is (p,t)
-        mkrwt = numpy.absolute(u_a) * numpy.power(afreq, -0.5 * tfreq) * numpy.power(1 - u_a, 0.5 * (tfreq - 1))
+
+        # calculate the denominator
+        denom = numpy.power(afreq, -0.5 * tfreq) * numpy.power(1 - u_a, 0.5 * (tfreq - 1))
+
+        # if any division by zero has occurred, then replace with 1
+        mask = numpy.logical_or(numpy.isnan(denom), numpy.isinf(denom))
+        denom[mask] = 1
+
+        # calculate marker weights
+        mkrwt = numpy.absolute(u_a) * denom
 
         # make sure mkrwt and tfreq have the same dimensions
         if mkrwt.shape != tfreq.shape:
