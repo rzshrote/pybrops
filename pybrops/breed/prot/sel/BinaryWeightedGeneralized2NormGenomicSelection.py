@@ -1,5 +1,5 @@
 """
-Module implementing selection protocols for binary general weighted 2-norm genomic selection
+Module implementing selection protocols for binary weighted general 2-norm genomic selection
 """
 
 import types
@@ -286,11 +286,9 @@ class BinaryWeightedGeneralized2NormGenomicSelection(SelectionProtocol):
         # u_a = marker effects; p = allele frequencies; t = target allele frequencies
 
         # calculate the denominator
-        denom = numpy.power(afreq, -0.5 * tfreq) * numpy.power(1 - u_a, 0.5 * (tfreq - 1))
-
-        # if any division by zero has occurred, then replace with 1
-        mask = numpy.logical_or(numpy.isnan(denom), numpy.isinf(denom))
-        denom[mask] = 1
+        denom = numpy.power(afreq, tfreq) * numpy.power(1.0 - afreq, 1.0 - tfreq)
+        denom[denom == 0.0] = 1.0 # prevents division by zero
+        denom = numpy.power(denom, -0.5) # take square root
 
         # calculate marker weights
         mkrwt = numpy.absolute(u_a) * denom

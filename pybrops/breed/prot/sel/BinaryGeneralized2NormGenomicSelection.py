@@ -1,5 +1,5 @@
 """
-Module implementing selection protocols for binary general weighted 2-norm genomic selection
+Module implementing selection protocols for binary general 2-norm genomic selection
 """
 
 import types
