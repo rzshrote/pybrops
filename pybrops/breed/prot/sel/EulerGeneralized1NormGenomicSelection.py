@@ -24,9 +24,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
+class EulerGeneralized1NormGenomicSelection(SelectionProtocol):
     """
-    docstring for GoldenGeneralized1NormGenomicSelection.
+    docstring for EulerGeneralized1NormGenomicSelection.
     """
 
     ############################################################################
@@ -51,14 +51,14 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             **kwargs
         ):
         """
-        Constructor for GoldenGeneralized1NormGenomicSelection.
+        Constructor for EulerGeneralized1NormGenomicSelection.
         
         Parameters
         ----------
         nparent : int
             Number of parents to select.
         """
-        super(GoldenGeneralized1NormGenomicSelection, self).__init__(**kwargs)
+        super(EulerGeneralized1NormGenomicSelection, self).__init__(**kwargs)
 
         self.nparent = nparent
         self.ncross = ncross
@@ -281,15 +281,12 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
         afreq = gmat.afreq()[:,None] # (p,1)
         tfreq = self.target(u_a) if callable(self.target) else self.target # (p,t)
 
-        # golden ratio
-        phi = 0.5 * (1.0 + math.sqrt(5))
-
         # calculate marker weights based on:
         # w = |u_a| / ( (p^t) * (1-p)^(1-t) )^(-1/phi)
         # u_a = marker effects; p = allele frequencies; t = target allele frequencies
         denom = numpy.power(afreq, tfreq) * numpy.power(1.0 - afreq, 1.0 - tfreq)
         denom[denom == 0.0] = 1.0 # prevents division by zero
-        denom = numpy.power(denom, -1.0 / phi) # take golden root
+        denom = numpy.power(denom, -1.0 / math.exp(1)) # take euler root
 
         # calculate marker weights
         mkrwt = numpy.absolute(u_a) * denom
