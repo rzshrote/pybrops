@@ -37,7 +37,6 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             nparent: int,
             ncross: int,
             nprogeny: int,
-            weight: Union[numpy.ndarray,Callable] = weight_absolute,
             target: Union[numpy.ndarray,Callable] = target_positive,
             method: str = "single",
             objfn_trans = None,
@@ -64,7 +63,6 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.weight = weight
         self.target = target
         self.method = method
         self.objfn_trans = objfn_trans
@@ -118,18 +116,6 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             del self._nprogeny
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
-
-    def weight():
-        doc = "The weight property."
-        def fget(self):
-            return self._weight
-        def fset(self, value):
-            check_isinstance(value, "weight", (numpy.ndarray, Callable))
-            self._weight = value
-        def fdel(self):
-            del self._weight
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    weight = property(**weight())
 
     def target():
         doc = "The target property."
