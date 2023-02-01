@@ -9,7 +9,7 @@ class GenotypeVariantMatrix(GenotypeMatrix,TaxaMatrix,VariantMatrix,PrunableMatr
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         GenotypeVariantMatrix constructor
 

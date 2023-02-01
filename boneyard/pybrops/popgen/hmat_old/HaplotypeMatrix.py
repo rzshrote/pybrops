@@ -13,7 +13,7 @@ class HaplotypeMatrix(TaxaMatrix,VariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         HaplotypeMatrix constructor
 

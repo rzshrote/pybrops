@@ -19,7 +19,7 @@ class DenseBreedingValueMatrix(BreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, **kwargs: dict):
         """
         BreedingValueMatrix constructor
 

@@ -15,7 +15,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nenv, var_E, rng = None, **kwargs):
+    def __init__(self, nenv, var_E, rng = None, **kwargs: dict):
         """
         nenv : int
             Number of environments.
@@ -114,7 +114,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
         """
         raise NotImplementedError("method is abstract")
 
-    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs: dict):
         """
         Parameters
         ----------
@@ -179,7 +179,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     ############################################################################
     # TODO: H^2 calculations
     # @staticmethod
-    # def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs):
+    # def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs: dict):
     #     """
     #     h2 : float or numpy.ndarray
     #         Narrow sense heritability of trait for single rep evaluation.
@@ -218,7 +218,7 @@ class NoGxEEvaluationOperator(EvaluationOperator):
     #
     #     return out
     @staticmethod
-    def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs):
+    def from_h2(gmat, lgmod, nenv, h2, rng = None, **kwargs: dict):
         """
         h2 : float or numpy.ndarray
             Narrow sense heritability of trait for single rep evaluation.

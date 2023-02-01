@@ -15,7 +15,7 @@ class DenseGenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMatr
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, raw = None, se = None, trait = None, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, raw = None, se = None, trait = None, taxa = None, taxa_grp = None, **kwargs: dict):
         super(DenseGenotypicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
             raw = raw,

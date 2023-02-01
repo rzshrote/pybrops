@@ -7,7 +7,7 @@ from . import CrossoverOperator
 class UniformSetCrossoverOperator(CrossoverOperator):
     """docstring for UniformSetCrossoverOperator."""
 
-    def __init__(self, M, rng, **kwargs):
+    def __init__(self, M, rng, **kwargs: dict):
         """
         M : float
         rng :
@@ -27,7 +27,7 @@ class UniformSetCrossoverOperator(CrossoverOperator):
         return locals()
     nparent = property(**nparent())
 
-    def crossover(self, parents, **kwargs):
+    def crossover(self, parents, **kwargs: dict):
         # copy parent data, so it is not overwritten
         ind = [copy.copy(parents[0]), copy.copy(parents[1])]
 

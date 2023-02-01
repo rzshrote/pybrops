@@ -6,12 +6,12 @@ from . import MutationOperator
 class SetMutationOperator(MutationOperator):
     """docstring for SetMutationOperator."""
 
-    def __init__(self, p, setspace, rng, **kwargs):
+    def __init__(self, p, setspace, rng, **kwargs: dict):
         super(SetMutationOperator, self).__init__(**kwargs)
         self.p = p
         self.rng = rng
 
-    def mutate(self, chrom, **kwargs):
+    def mutate(self, chrom, **kwargs: dict):
         # initialize
         out = copy.copy(chrom)                      # copy chromosome
         clen = len(chrom)                           # get chromosome length

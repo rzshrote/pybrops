@@ -6,7 +6,7 @@ class BlankLogbook(Logbook):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(BlankLogbook, self).__init__(**kwargs)
         self.reset()
 
@@ -27,22 +27,22 @@ class BlankLogbook(Logbook):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         pass
 
-    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs):
+    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs: dict):
         pass
 
-    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs):
+    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs: dict):
         pass
 
-    def log_evaluate(self, t_cur, t_max, bvmat, misc, **kwargs):
+    def log_evaluate(self, t_cur, t_max, bvmat, misc, **kwargs: dict):
         pass
 
-    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs):
+    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs: dict):
         pass
 
-    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs):
+    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs: dict):
         pass
 
     def reset(self):

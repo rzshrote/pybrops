@@ -4,13 +4,13 @@ class MatingOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(MatingOperator, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, **kwargs: dict):
         """
         Mate individuals according to a mate selection scheme.
 

@@ -10,7 +10,7 @@ from pybrops.core.error import cond_check_is_Generator
 class RandomFamilySurvivorSelection(SurvivorSelectionOperator):
     """Select random individuals with families"""
 
-    def __init__(self, k_f, rng = None, **kwargs):
+    def __init__(self, k_f, rng = None, **kwargs: dict):
         super(RandomFamilySurvivorSelection, self).__init__(**kwargs)
 
         # check inputs
@@ -20,7 +20,7 @@ class RandomFamilySurvivorSelection(SurvivorSelectionOperator):
         self.k_f = k_f
         self.rng = pybrops.core.random if rng is None else rng
 
-    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, **kwargs):
+    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, **kwargs: dict):
         """
         Select survivors to serve as potential parents for breeding.
 
@@ -124,13 +124,13 @@ class RandomFamilySurvivorSelection(SurvivorSelectionOperator):
         return geno_new, bval_new, gmod_new, misc
 
 
-    def sobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def sobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Return a survivor selection objective function.
         """
         raise RuntimeError("Random Survivor Selection has no objective function")
 
-    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Return a vectorized survivor objective function.
         """

@@ -6,7 +6,7 @@ class GenerationalGenotypeIntegrationOperator(GenotypeIntegrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gwind, **kwargs):
+    def __init__(self, gwind, **kwargs: dict):
         super(GenerationalGenotypeIntegrationOperator, self).__init__(**kwargs)
         self.gwind = gwind
 

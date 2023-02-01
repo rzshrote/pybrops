@@ -24,7 +24,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, ploidy = 2, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, ploidy = 2, **kwargs: dict):
         """
         Parameters
         ----------
@@ -615,7 +615,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -700,7 +700,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
@@ -760,7 +760,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -884,7 +884,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -922,7 +922,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs):
+    def delete_taxa(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -970,7 +970,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs):
+    def delete_vrnt(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
@@ -1039,7 +1039,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -1129,7 +1129,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -1201,7 +1201,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -1317,7 +1317,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -1349,7 +1349,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -1397,7 +1397,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def select_vrnt(self, indices, **kwargs):
+    def select_vrnt(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the variant axis.
 
@@ -1459,7 +1459,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -1493,7 +1493,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     @staticmethod
-    def concat_taxa(mats, **kwargs):
+    def concat_taxa(mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -1587,7 +1587,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     @staticmethod
-    def concat_vrnt(mats, **kwargs):
+    def concat_vrnt(mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 
@@ -1737,7 +1737,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -1778,7 +1778,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def append_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Append values to the Matrix along the taxa axis.
 
@@ -1827,7 +1827,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def append_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def append_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Append values to the Matrix along the variant axis.
 
@@ -1930,7 +1930,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._vrnt_chrgrp_stix = None
         self._vrnt_chrgrp_spix = None
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(self, obj, axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -1953,7 +1953,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_taxa(self, obj, **kwargs):
+    def remove_taxa(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
@@ -1978,7 +1978,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def remove_vrnt(self, obj, **kwargs):
+    def remove_vrnt(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the variant axis.
 
@@ -2017,7 +2017,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._vrnt_chrgrp_spix = None
         self._vrnt_chrgrp_len = None
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -2062,7 +2062,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -2115,7 +2115,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def incorp_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def incorp_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Incorporate values along the variant axis before the given indices.
 
@@ -2220,7 +2220,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._vrnt_chrgrp_len = None
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs):
+    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -2251,7 +2251,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return indices
 
-    def lexsort_taxa(self, keys = None, **kwargs):
+    def lexsort_taxa(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -2295,7 +2295,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         # return indices
         return indices
 
-    def lexsort_vrnt(self, keys = None, **kwargs):
+    def lexsort_vrnt(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the
         variant axis.
@@ -2339,7 +2339,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs):
+    def reorder(self, indices, axis = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -2360,7 +2360,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def reorder_taxa(self, indices, **kwargs):
+    def reorder_taxa(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the taxa axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -2383,7 +2383,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         if self._taxa_grp is not None:
             self._taxa_grp = self._taxa_grp[indices]        # reorder taxa group array
 
-    def reorder_vrnt(self, indices, **kwargs):
+    def reorder_vrnt(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the variant axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -2420,7 +2420,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         if self._vrnt_mask is not None:
             self._vrnt_mask = self._vrnt_mask[indices]      # reorder variant mask array
 
-    def sort(self, keys = None, axis = -1, **kwargs):
+    def sort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -2445,7 +2445,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot sort along axis {0}".format(axis))
 
-    def sort_taxa(self, keys = None, **kwargs):
+    def sort_taxa(self, keys = None, **kwargs: dict):
         """
         Sort slements of the Matrix along the taxa axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -2470,7 +2470,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         # reorder internals
         self.reorder_taxa(indices, **kwargs)
 
-    def sort_vrnt(self, keys = None, **kwargs):
+    def sort_vrnt(self, keys = None, **kwargs: dict):
         """
         Sort slements of the Matrix along the variant axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -2496,7 +2496,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self.reorder_vrnt(indices, **kwargs)
 
     ################### Grouping Methods ###################
-    def group(self, axis = -1, **kwargs):
+    def group(self, axis = -1, **kwargs: dict):
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -2512,7 +2512,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
 
-    def group_taxa(self, **kwargs):
+    def group_taxa(self, **kwargs: dict):
         """
         Sort the Matrix along the taxa axis, then populate grouping indices for
         the taxa axis.
@@ -2533,7 +2533,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
             # calculate stop indices
             self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
 
-    def group_vrnt(self, **kwargs):
+    def group_vrnt(self, **kwargs: dict):
         """
         Sort the Matrix along the variant axis, then populate grouping indices
         for the variant axis.
@@ -2554,7 +2554,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
             # calculate stop indices
             self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
 
-    def is_grouped(self, axis = -1, **kwargs):
+    def is_grouped(self, axis = -1, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -2576,7 +2576,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return grouped
 
-    def is_grouped_taxa(self, **kwargs):
+    def is_grouped_taxa(self, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped along the taxa
         axis.
@@ -2599,7 +2599,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
             (self._taxa_grp_len is not None)
         )
 
-    def is_grouped_vrnt(self, **kwargs):
+    def is_grouped_vrnt(self, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped along the
         variant axis.

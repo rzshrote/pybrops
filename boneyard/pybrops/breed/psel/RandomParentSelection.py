@@ -13,7 +13,7 @@ from pybrops.core.error import cond_check_is_Generator
 class RandomParentSelection(ParentSelectionOperator):
     """Perform random parent selection"""
 
-    def __init__(self, nparent, ncross, nprogeny, replace = False, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, replace = False, rng = None, **kwargs: dict):
         """
         Construct a RandomParentSelection operator.
 
@@ -47,7 +47,7 @@ class RandomParentSelection(ParentSelectionOperator):
         self.replace = replace
         self.rng = pybrops.core.random if rng is None else rng
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, nparent = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, nparent = None, **kwargs: dict):
         """
         Select parents for breeding.
 
@@ -107,11 +107,11 @@ class RandomParentSelection(ParentSelectionOperator):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, trans, trans_kwargs, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, trans, trans_kwargs, **kwargs: dict):
         raise RuntimeError("Random parent selection has no objective function.")
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         raise RuntimeError("Random parent selection has no objective function.")
 
-    def ppareto(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def ppareto(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         raise RuntimeError("Random parent selection has no Pareto frontier since it has no objective function.")

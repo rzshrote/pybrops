@@ -6,7 +6,7 @@ class LinearGenomicModelCalibrationOperator(GenomicModelCalibrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(LinearGenomicModelCalibrationOperator, self).__init__()
 
     ############################################################################

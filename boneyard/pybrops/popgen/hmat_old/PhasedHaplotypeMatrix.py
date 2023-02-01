@@ -9,7 +9,7 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(PhasedHaplotypeMatrix, self).__init__(**kwargs)
 
 

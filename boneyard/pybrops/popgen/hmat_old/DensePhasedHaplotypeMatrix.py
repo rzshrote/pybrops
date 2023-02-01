@@ -14,7 +14,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         DensePhasedHaplotypeMatrix constructor
 
@@ -137,7 +137,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -227,7 +227,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def adjoin_phase(self, values, **kwargs):
+    def adjoin_phase(self, values, **kwargs: dict):
         """
         Adjoin values along the phase axis.
 
@@ -273,7 +273,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -307,7 +307,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def delete_phase(self, obj, **kwargs):
+    def delete_phase(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the phase axis.
 
@@ -349,7 +349,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -445,7 +445,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def insert_phase(self, obj, values, **kwargs):
+    def insert_phase(self, obj, values, **kwargs: dict):
         """
         Insert values along the phase axis before the given indices.
 
@@ -501,7 +501,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -535,7 +535,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def select_phase(self, indices, **kwargs):
+    def select_phase(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the phase axis.
 
@@ -578,7 +578,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         return out
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -614,7 +614,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         return out
 
     @staticmethod
-    def concat_phase(mats, **kwargs):
+    def concat_phase(mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -696,7 +696,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -739,7 +739,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_phase(self, values, **kwargs):
+    def append_phase(self, values, **kwargs: dict):
         """
         Append values to the Matrix along the phase axis.
 
@@ -766,7 +766,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis = self.phase_axis)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(self, obj, axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -791,7 +791,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_phase(self, obj, **kwargs):
+    def remove_phase(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the phase axis.
 
@@ -805,7 +805,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis = self.phase_axis)
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -856,7 +856,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_phase(self, obj, values, **kwargs):
+    def incorp_phase(self, obj, values, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 

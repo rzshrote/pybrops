@@ -26,7 +26,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(self, mat, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Parameters
         ----------
@@ -279,7 +279,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def adjoin(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -374,7 +374,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def adjoin_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the taxa axis.
 
@@ -406,7 +406,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def adjoin_trait(self, values, raw = None, trait = None, **kwargs):
+    def adjoin_trait(self, values, raw = None, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -435,7 +435,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -491,7 +491,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs):
+    def delete_taxa(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -514,7 +514,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def delete_trait(self, obj, **kwargs):
+    def delete_trait(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the trait axis.
 
@@ -537,7 +537,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def insert(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def insert(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -650,7 +650,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def insert_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+    def insert_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -684,7 +684,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def insert_trait(self, obj, values, raw = None, trait = None, **kwargs):
+    def insert_trait(self, obj, values, raw = None, trait = None, **kwargs: dict):
         """
         Insert values along the trait axis before the given indices.
 
@@ -714,7 +714,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -770,7 +770,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -793,7 +793,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def select_trait(self, indices, **kwargs):
+    def select_trait(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the trait axis.
 
@@ -817,7 +817,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         )
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -920,7 +920,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         return out
 
     @staticmethod
-    def concat_taxa(mats, **kwargs):
+    def concat_taxa(mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -945,7 +945,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         )
 
     @staticmethod
-    def concat_trait(mats, **kwargs):
+    def concat_trait(mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the trait axis.
 
@@ -970,7 +970,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         )
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def append(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Append values to the matrix. Cannot add additional locations to 'raw'.
 
@@ -1043,7 +1043,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def append_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+    def append_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Append values to the Matrix along the taxa axis.
 
@@ -1067,7 +1067,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def append_trait(self, values, raw = None, trait = None, **kwargs):
+    def append_trait(self, values, raw = None, trait = None, **kwargs: dict):
         """
         Append values to the Matrix along the trait axis.
 
@@ -1088,7 +1088,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def remove(self, obj, axis, **kwargs):
+    def remove(self, obj, axis, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -1124,7 +1124,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def remove_taxa(self, obj, **kwargs):
+    def remove_taxa(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
@@ -1141,7 +1141,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def remove_trait(self, obj, **kwargs):
+    def remove_trait(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the trait axis.
 
@@ -1158,7 +1158,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def incorp(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def incorp(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -1230,7 +1230,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
-    def incorp_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs):
+    def incorp_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -1258,7 +1258,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def incorp_trait(self, obj, values, raw = None, trait = None, **kwargs):
+    def incorp_trait(self, obj, values, raw = None, trait = None, **kwargs: dict):
         """
         Incorporate values along the trait axis before the given indices.
 
@@ -1327,7 +1327,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # return indices
         return indices
 
-    def lexsort_taxa(self, keys = None, **kwargs):
+    def lexsort_taxa(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -1351,7 +1351,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def lexsort_trait(self, keys, **kwargs):
+    def lexsort_trait(self, keys, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the trait
         axis.
@@ -1408,7 +1408,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = self._trait[indices]              # reorder trait array
 
-    def reorder_taxa(self, indices, **kwargs):
+    def reorder_taxa(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the taxa axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -1426,7 +1426,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def reorder_trait(self, indices, **kwargs):
+    def reorder_trait(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the trait axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -1475,7 +1475,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # reorder internals
         self.reorder(indices, axis)
 
-    def sort_taxa(self, keys = None, **kwargs):
+    def sort_taxa(self, keys = None, **kwargs: dict):
         """
         Sort slements of the Matrix along the taxa axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -1494,7 +1494,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def sort_trait(self, keys, **kwargs):
+    def sort_trait(self, keys, **kwargs: dict):
         """
         Sort slements of the Matrix along the trait axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -1537,7 +1537,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
                 # calculate stop indices
                 self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
 
-    def group_taxa(self, **kwargs):
+    def group_taxa(self, **kwargs: dict):
         """
         Sort the Matrix along the taxa axis, then populate grouping indices for
         the taxa axis.
@@ -1574,7 +1574,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             )
         return False
 
-    def is_grouped_taxa(self, **kwargs):
+    def is_grouped_taxa(self, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped along the taxa
         axis.

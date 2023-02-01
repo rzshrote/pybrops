@@ -3,7 +3,7 @@ from pybrops.core.mat.Matrix import Matrix
 class LDMatrix(Matrix):
     """docstring for LDMatrix."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(LDMatrix, self).__init__(**kwargs)
 
 

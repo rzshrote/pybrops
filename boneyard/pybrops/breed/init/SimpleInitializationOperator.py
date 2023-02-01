@@ -24,7 +24,7 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs):
+    def __init__(self, burnin, founder_geno, founder_bval, founder_gmod, pselop, mateop, gintgop, evalop, bvintgop, calop, sselop, **kwargs: dict):
         """
         Parameters
         ----------
@@ -73,7 +73,7 @@ class SimpleInitializationOperator(InitializationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def initialize(self, burnin = None, **kwargs):
+    def initialize(self, burnin = None, **kwargs: dict):
         """
         Initialize a breeding program.
 

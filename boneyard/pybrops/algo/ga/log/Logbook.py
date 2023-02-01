@@ -1,7 +1,7 @@
 class Logbook:
     """docstring for Logbook."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(Logbook, self).__init__()
 
     def book():

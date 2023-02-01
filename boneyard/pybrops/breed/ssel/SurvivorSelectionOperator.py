@@ -4,7 +4,7 @@ class SurvivorSelectionOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(SurvivorSelectionOperator, self).__init__()
 
     ############################################################################
@@ -14,7 +14,7 @@ class SurvivorSelectionOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def sselect(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def sselect(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Select survivors to serve as potential parents for breeding.
 
@@ -84,13 +84,13 @@ class SurvivorSelectionOperator:
         """
         raise NotImplementedError("method is abstract")
 
-    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a survivor selection objective function.
         """
         raise NotImplementedError("method is abstract")
 
-    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a vectorized survivor objective function.
         """

@@ -10,7 +10,7 @@ from pybrops.core.error import cond_check_is_Generator
 class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
     """docstring for TwoWayOptimalHaploidValueSelection."""
 
-    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs):
+    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs: dict):
         """
         Constructor for two-way Optimal Haploid Value Selection (OHV).
 
@@ -179,7 +179,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
 
         return hmat
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -277,7 +277,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -414,7 +414,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
@@ -484,7 +484,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
         return objfn
 
     # TODO: implementation of this function
-    # def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    # def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
     #     """
     #     Return a vectorized objective function.
     #     """
@@ -583,7 +583,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the 'trans' function.
@@ -636,7 +636,7 @@ class TwoWayOptimalHaploidValueSelection(SelectionProtocol):
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the 'trans' function.

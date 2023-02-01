@@ -6,7 +6,7 @@ class SimpleBreedingValueIntegrationOperator(BreedingValueIntegrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(SimpleBreedingValueIntegrationOperator, self).__init__(**kwargs)
 
     ############################################################################

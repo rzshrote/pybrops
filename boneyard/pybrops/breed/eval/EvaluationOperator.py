@@ -4,7 +4,7 @@ class EvaluationOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(EvaluationOperator, self).__init__()
 
     ############################################################################
@@ -67,7 +67,7 @@ class EvaluationOperator:
         """
         raise NotImplementedError("method is abstract")
 
-    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs: dict):
         """
         Parameters
         ----------

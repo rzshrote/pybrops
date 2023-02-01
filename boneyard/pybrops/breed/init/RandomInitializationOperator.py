@@ -10,7 +10,7 @@ from pybrops.popgen.gmat import DensePhasedGenotypeMatrix
 class RandomInitializationOperator(InitializationOperator):
     """docstring for RandomInitializationOperator."""
 
-    def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng = None, **kwargs):
+    def __init__(self, ntaxa, nloci, nchr, ntrait, nburn, rng = None, **kwargs: dict):
         """
         ntaxa : dict
             Number of taxa.
@@ -46,7 +46,7 @@ class RandomInitializationOperator(InitializationOperator):
         self.nburn = nburn
         self.rng = pbo_rng if rng is None else rng
 
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize a breeding program.
 

@@ -16,7 +16,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, inbfn_p, ncross, nprogeny, cmatcls, bvtype = "gebv", rng = None, **kwargs):
+    def __init__(self, k_p, traitwt_p, inbfn_p, ncross, nprogeny, cmatcls, bvtype = "gebv", rng = None, **kwargs: dict):
         """
         cmatcls : CoancestryMatrix class
         inbfn_p : function
@@ -58,7 +58,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def get_bv(self, geno, bval, gmod, **kwargs):
+    def get_bv(self, geno, bval, gmod, **kwargs: dict):
         option = self.bvtype.lower()
         if option == "gebv":
             return gmod["cand"].predict(geno["cand"]).mat   # (n,t)
@@ -67,7 +67,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
         else:
             raise RuntimeError("unknown bvtype")
 
-    def calc_K(self, gmat, **kwargs):
+    def calc_K(self, gmat, **kwargs: dict):
         kmat = self.cmatcls.from_gmat(gmat)  # get coancestry (kinship) matrix
         return kmat
 
@@ -98,7 +98,7 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
         sel = numpy.array(sel)                          # convert to ndarray
         return sel
 
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -256,14 +256,14 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
         bv = self.get_bv(geno, bval, gmod)              # (n,t)
 
         # TODO: put this in static library
-        def objfn(sel, bv = bv, traitwt = traitwt, **kwargs):
+        def objfn(sel, bv = bv, traitwt = traitwt, **kwargs: dict):
             """
             Calculate genotypic mean from contributions:
                                     (bv)'(sel)
@@ -305,13 +305,13 @@ class OptimalContributionParentSelection(ParentSelectionOperator):
 
         return objfn
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
         bv = self.get_bv(geno, bval, gmod)              # (n,t)
 
-        def objfn_vec(sel, bv = bv, traitwt = traitwt, **kwargs):
+        def objfn_vec(sel, bv = bv, traitwt = traitwt, **kwargs: dict):
             """
             Calculate genotypic mean from contributions:
                                     (bv)'(sel)

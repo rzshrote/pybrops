@@ -1,10 +1,10 @@
 class MemeticOperator:
     """docstring for MemeticOperator."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(MemeticOperator, self).__init__()
 
-    def evolve(self, objfn, pop, score, **kwargs):
+    def evolve(self, objfn, pop, score, **kwargs: dict):
         """
         Parameters
         ----------

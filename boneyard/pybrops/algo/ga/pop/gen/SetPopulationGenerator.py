@@ -5,7 +5,7 @@ from pybrob.algo.ga.chrom.gen import SetChromosomeGenerator
 class SetPopulationGenerator(PopulationGenerator):
     """docstring for SetPopulationGenerator."""
 
-    def __init__(self, n, k, setspace, rng, **kwargs):
+    def __init__(self, n, k, setspace, rng, **kwargs: dict):
         super(SetPopulationGenerator, self).__init__(**kwargs)
         self.n = n
         self.k = k
@@ -17,7 +17,7 @@ class SetPopulationGenerator(PopulationGenerator):
             rng = self.rng
         )
 
-    def generate(self, n = None, k = None, setspace = None, **kwargs):
+    def generate(self, n = None, k = None, setspace = None, **kwargs: dict):
         if n is None:
             n = self.n
         if k is None:

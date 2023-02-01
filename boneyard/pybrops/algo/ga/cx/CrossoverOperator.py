@@ -1,7 +1,7 @@
 class CrossoverOperator:
     """docstring for CrossoverOperator."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(CrossoverOperator, self).__init__()
 
     def nparent():
@@ -15,7 +15,7 @@ class CrossoverOperator:
         return locals()
     nparent = property(**nparent())
 
-    def crossover(self, parents, **kwargs):
+    def crossover(self, parents, **kwargs: dict):
         """
         Parameters
         ----------

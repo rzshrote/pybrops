@@ -6,7 +6,7 @@ class BreedingValueMatrix(TaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         BreedingValueMatrix constructor
 

@@ -4,7 +4,7 @@ class Logbook:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(Logbook, self).__init__()
 
     ############################################################################
@@ -35,28 +35,28 @@ class Logbook:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs):
+    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs):
+    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_gintegrate(self, t_cur, t_max, geno, misc, **kwargs):
+    def log_gintegrate(self, t_cur, t_max, geno, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_evaluate(self, t_cur, t_max, bvmat, bvmat_true, misc, **kwargs):
+    def log_evaluate(self, t_cur, t_max, bvmat, bvmat_true, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_bvintegrate(self, t_cur, t_max, bval, misc, **kwargs):
+    def log_bvintegrate(self, t_cur, t_max, bval, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs):
+    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
-    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs):
+    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs: dict):
         raise NotImplementedError("method is abstract")
 
     def reset(self):

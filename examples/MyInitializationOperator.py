@@ -29,7 +29,8 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
             t_max = t_max,
             method = "single"                                   # just use equal weights for each trait
         )
-        mcfg = {                    # store parent selections configurations in dict
+        # store parent selections configurations in dict
+        mcfg = {
             "pgmat" = pgmat,
             "sel" = sel,
             "ncross" = ncross,

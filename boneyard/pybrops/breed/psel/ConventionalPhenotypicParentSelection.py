@@ -10,7 +10,7 @@ class ConventionalPhenotypicParentSelection(ParentSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, rng = None, **kwargs: dict):
         super(ConventionalPhenotypicParentSelection, self).__init__(**kwargs)
 
         # check data types
@@ -34,7 +34,7 @@ class ConventionalPhenotypicParentSelection(ParentSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -118,7 +118,7 @@ class ConventionalPhenotypicParentSelection(ParentSelectionOperator):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
@@ -172,7 +172,7 @@ class ConventionalPhenotypicParentSelection(ParentSelectionOperator):
 
         return objfn
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a vectorized objective function.
         """

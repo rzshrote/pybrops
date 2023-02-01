@@ -4,7 +4,7 @@ class ParentSelectionOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(ParentSelectionOperator, self).__init__()
 
     ############################################################################
@@ -14,7 +14,7 @@ class ParentSelectionOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -71,19 +71,19 @@ class ParentSelectionOperator:
         """
         raise NotImplementedError("method is abstract")
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Return an objective function.
         """
         raise NotImplementedError("method is abstract")
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
         raise NotImplementedError("method is abstract")
 
-    def ppareto(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def ppareto(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

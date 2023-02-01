@@ -11,7 +11,7 @@ class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_s, traitwt_s, rng = None, **kwargs):
+    def __init__(self, k_s, traitwt_s, rng = None, **kwargs: dict):
         super(WeightedGenomicSurvivorSelection, self).__init__(**kwargs)
 
         # error checks
@@ -31,7 +31,7 @@ class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select survivors to serve as potential parents for breeding.
 
@@ -139,7 +139,7 @@ class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
 
         return geno_new, bval_new, gmod_new, misc
 
-    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
@@ -230,7 +230,7 @@ class WeightedGenomicSurvivorSelection(SurvivorSelectionOperator):
 
         return objfn
 
-    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a vectorized objective function.
         """

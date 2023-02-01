@@ -37,11 +37,11 @@ def dcn(indiv, pop):
 class MULTISelectionOperator(SelectionOperator):
     """docstring for MULTISelectionOperator."""
 
-    def __init__(self, objwt, **kwargs):
+    def __init__(self, objwt, **kwargs: dict):
         super(MULTISelectionOperator, self).__init__(**kwargs)
         self.objwt = objwt
 
-    def select(self, t_cur, t_max, k, ppop, pscore, opop, oscore, objwt = None, **kwargs):
+    def select(self, t_cur, t_max, k, ppop, pscore, opop, oscore, objwt = None, **kwargs: dict):
         if objwt is None:
             objwt = self.objwt
 

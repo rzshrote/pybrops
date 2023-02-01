@@ -23,7 +23,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
     target = "positive", weight = "magnitude",
     ga_ngen = 250, ga_mu = 100, ga_lamb = 100, ga_M = 1.5,
-    rng = None, **kwargs):
+    rng = None, **kwargs: dict):
         """
         nparent : int
             Number of parents to select.
@@ -59,7 +59,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
             Function definition:
             --------------------
-            objfn_trans(obj, **kwargs):
+            objfn_trans(obj, **kwargs: dict):
                 Parameters
                     obj : scalar, numpy.ndarray
                         Objective scalar or vector to be transformed
@@ -81,7 +81,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
             Function definition:
             --------------------
-            ndset_trans(ndset, **kwargs):
+            ndset_trans(ndset, **kwargs: dict):
                 Parameters
                     ndset : numpy.ndarray
                         Array of shape (j, o) containing nondominated points.
@@ -176,7 +176,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
     nparent = None, algorithm = None, method = None,
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None,
-    **kwargs):
+    **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -313,7 +313,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, trans, trans_kwargs, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, trans, trans_kwargs, **kwargs: dict):
         """
         Return a parent selection objective function.
 
@@ -345,7 +345,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
         return outfn
 
     # TODO: implementation of this function
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
@@ -353,7 +353,7 @@ class MultiObjectiveGenomicParentSelection(ParentSelectionOperator):
 
     def ppareto(self, t_cur, t_max, geno, bval, gmod, nparent = None,
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None,
-    ngen = None, mu = None, lamb = None, M = None, **kwargs):
+    ngen = None, mu = None, lamb = None, M = None, **kwargs: dict):
         # get parameters
         if nparent is None:
             nparent = self.nparent

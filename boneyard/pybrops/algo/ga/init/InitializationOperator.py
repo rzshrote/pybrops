@@ -2,7 +2,7 @@ class InitializationOperator:
     """
     docstring for InitializationOperator.
     """
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         Constructor for InitializationOperator.
         

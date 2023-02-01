@@ -4,7 +4,7 @@ class GenericGeneticAlgorithm(GeneticAlgorithm):
     """
     docstring for GenericGeneticAlgorithm.
     """
-    def __init__(self, mu, lamb, ngen, **kwargs):
+    def __init__(self, mu, lamb, ngen, **kwargs: dict):
         """
         Constructor for GenericGeneticAlgorithm.
         

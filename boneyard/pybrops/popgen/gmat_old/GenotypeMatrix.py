@@ -6,7 +6,7 @@ class GenotypeMatrix(MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         """
         GenotypeMatrix constructor
 

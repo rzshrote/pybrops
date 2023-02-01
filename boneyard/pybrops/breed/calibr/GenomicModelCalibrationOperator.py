@@ -4,7 +4,7 @@ class GenomicModelCalibrationOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(GenomicModelCalibrationOperator, self).__init__()
 
     ############################################################################
@@ -14,7 +14,7 @@ class GenomicModelCalibrationOperator:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def calibrate(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def calibrate(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         """
         Calibrate genomic models using genotype and phenotype data.
 

@@ -1,13 +1,13 @@
 class TournamentSelectionOperator(SelectionOperator):
     """docstring for TournamentSelectionOperator."""
-    def __init__(self, n, **kwargs):
+    def __init__(self, n, **kwargs: dict):
         super(TournamentSelectionOperator, self).__init__(
             n = n,
             **kwargs
         )
         self.n = n
     # TODO: fixme
-    def select(self, t_cur, t_max, k, ppop, pscore, opop, oscore, **kwargs):
+    def select(self, t_cur, t_max, k, ppop, pscore, opop, oscore, **kwargs: dict):
         sel = []                            # declare output list
         sel_score = []                      # selection score
         ix = [k for k in range(len(score))] # create list of indices

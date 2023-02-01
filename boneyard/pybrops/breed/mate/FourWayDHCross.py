@@ -1,4 +1,6 @@
+import numpy
 from . import MatingOperator
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 
 class FourWayDHCross(MatingOperator):
     """docstring for FourWayDHCross."""
@@ -6,7 +8,7 @@ class FourWayDHCross(MatingOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(FourWayDHCross, self).__init__(**kwargs)
 
     ############################################################################
@@ -49,7 +51,7 @@ class FourWayDHCross(MatingOperator):
             A DensePhasedGenotypeMatrix of progeny.
         """
         # check data type
-        pybrops.popgen.gmat.is_DensePhasedGenotypeMatrix(pgvmat, "pgvmat")
+        check_is_DensePhasedGenotypeMatrix(pgvmat, "pgvmat")
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
         f2sel = numpy.repeat(sel[0::4], ncross)

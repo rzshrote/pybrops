@@ -21,7 +21,7 @@ class DenseChromosome(Chromosome):
         fitness: Union[numpy.ndarray,numbers.Number,None] = None, 
         fitness_n: Union[numpy.ndarray,numbers.Number,None] = None, 
         fitness_var: Union[numpy.ndarray,numbers.Number,None] = None, 
-        **kwargs):
+        **kwargs: dict):
         """
         Constructor for DenseChromosome.
         

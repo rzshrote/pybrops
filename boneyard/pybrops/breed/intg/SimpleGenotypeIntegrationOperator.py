@@ -6,7 +6,7 @@ class SimpleGenotypeIntegrationOperator(GenotypeIntegrationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(SimpleGenotypeIntegrationOperator, self).__init__(**kwargs)
 
     ############################################################################

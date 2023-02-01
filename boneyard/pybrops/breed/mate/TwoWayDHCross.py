@@ -13,7 +13,7 @@ class TwoWayDHCross(MatingOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         super(TwoWayDHCross, self).__init__(**kwargs)
         # check data types
         cond_check_is_Generator(rng, "rng")
@@ -24,7 +24,7 @@ class TwoWayDHCross(MatingOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs):
+    def mate(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 2-way mate selection scheme.
 

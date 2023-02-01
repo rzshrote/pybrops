@@ -6,7 +6,7 @@ class DensePhenotypicEstimatedBreedingValueMatrix(DenseEstimatedBreedingValueMat
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, **kwargs: dict):
         super(DensePhenotypicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
             **kwargs

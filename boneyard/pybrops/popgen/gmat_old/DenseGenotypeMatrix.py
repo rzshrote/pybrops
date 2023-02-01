@@ -13,7 +13,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, **kwargs: dict):
         super(DenseGenotypeMatrix, self).__init__(
             mat = mat,
             **kwargs
@@ -100,7 +100,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
         return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, **kwargs):
+    def adjoin(self, values, axis = -1, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -136,7 +136,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -166,7 +166,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, **kwargs):
+    def insert(self, obj, values, axis = -1, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -205,7 +205,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -236,7 +236,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
         return out
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -268,7 +268,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, **kwargs):
+    def append(self, values, axis = -1, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -291,7 +291,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(self, obj, axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -310,7 +310,7 @@ class DenseGenotypeMatrix(DenseMutableMatrix,GenotypeMatrix):
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis)
 
-    def incorp(self, obj, values, axis = -1, **kwargs):
+    def incorp(self, obj, values, axis = -1, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 

@@ -1,7 +1,7 @@
 class GeneticAlgorithm:
     """docstring for GeneticAlgorithm."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(GeneticAlgorithm, self).__init__()
 
     def mu():
@@ -92,5 +92,5 @@ class GeneticAlgorithm:
         return locals()
     sselop = property(**sselop())
 
-    def evolve(self, t, lbook, **kwargs):
+    def evolve(self, t, lbook, **kwargs: dict):
         raise NotImplementedError("method is abstract")

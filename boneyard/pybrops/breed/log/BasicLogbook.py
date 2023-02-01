@@ -8,7 +8,7 @@ class BasicLogbook(Logbook):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(BasicLogbook, self).__init__(**kwargs)
         self.reset()
 
@@ -40,7 +40,7 @@ class BasicLogbook(Logbook):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs):
+    def log_initialize(self, t_cur, t_max, geno, bval, gmod, **kwargs: dict):
         self.book["rep"].append(self.rep)
         self.book["t_cur"].append(t_cur)
         self.book["t_max"].append(t_max)
@@ -79,25 +79,25 @@ class BasicLogbook(Logbook):
         self.book["main_true_var_a"].append(gmod["true"].var_a(geno["main"]).sum())
         self.book["main_true_bulmer"].append(gmod["true"].bulmer(geno["main"]).sum())
 
-    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs):
+    def log_pselect(self, t_cur, t_max, pgvmat, sel, ncross, nprogeny, misc, **kwargs: dict):
         pass
 
-    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs):
+    def log_mate(self, t_cur, t_max, pgvmat, misc, **kwargs: dict):
         pass
 
-    def log_gintegrate(self, t_cur, t_max, geno, misc, **kwargs):
+    def log_gintegrate(self, t_cur, t_max, geno, misc, **kwargs: dict):
         pass
 
-    def log_evaluate(self, t_cur, t_max, bvmat, bvmat_true, misc, **kwargs):
+    def log_evaluate(self, t_cur, t_max, bvmat, bvmat_true, misc, **kwargs: dict):
         pass
 
-    def log_bvintegrate(self, t_cur, t_max, bval, misc, **kwargs):
+    def log_bvintegrate(self, t_cur, t_max, bval, misc, **kwargs: dict):
         pass
 
-    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs):
+    def log_calibrate(self, t_cur, t_max, gmod, misc, **kwargs: dict):
         pass
 
-    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs):
+    def log_sselect(self, t_cur, t_max, geno, bval, gmod, misc, **kwargs: dict):
         self.book["rep"].append(self.rep)
         self.book["t_cur"].append(t_cur)
         self.book["t_max"].append(t_max)

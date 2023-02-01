@@ -6,7 +6,7 @@ class TrueEvaluationOperator(EvaluationOperator):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(TrueEvaluationOperator, self).__init__(**kwargs)
 
     ############################################################################
@@ -16,7 +16,7 @@ class TrueEvaluationOperator(EvaluationOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs):
+    def evaluate(self, t_cur, t_max, pgvmat, gmod_true, **kwargs: dict):
         """
         Parameters
         ----------

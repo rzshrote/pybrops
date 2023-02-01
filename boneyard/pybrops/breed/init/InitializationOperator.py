@@ -4,13 +4,13 @@ class InitializationOperator:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict):
         super(InitializationOperator, self).__init__()
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize a breeding program.
 

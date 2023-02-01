@@ -7,7 +7,7 @@ from pybrops.core.error import cond_check_is_Generator
 class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
     """docstring for ConventionalGenomicSurvivorSelection."""
 
-    def __init__(self, k_s, traitwt_s, rng = None, **kwargs):
+    def __init__(self, k_s, traitwt_s, rng = None, **kwargs: dict):
         super(ConventionalGenomicSurvivorSelection, self).__init__(**kwargs)
 
         # check data types
@@ -27,7 +27,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def sselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select survivors to serve as potential parents for breeding.
 
@@ -135,7 +135,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
 
         return geno_new, bval_new, gmod_new, misc
 
-    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
@@ -210,7 +210,7 @@ class ConventionalGenomicSurvivorSelection(SurvivorSelectionOperator):
 
         return objfn
 
-    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def sobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a vectorized objective function.
         """

@@ -5,13 +5,13 @@ from . import MemeticOperator
 class StochasticSetHillClimberMemeticOperator(MemeticOperator):
     """docstring for StochasticSetHillClimberMemeticOperator."""
 
-    def __init__(self, setspace, rng, objwt = 1.0, **kwargs):
+    def __init__(self, setspace, rng, objwt = 1.0, **kwargs: dict):
         super(StochasticSetHillClimberMemeticOperator, self).__init__(**kwargs)
         self.setspace = setspace
         self.rng = rng
         self.objwt = objwt
 
-    def evolve(self, objfn, pop, score, setspace = None, objwt = None, **kwargs):
+    def evolve(self, objfn, pop, score, setspace = None, objwt = None, **kwargs: dict):
         """
         Parameters
         ----------
