@@ -22,7 +22,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGeneticVarianceMatrix.
 

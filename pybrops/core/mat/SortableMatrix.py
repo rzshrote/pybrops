@@ -3,7 +3,9 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes sorted.
 """
 
-from typing import Any
+from typing import Any, Sequence, Union
+
+import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class SortableMatrix(MutableMatrix):
@@ -17,7 +19,7 @@ class SortableMatrix(MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         SortableMatrix constructor
 
@@ -34,7 +36,12 @@ class SortableMatrix(MutableMatrix):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys, axis, **kwargs):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -55,14 +62,19 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder(self, indices, axis, **kwargs):
+    def reorder(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix using an array of indices. Note this
         modifies the Matrix in-place.
 
         Parameters
         ----------
-        indices : (N,) ndarray of ints
+        indices : (N,) ndarray of ints, Sequence of ints
             Array of indices that reorder the matrix along the specified axis.
         axis : int
             Axis to be reordered.
@@ -71,7 +83,12 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def sort(self, keys, axis, **kwargs):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix using a sequence of keys. Note this modifies
         the Matrix in-place.

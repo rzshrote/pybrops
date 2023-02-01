@@ -20,7 +20,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, df, col_atype, col_aefct, **kwargs):
+    def __init__(self, df, col_atype, col_aefct, **kwargs: dict):
         super(PandasPhenotypeDataFrame, self).__init__(
             df = df,
             **kwargs
@@ -96,7 +96,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, ctype = None, dtype = None, atype = None, aefct = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, return_atype = False, return_aefct = False, **kwargs):
+    def col_data(self, index = None, name = None, ctype = None, dtype = None, atype = None, aefct = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, return_atype = False, return_aefct = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 

@@ -20,7 +20,7 @@ class FourWayCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         super(FourWayCross, self).__init__(**kwargs)
 
         # make assignments
@@ -49,7 +49,7 @@ class FourWayCross(MatingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat: DensePhasedGenotypeMatrix, sel: numpy.ndarray, ncross: int, nprogeny: int, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat: DensePhasedGenotypeMatrix, sel: numpy.ndarray, ncross: int, nprogeny: int, miscout = None, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 4-way mate selection scheme.
 

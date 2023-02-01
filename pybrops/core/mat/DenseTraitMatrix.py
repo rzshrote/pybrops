@@ -147,7 +147,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     trait_axis = property(**trait_axis())
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, trait = None, **kwargs):
+    def adjoin(self, values, axis = -1, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -185,7 +185,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def adjoin_trait(self, values, trait = None, **kwargs):
+    def adjoin_trait(self, values, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -236,7 +236,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -269,7 +269,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete_trait(self, obj, **kwargs):
+    def delete_trait(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the trait axis.
 
@@ -303,7 +303,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, trait = None, **kwargs):
+    def insert(self, obj, values, axis = -1, trait = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -345,7 +345,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert_trait(self, obj, values, trait = None, **kwargs):
+    def insert_trait(self, obj, values, trait = None, **kwargs: dict):
         """
         Insert values along the trait axis before the given indices.
 
@@ -398,7 +398,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -428,7 +428,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def select_trait(self, indices, **kwargs):
+    def select_trait(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the trait axis.
 
@@ -463,7 +463,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs):
+    def concat(cls, mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -495,7 +495,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat_trait(cls, mats, **kwargs):
+    def concat_trait(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the trait axis.
 
@@ -562,7 +562,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, trait = None, **kwargs):
+    def append(self, values, axis = -1, trait = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -594,7 +594,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_trait(self, values, trait = None, **kwargs):
+    def append_trait(self, values, trait = None, **kwargs: dict):
         """
         Append values to the Matrix along the trait axis.
 
@@ -629,7 +629,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(self, obj, axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -650,7 +650,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_trait(self, obj, **kwargs):
+    def remove_trait(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the trait axis.
 
@@ -667,7 +667,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def incorp(self, obj, values, axis = -1, trait = None, **kwargs):
+    def incorp(self, obj, values, axis = -1, trait = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -696,7 +696,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_trait(self, obj, values, trait = None, **kwargs):
+    def incorp_trait(self, obj, values, trait = None, **kwargs: dict):
         """
         Incorporate values along the trait axis before the given indices.
 
@@ -736,7 +736,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs):
+    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -764,7 +764,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return indices
 
-    def lexsort_trait(self, keys = None, **kwargs):
+    def lexsort_trait(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the trait
         axis.
@@ -808,7 +808,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs):
+    def reorder(self, indices, axis = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -827,7 +827,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def reorder_trait(self, indices, **kwargs):
+    def reorder_trait(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the trait axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -848,7 +848,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = self._trait[indices]                # reorder trait array
 
-    def sort(self, keys = None, axis = -1, **kwargs):
+    def sort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -870,7 +870,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot sort along axis {0}".format(axis))
 
-    def sort_trait(self, keys = None, **kwargs):
+    def sort_trait(self, keys = None, **kwargs: dict):
         """
         Sort slements of the Matrix along the trait axis using a sequence of
         keys. Note this modifies the Matrix in-place.

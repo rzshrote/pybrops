@@ -17,7 +17,7 @@ class ImmigrationOperator(BreedingEdge):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class ImmigrationOperator.
 
@@ -35,7 +35,7 @@ class ImmigrationOperator(BreedingEdge):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def immigrate(self, bnode, **kwargs):
+    def immigrate(self, bnode, **kwargs: dict):
         """
         Immigrate individuals from a BreedingNode.
 

@@ -24,7 +24,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, G_efct = "fixed", E_efct = "random", RnE_efct = "random", **kwargs):
+    def __init__(self, G_efct = "fixed", E_efct = "random", RnE_efct = "random", **kwargs: dict):
         """
         Get estimated breeding values for an additive model of:
             y = G + E + R(E) + e
@@ -66,7 +66,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate_ptdf(ptdf, gmat, **kwargs):
+    def estimate_ptdf(ptdf, gmat, **kwargs: dict):
         """
         Helper method to handle breeding value estimation when passed a
         PhenotypeDataFrame.
@@ -214,7 +214,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
 
 
 
-    def estimate(self, pt_or_bv, gmat, **kwargs):
+    def estimate(self, pt_or_bv, gmat, **kwargs: dict):
         """
         Estimate breeding values.
 

@@ -18,7 +18,7 @@ class PhenotypingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class PhenotypingProtocol.
 
@@ -66,7 +66,7 @@ class PhenotypingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout, **kwargs):
+    def phenotype(self, pgmat, miscout, **kwargs: dict):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -88,7 +88,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_h2(self, h2, pgmat, **kwargs):
+    def set_h2(self, h2, pgmat, **kwargs: dict):
         """
         Set the narrow sense heritability for environments.
 
@@ -103,7 +103,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_H2(self, H2, pgmat, **kwargs):
+    def set_H2(self, H2, pgmat, **kwargs: dict):
         """
         Set the broad sense heritability for environments.
 

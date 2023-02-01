@@ -25,7 +25,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs):
+    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs: dict):
         """
         Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
@@ -333,14 +333,14 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         self.start_genome, self.start_geno, self.start_pheno, self.start_bval, self.start_gmod = self._initop.initialize(**kwargs)
 
-    def is_initialized(self, **kwargs):
+    def is_initialized(self, **kwargs: dict):
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -365,7 +365,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         )
 
     ################ Whole breeding program ################
-    def reset(self, **kwargs):
+    def reset(self, **kwargs: dict):
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -381,7 +381,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self.gmod = copy.deepcopy(self.start_gmod)      # reset genomic model container
         self.t_cur = 0                                  # reset time
 
-    def advance(self, ngen, lbook, verbose = False, **kwargs):
+    def advance(self, ngen, lbook, verbose = False, **kwargs: dict):
         """
         Advance the breeding program by a specified number of generations.
 
@@ -509,7 +509,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             # increment time variables
             self._t_cur += 1
 
-    def evolve(self, nrep, ngen, lbook, loginit = True, verbose = False, **kwargs):
+    def evolve(self, nrep, ngen, lbook, loginit = True, verbose = False, **kwargs: dict):
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,

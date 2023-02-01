@@ -17,7 +17,7 @@ class BreedingValueProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class BreedingValueProtocol.
 
@@ -31,7 +31,7 @@ class BreedingValueProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, ptobj, gtobj, miscout, **kwargs):
+    def estimate(self, ptobj, gtobj, miscout, **kwargs: dict):
         """
         Estimate breeding values.
 

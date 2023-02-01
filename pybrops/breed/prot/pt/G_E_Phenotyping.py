@@ -27,7 +27,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, nenv = 1, nrep = 1, var_env = 0, var_rep = 0, var_err = 0, rng = None, **kwargs):
+    def __init__(self, gpmod, nenv = 1, nrep = 1, var_env = 0, var_rep = 0, var_err = 0, rng = None, **kwargs: dict):
         """
         Construct a phenotyping protocol that simulates environments as having
         a fixed effect, but no genotype by environment interaction. Variance
@@ -242,7 +242,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, nrep = None, var_env = None, var_rep = None, var_err = None, **kwargs):
+    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, nrep = None, var_env = None, var_rep = None, var_err = None, **kwargs: dict):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -501,7 +501,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
         return ptdf
 
-    def set_h2(self, h2, pgmat, gpmod = None, **kwargs):
+    def set_h2(self, h2, pgmat, gpmod = None, **kwargs: dict):
         """
         Set the narrow sense heritability for environments.
 
@@ -534,7 +534,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # (t,) * (t,) -> (t,)
         self.var_err = (1.0 - h2) / h2 * var_A
 
-    def set_H2(self, H2, pgmat, gpmod = None, **kwargs):
+    def set_H2(self, H2, pgmat, gpmod = None, **kwargs: dict):
         """
         Set the broad sense heritability for environments.
 

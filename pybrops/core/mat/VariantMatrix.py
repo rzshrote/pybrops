@@ -18,7 +18,7 @@ class VariantMatrix(GroupableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         VariantMatrix constructor
 
@@ -251,7 +251,7 @@ class VariantMatrix(GroupableMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def adjoin_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -284,7 +284,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete_vrnt(self, obj, **kwargs):
+    def delete_vrnt(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
@@ -303,7 +303,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def insert_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -339,7 +339,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def select_vrnt(self, indices, **kwargs):
+    def select_vrnt(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the variant axis.
 
@@ -359,7 +359,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs):
+    def concat_vrnt(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 
@@ -380,7 +380,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
-    def append_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def append_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs: dict):
         """
         Append values to the Matrix along the variant axis.
 
@@ -407,7 +407,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_vrnt(self, obj, **kwargs):
+    def remove_vrnt(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the variant axis.
 
@@ -420,7 +420,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def incorp_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs: dict):
         """
         Incorporate values along the variant axis before the given indices.
 
@@ -451,7 +451,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
-    def lexsort_vrnt(self, keys, **kwargs):
+    def lexsort_vrnt(self, keys, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the
         variant axis.
@@ -471,7 +471,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder_vrnt(self, indices, **kwargs):
+    def reorder_vrnt(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the variant axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -485,7 +485,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def sort_vrnt(self, keys, **kwargs):
+    def sort_vrnt(self, keys, **kwargs: dict):
         """
         Sort slements of the Matrix along the variant axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -501,7 +501,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
-    def group_vrnt(self, **kwargs):
+    def group_vrnt(self, **kwargs: dict):
         """
         Sort the Matrix along the variant axis, then populate grouping indices
         for the variant axis.
@@ -513,7 +513,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped_vrnt(self, **kwargs):
+    def is_grouped_vrnt(self, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped along the
         variant axis.
@@ -532,7 +532,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
+    def interp_genpos(self, gmap, **kwargs: dict):
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -546,7 +546,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.
@@ -565,7 +565,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################## Clustering Methods ##################
-    def assign_hapgrp(self, k, **kwargs):
+    def assign_hapgrp(self, k, **kwargs: dict):
         """
         Assign haplotype groups using k-means clustering.
 

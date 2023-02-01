@@ -22,7 +22,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for CoancestryMatrix class.
 
@@ -65,7 +65,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         raise NotImplementedError("method is abstract")
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args, **kwargs):
+    def coancestry(self, *args, **kwargs: dict):
         """
         Retrieve the coancestry between individuals.
 
@@ -78,7 +78,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def kinship(self, *args, **kwargs):
+    def kinship(self, *args, **kwargs: dict):
         """
         Retrieve the kinship between individuals.
 
@@ -137,7 +137,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs: dict):
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 

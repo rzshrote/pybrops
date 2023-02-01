@@ -29,7 +29,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = global_prng, **kwargs):
+    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
 
@@ -211,7 +211,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             sel.append(subbest)
         return sel
 
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
 

@@ -21,7 +21,7 @@ class FourWayDHCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class FourWayDHCross.
 
@@ -60,7 +60,7 @@ class FourWayDHCross(MatingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 4-way mate selection scheme.
 

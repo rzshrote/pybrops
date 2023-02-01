@@ -27,7 +27,7 @@ class StandardGeneticMap(GeneticMap):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_genpos, **kwargs):
+    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_genpos, **kwargs: dict):
         """
         Constructor for creating a standard genetic map object.
 

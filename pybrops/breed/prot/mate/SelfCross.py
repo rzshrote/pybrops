@@ -20,7 +20,7 @@ class SelfCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class SelfCross.
 
@@ -59,7 +59,7 @@ class SelfCross(MatingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat: DensePhasedGenotypeMatrix, sel: numpy.ndarray, ncross: int, nprogeny: int, miscout: dict = None, s: int = 0, **kwargs):
+    def mate(self, pgmat: DensePhasedGenotypeMatrix, sel: numpy.ndarray, ncross: int, nprogeny: int, miscout: dict = None, s: int = 0, **kwargs: dict):
         """
         Self-fertilize individuals.
 

@@ -19,7 +19,7 @@ class SelectionProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class SelectionProtocol.
 
@@ -37,7 +37,7 @@ class SelectionProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Select individuals for breeding.
 
@@ -81,7 +81,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function constructed from inputs for fast calling.
 
@@ -111,7 +111,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function constructed from inputs for fast
         calling.
@@ -142,7 +142,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

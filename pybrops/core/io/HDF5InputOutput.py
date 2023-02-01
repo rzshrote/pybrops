@@ -19,7 +19,7 @@ class HDF5InputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class HDF5InputOutput.
 
@@ -56,7 +56,7 @@ class HDF5InputOutput:
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename: str, groupname: Optional[str]):
+    def from_hdf5(cls, filename: str, groupname: Optional[str]) -> 'HDF5InputOutput':
         """
         Read object from an HDF5 file.
 

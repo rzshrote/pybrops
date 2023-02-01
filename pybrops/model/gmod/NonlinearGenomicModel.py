@@ -18,7 +18,7 @@ class NonlinearGenomicModel(GenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for NonlinearGenomicModel class.
 

@@ -21,7 +21,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Constructor for DenseMolecularCoancestryMatrix class.
 
@@ -151,7 +151,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     # FIXME: there is a bug here. gmat with phased and unphased matrices return different values.
     @classmethod
-    def from_gmat(cls, gmat, **kwargs):
+    def from_gmat(cls, gmat, **kwargs: dict):
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 

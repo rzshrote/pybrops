@@ -25,7 +25,7 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs):
+    def __init__(self, k_p, traitwt_p, ncross, nprogeny, nrep, selfing = False, rng = None, **kwargs: dict):
         """
         k_p : int
             Number of crosses to select (1/2 number of parents).
@@ -157,7 +157,7 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs):
+    def pselect(self, t_cur, t_max, geno, bval, gmod, k = None, traitwt = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -254,7 +254,7 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
 
         return geno["cand"], sel, self.ncross, self.nprogeny, misc
 
-    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """
@@ -334,7 +334,7 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
 
         return objfn
 
-    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs):
+    def pobjfn_vec(self, t_cur, t_max, geno, bval, gmod, traitwt = None, **kwargs: dict):
         """
         Return a parent selection objective function.
         """

@@ -23,7 +23,7 @@ class GenomicModel(HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the GenomicModel class.
 
@@ -125,7 +125,7 @@ class GenomicModel(HDF5InputOutput):
     ############################################################################
 
     ####### methods for model fitting and prediction #######
-    def fit_numpy(self, Y, X, Z, **kwargs):
+    def fit_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Fit the model.
 
@@ -142,7 +142,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def fit(self, ptobj, cvobj, gtobj, **kwargs):
+    def fit(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Fit the model.
 
@@ -161,7 +161,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def predict_numpy(self, X, Z, **kwargs):
+    def predict_numpy(self, X, Z, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -185,7 +185,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def predict(self, cvobj, gtobj, **kwargs):
+    def predict(self, cvobj, gtobj, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -210,7 +210,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def score_numpy(self, Y, X, Z, **kwargs):
+    def score_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -236,7 +236,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def score(self, ptobj, cvobj, gtobj, **kwargs):
+    def score(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -265,7 +265,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######## methods for estimated breeding values #########
-    def gebv_numpy(self, Z, **kwargs):
+    def gebv_numpy(self, Z, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -287,7 +287,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gebv(self, gtobj, **kwargs):
+    def gebv(self, gtobj, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -311,7 +311,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ###### methods for population variance prediction ######
-    def var_G_numpy(self, Z, **kwargs):
+    def var_G_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -328,7 +328,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def var_G(self, gtobj, **kwargs):
+    def var_G(self, gtobj, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -346,7 +346,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def var_A_numpy(self, Z, **kwargs):
+    def var_A_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -363,7 +363,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def var_A(self, gtobj, **kwargs):
+    def var_A(self, gtobj, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -381,7 +381,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def var_a_numpy(self, p, ploidy, **kwargs):
+    def var_a_numpy(self, p, ploidy, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -400,7 +400,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def var_a(self, gtobj, ploidy, **kwargs):
+    def var_a(self, gtobj, ploidy, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -420,7 +420,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def bulmer_numpy(self, Z, p, ploidy, **kwargs):
+    def bulmer_numpy(self, Z, p, ploidy, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -441,7 +441,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def bulmer(self, gtobj, ploidy, **kwargs):
+    def bulmer(self, gtobj, ploidy, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -583,7 +583,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, descale, **kwargs):
+    def usl_numpy(self, p, ploidy, descale, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -602,7 +602,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def usl(self, gtobj, ploidy, descale, **kwargs):
+    def usl(self, gtobj, ploidy, descale, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -622,7 +622,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl_numpy(self, p, ploidy, descale, **kwargs):
+    def lsl_numpy(self, p, ploidy, descale, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 
@@ -641,7 +641,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl(self, gtobj, ploidy, descale, **kwargs):
+    def lsl(self, gtobj, ploidy, descale, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 

@@ -22,7 +22,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, data, col_grp = None, col_analysis_type = None, col_analysis_effect = None, row_name = None, **kwargs):
+    def __init__(self, data, col_grp = None, col_analysis_type = None, col_analysis_effect = None, row_name = None, **kwargs: dict):
         """
         Constructor for the concrete class DictPhenotypeDataFrame.
 
@@ -158,7 +158,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
                  analysis_type = None, analysis_effect = None, dtype = None,
                  return_index = False, return_name = False, return_grp = False,
                  return_analysis_type = None, return_analysis_effect = None,
-                 return_dtype = False, **kwargs):
+                 return_dtype = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 

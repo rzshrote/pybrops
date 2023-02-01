@@ -21,7 +21,7 @@ class PrunableMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         PrunableMatrix constructor
 
@@ -36,7 +36,7 @@ class PrunableMatrix(Matrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def prune(self, axis, **kwargs):
+    def prune(self, axis, **kwargs: dict):
         """
         Calculate a set of indices for selection of rows, columns, etc.
 

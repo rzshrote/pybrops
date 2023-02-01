@@ -19,7 +19,7 @@ class OptimizationAlgorithm:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class OptimizationAlgorithm.
 

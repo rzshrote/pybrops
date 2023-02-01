@@ -14,7 +14,7 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, **kwargs):
+    def __init__(self, gpmod, **kwargs: dict):
         """
         Constructor for the concrete class TrueBreedingValue.
 
@@ -50,7 +50,7 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs):
+    def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs: dict):
         """
         Estimate breeding values.
 

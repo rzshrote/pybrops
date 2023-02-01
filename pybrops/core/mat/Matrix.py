@@ -27,7 +27,7 @@ class Matrix(HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Matrix constructor
 
@@ -568,13 +568,13 @@ class Matrix(HDF5InputOutput):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def concat(mats: ArrayLike, axis: int, **kwargs: dict) -> 'Matrix':
+    def concat(mats: Sequence, axis: int, **kwargs: dict) -> 'Matrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : ArrayLike of matrices
+        mats : Sequence of matrices
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int

@@ -18,7 +18,7 @@ class DataFrame:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class DataFrame.
 
@@ -187,13 +187,13 @@ class DataFrame:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, **kwargs):
+    def col_data(self, **kwargs: dict):
         """
         Get a column's data from the dataframe.
         """
         raise NotImplementedError("method is abstract")
 
-    def to_pandas_df(self, **kwargs):
+    def to_pandas_df(self, **kwargs: dict):
         """
         Get dataframe as a pandas.DataFrame.
 
@@ -204,7 +204,7 @@ class DataFrame:
         """
         raise NotImplementedError("method is abstract")
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
 

@@ -17,7 +17,7 @@ class MatingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for abstract class MatingProtocol.
 
@@ -31,7 +31,7 @@ class MatingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs: dict):
         """
         Mate individuals according to a mating scheme.
 

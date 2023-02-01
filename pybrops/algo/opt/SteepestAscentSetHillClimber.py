@@ -20,7 +20,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = global_prng, **kwargs):
+    def __init__(self, rng = global_prng, **kwargs: dict):
         """
         Constructor for a steepest ascent set hill-climber.
 
@@ -62,7 +62,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         # randomly initialize a solution
         gbest_soln = self.rng.choice(sspace, (k,))
         wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, gbest_soln))]     # get search space elements not in chromosome

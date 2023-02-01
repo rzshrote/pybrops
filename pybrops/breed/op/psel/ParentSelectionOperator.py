@@ -15,7 +15,7 @@ class ParentSelectionOperator:
         1) Parental selection for an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class ParentSelectionOperator.
 
@@ -26,7 +26,7 @@ class ParentSelectionOperator:
         """
         super(ParentSelectionOperator, self).__init__()
 
-    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
+    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Select individuals to serve as parents in a breeding program.
 

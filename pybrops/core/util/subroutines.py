@@ -13,7 +13,7 @@ __all__ = [
     "human2bytes"
 ]
 
-def srange(start, stop, step):
+def srange(start: int, stop: int, step: int) -> int:
     """
     Stop range generator. Similar to a normal ``range`` generator object, but
     also yields the stop index as its final output.
@@ -35,7 +35,7 @@ def srange(start, stop, step):
     yield from range(start, stop, step)
     yield stop
 
-def matrix_is_sorted(mat):
+def matrix_is_sorted(mat: numpy.ndarray) -> bool:
     """
     Determine if a matrix is sorted in ascending order.
 
@@ -55,7 +55,7 @@ def matrix_is_sorted(mat):
             return False
     return True
 
-def slice_to_range(s, end):
+def slice_to_range(s: slice, end: int) -> range:
     """
     Convert a ``slice`` object to a ``range`` object.
 
@@ -75,7 +75,7 @@ def slice_to_range(s, end):
     r = range(ifnone(s.start, 0), ifnone(s.end, end), ifnone(s.step, 1))
     return r
 
-def slice_to_list(s, end):
+def slice_to_list(s: slice, end: int) -> list:
     """
     Convert a ``slice`` object to a ``list`` object.
 
@@ -112,7 +112,7 @@ HUMAN2BYTES_DICT = {
     ''   : 1
 }
 
-def human2bytes(s):
+def human2bytes(s: str) -> int:
     """
     Convert a human readable string representing a memory size to an integer
     number of bytes.

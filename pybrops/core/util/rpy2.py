@@ -30,6 +30,7 @@ R objects.
 # from rpy2.robjects.vectors import Vector
 
 
+import numpy
 from rpy2.robjects import baseenv
 from rpy2.robjects import NULL
 # vectors
@@ -326,14 +327,14 @@ def numpy_to_R(a, Rtype = None, factor = False):
     elif a.ndim == 2:
         conv_dict = _kind_numpy_to_R_Matrix
     else:
-        raise ValueError("numpy.ndarray of ndim == {0} not supported".format(ndim))
+        raise ValueError("numpy.ndarray of ndim == {0} not supported".format(a.ndim))
 
     ##############################
     ### get conversion function
     try:
         convfn = conv_dict[Rtype]
     except:
-        raise TypeError("conversion routine for numpy.ndarray kind '{0}' not supported".format(kind))
+        raise TypeError("conversion routine for numpy.ndarray kind '{0}' not supported".format(a.dtype.kind))
 
     ##############################
     ### convert array

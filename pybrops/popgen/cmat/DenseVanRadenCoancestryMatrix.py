@@ -33,7 +33,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseVanRadenCoancestryMatrix.
 
@@ -174,7 +174,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
 
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs: dict):
         """
         Create a DenseVanRadenCoancestryMatrix from a GenotypeMatrix
         

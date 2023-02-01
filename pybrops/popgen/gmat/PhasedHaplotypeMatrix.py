@@ -19,7 +19,7 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class PhasedHaplotypeMatrix.
 

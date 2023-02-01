@@ -8,4 +8,3 @@ from . import arrayix
 from . import pareto
 from . import h5py
 from . import rpy2
-from . import numpy

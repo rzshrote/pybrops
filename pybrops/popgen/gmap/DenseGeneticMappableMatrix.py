@@ -18,7 +18,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
     vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
     vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
-    vrnt_mask = None, **kwargs):
+    vrnt_mask = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGeneticMappableMatrix
 
@@ -52,7 +52,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
         )
 
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
+    def interp_genpos(self, gmap, **kwargs: dict):
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -68,7 +68,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
         # interpolate postions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.

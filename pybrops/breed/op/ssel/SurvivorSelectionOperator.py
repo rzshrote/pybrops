@@ -15,7 +15,7 @@ class SurvivorSelectionOperator:
         1) Survivor selection for an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class SurvivorSelectionOperator.
 
@@ -26,7 +26,7 @@ class SurvivorSelectionOperator:
         """
         super(SurvivorSelectionOperator, self).__init__()
 
-    def sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
+    def sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Select progeny survivors in a breeding program.
 

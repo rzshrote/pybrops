@@ -78,7 +78,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, beta, u_misc, u_a, trait = None, model_name = None, params = None, **kwargs):
+    def __init__(self, beta, u_misc, u_a, trait = None, model_name = None, params = None, **kwargs: dict):
         """
         Constructor for DenseAdditiveLinearGenomicModel class.
 
@@ -322,7 +322,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################################################################
 
     ####### methods for model fitting and prediction #######
-    def fit_numpy(self, Y, X, Z, **kwargs):
+    def fit_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Fit the model.
 
@@ -341,7 +341,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
-    def fit(self, ptobj, cvobj, gtobj, **kwargs):
+    def fit(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Fit the model.
 
@@ -363,7 +363,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
     ######## methods for estimated breeding values #########
-    def predict_numpy(self, X, Z, **kwargs):
+    def predict_numpy(self, X, Z, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -390,7 +390,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return Y_hat
 
-    def predict(self, cvobj, gtobj, **kwargs):
+    def predict(self, cvobj, gtobj, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -444,7 +444,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def score_numpy(self, Y, X, Z, **kwargs):
+    def score_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -499,7 +499,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return Rsq
 
-    def score(self, ptobj, cvobj, gtobj, **kwargs):
+    def score(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -555,7 +555,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return Rsq
 
     ######## methods for estimated breeding values #########
-    def gebv_numpy(self, Z, **kwargs):
+    def gebv_numpy(self, Z, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -580,7 +580,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return gebv_hat
 
-    def gebv(self, gtobj, **kwargs):
+    def gebv(self, gtobj, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -641,7 +641,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ###### methods for population variance prediction ######
-    def var_G_numpy(self, Z, **kwargs):
+    def var_G_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -665,7 +665,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_G(self, gtobj, **kwargs):
+    def var_G(self, gtobj, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -693,7 +693,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_A_numpy(self, Z, **kwargs):
+    def var_A_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -717,7 +717,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_A(self, gtobj, **kwargs):
+    def var_A(self, gtobj, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -745,7 +745,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_a_numpy(self, p, ploidy, **kwargs):
+    def var_a_numpy(self, p, ploidy, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -773,7 +773,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_a(self, gtobj, ploidy = None, **kwargs):
+    def var_a(self, gtobj, ploidy = None, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -812,7 +812,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def bulmer_numpy(self, Z, p, ploidy, **kwargs):
+    def bulmer_numpy(self, Z, p, ploidy, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -840,7 +840,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out[mask] = numpy.nan                   # add NaN's (avoids div by zero warning)
         return out
 
-    def bulmer(self, gtobj, ploidy = None, **kwargs):
+    def bulmer(self, gtobj, ploidy = None, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -883,7 +883,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, descale = False, **kwargs):
+    def usl_numpy(self, p, ploidy, descale = False, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -950,7 +950,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def usl(self, gtobj, ploidy = None, descale = False, **kwargs):
+    def usl(self, gtobj, ploidy = None, descale = False, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -982,7 +982,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def lsl_numpy(self, p, ploidy, descale = False, **kwargs):
+    def lsl_numpy(self, p, ploidy, descale = False, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 
@@ -1049,7 +1049,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def lsl(self, gtobj, ploidy = None, descale = False, **kwargs):
+    def lsl(self, gtobj, ploidy = None, descale = False, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 

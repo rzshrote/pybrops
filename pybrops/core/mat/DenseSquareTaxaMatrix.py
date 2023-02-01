@@ -92,7 +92,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     # is_square inherited from DenseSquareMatrix
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -135,7 +135,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
@@ -220,7 +220,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(self, obj, axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -253,7 +253,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs):
+    def delete_taxa(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -293,7 +293,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
+    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -341,7 +341,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         return out
 
     # TODO: FIXME
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -404,7 +404,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(self, indices, axis = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -434,7 +434,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return out
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -478,7 +478,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs):
+    def concat(cls, mats, axis = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -511,7 +511,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     # TODO: FIXME
     @classmethod
-    def concat_taxa(cls, mats, **kwargs):
+    def concat_taxa(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -590,7 +590,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
+    def append(self, values, axis = -1, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -617,7 +617,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def append_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Append values to the Matrix along the taxa axis.
 
@@ -701,7 +701,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(self, obj, axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -722,7 +722,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_taxa(self, obj, **kwargs):
+    def remove_taxa(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
@@ -747,7 +747,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, **kwargs):
+    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -778,7 +778,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
     # TODO: FIXME
-    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -833,7 +833,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         self._taxa_grp_spix = None
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs):
+    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -861,7 +861,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         return indices
 
-    def lexsort_taxa(self, keys = None, **kwargs):
+    def lexsort_taxa(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -909,7 +909,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs):
+    def reorder(self, indices, axis = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -928,7 +928,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def reorder_taxa(self, indices, **kwargs):
+    def reorder_taxa(self, indices, **kwargs: dict):
         """
         Reorder elements of the Matrix along the taxa axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -951,7 +951,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         if self._taxa_grp is not None:                  # if we have taxa groups
             self._taxa_grp = self._taxa_grp[indices]    # reorder taxa group array
 
-    def sort(self, keys = None, axis = -1, **kwargs):
+    def sort(self, keys = None, axis = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -976,7 +976,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     # sort_taxa is unaltered
 
     ################### Grouping Methods ###################
-    def group(self, axis = -1, **kwargs):
+    def group(self, axis = -1, **kwargs: dict):
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         """
@@ -991,7 +991,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     # group_taxa is unaltered
 
-    def is_grouped(self, axis = -1, **kwargs):
+    def is_grouped(self, axis = -1, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped.
 

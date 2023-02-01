@@ -20,7 +20,7 @@ class PhasedMatrix(MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         PhasedMatrix constructor
 
@@ -70,7 +70,7 @@ class PhasedMatrix(MutableMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_phase(self, values, **kwargs):
+    def adjoin_phase(self, values, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the phase axis.
 
@@ -89,7 +89,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete_phase(self, obj, **kwargs):
+    def delete_phase(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the phase axis.
 
@@ -108,7 +108,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert_phase(self, obj, values, **kwargs):
+    def insert_phase(self, obj, values, **kwargs: dict):
         """
         Insert values along the phase axis before the given indices.
 
@@ -130,7 +130,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def select_phase(self, indices, **kwargs):
+    def select_phase(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the phase axis.
 
@@ -150,7 +150,7 @@ class PhasedMatrix(MutableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_phase(cls, mats, **kwargs):
+    def concat_phase(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the phase axis.
 
@@ -171,7 +171,7 @@ class PhasedMatrix(MutableMatrix):
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
-    def append_phase(self, values, **kwargs):
+    def append_phase(self, values, **kwargs: dict):
         """
         Append values to the Matrix along the phase axis.
 
@@ -184,7 +184,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_phase(self, obj, **kwargs):
+    def remove_phase(self, obj, **kwargs: dict):
         """
         Remove sub-arrays along the phase axis.
 
@@ -197,7 +197,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_phase(self, obj, values, **kwargs):
+    def incorp_phase(self, obj, values, **kwargs: dict):
         """
         Incorporate values along the phase axis before the given indices.
 

@@ -15,7 +15,7 @@ class EvaluationOperator:
         1) Evaluation of an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class EvaluationOperator.
 
@@ -26,7 +26,7 @@ class EvaluationOperator:
         """
         super(EvaluationOperator, self).__init__()
 
-    def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
+    def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Evaluate individuals in a breeding program.
 

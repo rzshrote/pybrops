@@ -28,7 +28,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, ngen = 250, mu = 100, lamb = 100, rng = global_prng, **kwargs):
+    def __init__(self, ngen = 250, mu = 100, lamb = 100, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
 
@@ -113,7 +113,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
     ############################## Object Methods ##############################
     ############################################################################
 
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
 

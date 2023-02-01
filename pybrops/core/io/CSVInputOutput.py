@@ -19,7 +19,7 @@ class CSVInputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class CSVInputOutput.
 
@@ -36,7 +36,7 @@ class CSVInputOutput:
     ############################################################################
 
     ####################### File I/O #######################
-    def to_csv(self, filename):
+    def to_csv(self, filename: str) -> None:
         """
         Write and object to a CSV file.
 
@@ -53,7 +53,7 @@ class CSVInputOutput:
 
     ####################### File I/O #######################
     @classmethod
-    def from_csv(cls, filename):
+    def from_csv(cls, filename: str) -> 'CSVInputOutput':
         """
         Read object from a CSV file.
 

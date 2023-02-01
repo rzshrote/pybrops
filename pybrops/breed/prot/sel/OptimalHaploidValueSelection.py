@@ -488,7 +488,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -617,7 +617,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], ncross, nprogeny, misc
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a parent selection objective function.
 
@@ -653,7 +653,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized selection objective function for the provided datasets.
 
@@ -694,7 +694,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -821,7 +821,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             A transformation operator to alter the output.
             Function must adhere to the following standard::
 
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the ``trans`` function.
@@ -901,7 +901,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             A transformation operator to alter the output.
             Function must adhere to the following standard::
 
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the ``trans`` function.

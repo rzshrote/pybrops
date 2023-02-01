@@ -15,7 +15,7 @@ class InitializationOperator:
         1) Initialization of an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class InitializationOperator.
 
@@ -26,7 +26,7 @@ class InitializationOperator:
         """
         super(InitializationOperator, self).__init__()
 
-    def initialize(self, miscout, **kwargs):
+    def initialize(self, miscout, **kwargs: dict):
         """
         Initialize a breeding program.
 

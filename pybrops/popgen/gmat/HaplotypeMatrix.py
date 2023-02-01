@@ -19,7 +19,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         HaplotypeMatrix constructor
 

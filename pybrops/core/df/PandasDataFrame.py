@@ -15,7 +15,7 @@ class PandasDataFrame(DataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs):
+    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs: dict):
         """
         Constructor for the concrete class PandasDataFrame.
 
@@ -177,7 +177,7 @@ class PandasDataFrame(DataFrame):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, ctype = None, dtype = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, **kwargs):
+    def col_data(self, index = None, name = None, ctype = None, dtype = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 
@@ -259,13 +259,13 @@ class PandasDataFrame(DataFrame):
 
         return out
 
-    def to_pandas_df(self, **kwargs):
+    def to_pandas_df(self, **kwargs: dict):
         """
         Get dataframe as a pandas.DataFrame.
         """
         return self._df
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
         """

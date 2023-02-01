@@ -27,7 +27,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for abstract class GenotypeMatrix.
 

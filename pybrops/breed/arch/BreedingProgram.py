@@ -20,7 +20,7 @@ class BreedingProgram(BreedingNode):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class BreedingProgram.
 
@@ -182,14 +182,14 @@ class BreedingProgram(BreedingNode):
     ############################################################################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         raise NotImplementedError("method is abstract")
 
-    def is_initialized(self, **kwargs):
+    def is_initialized(self, **kwargs: dict):
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -208,7 +208,7 @@ class BreedingProgram(BreedingNode):
         raise NotImplementedError("method is abstract")
 
     ############# Population evolution methods #############
-    def reset(self, **kwargs):
+    def reset(self, **kwargs: dict):
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -219,7 +219,7 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def advance(self, ngen, lbook, **kwargs):
+    def advance(self, ngen, lbook, **kwargs: dict):
         """
         Advance the breeding program by a specified number of generations.
 
@@ -234,7 +234,7 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def evolve(self, nrep, ngen, lbook, **kwargs):
+    def evolve(self, nrep, ngen, lbook, **kwargs: dict):
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,

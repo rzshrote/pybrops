@@ -28,7 +28,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, cxeta = 30.0, muteta = 20.0,
-    refpnts = None, save_logbook = False, rng = None, **kwargs):
+    refpnts = None, save_logbook = False, rng = None, **kwargs: dict):
         """
         Constructor for NSGA-III optimization algorithm.
 
@@ -222,7 +222,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
 

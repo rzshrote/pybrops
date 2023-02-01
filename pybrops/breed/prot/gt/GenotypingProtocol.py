@@ -16,7 +16,7 @@ class GenotypingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class GenotypingProtocol.
 
@@ -30,7 +30,7 @@ class GenotypingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def genotype(self, pgmat, miscout, **kwargs):
+    def genotype(self, pgmat, miscout, **kwargs: dict):
         """
         Genotype a genome.
 

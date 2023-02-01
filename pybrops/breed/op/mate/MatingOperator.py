@@ -15,7 +15,7 @@ class MatingOperator:
         1) Mating of an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class MatingOperator
 
@@ -26,7 +26,7 @@ class MatingOperator:
         """
         super(MatingOperator, self).__init__()
 
-    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
+    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Mate individuals selected as parents in a breeding program.
 

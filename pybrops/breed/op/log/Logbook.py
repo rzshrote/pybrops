@@ -18,7 +18,7 @@ class Logbook:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class Logbook.
 
@@ -63,7 +63,7 @@ class Logbook:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'InitializationOperator.initialize'
         is called.
@@ -89,7 +89,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'ParentSelectionOperator.pselect'
         is called.
@@ -117,7 +117,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'MatingOperator.mate' is called.
 
@@ -142,7 +142,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'EvaluationOperator.evaluate' is
         called.
@@ -168,7 +168,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'SurvivorSelectionOperator.sselect'
         is called.

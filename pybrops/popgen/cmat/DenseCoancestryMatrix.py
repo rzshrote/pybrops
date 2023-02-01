@@ -28,7 +28,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Constructor for DenseCoancestryMatrix class.
 
@@ -198,7 +198,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             raise ValueError('Format not recognized. Options are "coancestry" or "kinship"')
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args, **kwargs):
+    def coancestry(self, *args, **kwargs: dict):
         """
         Retrieve the coancestry between individuals.
 
@@ -211,7 +211,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         """
         return self._mat[args]
 
-    def kinship(self, *args, **kwargs):
+    def kinship(self, *args, **kwargs: dict):
         """
         Retrieve the kinship between individuals.
 

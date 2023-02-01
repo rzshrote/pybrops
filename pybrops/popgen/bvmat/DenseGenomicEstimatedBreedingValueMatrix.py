@@ -33,7 +33,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGenomicEstimatedBreedingValueMatrix.
 

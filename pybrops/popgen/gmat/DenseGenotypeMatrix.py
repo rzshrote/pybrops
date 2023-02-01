@@ -309,7 +309,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
@@ -332,7 +332,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -384,7 +384,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def delete_taxa(self, obj, **kwargs):
+    def delete_taxa(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -409,7 +409,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs):
+    def delete_vrnt(self, obj, **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
@@ -434,7 +434,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -470,7 +470,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -523,7 +523,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -548,7 +548,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def select_vrnt(self, indices, **kwargs):
+    def select_vrnt(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the variant axis.
 
@@ -574,7 +574,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     @classmethod
-    def concat_taxa(cls, mats, **kwargs):
+    def concat_taxa(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -607,7 +607,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs):
+    def concat_vrnt(cls, mats, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 

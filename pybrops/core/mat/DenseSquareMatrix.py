@@ -38,7 +38,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(self, mat, **kwargs: dict):
         """
         Constructor for the concrete class DenseSquareMatrix.
 

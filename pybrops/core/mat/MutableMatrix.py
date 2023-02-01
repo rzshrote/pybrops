@@ -20,7 +20,7 @@ class MutableMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict):
+    def __init__(self, **kwargs: dict) -> None:
         """
         MutableMatrix constructor
 
@@ -39,7 +39,7 @@ class MutableMatrix(Matrix):
     ######### Matrix element in-place-manipulation #########
     def append(
             self, 
-            values: numpy.ndarray, 
+            values: Union[Matrix,numpy.ndarray], 
             axis: int, 
             **kwargs: dict
         ) -> None:
@@ -48,7 +48,7 @@ class MutableMatrix(Matrix):
 
         Parameters
         ----------
-        values : numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values are appended to append to the matrix.
         axis : int
             The axis along which values are appended.
@@ -80,8 +80,8 @@ class MutableMatrix(Matrix):
     def incorp(
             self, 
             obj: Union[int,slice,Sequence], 
-            values: numpy.ndarray, 
-            axis: int = -1, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int, 
             **kwargs
         ) -> None:
         """

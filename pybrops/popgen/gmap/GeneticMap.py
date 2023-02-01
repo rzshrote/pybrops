@@ -21,7 +21,7 @@ class GeneticMap:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class GeneticMap.
 
@@ -189,7 +189,7 @@ class GeneticMap:
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys, **kwargs):
+    def lexsort(self, keys, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -208,7 +208,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder(self, indices, **kwargs):
+    def reorder(self, indices, **kwargs: dict):
         """
         Reorder markers in the GeneticMap using an array of indices.
         Note this modifies the GeneticMap in-place.
@@ -222,7 +222,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def sort(self, keys, **kwargs):
+    def sort(self, keys, **kwargs: dict):
         """
         Sort slements of the GeneticMap using a sequence of keys.
         Note this modifies the GeneticMap in-place.
@@ -238,7 +238,7 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
-    def group(self, **kwargs):
+    def group(self, **kwargs: dict):
         """
         Sort the GeneticMap, then populate grouping indices.
 
@@ -249,7 +249,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped(self, **kwargs):
+    def is_grouped(self, **kwargs: dict):
         """
         Determine whether the GeneticMap has been sorted and grouped.
 
@@ -267,7 +267,7 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################ Insert/Delete Methods #################
-    def remove(self, indices, **kwargs):
+    def remove(self, indices, **kwargs: dict):
         """
         Remove indices from the GeneticMap. Sort and group internal arrays.
 
@@ -284,7 +284,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def select(self, indices, **kwargs):
+    def select(self, indices, **kwargs: dict):
         """
         Keep only selected markers, removing all others from the GeneticMap.
         Sort and group internal arrays.
@@ -302,7 +302,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def prune(self, nt, M, **kwargs):
+    def prune(self, nt, M, **kwargs: dict):
         """
         Prune markers evenly across all chromosomes.
 
@@ -363,7 +363,7 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################# Interpolation Methods ################
-    def build_spline(self, kind, fill_value, **kwargs):
+    def build_spline(self, kind, fill_value, **kwargs: dict):
         """
         Build a spline for estimating genetic map distances. This is built
         using the marker start indices (self.chr_start)
@@ -398,7 +398,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, **kwargs):
+    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, **kwargs: dict):
         """
         Interpolate a new genetic map from the current genetic map.
         Associate spline of current GeneticMap with new GeneticMap.
@@ -520,7 +520,7 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def to_csv(self, fname, sep, header, index, **kwargs):
+    def to_csv(self, fname, sep, header, index, **kwargs: dict):
         """
         Convert a GeneticMap object to a csv file.
 

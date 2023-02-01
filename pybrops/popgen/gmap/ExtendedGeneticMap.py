@@ -36,7 +36,7 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_genpos, vrnt_name = None, vrnt_fncode = None, **kwargs):
+    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_genpos, vrnt_name = None, vrnt_fncode = None, **kwargs: dict):
         """
         Constructor for the concrete class ExtendedGeneticMap.
 
@@ -263,7 +263,7 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, **kwargs):
+    def lexsort(self, keys = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -376,7 +376,7 @@ class ExtendedGeneticMap(GeneticMap):
         )
 
     ################ Insert/Delete Methods #################
-    def remove(self, indices, **kwargs):
+    def remove(self, indices, **kwargs: dict):
         """
         Remove indices from the GeneticMap. Sort and group internal arrays.
 
@@ -404,7 +404,7 @@ class ExtendedGeneticMap(GeneticMap):
         # sort and group
         self.group()
 
-    def select(self, indices, **kwargs):
+    def select(self, indices, **kwargs: dict):
         """
         Keep only selected markers, removing all others from the GeneticMap.
         Sort and group internal arrays.
@@ -630,7 +630,7 @@ class ExtendedGeneticMap(GeneticMap):
 
     ################ Interpolation Methods #################
     # TODO: do not require sorted internals to build spline
-    def build_spline(self, kind = 'linear', fill_value = 'extrapolate', **kwargs):
+    def build_spline(self, kind = 'linear', fill_value = 'extrapolate', **kwargs: dict):
         """
         Build a spline for estimating genetic map distances. This is built
         using the marker start indices (self.chr_start)
@@ -727,7 +727,7 @@ class ExtendedGeneticMap(GeneticMap):
 
         return out
 
-    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_name = None, vrnt_fncode = None, **kwargs):
+    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_name = None, vrnt_fncode = None, **kwargs: dict):
         """
         Interpolate a new genetic map from the current genetic map.
         Associate spline of current GeneticMap with new GeneticMap.
@@ -928,7 +928,7 @@ class ExtendedGeneticMap(GeneticMap):
         # return it
         return df
 
-    def to_csv(self, fname, sep = ',', header = True, index = False, **kwargs):
+    def to_csv(self, fname, sep = ',', header = True, index = False, **kwargs: dict):
         """
         Convert a GeneticMap object to a csv file.
         """

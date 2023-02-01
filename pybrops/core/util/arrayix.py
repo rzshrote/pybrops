@@ -2,9 +2,11 @@
 Module with utility functions for generating matrix indices.
 """
 
-import numpy
-
-__all__ = ["sqarrayix", "triuix", "triuix"]
+__all__ = [
+    "sqarrayix", 
+    "triuix", 
+    "triuix"
+]
 
 def sqarrayix(n: int, k: int) -> list:
     """

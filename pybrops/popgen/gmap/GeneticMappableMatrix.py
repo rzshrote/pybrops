@@ -15,7 +15,7 @@ class GeneticMappableMatrix(VariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: dict) -> None:
         """
         Constructor for the abstract class GeneticMappableMatrix.
 
@@ -32,7 +32,7 @@ class GeneticMappableMatrix(VariantMatrix):
     ############################################################################
 
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
+    def interp_genpos(self, gmap, **kwargs: dict):
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -46,7 +46,7 @@ class GeneticMappableMatrix(VariantMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.
