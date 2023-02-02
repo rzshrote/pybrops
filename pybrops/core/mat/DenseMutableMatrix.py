@@ -8,7 +8,6 @@ from typing import Any, Sequence, Union
 import numpy
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
-from pybrops.core.mat.DenseMatrix import is_DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class DenseMutableMatrix(DenseMatrix,MutableMatrix):
@@ -23,7 +22,11 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseMutableMatrix
 
@@ -64,7 +67,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a DenseMatrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -77,7 +80,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             obj: Union[int,slice,Sequence], 
             axis: int = -1, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
@@ -108,7 +111,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : DenseMatrix or numpy.ndarray

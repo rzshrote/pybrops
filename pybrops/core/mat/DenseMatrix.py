@@ -6,7 +6,6 @@ import copy
 import numpy
 import h5py
 from typing import Any, Optional, Sequence, Union
-from typing import Type
 from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_file_exists
@@ -33,7 +32,11 @@ class DenseMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Parameters
         ----------
@@ -244,29 +247,37 @@ class DenseMatrix(Matrix):
         return iter(self._mat)
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : Matrix
+        out : DenseMatrix
+            A copy of the DenseMatrix.
         """
         return self.__class__(
             mat = copy.copy(self.mat)
         )
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseMatrix':
         """
         Make a deep copy of the matrix.
 
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
-        out : Matrix
+        out : DenseMatrix
+            A deep copy of the DenseMatrix.
         """
         return self.__class__(
             mat = copy.deepcopy(self.mat, memo)
@@ -324,18 +335,23 @@ class DenseMatrix(Matrix):
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(
+            self
+        ) -> 'DenseMatrix':
         """
         Make a shallow copy of the Matrix.
 
         Returns
         -------
-        out : Matrix
-            A shallow copy of the original Matrix.
+        out : DenseMatrix
+            A shallow copy of the original DenseMatrix.
         """
         return copy.copy(self)
 
-    def deepcopy(self, memo = None):
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseMatrix':
         """
         Make a deep copy of the Matrix.
 
@@ -346,8 +362,8 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            A deep copy of the original Matrix.
+        out : DenseMatrix
+            A deep copy of the original DenseMatrix.
         """
         return copy.deepcopy(self, memo)
 
@@ -380,7 +396,7 @@ class DenseMatrix(Matrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -440,7 +456,7 @@ class DenseMatrix(Matrix):
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : Matrix, numpy.ndarray
@@ -509,7 +525,11 @@ class DenseMatrix(Matrix):
         return out
 
     @staticmethod
-    def concat(mats: ArrayLike, axis: int, **kwargs: dict) -> 'DenseMatrix':
+    def concat(
+        mats: ArrayLike, 
+        axis: int, 
+        **kwargs: dict
+    ) -> 'DenseMatrix':
         """
         Concatenate matrices together along an axis.
 
@@ -541,7 +561,11 @@ class DenseMatrix(Matrix):
         return out
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename: str, groupname: Optional[str] = None) -> None:
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
         """
         Write GenotypeMatrix to an HDF5 file.
 
@@ -576,22 +600,26 @@ class DenseMatrix(Matrix):
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename: str, groupname: Optional[str] = None):
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseMatrix':
         """
-        Read GenotypeMatrix from an HDF5 file.
+        Read DenseMatrix from an HDF5 file.
 
         Parameters
         ----------
         filename : str
             HDF5 file name which to read.
         groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+            HDF5 group name under which DenseMatrix data is stored.
+            If None, DenseMatrix is read from base HDF5 group.
 
         Returns
         -------
-        gmat : GenotypeMatrix
-            A genotype matrix read from file.
+        out : DenseMatrix
+            A dense matrix read from file.
         """
         check_file_exists(filename)                             # check file exists
         h5file = h5py.File(filename, "r")                       # open HDF5 in read only

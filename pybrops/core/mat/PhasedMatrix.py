@@ -2,8 +2,10 @@
 Module defining phased matrix interfaces and associated error checking routines.
 """
 
-from typing import Any
-
+from typing import Any, Sequence, Union
+import numpy
+from numpy.typing import ArrayLike
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class PhasedMatrix(MutableMatrix):
@@ -20,7 +22,10 @@ class PhasedMatrix(MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         PhasedMatrix constructor
 
@@ -70,9 +75,13 @@ class PhasedMatrix(MutableMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_phase(self, values, **kwargs: dict):
+    def adjoin_phase(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> 'PhasedMatrix':
         """
-        Add additional elements to the end of the Matrix along the phase axis.
+        Add additional elements to the end of the PhasedMatrix along the phase axis.
 
         Parameters
         ----------
@@ -83,38 +92,47 @@ class PhasedMatrix(MutableMatrix):
 
         Returns
         -------
-        out : Matrix
+        out : PhasedMatrix
             A copy of mat with values appended to axis. Note that adjoin does
-            not occur in-place: a new Matrix is allocated and filled.
+            not occur in-place: a new PhasedMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete_phase(self, obj, **kwargs: dict):
+    def delete_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'PhasedMatrix':
         """
         Delete sub-arrays along the phase axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : PhasedMatrix
+            A PhasedMatrix with deleted elements. Note that concat does not occur
+            in-place: a new PhasedMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert_phase(self, obj, values, **kwargs: dict):
+    def insert_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> 'PhasedMatrix':
         """
         Insert values along the phase axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : Matrix, numpy.ndarray
@@ -124,54 +142,66 @@ class PhasedMatrix(MutableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : PhasedMatrix
+            A PhasedMatrix with values inserted. Note that insert does not occur
+            in-place: a new PhasedMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def select_phase(self, indices, **kwargs: dict):
+    def select_phase(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'PhasedMatrix':
         """
         Select certain values from the Matrix along the phase axis.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : PhasedMatrix
+            The output PhasedMatrix with values selected. Note that select does not
+            occur in-place: a new PhasedMatrix is allocated and filled.
         """
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_phase(cls, mats, **kwargs: dict):
+    def concat_phase(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'PhasedMatrix':
         """
         Concatenate list of Matrix together along the phase axis.
 
         Parameters
         ----------
         mats : array_like of Matrix
-            List of Matrix to concatenate. The matrices must have the same
+            List of PhasedMatrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
             Additional keyword arguments
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : PhasedMatrix
+            The concatenated PhasedMatrix. Note that concat does not occur in-place:
+            a new PhasedMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
-    def append_phase(self, values, **kwargs: dict):
+    def append_phase(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix along the phase axis.
 
@@ -184,26 +214,35 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_phase(self, obj, **kwargs: dict):
+    def remove_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the phase axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_phase(self, obj, values, **kwargs: dict):
+    def incorp_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the phase axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : Matrix, numpy.ndarray
@@ -218,7 +257,7 @@ class PhasedMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedMatrix(v: Any):
+def is_PhasedMatrix(v: Any) -> bool:
     """
     Determine whether an object is a PhasedMatrix.
 
@@ -234,7 +273,7 @@ def is_PhasedMatrix(v: Any):
     """
     return isinstance(v, PhasedMatrix)
 
-def check_is_PhasedMatrix(v: Any, vname: str):
+def check_is_PhasedMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type PhasedMatrix. Otherwise raise TypeError.
 

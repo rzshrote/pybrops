@@ -18,7 +18,10 @@ class GroupableMatrix(SortableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         GroupableMatrix constructor
 
@@ -35,7 +38,11 @@ class GroupableMatrix(SortableMatrix):
     ############################################################################
 
     ################### Grouping Methods ###################
-    def group(self, axis: int, **kwargs: dict):
+    def group(
+            self, 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the Matrix, then populate grouping indices.
 
@@ -48,7 +55,11 @@ class GroupableMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped(self, axis: int, **kwargs: dict):
+    def is_grouped(
+            self, 
+            axis: int, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -73,7 +84,7 @@ class GroupableMatrix(SortableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GroupableMatrix(v: Any):
+def is_GroupableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a GroupableMatrix.
 
@@ -89,7 +100,7 @@ def is_GroupableMatrix(v: Any):
     """
     return isinstance(v, GroupableMatrix)
 
-def check_is_GroupableMatrix(v: Any, vname: str):
+def check_is_GroupableMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type GroupableMatrix. Otherwise raise TypeError.
 

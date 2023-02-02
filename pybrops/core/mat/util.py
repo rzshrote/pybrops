@@ -2,7 +2,14 @@
 Module containing matrix utilities.
 """
 
-def get_axis(axis, ndim):
+__all__ = [
+    "get_axis"
+]
+
+def get_axis(
+        axis: int, 
+        ndim: int
+    ) -> int:
     """
     Return an index (unsigned) from a provided axis integer (signed)
 

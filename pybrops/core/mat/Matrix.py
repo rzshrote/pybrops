@@ -428,7 +428,9 @@ class Matrix(HDF5InputOutput):
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(
+            self
+        ) -> 'Matrix':
         """
         Make a shallow copy of the Matrix.
 
@@ -439,7 +441,10 @@ class Matrix(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def deepcopy(self, memo: dict):
+    def deepcopy(
+            self, 
+            memo: dict
+        ) -> 'Matrix':
         """
         Make a deep copy of the Matrix.
 
@@ -567,14 +572,21 @@ class Matrix(HDF5InputOutput):
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
+    # TODO: there are discrepancies between this as a static method and other
+    #       related methods such as concat_taxa being class methods. Consider
+    #       converting this method to a class method as well.
     @staticmethod
-    def concat(mats: Sequence, axis: int, **kwargs: dict) -> 'Matrix':
+    def concat(
+            mats: Sequence, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : Sequence of matrices
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int

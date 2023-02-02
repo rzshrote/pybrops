@@ -4,6 +4,8 @@ that can be pruned along an axis.
 """
 
 from typing import Any
+
+import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 # TODO: is this class even necessary?
@@ -21,7 +23,10 @@ class PrunableMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         PrunableMatrix constructor
 
@@ -36,7 +41,11 @@ class PrunableMatrix(Matrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def prune(self, axis, **kwargs: dict):
+    def prune(
+            self, 
+            axis: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate a set of indices for selection of rows, columns, etc.
 

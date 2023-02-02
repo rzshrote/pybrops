@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with axes that are square and with taxa metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
@@ -18,7 +19,10 @@ class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the SquareTaxaMatrix abstract class.
 
@@ -35,13 +39,13 @@ class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SquareTaxaMatrix(obj):
+def is_SquareTaxaMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``SquareTaxaMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -49,18 +53,18 @@ def is_SquareTaxaMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``SquareTaxaMatrix`` object instance.
     """
-    return isinstance(obj, SquareTaxaMatrix)
+    return isinstance(v, SquareTaxaMatrix)
 
-def check_is_SquareTaxaMatrix(obj, objname):
+def check_is_SquareTaxaMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``SquareTaxaMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, SquareTaxaMatrix):
-        raise TypeError("'{0}' must be a SquareTaxaMatrix".format(objname))
+    if not isinstance(v, SquareTaxaMatrix):
+        raise TypeError("'{0}' must be a SquareTaxaMatrix".format(vname))
