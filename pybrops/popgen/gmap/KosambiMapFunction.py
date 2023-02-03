@@ -4,6 +4,7 @@ Module implementing the Kosambi genetic map function and associated error checki
 
 from typing import Any
 import numpy
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class KosambiMapFunction(GeneticMapFunction):
@@ -19,7 +20,10 @@ class KosambiMapFunction(GeneticMapFunction):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for a Kosambi mapping function object.
 
@@ -39,7 +43,10 @@ class KosambiMapFunction(GeneticMapFunction):
     ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
-    def mapfn(self, d):
+    def mapfn(
+            self, 
+            d: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert genetic map distances to recombination probabilities using the
         Kosambi mapping function (Kosambi, 1944).
@@ -60,7 +67,10 @@ class KosambiMapFunction(GeneticMapFunction):
         r = 0.5 * numpy.tanh(2.0 * d)
         return r
 
-    def invmapfn(self, r):
+    def invmapfn(
+            self, 
+            r: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert recombination probabilities between two loci to genetic map
         distances using the Kosambi mapping function (Kosambi, 1944).
@@ -83,7 +93,12 @@ class KosambiMapFunction(GeneticMapFunction):
         return d
 
     ########## Recombination Probability Methods ###########
-    def rprob1g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob1g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using genetic distances.
         Calculate recombination probabilities between successive entries along
@@ -113,7 +128,12 @@ class KosambiMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist1g(vrnt_chrgrp, vrnt_genpos))
 
-    def rprob2g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob2g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using genetic distances.
         Calculate a recombination probability matrix.
@@ -136,7 +156,12 @@ class KosambiMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist2g(vrnt_chrgrp, vrnt_genpos))
 
-    def rprob1p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob1p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using physical distances.
 
@@ -158,7 +183,12 @@ class KosambiMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist1p(vrnt_chrgrp, vrnt_phypos))
 
-    def rprob2p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob2p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using physical distances.
 

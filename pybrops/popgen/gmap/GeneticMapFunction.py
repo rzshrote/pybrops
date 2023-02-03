@@ -5,6 +5,10 @@ checking routines.
 
 from typing import Any
 
+import numpy
+
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
+
 
 class GeneticMapFunction:
     """
@@ -19,7 +23,10 @@ class GeneticMapFunction:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class GeneticMapFunction.
 
@@ -40,7 +47,10 @@ class GeneticMapFunction:
     ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
-    def mapfn(self, d):
+    def mapfn(
+            self, 
+            d: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert genetic distance (d) to recombination probability (r).
 
@@ -57,7 +67,10 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def invmapfn(self, r):
+    def invmapfn(
+            self, 
+            r: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         convert recombination probability (r) to genetic distance (d).
 
@@ -74,7 +87,12 @@ class GeneticMapFunction:
         raise NotImplementedError("method is abstract")
 
     ########## Recombination Probability Methods ###########
-    def rprob1g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob1g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using genetic distances.
         Calculate recombination probabilities between successive entries along
@@ -104,7 +122,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob2g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob2g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using genetic distances.
         Calculate a recombination probability matrix.
@@ -127,7 +150,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob1p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob1p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using physical distances.
 
@@ -149,7 +177,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob2p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob2p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using physical distances.
 

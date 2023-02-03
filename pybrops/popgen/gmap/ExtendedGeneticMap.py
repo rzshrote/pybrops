@@ -3,7 +3,7 @@ Module implementing a custom, extended genetic map format and associated error
 checking routines.
 """
 
-from typing import Any, Union
+from typing import Any, Optional, Sequence, Union
 import numpy
 import math
 import pandas
@@ -36,7 +36,16 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_genpos, vrnt_name = None, vrnt_fncode = None, **kwargs: dict):
+    def __init__(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_stop: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_fncode: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class ExtendedGeneticMap.
 
@@ -263,7 +272,11 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys: Union[tuple,numpy.ndarray,None] = None, **kwargs: dict):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -301,7 +314,10 @@ class ExtendedGeneticMap(GeneticMap):
         # return indices
         return indices
 
-    def reorder(self, indices):
+    def reorder(
+            self, 
+            indices: Union[Sequence,numpy.ndarray]
+        ) -> None:
         """
         Reorder markers in the GeneticMap using an array of indices.
         Note this modifies the GeneticMap in-place.
@@ -323,7 +339,10 @@ class ExtendedGeneticMap(GeneticMap):
         if self._vrnt_fncode is not None:
             self._vrnt_fncode = self._vrnt_fncode[indices]
 
-    def sort(self, keys = None):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None
+        ) -> None:
         """
         Set variant chromosome group name, stix, spix, len to None.
         Sort according to keys.
@@ -341,7 +360,9 @@ class ExtendedGeneticMap(GeneticMap):
         # reorder internals
         self.reorder(indices)
 
-    def group(self):
+    def group(
+            self
+        ) -> None:
         """
         Sort genetic map, then populate grouping indices.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -358,7 +379,9 @@ class ExtendedGeneticMap(GeneticMap):
         # calculate chr_grp_spix (stop indices)
         self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
 
-    def is_grouped(self):
+    def is_grouped(
+            self
+        ) -> bool:
         """
         Determine whether the GeneticMap has been sorted and grouped.
 
@@ -376,13 +399,17 @@ class ExtendedGeneticMap(GeneticMap):
         )
 
     ################ Insert/Delete Methods #################
-    def remove(self, indices, **kwargs: dict):
+    def remove(
+            self, 
+            indices: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove indices from the GeneticMap. Sort and group internal arrays.
 
         Parameters
         ----------
-        indices : numpy.ndarray, slice, int
+        indices : int, slice, Sequence
             Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
 
             Where:
@@ -404,14 +431,18 @@ class ExtendedGeneticMap(GeneticMap):
         # sort and group
         self.group()
 
-    def select(self, indices, **kwargs: dict):
+    def select(
+            self, 
+            indices: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Keep only selected markers, removing all others from the GeneticMap.
         Sort and group internal arrays.
 
         Parameters
         ----------
-        indices : numpy.ndarray, slice, int
+        indices : int, slice, Sequence
             Array of shape ``(a,)``, ``slice`` or ``int`` of item(s) to remove.
 
             Where:
@@ -433,7 +464,11 @@ class ExtendedGeneticMap(GeneticMap):
         # sort and group
         self.group()
 
-    def prune(self, nt = None, M = None):
+    def prune(
+            self, 
+            nt: int = None, 
+            M: float = None
+        ) -> None:
         """
         Prune markers evenly across all chromosomes.
 
@@ -564,7 +599,9 @@ class ExtendedGeneticMap(GeneticMap):
         self.select(indices)
 
     ################## Integrity Methods ###################
-    def congruence(self):
+    def congruence(
+            self
+        ) -> numpy.ndarray:
         """
         If not grouped, will group.
         Assess physical and genetic map site congruency.
@@ -599,7 +636,9 @@ class ExtendedGeneticMap(GeneticMap):
         # return results
         return out
 
-    def is_congruent(self):
+    def is_congruent(
+            self
+        ) -> bool:
         """
         Determine if the genetic map is congruent
         Determine if all sites in the genetic map demonstrate congruence with
@@ -609,7 +648,9 @@ class ExtendedGeneticMap(GeneticMap):
         out = numpy.all(self.congruence())
         return out
 
-    def remove_discrepancies(self):
+    def remove_discrepancies(
+            self
+        ) -> None:
         """
         Remove discrepancies between the physical map and the genetic map.
         In instances of conflict, assume that the physical map is correct.
@@ -630,7 +671,12 @@ class ExtendedGeneticMap(GeneticMap):
 
     ################ Interpolation Methods #################
     # TODO: do not require sorted internals to build spline
-    def build_spline(self, kind = 'linear', fill_value = 'extrapolate', **kwargs: dict):
+    def build_spline(
+            self, 
+            kind: str = 'linear', 
+            fill_value: Union[numpy.ndarray,str] = 'extrapolate', 
+            **kwargs: dict
+        ) -> None:
         """
         Build a spline for estimating genetic map distances. This is built
         using the marker start indices (self.chr_start)
@@ -685,7 +731,9 @@ class ExtendedGeneticMap(GeneticMap):
                 assume_sorted = False           # arrays are not sorted
             )
 
-    def has_spline(self):
+    def has_spline(
+            self
+        ) -> bool:
         """Return whether or not the GeneticMap has a built spline."""
         return (
             (self._spline is not None) and
@@ -693,7 +741,11 @@ class ExtendedGeneticMap(GeneticMap):
             (self._spline_fill_value is not None)
         )
 
-    def interp_genpos(self, vrnt_chrgrp, vrnt_phypos):
+    def interp_genpos(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Interpolate genetic positions given variant physical positions
 
@@ -727,7 +779,15 @@ class ExtendedGeneticMap(GeneticMap):
 
         return out
 
-    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, vrnt_stop, vrnt_name = None, vrnt_fncode = None, **kwargs: dict):
+    def interp_gmap(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_stop: numpy.ndarray, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_fncode: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'ExtendedGeneticMap':
         """
         Interpolate a new genetic map from the current genetic map.
         Associate spline of current GeneticMap with new GeneticMap.
@@ -755,7 +815,13 @@ class ExtendedGeneticMap(GeneticMap):
         return gmap
 
     ############### Genetic Distance Methods ###############
-    def gdist1g(self, vrnt_chrgrp, vrnt_genpos, ast = None, asp = None):
+    def gdist1g(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            ast: Optional[int] = None, 
+            asp: Optional[int] = None
+        ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using genetic positions.
         Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
@@ -800,7 +866,15 @@ class ExtendedGeneticMap(GeneticMap):
 
         return gdist
 
-    def gdist2g(self, vrnt_chrgrp, vrnt_genpos, rst = None, rsp = None, cst = None, csp = None):
+    def gdist2g(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            rst: Optional[int] = None, 
+            rsp: Optional[int] = None, 
+            cst: Optional[int] = None, 
+            csp: Optional[int] = None
+        ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using genetic positions.
         Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
@@ -840,7 +914,13 @@ class ExtendedGeneticMap(GeneticMap):
 
         return gdist
 
-    def gdist1p(self, vrnt_chrgrp, vrnt_phypos, ast = None, asp = None):
+    def gdist1p(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            ast: Optional[int] = None, 
+            asp: Optional[int] = None
+        ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using physical positions.
         Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
@@ -867,7 +947,15 @@ class ExtendedGeneticMap(GeneticMap):
 
         return gdist
 
-    def gdist2p(self, vrnt_chrgrp, vrnt_phypos, rst = None, rsp = None, cst = None, csp = None):
+    def gdist2p(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            rst: Optional[int] = None, 
+            rsp: Optional[int] = None, 
+            cst: Optional[int] = None, 
+            csp: Optional[int] = None
+        ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using physical positions.
         Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
@@ -903,7 +991,9 @@ class ExtendedGeneticMap(GeneticMap):
         return gdist
 
     #################### Export Methods ####################
-    def to_pandas_df(self):
+    def to_pandas_df(
+            self
+        ) -> pandas.DataFrame:
         """
         Convert a GeneticMap object to a pandas DataFrame.
 
@@ -928,7 +1018,14 @@ class ExtendedGeneticMap(GeneticMap):
         # return it
         return df
 
-    def to_csv(self, fname, sep = ',', header = True, index = False, **kwargs: dict):
+    def to_csv(
+            self, 
+            fname: str, 
+            sep: str = ',', 
+            header: bool = True, 
+            index: bool = False, 
+            **kwargs: dict
+        ) -> None:
         """
         Convert a GeneticMap object to a csv file.
         """
@@ -943,7 +1040,10 @@ class ExtendedGeneticMap(GeneticMap):
             index = index
         )
 
-    def to_egmap(self, fname):
+    def to_egmap(
+            self, 
+            fname: str
+        ) -> None:
         # write as special instance of csv
         self.to_csv(
             fname = fname,
@@ -956,7 +1056,16 @@ class ExtendedGeneticMap(GeneticMap):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_pandas_df(cls, pandas_df, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
+    def from_pandas_df(
+            cls, 
+            pandas_df: pandas.DataFrame, 
+            vrnt_chrgrp_ix: int = 0, 
+            vrnt_phypos_ix: int = 1, 
+            vrnt_stop_ix: int = 2, 
+            vrnt_genpos_ix: int = 3, 
+            vrnt_name_ix: Optional[int] = None, 
+            vrnt_fncode_ix: Optional[int] = None
+        ) -> 'ExtendedGeneticMap':
         """
         Read genetic map data from a Pandas DataFrame.
 
@@ -1064,7 +1173,18 @@ class ExtendedGeneticMap(GeneticMap):
         return genetic_map
 
     @classmethod
-    def from_csv(cls, fpath, sep = ',', header=0, vrnt_chrgrp_ix = 0, vrnt_phypos_ix = 1, vrnt_stop_ix = 2, vrnt_genpos_ix = 3, vrnt_name_ix = None, vrnt_fncode_ix = None):
+    def from_csv(
+            cls, 
+            fpath: str, 
+            sep: str = ',', 
+            header: int = 0, 
+            vrnt_chrgrp_ix: int = 0, 
+            vrnt_phypos_ix: int = 1, 
+            vrnt_stop_ix: int = 2, 
+            vrnt_genpos_ix: int = 3, 
+            vrnt_name_ix: Optional[int] = None, 
+            vrnt_fncode_ix: Optional[int] = None
+        ) -> 'ExtendedGeneticMap':
         """
         Create an ExtendedGeneticMap object from a csv or delimited file.
 
@@ -1117,9 +1237,12 @@ class ExtendedGeneticMap(GeneticMap):
         return genetic_map
 
     @classmethod
-    def from_egmap(cls, fpath):
+    def from_egmap(
+            cls, 
+            fpath: str
+        ) -> 'ExtendedGeneticMap':
         """
-        Read an extended genetic map file (\*.egmap).
+        Read an extended genetic map file (.egmap).
 
         Parameters
         ----------
@@ -1134,7 +1257,7 @@ class ExtendedGeneticMap(GeneticMap):
 
         Notes
         -----
-        Extended genetic map file (\*.egmap) format (similar to BED file format).
+        Extended genetic map file (.egmap) format (similar to BED file format).
 
         Genetic map assumptions:
 
@@ -1148,12 +1271,12 @@ class ExtendedGeneticMap(GeneticMap):
         - For discrepancies in the physical map vs. the genetic map, we assume
           that the physical map is correct.
 
-        General Extended Genetic Map File (\*.egmap) specifications:
+        General Extended Genetic Map File (.egmap) specifications:
 
         - This file format is headerless.
         - This file format is tab delimited.
 
-        Extended Genetic Map File (\*.egmap) field specifications:
+        Extended Genetic Map File (.egmap) field specifications:
 
         1) chrom (REQUIRED)
             Name of the chromosome; equivalent to the linkage group.

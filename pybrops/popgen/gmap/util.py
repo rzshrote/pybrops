@@ -2,7 +2,15 @@
 Module containing miscellaneous genetic map subroutines.
 """
 
-def cM2d(cM):
+import numpy
+
+__all__ = [
+    "cM2d"
+]
+
+def cM2d(
+        cM: numpy.ndarray
+    ) -> numpy.ndarray:
     """
     Convert centiMorgan units to genetic map distance units (equivalent to
     Morgan units).

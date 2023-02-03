@@ -17,7 +17,10 @@ class MatingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for abstract class MatingProtocol.
 

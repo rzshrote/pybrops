@@ -27,7 +27,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for abstract class GenotypeMatrix.
 
@@ -108,7 +111,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def tacount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele within each taxon.
 
@@ -126,7 +132,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tafreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def tafreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele within each taxon.
 
@@ -144,7 +153,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def acount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def acount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele across all taxa.
 
@@ -161,7 +173,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def afreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def afreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele across all taxa.
 
@@ -178,7 +193,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def apoly(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def apoly(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Allele polymorphism presence or absense across all loci.
 
@@ -195,7 +213,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def maf(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def maf(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Minor allele frequency across all taxa.
 
@@ -212,7 +233,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def meh(self, dtype: Optional[DTypeLike]) -> numbers.Number:
+    def meh(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -230,7 +254,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gtcount(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def gtcount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -256,7 +283,10 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gtfreq(self, dtype: Optional[DTypeLike]) -> numpy.ndarray:
+    def gtfreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.

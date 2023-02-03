@@ -57,7 +57,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             vrnt_mask: Optional[numpy.ndarray] = None, 
             ploidy: int = 2, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Parameters
         ----------

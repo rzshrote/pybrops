@@ -35,7 +35,10 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class BreedingValueMatrix.
 

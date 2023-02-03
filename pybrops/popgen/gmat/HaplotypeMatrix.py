@@ -3,7 +3,10 @@ Module defining basal matrix interfaces and associated error checking routines
 for haplotype matrices.
 """
 
-from typing import Any
+import numbers
+from typing import Any, Optional
+import numpy
+from numpy.typing import DTypeLike
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
@@ -19,7 +22,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         HaplotypeMatrix constructor
 
@@ -86,7 +92,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     ############################################################################
 
     ############## Matrix summary statistics ###############
-    def thcount(self, dtype):
+    def thcount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Haplotype count of the non-zero haplotype within each taxon.
 
@@ -104,7 +113,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def thfreq(self, dtype):
+    def thfreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Haplotype frequency of the non-zero haplotype within each taxon.
 
@@ -123,7 +135,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def hcount(self, dtype):
+    def hcount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Haplotype count of the non-zero haplotype across all taxa.
 
@@ -140,7 +155,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def hfreq(self, dtype):
+    def hfreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Haplotype frequency of the non-zero haplotype across all taxa.
 
@@ -157,7 +175,10 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def mhf(self, dtype):
+    def mhf(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Minor haplotype frequency across all taxa.
 
@@ -174,9 +195,17 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def meh(self):
+    def meh(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
@@ -186,10 +215,18 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gtcount(self):
+    def gtcount(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Gather haplotype counts across for homozygous major, heterozygous,
         homozygous minor all individuals.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
@@ -205,10 +242,18 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gtfreq(self):
+    def gtfreq(
+            self, 
+            dtype: Optional[DTypeLike]
+        ) -> numpy.ndarray:
         """
         Gather haplotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
+
+        Parameters
+        ----------
+        dtype : dtype, optional
+            The type of the returned array. If None, return native dtype.
 
         Returns
         -------
