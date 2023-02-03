@@ -38,7 +38,11 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseSquareMatrix.
 
@@ -169,7 +173,9 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     ############################################################################
 
     #################### Square Methods ####################
-    def is_square(self):
+    def is_square(
+            self
+        ) -> bool:
         """
         Determine whether the axis lengths for the square axes are identical.
 

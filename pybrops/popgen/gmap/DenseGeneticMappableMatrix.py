@@ -3,11 +3,13 @@ Module implementing dense matrices that can have their variants placed on a
 genetic map and associated error checking routines.
 """
 
-from typing import Any
+from typing import Any, Optional
+
+import numpy
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
-from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybrops.popgen.gmap.GeneticMap import GeneticMap, check_is_GeneticMap
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
 
 class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     """
@@ -15,10 +17,20 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     GeneticMap.
     """
 
-    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
-    vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
-    vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
-    vrnt_mask = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None,
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None,
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None,
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseGeneticMappableMatrix
 
@@ -52,7 +64,11 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
         )
 
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs: dict):
+    def interp_genpos(
+            self, 
+            gmap: GeneticMap, 
+            **kwargs: dict
+        ) -> None:
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -68,7 +84,12 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
         # interpolate postions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
+    def interp_xoprob(
+            self, 
+            gmap: GeneticMap, 
+            gmapfn: GeneticMapFunction, 
+            **kwargs: dict
+        ) -> None:
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.

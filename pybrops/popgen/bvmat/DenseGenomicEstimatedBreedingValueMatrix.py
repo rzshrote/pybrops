@@ -3,7 +3,7 @@ Module implementing matrix routines and associated error checking routines
 for dense breeding value matrices estimated from genomic and phenotypic data.
 """
 
-from typing import Any
+from typing import Any, Optional
 
 import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
@@ -35,7 +35,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait: numpy.ndarray = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGenomicEstimatedBreedingValueMatrix.
 

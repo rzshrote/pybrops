@@ -34,7 +34,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             self, 
             mat: numpy.ndarray, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DensePhasedMatrix.
 
@@ -170,7 +170,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
             self, 
             values: Union[Matrix,numpy.ndarray], 
             **kwargs: dict
-        ):
+        ) -> 'DensePhasedMatrix':
         """
         Adjoin values along the phase axis.
 

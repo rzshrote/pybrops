@@ -4,6 +4,7 @@ storing dense additive genetic variance estimates calculated using three-way DH
 formulae.
 """
 
+from typing import Optional
 import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
@@ -25,7 +26,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseThreeWayDHAdditiveGeneticVarianceMatrix.
 

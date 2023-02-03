@@ -2,7 +2,7 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
-from typing import Any
+from typing import Any, Optional
 import numpy
 import warnings
 
@@ -28,7 +28,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for DenseCoancestryMatrix class.
 

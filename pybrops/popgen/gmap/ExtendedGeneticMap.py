@@ -3,7 +3,7 @@ Module implementing a custom, extended genetic map format and associated error
 checking routines.
 """
 
-from typing import Any
+from typing import Any, Union
 import numpy
 import math
 import pandas
@@ -263,7 +263,7 @@ class ExtendedGeneticMap(GeneticMap):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, **kwargs: dict):
+    def lexsort(self, keys: Union[tuple,numpy.ndarray,None] = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys.
 

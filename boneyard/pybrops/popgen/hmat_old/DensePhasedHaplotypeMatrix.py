@@ -14,7 +14,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         DensePhasedHaplotypeMatrix constructor
 
@@ -137,7 +137,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def adjoin(self, values: Union[Matrix,numpy.ndarray], axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -696,7 +696,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def append(self, values: Union[Matrix,numpy.ndarray], axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -887,7 +887,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         self._mat = numpy.insert(self._mat, obj, values, axis = self.phase_axis)
 
     ############## Matrix summary statistics ###############
-    def thcount(self, dtype = None):
+    def thcount(self, dtype: Optional[DTypeLike] = None):
         """
         Haplotype count of the non-zero haplotype within each taxon.
 
@@ -910,7 +910,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def thfreq(self, dtype = None):
+    def thfreq(self, dtype: Optional[DTypeLike] = None):
         """
         Haplotype frequency of the non-zero haplotype within each taxon.
 
@@ -934,7 +934,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def hcount(self, dtype = None):
+    def hcount(self, dtype: Optional[DTypeLike] = None):
         """
         Haplotype count of the non-zero haplotype across all taxa.
 
@@ -956,7 +956,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
                 out = dtype.type(out)   # convert to correct dtype
         return out
 
-    def hfreq(self, dtype = None):
+    def hfreq(self, dtype: Optional[DTypeLike] = None):
         """
         Haplotype frequency of the non-zero haplotype across all taxa.
 
@@ -981,7 +981,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
                 out = dtype.type(out)           # convert to correct dtype
         return out
 
-    def mhf(self, dtype = None):
+    def mhf(self, dtype: Optional[DTypeLike] = None):
         """
         Minor haplotype frequency across all taxa.
 

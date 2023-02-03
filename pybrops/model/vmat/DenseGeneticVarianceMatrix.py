@@ -3,7 +3,7 @@ Module implementing classes and associated error checking routines for matrices
 storing dense genetic variance estimates.
 """
 
-from typing import Any
+from typing import Any, Optional
 
 import numpy
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
@@ -24,7 +24,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGeneticVarianceMatrix.
 

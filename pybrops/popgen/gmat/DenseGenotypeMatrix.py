@@ -44,17 +44,17 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def __init__(
             self, 
             mat: numpy.ndarray, 
-            taxa: numpy.ndarray = None, 
-            taxa_grp: numpy.ndarray = None, 
-            vrnt_chrgrp: numpy.ndarray = None,
-            vrnt_phypos: numpy.ndarray = None, 
-            vrnt_name: numpy.ndarray = None, 
-            vrnt_genpos: numpy.ndarray = None,
-            vrnt_xoprob: numpy.ndarray = None, 
-            vrnt_hapgrp: numpy.ndarray = None, 
-            vrnt_hapalt: numpy.ndarray = None,
-            vrnt_hapref: numpy.ndarray = None, 
-            vrnt_mask: numpy.ndarray = None, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None,
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None,
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None,
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
             ploidy: int = 2, 
             **kwargs: dict
         ):
@@ -313,8 +313,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def adjoin_taxa(
             self, 
             values: Union[Matrix,numpy.ndarray], 
-            taxa: numpy.ndarray = None, 
-            taxa_grp: numpy.ndarray = None, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> 'DenseGenotypeMatrix':
         """
@@ -354,15 +354,15 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def adjoin_vrnt(
             self, 
             values: Union[Matrix,numpy.ndarray], 
-            vrnt_chrgrp: numpy.ndarray = None, 
-            vrnt_phypos: numpy.ndarray = None, 
-            vrnt_name: numpy.ndarray = None, 
-            vrnt_genpos: numpy.ndarray = None, 
-            vrnt_xoprob: numpy.ndarray = None, 
-            vrnt_hapgrp: numpy.ndarray = None, 
-            vrnt_hapalt: numpy.ndarray = None, 
-            vrnt_hapref: numpy.ndarray = None, 
-            vrnt_mask: numpy.ndarray = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> 'DenseGenotypeMatrix':
         """
@@ -478,8 +478,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             self, 
             obj: Union[int,slice,Sequence], 
             values: Union[Matrix,numpy.ndarray], 
-            taxa: numpy.ndarray = None, 
-            taxa_grp: numpy.ndarray = None, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> 'DenseGenotypeMatrix':
         """
@@ -521,15 +521,15 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             self, 
             obj: Union[int,slice,Sequence], 
             values: Union[Matrix,numpy.ndarray], 
-            vrnt_chrgrp: numpy.ndarray = None, 
-            vrnt_phypos: numpy.ndarray = None, 
-            vrnt_name: numpy.ndarray = None, 
-            vrnt_genpos: numpy.ndarray = None, 
-            vrnt_xoprob: numpy.ndarray = None, 
-            vrnt_hapgrp: numpy.ndarray = None, 
-            vrnt_hapalt: numpy.ndarray = None, 
-            vrnt_hapref: numpy.ndarray = None, 
-            vrnt_mask: numpy.ndarray = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> 'DenseGenotypeMatrix':
         """

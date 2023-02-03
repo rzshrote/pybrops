@@ -37,12 +37,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self, 
-        mat: numpy.ndarray, 
-        taxa: Optional[numpy.ndarray] = None, 
-        taxa_grp: Optional[numpy.ndarray] = None, 
-        **kwargs: dict
-        ):
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseTaxaMatrix.
 
@@ -71,7 +71,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self.taxa_grp_len = None
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseTaxaMatrix':
         """
         Make a shallow copy of the the matrix.
 
@@ -94,7 +96,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Make a deep copy of the matrix.
 
@@ -287,7 +292,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def adjoin(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -299,11 +311,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             The axis along which values are adjoined.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
@@ -330,7 +342,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def adjoin_taxa(self, values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def adjoin_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Add additional elements to the end of the TaxaMatrix along the taxa
         axis. Copy-on-manipulation routine.
@@ -341,11 +359,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             Values to be appended to append to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
@@ -394,7 +412,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def delete(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Delete sub-arrays along an axis.
 
@@ -409,9 +432,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            A DenseTaxaMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -427,7 +450,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Delete sub-arrays along the taxa axis.
 
@@ -440,9 +467,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            A DenseTaxaMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         # get values
         mat = self._mat
@@ -465,7 +492,15 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Insert values along the given axis before the given indices.
 
@@ -474,26 +509,26 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
         taxa : numpy.ndarray
             Taxa names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            A DenseTaxaMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -512,7 +547,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def insert_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Insert values along the taxa axis before the given indices.
 
@@ -532,9 +574,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            A DenseTaxaMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         # extract mat values
         if isinstance(values, self.__class__):
@@ -574,7 +616,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def select(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Select certain values from the matrix.
 
@@ -589,9 +636,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            The output matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            The output DenseTaxaMatrix with values selected. Note that select does not
+            occur in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -604,7 +651,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    def select_taxa(self, indices, **kwargs: dict):
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -617,9 +668,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            The output DenseTaxaMatrix with values selected. Note that select does not
+            occur in-place: a new DenseTaxaMatrix is allocated and filled.
         """
         # check for array_like
         check_is_array_like(indices, "indices")
@@ -646,13 +697,18 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis: int = -1, **kwargs: dict):
+    def concat(
+            cls, 
+            mats: Sequence, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : Sequence of matrices
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -662,9 +718,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            The concatenated DenseTaxaMatrix. Note that concat does not occur in-place:
+            a new DenseTaxaMatrix is allocated and filled.
         """
         axis = get_axis(axis, mats[0].mat_ndim)     # get axis
         out = None                                  # declare variable
@@ -678,7 +734,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         return out
 
     @classmethod
-    def concat_taxa(cls, mats: Sequence, **kwargs: dict):
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseTaxaMatrix':
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -692,9 +752,9 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseTaxaMatrix
+            The concatenated DenseTaxaMatrix. Note that concat does not occur in-place:
+            a new DenseTaxaMatrix is allocated and filled.
         """
         # ensure that we have an iterable object
         check_is_iterable(mats, "mats")
@@ -703,7 +763,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if len(mats) <= 0:
             raise ValueError("need at least one Matrix to concatenate")
 
-        # ensure that all items in mats are DenseHaplotypeMatrix
+        # ensure that all items in mats are DenseTaxaMatrix
         for i,v in enumerate(mats):
             generic_check_isinstance(v, "mats[{0}]".format(i), cls)
 
@@ -745,7 +805,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         taxa_grp = None if taxa_grp_ls is None else numpy.concatenate(taxa_grp_ls, axis = 0)
 
         # TODO: decide if first element in list is good source of information
-        # concatenate everything and put into new DenseHaplotypeMatrix
+        # concatenate everything and put into new DenseTaxaMatrix
         # use first element as source of variant data
         out = cls(
             mat = mat,
@@ -757,13 +817,20 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def append(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
         Parameters
         ----------
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : DenseTaxaMatrix, numpy.ndarray
             Values are appended to append to the matrix.
             Must be of type int8.
             Must be of shape (m, n, p)
@@ -784,7 +851,13 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_taxa(self, values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def append_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix along the taxa axis.
 
@@ -833,7 +906,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def remove(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
@@ -854,7 +932,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
+    def remove_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the taxa axis.
 
@@ -879,7 +961,15 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def incorp(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
@@ -909,7 +999,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
+    def incorp_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -935,7 +1032,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
                 taxa_grp = values.taxa_grp
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type DenseHaplotypeMatrix or numpy.ndarray")
+            raise ValueError("'values' must be of type DenseTaxaMatrix or numpy.ndarray")
 
         # perform error checks before allocating memory
         if values.ndim != self.mat_ndim:
@@ -963,7 +1060,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self._taxa_grp_spix = None
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis: int = -1, **kwargs: dict):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -991,7 +1093,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return indices
 
-    def lexsort_taxa(self, keys = None, **kwargs: dict):
+    def lexsort_taxa(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -1035,7 +1141,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
+    def reorder(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder the VariantMatrix.
 
@@ -1054,7 +1165,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def reorder_taxa(self, indices, **kwargs: dict):
+    def reorder_taxa(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix along the taxa axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -1077,7 +1192,12 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         if self._taxa_grp is not None:
             self._taxa_grp = self._taxa_grp[indices]        # reorder taxa group array
 
-    def sort(self, keys = None, axis: int = -1, **kwargs: dict):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -1099,7 +1219,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot sort along axis {0}".format(axis))
 
-    def sort_taxa(self, keys = None, **kwargs: dict):
+    def sort_taxa(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix along the taxa axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -1125,7 +1249,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         self.reorder_taxa(indices, **kwargs)
 
     ################### Grouping Methods ###################
-    def group(self, axis: int = -1, **kwargs: dict):
+    def group(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         """
@@ -1138,7 +1266,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
 
-    def group_taxa(self, **kwargs: dict):
+    def group_taxa(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the Matrix along the taxa axis, then populate grouping indices for
         the taxa axis.
@@ -1159,7 +1290,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             # calculate stop indices
             self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
 
-    def is_grouped(self, axis: int = -1, **kwargs: dict):
+    def is_grouped(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -1179,7 +1314,10 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return grouped
 
-    def is_grouped_taxa(self, **kwargs: dict):
+    def is_grouped_taxa(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped along the taxa
         axis.

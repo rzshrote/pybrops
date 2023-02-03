@@ -4,9 +4,11 @@ associated error checking routines.
 """
 
 import copy
-from typing import Any
+import numbers
+from typing import Any, Optional
 import cyvcf2
 import numpy
+from numpy.typing import DTypeLike
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
@@ -32,8 +34,25 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
+        Constructor for the class DensePhasedGenotypeMatrix.
+
         Parameters
         ----------
         mat : numpy.ndarray
@@ -97,13 +116,16 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         )
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DensePhasedGenotypeMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : Matrix
+        out : DensePhasedGenotypeMatrix
+            A copyt of the DensePhasedGenotypeMatrix.
         """
         # create new object
         out = self.__class__(
@@ -135,17 +157,22 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DensePhasedGenotypeMatrix':
         """
         Make a deep copy of the matrix.
 
         Parameters
         ----------
         memo : dict
+            Deep copy metadata.
 
         Returns
         -------
-        out : Matrix
+        out : DensePhasedGenotypeMatrix
+            A deep copy of the DensePhasedGenotypeMatrix.
         """
         # create new object
         out = self.__class__(
@@ -291,7 +318,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     ############################################################################
 
     ################## Matrix conversion ###################
-    def mat_asformat(self, format):
+    def mat_asformat(
+            self, 
+            format: str
+        ) -> numpy.ndarray:
         """
         Get mat in a specific format type.
 
@@ -324,7 +354,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             raise ValueError('Format not recognized. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".')
 
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype = None):
+    def tacount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele within each taxon.
 
@@ -355,7 +388,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         )
         return out
 
-    def tafreq(self, dtype = None):
+    def tafreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele within each taxon.
 
@@ -379,7 +415,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
                 out = dtype.type(out)                   # convert to correct dtype
         return out
 
-    def acount(self, dtype = None):
+    def acount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele across all taxa.
 
@@ -401,7 +440,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
                 out = dtype.type(out)                           # convert to correct dtype
         return out
 
-    def afreq(self, dtype = None):
+    def afreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele across all taxa.
 
@@ -424,7 +466,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
                 out = dtype.type(out)                                   # convert to correct dtype
         return out
 
-    def apoly(self, dtype = None):
+    def apoly(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele polymorphism presence or absense across all loci.
 
@@ -456,7 +501,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         return out
 
-    def maf(self, dtype = None):
+    def maf(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Minor allele frequency across all taxa.
 
@@ -476,7 +524,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def meh(self, dtype = None):
+    def meh(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -501,7 +552,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def gtcount(self, dtype = None):
+    def gtcount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -546,7 +600,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         return out
 
-    def gtfreq(self, dtype = None):
+    def gtfreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
@@ -581,7 +638,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_vcf(cls, fname):
+    def from_vcf(
+            cls, 
+            fname: str
+        ) -> 'DensePhasedGenotypeMatrix':
         """
         Does not ensure that data is phased, just reads it as phased.
         """

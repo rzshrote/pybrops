@@ -6,6 +6,7 @@ with taxa metadata.
 from typing import Any, Sequence, Union
 
 import numpy
+from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.Matrix import Matrix
 
@@ -21,7 +22,10 @@ class TaxaMatrix(GroupableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs: dict) -> None:
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         TaxaMatrix constructor
 
@@ -156,7 +160,13 @@ class TaxaMatrix(GroupableMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_taxa(self, values, taxa, taxa_grp, **kwargs: dict):
+    def adjoin_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray, 
+            taxa_grp: numpy.ndarray, 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
         """
         Add additional elements to the end of the Matrix along the taxa axis.
 
@@ -173,13 +183,17 @@ class TaxaMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A copy of mat with values appended to axis. Note that adjoin does
-            not occur in-place: a new Matrix is allocated and filled.
+        out : TaxaMatrix
+            A copy of TaxaMatrix with values appended to axis. Note that adjoin does
+            not occur in-place: a new TaxaMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
-    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
         """
         Delete sub-arrays along the taxa axis.
 
@@ -192,13 +206,20 @@ class TaxaMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : TaxaMatrix
+            A TaxaMatrix with deleted elements. Note that concat does not occur
+            in-place: a new TaxaMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
-    def insert_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa, taxa_grp, **kwargs: dict):
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray, 
+            taxa_grp: numpy.ndarray, 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
         """
         Insert values along the taxa axis before the given indices.
 
@@ -218,13 +239,17 @@ class TaxaMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : TaxaMatrix
+            A TaxaMatrix with values inserted. Note that insert does not occur
+            in-place: a new TaxaMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
-    def select_taxa(self, indices, **kwargs: dict):
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -237,14 +262,18 @@ class TaxaMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : TaxaMatrix
+            The output TaxaMatrix with values selected. Note that select does not
+            occur in-place: a new TaxaMatrix is allocated and filled.
         """
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_taxa(cls, mats: Sequence, **kwargs: dict):
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -258,14 +287,20 @@ class TaxaMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : TaxaMatrix
+            The concatenated TaxaMatrix. Note that concat does not occur in-place:
+            a new TaxaMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("class method is abstract")
 
     ######### Matrix element in-place-manipulation #########
-    def append_taxa(self, values, taxa, taxa_grp, **kwargs: dict):
+    def append_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray, 
+            taxa_grp: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix along the taxa axis.
 
@@ -282,7 +317,11 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
+    def remove_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the taxa axis.
 
@@ -295,7 +334,14 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa, taxa_grp, **kwargs: dict):
+    def incorp_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray, 
+            taxa_grp: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -316,7 +362,11 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
-    def lexsort_taxa(self, keys, **kwargs: dict):
+    def lexsort_taxa(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -336,7 +386,11 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder_taxa(self, indices, **kwargs: dict):
+    def reorder_taxa(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix along the taxa axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -350,7 +404,11 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def sort_taxa(self, keys, **kwargs: dict):
+    def sort_taxa(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix along the taxa axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -366,7 +424,10 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
-    def group_taxa(self, **kwargs: dict):
+    def group_taxa(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the Matrix along the taxa axis, then populate grouping indices for
         the taxa axis.
@@ -378,7 +439,10 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped_taxa(self, **kwargs: dict):
+    def is_grouped_taxa(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped along the taxa
         axis.

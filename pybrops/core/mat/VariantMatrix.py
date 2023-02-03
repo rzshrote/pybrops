@@ -654,7 +654,12 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################## Clustering Methods ##################
-    def assign_hapgrp(self, k, **kwargs: dict):
+    # TODO: remove me???
+    def assign_hapgrp(
+            self, 
+            k: Union[int,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Assign haplotype groups using k-means clustering.
 

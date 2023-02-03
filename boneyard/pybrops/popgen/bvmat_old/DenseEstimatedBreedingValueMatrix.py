@@ -29,7 +29,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Parameters
         ----------
@@ -282,7 +282,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def adjoin(self, values: Union[Matrix,numpy.ndarray], axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -377,7 +377,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def adjoin_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
+    def adjoin_taxa(self, values: Union[Matrix,numpy.ndarray], raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the taxa axis.
 
@@ -409,7 +409,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def adjoin_trait(self, values, raw = None, trait = None, **kwargs: dict):
+    def adjoin_trait(self, values: Union[Matrix,numpy.ndarray], raw = None, trait = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -973,7 +973,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         )
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def append(self, values: Union[Matrix,numpy.ndarray], axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Append values to the matrix. Cannot add additional locations to 'raw'.
 
@@ -1046,7 +1046,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def append_taxa(self, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
+    def append_taxa(self, values: Union[Matrix,numpy.ndarray], raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Append values to the Matrix along the taxa axis.
 
@@ -1070,7 +1070,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def append_trait(self, values, raw = None, trait = None, **kwargs: dict):
+    def append_trait(self, values: Union[Matrix,numpy.ndarray], raw = None, trait = None, **kwargs: dict):
         """
         Append values to the Matrix along the trait axis.
 
@@ -1330,7 +1330,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # return indices
         return indices
 
-    def lexsort_taxa(self, keys = None, **kwargs: dict):
+    def lexsort_taxa(self, keys: Union[tuple,numpy.ndarray,None] = None, **kwargs: dict):
         """
         Perform an indirect stable sort using a sequence of keys along the taxa
         axis.
@@ -1478,7 +1478,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         # reorder internals
         self.reorder(indices, axis)
 
-    def sort_taxa(self, keys = None, **kwargs: dict):
+    def sort_taxa(self, keys: Union[tuple,numpy.ndarray,None] = None, **kwargs: dict):
         """
         Sort slements of the Matrix along the taxa axis using a sequence of
         keys. Note this modifies the Matrix in-place.

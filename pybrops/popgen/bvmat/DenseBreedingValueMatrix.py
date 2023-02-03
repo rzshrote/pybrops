@@ -4,7 +4,7 @@ for dense breeding value matrices.
 """
 
 import copy
-from typing import Any
+from typing import Any, Optional
 import numpy
 import h5py
 
@@ -49,7 +49,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait: numpy.ndarray = None, **kwargs: dict):
+    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         BreedingValueMatrix constructor
 
@@ -551,7 +551,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         return gmat
 
     @classmethod
-    def from_numpy(cls, a, taxa = None, taxa_grp = None, trait: numpy.ndarray = None, **kwargs: dict):
+    def from_numpy(cls, a, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Construct a DenseBreedingValueMatrix from a numpy.ndarray.
         Calculates mean-centering and scaling to unit variance.
