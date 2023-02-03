@@ -49,7 +49,7 @@ def check_all_equal(v: Any, vname: str) -> None:
     if any(e0 != e for e in viter):
         raise ValueError("not all elements in {0} are equal to {1}".format(vname, e0))
 
-def check_is_positive(v: Any, vname: str):
+def check_is_positive(v: Any, vname: str) -> None:
     """
     Check if a Python object is positive. Raise error if it is not.
 

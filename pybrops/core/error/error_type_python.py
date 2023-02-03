@@ -6,25 +6,25 @@ import inspect
 ################################################################################
 ###################### basic inheritance check functions #######################
 ################################################################################
-def check_inherits(obj, objname, objtype):
+def check_inherits(v, vname, vtype):
     """
     Generic check of inheritance using method resolution order metadata.
 
     Parameters
     ----------
-    obj : object
+    v : object
         Python object to check.
-    objname : str
+    vname : str
         Name associated with the object variable.
-    objtype : type
+    vtype : type
         Object type from which 'obj' must inherit.
     """
-    if isinstance(objtype, type):
-        if objtype not in obj.__mro__:
-            raise TypeError("variable '{0}' must inherit from '{1}'".format(objname, objtype))
-    elif isinstance(objtype, tuple):
-        if all(e not in obj.__mro__ for e in objtype):
-            raise TypeError("variable '{0}' must inherit from all of '{1}'".format(objname, objtype))
+    if isinstance(vtype, type):
+        if vtype not in v.__mro__:
+            raise TypeError("variable '{0}' must inherit from '{1}'".format(vname, vtype))
+    elif isinstance(vtype, tuple):
+        if all(e not in v.__mro__ for e in vtype):
+            raise TypeError("variable '{0}' must inherit from all of '{1}'".format(vname, vtype))
     else:
         raise TypeError("'objtype' must be of type 'type' or 'tuple'")
 

@@ -1,6 +1,9 @@
 import copy
+from typing import Sequence, Union
 import numpy
 import h5py
+
+from pybrops.core.error.error_attr_python import check_is_iterable
 
 from . import DenseBreedingValueMatrix
 
@@ -435,13 +438,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -491,13 +494,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs: dict):
+    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -514,13 +517,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def delete_trait(self, obj, **kwargs: dict):
+    def delete_trait(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the trait axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -537,7 +540,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def insert(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -650,7 +653,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
         return out
 
-    def insert_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
+    def insert_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -684,7 +687,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def insert_trait(self, obj, values, raw = None, trait = None, **kwargs: dict):
+    def insert_trait(self, obj: Union[int,slice,Sequence], values, raw = None, trait = None, **kwargs: dict):
         """
         Insert values along the trait axis before the given indices.
 
@@ -920,7 +923,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         return out
 
     @staticmethod
-    def concat_taxa(mats, **kwargs: dict):
+    def concat_taxa(mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -945,7 +948,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         )
 
     @staticmethod
-    def concat_trait(mats, **kwargs: dict):
+    def concat_trait(mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the trait axis.
 
@@ -1088,13 +1091,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def remove(self, obj, axis, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -1124,13 +1127,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def remove_taxa(self, obj, **kwargs: dict):
+    def remove_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -1141,13 +1144,13 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def remove_trait(self, obj, **kwargs: dict):
+    def remove_trait(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the trait axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -1158,7 +1161,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-    def incorp(self, obj, values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values, axis = -1, raw = None, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -1230,7 +1233,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             if self._trait is not None:
                 self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
-    def incorp_taxa(self, obj, values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
+    def incorp_taxa(self, obj: Union[int,slice,Sequence], values, raw = None, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 

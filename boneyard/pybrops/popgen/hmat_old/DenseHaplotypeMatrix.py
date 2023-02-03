@@ -884,13 +884,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -922,13 +922,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs: dict):
+    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -970,13 +970,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs: dict):
+    def delete_vrnt(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -1039,7 +1039,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -1129,7 +1129,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def insert_taxa(self, obj: Union[int,slice,Sequence], values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -1201,7 +1201,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert_vrnt(self, obj: Union[int,slice,Sequence], values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -1493,7 +1493,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     @staticmethod
-    def concat_taxa(mats, **kwargs: dict):
+    def concat_taxa(mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -1587,7 +1587,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         return out
 
     @staticmethod
-    def concat_vrnt(mats, **kwargs: dict):
+    def concat_vrnt(mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 
@@ -1930,13 +1930,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._vrnt_chrgrp_stix = None
         self._vrnt_chrgrp_spix = None
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -1953,13 +1953,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_taxa(self, obj, **kwargs: dict):
+    def remove_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -1978,13 +1978,13 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def remove_vrnt(self, obj, **kwargs: dict):
+    def remove_vrnt(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the variant axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -2017,7 +2017,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._vrnt_chrgrp_spix = None
         self._vrnt_chrgrp_len = None
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -2062,7 +2062,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def incorp_taxa(self, obj: Union[int,slice,Sequence], values, taxa = None, taxa_grp = None, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -2115,7 +2115,7 @@ class DenseHaplotypeMatrix(DenseMutableMatrix,HaplotypeMatrix):
         self._taxa_grp_stix = None
         self._taxa_grp_spix = None
 
-    def incorp_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def incorp_vrnt(self, obj: Union[int,slice,Sequence], values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Incorporate values along the variant axis before the given indices.
 

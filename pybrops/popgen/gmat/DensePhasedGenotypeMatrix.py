@@ -32,7 +32,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Parameters
         ----------

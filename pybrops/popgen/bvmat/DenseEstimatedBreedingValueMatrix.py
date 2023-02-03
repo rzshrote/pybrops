@@ -4,6 +4,8 @@ for dense breeding value matrices estimated from phenotypic data.
 """
 
 from typing import Any
+
+import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
@@ -33,7 +35,7 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseEstimatedBreedingValueMatrix.
 

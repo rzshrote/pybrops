@@ -19,7 +19,7 @@ def error_readonly(vname: str):
 ################################################################################
 ########################### attribute check functions ##########################
 ################################################################################
-def check_is_callable(v: Any, vname: str):
+def check_is_callable(v: Any, vname: str) -> None:
     """
     Subroutine to check whether a Python object is callable.
     If the object is not callable, raise an AttributeError with a custom error
@@ -37,7 +37,7 @@ def check_is_callable(v: Any, vname: str):
             "variable '{0}' must be callable (have the '__call__' attribute)".format(vname)
         )
 
-def check_is_iterable(v: Any, vname: str):
+def check_is_iterable(v: Any, vname: str) -> None:
     """
     Subroutine to check whether a Python object is iterable.
     If the object is not iterable, raise an AttributeError with a custom error

@@ -4,8 +4,8 @@ Module implementing a dense phased matrix and associated error checking routines
 
 import copy
 import numpy
-from typing import Any, Optional, Union
-
+from typing import Any, Optional, Sequence, Union
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_array_like
 from pybrops.core.error import check_is_iterable
@@ -210,7 +210,12 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
         Delete sub-arrays along an axis.
 
@@ -225,9 +230,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            A DensePhasedMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DensePhasedMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -240,7 +245,11 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def delete_phase(self, obj, **kwargs: dict):
+    def delete_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
         Delete sub-arrays along the phase axis.
 
@@ -270,7 +279,13 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, **kwargs: dict):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
         Insert values along the given axis before the given indices.
 
@@ -279,7 +294,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
@@ -288,9 +303,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            A DensePhasedMatrix with values inserted. Note that insert does not occur
+            in-place: a new DensePhasedMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -307,7 +322,12 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def insert_phase(self, obj, values, **kwargs: dict):
+    def insert_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
         Insert values along the phase axis before the given indices.
 
@@ -323,9 +343,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            A DensePhasedMatrix with values inserted. Note that insert does not occur
+            in-place: a new DensePhasedMatrix is allocated and filled.
         """
         # extract mat values
         if isinstance(values, self.__class__):
@@ -351,13 +371,18 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs: dict):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
-        Select certain values from the matrix.
+        Select certain values from the DensePhasedMatrix.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
@@ -366,9 +391,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         Returns
         -------
-        out : Matrix
-            The output matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            The output DensePhasedMatrix with values selected. Note that select does not
+            occur in-place: a new DensePhasedMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -381,22 +406,26 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    def select_phase(self, indices, **kwargs: dict):
+    def select_phase(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
-        Select certain values from the Matrix along the phase axis.
+        Select certain values from the DensePhasedMatrix along the phase axis.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            The output DensePhasedMatrix with values selected. Note that select does not
+            occur in-place: a new DensePhasedMatrix is allocated and filled.
         """
         # check for array_like
         check_is_array_like(indices, "indices")
@@ -412,13 +441,18 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs: dict):
+    def concat(
+            cls, 
+            mats: Sequence, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
-        Concatenate matrices together along an axis.
+        Concatenate a sequence of Matrix together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -428,9 +462,9 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DensePhasedMatrix
+            The concatenated DensePhasedMatrix. Note that concat does not occur in-place:
+            a new DensePhasedMatrix is allocated and filled.
         """
         axis = get_axis(axis, mats[0].mat_ndim)     # get axis
         out = None                                  # declare variable
@@ -444,13 +478,17 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         return out
 
     @classmethod
-    def concat_phase(cls, mats, **kwargs: dict):
+    def concat_phase(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DensePhasedMatrix':
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -502,7 +540,12 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, **kwargs: dict):
+    def append(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
@@ -524,7 +567,11 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_phase(self, values, **kwargs: dict):
+    def append_phase(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix along the phase axis.
 
@@ -551,7 +598,12 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis = self.phase_axis)
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
@@ -572,7 +624,11 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_phase(self, obj, **kwargs: dict):
+    def remove_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the phase axis.
 
@@ -586,7 +642,13 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis = self.phase_axis)
 
-    def incorp(self, obj, values, axis = -1, **kwargs: dict):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
@@ -614,7 +676,12 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_phase(self, obj, values, **kwargs: dict):
+    def incorp_phase(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the taxa axis before the given indices.
 
@@ -649,7 +716,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedMatrix(v: Any):
+def is_DensePhasedMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DensePhasedMatrix.
 
@@ -665,7 +732,7 @@ def is_DensePhasedMatrix(v: Any):
     """
     return isinstance(v, DensePhasedMatrix)
 
-def check_is_DensePhasedMatrix(v: Any, vname: str):
+def check_is_DensePhasedMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.
 

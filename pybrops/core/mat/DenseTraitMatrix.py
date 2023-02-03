@@ -5,8 +5,9 @@ checking routines.
 
 import numpy
 import copy
-from typing import Any
+from typing import Any, Sequence, Union
 from typing import Optional
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
@@ -15,6 +16,7 @@ from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -147,7 +149,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     trait_axis = property(**trait_axis())
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, trait = None, **kwargs: dict):
+    def adjoin(self, values, axis: int = -1, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -185,7 +187,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def adjoin_trait(self, values, trait = None, **kwargs: dict):
+    def adjoin_trait(self, values, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -236,7 +238,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -269,7 +271,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete_trait(self, obj, **kwargs: dict):
+    def delete_trait(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the trait axis.
 
@@ -303,7 +305,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, trait = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -345,7 +347,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert_trait(self, obj, values, trait = None, **kwargs: dict):
+    def insert_trait(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], trait: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the trait axis before the given indices.
 
@@ -398,7 +400,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs: dict):
+    def select(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -463,7 +465,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs: dict):
+    def concat(cls, mats, axis: int = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -495,13 +497,13 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat_trait(cls, mats, **kwargs: dict):
+    def concat_trait(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the trait axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -562,7 +564,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, trait = None, **kwargs: dict):
+    def append(self, values, axis: int = -1, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -594,7 +596,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_trait(self, values, trait = None, **kwargs: dict):
+    def append_trait(self, values, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the Matrix along the trait axis.
 
@@ -629,7 +631,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -650,7 +652,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_trait(self, obj, **kwargs: dict):
+    def remove_trait(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the trait axis.
 
@@ -667,7 +669,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def incorp(self, obj, values, axis = -1, trait = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -696,7 +698,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_trait(self, obj, values, trait = None, **kwargs: dict):
+    def incorp_trait(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], trait: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the trait axis before the given indices.
 
@@ -736,7 +738,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
+    def lexsort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -808,7 +810,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs: dict):
+    def reorder(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -848,7 +850,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = self._trait[indices]                # reorder trait array
 
-    def sort(self, keys = None, axis = -1, **kwargs: dict):
+    def sort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -894,7 +896,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTraitMatrix(v: Any):
+def is_DenseTraitMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseTraitMatrix.
 
@@ -910,7 +912,7 @@ def is_DenseTraitMatrix(v: Any):
     """
     return isinstance(v, DenseTraitMatrix)
 
-def check_is_DenseTraitMatrix(v: Any, vname: str):
+def check_is_DenseTraitMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
 

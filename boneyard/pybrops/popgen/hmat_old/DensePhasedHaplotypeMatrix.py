@@ -227,7 +227,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def adjoin_phase(self, values, **kwargs: dict):
+    def adjoin_phase(self, values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Adjoin values along the phase axis.
 
@@ -273,13 +273,13 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -307,13 +307,13 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def delete_phase(self, obj, **kwargs: dict):
+    def delete_phase(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the phase axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -349,7 +349,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -445,7 +445,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
 
         return out
 
-    def insert_phase(self, obj, values, **kwargs: dict):
+    def insert_phase(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Insert values along the phase axis before the given indices.
 
@@ -614,7 +614,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         return out
 
     @staticmethod
-    def concat_phase(mats, **kwargs: dict):
+    def concat_phase(mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
@@ -739,7 +739,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_phase(self, values, **kwargs: dict):
+    def append_phase(self, values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Append values to the Matrix along the phase axis.
 
@@ -766,13 +766,13 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis = self.phase_axis)
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -791,13 +791,13 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_phase(self, obj, **kwargs: dict):
+    def remove_phase(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the phase axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         **kwargs
             Additional keyword arguments.
@@ -856,7 +856,7 @@ class DensePhasedHaplotypeMatrix(DenseHaplotypeMatrix,PhasedMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_phase(self, obj, values, **kwargs: dict):
+    def incorp_phase(self, obj, values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 

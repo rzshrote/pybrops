@@ -5,11 +5,11 @@ checking routines.
 
 import copy
 import numbers
-from typing import Any, Optional
+from typing import Any, Optional, Sequence, Union
 import cyvcf2
 import h5py
 import numpy
-from numpy.typing import DTypeLike
+from numpy.typing import DTypeLike, ArrayLike
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5
@@ -19,6 +19,7 @@ from pybrops.core.error import check_ndarray_dtype_is_int8
 from pybrops.core.error import check_ndarray_is_2d
 from pybrops.core.error import error_readonly
 from pybrops.core.error import check_ndarray_in_interval
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -309,8 +310,20 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def adjoin_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray = None, 
+            taxa_grp: numpy.ndarray = None, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
+        Add additional elements to the end of the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
@@ -321,6 +334,12 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, self).adjoin_taxa(
             values = values,
@@ -332,7 +351,20 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def adjoin_vrnt(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: numpy.ndarray = None, 
+            vrnt_phypos: numpy.ndarray = None, 
+            vrnt_name: numpy.ndarray = None, 
+            vrnt_genpos: numpy.ndarray = None, 
+            vrnt_xoprob: numpy.ndarray = None, 
+            vrnt_hapgrp: numpy.ndarray = None, 
+            vrnt_hapalt: numpy.ndarray = None, 
+            vrnt_hapref: numpy.ndarray = None, 
+            vrnt_mask: numpy.ndarray = None, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -384,7 +416,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def delete_taxa(self, obj, **kwargs: dict):
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Delete sub-arrays along the taxa axis.
 
@@ -397,9 +433,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            A DenseGenotypeMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, self).delete_taxa(
             obj = obj,
@@ -409,7 +445,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs: dict):
+    def delete_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Delete sub-arrays along the variant axis.
 
@@ -422,9 +462,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            A DenseGenotypeMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, self).delete_vrnt(
             obj = obj,
@@ -434,7 +474,14 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: numpy.ndarray = None, 
+            taxa_grp: numpy.ndarray = None, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Insert values along the taxa axis before the given indices.
 
@@ -454,9 +501,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            A DenseGenotypeMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         # create output
         out = super(DenseGenotypeMatrix, self).insert_taxa(
@@ -470,7 +517,21 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: numpy.ndarray = None, 
+            vrnt_phypos: numpy.ndarray = None, 
+            vrnt_name: numpy.ndarray = None, 
+            vrnt_genpos: numpy.ndarray = None, 
+            vrnt_xoprob: numpy.ndarray = None, 
+            vrnt_hapgrp: numpy.ndarray = None, 
+            vrnt_hapalt: numpy.ndarray = None, 
+            vrnt_hapref: numpy.ndarray = None, 
+            vrnt_mask: numpy.ndarray = None, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Insert values along the variant axis before the given indices.
 
@@ -500,9 +561,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            A DenseGenotypeMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         # create output
         out = super(DenseGenotypeMatrix, self).insert_vrnt(
@@ -523,7 +584,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def select_taxa(self, indices, **kwargs: dict):
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -536,9 +601,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            The output DenseGenotypeMatrix with values selected. Note that select does not
+            occur in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, self).select_taxa(
             indices = indices,
@@ -548,7 +613,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def select_vrnt(self, indices, **kwargs: dict):
+    def select_vrnt(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Select certain values from the Matrix along the variant axis.
 
@@ -561,9 +630,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            The output DenseGenotypeMatrix with values selected. Note that select does not
+            occur in-place: a new DenseGenotypeMatrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, self).select_vrnt(
             indices = indices,
@@ -574,13 +643,17 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     @classmethod
-    def concat_taxa(cls, mats, **kwargs: dict):
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -588,9 +661,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseGenotypeMatrix
+            The concatenated DenseGenotypeMatrix. Note that concat does not occur in-place:
+            a new DenseGenotypeMatrix is allocated and filled.
         """
         out = super(DenseGenotypeMatrix, cls).concat_taxa(
             mats = mats,
@@ -607,13 +680,17 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs: dict):
+    def concat_vrnt(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Concatenate list of Matrix together along the variant axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -634,7 +711,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     ################## Matrix conversion ###################
-    def mat_asformat(self, format):
+    def mat_asformat(
+            self, 
+            format: str
+        ) -> numpy.ndarray:
         """
         Get mat in a specific format type.
 
@@ -666,7 +746,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             raise ValueError('Format not recognized. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".')
 
     ############## Matrix summary statistics ###############
-    def tacount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def tacount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele within each taxon.
 
@@ -694,7 +777,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out = self._mat.astype(dtype)
         return out
 
-    def tafreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def tafreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele within each taxon.
 
@@ -718,7 +804,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def acount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def acount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele count of the non-zero allele across all taxa.
 
@@ -743,7 +832,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         
         return out
 
-    def afreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def afreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele frequency of the non-zero allele across all taxa.
 
@@ -767,7 +859,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)                   # convert to correct dtype
         return out
 
-    def apoly(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def apoly(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Allele polymorphism presence or absense across all loci.
 
@@ -799,7 +894,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def maf(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def maf(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Minor allele frequency across all taxa.
 
@@ -819,7 +917,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         out[mask] = 1.0 - out[mask] # take 1 - allele frequency
         return out
 
-    def meh(self, dtype: Optional[DTypeLike] = None) -> numbers.Number:
+    def meh(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numbers.Number:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -846,7 +947,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
                 out = dtype.type(out)       # convert to correct dtype
         return out
 
-    def gtcount(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def gtcount(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Gather genotype counts for homozygous major, heterozygous, homozygous
         minor for all individuals.
@@ -891,7 +995,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def gtfreq(self, dtype: Optional[DTypeLike] = None) -> numpy.ndarray:
+    def gtfreq(
+            self, 
+            dtype: Optional[DTypeLike] = None
+        ) -> numpy.ndarray:
         """
         Gather genotype frequencies for homozygous major, heterozygous,
         homozygous minor across all individuals.
@@ -924,7 +1031,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return out
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename, groupname = None):
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
         """
         Write GenotypeMatrix to an HDF5 file.
 
@@ -971,7 +1082,11 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename, groupname = None):
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseGenotypeMatrix':
         """
         Read GenotypeMatrix from an HDF5 file.
 
@@ -1052,7 +1167,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         return gmat
 
     @classmethod
-    def from_vcf(cls, fname):
+    def from_vcf(
+            cls, 
+            fname: str
+        ) -> 'DenseGenotypeMatrix':
         """
         Create a DenseGenotypeMatrix from a VCF file.
 
@@ -1063,7 +1181,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : DensePhasedMatrix
+        out : DenseGenotypeMatrix
             An unphased genotype matrix with associated metadata from VCF file.
         """
         # make VCF iterator

@@ -5,8 +5,9 @@ checking routines.
 
 import copy
 import numpy
-from typing import Any
+from typing import Any, Sequence, Union
 from typing import Optional
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_iterable
 from pybrops.core.error import check_is_ndarray
@@ -18,6 +19,7 @@ from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
@@ -457,7 +459,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def adjoin(self, values, axis: int = -1, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -527,7 +529,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def adjoin_vrnt(self, values: Union[Matrix,numpy.ndarray], vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -648,7 +650,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -681,7 +683,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs: dict):
+    def delete_vrnt(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
@@ -747,7 +749,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -821,7 +823,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert_vrnt(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -940,7 +942,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs: dict):
+    def select(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -1037,7 +1039,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs: dict):
+    def concat(cls, mats, axis: int = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -1069,13 +1071,13 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         return out
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs: dict):
+    def concat_vrnt(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -1211,7 +1213,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def append(self, values, axis: int = -1, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -1245,7 +1247,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def append_vrnt(self, values: Union[Matrix,numpy.ndarray], vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the Matrix along the variant axis.
 
@@ -1348,7 +1350,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self._vrnt_chrgrp_stix = None
         self._vrnt_chrgrp_spix = None
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -1369,7 +1371,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_vrnt(self, obj, **kwargs: dict):
+    def remove_vrnt(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the variant axis.
 
@@ -1408,7 +1410,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self._vrnt_chrgrp_spix = None
         self._vrnt_chrgrp_len = None
 
-    def incorp(self, obj, values, axis = -1, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -1445,7 +1447,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def incorp_vrnt(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the variant axis before the given indices.
 
@@ -1550,7 +1552,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self._vrnt_chrgrp_len = None
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
+    def lexsort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -1623,7 +1625,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs: dict):
+    def reorder(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -1679,7 +1681,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         if self._vrnt_mask is not None:
             self._vrnt_mask = self._vrnt_mask[indices]      # reorder variant mask array
 
-    def sort(self, keys = None, axis = -1, **kwargs: dict):
+    def sort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -1728,7 +1730,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         self.reorder_vrnt(indices, **kwargs)
 
     ################### Grouping Methods ###################
-    def group(self, axis = -1, **kwargs: dict):
+    def group(self, axis: int = -1, **kwargs: dict):
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -1763,7 +1765,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             # calculate stop indices
             self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
 
-    def is_grouped(self, axis = -1, **kwargs: dict):
+    def is_grouped(self, axis: int = -1, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -1811,7 +1813,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVariantMatrix(v: Any):
+def is_DenseVariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseVariantMatrix.
 
@@ -1827,7 +1829,7 @@ def is_DenseVariantMatrix(v: Any):
     """
     return isinstance(v, DenseVariantMatrix)
 
-def check_is_DenseVariantMatrix(v: Any, vname: str):
+def check_is_DenseVariantMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseVariantMatrix. Otherwise raise TypeError.
 

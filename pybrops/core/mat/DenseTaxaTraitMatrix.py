@@ -4,11 +4,13 @@ associated error checking routines.
 """
 
 import numpy
+from numpy.typing import ArrayLike
 import copy
-from typing import Optional
+from typing import Optional, Sequence, Union
 from typing import Any
 
 from pybrops.core.error import error_readonly
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
@@ -161,7 +163,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def adjoin(self, values, axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -214,7 +216,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def adjoin_taxa(self, values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the taxa axis.
 
@@ -253,7 +255,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def adjoin_trait(self, values, trait = None, **kwargs: dict):
+    def adjoin_trait(self, values, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -290,7 +292,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -328,7 +330,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def delete_taxa(self, obj, **kwargs: dict):
+    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -353,7 +355,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def delete_trait(self, obj, **kwargs: dict):
+    def delete_trait(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the variant axis.
 
@@ -385,7 +387,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -443,7 +445,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs: dict):
+    def insert_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -479,7 +481,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def insert_trait(self, obj, values, trait = None, **kwargs: dict):
+    def insert_trait(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], trait: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the variant axis before the given indices.
 
@@ -521,7 +523,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs: dict):
+    def select(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -611,7 +613,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs: dict):
+    def concat(cls, mats, axis: int = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -645,13 +647,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         return out
 
     @classmethod
-    def concat_taxa(cls, mats, **kwargs: dict):
+    def concat_taxa(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -672,13 +674,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         return out
 
     @classmethod
-    def concat_trait(cls, mats, **kwargs: dict):
+    def concat_trait(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the variant axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -706,7 +708,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def append(self, values, axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -753,7 +755,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -776,7 +778,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, trait = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, trait: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -826,7 +828,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs: dict):
+    def lexsort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -857,7 +859,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs: dict):
+    def reorder(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Reorder the VariantMatrix.
 
@@ -878,7 +880,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def sort(self, keys = None, axis = -1, **kwargs: dict):
+    def sort(self, keys = None, axis: int = -1, **kwargs: dict):
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -904,7 +906,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             raise ValueError("cannot sort along axis {0}".format(axis))
 
     ################### Grouping Methods ###################
-    def group(self, axis = -1, **kwargs: dict):
+    def group(self, axis: int = -1, **kwargs: dict):
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -920,7 +922,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
 
-    def is_grouped(self, axis = -1, **kwargs: dict):
+    def is_grouped(self, axis: int = -1, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -947,7 +949,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaTraitMatrix(v: Any):
+def is_DenseTaxaTraitMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseTaxaTraitMatrix.
 
@@ -963,7 +965,7 @@ def is_DenseTaxaTraitMatrix(v: Any):
     """
     return isinstance(v, DenseTaxaTraitMatrix)
 
-def check_is_DenseTaxaTraitMatrix(v: Any, vname: str):
+def check_is_DenseTaxaTraitMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseTaxaTraitMatrix. Otherwise raise TypeError.
 

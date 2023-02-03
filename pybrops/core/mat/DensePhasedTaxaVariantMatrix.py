@@ -4,12 +4,14 @@ and associated error checking routines.
 """
 
 import numpy
-from typing import Any
+from typing import Any, Sequence, Union
 from typing import Optional
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_at_least_3d
 from pybrops.core.error import error_readonly
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
@@ -150,13 +152,13 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def adjoin(self, values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Add additional elements to the end of the Matrix along an axis.
 
         Parameters
         ----------
-        values : DensePhasedGenotypeMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are adjoined.
@@ -165,7 +167,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         Returns
         -------
-        out : DensePhasedGenotypeMatrix
+        out : DensePhasedTaxaVariantMatrix
             A copy of mat with values appended to axis. Note that adjoin does
             not occur in-place: a new Matrix is allocated and filled.
         """
@@ -204,7 +206,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def adjoin_phase(self, values, **kwargs: dict):
+    def adjoin_phase(self, values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Adjoin values along the phase axis.
 
@@ -243,7 +245,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs: dict):
+    def delete(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Delete sub-arrays along an axis.
 
@@ -277,7 +279,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def delete_phase(self, obj, **kwargs: dict):
+    def delete_phase(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the phase axis.
 
@@ -322,7 +324,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def insert(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Insert values along the given axis before the given indices.
 
@@ -382,7 +384,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def insert_phase(self, obj, values, **kwargs: dict):
+    def insert_phase(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], **kwargs: dict):
         """
         Insert values along the phase axis before the given indices.
 
@@ -431,7 +433,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs: dict):
+    def select(self, indices: ArrayLike, axis: int = -1, **kwargs: dict):
         """
         Select certain values from the matrix.
 
@@ -511,7 +513,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs: dict):
+    def concat(cls, mats, axis: int = -1, **kwargs: dict):
         """
         Concatenate matrices together along an axis.
 
@@ -547,13 +549,13 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         return out
 
     @classmethod
-    def concat_phase(cls, mats, **kwargs: dict):
+    def concat_phase(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -594,7 +596,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def append(self, values, axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Append values to the matrix.
 
@@ -640,7 +642,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def remove(self, obj, axis = -1, **kwargs: dict):
+    def remove(self, obj: Union[int,slice,Sequence], axis: int = -1, **kwargs: dict):
         """
         Remove sub-arrays along an axis.
 
@@ -665,7 +667,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs: dict):
+    def incorp(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], axis: int = -1, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, vrnt_chrgrp: numpy.ndarray = None, vrnt_phypos: numpy.ndarray = None, vrnt_name: numpy.ndarray = None, vrnt_genpos: numpy.ndarray = None, vrnt_xoprob: numpy.ndarray = None, vrnt_hapgrp: numpy.ndarray = None, vrnt_hapalt: numpy.ndarray = None, vrnt_hapref: numpy.ndarray = None, vrnt_mask: numpy.ndarray = None, **kwargs: dict):
         """
         Incorporate values along the given axis before the given indices.
 
@@ -719,7 +721,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
     ################### Sorting Methods ####################
 
     ################### Grouping Methods ###################
-    def is_grouped(self, axis = -1, **kwargs: dict):
+    def is_grouped(self, axis: int = -1, **kwargs: dict):
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -748,7 +750,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedTaxaVariantMatrix(v: Any):
+def is_DensePhasedTaxaVariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DensePhasedTaxaVariantMatrix.
 
@@ -764,7 +766,7 @@ def is_DensePhasedTaxaVariantMatrix(v: Any):
     """
     return isinstance(v, DensePhasedTaxaVariantMatrix)
 
-def check_is_DensePhasedTaxaVariantMatrix(v: Any, vname: str):
+def check_is_DensePhasedTaxaVariantMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DensePhasedTaxaVariantMatrix. Otherwise raise TypeError.
 

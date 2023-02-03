@@ -3,8 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa metadata.
 """
 
-from typing import Any
+from typing import Any, Sequence, Union
+
+import numpy
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
+from pybrops.core.mat.Matrix import Matrix
 
 class TaxaMatrix(GroupableMatrix):
     """
@@ -176,7 +179,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete_taxa(self, obj, **kwargs: dict):
+    def delete_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Delete sub-arrays along the taxa axis.
 
@@ -195,7 +198,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert_taxa(self, obj, values, taxa, taxa_grp, **kwargs: dict):
+    def insert_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa, taxa_grp, **kwargs: dict):
         """
         Insert values along the taxa axis before the given indices.
 
@@ -241,13 +244,13 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_taxa(cls, mats, **kwargs: dict):
+    def concat_taxa(cls, mats: Sequence, **kwargs: dict):
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -279,7 +282,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_taxa(self, obj, **kwargs: dict):
+    def remove_taxa(self, obj: Union[int,slice,Sequence], **kwargs: dict):
         """
         Remove sub-arrays along the taxa axis.
 
@@ -292,7 +295,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_taxa(self, obj, values, taxa, taxa_grp, **kwargs: dict):
+    def incorp_taxa(self, obj: Union[int,slice,Sequence], values: Union[Matrix,numpy.ndarray], taxa, taxa_grp, **kwargs: dict):
         """
         Incorporate values along the taxa axis before the given indices.
 

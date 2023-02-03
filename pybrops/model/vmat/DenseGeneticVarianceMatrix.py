@@ -4,6 +4,8 @@ storing dense genetic variance estimates.
 """
 
 from typing import Any
+
+import numpy
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 
@@ -22,7 +24,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs: dict):
+    def __init__(self, mat, taxa: numpy.ndarray = None, taxa_grp: numpy.ndarray = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGeneticVarianceMatrix.
 

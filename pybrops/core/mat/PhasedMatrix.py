@@ -182,7 +182,7 @@ class PhasedMatrix(MutableMatrix):
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of PhasedMatrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict

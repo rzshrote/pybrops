@@ -59,7 +59,7 @@ class InitializationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_InitializationOperator(v: Any):
+def is_InitializationOperator(v: Any) -> bool:
     """
     Determine whether an object is a InitializationOperator.
 
