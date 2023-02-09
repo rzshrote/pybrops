@@ -4,11 +4,13 @@ Module implementing selection protocols for multi-objective genomic selection.
 
 import numpy
 import types
-from typing import Union
+from typing import Callable, Union
 
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.targetfn import target_positive
+from pybrops.breed.prot.sel.weightfn import weight_absolute
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
@@ -18,6 +20,7 @@ from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class MultiObjectiveGenomicSelection(SelectionProtocol):
     """
@@ -30,23 +33,23 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self,
-        nparent: int, 
-        ncross: int, 
-        nprogeny: int,
-        target: Union[str,numpy.ndarray] = "positive", 
-        weight: Union[str,numpy.ndarray] = "magnitude", 
-        method: str = "single",
-        objfn_trans = None, 
-        objfn_trans_kwargs = None, 
-        objfn_wt = -1.0,
-        ndset_trans = None, 
-        ndset_trans_kwargs = None, 
-        ndset_wt = -1.0,
-        soalgo = None, 
-        moalgo = None,
-        rng = global_prng, 
-        **kwargs
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int,
+            weight: Union[numpy.ndarray,Callable] = weight_absolute,
+            target: Union[numpy.ndarray,Callable] = target_positive,
+            method: str = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = -1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = -1.0,
+            soalgo = None, 
+            moalgo = None,
+            rng = global_prng, 
+            **kwargs
         ):
         """
         Constructor for MultiObjectiveGenomicSelection class.
@@ -189,8 +192,8 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.target = target
         self.weight = weight
+        self.target = target
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
@@ -245,49 +248,29 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
-    def target():
-        doc = "The target property."
-        def fget(self):
-            return self._target
-        def fset(self, value):
-            check_isinstance(value, "target", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = (                         # target options
-                    'positive',
-                    'negative',
-                    'stabilizing'
-                )
-                if value not in options:            # if target not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'target'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
-            self._target = value
-        def fdel(self):
-            del self._target
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    target = property(**target())
-
     def weight():
         doc = "The weight property."
         def fget(self):
             return self._weight
         def fset(self, value):
-            check_isinstance(value, "weight", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = ('magnitude', 'equal')    # weight options
-                if value not in options:            # if weight not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'weight'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
+            check_isinstance(value, "weight", (numpy.ndarray, Callable))
             self._weight = value
         def fdel(self):
             del self._weight
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     weight = property(**weight())
+
+    def target():
+        doc = "The target property."
+        def fget(self):
+            return self._target
+        def fset(self, value):
+            check_isinstance(value, "target", (numpy.ndarray, Callable))
+            self._target = value
+        def fdel(self):
+            del self._target
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    target = property(**target())
 
     def method():
         doc = "The method property."
@@ -436,34 +419,29 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ########################## Private Object Methods ##########################
     ############################################################################
     def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel):
-        if isinstance(self.weight, str):
-            if self.weight == "magnitude":
-                return numpy.absolute(gpmod.u_a)
-            elif self.weight == "equal":
-                return 1.0
-                # return numpy.full(gpmod.u_a.shape, 1.0, dtype = "float64")
-            else:
-                raise ValueError("string value for 'weight' not recognized")
+        if callable(self.weight):
+            return self.weight(gpmod.u_a)
         elif isinstance(self.weight, numpy.ndarray):
             return self.weight
         else:
-            raise TypeError("variable 'weight' must be a string or numpy.ndarray")
-
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+    
     def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel):
-        if isinstance(self.target, str):
-            if self.target == "positive":
-                return numpy.float64(gpmod.u_a >= 0.0)   # positive alleles are desired
-            elif self.target == "negative":
-                return numpy.float64(gpmod.u_a <= 0.0)   # negative alleles are desired
-            elif self.target == "stabilizing":
-                return 0.5                          # both alleles desired
-                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
-            else:
-                raise ValueError("string value for 'target' not recognized")
+        if callable(self.target):
+            return self.target(gpmod.u_a)
         elif isinstance(self.target, numpy.ndarray):
             return self.target
         else:
-            raise TypeError("variable 'target' must be a string or numpy.ndarray")
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
+
+    def _calc_tminor(self, tfreq: numpy.ndarray):
+        return (tfreq == 0.0)
+    
+    def _calc_tmajor(self, tfreq: numpy.ndarray):
+        return (tfreq == 1.0)
+    
+    def _calc_thet(self, tminor: numpy.ndarray, tmajor: numpy.ndarray):
+        return numpy.logical_not(numpy.logical_or(tminor, tmajor))
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -620,6 +598,9 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         ploidy = gmat.ploidy                # (scalar) get number of phases
         mkrwt = self._calc_mkrwt(gpmod)     # (p,t) get marker weights
         tfreq = self._calc_tfreq(gpmod)     # (p,t) get target allele frequencies
+        tminor = self._calc_tminor(tfreq)
+        tmajor = self._calc_tmajor(tfreq)
+        thet = self._calc_thet(tminor, tmajor)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -627,7 +608,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,                         # byte code pointer
             self.objfn_static.__globals__,                      # global variables
             None,                                               # new name for the function
-            (mat, ploidy, tfreq, mkrwt, trans, trans_kwargs),   # default values for arguments
+            (mat, ploidy, tfreq, tminor, thet, tmajor, mkrwt, trans, trans_kwargs),   # default values for arguments
             self.objfn_static.__closure__                       # closure byte code pointer
         )
 
@@ -763,7 +744,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, ploidy, tfreq, mkrwt, trans, kwargs):
+    def objfn_static(sel, mat, ploidy, tfreq, tminor, thet, tmajor, mkrwt, trans, kwargs):
         """
         Multi-objective genomic selection objective function.
 
@@ -886,59 +867,43 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             - The second set of ``t`` elements in the ``mogs`` output correspond
               to the ``t`` PAFD outputs for each trait.
         """
-        # if no selection, select all
-        if sel is None:
-            sel = slice(None)
+        # calculate the allele frequency of the selected subset
+        # (n,p)[(k,),:,None] -> (p,1)
+        pfreq = (1.0 / (ploidy * len(sel))) * mat[sel,:,None].sum(0)
 
-        # generate a view of the genotype matrix that only contains 'sel' rows.
-        # (n,p)[(k,),:] -> (k,p)
-        sgeno = mat[sel,:]
+        # determine where allele frequencies are < 1.0
+        # (p,1)
+        p_ltmajor = (pfreq < 1.0)
 
-        # calculate reciprocal number of phases
-        # number of phases * number of individuals in 'sgeno'
-        rphase = 1.0 / (ploidy * sgeno.shape[1])
+        # determine where allele frequencies are > 0.0
+        # (p,1)
+        p_gtminor = (pfreq > 0.0)
 
-        # calculate population frequencies; add axis for correct broadcast
-        # (k,p).sum(0) -> (p,)
-        # (p,) * scalar -> (p,)
-        # (p,None) -> (p,1)
-        # Remark: we need (p,1) for broadcasting with (p,t) arrays
-        pfreq = (sgeno.sum(0) * rphase)[:,None]
+        # determine where allele frequencies are < 1.0 and > 0.0
+        # (p,1)
+        p_het = numpy.logical_and(p_ltmajor, p_gtminor)
 
-        # calculate some inequalities for use multiple times
-        pfreq_lteq_0 = (pfreq <= 0.0)   # is population freq <= 0.0
-        pfreq_gteq_1 = (pfreq >= 1.0)   # is population freq >= 1.0
-
-        # calculate allele unavailability
+        # determine where alleles are unavailable using precomputed arrays
         # (p,t)
-        allele_unavail = numpy.where(
-            tfreq >= 1.0,           # if target freq >= 1.0 (should always be 1.0)
-            pfreq_lteq_0,           # then set True if sel has allele freq == 0
-            numpy.where(            # else
-                tfreq > 0.0,        # if 0.0 < target freq < 1.0
-                numpy.logical_or(   # then set True if pop freq is outside (0.0,1.0)
-                    pfreq_lteq_0,   # mask for whether population freq <= 0.0
-                    pfreq_gteq_1    # mask for whether population freq >= 1.0
-                ),
-                pfreq_gteq_1        # else set True if pop freq is >= 1.0
+        allele_unavail = numpy.logical_not(
+            numpy.logical_or(
+                numpy.logical_and(p_ltmajor, tminor), 
+                numpy.logical_or(
+                    numpy.logical_and(p_het, thet), 
+                    numpy.logical_and(p_gtminor, tmajor)
+                )
             )
         )
 
-        # calculate distance between target and population
-        # (p,t)-(p,1) -> (p,t)
-        dist = numpy.absolute(tfreq - pfreq)
-
-        # compute f_PAU(x)
-        # (p,t) * (p,t) -> (p,t)
-        # (p,t).sum[0] -> (t,)
+        # calculate the manhattan distance and PAFD
+        # (p,t) -> (t,)
+        pafd = (mkrwt * numpy.absolute(tfreq - pfreq)).sum(0)
+        
+        # calculate the allele unavailability
+        # (p,t) -> (t,)
         pau = (mkrwt * allele_unavail).sum(0)
 
-        # compute f_PAFD(x)
-        # (p,t) * (p,t) -> (p,t)
-        # (p,t).sum[0] -> (t,)
-        pafd = (mkrwt * dist).sum(0)
-
-        # concatenate to make MOGS matrix
+        # concatenate to make MOGS vector
         # (t,) and (t,) -> (t + t,)
         mogs = numpy.concatenate([pau, pafd])
 
@@ -1080,7 +1045,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
 
         # calculate reciprocal number of phases
         # ploidy * number of individuals in 'sgeno'
-        rphase = 1.0 / (ploidy * sgeno.shape[2])
+        rphase = 1.0 / (ploidy * sgeno.shape[1])
 
         # calculate population frequencies; add axis for correct broadcast
         # (j,k,p).sum(1) -> (j,p)
