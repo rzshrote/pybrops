@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import is_DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import check_is_DenseGenotypeMatrix
-from pybrops.popgen.gmat.DenseGenotypeMatrix import cond_check_is_DenseGenotypeMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -246,8 +245,8 @@ def test_afreq_is_concrete():
 def test_maf_is_concrete():
     generic_assert_concrete_method(DenseGenotypeMatrix, "maf")
 
-def test_mehe_is_concrete():
-    generic_assert_concrete_method(DenseGenotypeMatrix, "mehe")
+def test_meh_is_concrete():
+    generic_assert_concrete_method(DenseGenotypeMatrix, "meh")
 
 def test_gtcount_is_concrete():
     generic_assert_concrete_method(DenseGenotypeMatrix, "gtcount")
@@ -765,6 +764,22 @@ def test_afreq_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
+def test_apoly_None(mat, mat_int8, mat_ploidy):
+    a = mat.apoly(dtype = None)
+    mask1 = numpy.all(mat_int8 == 0, axis=0)
+    mask2 = numpy.all(mat_int8 == mat_ploidy, axis=0)
+    b = numpy.logical_not(mask1 | mask2)
+    assert numpy.all(a == b)
+    assert a.dtype == b.dtype
+
+def test_afreq_float32(mat, mat_int8, mat_ploidy):
+    a = mat.apoly(dtype = "float32")
+    mask1 = numpy.all(mat_int8 == 0, axis=0)
+    mask2 = numpy.all(mat_int8 == mat_ploidy, axis=0)
+    b = numpy.float32(numpy.logical_not(mask1 | mask2))
+    assert numpy.all(a == b)
+    assert a.dtype == b.dtype
+
 def test_maf_None(mat, mat_int8, mat_ploidy):
     a = mat.maf(dtype = None)
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
@@ -779,15 +794,15 @@ def test_maf_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
-def test_mehe_None(mat, mat_int8, mat_ploidy):
-    a = mat.mehe(dtype = None)
+def test_meh_None(mat, mat_int8, mat_ploidy):
+    a = mat.meh(dtype = None)
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b = (mat_ploidy / mat_int8.shape[1]) * numpy.dot(b, 1.0 - b)
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
-def test_mehe_float32(mat, mat_int8, mat_ploidy):
-    a = mat.mehe(dtype = "float32")
+def test_meh_float32(mat, mat_int8, mat_ploidy):
+    a = mat.meh(dtype = "float32")
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b = numpy.float32((mat_ploidy / mat_int8.shape[1]) * numpy.dot(b, 1.0 - b))
     assert numpy.all(a == b)
@@ -817,6 +832,3 @@ def test_check_is_DenseGenotypeMatrix(mat):
         check_is_DenseGenotypeMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseGenotypeMatrix(None, "mat")
-
-def test_cond_check_is_DenseGenotypeMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseGenotypeMatrix)

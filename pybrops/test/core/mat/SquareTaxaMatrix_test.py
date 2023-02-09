@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import is_SquareTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import check_is_SquareTaxaMatrix
-from pybrops.core.mat.SquareTaxaMatrix import cond_check_is_SquareTaxaMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -58,6 +57,3 @@ def test_check_is_SquareTaxaMatrix(mat):
         check_is_SquareTaxaMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_SquareTaxaMatrix(None, "mat")
-
-def test_cond_check_is_SquareTaxaMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_SquareTaxaMatrix)

@@ -3,6 +3,9 @@ Module defining comma separated value I/O interfaces and associated error
 checking routines.
 """
 
+from typing import Any
+
+
 class CSVInputOutput:
     """
     Abstract class for defining CSV input/output functionality.
@@ -16,7 +19,10 @@ class CSVInputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class CSVInputOutput.
 
@@ -33,7 +39,7 @@ class CSVInputOutput:
     ############################################################################
 
     ####################### File I/O #######################
-    def to_csv(self, filename):
+    def to_csv(self, filename: str) -> None:
         """
         Write and object to a CSV file.
 
@@ -50,7 +56,7 @@ class CSVInputOutput:
 
     ####################### File I/O #######################
     @classmethod
-    def from_csv(cls, filename):
+    def from_csv(cls, filename: str) -> 'CSVInputOutput':
         """
         Read object from a CSV file.
 
@@ -71,13 +77,13 @@ class CSVInputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CSVInputOutput(v):
+def is_CSVInputOutput(v: Any) -> bool:
     """
     Determine whether an object is a CSVInputOutput.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -87,32 +93,16 @@ def is_CSVInputOutput(v):
     """
     return isinstance(v, CSVInputOutput)
 
-def check_is_CSVInputOutput(v, vname):
+def check_is_CSVInputOutput(v: Any, vname: str) -> None:
     """
     Check if object is of type CSVInputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CSVInputOutput):
         raise TypeError("variable '{0}' must be a CSVInputOutput".format(vname))
-
-def cond_check_is_CSVInputOutput(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type CSVInputOutput. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a CSVInputOutput.
-    """
-    if cond(v):
-        check_is_CSVInputOutput(v, vname)

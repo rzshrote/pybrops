@@ -5,11 +5,17 @@ Module containing utility functions for determining Pareto efficiency
 
 import numpy
 
-__all__ = ["is_pareto_efficient"]
+__all__ = [
+    "is_pareto_efficient"
+]
 
 # based on:
 # https://stackoverflow.com/questions/32791911/fast-calculation-of-pareto-front-in-python
-def is_pareto_efficient(fmat, wt, return_mask = True):
+def is_pareto_efficient(
+        fmat: numpy.ndarray, 
+        wt: numpy.ndarray, 
+        return_mask: bool = True
+    ) -> numpy.ndarray:
     """
     Find pareto-efficient points assuming maximizing functions.
 

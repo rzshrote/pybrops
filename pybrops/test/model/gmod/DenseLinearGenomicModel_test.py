@@ -13,11 +13,9 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.model.gmod.DenseLinearGenomicModel import DenseLinearGenomicModel
 from pybrops.model.gmod.DenseLinearGenomicModel import is_DenseLinearGenomicModel
 from pybrops.model.gmod.DenseLinearGenomicModel import check_is_DenseLinearGenomicModel
-from pybrops.model.gmod.DenseLinearGenomicModel import cond_check_is_DenseLinearGenomicModel
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
-from pybrops.core.util.numpy import is_ndarray
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -249,7 +247,7 @@ def test_predict_numpy(glgmod, mat_intercept, mat_beta, mat_int8, mat_u):
     a = glgmod.predict_numpy(mat_intercept, geno)
     b = (mat_intercept @ mat_beta) + (geno @ mat_u)
     assert numpy.all(a == b)
-    assert is_ndarray(a)
+    assert isinstance(a, numpy.ndarray)
 
 def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
     geno = mat_int8.sum(0)
@@ -263,14 +261,14 @@ def test_score_numpy(glgmod, mat_intercept, mat_int8):
     geno = mat_int8.sum(0)
     y_true = glgmod.predict_numpy(mat_intercept, geno)
     out = glgmod.score_numpy(y_true, mat_intercept, geno)
-    assert is_ndarray(out)
+    assert isinstance(out, numpy.ndarray)
     assert numpy.all(out == 1.0)
     assert len(out) == glgmod.ntrait
 
 def test_score(glgmod, mat_intercept, dpgmat):
     y_true = glgmod.predict(mat_intercept, dpgmat)
     out = glgmod.score(y_true, mat_intercept, dpgmat)
-    assert is_ndarray(out)
+    assert isinstance(out, numpy.ndarray)
     assert numpy.all(out == 1.0)
 
 ########################################
@@ -349,9 +347,6 @@ def test_is_DenseLinearGenomicModel_is_concrete():
 
 def test_check_is_DenseLinearGenomicModel_is_concrete():
     generic_assert_concrete_function(check_is_DenseLinearGenomicModel)
-
-def test_cond_check_is_DenseLinearGenomicModel_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

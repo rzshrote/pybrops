@@ -14,7 +14,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.df.DictDataFrame import DictDataFrame
 from pybrops.core.df.DictDataFrame import is_DictDataFrame
 from pybrops.core.df.DictDataFrame import check_is_DictDataFrame
-from pybrops.core.df.DictDataFrame import cond_check_is_DictDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -287,9 +286,6 @@ def test_is_DictDataFrame_is_concrete():
 
 def test_check_is_DictDataFrame_is_concrete():
     generic_assert_concrete_function(check_is_DictDataFrame)
-
-def test_cond_check_is_DictDataFrame_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DictDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

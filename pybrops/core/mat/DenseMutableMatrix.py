@@ -4,8 +4,10 @@ Module implementing a dense mutable matrix and associated error checking routine
 Mutable refers to the ability of adding/removing rows and columns from the matrix.
 """
 
+from typing import Any, Sequence, Union
+import numpy
+from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
-from pybrops.core.mat.DenseMatrix import is_DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class DenseMutableMatrix(DenseMatrix,MutableMatrix):
@@ -20,7 +22,11 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseMutableMatrix
 
@@ -41,7 +47,12 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
     ############################################################################
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, **kwargs):
+    def append(
+            self, 
+            values: Union[DenseMatrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
@@ -56,7 +67,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a DenseMatrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -64,13 +75,18 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         # append values
         self._mat = numpy.append(self._mat, values, axis)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : slice, int, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -83,16 +99,22 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         # delete values
         self._mat = numpy.delete(self._mat, obj, axis)
 
-    def incorp(self, obj, values, axis = -1, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[DenseMatrix,numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
-        values : array_like
+        values : DenseMatrix or numpy.ndarray
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
@@ -103,7 +125,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -116,13 +138,13 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMutableMatrix(v):
+def is_DenseMutableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a HDF5InputOutput.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -132,32 +154,16 @@ def is_DenseMutableMatrix(v):
     """
     return isinstance(v, DenseMutableMatrix)
 
-def check_is_DenseMutableMatrix(v, varname):
+def check_is_DenseMutableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMutableMatrix):
         raise TypeError("'%s' must be a DenseMutableMatrix." % varname)
-
-def cond_check_is_DenseMutableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HDF5InputOutput. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HDF5InputOutput.
-    """
-    if cond(v):
-        check_is_DenseMutableMatrix(v, varname)

@@ -5,7 +5,6 @@ Module implementing selection protocols for optimal haploid value selection.
 import types
 import numpy
 
-import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -16,6 +15,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
 from pybrops.core.util.haplo import calc_haplobin
@@ -32,13 +32,26 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nconfig, nparent, ncross, nprogeny, nhaploblk,
-    unique_parents = True, method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    def __init__(
+            self,
+            nconfig: int, 
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            nhaploblk: int,
+            unique_parents = True, 
+            method = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0,
+            rng = None, 
+            soalgo = None, 
+            moalgo = None,
+            **kwargs : dict
+        ):
         """
         Constructor for Optimal Haploid Value Selection (OHV).
 
@@ -156,7 +169,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._nconfig = value
         def fdel(self):
             del self._nconfig
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nconfig = property(**nconfig())
 
     def nparent():
@@ -169,7 +182,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -182,7 +195,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -195,7 +208,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def nhaploblk():
@@ -208,7 +221,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._nhaploblk = value
         def fdel(self):
             del self._nhaploblk
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nhaploblk = property(**nhaploblk())
 
     def unique_parents():
@@ -220,7 +233,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._unique_parents = value
         def fdel(self):
             del self._unique_parents
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     unique_parents = property(**unique_parents())
 
     def method():
@@ -239,7 +252,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def objfn_trans():
@@ -252,7 +265,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -266,7 +279,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -277,7 +290,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -290,7 +303,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -304,7 +317,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -315,7 +328,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def rng():
@@ -323,14 +336,14 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         def fget(self):
             return self._rng
         def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
+            # if None, use default random number generator
+            if value is None:
+                value = global_prng
             check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     def soalgo():
@@ -345,7 +358,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._soalgo = value
         def fdel(self):
             del self._soalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     soalgo = property(**soalgo())
 
     def moalgo():
@@ -364,7 +377,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     ############################################################################
@@ -475,7 +488,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -604,7 +617,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], ncross, nprogeny, misc
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a parent selection objective function.
 
@@ -640,7 +653,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized selection objective function for the provided datasets.
 
@@ -681,7 +694,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -808,7 +821,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             A transformation operator to alter the output.
             Function must adhere to the following standard::
 
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the ``trans`` function.
@@ -888,7 +901,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             A transformation operator to alter the output.
             Function must adhere to the following standard::
 
-                trans(numpy.ndarray, **kwargs):
+                trans(numpy.ndarray, **kwargs: dict):
                     return (scalar or numpy.ndarray)
         kwargs : dict
             Dictionary of keyword arguments to pass to the ``trans`` function.

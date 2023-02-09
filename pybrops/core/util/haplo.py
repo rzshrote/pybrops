@@ -4,9 +4,18 @@ Module containing haplotype calculation utility functions.
 
 import numpy
 
-__all__ = ["calc_nhaploblk_chrom", "calc_haplobin", "calc_haplobin_bounds"]
+__all__ = [
+    "calc_nhaploblk_chrom", 
+    "calc_haplobin", 
+    "calc_haplobin_bounds"
+]
 
-def calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix):
+def calc_nhaploblk_chrom(
+        nhaploblk: int, 
+        genpos: numpy.ndarray, 
+        chrgrp_stix: numpy.ndarray, 
+        chrgrp_spix: numpy.ndarray
+    ) -> numpy.ndarray:
     """
     Given a total number of haplotype blocks to assign across the genome,
     determine the number of haplotype blocks to give to each chromosome.
@@ -79,7 +88,12 @@ def calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix):
 
     return nhaploblk_chrom
 
-def calc_haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix):
+def calc_haplobin(
+        nhaploblk_chrom: numpy.ndarray, 
+        genpos: numpy.ndarray, 
+        chrgrp_stix: numpy.ndarray, 
+        chrgrp_spix: numpy.ndarray
+    ) -> numpy.ndarray:
     """
     Given the number of haplotype blocks to give to each chromosome across the
     genome, assign bins for each marker
@@ -165,7 +179,9 @@ def calc_haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix):
 
     return haplobin
 
-def calc_haplobin_bounds(haplobin):
+def calc_haplobin_bounds(
+        haplobin: numpy.ndarray
+    ) -> tuple:
     """
     Calculate haplotype bin boundaries and lengths.
 

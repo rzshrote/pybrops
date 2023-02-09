@@ -18,7 +18,6 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.SelfCross import SelfCross
 from pybrops.breed.prot.mate.SelfCross import is_SelfCross
 from pybrops.breed.prot.mate.SelfCross import check_is_SelfCross
-from pybrops.breed.prot.mate.SelfCross import cond_check_is_SelfCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -103,6 +102,3 @@ def test_check_is_SelfCross(mprot):
         check_is_SelfCross(mprot, "mprot")
     with pytest.raises(TypeError):
         check_is_SelfCross(None, "mprot")
-
-def test_cond_check_is_SelfCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_SelfCross)

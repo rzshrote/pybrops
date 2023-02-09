@@ -46,7 +46,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         cmatcls: type = DenseVanRadenCoancestryMatrix, bvtype = "gebv", method = "single",
         objfn_trans: Callable = None, objfn_trans_kwargs: dict = None, objfn_wt: Union[float,numpy.ndarray] = 1.0,
         ndset_trans: Callable = None, ndset_trans_kwargs: dict = None, ndset_wt: float = -1.0,
-        moalgo = None, rng = global_prng, **kwargs):
+        moalgo = None, rng = global_prng, **kwargs: dict):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -122,7 +122,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
             General function definition::
 
-                objfn_trans(obj, **kwargs):
+                objfn_trans(obj, **kwargs: dict):
                     Parameters
                         obj : scalar, numpy.ndarray
                             Objective scalar or vector to be transformed
@@ -145,7 +145,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
             Function definition::
 
-                ndset_trans(ndset, **kwargs):
+                ndset_trans(ndset, **kwargs: dict):
                     Parameters
                         ndset : numpy.ndarray
                             Array of shape (j,o) containing nondominated points.
@@ -482,7 +482,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -665,7 +665,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function for the provided datasets.
 
@@ -708,7 +708,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
@@ -733,7 +733,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

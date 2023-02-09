@@ -3,10 +3,13 @@ Module implementing dense matrices that can have their variants placed on a
 genetic map and associated error checking routines.
 """
 
+from typing import Any, Optional
+
+import numpy
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
-from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybrops.popgen.gmap.GeneticMap import GeneticMap, check_is_GeneticMap
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
 
 class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     """
@@ -14,10 +17,23 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     GeneticMap.
     """
 
-    def __init__(self, mat, vrnt_chrgrp = None, vrnt_phypos = None,
-    vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None,
-    vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None,
-    vrnt_mask = None, **kwargs):
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None,
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None,
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None,
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseGeneticMappableMatrix
 
@@ -50,8 +66,16 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
             **kwargs
         )
 
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
+    def interp_genpos(
+            self, 
+            gmap: GeneticMap, 
+            **kwargs: dict
+        ) -> None:
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -67,7 +91,12 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
         # interpolate postions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+    def interp_xoprob(
+            self, 
+            gmap: GeneticMap, 
+            gmapfn: GeneticMapFunction, 
+            **kwargs: dict
+        ) -> None:
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.
@@ -100,13 +129,13 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGeneticMappableMatrix(v):
+def is_DenseGeneticMappableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseGeneticMappableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -116,34 +145,16 @@ def is_DenseGeneticMappableMatrix(v):
     """
     return isinstance(v, DenseGeneticMappableMatrix)
 
-def check_is_DenseGeneticMappableMatrix(v, varname):
+def check_is_DenseGeneticMappableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type DenseGeneticMappableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseGeneticMappableMatrix(v):
+    if not isinstance(v, DenseGeneticMappableMatrix):
         raise TypeError("'{0}' must be a DenseGeneticMappableMatrix".format(varname))
-
-def cond_check_is_DenseGeneticMappableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseGeneticMappableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseGeneticMappableMatrix.
-    """
-    if cond(v):
-        check_is_DenseGeneticMappableMatrix(v, varname)

@@ -16,7 +16,10 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseUnphasedGenotyping.
 
@@ -32,7 +35,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def genotype(self, pgmat, miscout = None, **kwargs):
+    def genotype(self, pgmat, miscout = None, **kwargs: dict):
         """
         Genotype a genome. Returned matrix is in {0,1,2} format.
 

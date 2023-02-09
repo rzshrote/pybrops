@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
 from pybrops.breed.arch.BreedingProgram import is_BreedingProgram
 from pybrops.breed.arch.BreedingProgram import check_is_BreedingProgram
-from pybrops.breed.arch.BreedingProgram import cond_check_is_BreedingProgram
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -92,9 +91,6 @@ def test_is_BreedingProgram_is_concrete():
 
 def test_check_is_BreedingProgram_is_concrete():
     generic_assert_concrete_function(check_is_BreedingProgram)
-
-def test_cond_check_is_BreedingProgram_is_concrete():
-    generic_assert_concrete_function(cond_check_is_BreedingProgram)
 
 ################################################################################
 ######################### Test class utility functions #########################

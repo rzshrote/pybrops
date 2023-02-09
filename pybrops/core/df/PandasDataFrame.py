@@ -2,6 +2,7 @@
 Module implementing a Pandas DataFrame and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.error import check_is_pandas_df
 
@@ -14,7 +15,7 @@ class PandasDataFrame(DataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs):
+    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs: dict):
         """
         Constructor for the concrete class PandasDataFrame.
 
@@ -45,7 +46,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete dataframe"""
             del self._df
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     df = property(**df())
 
     ################## Column attributes ###################
@@ -60,7 +61,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete number of columns"""
             error_readonly("ncol")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -74,7 +75,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column axis index"""
             error_readonly("col_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -97,7 +98,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column data types"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -111,7 +112,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column names"""
             del self._df.columns
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_ctype():
@@ -127,7 +128,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete column types"""
             del self._col_ctype
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_ctype = property(**col_ctype())
 
     #################### Row attributes ####################
@@ -142,7 +143,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete number of rows"""
             error_readonly("nrow")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -156,7 +157,7 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete row axis index"""
             error_readonly("row_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -170,13 +171,13 @@ class PandasDataFrame(DataFrame):
         def fdel(self):
             """Delete row names"""
             del self._df.index
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, ctype = None, dtype = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, **kwargs):
+    def col_data(self, index = None, name = None, ctype = None, dtype = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 
@@ -258,13 +259,13 @@ class PandasDataFrame(DataFrame):
 
         return out
 
-    def to_pandas_df(self, **kwargs):
+    def to_pandas_df(self, **kwargs: dict):
         """
         Get dataframe as a pandas.DataFrame.
         """
         return self._df
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
         """
@@ -277,13 +278,9 @@ class PandasDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasDataFrame(v):
+def is_PandasDataFrame(v: Any) -> bool:
     return isinstance(v, PandasDataFrame)
 
-def check_is_PandasDataFrame(v, vname):
+def check_is_PandasDataFrame(v: Any, vname: str) -> None:
     if not isinstance(v, PandasDataFrame):
         raise TypeError("variable '{0}' must be a PandasDataFrame".format(vname))
-
-def cond_check_is_PandasDataFrame(v, vname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_PandasDataFrame(v, vname)

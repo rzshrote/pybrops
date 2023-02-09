@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program initialization operators.
 """
 
+from typing import Any
+
+
 class InitializationOperator:
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
@@ -12,7 +15,10 @@ class InitializationOperator:
         1) Initialization of an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class InitializationOperator.
 
@@ -23,7 +29,7 @@ class InitializationOperator:
         """
         super(InitializationOperator, self).__init__()
 
-    def initialize(self, miscout, **kwargs):
+    def initialize(self, miscout, **kwargs: dict):
         """
         Initialize a breeding program.
 
@@ -56,13 +62,13 @@ class InitializationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_InitializationOperator(v):
+def is_InitializationOperator(v: Any) -> bool:
     """
     Determine whether an object is a InitializationOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -72,32 +78,16 @@ def is_InitializationOperator(v):
     """
     return isinstance(v, InitializationOperator)
 
-def check_is_InitializationOperator(v, varname):
+def check_is_InitializationOperator(v: Any, varname: str):
     """
     Check if object is of type InitializationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, InitializationOperator):
         raise TypeError("'%s' must be a InitializationOperator." % varname)
-
-def cond_check_is_InitializationOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type InitializationOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a InitializationOperator.
-    """
-    if cond(v):
-        check_is_InitializationOperator(v, varname)

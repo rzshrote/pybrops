@@ -4,12 +4,18 @@ Module implementing a dense matrix and associated error checking routines.
 
 import copy
 import numpy
+import h5py
+from typing import Any, Optional, Sequence, Union
+from numpy.typing import ArrayLike
 
+from pybrops.core.error import check_file_exists
+from pybrops.core.error import check_group_in_hdf5
 from pybrops.core.error import error_readonly
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.mat.Matrix import Matrix
+from pybrops.core.mat.util import get_axis
+from pybrops.core.util.h5py import save_dict_to_hdf5
 
-# TODO: implement the HDF5InputOutput interface
 class DenseMatrix(Matrix):
     """
     A concrete class for dense matrices.
@@ -26,7 +32,11 @@ class DenseMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Parameters
         ----------
@@ -237,29 +247,37 @@ class DenseMatrix(Matrix):
         return iter(self._mat)
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : Matrix
+        out : DenseMatrix
+            A copy of the DenseMatrix.
         """
         return self.__class__(
             mat = copy.copy(self.mat)
         )
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseMatrix':
         """
         Make a deep copy of the matrix.
 
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
-        out : Matrix
+        out : DenseMatrix
+            A deep copy of the DenseMatrix.
         """
         return self.__class__(
             mat = copy.deepcopy(self.mat, memo)
@@ -281,7 +299,7 @@ class DenseMatrix(Matrix):
             self._mat = value
         def fdel(self):
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def mat_ndim():
@@ -295,7 +313,7 @@ class DenseMatrix(Matrix):
         def fdel(self):
             """Delete number of dimensions of the raw matrix"""
             error_readonly("mat_ndim")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_ndim = property(**mat_ndim())
 
     def mat_shape():
@@ -309,7 +327,7 @@ class DenseMatrix(Matrix):
         def fdel(self):
             """Delete the shape of the raw matrix"""
             error_readonly("mat_shape")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_shape = property(**mat_shape())
 
     ############################################################################
@@ -317,18 +335,23 @@ class DenseMatrix(Matrix):
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(
+            self
+        ) -> 'DenseMatrix':
         """
         Make a shallow copy of the Matrix.
 
         Returns
         -------
-        out : Matrix
-            A shallow copy of the original Matrix.
+        out : DenseMatrix
+            A shallow copy of the original DenseMatrix.
         """
         return copy.copy(self)
 
-    def deepcopy(self, memo = None):
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseMatrix':
         """
         Make a deep copy of the Matrix.
 
@@ -339,19 +362,24 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            A deep copy of the original Matrix.
+        out : DenseMatrix
+            A deep copy of the original DenseMatrix.
         """
         return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, **kwargs):
+    def adjoin(
+            self, 
+            values: Union['DenseMatrix',numpy.ndarray], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
         Parameters
         ----------
-        values : DenseMatrix or numpy.ndarray
+        values : DenseMatrix, numpy.ndarray
             Values are appended to append to the Matrix.
         axis : int
             The axis along which values are appended.
@@ -368,7 +396,7 @@ class DenseMatrix(Matrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -381,13 +409,18 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -396,9 +429,9 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseMatrix
+            A ``DenseMatrix`` with deleted elements. Note that concat does not occur
+            in-place: a new ``DenseMatrix`` is allocated and filled.
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
@@ -411,13 +444,19 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, **kwargs):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Insert values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : Matrix, numpy.ndarray
@@ -437,7 +476,7 @@ class DenseMatrix(Matrix):
         axis = get_axis(axis, self._mat.ndim)
 
         # if given a Matrix extract Matrix.mat values
-        if is_DenseMatrix(values):
+        if isinstance(values, DenseMatrix):
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
             raise ValueError("'values' must be of type DenseMatrix or numpy.ndarray")
@@ -450,13 +489,18 @@ class DenseMatrix(Matrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'DenseMatrix':
         """
         Select certain values from the matrix.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
@@ -465,9 +509,9 @@ class DenseMatrix(Matrix):
 
         Returns
         -------
-        out : Matrix
-            The output matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseMatrix
+            A ``DenseMatrix`` with values selected. Note that select does not
+            occur in-place: a new ``DenseMatrix`` is allocated and filled.
         """
         # get axis
         axis = get_axis(axis, self._mat.ndim)
@@ -481,13 +525,17 @@ class DenseMatrix(Matrix):
         return out
 
     @staticmethod
-    def concat(mats, axis = -1, **kwargs):
+    def concat(
+        mats: ArrayLike, 
+        axis: int, 
+        **kwargs: dict
+    ) -> 'DenseMatrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : ArrayLike of DenseMatrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -498,8 +546,8 @@ class DenseMatrix(Matrix):
         Returns
         -------
         out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+            A concatenated ``DenseMatrix``. Note that concat does not occur in-place:
+            a new ``DenseMatrix`` is allocated and filled.
         """
         # gather raw matrices
         mat_tp = tuple(m.mat for m in mats)
@@ -508,22 +556,113 @@ class DenseMatrix(Matrix):
         mat = numpy.concatenate(mat_tp, axis)
 
         # create new output
-        out = self.__class__(mat = mat, **kwargs)
+        out = mats[0].__class__(mat = mat, **kwargs)
 
         return out
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################################################################
+    ############################## Class Methods ###############################
+    ############################################################################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseMatrix':
+        """
+        Read DenseMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which DenseMatrix data is stored.
+            If None, DenseMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A dense matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMatrix(v):
+def is_DenseMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseMatrix.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -533,32 +672,16 @@ def is_DenseMatrix(v):
     """
     return isinstance(v, DenseMatrix)
 
-def check_is_DenseMatrix(v, varname):
+def check_is_DenseMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type DenseMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMatrix):
         raise TypeError("'%s' must be a DenseMatrix." % varname)
-
-def cond_check_is_DenseMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseMatrix. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DenseMatrix.
-    """
-    if cond(v):
-        check_is_DenseMatrix(v, varname)

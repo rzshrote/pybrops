@@ -4,8 +4,10 @@ storing dense additive genetic variance estimates calculated using three-way DH
 formulae.
 """
 
+from typing import Optional
 import numpy
 import pandas
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.subroutines import srange
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.util import cov_D2s
@@ -24,7 +26,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseThreeWayDHAdditiveGeneticVarianceMatrix.
 
@@ -62,7 +64,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         def fdel(self):
             """Delete axis indices for axes that are square"""
             error_readonly("square_axes")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     ############################################################################

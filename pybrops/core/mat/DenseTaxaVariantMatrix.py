@@ -1,10 +1,13 @@
-import numpy
 import copy
+import numpy
+from typing import Any, Sequence, Union
+from typing import Optional
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_at_least_2d
 from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
@@ -24,10 +27,22 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, taxa = None, taxa_grp = None, vrnt_chrgrp = None,
-    vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None,
-    vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None,
-    vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None,
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None,
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None,
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for creating dense matrices with taxa and variant metadata.
 
@@ -108,13 +123,16 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         self.vrnt_chrgrp_len = None
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : Matrix
+        out : DenseTaxaVariantMatrix
+            A copy of the DenseTaxaVariantMatrix.
         """
         # create new object
         out = self.__class__(
@@ -146,17 +164,22 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Make a deep copy of the matrix.
 
         Parameters
         ----------
         memo : dict
+            Deep copy metadata.
 
         Returns
         -------
-        out : Matrix
+        out : DenseTaxaVariantMatrix
+            A deep copy of the DenseTaxaVariantMatrix.
         """
         # create new object
         out = self.__class__(
@@ -203,7 +226,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             self._mat = value
         def fdel(self):
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     ############### Taxa Metadata Properites ###############
@@ -218,7 +241,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         def fdel(self):
             """Delete taxa axis number"""
             error_readonly("taxa_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     taxa_axis = property(**taxa_axis())
 
     ############# Variant Metadata Properites ##############
@@ -233,7 +256,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         def fdel(self):
             """Delete variant axis"""
             error_readonly("vrnt_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_axis = property(**vrnt_axis())
 
     ############################################################################
@@ -241,7 +264,23 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -292,9 +331,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : DensePhasedGenotypeMatrix
-            A copy of mat with values appended to axis. Note that adjoin does
-            not occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A copy of DenseTaxaVariantMatrix with values appended to axis. Note that adjoin does
+            not occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -326,8 +365,20 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def adjoin_taxa(self, values, taxa = None, taxa_grp = None, **kwargs):
+    def adjoin_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
+        Add additional elements to the end of the Matrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to append to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
@@ -338,6 +389,13 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseTaxaVariantMatrix
+            A copy of DenseTaxaVariantMatrix with values appended to axis. Note that adjoin does
+            not occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
+
         """
         out = super(DenseTaxaVariantMatrix, self).adjoin_taxa(
             values = values,
@@ -363,7 +421,20 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def adjoin_vrnt(self, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def adjoin_vrnt(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Add additional elements to the end of the Matrix along the variant axis.
 
@@ -394,9 +465,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            A copy of mat with values appended to axis. Note that adjoin does
-            not occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A copy of DenseTaxaVariantMatrix with values appended to axis. Note that adjoin does
+            not occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, self).adjoin_vrnt(
             values = values,
@@ -422,13 +493,18 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -437,9 +513,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -460,22 +536,26 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def delete_taxa(self, obj, **kwargs):
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Delete sub-arrays along the taxa axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, self).delete_taxa(
             obj = obj,
@@ -499,22 +579,26 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def delete_vrnt(self, obj, **kwargs):
+    def delete_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Delete sub-arrays along the variant axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, self).delete_vrnt(
             obj = obj,
@@ -531,63 +615,80 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def insert(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Insert values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
         taxa : numpy.ndarray
             Taxa names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         vrnt_chrgrp : numpy.ndarray
             Variant chromosome groups to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_chrgrp field, providing this argument overwrites the field.
         vrnt_phypos : numpy.ndarray
             Variant chromosome physical positions to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_phypos field, providing this argument overwrites the field.
         vrnt_name : numpy.ndarray
             Variant names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_name field, providing this argument overwrites the field.
         vrnt_genpos : numpy.ndarray
             Variant chromosome genetic positions to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_genpos field, providing this argument overwrites the field.
         vrnt_xoprob : numpy.ndarray
             Sequential variant crossover probabilities to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_xoprob field, providing this argument overwrites the field.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_hapgrp field, providing this argument overwrites the field.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_mask field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -621,13 +722,20 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def insert_taxa(self, obj, values, taxa = None, taxa_grp = None, **kwargs):
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Insert values along the taxa axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : Matrix, numpy.ndarray
@@ -641,9 +749,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         # create output
         out = super(DenseTaxaVariantMatrix, self).insert_taxa(
@@ -671,13 +779,27 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def insert_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Insert values along the variant axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : array_like
@@ -701,9 +823,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            A DenseTaxaVariantMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         # create output
         out = super(DenseTaxaVariantMatrix, self).insert_vrnt(
@@ -731,7 +853,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Select certain values from the matrix.
 
@@ -746,9 +873,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            The output matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            The output DenseTaxaVariantMatrix with values selected. Note that select does not
+            occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -763,7 +890,11 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -776,9 +907,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            The output DenseTaxaVariantMatrix with values selected. Note that select does not
+            occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, self).select_taxa(
             indices = indices,
@@ -802,7 +933,11 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    def select_vrnt(self, indices, **kwargs):
+    def select_vrnt(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Select certain values from the Matrix along the variant axis.
 
@@ -815,9 +950,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            The output DenseTaxaVariantMatrix with values selected. Note that select does not
+            occur in-place: a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, self).select_vrnt(
             indices = indices,
@@ -835,13 +970,18 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs):
+    def concat(
+            cls, 
+            mats: Sequence, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : Sequence of matrices
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -851,9 +991,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : DenseHaplotypeMatrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            The concatenated DenseTaxaVariantMatrix. Note that concat does not occur in-place:
+            a new DenseTaxaVariantMatrix is allocated and filled.
         """
         axis = get_axis(axis, mats[0].mat_ndim)     # get axis
         out = None                                  # declare variable
@@ -869,13 +1009,17 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         return out
 
     @classmethod
-    def concat_taxa(cls, mats, **kwargs):
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Concatenate list of Matrix together along the taxa axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -883,9 +1027,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseTaxaVariantMatrix
+            The concatenated DenseTaxaVariantMatrix. Note that concat does not occur in-place:
+            a new DenseTaxaVariantMatrix is allocated and filled.
         """
         out = super(DenseTaxaVariantMatrix, cls).concat_taxa(
             mats = mats,
@@ -910,13 +1054,17 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         return out
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs):
+    def concat_vrnt(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseTaxaVariantMatrix':
         """
         Concatenate list of Matrix together along the variant axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -944,7 +1092,23 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def append(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
@@ -985,13 +1149,18 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -1008,13 +1177,30 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def incorp(self, obj, values, axis = -1, taxa = None, taxa_grp = None, vrnt_chrgrp = None, vrnt_phypos = None, vrnt_name = None, vrnt_genpos = None, vrnt_xoprob = None, vrnt_hapgrp = None, vrnt_hapalt = None, vrnt_hapref = None, vrnt_mask = None, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : array_like
@@ -1054,7 +1240,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -1085,7 +1276,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs):
+    def reorder(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder the VariantMatrix.
 
@@ -1095,7 +1291,6 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
-
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -1106,7 +1301,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def sort(self, keys = None, axis = -1, **kwargs):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -1132,7 +1332,11 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             raise ValueError("cannot sort along axis {0}".format(axis))
 
     ################### Grouping Methods ###################
-    def group(self, axis = -1, **kwargs):
+    def group(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort matrix along axis, then populate grouping indices for the axis.
         Calculate chromosome grouping indices (group by vrnt_chrgrp).
@@ -1148,7 +1352,11 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
 
-    def is_grouped(self, axis = -1, **kwargs):
+    def is_grouped(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -1175,13 +1383,13 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaVariantMatrix(v):
+def is_DenseTaxaVariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseTaxaVariantMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -1191,34 +1399,16 @@ def is_DenseTaxaVariantMatrix(v):
     """
     return isinstance(v, DenseTaxaVariantMatrix)
 
-def check_is_DenseTaxaVariantMatrix(v, varname):
+def check_is_DenseTaxaVariantMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseTaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not is_DenseTaxaVariantMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaVariantMatrix".format(varname))
-
-def cond_check_is_DenseTaxaVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseTaxaVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseTaxaVariantMatrix.
-    """
-    if cond(v):
-        check_is_DenseTaxaVariantMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseTaxaVariantMatrix".format(vname))

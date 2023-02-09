@@ -2,15 +2,15 @@
 Module implementing mating protocols for three-way crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 class ThreeWayCross(MatingProtocol):
     """
@@ -20,7 +20,7 @@ class ThreeWayCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class ThreeWayCross.
 
@@ -33,16 +33,33 @@ class ThreeWayCross(MatingProtocol):
         """
         super(ThreeWayCross, self).__init__(**kwargs)
 
-        # check data types
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # make assignments
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 3-way mate selection scheme.
 
@@ -140,13 +157,9 @@ class ThreeWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayCross(v):
+def is_ThreeWayCross(v: Any) -> bool:
     return isinstance(v, ThreeWayCross)
 
-def check_is_ThreeWayCross(v, varname):
+def check_is_ThreeWayCross(v: Any, varname: str) -> None:
     if not isinstance(v, ThreeWayCross):
         raise TypeError("'%s' must be a ThreeWayCross." % varname)
-
-def cond_check_is_ThreeWayCross(v, varname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_ThreeWayCross(v, varname)

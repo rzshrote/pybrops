@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 storing additive genetic variance estimates.
 """
 
+from typing import Any
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 
 class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
@@ -17,7 +18,10 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class AdditiveGeneticVarianceMatrix.
 
@@ -78,50 +82,32 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveGeneticVarianceMatrix(obj):
+def is_AdditiveGeneticVarianceMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``AdditiveGeneticVarianceMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
     -------
     out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``AdditiveGeneticVarianceMatrix`` object instance.
+        ``True`` or ``False`` for whether ``v`` is a ``AdditiveGeneticVarianceMatrix`` object instance.
     """
-    return isinstance(obj, AdditiveGeneticVarianceMatrix)
+    return isinstance(v, AdditiveGeneticVarianceMatrix)
 
-def check_is_AdditiveGeneticVarianceMatrix(obj, objname):
+def check_is_AdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, AdditiveGeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a AdditiveGeneticVarianceMatrix".format(objname))
-
-def cond_check_is_AdditiveGeneticVarianceMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``AdditiveGeneticVarianceMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``AdditiveGeneticVarianceMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, AdditiveGeneticVarianceMatrix):
-        raise TypeError("'{0}' must be a AdditiveGeneticVarianceMatrix".format(objname))
+    if not isinstance(v, AdditiveGeneticVarianceMatrix):
+        raise TypeError("'{0}' must be a AdditiveGeneticVarianceMatrix".format(vname))

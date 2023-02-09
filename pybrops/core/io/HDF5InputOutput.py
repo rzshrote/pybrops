@@ -2,6 +2,10 @@
 Module defining HDF5 I/O interfaces and associated error checking routines.
 """
 
+from typing import Any, Optional
+from typing import Type
+
+
 class HDF5InputOutput:
     """
     Abstract class for defining HDF5 input/output functionality.
@@ -15,7 +19,10 @@ class HDF5InputOutput:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class HDF5InputOutput.
 
@@ -32,7 +39,7 @@ class HDF5InputOutput:
     ############################################################################
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename, groupname):
+    def to_hdf5(self, filename: str, groupname: Optional[str]) -> None:
         """
         Write object to an HDF5 file.
 
@@ -52,7 +59,7 @@ class HDF5InputOutput:
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename, groupname):
+    def from_hdf5(cls, filename: str, groupname: Optional[str]) -> 'HDF5InputOutput':
         """
         Read object from an HDF5 file.
 
@@ -76,13 +83,13 @@ class HDF5InputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HDF5InputOutput(v):
+def is_HDF5InputOutput(v: Any) -> bool:
     """
     Determine whether an object is a HDF5InputOutput.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -92,32 +99,16 @@ def is_HDF5InputOutput(v):
     """
     return isinstance(v, HDF5InputOutput)
 
-def check_is_HDF5InputOutput(v, vname):
+def check_is_HDF5InputOutput(v: Any, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HDF5InputOutput):
         raise TypeError("variable '{0}' must be a HDF5InputOutput".format(vname))
-
-def cond_check_is_HDF5InputOutput(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HDF5InputOutput. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HDF5InputOutput.
-    """
-    if cond(v):
-        check_is_HDF5InputOutput(v, vname)

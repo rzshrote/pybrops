@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic models that
 are linear in nature.
 """
 
+from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class LinearGenomicModel(GenomicModel):
@@ -37,7 +38,10 @@ class LinearGenomicModel(GenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for LinearGenomicModel class.
 
@@ -65,7 +69,7 @@ class LinearGenomicModel(GenomicModel):
         def fdel(self):
             """Delete fixed effect regression coefficients"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     beta = property(**beta())
 
     def u():
@@ -79,7 +83,7 @@ class LinearGenomicModel(GenomicModel):
         def fdel(self):
             """Delete random effect regression coefficients"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u = property(**u())
 
     ############################################################################
@@ -91,13 +95,13 @@ class LinearGenomicModel(GenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_LinearGenomicModel(v):
+def is_LinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a LinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -107,32 +111,16 @@ def is_LinearGenomicModel(v):
     """
     return isinstance(v, LinearGenomicModel)
 
-def check_is_LinearGenomicModel(v, vname):
+def check_is_LinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type LinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, LinearGenomicModel):
         raise TypeError("variable '{0}' must be a LinearGenomicModel".format(vname))
-
-def cond_check_is_LinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type LinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a LinearGenomicModel.
-    """
-    if cond(v):
-        check_is_LinearGenomicModel(v, vname)

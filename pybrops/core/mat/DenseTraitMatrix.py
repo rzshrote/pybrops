@@ -5,14 +5,18 @@ checking routines.
 
 import numpy
 import copy
+from typing import Any, Sequence, Union
+from typing import Optional
+from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_iterable
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_is_ndarray
+from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import error_readonly
 from pybrops.core.error import generic_check_isinstance
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -29,7 +33,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, trait = None, **kwargs):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseTraitMatrix.
 
@@ -50,13 +59,16 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         self.trait = trait
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseTraitMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : Matrix
+        out : DenseTraitMatrix
+            A copy of the DenseTraitMatrix.
         """
         # create new object
         out = self.__class__(
@@ -66,17 +78,22 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DenseTraitMatrix':
         """
         Make a deep copy of the matrix.
 
         Parameters
         ----------
         memo : dict
+            Deep copy metadata.
 
         Returns
         -------
         out : Matrix
+            A deep copy of the DenseTraitMatrix.
         """
         # create new object
         out = self.__class__(
@@ -98,15 +115,16 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             return self._trait
         def fset(self, value):
             """Set trait label array"""
-            cond_check_is_ndarray(value, "trait")
-            cond_check_ndarray_dtype_is_object(value, "trait")
-            cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_axis_len(value, "trait", 0, self.ntrait)
+            if value is not None:
+                check_is_ndarray(value, "trait")
+                check_ndarray_dtype_is_object(value, "trait")
+                check_ndarray_ndim(value, "trait", 1)
+                check_ndarray_axis_len(value, "trait", 0, self.ntrait)
             self._trait = value
         def fdel(self):
             """Delete trait label array"""
             del self._trait
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     #################### Trait metadata ####################
@@ -121,7 +139,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         def fdel(self):
             """Delete number of traits"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     def trait_axis():
@@ -135,17 +153,23 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         def fdel(self):
             """Delete trait axis number"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait_axis = property(**trait_axis())
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis = -1, trait = None, **kwargs):
+    def adjoin(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
         Parameters
         ----------
-        values : DenseTraitMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values to be adjoined to the Matrix.
         axis : int
             The axis along which values are adjoined.
@@ -177,7 +201,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def adjoin_trait(self, values, trait = None, **kwargs):
+    def adjoin_trait(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Add additional elements to the end of the Matrix along the trait axis.
 
@@ -228,13 +257,18 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete(self, obj, axis = -1, **kwargs):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -261,13 +295,17 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def delete_trait(self, obj, **kwargs):
+    def delete_trait(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Delete sub-arrays along the trait axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
@@ -295,13 +333,20 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert(self, obj, values, axis = -1, trait = None, **kwargs):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Insert values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : DenseTraitMatrix, numpy.ndarray
@@ -337,16 +382,22 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def insert_trait(self, obj, values, trait = None, **kwargs):
+    def insert_trait(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Insert values along the trait axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : DenseTraitMatrix, numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values to insert into the matrix.
         trait : numpy.ndarray
             Trait names to insert into the Matrix.
@@ -390,7 +441,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def select(self, indices, axis = -1, **kwargs):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Select certain values from the matrix.
 
@@ -420,7 +476,11 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    def select_trait(self, indices, **kwargs):
+    def select_trait(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Select certain values from the Matrix along the trait axis.
 
@@ -455,13 +515,18 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat(cls, mats, axis = -1, **kwargs):
+    def concat(
+            cls, 
+            mats: Sequence, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : Sequence of matrices
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -487,13 +552,17 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     @classmethod
-    def concat_trait(cls, mats, **kwargs):
+    def concat_trait(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DenseTraitMatrix':
         """
         Concatenate list of Matrix together along the trait axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
@@ -501,9 +570,9 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         Returns
         -------
-        out : Matrix
-            The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+        out : DenseTraitMatrix
+            The concatenated DenseTraitMatrix. Note that concat does not occur in-place:
+            a new DenseTraitMatrix is allocated and filled.
         """
         # ensure that we have an iterable object
         check_is_iterable(mats, "mats")
@@ -554,7 +623,13 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         return out
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis = -1, trait = None, **kwargs):
+    def append(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the matrix.
 
@@ -586,7 +661,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot append along axis {0}".format(axis))
 
-    def append_trait(self, values, trait = None, **kwargs):
+    def append_trait(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix along the trait axis.
 
@@ -621,13 +701,18 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.append(self._trait, trait, axis = 0)
 
-    def remove(self, obj, axis = -1, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -642,13 +727,17 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot remove along axis {0}".format(axis))
 
-    def remove_trait(self, obj, **kwargs):
+    def remove_trait(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the trait axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
@@ -659,13 +748,20 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = numpy.delete(self._trait, obj, axis = 0)
 
-    def incorp(self, obj, values, axis = -1, trait = None, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int = -1, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : array_like
@@ -688,13 +784,19 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot incorp along axis {0}".format(axis))
 
-    def incorp_trait(self, obj, values, trait = None, **kwargs):
+    def incorp_trait(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the trait axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : Matrix, numpy.ndarray
@@ -728,7 +830,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             self._trait = numpy.insert(self._trait, obj, trait, axis = 0)
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys = None, axis = -1, **kwargs):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a tuple of keys.
 
@@ -756,7 +863,11 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return indices
 
-    def lexsort_trait(self, keys = None, **kwargs):
+    def lexsort_trait(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys along the trait
         axis.
@@ -800,7 +911,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         # return indices
         return indices
 
-    def reorder(self, indices, axis = -1, **kwargs):
+    def reorder(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder the VariantMatrix.
 
@@ -810,7 +926,6 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
-
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -819,7 +934,11 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot reorder along axis {0}".format(axis))
 
-    def reorder_trait(self, indices, **kwargs):
+    def reorder_trait(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix along the trait axis using an array of
         indices. Note this modifies the Matrix in-place.
@@ -840,7 +959,12 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         if self._trait is not None:
             self._trait = self._trait[indices]                # reorder trait array
 
-    def sort(self, keys = None, axis = -1, **kwargs):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None], 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
         """
         Reset metadata for corresponding axis: name, stix, spix, len.
         Sort the VariantMatrix using a tuple of keys.
@@ -862,7 +986,11 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         else:
             raise ValueError("cannot sort along axis {0}".format(axis))
 
-    def sort_trait(self, keys = None, **kwargs):
+    def sort_trait(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix along the trait axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -886,13 +1014,13 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTraitMatrix(v):
+def is_DenseTraitMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseTraitMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -902,34 +1030,16 @@ def is_DenseTraitMatrix(v):
     """
     return isinstance(v, DenseTraitMatrix)
 
-def check_is_DenseTraitMatrix(v, varname):
+def check_is_DenseTraitMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not is_DenseTraitMatrix(v):
-        raise TypeError("'{0}' must be a DenseTraitMatrix".format(varname))
-
-def cond_check_is_DenseTraitMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseTraitMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseTraitMatrix.
-    """
-    if cond(v):
-        check_is_DenseTraitMatrix(v, varname)
+        raise TypeError("'{0}' must be a DenseTraitMatrix".format(vname))

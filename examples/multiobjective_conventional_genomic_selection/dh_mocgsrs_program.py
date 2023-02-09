@@ -320,7 +320,7 @@ class MyLogbook(Logbook):
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
         ################ candidate mean expected heterozygosity ################
-        self.data["cand_mehe"].append(genome["cand"].mehe())
+        self.data["cand_meh"].append(genome["cand"].meh())
         ########################### candidate means ############################
         tmp = bval["cand"].tmean(descale = True)
         self.data["cand_mean_syn1"].append(tmp[0])
@@ -359,7 +359,7 @@ class MyLogbook(Logbook):
         self.data["cand_true_lsl_syn2"].append(tmp[1])
         ########################################################################
         ################## main mean expected heterozygosity ###################
-        self.data["main_mehe"].append(genome["main"].mehe())
+        self.data["main_meh"].append(genome["main"].meh())
         ############################## main means ##############################
         tmp = bval["main"].tmean(descale = True)
         self.data["main_mean_syn1"].append(tmp[0])
@@ -414,7 +414,7 @@ class MyLogbook(Logbook):
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
         ################ candidate mean expected heterozygosity ################
-        self.data["cand_mehe"].append(genome["cand"].mehe())
+        self.data["cand_meh"].append(genome["cand"].meh())
         ########################### candidate means ############################
         tmp = bval["cand"].tmean(descale = True)
         self.data["cand_mean_syn1"].append(tmp[0])
@@ -453,7 +453,7 @@ class MyLogbook(Logbook):
         self.data["cand_true_lsl_syn2"].append(tmp[1])
         ########################################################################
         ################## main mean expected heterozygosity ###################
-        self.data["main_mehe"].append(genome["main"].mehe())
+        self.data["main_meh"].append(genome["main"].meh())
         ############################## main means ##############################
         tmp = bval["main"].tmean(descale = True)
         self.data["main_mean_syn1"].append(tmp[0])
@@ -494,7 +494,7 @@ class MyLogbook(Logbook):
         self.data = {
             "rep": [],
             "t_cur": [],
-            "cand_mehe": [],
+            "cand_meh": [],
             "cand_mean_syn1": [],
             "cand_mean_syn2": [],
             "cand_true_mean_syn1": [],
@@ -513,7 +513,7 @@ class MyLogbook(Logbook):
             "cand_true_usl_syn2": [],
             "cand_true_lsl_syn1": [],
             "cand_true_lsl_syn2": [],
-            "main_mehe": [],
+            "main_meh": [],
             "main_mean_syn1": [],
             "main_mean_syn2": [],
             "main_true_mean_syn1": [],

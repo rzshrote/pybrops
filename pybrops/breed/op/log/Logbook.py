@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program logbook operators.
 """
 
+from typing import Any
+
+
 class Logbook:
     """
     Abstract class defining interfaces for logging statistics about an entire
@@ -15,7 +18,10 @@ class Logbook:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class Logbook.
 
@@ -40,7 +46,7 @@ class Logbook:
         def fdel(self):
             """Delete Logbook data"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     def rep():
@@ -54,13 +60,13 @@ class Logbook:
         def fdel(self):
             """Delete replicate number"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rep = property(**rep())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'InitializationOperator.initialize'
         is called.
@@ -86,7 +92,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'ParentSelectionOperator.pselect'
         is called.
@@ -114,7 +120,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'MatingOperator.mate' is called.
 
@@ -139,7 +145,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'EvaluationOperator.evaluate' is
         called.
@@ -165,7 +171,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
-    def log_sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
+    def log_sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'SurvivorSelectionOperator.sselect'
         is called.
@@ -213,13 +219,13 @@ class Logbook:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Logbook(v):
+def is_Logbook(v: Any) -> bool:
     """
     Determine whether an object is a Logbook.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -229,32 +235,16 @@ def is_Logbook(v):
     """
     return isinstance(v, Logbook)
 
-def check_is_Logbook(v, varname):
+def check_is_Logbook(v: Any, varname: str) -> None:
     """
     Check if object is of type Logbook. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, Logbook):
         raise TypeError("'%s' must be a Logbook." % varname)
-
-def cond_check_is_Logbook(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type Logbook. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a Logbook.
-    """
-    if cond(v):
-        check_is_Logbook(v, varname)

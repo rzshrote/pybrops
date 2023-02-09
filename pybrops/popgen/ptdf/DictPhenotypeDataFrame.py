@@ -3,6 +3,7 @@ Module implementing a phenotype dataframe using dictionaries and its associated
 error checking routines.
 """
 
+from typing import Any
 import numpy
 import copy
 
@@ -21,7 +22,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, data, col_grp = None, col_analysis_type = None, col_analysis_effect = None, row_name = None, **kwargs):
+    def __init__(self, data, col_grp = None, col_analysis_type = None, col_analysis_effect = None, row_name = None, **kwargs: dict):
         """
         Constructor for the concrete class DictPhenotypeDataFrame.
 
@@ -116,7 +117,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable type array"""
             del self._col_analysis_type
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_type = property(**col_analysis_type())
 
     def col_analysis_effect():
@@ -147,7 +148,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         def fdel(self):
             """Delete analysis variable effect type array"""
             del self._col_analysis_effect
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_effect = property(**col_analysis_effect())
 
     ############################################################################
@@ -157,7 +158,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
                  analysis_type = None, analysis_effect = None, dtype = None,
                  return_index = False, return_name = False, return_grp = False,
                  return_analysis_type = None, return_analysis_effect = None,
-                 return_dtype = False, **kwargs):
+                 return_dtype = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 
@@ -257,13 +258,13 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictPhenotypeDataFrame(v):
+def is_DictPhenotypeDataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DictPhenotypeDataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -273,32 +274,16 @@ def is_DictPhenotypeDataFrame(v):
     """
     return isinstance(v, DictPhenotypeDataFrame)
 
-def check_is_DictPhenotypeDataFrame(v, vname):
+def check_is_DictPhenotypeDataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DictPhenotypeDataFrame):
         raise TypeError("variable '{0}' must be a DictPhenotypeDataFrame".format(vname))
-
-def cond_check_is_DictPhenotypeDataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DictPhenotypeDataFrame.
-    """
-    if cond(v):
-        check_is_DictPhenotypeDataFrame(v, vname)

@@ -5,7 +5,7 @@ method and associated error checking routines.
 
 import numpy
 import numbers
-from typing import Union
+from typing import Any, Union
 
 from pybrops.core.error import check_all_equal
 from pybrops.core.error import check_is_ndarray
@@ -20,7 +20,6 @@ from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
-# TODO: implement VanRaden methods
 class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     """
     A concrete class for a dense coancestry matrix calculated using the VanRaden
@@ -34,7 +33,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseVanRadenCoancestryMatrix.
 
@@ -175,7 +174,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
 
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs: dict):
         """
         Create a DenseVanRadenCoancestryMatrix from a GenotypeMatrix
         
@@ -259,13 +258,13 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVanRadenCoancestryMatrix(v):
+def is_DenseVanRadenCoancestryMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseVanRadenCoancestryMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -275,34 +274,16 @@ def is_DenseVanRadenCoancestryMatrix(v):
     """
     return isinstance(v, DenseVanRadenCoancestryMatrix)
 
-def check_is_DenseVanRadenCoancestryMatrix(v, vname):
+def check_is_DenseVanRadenCoancestryMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseVanRadenCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseVanRadenCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseVanRadenCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseVanRadenCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseVanRadenCoancestryMatrix(v, vname)

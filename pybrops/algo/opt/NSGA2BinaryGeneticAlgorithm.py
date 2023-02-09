@@ -28,7 +28,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, ngen = 250, mu = 100, lamb = 100, rng = global_prng, **kwargs):
+    def __init__(self, ngen = 250, mu = 100, lamb = 100, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
 
@@ -66,7 +66,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._ngen = value
         def fdel(self):
             del self._ngen
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ngen = property(**ngen())
 
     def mu():
@@ -79,7 +79,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._mu = value
         def fdel(self):
             del self._mu
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mu = property(**mu())
 
     def lamb():
@@ -92,7 +92,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._lamb = value
         def fdel(self):
             del self._lamb
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     lamb = property(**lamb())
 
     def rng():
@@ -106,14 +106,14 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
 

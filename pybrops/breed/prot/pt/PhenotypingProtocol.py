@@ -2,6 +2,9 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
+from typing import Any
+
+
 class PhenotypingProtocol:
     """
     Abstract class defining interfaces for phenotyping protocols.
@@ -15,7 +18,10 @@ class PhenotypingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class PhenotypingProtocol.
 
@@ -42,7 +48,7 @@ class PhenotypingProtocol:
         def fdel(self):
             """Delete genomic prediction model"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gpmod = property(**gpmod())
 
     ################ Stochastic Parameters #################
@@ -57,13 +63,13 @@ class PhenotypingProtocol:
         def fdel(self):
             """Delete error variance"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_err = property(**var_err())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout, **kwargs):
+    def phenotype(self, pgmat, miscout, **kwargs: dict):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -85,7 +91,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_h2(self, h2, pgmat, **kwargs):
+    def set_h2(self, h2, pgmat, **kwargs: dict):
         """
         Set the narrow sense heritability for environments.
 
@@ -100,7 +106,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_H2(self, H2, pgmat, **kwargs):
+    def set_H2(self, H2, pgmat, **kwargs: dict):
         """
         Set the broad sense heritability for environments.
 
@@ -120,13 +126,13 @@ class PhenotypingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypingProtocol(v):
+def is_PhenotypingProtocol(v: Any) -> bool:
     """
     Determine whether an object is a PhenotypingProtocol.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -136,32 +142,16 @@ def is_PhenotypingProtocol(v):
     """
     return isinstance(v, PhenotypingProtocol)
 
-def check_is_PhenotypingProtocol(v, varname):
+def check_is_PhenotypingProtocol(v: Any, varname: str) -> None:
     """
     Check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypingProtocol):
         raise TypeError("'%s' must be a PhenotypingProtocol." % varname)
-
-def cond_check_is_PhenotypingProtocol(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a PhenotypingProtocol.
-    """
-    if cond(v):
-        check_is_PhenotypingProtocol(v, varname)

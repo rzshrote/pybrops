@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic models that
 are non-linear in nature.
 """
 
+from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class NonlinearGenomicModel(GenomicModel):
@@ -17,7 +18,10 @@ class NonlinearGenomicModel(GenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for NonlinearGenomicModel class.
 
@@ -34,13 +38,13 @@ class NonlinearGenomicModel(GenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_NonlinearGenomicModel(v):
+def is_NonlinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a NonlinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -50,32 +54,16 @@ def is_NonlinearGenomicModel(v):
     """
     return isinstance(v, NonlinearGenomicModel)
 
-def check_is_NonlinearGenomicModel(v, vname):
+def check_is_NonlinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type NonlinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, NonlinearGenomicModel):
         raise TypeError("variable '{0}' must be a NonlinearGenomicModel".format(vname))
-
-def cond_check_is_NonlinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type NonlinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a NonlinearGenomicModel.
-    """
-    if cond(v):
-        check_is_NonlinearGenomicModel(v, vname)

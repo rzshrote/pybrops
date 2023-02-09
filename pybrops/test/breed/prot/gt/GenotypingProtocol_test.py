@@ -12,8 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.breed.prot.gt.GenotypingProtocol import is_GenotypingProtocol
 from pybrops.breed.prot.gt.GenotypingProtocol import check_is_GenotypingProtocol
-from pybrops.breed.prot.gt.GenotypingProtocol import cond_check_is_GenotypingProtocol
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -52,9 +50,6 @@ def test_is_GenotypingProtocol_is_concrete():
 
 def test_check_is_GenotypingProtocol_is_concrete():
     generic_assert_concrete_function(check_is_GenotypingProtocol)
-
-def test_cond_check_is_GenotypingProtocol_is_concrete():
-    generic_assert_concrete_function(cond_check_is_GenotypingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################

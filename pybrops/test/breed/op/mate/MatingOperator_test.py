@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.op.mate.MatingOperator import MatingOperator
 from pybrops.breed.op.mate.MatingOperator import is_MatingOperator
 from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
-from pybrops.breed.op.mate.MatingOperator import cond_check_is_MatingOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_MatingOperator_is_concrete():
 
 def test_check_is_MatingOperator_is_concrete():
     generic_assert_concrete_function(check_is_MatingOperator)
-
-def test_cond_check_is_MatingOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_MatingOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

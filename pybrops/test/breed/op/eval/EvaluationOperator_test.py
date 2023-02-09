@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
 from pybrops.breed.op.eval.EvaluationOperator import is_EvaluationOperator
 from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
-from pybrops.breed.op.eval.EvaluationOperator import cond_check_is_EvaluationOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_EvaluationOperator_is_concrete():
 
 def test_check_is_EvaluationOperator_is_concrete():
     generic_assert_concrete_function(check_is_EvaluationOperator)
-
-def test_cond_check_is_EvaluationOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_EvaluationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

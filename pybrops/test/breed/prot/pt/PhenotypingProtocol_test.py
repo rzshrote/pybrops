@@ -12,8 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.breed.prot.pt.PhenotypingProtocol import is_PhenotypingProtocol
 from pybrops.breed.prot.pt.PhenotypingProtocol import check_is_PhenotypingProtocol
-from pybrops.breed.prot.pt.PhenotypingProtocol import cond_check_is_PhenotypingProtocol
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -63,9 +61,6 @@ def test_is_PhenotypingProtocol_is_concrete():
 
 def test_check_is_PhenotypingProtocol_is_concrete():
     generic_assert_concrete_function(check_is_PhenotypingProtocol)
-
-def test_cond_check_is_PhenotypingProtocol_is_concrete():
-    generic_assert_concrete_function(cond_check_is_PhenotypingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################

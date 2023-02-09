@@ -295,7 +295,7 @@ class MyLogbook(Logbook):
         main_bval_true = gpmod.gebv(genome["main"])
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
-        self.data["cand_mehe"].append(genome["cand"].mehe())
+        self.data["cand_meh"].append(genome["cand"].meh())
         self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
         self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
         self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
@@ -305,7 +305,7 @@ class MyLogbook(Logbook):
         self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
         self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
         self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
-        self.data["main_mehe"].append(genome["main"].mehe())
+        self.data["main_meh"].append(genome["main"].meh())
         self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
         self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
         self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
@@ -327,7 +327,7 @@ class MyLogbook(Logbook):
         main_bval_true = gpmod.gebv(genome["main"])
         self.data["rep"].append(self.rep)
         self.data["t_cur"].append(t_cur)
-        self.data["cand_mehe"].append(genome["cand"].mehe())
+        self.data["cand_meh"].append(genome["cand"].meh())
         self.data["cand_mean"].append(bval["cand"].tmean(descale = True)[0])
         self.data["cand_true_mean"].append(cand_bval_true.tmean(descale = True)[0])
         self.data["cand_std"].append(bval["cand"].tstd(descale = True)[0])
@@ -337,7 +337,7 @@ class MyLogbook(Logbook):
         self.data["cand_true_bulmer"].append(gpmod.bulmer(genome["cand"])[0])
         self.data["cand_true_usl"].append(gpmod.usl(genome["cand"], descale = True)[0])
         self.data["cand_true_lsl"].append(gpmod.lsl(genome["cand"], descale = True)[0])
-        self.data["main_mehe"].append(genome["main"].mehe())
+        self.data["main_meh"].append(genome["main"].meh())
         self.data["main_mean"].append(bval["main"].tmean(descale = True)[0])
         self.data["main_true_mean"].append(main_bval_true.tmean(descale = True)[0])
         self.data["main_std"].append(bval["main"].tstd(descale = True)[0])
@@ -351,7 +351,7 @@ class MyLogbook(Logbook):
         self.data = {
             "rep": [],
             "t_cur": [],
-            "cand_mehe": [],
+            "cand_meh": [],
             "cand_mean": [],
             "cand_true_mean": [],
             "cand_std": [],
@@ -361,7 +361,7 @@ class MyLogbook(Logbook):
             "cand_true_bulmer": [],
             "cand_true_usl": [],
             "cand_true_lsl": [],
-            "main_mehe": [],
+            "main_meh": [],
             "main_mean": [],
             "main_true_mean": [],
             "main_std": [],

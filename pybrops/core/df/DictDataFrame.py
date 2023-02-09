@@ -4,6 +4,7 @@ Module implementing a Dictionary DataFrame and associated error checking routine
 
 import copy
 import numbers
+from typing import Any
 import numpy
 import pandas
 
@@ -26,7 +27,7 @@ class DictDataFrame(DataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, data, col_grp = None, row_name = None, **kwargs):
+    def __init__(self, data, col_grp = None, row_name = None, **kwargs: dict):
         """
         Constructor for the concrete class DictDataFrame.
 
@@ -98,7 +99,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete dataframe"""
             del self._data
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     ################## Column attributes ###################
@@ -113,7 +114,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete number of columns"""
             error_readonly("ncol")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -127,7 +128,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column axis index"""
             error_readonly("col_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -165,7 +166,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column data types"""
             error_readonly("col_dtype")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -202,7 +203,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column names"""
             error_readonly("col_name")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_grp():
@@ -230,7 +231,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete column groups"""
             del self._col_grp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_grp = property(**col_grp())
 
     #################### Row attributes ####################
@@ -249,7 +250,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete number of rows"""
             error_readonly("nrow")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -263,7 +264,7 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete row axis index"""
             error_readonly("row_axis")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -293,13 +294,13 @@ class DictDataFrame(DataFrame):
         def fdel(self):
             """Delete row names"""
             del self._row_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, grp = None, dtype = None, return_index = False, return_name = False, return_grp = False, return_dtype = False, **kwargs):
+    def col_data(self, index = None, name = None, grp = None, dtype = None, return_index = False, return_name = False, return_grp = False, return_dtype = False, **kwargs: dict):
         """
         Get a column's (or columns') data from the dataframe.
 
@@ -378,7 +379,7 @@ class DictDataFrame(DataFrame):
 
         return out
 
-    def to_pandas_df(self, **kwargs):
+    def to_pandas_df(self, **kwargs: dict):
         """
         Get dataframe as a pandas.DataFrame.
 
@@ -393,7 +394,7 @@ class DictDataFrame(DataFrame):
         )
         return out
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
 
@@ -409,13 +410,13 @@ class DictDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictDataFrame(v):
+def is_DictDataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DictDataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -425,32 +426,16 @@ def is_DictDataFrame(v):
     """
     return isinstance(v, DictDataFrame)
 
-def check_is_DictDataFrame(v, vname):
+def check_is_DictDataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DictDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DictDataFrame):
         raise TypeError("variable '{0}' must be a DictDataFrame".format(vname))
-
-def cond_check_is_DictDataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DictDataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DictDataFrame.
-    """
-    if cond(v):
-        check_is_DictDataFrame(v, vname)

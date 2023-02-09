@@ -20,8 +20,6 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
@@ -42,7 +40,7 @@ class OptimalContributionSelection(SelectionProtocol):
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
     moalgo = None,
-    rng = global_prng, **kwargs):
+    rng = global_prng, **kwargs: dict):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -118,7 +116,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
             General function definition::
 
-                objfn_trans(obj, **kwargs):
+                objfn_trans(obj, **kwargs: dict):
                     Parameters
                         obj : scalar, numpy.ndarray
                             Objective scalar or vector to be transformed
@@ -141,7 +139,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
             Function definition::
 
-                ndset_trans(ndset, **kwargs):
+                ndset_trans(ndset, **kwargs: dict):
                     Parameters
                         ndset : numpy.ndarray
                             Array of shape (j,o) containing nondominated points.
@@ -561,7 +559,7 @@ class OptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -691,7 +689,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function for the provided datasets.
 
@@ -735,7 +733,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
@@ -761,7 +759,7 @@ class OptimalContributionSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

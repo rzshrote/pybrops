@@ -12,8 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import is_MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
-from pybrops.breed.prot.mate.MatingProtocol import cond_check_is_MatingProtocol
-
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -52,9 +50,6 @@ def test_is_MatingProtocol_is_concrete():
 
 def test_check_is_MatingProtocol_is_concrete():
     generic_assert_concrete_function(check_is_MatingProtocol)
-
-def test_cond_check_is_MatingProtocol_is_concrete():
-    generic_assert_concrete_function(cond_check_is_MatingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################

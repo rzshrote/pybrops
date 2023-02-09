@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.Matrix import is_Matrix
 from pybrops.core.mat.Matrix import check_is_Matrix
-from pybrops.core.mat.Matrix import cond_check_is_Matrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -229,14 +228,3 @@ def test_check_is_Matrix(mat):
         check_is_Matrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_Matrix(None, "mat")
-
-def test_cond_check_is_Matrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_Matrix)
-
-# def test_cond_check_is_Matrix():
-#     with not_raises(TypeError):
-#         cond_check_is_Matrix(mat, "mat")
-#     # with not_raises(TypeError):
-#     #     cond_check_is_Matrix(None, "mat")
-#     with pytest.raises(TypeError):
-#         cond_check_is_Matrix("string", "mat")

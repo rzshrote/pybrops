@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
+from typing import Any
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class GermplasmBank(BreedingNode):
@@ -16,7 +17,10 @@ class GermplasmBank(BreedingNode):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class GermplasmBank.
 
@@ -40,13 +44,13 @@ class GermplasmBank(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GermplasmBank(v):
+def is_GermplasmBank(v: Any) -> bool:
     """
     Determine whether an object is a GermplasmBank.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -56,32 +60,16 @@ def is_GermplasmBank(v):
     """
     return isinstance(v, GermplasmBank)
 
-def check_is_GermplasmBank(v, varname):
+def check_is_GermplasmBank(v: Any, varname: str) -> None:
     """
     Check if object is of type GermplasmBank. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GermplasmBank):
         raise TypeError("'%s' must be a GermplasmBank." % varname)
-
-def cond_check_is_GermplasmBank(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type GermplasmBank. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a GermplasmBank.
-    """
-    if cond(v):
-        check_is_GermplasmBank(v, varname)

@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes sorted.
 """
 
+from typing import Any, Sequence, Union
+
+import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
 class SortableMatrix(MutableMatrix):
@@ -16,7 +19,10 @@ class SortableMatrix(MutableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         SortableMatrix constructor
 
@@ -33,7 +39,12 @@ class SortableMatrix(MutableMatrix):
     ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys, axis, **kwargs):
+    def lexsort(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -54,14 +65,19 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder(self, indices, axis, **kwargs):
+    def reorder(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix using an array of indices. Note this
         modifies the Matrix in-place.
 
         Parameters
         ----------
-        indices : (N,) ndarray of ints
+        indices : (N,) ndarray of ints, Sequence of ints
             Array of indices that reorder the matrix along the specified axis.
         axis : int
             Axis to be reordered.
@@ -70,7 +86,12 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def sort(self, keys, axis, **kwargs):
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix using a sequence of keys. Note this modifies
         the Matrix in-place.
@@ -92,13 +113,13 @@ class SortableMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SortableMatrix(v):
+def is_SortableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a SortableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -108,34 +129,16 @@ def is_SortableMatrix(v):
     """
     return isinstance(v, SortableMatrix)
 
-def check_is_SortableMatrix(v, varname):
+def check_is_SortableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SortableMatrix):
         raise TypeError("'%s' must be a SortableMatrix." % varname)
-
-def cond_check_is_SortableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type SortableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        SortableMatrix.
-    """
-    if cond(v):
-        check_is_SortableMatrix(v, varname)

@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive, dominance, and epistatic effects.
 """
 
+from typing import Any
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 
 class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel):
@@ -65,7 +66,10 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class AdditiveDominanceEpistaticLinearGenomicModel.
 
@@ -91,7 +95,7 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
         def fdel(self):
             """Delete epistatic genomic marker effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_i = property(**u_i())
 
 
@@ -99,13 +103,13 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveDominanceEpistaticLinearGenomicModel(v):
+def is_AdditiveDominanceEpistaticLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a AdditiveDominanceEpistaticLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -115,32 +119,16 @@ def is_AdditiveDominanceEpistaticLinearGenomicModel(v):
     """
     return isinstance(v, AdditiveDominanceEpistaticLinearGenomicModel)
 
-def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v, vname):
+def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceEpistaticLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveDominanceEpistaticLinearGenomicModel):
         raise TypeError("variable '{0}' must be a AdditiveDominanceEpistaticLinearGenomicModel".format(vname))
-
-def cond_check_is_AdditiveDominanceEpistaticLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type AdditiveDominanceEpistaticLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a AdditiveDominanceEpistaticLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_AdditiveDominanceEpistaticLinearGenomicModel(v, vname)

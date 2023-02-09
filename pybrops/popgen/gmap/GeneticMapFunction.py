@@ -3,6 +3,13 @@ Module defining basal genetic map function interfaces and associated error
 checking routines.
 """
 
+from typing import Any
+
+import numpy
+
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
+
+
 class GeneticMapFunction:
     """
     An abstract class for genetic map function objects.
@@ -16,7 +23,10 @@ class GeneticMapFunction:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class GeneticMapFunction.
 
@@ -37,7 +47,10 @@ class GeneticMapFunction:
     ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
-    def mapfn(self, d):
+    def mapfn(
+            self, 
+            d: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert genetic distance (d) to recombination probability (r).
 
@@ -54,7 +67,10 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def invmapfn(self, r):
+    def invmapfn(
+            self, 
+            r: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         convert recombination probability (r) to genetic distance (d).
 
@@ -71,7 +87,12 @@ class GeneticMapFunction:
         raise NotImplementedError("method is abstract")
 
     ########## Recombination Probability Methods ###########
-    def rprob1g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob1g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using genetic distances.
         Calculate recombination probabilities between successive entries along
@@ -101,7 +122,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob2g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob2g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using genetic distances.
         Calculate a recombination probability matrix.
@@ -124,7 +150,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob1p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob1p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using physical distances.
 
@@ -146,7 +177,12 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
-    def rprob2p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob2p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using physical distances.
 
@@ -173,16 +209,11 @@ class GeneticMapFunction:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMapFunction(v):
+def is_GeneticMapFunction(v: Any) -> bool:
     """Return whether an object is a GeneticMapFunction or not"""
     return isinstance(v, GeneticMapFunction)
 
-def check_is_GeneticMapFunction(v, vname):
+def check_is_GeneticMapFunction(v: Any, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):
         raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))
-
-def cond_check_is_GeneticMapFunction(v, vname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a GeneticMapFunction"""
-    if cond(v):
-        check_is_GeneticMapFunction(v, vname)

@@ -3,6 +3,7 @@ Module defining matrix interfaces and associated error checking routines for
 matrices with phase, variant, and taxa metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
@@ -19,7 +20,10 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class PhasedTaxaVariantMatrix.
 
@@ -36,13 +40,13 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedTaxaVariantMatrix(v):
+def is_PhasedTaxaVariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a PhasedTaxaVariantMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -52,34 +56,16 @@ def is_PhasedTaxaVariantMatrix(v):
     """
     return isinstance(v, PhasedTaxaVariantMatrix)
 
-def check_is_PhasedTaxaVariantMatrix(v, varname):
+def check_is_PhasedTaxaVariantMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type PhasedTaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_PhasedTaxaVariantMatrix(v):
+    if not isinstance(v, PhasedTaxaVariantMatrix):
         raise TypeError("'{0}' must be a PhasedTaxaVariantMatrix".format(varname))
-
-def cond_check_is_PhasedTaxaVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhasedTaxaVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        PhasedTaxaVariantMatrix.
-    """
-    if cond(v):
-        check_is_PhasedTaxaVariantMatrix(v, varname)

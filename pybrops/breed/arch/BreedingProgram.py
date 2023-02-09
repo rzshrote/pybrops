@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
+from typing import Any
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class BreedingProgram(BreedingNode):
@@ -19,7 +20,10 @@ class BreedingProgram(BreedingNode):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class BreedingProgram.
 
@@ -46,7 +50,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_genome = property(**start_genome())
 
     def start_geno():
@@ -60,7 +64,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_geno = property(**start_geno())
 
     def start_pheno():
@@ -74,7 +78,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_pheno = property(**start_pheno())
 
     def start_bval():
@@ -88,7 +92,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting breeding values for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_bval = property(**start_bval())
 
     def start_gmod():
@@ -102,7 +106,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete starting genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_gmod = property(**start_gmod())
 
     ######### Breeding program operator properties #########
@@ -117,7 +121,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the initialization operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     initop = property(**initop())
 
     def pselop():
@@ -131,7 +135,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the parent selection operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pselop = property(**pselop())
 
     def mateop():
@@ -145,7 +149,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the mating operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mateop = property(**mateop())
 
     def evalop():
@@ -159,7 +163,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the evaluation operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     evalop = property(**evalop())
 
     def sselop():
@@ -173,7 +177,7 @@ class BreedingProgram(BreedingNode):
         def fdel(self):
             """Delete the survivor selection operator"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     sselop = property(**sselop())
 
     ############################################################################
@@ -181,14 +185,14 @@ class BreedingProgram(BreedingNode):
     ############################################################################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         raise NotImplementedError("method is abstract")
 
-    def is_initialized(self, **kwargs):
+    def is_initialized(self, **kwargs: dict):
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -207,7 +211,7 @@ class BreedingProgram(BreedingNode):
         raise NotImplementedError("method is abstract")
 
     ############# Population evolution methods #############
-    def reset(self, **kwargs):
+    def reset(self, **kwargs: dict):
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -218,7 +222,7 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def advance(self, ngen, lbook, **kwargs):
+    def advance(self, ngen, lbook, **kwargs: dict):
         """
         Advance the breeding program by a specified number of generations.
 
@@ -233,7 +237,7 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def evolve(self, nrep, ngen, lbook, **kwargs):
+    def evolve(self, nrep, ngen, lbook, **kwargs: dict):
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,
@@ -256,13 +260,13 @@ class BreedingProgram(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingProgram(v):
+def is_BreedingProgram(v: Any) -> bool:
     """
     Determine whether an object is a BreedingProgram.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -272,32 +276,16 @@ def is_BreedingProgram(v):
     """
     return isinstance(v, BreedingProgram)
 
-def check_is_BreedingProgram(v, varname):
+def check_is_BreedingProgram(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingProgram. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingProgram):
         raise TypeError("'%s' must be a BreedingProgram." % varname)
-
-def cond_check_is_BreedingProgram(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingProgram. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingProgram.
-    """
-    if cond(v):
-        check_is_BreedingProgram(v, varname)

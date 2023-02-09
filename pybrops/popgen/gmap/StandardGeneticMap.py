@@ -3,6 +3,9 @@ Module implementing a standard genetic map format and associated error checking
 routines.
 """
 
+from typing import Any
+
+import numpy
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype
 from pybrops.core.error import check_ndarray_ndim
@@ -24,7 +27,13 @@ class StandardGeneticMap(GeneticMap):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, vrnt_chrgrp, vrnt_phypos, vrnt_genpos, **kwargs):
+    def __init__(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for creating a standard genetic map object.
 
@@ -60,7 +69,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_chrgrp = value
         def fdel(self):
             del self._vrnt_chrgrp
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -74,7 +83,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_phypos = value
         def fdel(self):
             del self._vrnt_phypos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_genpos():
@@ -88,7 +97,7 @@ class StandardGeneticMap(GeneticMap):
             self._vrnt_genpos = value
         def fdel(self):
             del self._vrnt_genpos
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     ############################################################################
@@ -100,13 +109,13 @@ class StandardGeneticMap(GeneticMap):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_StandardGeneticMap(v):
+def is_StandardGeneticMap(v: Any) -> bool:
     """
     Determine whether an object is a StandardGeneticMap.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -116,32 +125,16 @@ def is_StandardGeneticMap(v):
     """
     return isinstance(v, StandardGeneticMap)
 
-def check_is_StandardGeneticMap(v, varname):
+def check_is_StandardGeneticMap(v: Any, varname: str) -> None:
     """
     Check if object is of type StandardGeneticMap. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_StandardGeneticMap(v):
+    if not isinstance(v, StandardGeneticMap):
         raise TypeError("'{0}' must be of type StandardGeneticMap.".format(varname))
-
-def cond_check_is_StandardGeneticMap(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type StandardGeneticMap. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a StandardGeneticMap.
-    """
-    if cond(v):
-        check_is_StandardGeneticMap(v, varname)

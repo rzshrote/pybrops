@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for
 breeding program mating operators.
 """
 
+from typing import Any
+
+
 class MatingOperator:
     """
     Abstract class defining interfaces for the mating of an entire breeding
@@ -12,7 +15,10 @@ class MatingOperator:
         1) Mating of an entire breeding program.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class MatingOperator
 
@@ -23,7 +29,7 @@ class MatingOperator:
         """
         super(MatingOperator, self).__init__()
 
-    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs):
+    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Mate individuals selected as parents in a breeding program.
 
@@ -72,13 +78,13 @@ class MatingOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MatingOperator(v):
+def is_MatingOperator(v: Any) -> bool:
     """
     Determine whether an object is a MatingOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -88,32 +94,16 @@ def is_MatingOperator(v):
     """
     return isinstance(v, MatingOperator)
 
-def check_is_MatingOperator(v, varname):
+def check_is_MatingOperator(v: Any, varname: str) -> None:
     """
     Check if object is of type MatingOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingOperator):
         raise TypeError("'%s' must be a MatingOperator." % varname)
-
-def cond_check_is_MatingOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type MatingOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a MatingOperator.
-    """
-    if cond(v):
-        check_is_MatingOperator(v, varname)

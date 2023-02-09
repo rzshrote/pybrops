@@ -2,15 +2,16 @@
 Module implementing mating protocols for four-way DH crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_ndarray_len_is_multiple_of_4
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 class FourWayDHCross(MatingProtocol):
     """
@@ -20,7 +21,7 @@ class FourWayDHCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class FourWayDHCross.
 
@@ -33,16 +34,33 @@ class FourWayDHCross(MatingProtocol):
         """
         super(FourWayDHCross, self).__init__(**kwargs)
 
-        # check data types
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # make assignments
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 4-way mate selection scheme.
 
@@ -156,13 +174,13 @@ class FourWayDHCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_FourWayDHCross(v):
+def is_FourWayDHCross(v: Any) -> bool:
     """
     Determine whether an object is a FourWayDHCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -172,32 +190,16 @@ def is_FourWayDHCross(v):
     """
     return isinstance(v, FourWayDHCross)
 
-def check_is_FourWayDHCross(v, varname):
+def check_is_FourWayDHCross(v: Any, varname: str) -> None:
     """
     Check if object is of type FourWayDHCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, FourWayDHCross):
         raise TypeError("'%s' must be a FourWayDHCross." % varname)
-
-def cond_check_is_FourWayDHCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type FourWayDHCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a FourWayDHCross.
-    """
-    if cond(v):
-        check_is_FourWayDHCross(v, varname)

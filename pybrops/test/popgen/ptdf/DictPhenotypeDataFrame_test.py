@@ -14,7 +14,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import is_DictPhenotypeDataFrame
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import check_is_DictPhenotypeDataFrame
-from pybrops.popgen.ptdf.DictPhenotypeDataFrame import cond_check_is_DictPhenotypeDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -271,9 +270,6 @@ def test_is_DictPhenotypeDataFrame_is_concrete():
 
 def test_check_is_DictPhenotypeDataFrame_is_concrete():
     generic_assert_concrete_function(check_is_DictPhenotypeDataFrame)
-
-def test_cond_check_is_DictPhenotypeDataFrame_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DictPhenotypeDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

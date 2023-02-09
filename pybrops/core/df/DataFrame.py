@@ -2,6 +2,9 @@
 Module defining DataFrame interfaces and associated error checking routines.
 """
 
+from typing import Any
+
+
 class DataFrame:
     """
     An abstract class for data frame wrapper objects.
@@ -15,7 +18,10 @@ class DataFrame:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class DataFrame.
 
@@ -64,7 +70,7 @@ class DataFrame:
         def fdel(self):
             """Delete dataframe"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     data = property(**data())
 
     ################## Column attributes ###################
@@ -79,7 +85,7 @@ class DataFrame:
         def fdel(self):
             """Delete number of columns"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncol = property(**ncol())
 
     def col_axis():
@@ -93,7 +99,7 @@ class DataFrame:
         def fdel(self):
             """Delete column axis index"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_axis = property(**col_axis())
 
     def col_dtype():
@@ -107,7 +113,7 @@ class DataFrame:
         def fdel(self):
             """Delete column data types"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_dtype = property(**col_dtype())
 
     def col_name():
@@ -121,7 +127,7 @@ class DataFrame:
         def fdel(self):
             """Delete column names"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_name = property(**col_name())
 
     def col_grp():
@@ -135,7 +141,7 @@ class DataFrame:
         def fdel(self):
             """Delete column groups"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_grp = property(**col_grp())
 
     #################### Row attributes ####################
@@ -150,7 +156,7 @@ class DataFrame:
         def fdel(self):
             """Delete number of rows"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nrow = property(**nrow())
 
     def row_axis():
@@ -164,7 +170,7 @@ class DataFrame:
         def fdel(self):
             """Delete row axis index"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_axis = property(**row_axis())
 
     def row_name():
@@ -178,19 +184,19 @@ class DataFrame:
         def fdel(self):
             """Delete row names"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     row_name = property(**row_name())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, **kwargs):
+    def col_data(self, **kwargs: dict):
         """
         Get a column's data from the dataframe.
         """
         raise NotImplementedError("method is abstract")
 
-    def to_pandas_df(self, **kwargs):
+    def to_pandas_df(self, **kwargs: dict):
         """
         Get dataframe as a pandas.DataFrame.
 
@@ -201,7 +207,7 @@ class DataFrame:
         """
         raise NotImplementedError("method is abstract")
 
-    def to_dict(self, **kwargs):
+    def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
 
@@ -217,13 +223,13 @@ class DataFrame:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DataFrame(v):
+def is_DataFrame(v: Any) -> bool:
     """
     Determine whether an object is a DataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -233,32 +239,16 @@ def is_DataFrame(v):
     """
     return isinstance(v, DataFrame)
 
-def check_is_DataFrame(v, vname):
+def check_is_DataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type DataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DataFrame):
         raise TypeError("variable '{0}' must be a DataFrame".format(vname))
-
-def cond_check_is_DataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DataFrame.
-    """
-    if cond(v):
-        check_is_DataFrame(v, vname)

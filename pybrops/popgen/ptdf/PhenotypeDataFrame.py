@@ -2,6 +2,7 @@
 Module defining phenotype dataframe interfaces and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.df.DataFrame import DataFrame
 
 class PhenotypeDataFrame(DataFrame):
@@ -15,7 +16,10 @@ class PhenotypeDataFrame(DataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class PhenotypeDataFrame.
         """
@@ -36,7 +40,7 @@ class PhenotypeDataFrame(DataFrame):
         def fdel(self):
             """Delete analysis variable type array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_type = property(**col_analysis_type())
 
     # TODO: maybe eliminate these. it seems like this information should go in other modules
@@ -51,7 +55,7 @@ class PhenotypeDataFrame(DataFrame):
         def fdel(self):
             """Delete analysis variable effect type array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     col_analysis_effect = property(**col_analysis_effect())
 
 
@@ -59,13 +63,13 @@ class PhenotypeDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypeDataFrame(v):
+def is_PhenotypeDataFrame(v: Any) -> bool:
     """
     Determine whether an object is a PhenotypeDataFrame.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -75,32 +79,16 @@ def is_PhenotypeDataFrame(v):
     """
     return isinstance(v, PhenotypeDataFrame)
 
-def check_is_PhenotypeDataFrame(v, vname):
+def check_is_PhenotypeDataFrame(v: Any, vname: str) -> None:
     """
     Check if object is of type PhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypeDataFrame):
         raise TypeError("variable '{0}' must be a PhenotypeDataFrame".format(vname))
-
-def cond_check_is_PhenotypeDataFrame(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type PhenotypeDataFrame. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a PhenotypeDataFrame.
-    """
-    if cond(v):
-        check_is_PhenotypeDataFrame(v, vname)

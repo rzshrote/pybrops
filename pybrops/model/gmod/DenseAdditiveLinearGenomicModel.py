@@ -4,26 +4,22 @@ models that incorporate genomic additive effects.
 """
 
 import copy
+from typing import Any, Union
 import h5py
 import numpy
 
 from pybrops.core.error import check_file_exists
 from pybrops.core.error import check_group_in_hdf5
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_ndarray_dtype_is_float64
 from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_str
-from pybrops.core.error import cond_check_ndarray_axis_len
-from pybrops.core.error import cond_check_ndarray_dtype_is_object
-from pybrops.core.error import cond_check_ndarray_ndim
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_str
+from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.core.error import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
-from pybrops.core.util.numpy import is_ndarray
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
@@ -82,7 +78,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, beta, u_misc, u_a, trait = None, model_name = None, params = None, **kwargs):
+    def __init__(self, beta, u_misc, u_a, trait = None, model_name = None, params = None, **kwargs: dict):
         """
         Constructor for DenseAdditiveLinearGenomicModel class.
 
@@ -203,7 +199,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete fixed effect regression coefficients"""
             del self._beta
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     beta = property(**beta())
 
     def u():
@@ -221,7 +217,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete random effect regression coefficients"""
             raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u = property(**u())
 
     def u_misc():
@@ -241,7 +237,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete miscellaneous random effect regression coefficients"""
             del self._u_misc
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_misc = property(**u_misc())
 
     def u_a():
@@ -261,7 +257,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete additive genomic marker effect regression coefficients"""
             del self._u_a
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_a = property(**u_a())
 
     ################## Genomic Model Data ##################
@@ -270,11 +266,12 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fget(self):
             return self._model_name
         def fset(self, value):
-            cond_check_is_str(value, "model_name")
+            if value is None:
+                check_is_str(value, "model_name")
             self._model_name = value
         def fdel(self):
             del self._model_name
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     model_name = property(**model_name())
 
     def params():
@@ -282,11 +279,13 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fget(self):
             return self._params
         def fset(self, value):
-            cond_check_is_dict(value, "params")
+            if value is None:
+                value = {}
+            check_is_dict(value, "params")
             self._params = value
         def fdel(self):
             del self._params
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     params = property(**params())
 
     def trait():
@@ -294,13 +293,14 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fget(self):
             return self._trait
         def fset(self, value):
-            cond_check_is_ndarray(value, "trait")
-            cond_check_ndarray_ndim(value, "trait", 1)
-            cond_check_ndarray_dtype_is_object(value, "trait")
+            if value is None:
+                check_is_ndarray(value, "trait")
+                check_ndarray_ndim(value, "trait", 1)
+                check_ndarray_dtype_is_object(value, "trait")
             self._trait = value
         def fdel(self):
             del self._trait
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     trait = property(**trait())
 
     def ntrait():
@@ -314,7 +314,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         def fdel(self):
             """Delete the number of traits predicted by the model"""
             error_readonly("ntrait")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ntrait = property(**ntrait())
 
     ############################################################################
@@ -322,7 +322,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################################################################
 
     ####### methods for model fitting and prediction #######
-    def fit_numpy(self, Y, X, Z, **kwargs):
+    def fit_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Fit the model.
 
@@ -341,7 +341,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
-    def fit(self, ptobj, cvobj, gtobj, **kwargs):
+    def fit(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Fit the model.
 
@@ -363,7 +363,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
     ######## methods for estimated breeding values #########
-    def predict_numpy(self, X, Z, **kwargs):
+    def predict_numpy(self, X, Z, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -390,7 +390,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return Y_hat
 
-    def predict(self, cvobj, gtobj, **kwargs):
+    def predict(self, cvobj, gtobj, **kwargs: dict):
         """
         Predict breeding values.
 
@@ -414,17 +414,17 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Estimated breeding values.
         """
         # process cvobj
-        if is_ndarray(cvobj):
+        if isinstance(cvobj, numpy.ndarray):
             X = cvobj
         else:
             raise TypeError("accepted types are numpy.ndarray")
 
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             taxa = gtobj.taxa
             taxa_grp = gtobj.taxa_grp
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
             taxa = None
             taxa_grp = None
@@ -444,7 +444,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def score_numpy(self, Y, X, Z, **kwargs):
+    def score_numpy(self, Y, X, Z, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -499,7 +499,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return Rsq
 
-    def score(self, ptobj, cvobj, gtobj, **kwargs):
+    def score(self, ptobj, cvobj, gtobj, **kwargs: dict):
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -530,21 +530,21 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Y = ptobj.descale()
         elif is_PhenotypeDataFrame(ptobj):
             raise RuntimeError("not implmented yet")
-        elif is_ndarray(ptobj):
+        elif isinstance(ptobj, numpy.ndarray):
             Y = ptobj
         else:
             raise TypeError("must be BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray")
 
         # process cvobj
-        if is_ndarray(cvobj):
+        if isinstance(cvobj, numpy.ndarray):
             X = cvobj
         else:
             raise TypeError("must be numpy.ndarray")
 
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
         else:
             raise TypeError("must be GenotypeMatrix, numpy.ndarray")
@@ -555,7 +555,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return Rsq
 
     ######## methods for estimated breeding values #########
-    def gebv_numpy(self, Z, **kwargs):
+    def gebv_numpy(self, Z, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -580,7 +580,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return gebv_hat
 
-    def gebv(self, gtobj, **kwargs):
+    def gebv(self, gtobj, **kwargs: dict):
         """
         Calculate genomic estimated breeding values.
 
@@ -602,11 +602,11 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Genomic estimated breeding values.
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             taxa = gtobj.taxa
             taxa_grp = gtobj.taxa_grp
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
             taxa = None
             taxa_grp = None
@@ -641,7 +641,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ###### methods for population variance prediction ######
-    def var_G_numpy(self, Z, **kwargs):
+    def var_G_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -665,7 +665,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_G(self, gtobj, **kwargs):
+    def var_G(self, gtobj, **kwargs: dict):
         """
         Calculate the population genetic variance.
 
@@ -682,9 +682,9 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
         else:
             raise TypeError("must be GenotypeMatrix, ndarray")
@@ -693,7 +693,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_A_numpy(self, Z, **kwargs):
+    def var_A_numpy(self, Z, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -717,7 +717,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_A(self, gtobj, **kwargs):
+    def var_A(self, gtobj, **kwargs: dict):
         """
         Calculate the population additive genetic variance
 
@@ -734,9 +734,9 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
         else:
             raise TypeError("must be GenotypeMatrix, ndarray")
@@ -745,7 +745,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_a_numpy(self, p, ploidy, **kwargs):
+    def var_a_numpy(self, p, ploidy, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -773,7 +773,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def var_a(self, gtobj, ploidy = None, **kwargs):
+    def var_a(self, gtobj, ploidy = None, **kwargs: dict):
         """
         Calculate the population additive genic variance
 
@@ -797,10 +797,10 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             if ploidy is None:
                 ploidy = 2
             p = (1.0 / (ploidy * gtobj.shape[0])) * gtobj.sum(0)    # get allele frequencies
@@ -812,7 +812,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def bulmer_numpy(self, Z, p, ploidy, **kwargs):
+    def bulmer_numpy(self, Z, p, ploidy, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -840,7 +840,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out[mask] = numpy.nan                   # add NaN's (avoids div by zero warning)
         return out
 
-    def bulmer(self, gtobj, ploidy = None, **kwargs):
+    def bulmer(self, gtobj, ploidy = None, **kwargs: dict):
         """
         Calculate the Bulmer effect.
 
@@ -865,11 +865,11 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             genic variance is zero, NaN's are produced.
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj       # get genotypes
             if ploidy is None:                  # if ploidy not provided
                 ploidy = 2                      # assume diploid
@@ -883,7 +883,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, descale = False, **kwargs):
+    def usl_numpy(self, p, ploidy, descale = False, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -950,7 +950,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def usl(self, gtobj, ploidy = None, descale = False, **kwargs):
+    def usl(self, gtobj, ploidy = None, descale = False, **kwargs: dict):
         """
         Calculate the upper selection limit for a population.
 
@@ -967,10 +967,10 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             if ploidy is None:
                 ploidy = 2
             p = (1.0 / (ploidy * gtobj.shape[0])) * gtobj.sum(0)    # get allele frequencies
@@ -982,7 +982,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def lsl_numpy(self, p, ploidy, descale = False, **kwargs):
+    def lsl_numpy(self, p, ploidy, descale = False, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 
@@ -1049,7 +1049,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         return out
 
-    def lsl(self, gtobj, ploidy = None, descale = False, **kwargs):
+    def lsl(self, gtobj, ploidy = None, descale = False, **kwargs: dict):
         """
         Calculate the lower selection limit for a population.
 
@@ -1066,10 +1066,10 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
-        elif is_ndarray(gtobj):
+        elif isinstance(gtobj, numpy.ndarray):
             if ploidy is None:
                 ploidy = 2
             p = (1.0 / (ploidy * gtobj.shape[0])) * gtobj.sum(0)    # get allele frequencies
@@ -1079,6 +1079,485 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # calculate genic variance
         out = self.lsl_numpy(p, ploidy, descale, **kwargs)
 
+        return out
+
+    ############ methods for allele attributes #############
+    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count favorable alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct mask for beneficial alleles
+        # (p,t)
+        mask = (self.u_a > 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+
+        # get maximum number of favorable alleles
+        # scalar
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
+
+        # calculate favorable allele counts
+        # (p,t)
+        out = numpy.where(mask, acount, maxfav - acount)
+
+        return out
+
+    def fafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Favorable allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele frequencies
+        out = (1.0 / (gmat.ploidy * gmat.ntaxa)) * self.facount(gmat)
+
+        # convert datatypes if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def faavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine which favorable alleles are available in an input set of taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native bool type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get boolean mask of favorable alleles that are available
+        out = (facount > 0)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def faavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of favorable alleles which are available.
+        This is not a very helpful metric.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine available favorable allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is available, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of favorable alleles which are fixed
+        faavail = self.faavail(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = faavail * self.u_a
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def fafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        facount = self.facount(gmat)
+
+        # get maximum number of favorable alleles
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of favorable alleles that are fixed
+        out = (facount == maxfav)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def fafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of favorable alleles which have been fixed.
+        This is not a very helpful metric.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine fixed favorable allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of favorable alleles which are fixed
+        fafixed = self.fafixed(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = fafixed * self.u_a
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count deleterious alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+        """
+        # convert data type
+        if dtype is None:
+            dtype = int
+        dtype = numpy.dtype(dtype)
+
+        # construct mask for deleterious alleles
+        # (p,t)
+        mask = (self.u_a < 0.0)
+
+        # get allele counts for the genotype matrix
+        # (p,) -> (p,1)
+        acount = gmat.acount(dtype = dtype)[:,None]
+
+        # get maximum number of favorable alleles
+        # scalar
+        maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
+
+        # calculate favorable allele counts
+        # (p,t)
+        out = numpy.where(mask, acount, maxfav - acount)
+
+        return out
+
+    def dafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Deleterious allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele frequencies
+        out = (1.0 / (gmat.ploidy * gmat.ntaxa)) * self.dacount(gmat)
+
+        # convert datatypes if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+
+        return out
+    
+    def daavail(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native boolean type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious allele is available.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        facount = self.dacount(gmat)
+
+        # get boolean mask of deleterious alleles that are available
+        out = (facount > 0)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def daavailval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of deleterious alleles which are available.
+        This is not a very helpful metric.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine available deleterious allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a deleterious allele if it is available, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of deleterious alleles which are fixed
+        daavail = self.daavail(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = daavail * self.u_a
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def dafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        dacount = self.dacount(gmat)
+
+        # get maximum number of deleterious alleles
+        maxdel = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of deleterious alleles that are fixed
+        out = (dacount == maxdel)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def dafixedval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype, None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Calculate the value of deleterious alleles which have been fixed.
+        This is not a very helpful metric.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine fixed deleterious allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean matrix of deleterious alleles which are fixed
+        dafixed = self.dafixed(gmat)
+
+        # multiply fixed status by its value
+        # (p,t) * (p,t) -> (p,t)
+        out = dafixed * self.u_a
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def polyval(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None] = None, **kwargs: dict) -> numpy.ndarray:
+        """
+        Get the value available at polymorphic allele sites.
+        This is not a very helpful metric.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine polymorphic allele values.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native float type.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing the value of a favorable allele if it is fixed, otherwise 0.
+        """
+        # process dtype
+        if dtype is None:
+            dtype = float
+        dtype = numpy.dtype(dtype)
+
+        # get boolean mask of alleles which are polymorphic
+        # (p,)[:,None] -> (p,1)
+        apoly = gmat.apoly()[:,None]
+
+        # multiply polymorphic status by its value
+        # (p,1) * (p,t) -> (p,t)
+        out = apoly * self.u_a
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
         return out
 
     ################### File I/O methods ###################
@@ -1189,13 +1668,13 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveLinearGenomicModel(v):
+def is_DenseAdditiveLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a DenseAdditiveLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -1205,32 +1684,16 @@ def is_DenseAdditiveLinearGenomicModel(v):
     """
     return isinstance(v, DenseAdditiveLinearGenomicModel)
 
-def check_is_DenseAdditiveLinearGenomicModel(v, vname):
+def check_is_DenseAdditiveLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseAdditiveLinearGenomicModel):
         raise TypeError("variable '{0}' must be a DenseAdditiveLinearGenomicModel".format(vname))
-
-def cond_check_is_DenseAdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a DenseAdditiveLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_DenseAdditiveLinearGenomicModel(v, vname)

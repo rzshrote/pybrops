@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.df.DataFrame import is_DataFrame
 from pybrops.core.df.DataFrame import check_is_DataFrame
-from pybrops.core.df.DataFrame import cond_check_is_DataFrame
 
 
 ################################################################################
@@ -85,9 +84,6 @@ def test_is_DataFrame_is_concrete():
 
 def test_check_is_DataFrame_is_concrete():
     generic_assert_concrete_function(check_is_DataFrame)
-
-def test_cond_check_is_DataFrame_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

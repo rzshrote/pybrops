@@ -3,6 +3,9 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
+from typing import Any
+
+
 class MatingProtocol:
     """
     Abstract class for mating protocols.
@@ -14,7 +17,10 @@ class MatingProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for abstract class MatingProtocol.
 
@@ -28,7 +34,7 @@ class MatingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs: dict):
         """
         Mate individuals according to a mating scheme.
 
@@ -62,13 +68,13 @@ class MatingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MatingProtocol(v):
+def is_MatingProtocol(v: Any) -> bool:
     """
     Determine whether an object is a MatingProtocol.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -78,32 +84,16 @@ def is_MatingProtocol(v):
     """
     return isinstance(v, MatingProtocol)
 
-def check_is_MatingProtocol(v, varname):
+def check_is_MatingProtocol(v: Any, varname: str) -> None:
     """
     Check if object is of type MatingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingProtocol):
         raise TypeError("'%s' must be a MatingProtocol." % varname)
-
-def cond_check_is_MatingProtocol(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type MatingProtocol. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a MatingProtocol.
-    """
-    if cond(v):
-        check_is_MatingProtocol(v, varname)

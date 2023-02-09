@@ -9,15 +9,12 @@ from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_int
-from pybrops.core.error import cond_check_is_callable
-from pybrops.core.error import cond_check_is_dict
-from pybrops.core.error import cond_check_is_float
+from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class FamilyPhenotypicSelection(SelectionProtocol):
@@ -34,7 +31,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
     method = "single",
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    rng = global_prng, moalgo = None, **kwargs):
+    rng = global_prng, moalgo = None, **kwargs: dict):
         """
         Constructor for within-family phenotypic selection (FPS).
 
@@ -86,7 +83,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -99,7 +96,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -112,7 +109,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def method():
@@ -131,7 +128,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def objfn_trans():
@@ -144,7 +141,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -158,7 +155,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -169,7 +166,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -182,7 +179,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -196,7 +193,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -207,7 +204,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def rng():
@@ -221,7 +218,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     def moalgo():
@@ -240,13 +237,13 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -375,7 +372,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function for the provided datasets.
 
@@ -416,7 +413,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function for the provided datasets.
 
@@ -457,7 +454,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

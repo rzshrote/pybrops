@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.arch.ImmigrationOperator import ImmigrationOperator
 from pybrops.breed.arch.ImmigrationOperator import is_ImmigrationOperator
 from pybrops.breed.arch.ImmigrationOperator import check_is_ImmigrationOperator
-from pybrops.breed.arch.ImmigrationOperator import cond_check_is_ImmigrationOperator
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_ImmigrationOperator_is_concrete():
 
 def test_check_is_ImmigrationOperator_is_concrete():
     generic_assert_concrete_function(check_is_ImmigrationOperator)
-
-def test_cond_check_is_ImmigrationOperator_is_concrete():
-    generic_assert_concrete_function(cond_check_is_ImmigrationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -41,7 +41,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
     soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    rng = None, **kwargs: dict):
         """
         Constructor for MultiObjectiveGenomicSelection class.
 
@@ -162,7 +162,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
             Function definition::
 
-                objfn_trans(obj, **kwargs):
+                objfn_trans(obj, **kwargs: dict):
                     Parameters
                         obj : scalar, numpy.ndarray
                             Objective scalar or vector to be transformed
@@ -185,7 +185,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
             Function definition::
 
-                ndset_trans(ndset, **kwargs):
+                ndset_trans(ndset, **kwargs: dict):
                     Parameters
                         ndset : numpy.ndarray
                             Array of shape (j,o) containing nondominated points.
@@ -310,7 +310,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._nconfig = value
         def fdel(self):
             del self._nconfig
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nconfig = property(**nconfig())
 
     def nparent():
@@ -323,7 +323,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -336,7 +336,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -349,7 +349,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def vmatcls():
@@ -371,7 +371,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._vmatcls = value
         def fdel(self):
             del self._vmatcls
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vmatcls = property(**vmatcls())
 
     def s():
@@ -383,7 +383,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._s = value
         def fdel(self):
             del self._s
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     s = property(**s())
 
     def gmapfn():
@@ -395,7 +395,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._gmapfn = value
         def fdel(self):
             del self._gmapfn
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gmapfn = property(**gmapfn())
 
     def mem():
@@ -407,7 +407,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._mem = value
         def fdel(self):
             del self._mem
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mem = property(**mem())
 
     def unique_parents():
@@ -419,7 +419,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._unique_parents = value
         def fdel(self):
             del self._unique_parents
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     unique_parents = property(**unique_parents())
 
     def method():
@@ -438,7 +438,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def target():
@@ -462,7 +462,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._target = value
         def fdel(self):
             del self._target
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     target = property(**target())
 
     def weight():
@@ -482,7 +482,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._weight = value
         def fdel(self):
             del self._weight
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     weight = property(**weight())
 
     def objfn_trans():
@@ -495,7 +495,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -509,7 +509,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -520,7 +520,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -533,7 +533,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -547,7 +547,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -558,7 +558,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def soalgo():
@@ -573,7 +573,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._soalgo = value
         def fdel(self):
             del self._soalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     soalgo = property(**soalgo())
 
     def moalgo():
@@ -592,7 +592,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     def rng():
@@ -607,7 +607,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################
@@ -676,7 +676,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select individuals for breeding.
 
@@ -749,7 +749,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             # optimize using hill-climber algorithm
             opt = self.soalgo.optimize(
                 k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
+                sspace = numpy.arange(ntaxa),   # parental indices
                 rng = self.rng,                 # PRNG source
                 objwt = objfn_wt                # maximizing function
             )
@@ -797,7 +797,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
             return pgmat, sel_config[ix], ncross, nprogeny
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a selection objective function for the provided datasets.
 
@@ -866,7 +866,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized selection objective function for the provided datasets.
 
@@ -935,7 +935,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

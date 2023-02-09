@@ -2,6 +2,7 @@
 Module defining basal coancestry matrix interfaces and associated error checking routines.
 """
 
+from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -21,7 +22,10 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for CoancestryMatrix class.
 
@@ -64,7 +68,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         raise NotImplementedError("method is abstract")
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args, **kwargs):
+    def coancestry(self, *args, **kwargs: dict):
         """
         Retrieve the coancestry between individuals.
 
@@ -77,7 +81,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def kinship(self, *args, **kwargs):
+    def kinship(self, *args, **kwargs: dict):
         """
         Retrieve the kinship between individuals.
 
@@ -136,7 +140,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs: dict):
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 
@@ -159,13 +163,13 @@ class CoancestryMatrix(SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CoancestryMatrix(v):
+def is_CoancestryMatrix(v: Any) -> bool:
     """
     Determine whether an object is a CoancestryMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -175,34 +179,16 @@ def is_CoancestryMatrix(v):
     """
     return isinstance(v, CoancestryMatrix)
 
-def check_is_CoancestryMatrix(v, vname):
+def check_is_CoancestryMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type CoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CoancestryMatrix):
         raise TypeError("variable '{0}' must be a CoancestryMatrix".format(vname))
-
-def cond_check_is_CoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type CoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        CoancestryMatrix.
-    """
-    if cond(v):
-        check_is_CoancestryMatrix(v, vname)

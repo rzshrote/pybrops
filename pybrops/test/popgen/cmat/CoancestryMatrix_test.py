@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.CoancestryMatrix import is_CoancestryMatrix
 from pybrops.popgen.cmat.CoancestryMatrix import check_is_CoancestryMatrix
-from pybrops.popgen.cmat.CoancestryMatrix import cond_check_is_CoancestryMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -63,9 +62,6 @@ def test_is_CoancestryMatrix_is_concrete():
 
 def test_check_is_CoancestryMatrix_is_concrete():
     generic_assert_concrete_function(check_is_CoancestryMatrix)
-
-def test_cond_check_is_CoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_CoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

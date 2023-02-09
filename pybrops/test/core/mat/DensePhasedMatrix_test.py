@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
 from pybrops.core.mat.DensePhasedMatrix import is_DensePhasedMatrix
 from pybrops.core.mat.DensePhasedMatrix import check_is_DensePhasedMatrix
-from pybrops.core.mat.DensePhasedMatrix import cond_check_is_DensePhasedMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -193,6 +192,3 @@ def test_check_is_DensePhasedMatrix(mat):
         check_is_DensePhasedMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DensePhasedMatrix(None, "mat")
-
-def test_cond_check_is_DensePhasedMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DensePhasedMatrix)

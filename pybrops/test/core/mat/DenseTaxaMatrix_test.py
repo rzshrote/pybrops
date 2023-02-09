@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTaxaMatrix import is_DenseTaxaMatrix
 from pybrops.core.mat.DenseTaxaMatrix import check_is_DenseTaxaMatrix
-from pybrops.core.mat.DenseTaxaMatrix import cond_check_is_DenseTaxaMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -440,6 +439,3 @@ def test_check_is_DenseTaxaMatrix(mat):
         check_is_DenseTaxaMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseTaxaMatrix(None, "mat")
-
-def test_cond_check_is_DenseTaxaMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseTaxaMatrix)

@@ -3,6 +3,11 @@ Module defining interfaces and associated error checking routines for
 optimization algorithms.
 """
 
+from typing import Any, Callable
+
+import numpy
+
+
 class OptimizationAlgorithm:
     """
     An abstract class for optimization algorithms.
@@ -14,7 +19,10 @@ class OptimizationAlgorithm:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class OptimizationAlgorithm.
 
@@ -28,7 +36,14 @@ class OptimizationAlgorithm:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(
+            self, 
+            objfn: Callable, 
+            k: int, 
+            sspace: numpy.ndarray, 
+            objfn_wt : numpy.ndarray, 
+            **kwargs: dict
+        ):
         """
         Optimize an objective function.
 
@@ -43,6 +58,8 @@ class OptimizationAlgorithm:
             Search space that the OptimizationAlgorithm searches in.
         objfn_wt : numpy.ndarray
             Weight(s) applied to output(s) from the objfn.
+        kwargs : dict
+            Additional keyword arguments
 
         Returns
         -------
@@ -59,13 +76,13 @@ class OptimizationAlgorithm:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_OptimizationAlgorithm(v):
+def is_OptimizationAlgorithm(v: Any) -> bool:
     """
     Determine whether an object is a OptimizationAlgorithm.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -75,32 +92,16 @@ def is_OptimizationAlgorithm(v):
     """
     return isinstance(v, OptimizationAlgorithm)
 
-def check_is_OptimizationAlgorithm(v, vname):
+def check_is_OptimizationAlgorithm(v: Any, vname: str) -> None:
     """
     Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, OptimizationAlgorithm):
         raise TypeError("variable '{0}' must be a OptimizationAlgorithm".format(vname))
-
-def cond_check_is_OptimizationAlgorithm(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a OptimizationAlgorithm.
-    """
-    if cond(v):
-        check_is_OptimizationAlgorithm(v, vname)

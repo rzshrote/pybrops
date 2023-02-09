@@ -3,6 +3,7 @@ Module defining basal matrix interfaces and associated error checking routines
 for breeding value matrices.
 """
 
+from typing import Any
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
@@ -34,7 +35,10 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class BreedingValueMatrix.
 
@@ -60,7 +64,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete the mean of the phenotype values used to calculate breeding values"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     location = property(**location())
 
     def scale():
@@ -74,7 +78,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         def fdel(self):
             """Delete the standard deviation of the phenotype values used to calculate breeding values"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     scale = property(**scale())
 
     ############################################################################
@@ -263,13 +267,13 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingValueMatrix(v):
+def is_BreedingValueMatrix(v: Any) -> bool:
     """
     Determine whether an object is a BreedingValueMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -279,34 +283,16 @@ def is_BreedingValueMatrix(v):
     """
     return isinstance(v, BreedingValueMatrix)
 
-def check_is_BreedingValueMatrix(v, vname):
+def check_is_BreedingValueMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type BreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueMatrix):
         raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
-
-def cond_check_is_BreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingValueMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        BreedingValueMatrix.
-    """
-    if cond(v):
-        check_is_BreedingValueMatrix(v, vname)

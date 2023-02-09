@@ -4,6 +4,7 @@ for dense breeding value matrices.
 """
 
 import copy
+from typing import Any, Optional
 import numpy
 import h5py
 
@@ -13,6 +14,8 @@ from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_ndarray_mean_is_approx
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_std_is_approx
+from pybrops.core.error import check_group_in_hdf5
+from pybrops.core.error import check_file_exists
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
@@ -46,7 +49,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         BreedingValueMatrix constructor
 
@@ -162,7 +165,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete raw matrix"""
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def location():
@@ -179,7 +182,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete the mean of the phenotype values used to calculate breeding values"""
             del self._location
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     location = property(**location())
 
     def scale():
@@ -196,7 +199,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         def fdel(self):
             """Delete the standard deviation of the phenotype values used to calculate breeding values"""
             del self._scale
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     scale = property(**scale())
 
     ############################################################################
@@ -206,7 +209,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ######### Matrix element copy-on-manipulation ##########
     # FIXME: super adjoin, delete, insert, select, ... for location, scale bug
 
-    def select_taxa(self, indices, **kwargs):
+    def select_taxa(self, indices, **kwargs: dict):
         """
         Select certain values from the Matrix along the taxa axis.
 
@@ -384,7 +387,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
         if descale:
             out *= self._scale
-            out += self._location
         return out
 
     def tstd(self, descale = False):
@@ -549,7 +551,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         return gmat
 
     @classmethod
-    def from_numpy(cls, a, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def from_numpy(cls, a, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Construct a DenseBreedingValueMatrix from a numpy.ndarray.
         Calculates mean-centering and scaling to unit variance.
@@ -603,13 +605,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseBreedingValueMatrix(v):
+def is_DenseBreedingValueMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseBreedingValueMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -619,34 +621,16 @@ def is_DenseBreedingValueMatrix(v):
     """
     return isinstance(v, DenseBreedingValueMatrix)
 
-def check_is_DenseBreedingValueMatrix(v, vname):
+def check_is_DenseBreedingValueMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseBreedingValueMatrix):
         raise TypeError("variable '{0}' must be a DenseBreedingValueMatrix".format(vname))
-
-def cond_check_is_DenseBreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseBreedingValueMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseBreedingValueMatrix.
-    """
-    if cond(v):
-        check_is_DenseBreedingValueMatrix(v, vname)

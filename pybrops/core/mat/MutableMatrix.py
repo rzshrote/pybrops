@@ -2,6 +2,9 @@
 Module defining mutable matrix interfaces and associated error checking routines.
 """
 
+from typing import Any, Sequence, Union
+
+import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 class MutableMatrix(Matrix):
@@ -17,7 +20,10 @@ class MutableMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         MutableMatrix constructor
 
@@ -34,13 +40,18 @@ class MutableMatrix(Matrix):
     ############################################################################
 
     ######### Matrix element in-place-manipulation #########
-    def append(self, values, axis, **kwargs):
+    def append(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Append values to the Matrix.
 
         Parameters
         ----------
-        values : numpy.ndarray
+        values : Matrix, numpy.ndarray
             Values are appended to append to the matrix.
         axis : int
             The axis along which values are appended.
@@ -49,13 +60,18 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def remove(self, obj, axis, **kwargs):
+    def remove(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to remove the subarray defined by obj.
@@ -64,16 +80,22 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp(self, obj, values, axis, **kwargs):
+    def incorp(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            axis: int, 
+            **kwargs
+        ) -> None:
         """
         Incorporate values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
-        values : array_like
+        values : numpy.ndarray
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
@@ -87,13 +109,13 @@ class MutableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MutableMatrix(v):
+def is_MutableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a MutableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -103,34 +125,16 @@ def is_MutableMatrix(v):
     """
     return isinstance(v, MutableMatrix)
 
-def check_is_MutableMatrix(v, varname):
+def check_is_MutableMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MutableMatrix):
         raise TypeError("'%s' must be a MutableMatrix." % varname)
-
-def cond_check_is_MutableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type MutableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        MutableMatrix.
-    """
-    if cond(v):
-        check_is_MutableMatrix(v, varname)

@@ -18,7 +18,6 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.ThreeWayDHCross import ThreeWayDHCross
 from pybrops.breed.prot.mate.ThreeWayDHCross import is_ThreeWayDHCross
 from pybrops.breed.prot.mate.ThreeWayDHCross import check_is_ThreeWayDHCross
-from pybrops.breed.prot.mate.ThreeWayDHCross import cond_check_is_ThreeWayDHCross
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -103,6 +102,3 @@ def test_check_is_ThreeWayDHCross(mprot):
         check_is_ThreeWayDHCross(mprot, "mprot")
     with pytest.raises(TypeError):
         check_is_ThreeWayDHCross(None, "mprot")
-
-def test_cond_check_is_ThreeWayDHCross_is_concrete():
-    generic_assert_concrete_function(cond_check_is_ThreeWayDHCross)

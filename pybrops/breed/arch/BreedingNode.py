@@ -4,6 +4,9 @@ breeding nodes. Breeding nodes compose complex breeding programs in a graph-like
 structure. They are points were germplasm and information are located.
 """
 
+from typing import Any
+
+
 class BreedingNode:
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
@@ -18,7 +21,10 @@ class BreedingNode:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class BreedingNode.
 
@@ -45,7 +51,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genomes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     genome = property(**genome())
 
     def geno():
@@ -59,7 +65,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     geno = property(**geno())
 
     def pheno():
@@ -73,7 +79,7 @@ class BreedingNode:
         def fdel(self):
             """Delete phenotypes for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pheno = property(**pheno())
 
     def bval():
@@ -87,7 +93,7 @@ class BreedingNode:
         def fdel(self):
             """Delete breeding values for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     bval = property(**bval())
 
     def gmod():
@@ -101,7 +107,7 @@ class BreedingNode:
         def fdel(self):
             """Delete genomic models for individuals in the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gmod = property(**gmod())
 
     ############# Generation number properties #############
@@ -116,7 +122,7 @@ class BreedingNode:
         def fdel(self):
             """Delete the current time for the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_cur = property(**t_cur())
 
     def t_max():
@@ -130,7 +136,7 @@ class BreedingNode:
         def fdel(self):
             """Delete the maximum time for the breeding program"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_max = property(**t_max())
 
     ############################################################################
@@ -142,13 +148,13 @@ class BreedingNode:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingNode(v):
+def is_BreedingNode(v: Any) -> bool:
     """
     Determine whether an object is a BreedingNode.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -158,32 +164,16 @@ def is_BreedingNode(v):
     """
     return isinstance(v, BreedingNode)
 
-def check_is_BreedingNode(v, varname):
+def check_is_BreedingNode(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingNode. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingNode):
         raise TypeError("'%s' must be a BreedingNode." % varname)
-
-def cond_check_is_BreedingNode(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingNode. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingNode.
-    """
-    if cond(v):
-        check_is_BreedingNode(v, varname)

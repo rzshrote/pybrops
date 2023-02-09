@@ -3,31 +3,28 @@ from typing import Any
 from typing import Union
 import inspect
 
-from . import generic_default_cond
-from . import generic_cond_check_isinstance
-
 ################################################################################
 ###################### basic inheritance check functions #######################
 ################################################################################
-def check_inherits(obj, objname, objtype):
+def check_inherits(v, vname, vtype):
     """
     Generic check of inheritance using method resolution order metadata.
 
     Parameters
     ----------
-    obj : object
+    v : object
         Python object to check.
-    objname : str
+    vname : str
         Name associated with the object variable.
-    objtype : type
+    vtype : type
         Object type from which 'obj' must inherit.
     """
-    if isinstance(objtype, type):
-        if objtype not in obj.__mro__:
-            raise TypeError("variable '{0}' must inherit from '{1}'".format(objname, objtype))
-    elif isinstance(objtype, tuple):
-        if all(e not in obj.__mro__ for e in objtype):
-            raise TypeError("variable '{0}' must inherit from all of '{1}'".format(objname, objtype))
+    if isinstance(vtype, type):
+        if vtype not in v.__mro__:
+            raise TypeError("variable '{0}' must inherit from '{1}'".format(vname, vtype))
+    elif isinstance(vtype, tuple):
+        if all(e not in v.__mro__ for e in vtype):
+            raise TypeError("variable '{0}' must inherit from all of '{1}'".format(vname, vtype))
     else:
         raise TypeError("'objtype' must be of type 'type' or 'tuple'")
 
@@ -40,7 +37,7 @@ def check_isinstance(v: Any, vname: str, vtype: Union[type,tuple]) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -69,7 +66,7 @@ def check_is_bool(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -77,17 +74,17 @@ def check_is_bool(v: Any, vname: str) -> None:
     if not isinstance(v, bool):
         raise TypeError("variable '{0}' must be of type 'bool'".format(vname))
 
-# def check_is_bytearray(v, vname):
+# def check_is_bytearray(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, bytearray)
 
-# def check_is_bytes(v, vname):
+# def check_is_bytes(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, bytes)
 
-def check_is_class(v, vname):
+def check_is_class(v: Any, vname: str) -> None:
     if not inspect.isclass(v):
         raise TypeError("variable '{0}' must be a class name".format(vname))
 
-# def check_is_complex(v, vname):
+# def check_is_complex(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, complex)
 
 def check_is_dict(v: Any, vname: str) -> None:
@@ -96,7 +93,7 @@ def check_is_dict(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -110,7 +107,7 @@ def check_is_float(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -118,7 +115,7 @@ def check_is_float(v: Any, vname: str) -> None:
     if not isinstance(v, float):
         raise TypeError("variable '{0}' must be of type 'float'".format(vname))
 
-# def check_is_frozenset(v, vname):
+# def check_is_frozenset(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, frozenset)
 
 def check_is_int(v: Any, vname: str) -> None:
@@ -127,7 +124,7 @@ def check_is_int(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -141,7 +138,7 @@ def check_is_list(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -149,7 +146,7 @@ def check_is_list(v: Any, vname: str) -> None:
     if not isinstance(v, list):
         raise TypeError("variable '{0}' must be of type 'list'".format(vname))
 
-# def check_is_memoryview(v, vname):
+# def check_is_memoryview(v: Any, vname: str) -> None:
 #     generic_check_isinstance(v, vname, memoryview)
 
 def check_is_range(v: Any, vname: str) -> None:
@@ -158,7 +155,7 @@ def check_is_range(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -172,7 +169,7 @@ def check_is_set(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -186,7 +183,7 @@ def check_is_str(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -200,7 +197,7 @@ def check_is_tuple(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -214,7 +211,7 @@ def check_is_type(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -228,7 +225,7 @@ def check_is_Number(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -242,7 +239,7 @@ def check_is_Integral(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
@@ -269,65 +266,10 @@ def check_is_list_or_tuple(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : object
+    v : Any
         Python object to check.
     vname : str
         Name associated with the Python object.
     """
     if not isinstance(v, (list,tuple)):
         raise TypeError("variable '{0}' must be of type 'list' or 'tuple'".format(vname))
-
-
-################################################################################
-######################### conditional check functions ##########################
-################################################################################
-def cond_check_is_bool(v, vname):
-    generic_cond_check_isinstance(v, vname, bool)
-
-# def cond_check_is_bytearray(v, vname):
-#     generic_cond_check_isinstance(v, vname, bytearray)
-
-# def cond_check_is_bytes(v, vname):
-#     generic_cond_check_isinstance(v, vname, bytes)
-
-# def cond_check_is_complex(v, vname):
-#     generic_cond_check_isinstance(v, vname, complex)
-
-def cond_check_is_dict(v, vname):
-    generic_cond_check_isinstance(v, vname, dict)
-
-def cond_check_is_float(v, vname):
-    generic_cond_check_isinstance(v, vname, float)
-
-# def cond_check_is_frozenset(v, vname):
-#     generic_cond_check_isinstance(v, vname, frozenset)
-
-def cond_check_is_int(v, vname):
-    generic_cond_check_isinstance(v, vname, int)
-
-def cond_check_is_list(v, vname):
-    generic_cond_check_isinstance(v, vname, list)
-
-# def cond_check_is_memoryview(v, vname):
-#     generic_cond_check_isinstance(v, vname, memoryview)
-
-def cond_check_is_range(v, vname):
-    generic_cond_check_isinstance(v, vname, range)
-
-def cond_check_is_set(v, vname):
-    generic_cond_check_isinstance(v, vname, set)
-
-def cond_check_is_str(v, vname):
-    generic_cond_check_isinstance(v, vname, str)
-
-def cond_check_is_tuple(v, vname):
-    generic_cond_check_isinstance(v, vname, tuple)
-
-
-################################################################################
-########## conditional compound check functions for basic data types ###########
-################################################################################
-
-def cond_check_is_str_or_iterable(v, vname, cond = generic_default_cond):
-    if cond(v):
-        check_is_str_or_iterable(v, vname)

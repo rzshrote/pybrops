@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for
 immigration operators.
 """
 
+from typing import Any
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 
 class ImmigrationOperator(BreedingEdge):
@@ -16,7 +17,10 @@ class ImmigrationOperator(BreedingEdge):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class ImmigrationOperator.
 
@@ -34,7 +38,7 @@ class ImmigrationOperator(BreedingEdge):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def immigrate(self, bnode, **kwargs):
+    def immigrate(self, bnode, **kwargs: dict):
         """
         Immigrate individuals from a BreedingNode.
 
@@ -55,13 +59,13 @@ class ImmigrationOperator(BreedingEdge):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ImmigrationOperator(v):
+def is_ImmigrationOperator(v: Any) -> bool:
     """
     Determine whether an object is a ImmigrationOperator.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -71,32 +75,16 @@ def is_ImmigrationOperator(v):
     """
     return isinstance(v, ImmigrationOperator)
 
-def check_is_ImmigrationOperator(v, varname):
+def check_is_ImmigrationOperator(v: Any, varname: str) -> None:
     """
     Check if object is of type ImmigrationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ImmigrationOperator):
         raise TypeError("'%s' must be a ImmigrationOperator." % varname)
-
-def cond_check_is_ImmigrationOperator(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ImmigrationOperator. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a ImmigrationOperator.
-    """
-    if cond(v):
-        check_is_ImmigrationOperator(v, varname)

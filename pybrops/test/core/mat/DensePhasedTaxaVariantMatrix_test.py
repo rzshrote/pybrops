@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import is_DensePhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import check_is_DensePhasedTaxaVariantMatrix
-from pybrops.core.mat.DensePhasedTaxaVariantMatrix import cond_check_is_DensePhasedTaxaVariantMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -379,6 +378,3 @@ def test_check_is_DensePhasedTaxaVariantMatrix(mat):
         check_is_DensePhasedTaxaVariantMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DensePhasedTaxaVariantMatrix(None, "mat")
-
-def test_cond_check_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DensePhasedTaxaVariantMatrix)

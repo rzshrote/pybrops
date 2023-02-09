@@ -2,7 +2,15 @@
 Module defining basal Matrix interfaces and associated error checking routines.
 """
 
-class Matrix:
+import numpy
+from typing import Any, Union
+
+from typing import Sequence
+from numpy.typing import ArrayLike
+
+from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+
+class Matrix(HDF5InputOutput):
     """
     An abstract class for matrix wrapper objects.
 
@@ -19,7 +27,10 @@ class Matrix:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Matrix constructor
 
@@ -384,7 +395,7 @@ class Matrix:
         def fdel(self):
             """Delete raw matrix object"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     def mat_ndim():
@@ -398,7 +409,7 @@ class Matrix:
         def fdel(self):
             """Delete number of dimensions of the raw matrix"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_ndim = property(**mat_ndim())
 
     def mat_shape():
@@ -412,7 +423,7 @@ class Matrix:
         def fdel(self):
             """Delete the shape of the raw matrix"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat_shape = property(**mat_shape())
 
     ############################################################################
@@ -420,7 +431,9 @@ class Matrix:
     ############################################################################
 
     #################### Matrix copying ####################
-    def copy(self):
+    def copy(
+            self
+        ) -> 'Matrix':
         """
         Make a shallow copy of the Matrix.
 
@@ -431,7 +444,10 @@ class Matrix:
         """
         raise NotImplementedError("method is abstract")
 
-    def deepcopy(self, memo):
+    def deepcopy(
+            self, 
+            memo: dict
+        ) -> 'Matrix':
         """
         Make a deep copy of the Matrix.
 
@@ -448,7 +464,12 @@ class Matrix:
         raise NotImplementedError("method is abstract")
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin(self, values, axis, **kwargs):
+    def adjoin(
+            self, 
+            values: Union['Matrix',numpy.ndarray], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Add additional elements to the end of the Matrix along an axis.
 
@@ -469,13 +490,18 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete(self, obj, axis, **kwargs):
+    def delete(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Delete sub-arrays along an axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         axis: int
             The axis along which to delete the subarray defined by obj.
@@ -490,16 +516,22 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert(self, obj, values, axis, **kwargs):
+    def insert(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Insert values along the given axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
-        values : array_like
+        values : ArrayLike
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
@@ -514,13 +546,18 @@ class Matrix:
         """
         raise NotImplementedError("static method is abstract")
 
-    def select(self, indices, axis, **kwargs):
+    def select(
+            self, 
+            indices: ArrayLike, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Select certain values from the matrix.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         axis : int
             The axis along which values are selected.
@@ -535,14 +572,24 @@ class Matrix:
         """
         raise NotImplementedError("method is abstract")
 
+    ############################################################################
+    ############################## Static Methods ##############################
+    ############################################################################
+    # TODO: there are discrepancies between this as a static method and other
+    #       related methods such as concat_taxa being class methods. Consider
+    #       converting this method to a class method as well.
     @staticmethod
-    def concat(mats, axis, **kwargs):
+    def concat(
+            mats: Sequence, 
+            axis: int, 
+            **kwargs: dict
+        ) -> 'Matrix':
         """
         Concatenate matrices together along an axis.
 
         Parameters
         ----------
-        mats : array_like of matrices
+        mats : Sequence of Matrix
             List of Matrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         axis : int
@@ -563,13 +610,13 @@ class Matrix:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Matrix(v):
+def is_Matrix(v: Any) -> bool:
     """
     Determine whether an object is a Matrix.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -579,32 +626,16 @@ def is_Matrix(v):
     """
     return isinstance(v, Matrix)
 
-def check_is_Matrix(v, varname):
+def check_is_Matrix(v: Any, varname: str) -> None:
     """
     Check if object is of type Matrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_Matrix(v):
+    if not isinstance(v, Matrix):
         raise TypeError("'{0}' must be of type Matrix.".format(varname))
-
-def cond_check_is_Matrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type Matrix. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a Matrix.
-    """
-    if cond(v):
-        check_is_Matrix(v, varname)

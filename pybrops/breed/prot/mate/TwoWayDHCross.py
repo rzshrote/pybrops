@@ -2,18 +2,18 @@
 Module implementing mating protocols for three-way DH crosses.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_ndarray_len_is_multiple_of_2
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 class TwoWayDHCross(MatingProtocol):
     """
@@ -23,7 +23,7 @@ class TwoWayDHCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, progeny_counter = 0, family_counter = 0, rng = None, **kwargs):
+    def __init__(self, progeny_counter = 0, family_counter = 0, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class TwoWayDHCross.
 
@@ -43,17 +43,32 @@ class TwoWayDHCross(MatingProtocol):
         check_is_int(family_counter, "family_counter")
         self.family_counter = family_counter
 
-        if rng is None:
-            self.rng = pybrops.core.random
-        else:
-            check_is_Generator_or_RandomState(rng, "rng")
-            self.rng = rng
+        self.rng = rng
 
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs: dict):
         """
         Mate individuals according to a 2-way mate selection scheme, then create
         doubled haploid (DH) progenies.
@@ -204,13 +219,13 @@ class TwoWayDHCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TwoWayDHCross(v):
+def is_TwoWayDHCross(v: Any) -> bool:
     """
     Determine whether an object is a TwoWayDHCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -220,32 +235,16 @@ def is_TwoWayDHCross(v):
     """
     return isinstance(v, TwoWayDHCross)
 
-def check_is_TwoWayDHCross(v, varname):
+def check_is_TwoWayDHCross(v: Any, varname: str) -> None:
     """
     Check if object is of type TwoWayDHCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TwoWayDHCross):
         raise TypeError("'%s' must be a TwoWayDHCross." % varname)
-
-def cond_check_is_TwoWayDHCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type TwoWayDHCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a TwoWayDHCross.
-    """
-    if cond(v):
-        check_is_TwoWayDHCross(v, varname)

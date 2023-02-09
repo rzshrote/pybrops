@@ -21,8 +21,6 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import cond_check_is_ndarray
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
@@ -56,7 +54,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
     objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
     ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
     moalgo = None,
-    rng = global_prng, **kwargs):
+    rng = global_prng, **kwargs: dict):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -117,7 +115,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
             General function definition::
 
-                objfn_trans(obj, **kwargs):
+                objfn_trans(obj, **kwargs: dict):
                     Parameters
                         obj : scalar, numpy.ndarray
                             Objective scalar or vector to be transformed
@@ -140,7 +138,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
             Function definition::
 
-                ndset_trans(ndset, **kwargs):
+                ndset_trans(ndset, **kwargs: dict):
                     Parameters
                         ndset : numpy.ndarray
                             Array of shape (j,o) containing nondominated points.
@@ -208,7 +206,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -221,7 +219,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -234,7 +232,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def mehfn():
@@ -246,7 +244,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._mehfn = value
         def fdel(self):
             del self._mehfn
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mehfn = property(**mehfn())
 
     def bvtype():
@@ -265,7 +263,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._bvtype = value
         def fdel(self):
             del self._bvtype
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     bvtype = property(**bvtype())
 
     def method():
@@ -284,7 +282,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def objfn_trans():
@@ -297,7 +295,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -311,7 +309,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -322,7 +320,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -335,7 +333,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -349,7 +347,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -360,7 +358,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def moalgo():
@@ -382,7 +380,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     def rng():
@@ -396,7 +394,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################
@@ -572,7 +570,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -702,7 +700,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function for the provided datasets.
 
@@ -746,7 +744,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function.
         """
@@ -772,7 +770,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 

@@ -2,11 +2,13 @@
 Module with utility functions for generating matrix indices.
 """
 
-import numpy
+__all__ = [
+    "sqarrayix", 
+    "triuix", 
+    "triuix"
+]
 
-__all__ = ["sqarrayix", "triuix", "triuix"]
-
-def sqarrayix(n,k):
+def sqarrayix(n: int, k: int) -> list:
     """
     Generate lists containing indices for indexing square arrays.
 
@@ -35,7 +37,7 @@ def sqarrayix(n,k):
                 l.pop()
     yield from recurse([],n,k)
 
-def triuix(n,k):
+def triuix(n: int, k: int) -> list:
     """
     Generate lists containing indices for indexing upper triangle arrays
     including elements along the diagonal.
@@ -66,7 +68,7 @@ def triuix(n,k):
                 l.pop()
     yield from recurse([],n,k)
 
-def triudix(n,k):
+def triudix(n: int, k: int) -> list:
     """
     Generate lists containing indices for indexing upper triangle arrays
     excluding elements along the diagonal.

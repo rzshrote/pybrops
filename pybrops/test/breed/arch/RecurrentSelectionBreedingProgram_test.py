@@ -18,7 +18,6 @@ from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOpe
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import is_RecurrentSelectionBreedingProgram
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import check_is_RecurrentSelectionBreedingProgram
-from pybrops.breed.arch.RecurrentSelectionBreedingProgram import cond_check_is_RecurrentSelectionBreedingProgram
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -88,9 +87,6 @@ def test_is_RecurrentSelectionBreedingProgram_is_concrete():
 
 def test_check_is_RecurrentSelectionBreedingProgram_is_concrete():
     generic_assert_concrete_function(check_is_RecurrentSelectionBreedingProgram)
-
-def test_cond_check_is_RecurrentSelectionBreedingProgram_is_concrete():
-    generic_assert_concrete_function(cond_check_is_RecurrentSelectionBreedingProgram)
 
 ################################################################################
 ######################### Test class utility functions #########################

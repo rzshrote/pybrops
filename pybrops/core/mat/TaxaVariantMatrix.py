@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa and variant metadata.
 """
 
+from typing import Any
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 
@@ -18,7 +19,10 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class TaxaVariantMatrix.
 
@@ -34,13 +38,13 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TaxaVariantMatrix(v):
+def is_TaxaVariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a TaxaVariantMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -50,34 +54,16 @@ def is_TaxaVariantMatrix(v):
     """
     return isinstance(v, TaxaVariantMatrix)
 
-def check_is_TaxaVariantMatrix(v, varname):
+def check_is_TaxaVariantMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type TaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_TaxaVariantMatrix(v):
+    if not isinstance(v, TaxaVariantMatrix):
         raise TypeError("'{0}' must be a TaxaVariantMatrix".format(varname))
-
-def cond_check_is_TaxaVariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type TaxaVariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        TaxaVariantMatrix.
-    """
-    if cond(v):
-        check_is_TaxaVariantMatrix(v, varname)

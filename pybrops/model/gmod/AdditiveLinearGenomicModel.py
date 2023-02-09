@@ -3,6 +3,7 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive effects.
 """
 
+from typing import Any
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class AdditiveLinearGenomicModel(LinearGenomicModel):
@@ -59,7 +60,10 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class AdditiveLinearGenomicModel.
 
@@ -84,7 +88,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete miscellaneous random effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_misc = property(**u_misc())
 
     def u_a():
@@ -98,7 +102,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         def fdel(self):
             """Delete additive genomic marker effects"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     u_a = property(**u_a())
 
 
@@ -106,13 +110,13 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveLinearGenomicModel(v):
+def is_AdditiveLinearGenomicModel(v: Any) -> bool:
     """
     Determine whether an object is a AdditiveLinearGenomicModel.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -122,32 +126,16 @@ def is_AdditiveLinearGenomicModel(v):
     """
     return isinstance(v, AdditiveLinearGenomicModel)
 
-def check_is_AdditiveLinearGenomicModel(v, vname):
+def check_is_AdditiveLinearGenomicModel(v: Any, vname: str) -> None:
     """
     Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveLinearGenomicModel):
         raise TypeError("variable '{0}' must be a AdditiveLinearGenomicModel".format(vname))
-
-def cond_check_is_AdditiveLinearGenomicModel(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a AdditiveLinearGenomicModel.
-    """
-    if cond(v):
-        check_is_AdditiveLinearGenomicModel(v, vname)

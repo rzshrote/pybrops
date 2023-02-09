@@ -3,6 +3,8 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes grouped.
 """
 
+from typing import Any
+
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
 class GroupableMatrix(SortableMatrix):
@@ -16,7 +18,10 @@ class GroupableMatrix(SortableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         GroupableMatrix constructor
 
@@ -33,7 +38,11 @@ class GroupableMatrix(SortableMatrix):
     ############################################################################
 
     ################### Grouping Methods ###################
-    def group(self, axis, **kwargs):
+    def group(
+            self, 
+            axis: int, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the Matrix, then populate grouping indices.
 
@@ -46,7 +55,11 @@ class GroupableMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped(self, axis, **kwargs):
+    def is_grouped(
+            self, 
+            axis: int, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
 
@@ -71,13 +84,13 @@ class GroupableMatrix(SortableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GroupableMatrix(v):
+def is_GroupableMatrix(v: Any) -> bool:
     """
     Determine whether an object is a GroupableMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -87,34 +100,16 @@ def is_GroupableMatrix(v):
     """
     return isinstance(v, GroupableMatrix)
 
-def check_is_GroupableMatrix(v, varname):
+def check_is_GroupableMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type GroupableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not is_GroupableMatrix(v):
-        raise TypeError("'{0}' must be a GroupableMatrix".format(varname))
-
-def cond_check_is_GroupableMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type GroupableMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        GroupableMatrix.
-    """
-    if cond(v):
-        check_is_GroupableMatrix(v, varname)
+        raise TypeError("'{0}' must be a GroupableMatrix".format(vname))

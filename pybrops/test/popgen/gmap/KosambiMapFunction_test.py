@@ -5,7 +5,6 @@ from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.KosambiMapFunction import KosambiMapFunction
 from pybrops.popgen.gmap.KosambiMapFunction import is_KosambiMapFunction
 from pybrops.popgen.gmap.KosambiMapFunction import check_is_KosambiMapFunction
-from pybrops.popgen.gmap.KosambiMapFunction import cond_check_is_KosambiMapFunction
 
 @pytest.fixture
 def gmap(shared_datadir):
@@ -21,7 +20,3 @@ def test_is_KosambiMapFunction(kosambi):
 def test_check_is_KosambiMapFunction():
     with pytest.raises(TypeError):
         check_is_KosambiMapFunction(None, "None")
-
-def test_cond_check_is_KosambiMapFunction():
-    with pytest.raises(TypeError):
-        cond_check_is_KosambiMapFunction(0, "0")

@@ -3,6 +3,7 @@ Module implementing recurrent selection.
 """
 
 import copy
+from typing import Any
 import numpy
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
@@ -24,7 +25,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs):
+    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs: dict):
         """
         Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
@@ -77,7 +78,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genomes for individuals in the breeding program"""
             del self._start_genome
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_genome = property(**start_genome())
 
     def start_geno():
@@ -93,7 +94,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genotypes for individuals in the breeding program"""
             del self._start_geno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_geno = property(**start_geno())
 
     def start_pheno():
@@ -109,7 +110,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting phenotypes for individuals in the breeding program"""
             del self._start_pheno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_pheno = property(**start_pheno())
 
     def start_bval():
@@ -125,7 +126,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting breeding values for individuals in the breeding program"""
             del self._start_bval
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_bval = property(**start_bval())
 
     def start_gmod():
@@ -141,7 +142,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete starting genomic models for individuals in the breeding program"""
             del self._start_gmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     start_gmod = property(**start_gmod())
 
     ############ Program information containers ############
@@ -157,7 +158,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genomes for individuals in the breeding program"""
             del self._genome
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     genome = property(**genome())
 
     def geno():
@@ -172,7 +173,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genotypes for individuals in the breeding program"""
             del self._geno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     geno = property(**geno())
 
     def pheno():
@@ -187,7 +188,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete phenotypes for individuals in the breeding program"""
             del self._pheno
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pheno = property(**pheno())
 
     def bval():
@@ -202,7 +203,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete breeding values for individuals in the breeding program"""
             del self._bval
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     bval = property(**bval())
 
     def gmod():
@@ -217,7 +218,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete genomic models for individuals in the breeding program"""
             del self._gmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gmod = property(**gmod())
 
     ######### Breeding program operator properties #########
@@ -233,7 +234,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the initialization operator"""
             del self._initop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     initop = property(**initop())
 
     def pselop():
@@ -248,7 +249,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the parent selection operator"""
             del self._pselop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     pselop = property(**pselop())
 
     def mateop():
@@ -263,7 +264,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the mating operator"""
             del self._mateop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mateop = property(**mateop())
 
     def evalop():
@@ -278,7 +279,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the evaluation operator"""
             del self._evalop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     evalop = property(**evalop())
 
     def sselop():
@@ -293,7 +294,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the survivor selection operator"""
             del self._sselop
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     sselop = property(**sselop())
 
     ############# Generation number properties #############
@@ -309,7 +310,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the current time for the breeding program"""
             del self._t_cur
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_cur = property(**t_cur())
 
     def t_max():
@@ -324,7 +325,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         def fdel(self):
             """Delete the maximum time for the breeding program"""
             del self._t_max
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     t_max = property(**t_max())
 
     ############################################################################
@@ -332,14 +333,14 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ############################################################################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs):
+    def initialize(self, **kwargs: dict):
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         self.start_genome, self.start_geno, self.start_pheno, self.start_bval, self.start_gmod = self._initop.initialize(**kwargs)
 
-    def is_initialized(self, **kwargs):
+    def is_initialized(self, **kwargs: dict):
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -364,7 +365,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         )
 
     ################ Whole breeding program ################
-    def reset(self, **kwargs):
+    def reset(self, **kwargs: dict):
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -380,7 +381,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self.gmod = copy.deepcopy(self.start_gmod)      # reset genomic model container
         self.t_cur = 0                                  # reset time
 
-    def advance(self, ngen, lbook, verbose = False, **kwargs):
+    def advance(self, ngen, lbook, verbose = False, **kwargs: dict):
         """
         Advance the breeding program by a specified number of generations.
 
@@ -508,7 +509,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             # increment time variables
             self._t_cur += 1
 
-    def evolve(self, nrep, ngen, lbook, loginit = True, verbose = False, **kwargs):
+    def evolve(self, nrep, ngen, lbook, loginit = True, verbose = False, **kwargs: dict):
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,
@@ -586,13 +587,13 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_RecurrentSelectionBreedingProgram(v):
+def is_RecurrentSelectionBreedingProgram(v: Any) -> bool:
     """
     Determine whether an object is a RecurrentSelectionBreedingProgram.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -602,32 +603,16 @@ def is_RecurrentSelectionBreedingProgram(v):
     """
     return isinstance(v, RecurrentSelectionBreedingProgram)
 
-def check_is_RecurrentSelectionBreedingProgram(v, varname):
+def check_is_RecurrentSelectionBreedingProgram(v: Any, varname: str) -> None:
     """
     Check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, RecurrentSelectionBreedingProgram):
         raise TypeError("'%s' must be a RecurrentSelectionBreedingProgram." % varname)
-
-def cond_check_is_RecurrentSelectionBreedingProgram(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a RecurrentSelectionBreedingProgram.
-    """
-    if cond(v):
-        check_is_RecurrentSelectionBreedingProgram(v, varname)

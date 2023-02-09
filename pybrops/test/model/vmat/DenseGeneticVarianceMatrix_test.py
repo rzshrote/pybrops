@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import is_DenseGeneticVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import check_is_DenseGeneticVarianceMatrix
-from pybrops.model.vmat.DenseGeneticVarianceMatrix import cond_check_is_DenseGeneticVarianceMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -85,6 +84,3 @@ def test_check_is_DenseGeneticVarianceMatrix(mat):
         check_is_DenseGeneticVarianceMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_DenseGeneticVarianceMatrix(None, "mat")
-
-def test_cond_check_is_DenseGeneticVarianceMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseGeneticVarianceMatrix)

@@ -3,10 +3,11 @@ Module containing functions for transforming objective function outputs.
 """
 
 import numpy
+from typing import Union
 
 __all__ = ["trans_ndpt_to_vec_dist", "trans_sum", "trans_dot", "trans_flatten"]
 
-def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
+def trans_ndpt_to_vec_dist(mat: numpy.ndarray, objfn_wt: numpy.ndarray, wt: numpy.ndarray, **kwargs: dict):
     """
     Transform a set of non-dominated points by calculating their distances to a
     vector.
@@ -29,6 +30,8 @@ def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
         (dimensions).
         This array is used as the vector to calculate the distance between each
         point in 'mat'
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
 
     Returns
     -------
@@ -91,7 +94,7 @@ def trans_ndpt_to_vec_dist(mat, objfn_wt, wt, **kwargs):
 
     return d
 
-def trans_sum(mat, axis = None, **kwargs):
+def trans_sum(mat: numpy.ndarray, axis: Union[int,tuple,None] = None, **kwargs: dict):
     """
     Transform a numpy.ndarray by taking a summation across an axis.
 
@@ -101,6 +104,8 @@ def trans_sum(mat, axis = None, **kwargs):
         An array to be transformed through summation.
     axis : None, int, tuple of ints
         Axis along which to take the summation.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
 
     Returns
     -------
@@ -109,7 +114,7 @@ def trans_sum(mat, axis = None, **kwargs):
     """
     return mat.sum(axis = axis)
 
-def trans_dot(mat, wt, **kwargs):
+def trans_dot(mat: numpy.ndarray, wt: numpy.ndarray, **kwargs: dict):
     """
     Transform a numpy.ndarray by taking the dot product with a vector of weights
 
@@ -125,6 +130,8 @@ def trans_dot(mat, wt, **kwargs):
         An array to transform through dot product.
     wt : numpy.ndarray
         An array of weights.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
 
     Returns
     -------
@@ -133,7 +140,7 @@ def trans_dot(mat, wt, **kwargs):
     """
     return mat.dot(wt)
 
-def trans_flatten(mat, **kwargs):
+def trans_flatten(mat: numpy.ndarray, **kwargs: dict):
     """
     Transform a numpy.ndarray by flattening it.
 
@@ -141,6 +148,8 @@ def trans_flatten(mat, **kwargs):
     ----------
     mat : numpy.ndarray
         An array to be flattened.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
 
     Returns
     -------

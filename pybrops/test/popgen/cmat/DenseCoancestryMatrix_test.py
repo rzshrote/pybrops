@@ -13,7 +13,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import is_DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import check_is_DenseCoancestryMatrix
-from pybrops.popgen.cmat.DenseCoancestryMatrix import cond_check_is_DenseCoancestryMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -189,9 +188,6 @@ def test_is_DenseCoancestryMatrix_is_concrete():
 
 def test_check_is_DenseCoancestryMatrix_is_concrete():
     generic_assert_concrete_function(check_is_DenseCoancestryMatrix)
-
-def test_cond_check_is_DenseCoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_DenseCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

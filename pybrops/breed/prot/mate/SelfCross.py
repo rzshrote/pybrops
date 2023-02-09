@@ -2,15 +2,15 @@
 Module implementing mating protocols for self-fertilization.
 """
 
+from typing import Any
 import numpy
 
-import pybrops.core.random
-from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import cond_check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 class SelfCross(MatingProtocol):
     """
@@ -20,7 +20,7 @@ class SelfCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs):
+    def __init__(self, rng = None, **kwargs: dict):
         """
         Constructor for the concrete class SelfCross.
 
@@ -33,16 +33,33 @@ class SelfCross(MatingProtocol):
         """
         super(SelfCross, self).__init__(**kwargs)
 
-        # check data types
-        cond_check_is_Generator_or_RandomState(rng, "rng")
-
         # make assignments
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            """Get value for rng."""
+            return self._rng
+        def fset(self, value):
+            """Set value for rng."""
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")
+            self._rng = value
+        def fdel(self):
+            """Delete value for rng."""
+            del self._rng
+        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
+    rng = property(**rng())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs):
+    def mate(self, pgmat: DensePhasedGenotypeMatrix, sel: numpy.ndarray, ncross: int, nprogeny: int, miscout: dict = None, s: int = 0, **kwargs: dict):
         """
         Self-fertilize individuals.
 
@@ -145,13 +162,13 @@ class SelfCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SelfCross(v):
+def is_SelfCross(v: Any) -> bool:
     """
     Determine whether an object is a SelfCross.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -161,32 +178,16 @@ def is_SelfCross(v):
     """
     return isinstance(v, SelfCross)
 
-def check_is_SelfCross(v, varname):
+def check_is_SelfCross(v: Any, varname: str) -> None:
     """
     Check if object is of type SelfCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SelfCross):
         raise TypeError("'%s' must be a SelfCross." % varname)
-
-def cond_check_is_SelfCross(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type SelfCross. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a SelfCross.
-    """
-    if cond(v):
-        check_is_SelfCross(v, varname)

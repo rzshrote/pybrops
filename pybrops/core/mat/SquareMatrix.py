@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for matrices
 with axes that are square.
 """
 
+from typing import Any
 from pybrops.core.mat.Matrix import Matrix
 
 class SquareMatrix(Matrix):
@@ -31,7 +32,10 @@ class SquareMatrix(Matrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the SquareMatrix abstract class.
 
@@ -59,7 +63,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete the number of axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nsquare = property(**nsquare())
 
     def square_axes():
@@ -73,7 +77,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete axis indices for axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     def square_axes_len():
@@ -87,7 +91,7 @@ class SquareMatrix(Matrix):
         def fdel(self):
             """Delete axis lengths for axes that are square"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes_len = property(**square_axes_len())
 
     ############################################################################
@@ -95,7 +99,9 @@ class SquareMatrix(Matrix):
     ############################################################################
 
     #################### Square Methods ####################
-    def is_square(self):
+    def is_square(
+            self
+        ) -> bool:
         """
         Determine whether the axis lengths for the square axes are identical.
 
@@ -112,13 +118,13 @@ class SquareMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SquareMatrix(obj):
+def is_SquareMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``SquareMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -126,36 +132,18 @@ def is_SquareMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``SquareMatrix`` object instance.
     """
-    return isinstance(obj, SquareMatrix)
+    return isinstance(v, SquareMatrix)
 
-def check_is_SquareMatrix(obj, objname):
+def check_is_SquareMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``SquareMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, SquareMatrix):
-        raise TypeError("'{0}' must be a SquareMatrix".format(objname))
-
-def cond_check_is_SquareMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``SquareMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``SquareMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, SquareMatrix):
-        raise TypeError("'{0}' must be a SquareMatrix".format(objname))
+    if not isinstance(v, SquareMatrix):
+        raise TypeError("'{0}' must be a SquareMatrix".format(vname))

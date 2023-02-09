@@ -2,6 +2,7 @@
 Module containing wrappers for random number generation.
 """
 
+from typing import Optional, Union
 import numpy
 import random as py_random
 from numpy.random import PCG64
@@ -116,7 +117,7 @@ zipf = global_prng.zipf
 # ranf = global_prng.random_sample
 
 # random number seeding
-def seed(s = None):
+def seed(s: Optional[int] = None) -> None:
     """
     Seed the global pseudo-random number generator (PRNG). Begins by seeding the
     ``random`` module, then seeds ``numpy.random``, which combined finishes the
@@ -135,7 +136,11 @@ def seed(s = None):
     numpy.random.seed(py_random.randint(0, 2**32-1))    # seed numpy.random with 4 bytes of entropy
 
 # random number generator spawner
-def spawn(n = None, BitGenerator = PCG64, sbits = 64):
+def spawn(
+        n: Optional[int] = None, 
+        BitGenerator: numpy.random.BitGenerator = PCG64, 
+        sbits: int = 64
+    ) -> Union[numpy.random.Generator,list]:
     """
     Spawn new numpy PRNG streams.
 

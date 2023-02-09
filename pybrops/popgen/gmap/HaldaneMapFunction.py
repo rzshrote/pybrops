@@ -2,8 +2,9 @@
 Module implementing the Haldane genetic map function and associated error checking routines.
 """
 
+from typing import Any
 import numpy
-
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class HaldaneMapFunction(GeneticMapFunction):
@@ -19,7 +20,10 @@ class HaldaneMapFunction(GeneticMapFunction):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for a Haldane mapping function object.
 
@@ -39,7 +43,10 @@ class HaldaneMapFunction(GeneticMapFunction):
     ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
-    def mapfn(self, d):
+    def mapfn(
+            self, 
+            d: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert genetic distances in Morgans to recombination probabilities using
         the Haldane mapping function (Haldane, 1919).
@@ -62,7 +69,10 @@ class HaldaneMapFunction(GeneticMapFunction):
         r = 0.5 * (1.0 - numpy.exp(-2.0 * d))
         return r
 
-    def invmapfn(self, r):
+    def invmapfn(
+            self, 
+            r: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Convert recombination probabilities between two loci to genetic map
         distances using the Haldane mapping function (Haldane, 1919).
@@ -85,7 +95,12 @@ class HaldaneMapFunction(GeneticMapFunction):
         return d
 
     ########## Recombination Probability Methods ###########
-    def rprob1g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob1g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using genetic distances.
         Calculate recombination probabilities between successive entries along
@@ -115,7 +130,12 @@ class HaldaneMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist1g(vrnt_chrgrp, vrnt_genpos))
 
-    def rprob2g(self, gmap, vrnt_chrgrp, vrnt_genpos):
+    def rprob2g(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using genetic distances.
         Calculate a recombination probability matrix.
@@ -138,7 +158,12 @@ class HaldaneMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist2g(vrnt_chrgrp, vrnt_genpos))
 
-    def rprob1p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob1p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate sequential recombination probabilities using physical distances.
 
@@ -160,7 +185,12 @@ class HaldaneMapFunction(GeneticMapFunction):
         """
         return self.mapfn(gmap.gdist1p(vrnt_chrgrp, vrnt_phypos))
 
-    def rprob2p(self, gmap, vrnt_chrgrp, vrnt_phypos):
+    def rprob2p(
+            self, 
+            gmap: GeneticMap, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Calculate pairwise recombination probabilities using physical distances.
 
@@ -187,13 +217,13 @@ class HaldaneMapFunction(GeneticMapFunction):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HaldaneMapFunction(v):
+def is_HaldaneMapFunction(v: Any) -> bool:
     """
     Determine whether an object is a HaldaneMapFunction.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -203,32 +233,16 @@ def is_HaldaneMapFunction(v):
     """
     return isinstance(v, HaldaneMapFunction)
 
-def check_is_HaldaneMapFunction(v, varname):
+def check_is_HaldaneMapFunction(v: Any, varname: str) -> None:
     """
     Check if object is of type HaldaneMapFunction. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_HaldaneMapFunction(v):
+    if not isinstance(v, HaldaneMapFunction):
         raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(varname))
-
-def cond_check_is_HaldaneMapFunction(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type HaldaneMapFunction. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a HaldaneMapFunction.
-    """
-    if cond(v):
-        check_is_HaldaneMapFunction(v, varname)

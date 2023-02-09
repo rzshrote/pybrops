@@ -4,6 +4,9 @@ breeding edges. Breeding edges define how information and germplasm flows
 between breeding nodes.
 """
 
+from typing import Any
+
+
 class BreedingEdge:
     """
     Abstract class defining interfaces for breeding edges. Breeding edges define
@@ -13,7 +16,10 @@ class BreedingEdge:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class BreedingEdge.
 
@@ -37,13 +43,13 @@ class BreedingEdge:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingEdge(v):
+def is_BreedingEdge(v: Any) -> bool:
     """
     Determine whether an object is a BreedingEdge.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -53,32 +59,16 @@ def is_BreedingEdge(v):
     """
     return isinstance(v, BreedingEdge)
 
-def check_is_BreedingEdge(v, varname):
+def check_is_BreedingEdge(v: Any, varname: str) -> None:
     """
     Check if object is of type BreedingEdge. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingEdge):
         raise TypeError("'%s' must be a BreedingEdge." % varname)
-
-def cond_check_is_BreedingEdge(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type BreedingEdge. Otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a BreedingEdge.
-    """
-    if cond(v):
-        check_is_BreedingEdge(v, varname)

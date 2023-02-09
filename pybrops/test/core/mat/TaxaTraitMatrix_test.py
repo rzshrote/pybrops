@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import is_TaxaTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import check_is_TaxaTraitMatrix
-from pybrops.core.mat.TaxaTraitMatrix import cond_check_is_TaxaTraitMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -50,6 +49,3 @@ def test_check_is_TaxaTraitMatrix(mat):
         check_is_TaxaTraitMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_TaxaTraitMatrix(None, "mat")
-
-def test_cond_check_is_TaxaTraitMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_TaxaTraitMatrix)

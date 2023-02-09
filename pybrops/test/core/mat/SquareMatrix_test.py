@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.SquareMatrix import is_SquareMatrix
 from pybrops.core.mat.SquareMatrix import check_is_SquareMatrix
-from pybrops.core.mat.SquareMatrix import cond_check_is_SquareMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -68,6 +67,3 @@ def test_check_is_SquareMatrix(mat):
         check_is_SquareMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_SquareMatrix(None, "mat")
-
-def test_cond_check_is_SquareMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_SquareMatrix)

@@ -10,7 +10,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.core.mat.PrunableMatrix import PrunableMatrix
 from pybrops.core.mat.PrunableMatrix import is_PrunableMatrix
 from pybrops.core.mat.PrunableMatrix import check_is_PrunableMatrix
-from pybrops.core.mat.PrunableMatrix import cond_check_is_PrunableMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -58,14 +57,3 @@ def test_check_is_PrunableMatrix(mat):
         check_is_PrunableMatrix(mat, "mat")
     with pytest.raises(TypeError):
         check_is_PrunableMatrix(None, "mat")
-
-def test_cond_check_is_PrunableMatrix_is_concrete():
-    generic_assert_concrete_function(cond_check_is_PrunableMatrix)
-
-# def test_cond_check_is_PrunableMatrix():
-#     with not_raises(TypeError):
-#         cond_check_is_PrunableMatrix(mat, "mat")
-#     # with not_raises(TypeError):
-#     #     cond_check_is_PrunableMatrix(None, "mat")
-#     with pytest.raises(TypeError):
-#         cond_check_is_PrunableMatrix("string", "mat")

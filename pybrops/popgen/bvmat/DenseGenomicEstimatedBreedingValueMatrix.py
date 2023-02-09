@@ -3,6 +3,9 @@ Module implementing matrix routines and associated error checking routines
 for dense breeding value matrices estimated from genomic and phenotypic data.
 """
 
+from typing import Any, Optional
+
+import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
@@ -32,7 +35,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat, location, scale, taxa = None, taxa_grp = None, trait = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseGenomicEstimatedBreedingValueMatrix.
 
@@ -70,13 +73,13 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenomicEstimatedBreedingValueMatrix(v):
+def is_DenseGenomicEstimatedBreedingValueMatrix(v: Any) -> bool:
     """
     Determine whether an object is a DenseGenomicEstimatedBreedingValueMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -86,34 +89,16 @@ def is_DenseGenomicEstimatedBreedingValueMatrix(v):
     """
     return isinstance(v, DenseGenomicEstimatedBreedingValueMatrix)
 
-def check_is_DenseGenomicEstimatedBreedingValueMatrix(v, vname):
+def check_is_DenseGenomicEstimatedBreedingValueMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type DenseGenomicEstimatedBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseGenomicEstimatedBreedingValueMatrix):
         raise TypeError("variable '{0}' must be a DenseGenomicEstimatedBreedingValueMatrix".format(vname))
-
-def cond_check_is_DenseGenomicEstimatedBreedingValueMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseGenomicEstimatedBreedingValueMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseGenomicEstimatedBreedingValueMatrix.
-    """
-    if cond(v):
-        check_is_DenseGenomicEstimatedBreedingValueMatrix(v, vname)

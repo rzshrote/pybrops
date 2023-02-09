@@ -34,7 +34,7 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs):
+    def __init__(self, mat: numpy.ndarray, taxa: Union[numpy.ndarray,None] = None, taxa_grp: Union[numpy.ndarray,None] = None, **kwargs: dict):
         """
         Constructor for the concrete class DenseYangCoancestryMatrix.
 
@@ -175,7 +175,7 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
 
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs):
+    def from_gmat(cls, gmat: GenotypeMatrix, p_anc: Union[numpy.ndarray,float,None] = None, **kwargs: dict):
         """
         Create a dense genomic relationship matrix using methods from Yang et al. (2010) from a GenotypeMatrix.
         
@@ -271,7 +271,7 @@ def is_DenseYangCoancestryMatrix(v: Any) -> bool:
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -287,28 +287,10 @@ def check_is_DenseYangCoancestryMatrix(v: Any, vname: str) -> None:
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseYangCoancestryMatrix):
         raise TypeError("variable '{0}' must be a DenseYangCoancestryMatrix".format(vname))
-
-def cond_check_is_DenseYangCoancestryMatrix(v, vname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type DenseYangCoancestryMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        DenseYangCoancestryMatrix.
-    """
-    if cond(v):
-        check_is_DenseYangCoancestryMatrix(v, vname)

@@ -18,7 +18,7 @@ class TruePhenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, **kwargs):
+    def __init__(self, gpmod, **kwargs: dict):
         """
         Constructor for the concrete class TruePhenotyping.
 
@@ -49,7 +49,7 @@ class TruePhenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete genomic prediction model"""
             del self._gpmod
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     gpmod = property(**gpmod())
 
     ################ Stochastic Parameters #################
@@ -64,13 +64,13 @@ class TruePhenotyping(PhenotypingProtocol):
         def fdel(self):
             """Delete error variance"""
             error_readonly("var_err")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     var_err = property(**var_err())
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout = None, gpmod = None, **kwargs):
+    def phenotype(self, pgmat, miscout = None, gpmod = None, **kwargs: dict):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -174,7 +174,7 @@ class TruePhenotyping(PhenotypingProtocol):
 
         return ptdf
 
-    def set_h2(self, h2, pgmat, **kwargs):
+    def set_h2(self, h2, pgmat, **kwargs: dict):
         """
         Set the narrow sense heritability for environments.
 
@@ -189,7 +189,7 @@ class TruePhenotyping(PhenotypingProtocol):
         """
         raise AttributeError("unsupported operation: heritability always set at 1.0")
 
-    def set_H2(self, H2, pgmat, **kwargs):
+    def set_H2(self, H2, pgmat, **kwargs: dict):
         """
         Set the broad sense heritability for environments.
 

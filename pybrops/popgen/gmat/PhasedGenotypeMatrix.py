@@ -3,6 +3,7 @@ Module defining basal matrix interfaces and associated error checking routines
 for phased genotype matrices.
 """
 
+from typing import Any
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -24,7 +25,10 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class PhasedGenotypeMatrix.
 
@@ -41,16 +45,11 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedGenotypeMatrix(v):
+def is_PhasedGenotypeMatrix(v: Any) -> bool:
     """Return whether an object is a PhasedGenotypeMatrix or not"""
     return isinstance(v, PhasedGenotypeMatrix)
 
-def check_is_PhasedGenotypeMatrix(v, varname):
+def check_is_PhasedGenotypeMatrix(v: Any, varname: str) -> None:
     """Raise TypeError if object is not a PhasedGenotypeMatrix"""
     if not isinstance(v, PhasedGenotypeMatrix):
         raise TypeError("'%s' must be a PhasedGenotypeMatrix." % varname)
-
-def cond_check_is_PhasedGenotypeMatrix(v, varname, cond=(lambda s: s is not None)):
-    """If object is not None, raise TypeError if object is not a PhasedGenotypeMatrix"""
-    if cond(v):
-        check_is_PhasedGenotypeMatrix(v, varname)

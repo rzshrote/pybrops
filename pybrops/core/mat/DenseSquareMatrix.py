@@ -3,6 +3,7 @@ Module implementing a dense matrix with axes that are square and associated
 error checking routines.
 """
 
+from typing import Any
 import numpy
 
 from pybrops.core.error import check_is_ndarray
@@ -37,7 +38,11 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat, **kwargs):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseSquareMatrix.
 
@@ -70,7 +75,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete raw matrix object"""
             del self._mat
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     mat = property(**mat())
 
     ############## Square Metadata Properties ##############
@@ -85,7 +90,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete the number of axes that are square"""
             error_readonly("nsquare")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nsquare = property(**nsquare())
 
     def square_axes():
@@ -99,7 +104,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete axis indices for axes that are square"""
             error_readonly("square_axes")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes = property(**square_axes())
 
     def square_axes_len():
@@ -113,7 +118,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         def fdel(self):
             """Delete axis lengths for axes that are square"""
             error_readonly("square_axes_len")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     square_axes_len = property(**square_axes_len())
 
     ################### Fill data lookup ###################
@@ -168,7 +173,9 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     ############################################################################
 
     #################### Square Methods ####################
-    def is_square(self):
+    def is_square(
+            self
+        ) -> bool:
         """
         Determine whether the axis lengths for the square axes are identical.
 
@@ -191,13 +198,13 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseSquareMatrix(obj):
+def is_DenseSquareMatrix(v: Any) -> bool:
     """
     Determine whether an object is a ``DenseSquareMatrix``.
 
     Parameters
     ----------
-    obj : object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -205,36 +212,18 @@ def is_DenseSquareMatrix(obj):
     out : bool
         ``True`` or ``False`` for whether ``obj`` is a ``DenseSquareMatrix`` object instance.
     """
-    return isinstance(obj, DenseSquareMatrix)
+    return isinstance(v, DenseSquareMatrix)
 
-def check_is_DenseSquareMatrix(obj, objname):
+def check_is_DenseSquareMatrix(v: Any, vname: str) -> None:
     """
     Check if object is of type ``DenseSquareMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    obj : object
+    v : object
         Any Python object to test.
-    objname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(obj, DenseSquareMatrix):
-        raise TypeError("'{0}' must be a DenseSquareMatrix".format(objname))
-
-def cond_check_is_DenseSquareMatrix(obj, objname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type ``DenseSquareMatrix``. Otherwise raise
-    ``TypeError``.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test.
-    objname : str
-        Name of variable to print in ``TypeError`` message.
-    cond : function
-        A function returning ``True`` or ``False`` for whether to test if ``obj``
-        is a ``DenseSquareMatrix``.
-    """
-    if cond(obj) and not isinstance(obj, DenseSquareMatrix):
-        raise TypeError("'{0}' must be a DenseSquareMatrix".format(objname))
+    if not isinstance(v, DenseSquareMatrix):
+        raise TypeError("'{0}' must be a DenseSquareMatrix".format(vname))

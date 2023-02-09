@@ -15,6 +15,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.random.prng import global_prng
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
@@ -29,13 +30,24 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nparent, ncross, nprogeny, nhaploblk,
-    method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs):
+    def __init__(
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            nhaploblk: int,
+            method = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0,
+            soalgo = None, 
+            moalgo = None,
+            rng = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for optimal population value selection (OPV).
 
@@ -89,7 +101,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._nparent = value
         def fdel(self):
             del self._nparent
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nparent = property(**nparent())
 
     def ncross():
@@ -102,7 +114,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._ncross = value
         def fdel(self):
             del self._ncross
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ncross = property(**ncross())
 
     def nprogeny():
@@ -115,7 +127,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._nprogeny = value
         def fdel(self):
             del self._nprogeny
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
     def nhaploblk():
@@ -128,7 +140,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._nhaploblk = value
         def fdel(self):
             del self._nhaploblk
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nhaploblk = property(**nhaploblk())
 
     def method():
@@ -147,7 +159,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._method = value
         def fdel(self):
             del self._method
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     method = property(**method())
 
     def objfn_trans():
@@ -160,7 +172,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._objfn_trans = value
         def fdel(self):
             del self._objfn_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans = property(**objfn_trans())
 
     def objfn_trans_kwargs():
@@ -174,7 +186,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._objfn_trans_kwargs = value
         def fdel(self):
             del self._objfn_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_trans_kwargs = property(**objfn_trans_kwargs())
 
     def objfn_wt():
@@ -185,7 +197,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._objfn_wt = value
         def fdel(self):
             del self._objfn_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     objfn_wt = property(**objfn_wt())
 
     def ndset_trans():
@@ -198,7 +210,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._ndset_trans = value
         def fdel(self):
             del self._ndset_trans
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans = property(**ndset_trans())
 
     def ndset_trans_kwargs():
@@ -212,7 +224,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._ndset_trans_kwargs = value
         def fdel(self):
             del self._ndset_trans_kwargs
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_trans_kwargs = property(**ndset_trans_kwargs())
 
     def ndset_wt():
@@ -223,7 +235,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._ndset_wt = value
         def fdel(self):
             del self._ndset_wt
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
     def soalgo():
@@ -238,7 +250,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._soalgo = value
         def fdel(self):
             del self._soalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     soalgo = property(**soalgo())
 
     def moalgo():
@@ -257,7 +269,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             self._moalgo = value
         def fdel(self):
             del self._moalgo
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
 
     def rng():
@@ -265,14 +277,14 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         def fget(self):
             return self._rng
         def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
+            # if None, use default random number generator
+            if value is None:
+                value = global_prng
             check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
             self._rng = value
         def fdel(self):
             del self._rng
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     rng = property(**rng())
 
     ############################################################################
@@ -342,7 +354,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select individuals for breeding.
 
@@ -404,9 +416,6 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
         if method == "single":
-            # get number of taxa
-            ntaxa = pgmat.ntaxa
-
             # get vectorized objective function
             objfn = self.objfn(
                 pgmat = pgmat,
@@ -420,26 +429,23 @@ class OptimalPopulationValueSelection(SelectionProtocol):
                 trans_kwargs = objfn_trans_kwargs
             )
 
-            # create optimization algorithm
-            soalgo = SteepestAscentSetHillClimber(
-                rng = self.rng,                 # PRNG source
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
                 **kwargs
             )
 
-            # optimize using hill-climber algorithm
-            opt = soalgo.optimize(
-                objfn = objfn,                  # objective function
-                k = nparent,                    # number of parents to select
-                setspace = numpy.arange(ntaxa), # parental indices
-                objfn_wt = objfn_wt             # maximizing function
-            )
-
-            # get best solution
-            sel = opt["soln"]
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
             # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(opt)     # add dict to dict
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, ncross, nprogeny
 
@@ -475,7 +481,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
             return pgmat, sel_config[ix], ncross, nprogeny
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a selection objective function for the provided datasets.
 
@@ -514,7 +520,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized selection objective function for the provided datasets.
 
@@ -553,7 +559,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -752,7 +758,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
 
         # apply objective weights
         # (j,t) dot (t,) -> scalar
-        if traitwt is not None:
-            opv = opv.dot(traitwt)
+        if trans is not None:
+            opv = trans(opv, **kwargs)
 
         return opv

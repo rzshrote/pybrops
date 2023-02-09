@@ -2,6 +2,9 @@
 Module defining interfaces and error checking routines for selection protocols.
 """
 
+from typing import Any
+
+
 class SelectionProtocol:
     """
     Abstract class defining interfaces for selection protocols.
@@ -16,7 +19,10 @@ class SelectionProtocol:
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the abstract class SelectionProtocol.
 
@@ -34,7 +40,7 @@ class SelectionProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Select individuals for breeding.
 
@@ -78,7 +84,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return an objective function constructed from inputs for fast calling.
 
@@ -108,7 +114,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
         Return a vectorized objective function constructed from inputs for fast
         calling.
@@ -139,7 +145,7 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -252,13 +258,9 @@ class SelectionProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SelectionProtocol(v):
+def is_SelectionProtocol(v: Any) -> bool:
     return isinstance(v, SelectionProtocol)
 
-def check_is_SelectionProtocol(v, vname):
+def check_is_SelectionProtocol(v: Any, vname: str) -> None:
     if not isinstance(v, SelectionProtocol):
         raise TypeError("variable '{0}' must be a SelectionProtocol".format(vname))
-
-def cond_check_is_SelectionProtocol(v, vname, cond=(lambda s: s is not None)):
-    if cond(v):
-        check_is_SelectionProtocol(v, vname)

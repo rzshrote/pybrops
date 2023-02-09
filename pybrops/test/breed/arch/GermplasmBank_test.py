@@ -12,7 +12,6 @@ from pybrops.test import generic_assert_concrete_function
 from pybrops.breed.arch.GermplasmBank import GermplasmBank
 from pybrops.breed.arch.GermplasmBank import is_GermplasmBank
 from pybrops.breed.arch.GermplasmBank import check_is_GermplasmBank
-from pybrops.breed.arch.GermplasmBank import cond_check_is_GermplasmBank
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -51,9 +50,6 @@ def test_is_GermplasmBank_is_concrete():
 
 def test_check_is_GermplasmBank_is_concrete():
     generic_assert_concrete_function(check_is_GermplasmBank)
-
-def test_cond_check_is_GermplasmBank_is_concrete():
-    generic_assert_concrete_function(cond_check_is_GermplasmBank)
 
 ################################################################################
 ######################### Test class utility functions #########################

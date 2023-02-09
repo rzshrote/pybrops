@@ -3,7 +3,12 @@ Module defining interfaces and associated error checking routines for matrices
 with variant metadata.
 """
 
+from typing import Any, Sequence, Union
+
+import numpy
+from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
+from pybrops.core.mat.Matrix import Matrix
 
 class VariantMatrix(GroupableMatrix):
     """
@@ -17,7 +22,10 @@ class VariantMatrix(GroupableMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, **kwargs):
+    def __init__(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         VariantMatrix constructor
 
@@ -45,7 +53,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group lable array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp = property(**vrnt_chrgrp())
 
     def vrnt_phypos():
@@ -59,7 +67,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant physical position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_phypos = property(**vrnt_phypos())
 
     def vrnt_name():
@@ -73,7 +81,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant name array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_name = property(**vrnt_name())
 
     def vrnt_genpos():
@@ -87,7 +95,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant genetic position array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_genpos = property(**vrnt_genpos())
 
     def vrnt_xoprob():
@@ -101,7 +109,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant crossover sequential probability array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_xoprob = property(**vrnt_xoprob())
 
     def vrnt_hapgrp():
@@ -115,7 +123,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant haplotype group label array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapgrp = property(**vrnt_hapgrp())
 
     def vrnt_hapalt():
@@ -129,7 +137,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant haplotype sequence"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapalt = property(**vrnt_hapalt())
 
     def vrnt_hapref():
@@ -143,7 +151,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant reference haplotype sequence"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_hapref = property(**vrnt_hapref())
 
     def vrnt_mask():
@@ -157,7 +165,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant mask"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_mask = property(**vrnt_mask())
 
     ############# Variant Metadata Properites ##############
@@ -172,7 +180,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete number of variants"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nvrnt = property(**nvrnt())
 
     def vrnt_axis():
@@ -186,7 +194,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant axis"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_axis = property(**vrnt_axis())
 
     def vrnt_chrgrp_name():
@@ -200,7 +208,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group name array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
 
     def vrnt_chrgrp_stix():
@@ -214,7 +222,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group start indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
 
     def vrnt_chrgrp_spix():
@@ -228,7 +236,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group stop indices array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
 
     def vrnt_chrgrp_len():
@@ -242,7 +250,7 @@ class VariantMatrix(GroupableMatrix):
         def fdel(self):
             """Delete variant chromosome group length array"""
             raise NotImplementedError("method is abstract")
-        return locals()
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
 
     ############################################################################
@@ -250,9 +258,20 @@ class VariantMatrix(GroupableMatrix):
     ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
-    def adjoin_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def adjoin_vrnt(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_name: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            vrnt_xoprob: numpy.ndarray, 
+            vrnt_hapgrp: numpy.ndarray, 
+            vrnt_mask: numpy.ndarray, 
+            **kwargs: dict
+        ) -> 'VariantMatrix':
         """
-        Add additional elements to the end of the Matrix along the variant axis.
+        Add additional elements to the end of the VariantMatrix along the variant axis.
 
         Parameters
         ----------
@@ -277,38 +296,54 @@ class VariantMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A copy of mat with values appended to axis. Note that adjoin does
-            not occur in-place: a new Matrix is allocated and filled.
+        out : VariantMatrix
+            A copy of the VariantMatrix with values appended to axis. Note that adjoin does
+            not occur in-place: a new VariantMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def delete_vrnt(self, obj, **kwargs):
+    def delete_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'VariantMatrix':
         """
         Delete sub-arrays along the variant axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            A Matrix with deleted elements. Note that concat does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : VariantMatrix
+            A VariantMatrix with deleted elements. Note that delete does not occur
+            in-place: a new VariantMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def insert_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def insert_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: ArrayLike, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_name: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            vrnt_xoprob: numpy.ndarray, 
+            vrnt_hapgrp: numpy.ndarray, 
+            vrnt_mask: numpy.ndarray, 
+            **kwargs: dict
+        ) -> 'VariantMatrix':
         """
         Insert values along the variant axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             inserted.
         values : array_like
@@ -332,125 +367,164 @@ class VariantMatrix(GroupableMatrix):
 
         Returns
         -------
-        out : Matrix
-            A Matrix with values inserted. Note that insert does not occur
-            in-place: a new Matrix is allocated and filled.
+        out : VariantMatrix
+            A VariantMatrix with values inserted. Note that insert does not occur
+            in-place: a new VariantMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
-    def select_vrnt(self, indices, **kwargs):
+    def select_vrnt(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'VariantMatrix':
         """
-        Select certain values from the Matrix along the variant axis.
+        Select certain values from the VariantMatrix along the variant axis.
 
         Parameters
         ----------
-        indices : array_like (Nj, ...)
+        indices : ArrayLike (Nj, ...)
             The indices of the values to select.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : Matrix
-            The output Matrix with values selected. Note that select does not
-            occur in-place: a new Matrix is allocated and filled.
+        out : VariantMatrix
+            The output VariantMatrix with values selected. Note that select does not
+            occur in-place: a new VariantMatrix is allocated and filled.
         """
         raise NotImplementedError("method is abstract")
 
     @classmethod
-    def concat_vrnt(cls, mats, **kwargs):
+    def concat_vrnt(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'VariantMatrix':
         """
-        Concatenate list of Matrix together along the variant axis.
+        Concatenate list of VariantMatrix together along the variant axis.
 
         Parameters
         ----------
-        mats : array_like of Matrix
-            List of Matrix to concatenate. The matrices must have the same
+        mats : Sequence of VariantMatrix
+            List of VariantMatrix to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
             Additional keyword arguments
 
         Returns
         -------
-        out : Matrix
+        out : VariantMatrix
             The concatenated matrix. Note that concat does not occur in-place:
-            a new Matrix is allocated and filled.
+            a new VariantMatrix is allocated and filled.
         """
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
-    def append_vrnt(self, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def append_vrnt(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_name: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            vrnt_xoprob: numpy.ndarray, 
+            vrnt_hapgrp: numpy.ndarray, 
+            vrnt_mask: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
-        Append values to the Matrix along the variant axis.
+        Append values to the VariantMatrix along the variant axis.
 
         Parameters
         ----------
         values : Matrix, numpy.ndarray
-            Values are appended to append to the matrix.
+            Values are appended to append to the VariantMatrix.
         vrnt_chrgrp : numpy.ndarray
-            Variant chromosome groups to append to the Matrix.
+            Variant chromosome groups to append to the VariantMatrix.
         vrnt_phypos : numpy.ndarray
-            Variant chromosome physical positions to append to the Matrix.
+            Variant chromosome physical positions to append to the VariantMatrix.
         vrnt_name : numpy.ndarray
-            Variant names to append to the Matrix.
+            Variant names to append to the VariantMatrix.
         vrnt_genpos : numpy.ndarray
-            Variant chromosome genetic positions to append to the Matrix.
+            Variant chromosome genetic positions to append to the VariantMatrix.
         vrnt_xoprob : numpy.ndarray
-            Sequential variant crossover probabilities to append to the Matrix.
+            Sequential variant crossover probabilities to append to the VariantMatrix.
         vrnt_hapgrp : numpy.ndarray
-            Variant haplotype labels to append to the Matrix.
+            Variant haplotype labels to append to the VariantMatrix.
         vrnt_mask : numpy.ndarray
-            Variant mask to append to the Matrix.
+            Variant mask to append to the VariantMatrix.
         kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_vrnt(self, obj, **kwargs):
+    def remove_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Remove sub-arrays along the variant axis.
 
         Parameters
         ----------
-        obj : slice, int, or array of ints
+        obj : int, slice, or Sequence of ints
             Indicate indices of sub-arrays to remove along the specified axis.
         kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
-    def incorp_vrnt(self, obj, values, vrnt_chrgrp, vrnt_phypos, vrnt_name, vrnt_genpos, vrnt_xoprob, vrnt_hapgrp, vrnt_mask, **kwargs):
+    def incorp_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            vrnt_name: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            vrnt_xoprob: numpy.ndarray, 
+            vrnt_hapgrp: numpy.ndarray, 
+            vrnt_mask: numpy.ndarray, 
+            **kwargs: dict
+        ) -> None:
         """
         Incorporate values along the variant axis before the given indices.
 
         Parameters
         ----------
-        obj: int, slice, or sequence of ints
+        obj: int, slice, or Sequence of ints
             Object that defines the index or indices before which values is
             incorporated.
         values : Matrix, numpy.ndarray
-            Values to incorporate into the matrix.
+            Values to incorporate into the VariantMatrix.
         vrnt_chrgrp : numpy.ndarray
-            Variant chromosome groups to incorporate into the Matrix.
+            Variant chromosome groups to incorporate into the VariantMatrix.
         vrnt_phypos : numpy.ndarray
-            Variant chromosome physical positions to incorporate into the Matrix.
+            Variant chromosome physical positions to incorporate into the VariantMatrix.
         vrnt_name : numpy.ndarray
-            Variant names to incorporate into the Matrix.
+            Variant names to incorporate into the VariantMatrix.
         vrnt_genpos : numpy.ndarray
-            Variant chromosome genetic positions to incorporate into the Matrix.
+            Variant chromosome genetic positions to incorporate into the VariantMatrix.
         vrnt_xoprob : numpy.ndarray
-            Sequential variant crossover probabilities to incorporate into the Matrix.
+            Sequential variant crossover probabilities to incorporate into the VariantMatrix.
         vrnt_hapgrp : numpy.ndarray
-            Variant haplotype labels to incorporate into the Matrix.
+            Variant haplotype labels to incorporate into the VariantMatrix.
         vrnt_mask : numpy.ndarray
-            Variant mask to incorporate into the Matrix.
+            Variant mask to incorporate into the VariantMatrix.
         kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
-    def lexsort_vrnt(self, keys, **kwargs):
+    def lexsort_vrnt(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys along the
         variant axis.
@@ -470,21 +544,29 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder_vrnt(self, indices, **kwargs):
+    def reorder_vrnt(
+            self, 
+            indices: Union[numpy.ndarray,Sequence], 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder elements of the Matrix along the variant axis using an array of
         indices. Note this modifies the Matrix in-place.
 
         Parameters
         ----------
-        indices : (N,) ndarray of ints
+        indices : (N,) ndarray of ints, Sequence of ints
             Array of indices that reorder the matrix along the specified axis.
         kwargs : dict
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
-    def sort_vrnt(self, keys, **kwargs):
+    def sort_vrnt(
+            self, 
+            keys: Union[tuple,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the Matrix along the variant axis using a sequence of
         keys. Note this modifies the Matrix in-place.
@@ -500,7 +582,10 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
-    def group_vrnt(self, **kwargs):
+    def group_vrnt(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the Matrix along the variant axis, then populate grouping indices
         for the variant axis.
@@ -512,7 +597,10 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped_vrnt(self, **kwargs):
+    def is_grouped_vrnt(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped along the
         variant axis.
@@ -531,7 +619,8 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################# Interpolation Methods ################
-    def interp_genpos(self, gmap, **kwargs):
+    # TODO: remove me. This violates acyclical dependency requirements
+    def interp_genpos(self, gmap, **kwargs: dict):
         """
         Interpolate genetic map postions for variants using a GeneticMap
 
@@ -545,7 +634,8 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def interp_xoprob(self, gmap, gmapfn, **kwargs):
+    # TODO: remove me. This violates acyclical dependency requirements
+    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
         """
         Interpolate genetic map positions AND crossover probabilities between
         sequential markers using a GeneticMap and a GeneticMapFunction.
@@ -564,7 +654,12 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################## Clustering Methods ##################
-    def assign_hapgrp(self, k, **kwargs):
+    # TODO: remove me???
+    def assign_hapgrp(
+            self, 
+            k: Union[int,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Assign haplotype groups using k-means clustering.
 
@@ -582,13 +677,13 @@ class VariantMatrix(GroupableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_VariantMatrix(v):
+def is_VariantMatrix(v: Any) -> bool:
     """
     Determine whether an object is a VariantMatrix.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
 
     Returns
@@ -598,34 +693,16 @@ def is_VariantMatrix(v):
     """
     return isinstance(v, VariantMatrix)
 
-def check_is_VariantMatrix(v, varname):
+def check_is_VariantMatrix(v: Any, varname: str) -> None:
     """
     Check if object is of type VariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : any object
+    v : Any
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
     """
-    if not is_VariantMatrix(v):
+    if not isinstance(v, VariantMatrix):
         raise TypeError("'{0}' must be a VariantMatrix".format(varname))
-
-def cond_check_is_VariantMatrix(v, varname, cond=(lambda s: s is not None)):
-    """
-    Conditionally check if object is of type VariantMatrix. Otherwise raise
-    TypeError.
-
-    Parameters
-    ----------
-    v : any object
-        Any Python object to test.
-    varname : str
-        Name of variable to print in TypeError message.
-    cond : function
-        A function returning True/False for whether to test if is a
-        VariantMatrix.
-    """
-    if cond(v):
-        check_is_VariantMatrix(v, varname)

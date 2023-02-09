@@ -12,6 +12,11 @@ from . import sampling
 from . import SelectionProtocol
 
 # concrete classes
+from . import BinaryMaximumMeanExpectedHeterozygositySelection
+from . import BinaryMinimumMeanGenomicRelationshipSelection
+from . import ContinuousGenomicOptimalContributionSelection
+from . import ContinuousMaximumMeanExpectedHeterozygositySelection
+from . import ContinuousMinimumMeanGenomicRelationshipSelection
 from . import ConventionalGenomicSelection
 from . import ConventionalPhenotypicSelection
 from . import FamilyPhenotypicSelection

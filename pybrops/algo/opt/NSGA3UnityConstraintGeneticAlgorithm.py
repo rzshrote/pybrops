@@ -10,6 +10,7 @@ from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error import check_is_ndarray
 from pybrops.core.random import global_prng
 from pybrops.core.util.pareto import is_pareto_efficient
 
@@ -27,7 +28,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, cxeta = 30.0, muteta = 20.0,
-    refpnts = None, save_logbook = False, rng = None, **kwargs):
+    refpnts = None, save_logbook = False, rng = None, **kwargs: dict):
         """
         Constructor for NSGA-III optimization algorithm.
 
@@ -221,7 +222,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs):
+    def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
 
