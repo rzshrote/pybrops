@@ -1,5 +1,5 @@
 """
-Module implementing selection protocols for optimal haploid value selection.
+Module implementing selection protocols for Usefulness Criterion selection.
 """
 
 import types
@@ -22,9 +22,9 @@ from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 
-class OptimalHaploidValueSelection(SelectionProtocol):
+class UsefulnessCriterionSelection(SelectionProtocol):
     """
-    Class implementing selection protocols for optimal haploid value selection.
+    Class implementing selection protocols for usefulness criterion selection.
 
     # TODO: add formulae for methodology.
     """
@@ -38,7 +38,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             nparent: int, 
             ncross: int, 
             nprogeny: int, 
-            nhaploblk: int,
             unique_parents = True, 
             method = "single",
             objfn_trans = None, 
@@ -53,7 +52,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             **kwargs : dict
         ):
         """
-        Constructor for Optimal Haploid Value Selection (OHV).
+        Constructor for Usefulness Criterion Selection (UCS).
 
         Parameters
         ----------
@@ -75,8 +74,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Number of crosses to perform per configuration.
         nprogeny : int
             Number of progeny to derive from each cross configuration.
-        nhaploblk : int
-            Number of haplotype blocks to segment the genome into.
         unique_parents : bool, default = True
             Whether to allow force unique parents or not.
             If ``True``, all parents in the mating configuration must be unique.
@@ -88,14 +85,14 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             +--------------+---------------------------------------------------+
             | Method       | Description                                       |
             +==============+===================================================+
-            | ``"single"`` | OHV is transformed to a single objective and      |
+            | ``"single"`` | UCS is transformed to a single objective and      |
             |              | optimization is done on the transformed function. |
             |              | This is done using the ``trans`` function         |
             |              | provided::                                        |
             |              |                                                   |
             |              |    optimize : objfn_trans(MOGS)                   |
             +--------------+---------------------------------------------------+
-            | ``"pareto"`` | OHV is transformed by a transformation function,  |
+            | ``"pareto"`` | UCS is transformed by a transformation function,  |
             |              | but NOT reduced to a single objective. The Pareto |
             |              | frontier for this transformed function is mapped  |
             |              | using a multi-objective genetic algorithm.        |
@@ -135,14 +132,13 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 )
         rng : numpy.random.Generator, numpy.random.RandomState
         """
-        super(OptimalHaploidValueSelection, self).__init__(**kwargs)
+        super(UsefulnessCriterionSelection, self).__init__(**kwargs)
 
         # error checks and assignments (ORDER DEPENDENT!!!)
         self.nconfig = nconfig
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nhaploblk = nhaploblk
         self.unique_parents = unique_parents
         self.method = method
         self.objfn_trans = objfn_trans
@@ -210,19 +206,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             del self._nprogeny
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
-
-    def nhaploblk():
-        doc = "The nhaploblk property."
-        def fget(self):
-            return self._nhaploblk
-        def fset(self, value):
-            check_is_int(value, "nhaploblk")    # must be int
-            check_is_gt(value, "nhaploblk", 0)  # int must be >0
-            self._nhaploblk = value
-        def fdel(self):
-            del self._nhaploblk
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nhaploblk = property(**nhaploblk())
 
     def unique_parents():
         doc = "The unique_parents property."
@@ -559,19 +542,19 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             # calculate xmap
             xmap = self._calc_xmap(pgmat.ntaxa)
 
-            # get all OHVs for each configuration
+            # get all UCSs for each configuration
             # (s,)
-            ohv = [objfn([i]) for i in range(len(xmap))]
+            UCS = [objfn([i]) for i in range(len(xmap))]
 
             # convert to numpy.ndarray
-            ohv = numpy.array(ohv)
+            UCS = numpy.array(UCS)
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
-            ohv = ohv * objfn_wt
+            UCS = UCS * objfn_wt
 
-            # get indices of top nconfig OHVs
-            sel = ohv.argsort()[::-1][:nconfig]
+            # get indices of top nconfig UCSs
+            sel = UCS.argsort()[::-1][:nconfig]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
@@ -581,7 +564,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             sel = xmap[sel,:].flatten()
 
             # get GEBVs for reference
-            misc = {"ohv" : ohv}
+            misc = {"UCS" : UCS}
 
             # add optimization details to miscellaneous output
             if miscout is not None:     # if miscout was provided
@@ -781,11 +764,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel, xmap, mat, ploidy, trans, kwargs):
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
+        Score a population of individuals based on Usefulness Criterion
+        Selection (UCS). Scoring for UCS is defined as the sum of maximum
         haploid breeding values obtainable from a population.
 
-        OHV selects the ``q`` individuals with the largest OHVs.
+        UCS selects the ``q`` individuals with the largest UCSs.
 
         Parameters
         ----------
@@ -828,8 +811,8 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         Returns
         -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+        UCS : numpy.ndarray
+            A UCS matrix of shape ``(t,)`` if ``trans`` is ``None``.
             Otherwise, of shape specified by ``trans``.
 
             Where:
@@ -846,23 +829,23 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         # (m,k,d,b,t).max((0,2)) -> (k,b,t)     # find maximum haplotype across all parental phases
         # (k,b,t).sum((0,1)) -> (t,)            # add maximum haplotypes for k crosses and b blocks
         # scalar * (t,) -> (t,)                 # multiply result by number of phases
-        ohv = ploidy * mat[:,sel,:,:].max((0,2)).sum((0,1))
+        UCS = ploidy * mat[:,sel,:,:].max((0,2)).sum((0,1))
 
         # apply transformations
         # (t,) ---trans---> (?,)
         if trans:
-            ohv = trans(ohv, **kwargs)
+            UCS = trans(UCS, **kwargs)
 
-        return ohv
+        return UCS
 
     @staticmethod
     def objfn_vec_static(sel, xmap, mat, ploidy, trans, kwargs):
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
+        Score a population of individuals based on Usefulness Criterion
+        Selection (UCS). Scoring for UCS is defined as the sum of maximum
         haploid breeding values obtainable from a population.
 
-        OHV selects the ``q`` individuals with the largest OHVs.
+        UCS selects the ``q`` individuals with the largest UCSs.
 
         Parameters
         ----------
@@ -906,8 +889,8 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         Returns
         -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+        UCS : numpy.ndarray
+            A UCS matrix of shape ``(t,)`` if ``trans`` is ``None``.
             Otherwise, of shape specified by ``trans``.
 
             Where:
@@ -924,11 +907,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         # (m,j,k,d,b,t).max((0,3)) -> (j,k,b,t)     # find maximum haplotype across all parental phases
         # (j,k,b,t).sum((1,2)) -> (j,t)             # add maximum haplotypes for k crosses and b blocks
         # scalar * (j,t) -> (j,t)                   # multiply result by number of phases
-        ohv = ploidy * mat[:,sel,:,:].max((0,3)).sum((1,2))
+        UCS = ploidy * mat[:,sel,:,:].max((0,3)).sum((1,2))
 
         # apply transformations
         # (j,t) ---trans---> (?,?)
         if trans:
-            ohv = trans(ohv, **kwargs)
+            UCS = trans(UCS, **kwargs)
 
-        return ohv
+        return UCS

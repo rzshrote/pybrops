@@ -1,30 +1,28 @@
 """
-Module implementing selection protocols for optimal haploid value selection.
+Module implementing selection protocols for Genotype Building selection.
 """
 
-import types
 import numpy
+import types
 
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_value_python import check_is_lt
 from pybrops.core.random.prng import global_prng
-from pybrops.core.util.arrayix import triuix
-from pybrops.core.util.arrayix import triudix
+from pybrops.core.util.haplo import calc_nhaploblk_chrom
 from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
-from pybrops.core.util.haplo import calc_nhaploblk_chrom
 
-class OptimalHaploidValueSelection(SelectionProtocol):
+class GenotypeBuildingSelection(SelectionProtocol):
     """
-    Class implementing selection protocols for optimal haploid value selection.
+    Class implementing selection protocols for Genotype Building selection.
 
     # TODO: add formulae for methodology.
     """
@@ -34,12 +32,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     def __init__(
             self,
-            nconfig: int, 
             nparent: int, 
             ncross: int, 
             nprogeny: int, 
             nhaploblk: int,
-            unique_parents = True, 
+            nbestfndr: int,
             method = "single",
             objfn_trans = None, 
             objfn_trans_kwargs = None, 
@@ -47,103 +44,40 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             ndset_trans = None, 
             ndset_trans_kwargs = None, 
             ndset_wt = 1.0,
-            rng = None, 
             soalgo = None, 
             moalgo = None,
-            **kwargs : dict
+            rng = None, 
+            **kwargs: dict
         ):
         """
-        Constructor for Optimal Haploid Value Selection (OHV).
+        Constructor for Genotype Building selection (OPV).
 
         Parameters
         ----------
-        nconfig : int
-            Number of cross configurations to consider.
-
-            Examples:
-
-            - 20 two-way crosses would be: ``nconfig = 20``
-            - 20 three way crosses would be: ``nconfig = 20``
         nparent : int
-            Number of parents to per configuration.
-
-            Example:
-
-            - 20 two-way crosses would be: ``nparent = 2``
-            - 20 three-way crosses would be: ``nparent = 3``
+            Number of parents to select.
         ncross : int
-            Number of crosses to perform per configuration.
+            Number of crosses per configuration.
         nprogeny : int
-            Number of progeny to derive from each cross configuration.
+            Number of progeny to derive from each cross.
         nhaploblk : int
-            Number of haplotype blocks to segment the genome into.
-        unique_parents : bool, default = True
-            Whether to allow force unique parents or not.
-            If ``True``, all parents in the mating configuration must be unique.
-            If ``False``, non-unique parents are allowed. In this scenario,
-            self-fertilization is considered as a viable option.
-        method : str
-            Method of selecting parents.
-
-            +--------------+---------------------------------------------------+
-            | Method       | Description                                       |
-            +==============+===================================================+
-            | ``"single"`` | OHV is transformed to a single objective and      |
-            |              | optimization is done on the transformed function. |
-            |              | This is done using the ``trans`` function         |
-            |              | provided::                                        |
-            |              |                                                   |
-            |              |    optimize : objfn_trans(MOGS)                   |
-            +--------------+---------------------------------------------------+
-            | ``"pareto"`` | OHV is transformed by a transformation function,  |
-            |              | but NOT reduced to a single objective. The Pareto |
-            |              | frontier for this transformed function is mapped  |
-            |              | using a multi-objective genetic algorithm.        |
-            |              |                                                   |
-            |              | Objectives are scaled to :math:`[0,1]` and a      |
-            |              | vector orthogonal to the hyperplane defined by    |
-            |              | the extremes of the front is drawn starting at    |
-            |              | the point defined by ``ndset_trans``. The closest |
-            |              | point on the Pareto frontier to the orthogonal    |
-            |              | vector is selected.                               |
-            +--------------+---------------------------------------------------+
+            Number of haplotype blocks to divide the genome into.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
         objfn_wt : float, numpy.ndarray
         ndset_trans : function, callable, None
         ndset_trans_kwargs : dict, None
         ndset_wt : float
-        soalgo : OptimizationAlgorithm
-            Single-objective optimization algorithm to optimize the objective
-            function. If ``None``, use a SteepestAscentSetHillClimber with the
-            following parameters::
-
-                soalgo = SteepestAscentSetHillClimber(
-                    rng = self.rng  # PRNG source
-                )
-        moalgo : OptimizationAlgorithm
-            Multi-objective optimization algorithm to optimize the objective
-            functions. If ``None``, use a NSGA2SetGeneticAlgorithm with the
-            following parameters::
-
-                moalgo = NSGA2SetGeneticAlgorithm(
-                    ngen = 250,     # number of generations to evolve
-                    mu = 100,       # number of parents in population
-                    lamb = 100,     # number of progeny to produce
-                    M = 1.5,        # algorithm crossover genetic map length
-                    rng = self.rng  # PRNG source
-                )
         rng : numpy.random.Generator, numpy.random.RandomState
         """
-        super(OptimalHaploidValueSelection, self).__init__(**kwargs)
+        super(GenotypeBuildingSelection, self).__init__(**kwargs)
 
         # error checks and assignments (ORDER DEPENDENT!!!)
-        self.nconfig = nconfig
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
         self.nhaploblk = nhaploblk
-        self.unique_parents = unique_parents
+        self.nbestfndr = nbestfndr # must be less than or equal to nparent
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
@@ -159,19 +93,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def nconfig():
-        doc = "The nconfig property."
-        def fget(self):
-            return self._nconfig
-        def fset(self, value):
-            check_is_int(value, "nconfig")      # must be int
-            check_is_gt(value, "nconfig", 0)    # int must be >0
-            self._nconfig = value
-        def fdel(self):
-            del self._nconfig
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nconfig = property(**nconfig())
-
     def nparent():
         doc = "The nparent property."
         def fget(self):
@@ -224,17 +145,19 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nhaploblk = property(**nhaploblk())
 
-    def unique_parents():
-        doc = "The unique_parents property."
+    def nbestfndr():
+        doc = "The nbestfndr property."
         def fget(self):
-            return self._unique_parents
+            return self._nbestfndr
         def fset(self, value):
-            check_is_bool(value, "unique_parents")
-            self._unique_parents = value
+            check_is_int(value, "nbestfndr")                # must be int
+            check_is_gt(value, "nbestfndr", 0)              # int must be >0
+            check_is_lt(value, "nbestfndr", self.nparent)   # cannot have more founders than number of parents selected
+            self._nbestfndr = value
         def fdel(self):
-            del self._unique_parents
+            del self._nbestfndr
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    unique_parents = property(**unique_parents())
+    nbestfndr = property(**nbestfndr())
 
     def method():
         doc = "The method property."
@@ -331,21 +254,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     ndset_wt = property(**ndset_wt())
 
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            # if None, use default random number generator
-            if value is None:
-                value = global_prng
-            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rng = property(**rng())
-
     def soalgo():
         doc = "The soalgo property."
         def fget(self):
@@ -379,6 +287,21 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             del self._moalgo
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     moalgo = property(**moalgo())
+
+    def rng():
+        doc = "The rng property."
+        def fget(self):
+            return self._rng
+        def fset(self, value):
+            # if None, use default random number generator
+            if value is None:
+                value = global_prng
+            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
+            self._rng = value
+        def fdel(self):
+            del self._rng
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    rng = property(**rng())
 
     ############################################################################
     ########################## Private Object Methods ##########################
@@ -428,12 +351,10 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         hbin = calc_haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # define shape
-        # (m,n,b,t)
-        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1])
+        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1]) # (m,n,b,t)
 
         # allocate haplotype matrix
-        # (m,n,b,t)
-        hmat = numpy.empty(s, dtype = u.dtype)
+        hmat = numpy.empty(s, dtype = u.dtype)   # (m,n,b,t)
 
         # get boundary indices
         hstix, hspix, hlen = calc_haplobin_bounds(hbin)
@@ -446,51 +367,12 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
         return hmat
 
-    def _calc_xmap(self, ntaxa):
-        """
-        Calculate the cross map.
-
-        Parameters
-        ----------
-        ntaxa : int
-            Number of taxa.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of shape ``(s,d)`` containing cross map indices.
-
-            Where:
-
-            - ``s`` is the number of elements in the upper triangle, including
-              or not including the diagonal (depending on ``unique_parents``).
-            - ``d`` is the number of parents in the cross.
-        """
-        if self.unique_parents:         # if we want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triudix(            # generator for indices without diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
-        else:                           # otherwise we don't want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triuix(             # generator for indices with diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
-
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
 
         Parameters
         ----------
@@ -512,6 +394,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).
             If ``None``, user defined output is not calculated or stored.
+        method : str
+            Options: "single", "pareto"
+        nparent : int
+        ncross : int
+        nprogeny : int
         kwargs : dict
             Additional keyword arguments.
 
@@ -531,10 +418,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
               progeny to generate per cross.
         """
         # get selection parameters
-        nconfig = self.nconfig
         nparent = self.nparent
         ncross = self.ncross
         nprogeny = self.nprogeny
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
         ndset_trans = self.ndset_trans
         ndset_trans_kwargs = self.ndset_trans_kwargs
@@ -553,39 +441,27 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
                 **kwargs
             )
 
-            # calculate xmap
-            xmap = self._calc_xmap(pgmat.ntaxa)
-
-            # get all OHVs for each configuration
-            # (s,)
-            ohv = [objfn([i]) for i in range(len(xmap))]
-
-            # convert to numpy.ndarray
-            ohv = numpy.array(ohv)
-
-            # multiply the objectives by objfn_wt to transform to maximizing function
-            # (n,) * scalar -> (n,)
-            ohv = ohv * objfn_wt
-
-            # get indices of top nconfig OHVs
-            sel = ohv.argsort()[::-1][:nconfig]
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            # convert 'sel' to parent selections (ordered)
-            # (kd,)
-            sel = xmap[sel,:].flatten()
-
-            # get GEBVs for reference
-            misc = {"ohv" : ohv}
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
             # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(misc)    # add dict to dict
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, ncross, nprogeny
 
@@ -593,7 +469,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         # selection configuration
         elif method == "pareto":
             # get the pareto frontier
-            frontier, sel_config, misc = self.pareto(
+            frontier, sel_config = self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -601,8 +477,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
+                miscout = miscout,
                 nparent = nparent,
-                **kwargs
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
             )
 
             # get scores for each of the points along the pareto frontier
@@ -611,20 +490,21 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             # get index of maximum score
             ix = score.argmax()
 
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], ncross, nprogeny, misc
+            return pgmat, sel_config[ix], ncross, nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
-        Return a parent selection objective function.
+        Return a selection objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
-            Phased genotype matrix.
+            Input genome matrix.
         gmat : GenotypeMatrix
             Not used by this function.
         ptdf : PhenotypeDataFrame
@@ -633,22 +513,26 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Not used by this function.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
         """
-        ntaxa = pgmat.ntaxa                     # get number of taxa
-        xmap = self._calc_xmap(ntaxa)           # (s,p) get the cross map
+        # get selection parameters
         mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
-        ploidy = pgmat.ploidy                   # (scalar) get ploidy
-        trans = self.objfn_trans                # get transformation function
-        trans_kwargs = self.objfn_trans_kwargs  # get transformation function keyword arguments
+        nbestfndr = self.nbestfndr              # get number of best founders
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_static.__code__,                 # byte code pointer
-            self.objfn_static.__globals__,              # global variables
-            None,                                       # new name for the function
-            (xmap, mat, ploidy, trans, trans_kwargs),   # default values for arguments
-            self.objfn_static.__closure__               # closure byte code pointer
+            self.objfn_static.__code__,         # byte code pointer
+            self.objfn_static.__globals__,      # global variables
+            None,                               # new name for the function
+            (mat, nbestfndr, trans, trans_kwargs), # default values for arguments
+            self.objfn_static.__closure__       # closure byte code pointer
         )
 
         return outfn
@@ -677,19 +561,18 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         """
         # get selection parameters
         mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
-        xmap = self._calc_xmap()                # (s,p) get the cross map
-        ploidy = pgmat.ploidy                   # (scalar) get ploidy
-        trans = self.objfn_trans                # get transformation function
-        trans_kwargs = self.objfn_trans_kwargs  # get transformation function keyword arguments
+        nbestfndr = self.nbestfndr              # get number of best founders
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,             # byte code pointer
-            self.objfn_vec_static.__globals__,          # global variables
-            None,                                       # new name for the function
-            (xmap, mat, ploidy, trans, trans_kwargs),   # default values for arguments
-            self.objfn_vec_static.__closure__           # closure byte code pointer
+            self.objfn_vec_static.__code__,     # byte code pointer
+            self.objfn_vec_static.__globals__,  # global variables
+            None,                               # new name for the function
+            (mat, nbestfndr, trans, trans_kwargs), # default values for arguments
+            self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
         return outfn
@@ -742,8 +625,9 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         """
         # get selection parameters
         nparent = self.nparent
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
-        moalgo = self.moalgo
 
         # get number of taxa
         ntaxa = pgmat.ntaxa
@@ -757,11 +641,12 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             gpmod = gpmod,
             t_cur = t_cur,
             t_max = t_max,
-            **kwargs
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
         )
 
         # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = moalgo.optimize(
+        frontier, sel_config, misc = self.moalgo.optimize(
             objfn = objfn,                  # objective function
             k = nparent,                    # vector length to optimize (sspace^k)
             sspace = numpy.arange(ntaxa),   # search space options
@@ -772,37 +657,29 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         if miscout is not None:     # if miscout is provided
             miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
-        # TODO: fix sel_config output format: currently in xmap indices format.
         return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, xmap, mat, ploidy, trans, kwargs):
+    def objfn_static(sel, mat, nbestfndr, trans, kwargs):
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
-        haploid breeding values obtainable from a population.
-
-        OHV selects the ``q`` individuals with the largest OHVs.
+        Score a population of individuals based on Genotype Building
+        Selection.
 
         Parameters
         ----------
-        sel : numpy.ndarray
-            A cross selection indices array of shape ``(k,)``.
+        sel : numpy.ndarray, None
+            A selection indices matrix of shape ``(k,)``.
 
             Where:
 
-            - ``k`` is the number of crosses to select.
-        xmap : numpy.ndarray
-            A cross selection index map array of shape ``(s,p)``.
+            - ``k`` is the number of individuals to select.
 
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is None, use all individuals.
         mat : numpy.ndarray
             A haplotype effect matrix of shape ``(m,n,b,t)``.
 
@@ -810,59 +687,65 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
             - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``b`` is the number of haplotype blocks.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
-        ploidy : int
-            Ploidy level of the species.
-            In many cases, this should be equal to ``m`` from the ``mat``
-            parameter. In cases where data is unphased (``m == 1``), then this
-            parameter should be different from ``m``.
+        nbestfndr : int
+            Number of best founders to select. Must be less than or equal to ``n``.
         trans : function or callable
             A transformation operator to alter the output.
-            Function must adhere to the following standard::
+            Function must adhere to the following standard:
 
-                trans(numpy.ndarray, **kwargs: dict):
-                    return (scalar or numpy.ndarray)
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to the ``trans`` function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+        gb : numpy.ndarray
+            An GB matrix of shape ``(t,)`` if ``trans`` is ``None``.
             Otherwise, of shape specified by ``trans``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # get the cross configurations
-        # (s,d)[(k,),:] -> (k,d)
-        sel = xmap[sel,:]
+        # get number of phases
+        nphase = mat.shape[0]
 
-        # get maximum haplotype value
-        # multiply by ploidy
-        # (m,n,b,t)[:,(k,d),:,:] -> (m,k,d,b,t) # select k individuals
-        # (m,k,d,b,t).max((0,2)) -> (k,b,t)     # find maximum haplotype across all parental phases
-        # (k,b,t).sum((0,1)) -> (t,)            # add maximum haplotypes for k crosses and b blocks
-        # scalar * (t,) -> (t,)                 # multiply result by number of phases
-        ohv = ploidy * mat[:,sel,:,:].max((0,2)).sum((0,1))
+        # get best haplotype within each individual
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k,h,t).max(0) -> (k,h,t)
+        bestphase = mat[:,sel,:,:].max(0)
+
+        # sort the bestphase tensor along the individual axis to get best individuals
+        # (k,h,t) 
+        bestphase.sort(0)
+
+        # get top haplotype index boundaries
+        k = len(sel)
+        st = k - nbestfndr
+        sp = k
+
+        # get top haplotypes and sum across the individual and haplotype axes
+        # scale by nphase / nbestfndr
+        # (k,h,t)[(nbestfndr,),:,:] -> (nbestfndr,h,t)
+        # (nbestfndr,h,t).sum((0,1)) -> (t,)
+        # scalar * (t,) -> (t,)
+        gb = (nphase / nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
 
         # apply transformations
         # (t,) ---trans---> (?,)
-        if trans:
-            ohv = trans(ohv, **kwargs)
+        if trans is not None:
+            gb = trans(gb, **kwargs)
 
-        return ohv
+        return gb
 
     @staticmethod
-    def objfn_vec_static(sel, xmap, mat, ploidy, trans, kwargs):
+    def objfn_vec_static(sel, mat, nbestfndr, trans, kwargs):
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
-        haploid breeding values obtainable from a population.
-
-        OHV selects the ``q`` individuals with the largest OHVs.
+        Score a population of individuals based on Genotype Building
+        Selection.
 
         Parameters
         ----------
@@ -871,64 +754,69 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
             Where:
 
-            - ``j`` is the number of selection configurations.
+            - ``j`` is the number of configurations to score.
             - ``k`` is the number of individuals to select.
-        xmap : numpy.ndarray
-            A cross selection index map array of shape ``(s,p)``.
 
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
         mat : numpy.ndarray
-            A haplotype effect matrix of shape ``(t,m,n,b)``.
+            A haplotype effect matrix of shape ``(m,n,h,t)``.
 
             Where:
 
-            - ``t`` is the number of traits.
             - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``b`` is the number of haplotype blocks.
-        ploidy : int
-            Ploidy level of the species.
-            In many cases, this should be equal to ``m`` from the ``mat``
-            parameter. In cases where data is unphased (``m == 1``), then this
-            parameter should be different from ``m``.
+            - ``h`` is the number of haplotype blocks.
+            - ``t`` is the number of traits.
+        nbestfndr : int
+            Number of best founders to select. Must be less than or equal to ``n``.
         trans : function or callable
             A transformation operator to alter the output.
-            Function must adhere to the following standard::
+            Function must adhere to the following standard:
 
-                trans(numpy.ndarray, **kwargs: dict):
-                    return (scalar or numpy.ndarray)
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
-            Dictionary of keyword arguments to pass to the ``trans`` function.
+            Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+        opv : numpy.ndarray
+            An OPV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
             Otherwise, of shape specified by ``trans``.
 
             Where:
 
+            - ``j`` is the number of selection configurations.
             - ``t`` is the number of traits.
         """
-        # get the cross configurations
-        # (s,d)[(j,k),:] -> (j,k,d)
-        sel = xmap[sel,:]
+        # get number of phases
+        nphase = mat.shape[0]
 
-        # get maximum haplotype value
-        # multiply by ploidy
-        # (m,n,b,t)[:,(j,k,d),:] -> (m,j,k,d,b,t)   # select k individuals
-        # (m,j,k,d,b,t).max((0,3)) -> (j,k,b,t)     # find maximum haplotype across all parental phases
-        # (j,k,b,t).sum((1,2)) -> (j,t)             # add maximum haplotypes for k crosses and b blocks
-        # scalar * (j,t) -> (j,t)                   # multiply result by number of phases
-        ohv = ploidy * mat[:,sel,:,:].max((0,3)).sum((1,2))
+        # get best haplotype within each individual
+        # (m,n,h,t)[:,(j,k),:,:] -> (m,j,k,h,t)
+        # (m,j,k,h,t).max(0) -> (j,k,h,t)
+        bestphase = mat[:,sel,:,:].max(0)
+
+        # sort the bestphase tensor along the individual axis to get best individuals
+        # (j,k,h,t) 
+        bestphase.sort(1)
+
+        # get top haplotype index boundaries
+        k = len(sel)
+        st = k - nbestfndr
+        sp = k
+
+        # get top haplotypes and sum across the individual and haplotype axes
+        # scale by nphase / nbestfndr
+        # (j,k,h,t)[:,(nbestfndr,),:,:] -> (j,nbestfndr,h,t)
+        # (j,nbestfndr,h,t).sum((1,2)) -> (j,t)
+        # scalar * (j,t) -> (j,t)
+        gb = (nphase / nbestfndr) * bestphase[:,st:sp,:,:].sum((1,2))
 
         # apply transformations
-        # (j,t) ---trans---> (?,?)
-        if trans:
-            ohv = trans(ohv, **kwargs)
+        # (j,t) ---trans---> (j,?)
+        if trans is not None:
+            gb = trans(gb, **kwargs)
 
-        return ohv
+        return gb
