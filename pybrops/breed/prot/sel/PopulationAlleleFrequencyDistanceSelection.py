@@ -30,23 +30,23 @@ class PopulationAlleleFrequencyDistanceSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self,
-        nparent: int, 
-        ncross: int, 
-        nprogeny: int,
-        target: Union[str,numpy.ndarray] = "positive", 
-        weight: Union[str,numpy.ndarray] = "magnitude", 
-        method: str = "single",
-        objfn_trans = None, 
-        objfn_trans_kwargs = None, 
-        objfn_wt = -1.0,
-        ndset_trans = None, 
-        ndset_trans_kwargs = None, 
-        ndset_wt = -1.0,
-        soalgo = None, 
-        moalgo = None,
-        rng = global_prng, 
-        **kwargs
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int,
+            target: Union[str,numpy.ndarray] = "positive", 
+            weight: Union[str,numpy.ndarray] = "magnitude", 
+            method: str = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = -1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = -1.0,
+            soalgo = None, 
+            moalgo = None,
+            rng = global_prng, 
+            **kwargs
         ):
         """
         Constructor for PopulationAlleleFrequencyDistanceSelection class.
@@ -871,7 +871,7 @@ class PopulationAlleleFrequencyDistanceSelection(SelectionProtocol):
 
         # calculate reciprocal number of phases
         # number of phases * number of individuals in 'sgeno'
-        rphase = 1.0 / (ploidy * sgeno.shape[1])
+        rphase = 1.0 / (ploidy * sgeno.shape[0])
 
         # calculate population frequencies; add axis for correct broadcast
         # (k,p).sum(0) -> (p,)

@@ -304,7 +304,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         else:
             raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
 
-    def _calc_v(self, gmat: GenotypeMatrix, gpmod: AdditiveLinearGenomicModel):
+    def _calc_V(self, gmat: GenotypeMatrix, gpmod: AdditiveLinearGenomicModel):
         # get marker weights and target frequencies
         mkrwt = self._calc_mkrwt(gpmod) # (p,t)
         tfreq = self._calc_tfreq(gpmod) # (p,t)
@@ -314,38 +314,28 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             raise ValueError("marker weights and target allele frequencies do not have the same shape")
 
         # get number of traits and taxa
+        nvrnt = mkrwt.shape[0]
         ntrait = mkrwt.shape[1]
         ntaxa = gmat.ntaxa
         ploidy = float(gmat.ploidy)
 
         # allocate a tensor for storing distance matrices
-        v = numpy.empty((ntaxa,ntrait), dtype = "float64")
+        # (n,p,t)
+        V = numpy.empty((ntaxa,nvrnt,ntrait), dtype = "float64")
 
         # get the genotype matrix as {0,1,2,...}
+        # divide the genotypes by the number of phases
         # (n,p)
-        X = gmat.tacount()
+        Z = (1.0 / ploidy) * gmat.tacount()
 
         # calculate a distance matrix for each trait
         for trait in range(ntrait):
-            # multiply afreq by ploidy level to get the number of alleles on which to center
-            # (p,t)[None,:,ix] -> (1,p)
-            # scalar * (1,p) -> (1,p)
-            M = ploidy * tfreq[None,:,trait]
+            # (n,p) = (1,p) * ( (n,p) - (1,p) )
+            V[:,:,trait] = mkrwt[None,:,trait] * (Z - tfreq[None,:,trait])
 
-            # calculate the Z matrix
-            # (n,p) - (1,p) -> (n,p)
-            Z = numpy.absolute(X - M)
-
-            # get marker weights
-            # (p,t)[:,ix,None] -> (p,1)
-            W = mkrwt[:,trait,None]
-
-            # calculate the weighted G matrix for the current trait
-            # (n,p) @ (p,1) -> (n,1)
-            v[trait,:] = Z.dot(W)
-
-        # return Cholesky decomposition tensor
-        return v
+        # return distance value tensor
+        # (n,p,t)
+        return V
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -479,7 +469,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        v = self._calc_v(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
+        V = self._calc_V(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -487,7 +477,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,     # byte code pointer
             self.objfn_static.__globals__,  # global variables
             None,                           # new name for the function
-            (v, trans, trans_kwargs),       # default values for last 3 arguments
+            (V, trans, trans_kwargs),       # default values for last 3 arguments
             self.objfn_static.__closure__   # closure byte code pointer
         )
 
@@ -501,7 +491,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        v = self._calc_v(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
+        V = self._calc_V(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -509,7 +499,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (v, trans, trans_kwargs),           # default values for last 3 arguments
+            (V, trans, trans_kwargs),           # default values for last 3 arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -594,7 +584,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel: numpy.ndarray, v: numpy.ndarray, trans: Callable, kwargs: dict):
+    def objfn_static(sel: numpy.ndarray, V: numpy.ndarray, trans: Callable, kwargs: dict):
         """
         Score a parent selection vector according to its distance from a utopian point.
         The goal is to minimize this function.
@@ -610,13 +600,14 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-        v : numpy.ndarray
-            A matrix of shape ``(n,t)`` containing values of individuals.
-            Invidividual values represent their distances from a utopian point.
+        V : numpy.ndarray
+            A matrix of shape ``(n,p,t)`` containing distance values of individuals' 
+            alleles for each trait.
 
             Where:
 
             - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
             - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
@@ -639,10 +630,12 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             - ``t`` is the number of traits.
         """
         # calculate vector
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        # scalar * (t,) -> (t,)
-        dist = (1.0 / sel.shape[0]) * v[sel,:].sum(0)
+        # (n,p,t)[(k,),:] -> (k,p,t)
+        # (k,p,t).sum(0) -> (p,t)
+        # scalar * (p,t) -> (p,t)
+        # | (p,t) | -> (p,t)
+        # (p,t).sum(0) -> (t,)
+        dist = numpy.absolute((1.0 / len(sel)) * V[sel,:,:].sum(0)).sum(0)
 
         # apply transformations if needed
         if trans:
@@ -651,7 +644,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         return dist
 
     @staticmethod
-    def objfn_vec_static(sel: numpy.ndarray, v: numpy.ndarray, trans: Callable, kwargs: dict):
+    def objfn_vec_static(sel: numpy.ndarray, V: numpy.ndarray, trans: Callable, kwargs: dict):
         """
         Score a parent selection vector according to its distance from a utopian point.
         The goal is to minimize this function.
@@ -669,13 +662,14 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
             ``sel`` cannot be ``None``.
-        v : numpy.ndarray
-            A matrix of shape ``(n,t)`` containing values of individuals.
-            Invidividual values represent their distances from a utopian point.
+        V : numpy.ndarray
+            A matrix of shape ``(n,p,t)`` containing distance values of individuals' 
+            alleles for each trait.
 
             Where:
 
             - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
             - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.
@@ -698,10 +692,12 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             - ``t`` is the number of traits.
         """
         # calculate vector
-        # (n,t)[(j,k),:] -> (j,k,t)
-        # (j,k,t).sum(1) -> (j,t)
-        # scalar * (j,t) -> (j,t)
-        dist = (1.0 / sel.shape[0]) * v[sel,:].sum(0)
+        # (n,p,t)[(j,k,),:] -> (j,k,p,t)
+        # (j,k,p,t).sum(1) -> (j,p,t)
+        # scalar * (j,p,t) -> (j,p,t)
+        # | (j,p,t) | -> (j,p,t)
+        # (j,p,t).sum(1) -> (j,t)
+        dist = numpy.absolute((1.0 / len(sel)) * V[sel,:,:].sum(1)).sum(1)
 
         # apply transformations if needed
         if trans:
