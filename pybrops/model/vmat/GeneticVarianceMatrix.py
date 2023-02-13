@@ -44,7 +44,7 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmod(cls, gmod, pgmat, ncross, nprogeny, s):
+    def from_gmod(cls, gmod, pgmat, ncross, nprogeny, s, **kwargs):
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -63,6 +63,8 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
         s : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------

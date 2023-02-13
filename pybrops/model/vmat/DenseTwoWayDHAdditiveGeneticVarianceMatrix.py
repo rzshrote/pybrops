@@ -9,8 +9,12 @@ import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.subroutines import srange
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 # TODO: implement me
 class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
@@ -108,10 +112,31 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
     ############################## Class Methods ###############################
     ############################################################################
     # TODO: implement me
-    # from_gmod
+    @classmethod
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            s: int
+        ):
+        if isinstance(gmod, AdditiveLinearGenomicModel):
+            cls.from_algmod(gmod, pgmat, ncross, nprogeny, s)
+        else:
+            raise NotImplementedError("support for non-linear models not implemented yet")
 
     @classmethod
-    def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem = 1024):
+    def from_algmod(
+            cls, 
+            algmod: AdditiveLinearGenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            s: int, 
+            gmapfn: GeneticMapFunction, 
+            mem: int = 1024
+        ):
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
         2-way cross between *inbred* individuals.

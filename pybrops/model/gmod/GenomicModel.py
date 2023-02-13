@@ -5,6 +5,7 @@ Module defining basal interfaces and error checking routines for genomic models.
 from typing import Any, Union
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class GenomicModel(HDF5InputOutput):
@@ -268,7 +269,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######## methods for estimated breeding values #########
-    def gebv_numpy(self, Z, **kwargs: dict):
+    def gebv_numpy(self, Z: numpy.ndarray, **kwargs: dict) -> numpy.ndarray:
         """
         Calculate genomic estimated breeding values.
 
@@ -290,7 +291,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gebv(self, gtobj, **kwargs: dict):
+    def gebv(self, gtobj: GenotypeMatrix, **kwargs: dict) -> BreedingValueMatrix:
         """
         Calculate genomic estimated breeding values.
 

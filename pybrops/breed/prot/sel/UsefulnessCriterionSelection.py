@@ -2,8 +2,11 @@
 Module implementing selection protocols for Usefulness Criterion selection.
 """
 
+import numbers
 import types
+from typing import Type
 import numpy
+import scipy.stats
 
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
@@ -15,12 +18,16 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_python import check_is_Number
+from pybrops.core.error.error_value_python import check_is_gteq, check_is_lt
 from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
-from pybrops.core.util.haplo import calc_haplobin
-from pybrops.core.util.haplo import calc_haplobin_bounds
-from pybrops.core.util.haplo import calc_nhaploblk_chrom
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class UsefulnessCriterionSelection(SelectionProtocol):
     """
@@ -38,6 +45,9 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             nparent: int, 
             ncross: int, 
             nprogeny: int, 
+            nself: int,
+            upper_percentile: numbers.Number,
+            vmatcls: Type[GeneticVarianceMatrix],
             unique_parents = True, 
             method = "single",
             objfn_trans = None, 
@@ -139,6 +149,9 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.nself = nself
+        self.upper_percentile = upper_percentile
+        self.vmatcls = vmatcls
         self.unique_parents = unique_parents
         self.method = method
         self.objfn_trans = objfn_trans
@@ -207,6 +220,19 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     nprogeny = property(**nprogeny())
 
+    def nself():
+        doc = "The nself property."
+        def fget(self):
+            return self._nself
+        def fset(self, value):
+            check_is_int(value, "nself")     # must be int
+            check_is_gteq(value, "nself", 0)   # int must be >=0
+            self._nself = value
+        def fdel(self):
+            del self._nself
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    nself = property(**nself())
+
     def unique_parents():
         doc = "The unique_parents property."
         def fget(self):
@@ -218,6 +244,45 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             del self._unique_parents
         return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
     unique_parents = property(**unique_parents())
+
+    def upper_percentile():
+        doc = "The upper_percentile property."
+        def fget(self):
+            return self._upper_percentile
+        def fset(self, value):
+            check_is_Number(value, "upper_percentile")  # must be a number
+            check_is_gt(value, "upper_percentile", 0)   # number must be >0
+            check_is_lt(value, "upper_percentile", 1)   # number must be <1
+            self._upper_percentile = value
+            # set the selection intensity
+            self._selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - self._upper_percentile)) / self._upper_percentile
+        def fdel(self):
+            del self._upper_percentile
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    upper_percentile = property(**upper_percentile())
+
+    def selection_intensity():
+        doc = "The selection_intensity property."
+        def fget(self):
+            return self._selection_intensity
+        def fset(self, value):
+            error_readonly("selection_intensity")
+        def fdel(self):
+            error_readonly("selection_intensity")
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    selection_intensity = property(**selection_intensity())
+
+    # TODO: type checks
+    def vmatcls():
+        doc = "The vmatcls property."
+        def fget(self):
+            return self._vmatcls
+        def fset(self, value):
+            self._vmatcls = value
+        def fdel(self):
+            del self._vmatcls
+        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
+    vmatcls = property(**vmatcls())
 
     def method():
         doc = "The method property."
@@ -366,68 +431,16 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _calc_hmat(self, gmat, mod):
-        """
-        Calculate a haplotype matrix from a genome matrix and model.
+    def _calc_uc(self, pgmat: PhasedGenotypeMatrix, gmod: GenomicModel):
+        # calculate breeding values as numpy.ndarray; decentered and descaled
+        # (n,t)
+        bvmat = gmod.gebv(pgmat).descale()
 
-        Parameters
-        ----------
-        gmat : PhasedGenotypeMatrix
-            A genome matrix.
-        mod : DenseAdditiveLinearGenomicModel
-            A genomic prediction model.
+        # calculate variance matrix for the 
+        vmat = self.vmatcls.from_gmat(gmod, pgmat, self.ncross, self.nprogeny, self.nself).mat
 
-        Returns
-        -------
-        hmat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,b,t)``.
-        """
-        mat         = gmat.mat              # get genotypes
-        genpos      = gmat.vrnt_genpos      # get genetic positions
-        chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
-        chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
-        chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        u           = mod.u_a               # get regression coefficients
-
-        if (chrgrp_stix is None) or (chrgrp_spix is None):
-            raise RuntimeError("markers are not sorted by chromosome position")
-
-        # get number of chromosomes
-        nchr = len(chrgrp_stix)
-
-        if self.nhaploblk < nchr:
-            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
-
-        # calculate number of marker blocks to assign to each chromosome
-        nblk = calc_nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
-
-        # ensure there are enough markers per chromosome
-        if numpy.any(nblk > chrgrp_len):
-            raise RuntimeError(
-                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
-            )
-
-        # calculate haplotype bins
-        hbin = calc_haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
-
-        # define shape
-        # (m,n,b,t)
-        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1])
-
-        # allocate haplotype matrix
-        # (m,n,b,t)
-        hmat = numpy.empty(s, dtype = u.dtype)
-
-        # get boundary indices
-        hstix, hspix, hlen = calc_haplobin_bounds(hbin)
-
-        # OPTIMIZE: perhaps eliminate one loop using dot function
-        # fill haplotype matrix
-        for i in range(hmat.shape[3]):                          # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
-
-        return hmat
+        
+        pass
 
     def _calc_xmap(self, ntaxa):
         """

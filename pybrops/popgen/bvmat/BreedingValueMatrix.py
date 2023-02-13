@@ -4,6 +4,8 @@ for breeding value matrices.
 """
 
 from typing import Any
+
+import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
@@ -118,7 +120,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmax(self, descale):
+    def tmax(self, descale: bool) -> numpy.ndarray:
         """
         Return the maximum along the trait axis.
 
@@ -139,7 +141,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmean(self, descale):
+    def tmean(self, descale: bool) -> numpy.ndarray:
         """
         Return the mean along the trait axis.
 
@@ -160,7 +162,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tmin(self, descale):
+    def tmin(self, descale: bool) -> numpy.ndarray:
         """
         Return the minimum along the trait axis.
 
@@ -181,7 +183,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def trange(self, descale):
+    def trange(self, descale: bool) -> numpy.ndarray:
         """
         Return the range along the trait axis.
 
@@ -202,7 +204,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tstd(self, descale):
+    def tstd(self, descale: bool) -> numpy.ndarray:
         """
         Return the standard deviation along the trait axis.
 
@@ -223,7 +225,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def tvar(self, descale):
+    def tvar(self, descale: bool) -> numpy.ndarray:
         """
         Return the variance along the trait axis.
 
@@ -244,7 +246,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def descale(self):
+    def descale(self) -> numpy.ndarray:
         """
         Transform values within the BreedingValueMatrix back to their de-scaled
         and de-centered values.
