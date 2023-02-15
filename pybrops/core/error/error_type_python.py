@@ -1,3 +1,4 @@
+import math
 import numbers
 from typing import Any
 from typing import Union
@@ -131,6 +132,20 @@ def check_is_int(v: Any, vname: str) -> None:
     """
     if not isinstance(v, int):
         raise TypeError("variable '{0}' must be of type 'int'".format(vname))
+
+def check_is_int_or_inf(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is an int or if it is infinite. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v != math.inf) and (not isinstance(v, int)):
+        raise TypeError("variable '{0}' must be of type 'int' or be infinite".format(vname))
 
 def check_is_list(v: Any, vname: str) -> None:
     """

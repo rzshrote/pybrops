@@ -2,11 +2,18 @@
 Module implementing selection protocols for multi-objective genomic mating.
 """
 
+import numbers
+from typing import Callable, Union
 import numpy
 import math
 import types
+from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.breed.prot.sel.targetfn import target_negative, target_positive, target_stabilizing
+from pybrops.breed.prot.sel.weightfn import weight_absolute, weight_one
+from pybrops.core.error.error_type_python import check_is_int_or_inf
+from pybrops.core.error.error_value_python import check_is_gteq
 
-import pybrops.core.random
+from pybrops.core.random.prng import global_prng
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -20,8 +27,10 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_type
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
+from pybrops.model.vmat.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
 class MultiObjectiveGenomicMating(SelectionProtocol):
@@ -35,13 +44,29 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self,
-    nconfig, nparent, ncross, nprogeny, vmatcls, s, gmapfn, mem = 1024,
-    unique_parents = True, method = "single",
-    target = "positive", weight = "magnitude",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    soalgo = None, moalgo = None,
-    rng = None, **kwargs: dict):
+            nconfig: int, 
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            vmatfcty: GeneticVarianceMatrixFactory, 
+            nself: int, 
+            gmapfn: GeneticMapFunction, 
+            weight: Union[numpy.ndarray,Callable,str] = weight_absolute,
+            target: Union[numpy.ndarray,Callable,str] = target_positive,
+            unique_parents: bool = True, 
+            mem: int = 1024,
+            method: str = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0,
+            rng = None, 
+            soalgo = None, 
+            moalgo = None,
+            **kwargs: dict
+        ):
         """
         Constructor for MultiObjectiveGenomicSelection class.
 
@@ -229,15 +254,15 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             If ``rng`` is ``None``, use ``pybrops.core.random`` module
             (NOT THREAD SAFE!).
         """
-        super(MultiObjectiveGenomicSelection, self).__init__(**kwargs)
+        super(MultiObjectiveGenomicMating, self).__init__(**kwargs)
 
         # error checks and assignments (ORDER DEPENDENT!!!)
         self.nconfig = nconfig
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.vmatcls = vmatcls
-        self.s = s
+        self.vmatcls = vmatfcty
+        self.nself = nself
         self.gmapfn = gmapfn
         self.mem = mem
         self.unique_parents = unique_parents
@@ -300,316 +325,435 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def nconfig():
-        doc = "The nconfig property."
-        def fget(self):
-            return self._nconfig
-        def fset(self, value):
-            check_is_int(value, "nconfig")      # must be int
-            check_is_gt(value, "nconfig", 0)    # int must be >0
-            self._nconfig = value
-        def fdel(self):
-            del self._nconfig
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nconfig = property(**nconfig())
+    @property
+    def nconfig(self) -> int:
+        """Description for property nconfig."""
+        return self._nconfig
+    @nconfig.getter
+    def nconfig(self) -> int:
+        """Get data for property nconfig."""
+        return self._nconfig
+    @nconfig.setter
+    def nconfig(self, value: int) -> None:
+        """Set data for property nconfig."""
+        check_is_int(value, "nconfig")      # must be int
+        check_is_gt(value, "nconfig", 0)    # int must be >0
+        self._nconfig = value
+    @nconfig.deleter
+    def nconfig(self) -> None:
+        """Delete data for property nconfig."""
+        del self._nconfig
+    
+    @property
+    def nparent(self) -> int:
+        """Description for property nparent."""
+        return self._nparent
+    @nparent.getter
+    def nparent(self) -> int:
+        """Get data for property nparent."""
+        return self._nparent
+    @nparent.setter
+    def nparent(self, value: int) -> None:
+        """Set data for property nparent."""
+        check_is_int(value, "nparent")      # must be int
+        check_is_gt(value, "nparent", 0)    # int must be >0
+        self._nparent = value
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete data for property nparent."""
+        del self._nparent
+    
+    @property
+    def ncross(self) -> int:
+        """Description for property ncross."""
+        return self._ncross
+    @ncross.getter
+    def ncross(self) -> int:
+        """Get data for property ncross."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: int) -> None:
+        """Set data for property ncross."""
+        check_is_int(value, "ncross")       # must be int
+        check_is_gt(value, "ncross", 0)     # int must be >0
+        self._ncross = value
+    @ncross.deleter
+    def ncross(self) -> None:
+        """Delete data for property ncross."""
+        del self._ncross
+    
+    @property
+    def nprogeny(self) -> int:
+        """Description for property nprogeny."""
+        return self._nprogeny
+    @nprogeny.getter
+    def nprogeny(self) -> int:
+        """Get data for property nprogeny."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: int) -> None:
+        """Set data for property nprogeny."""
+        check_is_int(value, "nprogeny")     # must be int
+        check_is_gt(value, "nprogeny", 0)   # int must be >0
+        self._nprogeny = value
+    @nprogeny.deleter
+    def nprogeny(self) -> None:
+        """Delete data for property nprogeny."""
+        del self._nprogeny
+    
+    @property
+    def vmatfcty(self) -> GeneticVarianceMatrixFactory:
+        """Description for property vmatfcty."""
+        return self._vmatfcty
+    @vmatfcty.getter
+    def vmatfcty(self) -> GeneticVarianceMatrixFactory:
+        """Get data for property vmatfcty."""
+        return self._vmatfcty
+    @vmatfcty.setter
+    def vmatfcty(self, value: GeneticVarianceMatrixFactory) -> None:
+        """Set data for property vmatfcty."""
+        check_is_GeneticVarianceMatrixFactory(value, "vmatfcty")
+        self._vmatfcty = value
+    @vmatfcty.deleter
+    def vmatfcty(self) -> None:
+        """Delete data for property vmatfcty."""
+        del self._vmatfcty
 
-    def nparent():
-        doc = "The nparent property."
-        def fget(self):
-            return self._nparent
-        def fset(self, value):
-            check_is_int(value, "nparent")      # must be int
-            check_is_gt(value, "nparent", 0)    # int must be >0
-            self._nparent = value
-        def fdel(self):
-            del self._nparent
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nparent = property(**nparent())
-
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            return self._ncross
-        def fset(self, value):
-            check_is_int(value, "ncross")       # must be int
-            check_is_gt(value, "ncross", 0)     # int must be >0
-            self._ncross = value
-        def fdel(self):
-            del self._ncross
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ncross = property(**ncross())
-
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            return self._nprogeny
-        def fset(self, value):
-            check_is_int(value, "nprogeny")     # must be int
-            check_is_gt(value, "nprogeny", 0)   # int must be >0
-            self._nprogeny = value
-        def fdel(self):
-            del self._nprogeny
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nprogeny = property(**nprogeny())
-
-    def vmatcls():
-        doc = "The vmatcls property."
-        def fget(self):
-            return self._vmatcls
-        def fset(self, value):
-            # make sure is of type 'type'
-            check_is_type(value, "vmatcls")
-
-            # make sure class inherits from Additive Genetic/Genic
-            check_inherits(
-                value,
-                "vmatcls",
-                (AdditiveGeneticVarianceMatrix, AdditiveGenicVarianceMatrix)
+    @property
+    def nself(self) -> Union[int,numbers.Number]:
+        """Description for property nself."""
+        return self._nself
+    @nself.getter
+    def nself(self) -> Union[int,numbers.Number]:
+        """Get data for property nself."""
+        return self._nself
+    @nself.setter
+    def nself(self, value: Union[int,numbers.Number]) -> None:
+        """Set data for property nself."""
+        check_is_int_or_inf(value, "nself") # must be int or inf
+        check_is_gteq(value, "nself", 0)    # must be >= 0; cannot be negative
+        self._nself = value
+    @nself.deleter
+    def nself(self) -> None:
+        """Delete data for property nself."""
+        del self._nself
+        
+    @property
+    def gmapfn(self) -> GeneticMapFunction:
+        """Description for property gmapfn."""
+        return self._gmapfn
+    @gmapfn.getter
+    def gmapfn(self) -> GeneticMapFunction:
+        """Get data for property gmapfn."""
+        return self._gmapfn
+    @gmapfn.setter
+    def gmapfn(self, value: GeneticMapFunction) -> None:
+        """Set data for property gmapfn."""
+        check_isinstance(value, "gmapfn", GeneticMapFunction)
+        self._gmapfn = value
+    @gmapfn.deleter
+    def gmapfn(self) -> None:
+        """Delete data for property gmapfn."""
+        del self._gmapfn
+    
+    @property
+    def mem(self) -> int:
+        """Description for property mem."""
+        return self._mem
+    @mem.getter
+    def mem(self) -> int:
+        """Get data for property mem."""
+        return self._mem
+    @mem.setter
+    def mem(self, value: int) -> None:
+        """Set data for property mem."""
+        check_is_int(value, "mem")
+        check_is_gt(value, "mem", 0)
+        self._mem = value
+    @mem.deleter
+    def mem(self) -> None:
+        """Delete data for property mem."""
+        del self._mem
+    
+    @property
+    def unique_parents(self) -> bool:
+        """Description for property unique_parents."""
+        return self._unique_parents
+    @unique_parents.getter
+    def unique_parents(self) -> bool:
+        """Get data for property unique_parents."""
+        return self._unique_parents
+    @unique_parents.setter
+    def unique_parents(self, value: bool) -> None:
+        """Set data for property unique_parents."""
+        check_is_bool(value, "unique_parents")
+        self._unique_parents = value
+    @unique_parents.deleter
+    def unique_parents(self) -> None:
+        """Delete data for property unique_parents."""
+        del self._unique_parents
+    
+    @property
+    def method(self) -> str:
+        """Description for property method."""
+        return self._method
+    @method.getter
+    def method(self) -> str:
+        """Get data for property method."""
+        return self._method
+    @method.setter
+    def method(self, value: str) -> None:
+        """Set data for property method."""
+        check_is_str(value, "method")       # must be string
+        value = value.lower()               # convert to lowercase
+        options = ("single", "pareto")      # method options
+        # if not method supported raise ValueError
+        if value not in options:
+            raise ValueError("Unsupported method. Options are: " + ", ".join(map(str, options)))
+        self._method = value
+    @method.deleter
+    def method(self) -> None:
+        """Delete data for property method."""
+        del self._method
+    
+    @property
+    def weight(self) -> Union[numpy.ndarray,Callable,str]:
+        """Description for property weight."""
+        return self._weight
+    @weight.getter
+    def weight(self) -> Union[numpy.ndarray,Callable,str]:
+        """Get data for property weight."""
+        return self._weight
+    @weight.setter
+    def weight(self, value: Union[numpy.ndarray,Callable,str]) -> None:
+        """Set data for property weight."""
+        check_isinstance(value, "weight", (numpy.ndarray,Callable,str))
+        if isinstance(value, str):
+            # convert to lowercase
+            value = value.lower()
+            # convert string to function
+            if value == 'magnitude':
+                value = weight_absolute
+            elif value == 'equal':
+                value = weight_one
+            else:
+                raise ValueError("Unsupported weight. Options are: 'magnitude', 'equal'")
+        self._weight = value
+    @weight.deleter
+    def weight(self) -> None:
+        """Delete data for property weight."""
+        del self._weight
+    
+    @property
+    def target(self) -> Union[numpy.ndarray,Callable,str]:
+        """Description for property target."""
+        return self._target
+    @target.getter
+    def target(self) -> Union[numpy.ndarray,Callable,str]:
+        """Get data for property target."""
+        return self._target
+    @target.setter
+    def target(self, value: Union[numpy.ndarray,Callable,str]) -> None:
+        """Set data for property target."""
+        check_isinstance(value, "target", (numpy.ndarray,Callable,str))
+        if isinstance(value, str):
+            # convert to lowercase
+            value = value.lower()
+            # convert string to function
+            if value == 'positive':
+                value = target_positive
+            elif value == 'negative':
+                value = target_negative
+            elif value == 'stabilizing':
+                value = target_stabilizing
+            else:
+                raise ValueError("Unsupported weight. Options are: 'positive', 'negative', 'stabilizing'")
+        self._target = value
+    @target.deleter
+    def target(self) -> None:
+        """Delete data for property target."""
+        del self._target
+    
+    @property
+    def objfn_trans(self) -> Union[Callable,None]:
+        """Description for property objfn_trans."""
+        return self._objfn_trans
+    @objfn_trans.getter
+    def objfn_trans(self) -> Union[Callable,None]:
+        """Get data for property objfn_trans."""
+        return self._objfn_trans
+    @objfn_trans.setter
+    def objfn_trans(self, value: Union[Callable,None]) -> None:
+        """Set data for property objfn_trans."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "objfn_trans") # must be callable
+        self._objfn_trans = value
+    @objfn_trans.deleter
+    def objfn_trans(self) -> None:
+        """Delete data for property objfn_trans."""
+        del self._objfn_trans
+    
+    @property
+    def objfn_trans_kwargs(self) -> dict:
+        """Description for property objfn_trans_kwargs."""
+        return self._objfn_trans_kwargs
+    @objfn_trans_kwargs.getter
+    def objfn_trans_kwargs(self) -> dict:
+        """Get data for property objfn_trans_kwargs."""
+        return self._objfn_trans_kwargs
+    @objfn_trans_kwargs.setter
+    def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set data for property objfn_trans_kwargs."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+        self._objfn_trans_kwargs = value
+    @objfn_trans_kwargs.deleter
+    def objfn_trans_kwargs(self) -> None:
+        """Delete data for property objfn_trans_kwargs."""
+        del self._objfn_trans_kwargs
+    
+    @property
+    def objfn_wt(self) -> numpy.ndarray:
+        """Description for property objfn_wt."""
+        return self._objfn_wt
+    @objfn_wt.getter
+    def objfn_wt(self) -> numpy.ndarray:
+        """Get data for property objfn_wt."""
+        return self._objfn_wt
+    @objfn_wt.setter
+    def objfn_wt(self, value: numpy.ndarray) -> None:
+        """Set data for property objfn_wt."""
+        self._objfn_wt = value
+    @objfn_wt.deleter
+    def objfn_wt(self) -> None:
+        """Delete data for property objfn_wt."""
+        del self._objfn_wt
+    
+    @property
+    def ndset_trans(self) -> Union[Callable,None]:
+        """Description for property ndset_trans."""
+        return self._ndset_trans
+    @ndset_trans.getter
+    def ndset_trans(self) -> Union[Callable,None]:
+        """Get data for property ndset_trans."""
+        return self._ndset_trans
+    @ndset_trans.setter
+    def ndset_trans(self, value: Union[Callable,None]) -> None:
+        """Set data for property ndset_trans."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "ndset_trans") # must be callable
+        self._ndset_trans = value
+    @ndset_trans.deleter
+    def ndset_trans(self) -> None:
+        """Delete data for property ndset_trans."""
+        del self._ndset_trans
+    
+    @property
+    def ndset_trans_kwargs(self) -> dict:
+        """Description for property ndset_trans_kwargs."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.getter
+    def ndset_trans_kwargs(self) -> dict:
+        """Get data for property ndset_trans_kwargs."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.setter
+    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set data for property ndset_trans_kwargs."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+        self._ndset_trans_kwargs = value
+    @ndset_trans_kwargs.deleter
+    def ndset_trans_kwargs(self) -> None:
+        """Delete data for property ndset_trans_kwargs."""
+        del self._ndset_trans_kwargs
+    
+    @property
+    def ndset_wt(self) -> numpy.ndarray:
+        """Description for property ndset_wt."""
+        return self._ndset_wt
+    @ndset_wt.getter
+    def ndset_wt(self) -> numpy.ndarray:
+        """Get data for property ndset_wt."""
+        return self._ndset_wt
+    @ndset_wt.setter
+    def ndset_wt(self, value: numpy.ndarray) -> None:
+        """Set data for property ndset_wt."""
+        self._ndset_wt = value
+    @ndset_wt.deleter
+    def ndset_wt(self) -> None:
+        """Delete data for property ndset_wt."""
+        del self._ndset_wt
+    
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Description for property rng."""
+        return self._rng
+    @rng.getter
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Get data for property rng."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+        """Set data for property rng."""
+        if value is None:       # if None
+            value = global_prng # use default random number generator
+        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete data for property rng."""
+        del self._rng
+    
+    @property
+    def soalgo(self) -> OptimizationAlgorithm:
+        """Description for property soalgo."""
+        return self._soalgo
+    @soalgo.getter
+    def soalgo(self) -> OptimizationAlgorithm:
+        """Get data for property soalgo."""
+        return self._soalgo
+    @soalgo.setter
+    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set data for property soalgo."""
+        # if value is None, use a default hillclimber
+        if value is None:
+            value = SteepestAscentSetHillClimber(rng = self.rng)
+        check_is_OptimizationAlgorithm(value, "soalgo")
+        self._soalgo = value
+    @soalgo.deleter
+    def soalgo(self) -> None:
+        """Delete data for property soalgo."""
+        del self._soalgo
+    
+    @property
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Description for property moalgo."""
+        return self._moalgo
+    @moalgo.getter
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Get data for property moalgo."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set data for property moalgo."""
+        # if value is None, use a default nsga-ii algorithm
+        if value is None:
+            value = NSGA2SetGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                mu = 100,       # number of parents in population
+                lamb = 100,     # number of progeny to produce
+                M = 1.5,        # algorithm crossover genetic map length
+                rng = self.rng  # PRNG source
             )
-
-            # make assignment to private variable
-            self._vmatcls = value
-        def fdel(self):
-            del self._vmatcls
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vmatcls = property(**vmatcls())
-
-    def s():
-        doc = "The s property."
-        def fget(self):
-            return self._s
-        def fset(self, value):
-            check_is_int(value, "s")
-            self._s = value
-        def fdel(self):
-            del self._s
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    s = property(**s())
-
-    def gmapfn():
-        doc = "The gmapfn property."
-        def fget(self):
-            return self._gmapfn
-        def fset(self, value):
-            check_isinstance(value, "gmapfn", GeneticMapFunction)
-            self._gmapfn = value
-        def fdel(self):
-            del self._gmapfn
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gmapfn = property(**gmapfn())
-
-    def mem():
-        doc = "The mem property."
-        def fget(self):
-            return self._mem
-        def fset(self, value):
-            check_is_int(value, "mem")
-            self._mem = value
-        def fdel(self):
-            del self._mem
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mem = property(**mem())
-
-    def unique_parents():
-        doc = "The unique_parents property."
-        def fget(self):
-            return self._unique_parents
-        def fset(self, value):
-            check_is_bool(value, "unique_parents")
-            self._unique_parents = value
-        def fdel(self):
-            del self._unique_parents
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    unique_parents = property(**unique_parents())
-
-    def method():
-        doc = "The method property."
-        def fget(self):
-            return self._method
-        def fset(self, value):
-            check_is_str(value, "method")       # must be string
-            value = value.lower()               # convert to lowercase
-            options = ("single", "pareto")      # method options
-            if value not in options:            # if not method supported
-                raise ValueError(               # raise ValueError
-                    "Unsupported 'method'. Options are: " +
-                    ", ".join(map(str, options))
-                )
-            self._method = value
-        def fdel(self):
-            del self._method
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    method = property(**method())
-
-    def target():
-        doc = "The target property."
-        def fget(self):
-            return self._target
-        def fset(self, value):
-            check_isinstance(value, "target", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = (                         # target options
-                    'positive',
-                    'negative',
-                    'stabilizing'
-                )
-                if value not in options:            # if target not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'target'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
-            self._target = value
-        def fdel(self):
-            del self._target
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    target = property(**target())
-
-    def weight():
-        doc = "The weight property."
-        def fget(self):
-            return self._weight
-        def fset(self, value):
-            check_isinstance(value, "weight", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = ('magnitude', 'equal')    # weight options
-                if value not in options:            # if weight not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'weight'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
-            self._weight = value
-        def fdel(self):
-            del self._weight
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    weight = property(**weight())
-
-    def objfn_trans():
-        doc = "The objfn_trans property."
-        def fget(self):
-            return self._objfn_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "objfn_trans") # must be callable
-            self._objfn_trans = value
-        def fdel(self):
-            del self._objfn_trans
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_trans = property(**objfn_trans())
-
-    def objfn_trans_kwargs():
-        doc = "The objfn_trans_kwargs property."
-        def fget(self):
-            return self._objfn_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
-            self._objfn_trans_kwargs = value
-        def fdel(self):
-            del self._objfn_trans_kwargs
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_trans_kwargs = property(**objfn_trans_kwargs())
-
-    def objfn_wt():
-        doc = "The objfn_wt property."
-        def fget(self):
-            return self._objfn_wt
-        def fset(self, value):
-            self._objfn_wt = value
-        def fdel(self):
-            del self._objfn_wt
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_wt = property(**objfn_wt())
-
-    def ndset_trans():
-        doc = "The ndset_trans property."
-        def fget(self):
-            return self._ndset_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "ndset_trans") # must be callable
-            self._ndset_trans = value
-        def fdel(self):
-            del self._ndset_trans
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_trans = property(**ndset_trans())
-
-    def ndset_trans_kwargs():
-        doc = "The ndset_trans_kwargs property."
-        def fget(self):
-            return self._ndset_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
-            self._ndset_trans_kwargs = value
-        def fdel(self):
-            del self._ndset_trans_kwargs
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_trans_kwargs = property(**ndset_trans_kwargs())
-
-    def ndset_wt():
-        doc = "The ndset_wt property."
-        def fget(self):
-            return self._ndset_wt
-        def fset(self, value):
-            self._ndset_wt = value
-        def fdel(self):
-            del self._ndset_wt
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_wt = property(**ndset_wt())
-
-    def soalgo():
-        doc = "The soalgo property."
-        def fget(self):
-            return self._soalgo
-        def fset(self, value):
-            if value is None:
-                value = SteepestAscentSetHillClimber(
-                    rng = self.rng  # PRNG source
-                )
-            self._soalgo = value
-        def fdel(self):
-            del self._soalgo
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    soalgo = property(**soalgo())
-
-    def moalgo():
-        doc = "The moalgo property."
-        def fget(self):
-            return self._moalgo
-        def fset(self, value):
-            if value is None:
-                value = NSGA2SetGeneticAlgorithm(
-                    ngen = 250,     # number of generations to evolve
-                    mu = 100,       # number of parents in population
-                    lamb = 100,     # number of progeny to produce
-                    M = 1.5,        # algorithm crossover genetic map length
-                    rng = self.rng  # PRNG source
-                )
-            self._moalgo = value
-        def fdel(self):
-            del self._moalgo
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    moalgo = property(**moalgo())
-
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            if value is None:               # if None
-                value = pybrops.core.random # use default random number generator
-                return                      # exit function
-            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rng = property(**rng())
-
+        check_is_OptimizationAlgorithm(value, "moalgo")
+        self._moalgo = value
+    @moalgo.deleter
+    def moalgo(self) -> None:
+        """Delete data for property moalgo."""
+        del self._moalgo
+    
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
@@ -777,11 +921,11 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
                 t_max = t_max,
                 miscout = miscout,
                 nparent = nparent,
-                objfn_trans = objfn_trans,
-                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_trans = self.objfn_trans,
+                objfn_trans_kwargs = self.objfn_trans_kwargs,
                 objfn_wt = objfn_wt,
-                weight = weight,
-                target = target
+                weight = self.weight,
+                target = self.target
             )
 
             # get scores for each of the points along the pareto frontier
@@ -841,7 +985,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
                 pgmat = pgmat,
                 ncross = self.ncross,
                 nprogeny = self.nprogeny,
-                s = self.s,
+                s = self.nself,
                 gmapfn = self.gmapfn,
                 mem = self.mem
             )
@@ -910,7 +1054,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
                 pgmat = pgmat,
                 ncross = self.ncross,
                 nprogeny = self.nprogeny,
-                s = self.s,
+                s = self.nself,
                 gmapfn = self.gmapfn,
                 mem = self.mem
             )
