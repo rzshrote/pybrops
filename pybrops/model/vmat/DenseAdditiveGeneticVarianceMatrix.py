@@ -24,7 +24,13 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseAdditiveGeneticVarianceMatrix.
 

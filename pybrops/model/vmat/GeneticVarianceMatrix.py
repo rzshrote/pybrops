@@ -5,6 +5,9 @@ storing genetic variance estimates.
 
 from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class GeneticVarianceMatrix(SquareTaxaMatrix):
     """
@@ -36,6 +39,24 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
+    ######## Expected parental genome contributions ########
+    @property
+    def epgc(self) -> tuple:
+        """Expected parental genome contribution to the offspring."""
+        raise NotImplementedError("property is abstract")
+    @epgc.getter
+    def epgc(self) -> tuple:
+        """Get a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")
+    @epgc.setter
+    def epgc(self, value: tuple) -> None:
+        """Set a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")    
+    @epgc.deleter
+    def epgc(self) -> None:
+        """Delete the expected parental genome contributions tuple."""
+        raise NotImplementedError("property is abstract")
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
@@ -44,7 +65,16 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmod(cls, gmod, pgmat, ncross, nprogeny, s, **kwargs):
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            s: int, 
+            gmapfn: GeneticMapFunction, 
+            **kwargs: dict
+        ) -> 'GeneticVarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -63,6 +93,8 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
         s : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
+        gmapfn : GeneticMapFunction
+            Genetic map function with which to calculate recombination probabilities.
         kwargs : dict
             Additional keyword arguments.
 

@@ -9,7 +9,6 @@ import numpy
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 
-# TODO: implement me
 class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
     """
     A semi-concrete class for dense genetic variance matrices.
@@ -24,7 +23,13 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseGeneticVarianceMatrix.
 

@@ -4,7 +4,10 @@ storing additive genetic variance estimates.
 """
 
 from typing import Any
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
     """
@@ -45,7 +48,17 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem):
+    def from_algmod(
+            cls, 
+            algmod: AdditiveLinearGenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            s: int, 
+            gmapfn: GeneticMapFunction, 
+            mem: int,
+            **kwargs: dict
+        ):
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -69,6 +82,8 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
             recombination.
         mem : int
             Memory chunk size to use during matrix operations.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
