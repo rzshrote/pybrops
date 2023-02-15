@@ -4,7 +4,7 @@ Module implementing selection protocols for Usefulness Criterion selection.
 
 import numbers
 import types
-from typing import Callable, Type, Union
+from typing import Callable, Optional, Type, Union
 import numpy
 import scipy.stats
 
@@ -52,17 +52,17 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             upper_percentile: numbers.Number,
             vmatfcty: GeneticVarianceMatrixFactory,
             gmapfn: GeneticMapFunction,
-            unique_parents = True, 
-            method = "single",
-            objfn_trans = None, 
-            objfn_trans_kwargs = None, 
-            objfn_wt = 1.0,
-            ndset_trans = None, 
-            ndset_trans_kwargs = None, 
-            ndset_wt = 1.0,
-            rng = None, 
-            soalgo = None, 
-            moalgo = None,
+            unique_parents: bool = True, 
+            method: str = "single",
+            objfn_trans: Optional[Callable] = None, 
+            objfn_trans_kwargs: Optional[dict] = None, 
+            objfn_wt: Union[numpy.ndarray,numbers.Number] = 1.0,
+            ndset_trans: Optional[Callable] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            ndset_wt: Union[numpy.ndarray,numbers.Number] = 1.0,
+            rng: Union[numpy.random.Generator,numpy.random.RandomState] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs : dict
         ):
         """
@@ -614,7 +614,7 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             pgmat = pgmat, 
             ncross = self.ncross, 
             nprogeny = self.nprogeny, 
-            s = self.nself,
+            nself = self.nself,
             gmapfn = self.gmapfn
         )
 
@@ -643,7 +643,7 @@ class UsefulnessCriterionSelection(SelectionProtocol):
 
             # calculate the usefulness criterion
             # (t,) + (t,) -> (t,)
-            uc[i,:] = pmean + self.selection_intensity * pvar
+            uc[i,:] = pmean + self.selection_intensity * numpy.sqrt(pvar)
         
         return uc
 

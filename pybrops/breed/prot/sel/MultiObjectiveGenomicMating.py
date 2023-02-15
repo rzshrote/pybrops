@@ -18,20 +18,21 @@ from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
-from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_type
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.util.arrayix import triudix, triuix
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class MultiObjectiveGenomicMating(SelectionProtocol):
     """
@@ -98,19 +99,19 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
-            +-------------+-------------------------+
-            | Example     | Description             |
-            +=============+=========================+
-            | ``s = 0``   | Derive gametes from F1  |
-            +-------------+-------------------------+
-            | ``s = 1``   | Derive gametes from F2  |
-            +-------------+-------------------------+
-            | ``s = 2``   | Derive gametes from F3  |
-            +-------------+-------------------------+
-            | ``...``     | etc.                    |
-            +-------------+-------------------------+
-            | ``s = inf`` | Derive gametes from SSD |
-            +-------------+-------------------------+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
         gmapfn : GeneticMapFunction
             Used for 'vmatcls' matrix construction.
             GeneticMapFunction to use to estimate covariance induced by
@@ -279,48 +280,6 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
         self.soalgo = soalgo
         self.moalgo = moalgo
-
-    ############################################################################
-    ########################## Private Object Methods ##########################
-    ############################################################################
-    def _calc_xmap(self, ntaxa):
-        """
-        Calculate the cross map.
-
-        Parameters
-        ----------
-        ntaxa : int
-            Number of taxa.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of shape ``(s,d)`` containing cross map indices.
-
-            Where:
-
-            - ``s`` is the number of elements in the upper triangle, including
-              or not including the diagonal (depending on ``unique_parents``).
-            - ``d`` is the number of parents in the cross.
-        """
-        if self.unique_parents:         # if we want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triudix(            # generator for indices without diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
-        else:                           # otherwise we don't want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triuix(             # generator for indices with diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
 
     ############################################################################
     ############################ Object Properties #############################
@@ -757,65 +716,86 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    @staticmethod
-    def _calc_mkrwt(weight, u):
+    def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel) -> numpy.ndarray:
+        if callable(self.weight):
+            return self.weight(gpmod.u_a)
+        elif isinstance(self.weight, numpy.ndarray):
+            return self.weight
+        else:
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+    
+    def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel) -> numpy.ndarray:
+        if callable(self.target):
+            return self.target(gpmod.u_a)
+        elif isinstance(self.target, numpy.ndarray):
+            return self.target
+        else:
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
+
+    def _calc_tminor(self, tfreq: numpy.ndarray) -> numpy.ndarray:
+        return (tfreq == 0.0)
+    
+    def _calc_tmajor(self, tfreq: numpy.ndarray) -> numpy.ndarray:
+        return (tfreq == 1.0)
+    
+    def _calc_thet(self, tminor: numpy.ndarray, tmajor: numpy.ndarray):
+        return numpy.logical_not(numpy.logical_or(tminor, tmajor))
+
+    def _calc_xmap(self, ntaxa: int) -> numpy.ndarray:
         """
-        Calculate marker weights.
+        Calculate the cross map.
 
         Parameters
         ----------
-        weight : str, numpy.ndarray
-        u : numpy.ndarray
+        ntaxa : int
+            Number of taxa.
 
         Returns
         -------
         out : numpy.ndarray
-            Array of shape ``(p,)`` containing marker weights.
-        """
-        if isinstance(weight, str):
-            weight = weight.lower()             # convert to lowercase
-            if weight == "magnitude":           # return abs(u)
-                return numpy.absolute(u)
-            elif weight == "equal":             # return 1s matrix
-                return numpy.full(u.shape, 1.0, dtype='float64')
-            else:
-                raise ValueError("string value for 'weight' not recognized")
-        elif isinstance(weight, numpy.ndarray):
-            return weight
-        else:
-            raise TypeError("variable 'weight' must be a string or numpy.ndarray")
+            An array of shape ``(s,d)`` containing cross map indices.
 
-    @staticmethod
-    def _calc_tfreq(target, u):
-        """
-        Calculate target allele frequencies.
+            Where:
 
-        Parameters
-        ----------
-        target : str, numpy.ndarray
-        u : numpy.ndarray
-            Array of shape ``(p,)`` containing marker effect estimates.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            Array of shape ``(p,)`` containing marker target allele frequencies.
+            - ``s`` is the number of elements in the upper triangle, including
+              or not including the diagonal (depending on ``unique_parents``).
+            - ``d`` is the number of parents in the cross.
         """
-        if isinstance(target, str):
-            target = target.lower()                 # convert to lowercase
-            if target == "positive":
-                return numpy.float64(u >= 0.0)   # positive alleles are desired
-            elif target == "negative":
-                return numpy.float64(u <= 0.0)   # negative alleles are desired
-            elif target == "stabilizing":
-                return 0.5                          # both alleles desired
-                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
-            else:
-                raise ValueError("string value for 'target' not recognized")
-        elif isinstance(target, numpy.ndarray):
-            return target
-        else:
-            raise TypeError("variable 'target' must be a string or numpy.ndarray")
+        if self.unique_parents:         # if we want unique parents
+            return numpy.array(         # create a numpy.ndarray
+                list(                   # convert to list
+                    triudix(            # generator for indices without diagonal
+                        ntaxa,          # number of taxa
+                        self.nparent    # number of parents
+                    )
+                )
+            )
+        else:                           # otherwise we don't want unique parents
+            return numpy.array(         # create a numpy.ndarray
+                list(                   # convert to list
+                    triuix(             # generator for indices with diagonal
+                        ntaxa,          # number of taxa
+                        self.nparent    # number of parents
+                    )
+                )
+            )
+
+    def _calc_vmat(
+            self, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix
+        ) -> numpy.ndarray:
+        # calculate variance matrix
+        vmat = self.vmatfcty.from_gmod(
+            gmod = gmod, 
+            pgmat = pgmat, 
+            ncross = self.ncross, 
+            nprogeny = self.nprogeny, 
+            nself = self.nself, 
+            gmapfn = self.gmapfn, 
+            mem = self.mem
+        )
+        return vmat.mat
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -964,38 +944,19 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             A selection objective function for the specified problem.
         """
         # get selection parameters
-        weight = self.weight
-        target = self.target
-
-        # calculate default function parameters
-        mat = gmat.mat                      # (n,p) get genotype matrix
-        ntaxa = pgmat.ntaxa                 # get number of taxa
-        ploidy = gmat.ploidy                # (scalar) get number of phases
-        u = gpmod.u_a                       # (p,t) get regression coefficients
-        xmap = self._calc_xmap(ntaxa)       # (s,p) get the cross map
-        mkrwt = self._calc_mkrwt(weight, u) # (p,t) get marker weights
-        tfreq = self._calc_tfreq(target, u) # (p,t) get target allele frequencies
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        # generate variance matrix
-        if AdditiveGeneticVarianceMatrix in self.vmatcls.__mro__:
-            vmat = self.vmatcls.from_algmod(
-                algmod = gpmod,
-                pgmat = pgmat,
-                ncross = self.ncross,
-                nprogeny = self.nprogeny,
-                s = self.nself,
-                gmapfn = self.gmapfn,
-                mem = self.mem
-            )
-        elif AdditiveGenicVarianceMatrix in self.vmatcls.__mro__:
-            vmat = self.vmatcls.from_algmod(
-                algmod = gpmod,
-                pgmat = pgmat,
-                nprogeny = self.nprogeny,
-                mem = self.mem
-            )
+        # calculate default function parameters
+        xmap = self._calc_xmap(gmat.ntaxa)
+        mat = gmat.mat                      # (n,p) get genotype matrix
+        ploidy = gmat.ploidy                # (scalar) get number of phases
+        mkrwt = self._calc_mkrwt(gpmod)     # (p,t) get marker weights
+        tfreq = self._calc_tfreq(gpmod)     # (p,t) get target allele frequencies
+        tminor = self._calc_tminor(tfreq)
+        tmajor = self._calc_tmajor(tfreq)
+        thet = self._calc_thet(tminor, tmajor)
+        vmat = self._calc_vmat(gpmod, pgmat)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -1003,8 +964,9 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
             self.objfn_static.__code__,         # byte code pointer
             self.objfn_static.__globals__,      # global variables
             None,                               # new name for the function
-            (xmap, mat, ploidy, tfreq, mkrwt,
-            vmat, trans, trans_kwargs),         # default values for arguments
+            (xmap, mat, ploidy, mkrwt, tfreq, 
+             tminor, thet, tmajor, vmat, trans, 
+             trans_kwargs),                     # default values for arguments
             self.objfn_static.__closure__       # closure byte code pointer
         )
 
@@ -1161,6 +1123,235 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
+    @staticmethod
+    def objfn_static(
+            xsel: numpy.ndarray, 
+            xmap: numpy.ndarray, 
+            mat: numpy.ndarray, 
+            ploidy: int, 
+            mkrwt: numpy.ndarray, 
+            tfreq: numpy.ndarray, 
+            tminor: numpy.ndarray, 
+            thet: numpy.ndarray, 
+            tmajor: numpy.ndarray, 
+            vmat: numpy.ndarray, 
+            trans: Callable, 
+            kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Multi-objective genomic mating objective function.
+
+        - The goal is to minimize all objectives for this function.
+        - This is a bare bones function. Minimal error checking is done.
+
+        Objectives: :math:`F(\\textbf{x})`
+
+        .. math::
+
+            F(\\textbf{x}) = {[f^{\\textup{PAU}}(\\textbf{x}), f^{\\textup{PAFD}}(\\textbf{x})]}'
+
+        Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
+
+        Formal PAU definition:
+
+        .. math::
+
+            f^{\\textup{PAU}}(\\textbf{x}) = \\textbf{w} \\cdot \\textbf{u}
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency.
+        From the selection allele frequencies and the target allele frequencies
+        ``tfreq``, determine if the target frequencies can be attained after
+        unlimited generations of selection. If the target allele frequency at a
+        locus cannot be attained, score locus as ``1``, otherwise score as
+        ``0``. Store this into a binary score vector :math:`\\textbf{u}`.
+        Take the dot product between the binary score vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAU}}(\\textbf{x})` and return the result.
+
+        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
+
+        Formal PAFD definition:
+
+        .. math::
+            f^{\\textup{PAFD}}(\\textbf{x}) = \\textbf{w} \\cdot \\left | \\textbf{p}_{x} - \\textbf{p}_{t} \\right |
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency
+        :math:`\\textbf{p}_{x}`. From the selection allele frequencies and the
+        target allele frequencies :math:`\\textbf{p}_{t} =` ``tfreq``,
+        calculate the absolute value of the difference between the two vectors.
+        Finally, take the dot product between the difference vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAFD}}(\\textbf{x})` and return the result.
+
+        Sum of Progeny Standard Deviations of Additive Variance (SPstdA): :math:`f^{\\textup{SPstdA}}(\\textbf{x})`
+
+        Formal SPstdA definition:
+
+        .. math::
+
+            f^{\\textup{SPstdA}}(\\textbf{x}) = \\sum_{c \\in S} \\sigma_{A,c}
+
+        Given a progeny variance matrix :math:`\\Sigma_{A} =` ``vmat`` and a
+        selection indices vector :math:`\\textbf{x} =` ``sel``, take the sum of
+        the square root of the progeny variance
+        :math:`\\sigma_{A,c} = \\sqrt{\\Sigma_{A,c}}` for each cross.
+
+        Parameters
+        ----------
+        sel : numpy.ndarray
+            A cross selection indices matrix of shape ``(k,)``.
+
+            Where:
+
+            - ``k`` is the number of crosses to select.
+
+            Each index indicates which cross specified by ``xmap`` to select.
+        xmap : numpy.ndarray
+            A cross selection index map array of shape ``(s,d)``.
+
+            Where:
+
+            - ``s`` is the size of the sample space (number of cross
+              combinations for ``d`` parents).
+            - ``d`` is the number of parents.
+        mat : numpy.ndarray
+            A genotype matrix of shape ``(n,p)`` representing only biallelic
+            loci. One of the two alleles at a locus is coded using a ``1``. The
+            other allele is coded as a ``0``. ``mat`` holds the counts of the
+            allele coded by ``1``.
+
+            Where:
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
+
+            Example::
+
+                # matrix of shape (n = 3, p = 4)
+                mat = numpy.array([[0,2,1,0],
+                                   [2,2,1,1],
+                                   [0,1,0,2]])
+        ploidy : int
+            Number of phases that the genotype matrix ``mat`` represents.
+        tfreq : floating, numpy.ndarray
+            A target allele frequency matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Example::
+
+                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
+        mkrwt : numpy.ndarray
+            A marker weight coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Remarks:
+
+            - All values in ``mkrwt`` must be non-negative.
+        vmat : numpy.ndarray, Matrix
+            A variance matrix of shape ``(n,...,n,t)``. Can be a
+            ``numpy.ndarray`` or a Matrix of some sort. Must be have the ``[]``
+            operator to access elements of the matrix.
+
+            Where:
+
+            - ``n`` is the number of parental candidates.
+            - ``t`` is the number of traits.
+            - ``(n,...,n,t)`` is a tuple of length ``d + 1``.
+            - ``d`` is the number of parents for a cross.
+        trans : function or callable
+            A transformation operator to alter the output.
+            Function must adhere to the following standard:
+
+            - Must accept a single numpy.ndarray argument.
+            - Must return a single object, whether scalar or numpy.ndarray.
+        kwargs : dict
+            Dictionary of keyword arguments to pass to ``trans`` function.
+
+        Returns
+        -------
+        mogm : numpy.ndarray
+            A MOGM score matrix of shape ``(t + t + t,)`` if ``trans`` is
+            ``None``. Otherwise, of shape specified by ``trans``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+
+            Matrix element ordering for un-transformed MOGM score matrix:
+
+            - The first set of ``t`` elements in the ``mogm`` output correspond
+              to the ``t`` PAU outputs for each trait.
+            - The second set of ``t`` elements in the ``mogm`` output correspond
+              to the ``t`` PAFD outputs for each trait.
+            - The third set of ``t`` elements in the ``mogm`` output correspond
+              to the ``t`` SPstdA outputs for each trait.
+        """
+        # get selected individuals from cross selection indices
+        sel = xmap[xsel].flatten()
+
+        # calculate the allele frequency of the selected subset
+        # (n,p)[(k,),:,None] -> (p,1)
+        pfreq = (1.0 / (ploidy * len(sel))) * mat[sel,:,None].sum(0)
+
+        # determine where allele frequencies are < 1.0
+        # (p,1)
+        p_ltmajor = (pfreq < 1.0)
+
+        # determine where allele frequencies are > 0.0
+        # (p,1)
+        p_gtminor = (pfreq > 0.0)
+
+        # determine where allele frequencies are < 1.0 and > 0.0
+        # (p,1)
+        p_het = numpy.logical_and(p_ltmajor, p_gtminor)
+
+        # determine where alleles are unavailable using precomputed arrays
+        # (p,t)
+        allele_unavail = numpy.logical_not(
+            numpy.logical_or(
+                numpy.logical_and(p_ltmajor, tminor), 
+                numpy.logical_or(
+                    numpy.logical_and(p_het, thet), 
+                    numpy.logical_and(p_gtminor, tmajor)
+                )
+            )
+        )
+
+        # get selection tuple for the variance matrix
+        # ([...],...,[...],:)
+        vsel = tuple(xmap[xsel].T) + (slice(None),)
+
+        # calculate the manhattan distance and PAFD
+        # (p,t) -> (t,)
+        pafd = (mkrwt * numpy.absolute(tfreq - pfreq)).sum(0)
+        
+        # calculate the allele unavailability
+        # (p,t) -> (t,)
+        pau = (mkrwt * allele_unavail).sum(0)
+
+        # calculate the sum of standard deviations of additive variance
+        spstda = -numpy.sqrt(vmat[vsel]).sum(0)
+
+        # concatenate to make MOGS vector
+        # (t,) and (t,) and (t,) -> (t + t + t,)
+        mogs = numpy.concatenate([pau, pafd, spstda])
+
+        # apply transformations
+        if trans is not None:
+            mogs = trans(mogs, **kwargs)
+
+        return mogs
+
     @staticmethod
     def objfn_static(sel, xmap, mat, ploidy, tfreq, mkrwt, vmat, trans, kwargs):
         """
