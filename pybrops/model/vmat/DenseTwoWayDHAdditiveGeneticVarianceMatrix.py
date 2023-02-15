@@ -145,7 +145,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
-            s: Union[int,numbers.Number],
+            nself: Union[int,numbers.Number],
             gmapfn: GeneticMapFunction,
             **kwargs: dict
         ) -> 'DenseTwoWayDHAdditiveGeneticVarianceMatrix':
@@ -165,23 +165,23 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int, numbers.Number
+        nself : int, numbers.Number
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
-            +-------------+-------------------------+
-            | Example     | Description             |
-            +=============+=========================+
-            | ``s = 0``   | Derive gametes from F1  |
-            +-------------+-------------------------+
-            | ``s = 1``   | Derive gametes from F2  |
-            +-------------+-------------------------+
-            | ``s = 2``   | Derive gametes from F3  |
-            +-------------+-------------------------+
-            | ``...``     | etc.                    |
-            +-------------+-------------------------+
-            | ``s = inf`` | Derive gametes from SSD |
-            +-------------+-------------------------+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
@@ -195,7 +195,15 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         """
         # if genomic model is an additive linear genomic model, then use specialized routine
         if isinstance(gmod, AdditiveLinearGenomicModel):
-            return cls.from_algmod(gmod, pgmat, ncross, nprogeny, s, gmapfn, **kwargs)
+            return cls.from_algmod(
+                algmod = gmod, 
+                pgmat = pgmat, 
+                ncross = ncross, 
+                nprogeny = nprogeny, 
+                nself = nself, 
+                gmapfn = gmapfn, 
+                **kwargs
+            )
         # otherwise raise error since non-linear support hasn't been implemented yet
         else:
             raise NotImplementedError("support for non-linear models not implemented yet")
@@ -207,7 +215,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
-            s: int, 
+            nself: int, 
             gmapfn: GeneticMapFunction, 
             mem: int = 1024
         ) -> 'DenseTwoWayDHAdditiveGeneticVarianceMatrix':
@@ -228,23 +236,23 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
-            +-------------+-------------------------+
-            | Example     | Description             |
-            +=============+=========================+
-            | ``s = 0``   | Derive gametes from F1  |
-            +-------------+-------------------------+
-            | ``s = 1``   | Derive gametes from F2  |
-            +-------------+-------------------------+
-            | ``s = 2``   | Derive gametes from F3  |
-            +-------------+-------------------------+
-            | ``...``     | etc.                    |
-            +-------------+-------------------------+
-            | ``s = inf`` | Derive gametes from SSD |
-            +-------------+-------------------------+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
@@ -302,7 +310,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
                     r = gmapfn.mapfn(numpy.abs(gi - gj)) # (rb,cb) covariance matrix
 
                     # calculate a D1 recombination covariance matrix; this is specific to mating scheme
-                    D1 = cov_D1s(r, s)  # (rb,cb) covariance matrix
+                    D1 = cov_D1s(r, nself)  # (rb,cb) covariance matrix
 
                     # get marker coefficients for rows and columns
                     ru = u[rst:rsp].T # (rb,t)' -> (t,rb)

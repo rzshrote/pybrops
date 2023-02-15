@@ -260,7 +260,7 @@ def test_from_algmod(dalgmod, dpgmat, ncross, nprogeny, gmapfn):
         pgmat = dpgmat,
         ncross = ncross,
         nprogeny = nprogeny,
-        s = 0,
+        nself = 0,
         gmapfn = gmapfn,
         mem = None
     )
@@ -269,7 +269,7 @@ def test_from_algmod(dalgmod, dpgmat, ncross, nprogeny, gmapfn):
         pgmat = dpgmat,
         ncross = ncross,
         nprogeny = nprogeny,
-        s = 1,
+        nself = 1,
         gmapfn = gmapfn,
         mem = None
     )

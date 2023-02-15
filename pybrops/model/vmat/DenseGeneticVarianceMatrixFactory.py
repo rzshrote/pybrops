@@ -35,7 +35,7 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
-            s: int, 
+            nself: int, 
             gmapfn: GeneticMapFunction, 
             **kwargs: dict
         ) -> GeneticVarianceMatrix:
@@ -54,7 +54,7 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
@@ -67,7 +67,15 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
         out : GeneticVarianceMatrix
             A matrix of genetic variance estimations.
         """
-        return DenseGeneticVarianceMatrix.from_gmod(gmod, pgmat, ncross, nprogeny, s, gmapfn, **kwargs)
+        return DenseGeneticVarianceMatrix.from_gmod(
+            gmod = gmod, 
+            pgmat = pgmat, 
+            ncross = ncross, 
+            nprogeny = nprogeny, 
+            nself = nself, 
+            gmapfn = gmapfn, 
+            **kwargs
+        )
 
 
 

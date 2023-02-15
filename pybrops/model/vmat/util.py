@@ -55,7 +55,7 @@ def rprob_filial(r, k):
     # return result
     return r_k
 
-def cov_D1s(r, s):
+def cov_D1s(r, nself):
     """
     Calculate a D1 matrix.
 
@@ -67,21 +67,21 @@ def cov_D1s(r, s):
     ----------
     r : numpy.ndarray
         Recombination probability matrix.
-    s : int, inf
+    nself : int, inf
         Selfing generation number to derive gametes from.
 
         +-------------+-------------------------+
         | Example     | Description             |
         +=============+=========================+
-        | ``s = 0``   | Derive gametes from F1  |
+        | ``nself = 0``   | Derive gametes from F1  |
         +-------------+-------------------------+
-        | ``s = 1``   | Derive gametes from F2  |
+        | ``nself = 1``   | Derive gametes from F2  |
         +-------------+-------------------------+
-        | ``s = 2``   | Derive gametes from F3  |
+        | ``nself = 2``   | Derive gametes from F3  |
         +-------------+-------------------------+
         | ``...``     | etc.                    |
         +-------------+-------------------------+
-        | ``s = inf`` | Derive gametes from SSD |
+        | ``nself = inf`` | Derive gametes from SSD |
         +-------------+-------------------------+
 
     Returns
@@ -89,14 +89,14 @@ def cov_D1s(r, s):
     D1 : numpy.ndarray
         A D1 matrix of covariance between genomic loci.
     """
-    if s == 0:
+    if nself == 0:
         return (1 - 2 * r)
-    elif s > 0:
-        return (1.0 - 2.0 * rprob_filial(r, s+1))
+    elif nself > 0:
+        return (1.0 - 2.0 * rprob_filial(r, nself+1))
     else:
         raise ValueError("s must be >= 0.")
 
-def cov_D2s(r, s):
+def cov_D2s(r, nself):
     """
     Calculate a D2 matrix.
 
@@ -108,21 +108,21 @@ def cov_D2s(r, s):
     ----------
     r : numpy.ndarray
         Recombination probability matrix.
-    s : int, inf
+    nself : int, inf
         Selfing generation number to derive gametes from.
 
         +-------------+-------------------------+
         | Example     | Description             |
         +=============+=========================+
-        | ``s = 0``   | Derive gametes from F1  |
+        | ``nself = 0``   | Derive gametes from F1  |
         +-------------+-------------------------+
-        | ``s = 1``   | Derive gametes from F2  |
+        | ``nself = 1``   | Derive gametes from F2  |
         +-------------+-------------------------+
-        | ``s = 2``   | Derive gametes from F3  |
+        | ``nself = 2``   | Derive gametes from F3  |
         +-------------+-------------------------+
         | ``...``     | etc.                    |
         +-------------+-------------------------+
-        | ``s = inf`` | Derive gametes from SSD |
+        | ``nself = inf`` | Derive gametes from SSD |
         +-------------+-------------------------+
 
     Returns
@@ -130,15 +130,15 @@ def cov_D2s(r, s):
     D2 : numpy.ndarray
         A D2 matrix.
     """
-    if s == 0:
+    if nself == 0:
         return (1.0 - 2.0 * r)**2
-    elif s > 0:
+    elif nself > 0:
         four_r = 4.0 * r
-        return (1.0 - four_r + (four_r * rprob_filial(r, s+1)))
+        return (1.0 - four_r + (four_r * rprob_filial(r, nself+1)))
     else:
         raise ValueError("s must be >= 0.")
 
-def cov_D1st(r, s, t):
+def cov_D1st(r, nself, t):
     """
     Calculate a D1 matrix.
 
@@ -149,21 +149,21 @@ def cov_D1st(r, s, t):
     ----------
     r : numpy.ndarray
         Recombination probability matrix.
-    s : int, inf
+    nself : int, inf
         Selfing generation number to derive gametes from.
 
         +-------------+-------------------------+
         | Example     | Description             |
         +=============+=========================+
-        | ``s = 0``   | Derive gametes from F1  |
+        | ``nself = 0``   | Derive gametes from F1  |
         +-------------+-------------------------+
-        | ``s = 1``   | Derive gametes from F2  |
+        | ``nself = 1``   | Derive gametes from F2  |
         +-------------+-------------------------+
-        | ``s = 2``   | Derive gametes from F3  |
+        | ``nself = 2``   | Derive gametes from F3  |
         +-------------+-------------------------+
         | ``...``     | etc.                    |
         +-------------+-------------------------+
-        | ``s = inf`` | Derive gametes from SSD |
+        | ``nself = inf`` | Derive gametes from SSD |
         +-------------+-------------------------+
 
         Remark:
@@ -197,17 +197,17 @@ def cov_D1st(r, s, t):
     D_1 : numpy.ndarray
         A D_1 matrix.
     """
-    if s == 0 and t == 0:
+    if nself == 0 and t == 0:
         return (1 - 2*r)
-    elif s > 0:
-        r_k = rprob_filial(r, s+1)
+    elif nself > 0:
+        r_k = rprob_filial(r, nself+1)
         return (1.0 - 2.0*r_k)
     elif t > 0:
         return (1.0 - 2.0*r) * ((1.0 - r)**t)
     else:
         raise ValueError("s and t must be >= 0.")
 
-def cov_D2st(r, s, t):
+def cov_D2st(r, nself, t):
     """
     Calculate a D_2 matrix. This matrix represents a linkage disequilibrium
     prototype for two recombination events prior to selfing or random
@@ -217,21 +217,21 @@ def cov_D2st(r, s, t):
     ----------
     r : numpy.ndarray
         Recombination probability matrix.
-    s : int, inf
+    nself : int, inf
         Selfing generation number to derive gametes from.
 
         +-------------+-------------------------+
         | Example     | Description             |
         +=============+=========================+
-        | ``s = 0``   | Derive gametes from F1  |
+        | ``nself = 0``   | Derive gametes from F1  |
         +-------------+-------------------------+
-        | ``s = 1``   | Derive gametes from F2  |
+        | ``nself = 1``   | Derive gametes from F2  |
         +-------------+-------------------------+
-        | ``s = 2``   | Derive gametes from F3  |
+        | ``nself = 2``   | Derive gametes from F3  |
         +-------------+-------------------------+
         | ``...``     | etc.                    |
         +-------------+-------------------------+
-        | ``s = inf`` | Derive gametes from SSD |
+        | ``nself = inf`` | Derive gametes from SSD |
         +-------------+-------------------------+
 
         Remark:
@@ -265,10 +265,10 @@ def cov_D2st(r, s, t):
     D_2 : numpy.ndarray
         A D_2 matrix.
     """
-    if s == 0 and t == 0:
+    if nself == 0 and t == 0:
         return (1.0 - 2.0*r)**2
-    elif s > 0:
-        r_k = rprob_filial(r, s+1)
+    elif nself > 0:
+        r_k = rprob_filial(r, nself+1)
         four_r = 4.0*r
         return ( 1.0 - four_r + (four_r*r_k) )
     elif t > 0:

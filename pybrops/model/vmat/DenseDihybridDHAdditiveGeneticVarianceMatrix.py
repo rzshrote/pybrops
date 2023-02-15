@@ -4,14 +4,19 @@ storing dense additive genetic variance estimates calculated using dihybrid DH
 formulae.
 """
 
-from typing import Optional
+import numbers
+from typing import Optional, Union
 import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.subroutines import srange
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.util import cov_D2s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     """
@@ -26,7 +31,13 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseFourWayDHAdditiveGeneticVarianceMatrix.
 
@@ -70,7 +81,10 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def to_csv(self, fname):
+    def to_csv(
+            self, 
+            fname: str
+        ) -> None:
         # get names for taxa and traits
         taxa = [str(e) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
         trait = [str(e) for e in range(self.mat_shape[2])]
@@ -102,10 +116,87 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     ############################## Class Methods ###############################
     ############################################################################
     # TODO: implement me
-    # from_gmod
+    @classmethod
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            nself: Union[int,numbers.Number],
+            gmapfn: GeneticMapFunction,
+            **kwargs: dict
+        ) -> 'DenseDihybridDHAdditiveGeneticVarianceMatrix':
+        """
+        Calculate a symmetrical tensor of progeny variances for each possible
+        3-way cross between *inbred* individuals.
+
+        Parameters
+        ----------
+        gmod : GenomicModel
+            Genomic Model with which to estimate genetic variances.
+        pgmat : PhasedGenotypeMatrix
+            Input genomes to use to estimate genetic variances.
+        ncross : int
+            Number of cross patterns to simulate for genetic variance
+            estimation.
+        nprogeny : int
+            Number of progeny to simulate per cross to estimate genetic
+            variance.
+        nself : int, numbers.Number
+            Number of selfing generations post-cross pattern before 'nprogeny'
+            individuals are simulated.
+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
+        gmapfn : GeneticMapFunction
+            GeneticMapFunction to use to estimate covariance induced by
+            recombination.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseTwoWayDHAdditiveGeneticVarianceMatrix
+            A matrix of additive genetic variance estimations.
+        """
+        # if genomic model is an additive linear genomic model, then use specialized routine
+        if isinstance(gmod, AdditiveLinearGenomicModel):
+            return cls.from_algmod(
+                algmod = gmod, 
+                pgmat = pgmat, 
+                ncross = ncross, 
+                nprogeny = nprogeny, 
+                nself = nself, 
+                gmapfn = gmapfn, 
+                **kwargs
+            )
+        # otherwise raise error since non-linear support hasn't been implemented yet
+        else:
+            raise NotImplementedError("support for non-linear models not implemented yet")
 
     @classmethod
-    def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem = 1024):
+    def from_algmod(
+            cls, 
+            algmod, 
+            pgmat, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            mem = 1024
+        ) -> 'DenseDihybridDHAdditiveGeneticVarianceMatrix':
         """
         Calculate a symmetrical matrix of DH progeny variances for each possible
         pairwise dihybrid cross between *non-inbred* individuals.
@@ -123,23 +214,23 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
-            +-------------+-------------------------+
-            | Example     | Description             |
-            +=============+=========================+
-            | ``s = 0``   | Derive gametes from F1  |
-            +-------------+-------------------------+
-            | ``s = 1``   | Derive gametes from F2  |
-            +-------------+-------------------------+
-            | ``s = 2``   | Derive gametes from F3  |
-            +-------------+-------------------------+
-            | ``...``     | etc.                    |
-            +-------------+-------------------------+
-            | ``s = inf`` | Derive gametes from SSD |
-            +-------------+-------------------------+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
@@ -197,10 +288,10 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
                     r = gmapfn.mapfn(numpy.abs(gi - gj)) # (rb,cb) covariance matrix
 
                     # calculate a D1 matrix; this is specific to mating scheme
-                    D1 = cov_D1s(r, s)  # (rb,cb) covariance matrix
+                    D1 = cov_D1s(r, nself)  # (rb,cb) covariance matrix
 
                     # calculate a D2 matrix; this is specific to mating scheme
-                    D2 = cov_D2s(r, s)  # (rb,cb) covariance matrix
+                    D2 = cov_D2s(r, nself)  # (rb,cb) covariance matrix
 
                     # get marker coefficients for rows and columns
                     ru = u[rst:rsp].T # (rb,t)' -> (t,rb)

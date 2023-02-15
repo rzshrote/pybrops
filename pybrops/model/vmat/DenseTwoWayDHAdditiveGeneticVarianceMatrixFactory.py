@@ -39,7 +39,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
-            s: int, 
+            nself: int, 
             gmapfn: GeneticMapFunction, 
             **kwargs: dict
         ) -> GeneticVarianceMatrix:
@@ -58,7 +58,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
@@ -71,7 +71,15 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
         out : GeneticVarianceMatrix
             A matrix of genetic variance estimations.
         """
-        return DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_gmod(gmod, pgmat, ncross, nprogeny, s, gmapfn, **kwargs)
+        return DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_gmod(
+            gmod = gmod, 
+            pgmat = pgmat, 
+            ncross = ncross, 
+            nprogeny = nprogeny, 
+            nself = nself, 
+            gmapfn = gmapfn, 
+            **kwargs
+        )
 
     def from_algmod(
             self, 
@@ -79,9 +87,9 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
-            s: int, 
+            nself: int, 
             gmapfn: GeneticMapFunction, 
-            mem: int,
+            mem: int = 1024,
             **kwargs: dict
         ):
         """
@@ -99,7 +107,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
@@ -115,7 +123,16 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVari
         out : GeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
-        return DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_algmod(algmod, pgmat, ncross, nprogeny, s, gmapfn, mem, **kwargs)
+        return DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_algmod(
+            algmod = algmod, 
+            pgmat = pgmat, 
+            ncross = ncross, 
+            nprogeny = nprogeny, 
+            nself = nself, 
+            gmapfn = gmapfn, 
+            mem = mem, 
+            **kwargs
+        )
 
 
 
