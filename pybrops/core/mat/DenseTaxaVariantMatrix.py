@@ -1242,7 +1242,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     ################### Sorting Methods ####################
     def lexsort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> numpy.ndarray:
@@ -1303,7 +1303,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:

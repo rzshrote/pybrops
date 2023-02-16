@@ -1,11 +1,8 @@
-import inspect
 import pytest
 
 from pybrops.test import not_raises
 from pybrops.test import generic_assert_docstring
 from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
 from pybrops.test import generic_assert_concrete_method
 from pybrops.test import generic_assert_concrete_function
 
@@ -39,7 +36,7 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_append_is_abstract(mat):
+def test_from_algmod_is_abstract(mat):
     generic_assert_abstract_method(mat, "from_algmod")
 
 ################################################################################

@@ -40,7 +40,7 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             nself: int, 
             gmapfn: GeneticMapFunction, 
             **kwargs: dict
-        ) -> GeneticVarianceMatrix:
+        ) -> DenseAdditiveGeneticVarianceMatrix:
         """
         Estimate genetic variances from a GenomicModel and PhasedGenotypeMatrix.
 
@@ -89,7 +89,7 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             gmapfn: GeneticMapFunction, 
             mem: int = 1024,
             **kwargs: dict
-        ):
+        ) -> DenseAdditiveGeneticVarianceMatrix:
         """
         Estimate genetic variances from a GenomicModel.
 

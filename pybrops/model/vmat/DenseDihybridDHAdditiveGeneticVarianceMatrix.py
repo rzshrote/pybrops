@@ -5,18 +5,19 @@ formulae.
 """
 
 import numbers
-from typing import Optional, Union
+from typing import Any, Optional, Union
 import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.util.subroutines import srange
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.util import cov_D2s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     """
@@ -85,6 +86,14 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             self, 
             fname: str
         ) -> None:
+        """
+        Save the dense dihybrid DH additive genetic variance matrix to a csv file.
+
+        Parameters
+        ----------
+        fname : str
+            Name of the file to which to save.
+        """
         # get names for taxa and traits
         taxa = [str(e) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
         trait = [str(e) for e in range(self.mat_shape[2])]
@@ -171,6 +180,14 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         out : DenseTwoWayDHAdditiveGeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
+        # type checks
+        check_is_GenomicModel(gmod, "gmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        check_is_int(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        
         # if genomic model is an additive linear genomic model, then use specialized routine
         if isinstance(gmod, AdditiveLinearGenomicModel):
             return cls.from_algmod(
@@ -189,13 +206,13 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     @classmethod
     def from_algmod(
             cls, 
-            algmod, 
-            pgmat, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            mem = 1024
+            algmod: AdditiveLinearGenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            nself: int, 
+            gmapfn: int, 
+            mem: int = 1024
         ) -> 'DenseDihybridDHAdditiveGeneticVarianceMatrix':
         """
         Calculate a symmetrical matrix of DH progeny variances for each possible
@@ -248,9 +265,21 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         out : GeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
+        # type checks
+        check_is_AdditiveLinearGenomicModel(algmod, "algmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        check_is_int(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():
             raise RuntimeError("pgmat must be grouped along the vrnt axis")
+        
+        # check for genetic positions
+        if pgmat.vrnt_genpos is None:
+            raise RuntimeError("pgmat must have genetic positions")
 
         # gather shapes of data input
         ntrait = algmod.ntrait                  # number ot traits (t)
@@ -371,3 +400,22 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         )
 
         return out
+
+
+
+################################################################################
+################################## Utilities ###################################
+################################################################################
+def check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+    """
+    Check if object is of type ``DenseDihybridDHAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : Any
+        Any Python object to test.
+    vname : str
+        Name of variable to print in ``TypeError`` message.
+    """
+    if not isinstance(v, DenseDihybridDHAdditiveGeneticVarianceMatrix):
+        raise TypeError("'{0}' must be a DenseDihybridDHAdditiveGeneticVarianceMatrix".format(vname))

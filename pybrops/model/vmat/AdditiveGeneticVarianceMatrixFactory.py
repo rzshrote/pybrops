@@ -1,5 +1,6 @@
 from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -7,7 +8,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
     """
-    docstring for AdditiveGeneticVarianceMatrixFactory.
+    Abstract factory class for producing AdditiveGeneticVarianceMatrix objects.
     """
 
     ############################################################################
@@ -40,7 +41,7 @@ class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
             gmapfn: GeneticMapFunction, 
             mem: int,
             **kwargs: dict
-        ):
+        ) -> AdditiveGeneticVarianceMatrix:
         """
         Estimate genetic variances from a GenomicModel.
 

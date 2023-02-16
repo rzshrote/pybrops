@@ -58,7 +58,7 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
             gmapfn: GeneticMapFunction, 
             mem: int,
             **kwargs: dict
-        ):
+        ) -> 'AdditiveGeneticVarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 

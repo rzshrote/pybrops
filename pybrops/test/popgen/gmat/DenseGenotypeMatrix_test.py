@@ -720,7 +720,7 @@ def test_tacount_None(mat, mat_int8):
     a = mat.tacount(dtype = None)
     b = mat_int8
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == int
 
 def test_tacount_float32(mat, mat_int8):
     a = mat.tacount(dtype = "float32")
@@ -732,7 +732,7 @@ def test_tafreq_None(mat, mat_int8, mat_ploidy):
     a = mat.tafreq(dtype = None)
     b = ((1.0 / mat_ploidy) * mat_int8)
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == float
 
 def test_tafreq_float32(mat, mat_int8, mat_ploidy):
     a = mat.tafreq(dtype = "float32")
@@ -744,7 +744,7 @@ def test_acount_None(mat, mat_int8):
     a = mat.acount(dtype = None)
     b = mat_int8.sum(0)
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == int
 
 def test_acount_float32(mat, mat_int8):
     a = mat.acount(dtype = "float32")
@@ -756,7 +756,7 @@ def test_afreq_None(mat, mat_int8, mat_ploidy):
     a = mat.afreq(dtype = None)
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == float
 
 def test_afreq_float32(mat, mat_int8, mat_ploidy):
     a = mat.afreq(dtype = "float32")
@@ -770,7 +770,7 @@ def test_apoly_None(mat, mat_int8, mat_ploidy):
     mask2 = numpy.all(mat_int8 == mat_ploidy, axis=0)
     b = numpy.logical_not(mask1 | mask2)
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == bool
 
 def test_afreq_float32(mat, mat_int8, mat_ploidy):
     a = mat.apoly(dtype = "float32")
@@ -785,7 +785,7 @@ def test_maf_None(mat, mat_int8, mat_ploidy):
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b[b > 0.5] = 1.0 - b[b > 0.5]
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == float
 
 def test_maf_float32(mat, mat_int8, mat_ploidy):
     a = mat.maf(dtype = "float32")
@@ -799,7 +799,7 @@ def test_meh_None(mat, mat_int8, mat_ploidy):
     b = ((1.0 / (mat_ploidy * mat_int8.shape[0])) * mat_int8.sum(0))
     b = (mat_ploidy / mat_int8.shape[1]) * numpy.dot(b, 1.0 - b)
     assert numpy.all(a == b)
-    assert a.dtype == b.dtype
+    assert a.dtype == float
 
 def test_meh_float32(mat, mat_int8, mat_ploidy):
     a = mat.meh(dtype = "float32")
