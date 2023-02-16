@@ -1,16 +1,16 @@
 from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrixFactory import DenseAdditiveGeneticVarianceMatrixFactory
-from pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix import DenseFourWayDHAdditiveGeneticVarianceMatrix
+from pybrops.model.vmat.fcty.DenseAdditiveGeneticVarianceMatrixFactory import DenseAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix import DenseDihybridDHAdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVarianceMatrixFactory):
+class DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVarianceMatrixFactory):
     """
-    docstring for DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.
+    docstring for DenseDihybridDHAdditiveGeneticVarianceMatrixFactory.
     """
 
     ############################################################################
@@ -21,14 +21,14 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.
+        Constructor for DenseDihybridDHAdditiveGeneticVarianceMatrixFactory.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
+        super(DenseDihybridDHAdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -71,7 +71,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
         out : GeneticVarianceMatrix
             A matrix of genetic variance estimations.
         """
-        return DenseFourWayDHAdditiveGeneticVarianceMatrix.from_gmod(
+        return DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod(
             gmod = gmod, 
             pgmat = pgmat, 
             ncross = ncross, 
@@ -123,7 +123,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
         out : GeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
-        return DenseFourWayDHAdditiveGeneticVarianceMatrix.from_algmod(
+        return DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod(
             algmod = algmod, 
             pgmat = pgmat, 
             ncross = ncross, 
@@ -139,9 +139,9 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
+def check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
     """
-    Check if object is of type ``DenseFourWayDHAdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
+    Check if object is of type ``DenseDihybridDHAdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -150,5 +150,5 @@ def check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(v: Any, vname: s
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, DenseFourWayDHAdditiveGeneticVarianceMatrixFactory):
-        raise TypeError("'{0}' must be a DenseFourWayDHAdditiveGeneticVarianceMatrixFactory".format(vname))
+    if not isinstance(v, DenseDihybridDHAdditiveGeneticVarianceMatrixFactory):
+        raise TypeError("'{0}' must be a DenseDihybridDHAdditiveGeneticVarianceMatrixFactory".format(vname))

@@ -10,8 +10,8 @@ from pybrops.test import generic_assert_docstring
 from pybrops.test import generic_assert_concrete_method
 from pybrops.test import generic_assert_concrete_function
 
-from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
-from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
 
 ################################################################################
 ################################ Test fixtures #################################

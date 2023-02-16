@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
+from pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix import DenseFourWayDHAdditiveGeneticVarianceMatrix
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
@@ -10,8 +10,8 @@ from pybrops.test import generic_assert_docstring
 from pybrops.test import generic_assert_concrete_method
 from pybrops.test import generic_assert_concrete_function
 
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrixFactory import DenseAdditiveGeneticVarianceMatrixFactory
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrixFactory import check_is_DenseAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory import DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory import check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -132,25 +132,25 @@ def gmapfn():
 ############################################################
 @pytest.fixture
 def fcty():
-    yield DenseAdditiveGeneticVarianceMatrixFactory()
+    yield DenseFourWayDHAdditiveGeneticVarianceMatrixFactory()
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseAdditiveGeneticVarianceMatrixFactory)
+    generic_assert_docstring(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveGeneticVarianceMatrixFactory, "__init__")
+    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "__init__")
 
 def test_from_gmod_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveGeneticVarianceMatrixFactory, "from_gmod")
+    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_gmod")
 
 def test_from_algmod_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveGeneticVarianceMatrixFactory, "from_algmod")
+    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_algmod")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -168,7 +168,7 @@ def test_from_gmod(fcty, dalgmod, dpgmat, gmapfn, mat_taxa, mat_taxa_grp):
         nself = 0,
         gmapfn = gmapfn
     )
-    assert isinstance(vmat, DenseAdditiveGeneticVarianceMatrix)
+    assert isinstance(vmat, DenseFourWayDHAdditiveGeneticVarianceMatrix)
     assert numpy.all(vmat.taxa == mat_taxa)
     assert numpy.all(vmat.taxa_grp == mat_taxa_grp)
 
@@ -181,18 +181,18 @@ def test_from_algmod(fcty, dalgmod, dpgmat, gmapfn, mat_taxa, mat_taxa_grp):
         nself = 0,
         gmapfn = gmapfn
     )
-    assert isinstance(vmat, DenseAdditiveGeneticVarianceMatrix)
+    assert isinstance(vmat, DenseFourWayDHAdditiveGeneticVarianceMatrix)
     assert numpy.all(vmat.taxa == mat_taxa)
     assert numpy.all(vmat.taxa_grp == mat_taxa_grp)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseAdditiveGeneticVarianceMatrixFactory_is_concrete():
-    generic_assert_concrete_function(check_is_DenseAdditiveGeneticVarianceMatrixFactory)
+def test_check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory_is_concrete():
+    generic_assert_concrete_function(check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
 
-def test_check_is_DenseAdditiveGeneticVarianceMatrixFactory(fcty):
+def test_check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(fcty):
     with not_raises(TypeError):
-        check_is_DenseAdditiveGeneticVarianceMatrixFactory(fcty, "fcty")
+        check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(fcty, "fcty")
     with pytest.raises(TypeError):
-        check_is_DenseAdditiveGeneticVarianceMatrixFactory(None, "fcty")
+        check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(None, "fcty")

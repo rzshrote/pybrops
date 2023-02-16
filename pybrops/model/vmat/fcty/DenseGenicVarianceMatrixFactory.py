@@ -1,15 +1,15 @@
 from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
+from pybrops.model.vmat.DenseGenicVarianceMatrix import DenseGenicVarianceMatrix
+from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
+from pybrops.model.vmat.fcty.GenicVarianceMatrixFactory import GenicVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
+class DenseGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
     """
-    docstring for DenseGeneticVarianceMatrixFactory.
+    docstring for DenseGenicVarianceMatrixFactory.
     """
 
     ############################################################################
@@ -17,14 +17,14 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
     ############################################################################
     def __init__(self, **kwargs: dict):
         """
-        Constructor for DenseGeneticVarianceMatrixFactory.
+        Constructor for DenseGenicVarianceMatrixFactory.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseGeneticVarianceMatrixFactory, self).__init__(**kwargs)
+        super(DenseGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -33,26 +33,23 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
             self, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
             nprogeny: int, 
-            nself: int, 
-            gmapfn: GeneticMapFunction, 
             **kwargs: dict
-        ) -> GeneticVarianceMatrix:
+        ) -> DenseGenicVarianceMatrix:
         """
-        Estimate genetic variances from a GenomicModel and PhasedGenotypeMatrix.
+        Estimate genic variances from a GenomicModel and PhasedGenotypeMatrix.
 
         Parameters
         ----------
         gmod : GenomicModel
-            GenomicModel with which to estimate genetic variances.
+            GenomicModel with which to estimate genic variances.
         pgmat : PhasedGenotypeMatrix
-            Input genomes to use to estimate genetic variances.
+            Input genomes to use to estimate genic variances.
         ncross : int
-            Number of cross patterns to simulate for genetic variance
+            Number of cross patterns to simulate for genic variance
             estimation.
         nprogeny : int
-            Number of progeny to simulate per cross to estimate genetic
+            Number of progeny to simulate per cross to estimate genic
             variance.
         nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
@@ -64,16 +61,13 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
 
         Returns
         -------
-        out : GeneticVarianceMatrix
-            A matrix of genetic variance estimations.
+        out : GenicVarianceMatrix
+            A matrix of genic variance estimations.
         """
-        return DenseGeneticVarianceMatrix.from_gmod(
+        return DenseGenicVarianceMatrix.from_gmod(
             gmod = gmod, 
             pgmat = pgmat, 
-            ncross = ncross, 
             nprogeny = nprogeny, 
-            nself = nself, 
-            gmapfn = gmapfn, 
             **kwargs
         )
 
@@ -82,9 +76,9 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_GeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
+def check_is_GenicVarianceMatrixFactory(v: Any, vname: str) -> None:
     """
-    Check if object is of type ``GeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
+    Check if object is of type ``GenicVarianceMatrixFactory``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -93,5 +87,5 @@ def check_is_GeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, GeneticVarianceMatrixFactory):
-        raise TypeError("'{0}' must be a GeneticVarianceMatrixFactory".format(vname))
+    if not isinstance(v, GenicVarianceMatrixFactory):
+        raise TypeError("'{0}' must be a GenicVarianceMatrixFactory".format(vname))

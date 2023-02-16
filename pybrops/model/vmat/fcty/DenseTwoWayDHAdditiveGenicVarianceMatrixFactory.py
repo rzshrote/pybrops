@@ -1,16 +1,15 @@
 from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrixFactory import DenseAdditiveGeneticVarianceMatrixFactory
-from pybrops.model.vmat.DenseThreeWayDHAdditiveGeneticVarianceMatrix import DenseThreeWayDHAdditiveGeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
+from pybrops.model.vmat.DenseTwoWayDHAdditiveGenicVarianceMatrix import DenseTwoWayDHAdditiveGenicVarianceMatrix
+from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVarianceMatrixFactory):
+class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVarianceMatrix):
     """
-    docstring for DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory.
+    docstring for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
     """
 
     ############################################################################
@@ -21,14 +20,14 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory.
+        Constructor for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
+        super(DenseTwoWayDHAdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -37,26 +36,23 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
             self, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
             nprogeny: int, 
-            nself: int, 
-            gmapfn: GeneticMapFunction, 
             **kwargs: dict
-        ) -> GeneticVarianceMatrix:
+        ) -> GenicVarianceMatrix:
         """
-        Estimate genetic variances from a GenomicModel and PhasedGenotypeMatrix.
+        Estimate genic variances from a GenomicModel and PhasedGenotypeMatrix.
 
         Parameters
         ----------
         gmod : GenomicModel
-            GenomicModel with which to estimate genetic variances.
+            GenomicModel with which to estimate genic variances.
         pgmat : PhasedGenotypeMatrix
-            Input genomes to use to estimate genetic variances.
+            Input genomes to use to estimate genic variances.
         ncross : int
-            Number of cross patterns to simulate for genetic variance
+            Number of cross patterns to simulate for genic variance
             estimation.
         nprogeny : int
-            Number of progeny to simulate per cross to estimate genetic
+            Number of progeny to simulate per cross to estimate genic
             variance.
         nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
@@ -68,16 +64,13 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 
         Returns
         -------
-        out : GeneticVarianceMatrix
-            A matrix of genetic variance estimations.
+        out : GenicVarianceMatrix
+            A matrix of genic variance estimations.
         """
-        return DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_gmod(
+        return DenseTwoWayDHAdditiveGenicVarianceMatrix.from_gmod(
             gmod = gmod, 
             pgmat = pgmat, 
-            ncross = ncross, 
             nprogeny = nprogeny, 
-            nself = nself, 
-            gmapfn = gmapfn, 
             **kwargs
         )
 
@@ -85,27 +78,24 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
             self, 
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
             nprogeny: int, 
-            nself: int, 
-            gmapfn: GeneticMapFunction, 
             mem: int = 1024,
             **kwargs: dict
         ):
         """
-        Estimate genetic variances from a GenomicModel.
+        Estimate genic variances from a GenomicModel.
 
         Parameters
         ----------
         algmod : AdditiveLinearGenomicModel
-            AdditiveLinearGenomicModel with which to estimate genetic variances.
+            AdditiveLinearGenomicModel with which to estimate genic variances.
         pgmat : PhasedGenotypeMatrix
-            Input genomes to use to estimate genetic variances.
+            Input genomes to use to estimate genic variances.
         ncross : int
-            Number of cross patterns to simulate for genetic variance
+            Number of cross patterns to simulate for genic variance
             estimation.
         nprogeny : int
-            Number of progeny to simulate per cross to estimate genetic
+            Number of progeny to simulate per cross to estimate genic
             variance.
         nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
@@ -120,16 +110,13 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 
         Returns
         -------
-        out : GeneticVarianceMatrix
-            A matrix of additive genetic variance estimations.
+        out : GenicVarianceMatrix
+            A matrix of additive genic variance estimations.
         """
-        return DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_algmod(
+        return DenseTwoWayDHAdditiveGenicVarianceMatrix.from_algmod(
             algmod = algmod, 
             pgmat = pgmat, 
-            ncross = ncross, 
             nprogeny = nprogeny, 
-            nself = nself, 
-            gmapfn = gmapfn, 
             mem = mem, 
             **kwargs
         )
@@ -139,9 +126,9 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
+def check_is_DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(v: Any, vname: str) -> None:
     """
-    Check if object is of type ``DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
+    Check if object is of type ``DenseTwoWayDHAdditiveGenicVarianceMatrixFactory``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -150,5 +137,5 @@ def check_is_DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(v: Any, vname: 
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory):
-        raise TypeError("'{0}' must be a DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory".format(vname))
+    if not isinstance(v, DenseTwoWayDHAdditiveGenicVarianceMatrixFactory):
+        raise TypeError("'{0}' must be a DenseTwoWayDHAdditiveGenicVarianceMatrixFactory".format(vname))

@@ -87,7 +87,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             fname: str
         ) -> None:
         """
-        Save the dense dihybrid DH additive genetic variance matrix to a csv file.
+        Save a dense dihybrid DH additive genetic variance matrix to a csv file.
 
         Parameters
         ----------

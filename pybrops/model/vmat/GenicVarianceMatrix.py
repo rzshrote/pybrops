@@ -5,6 +5,8 @@ storing genic variance estimates.
 
 from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class GenicVarianceMatrix(SquareTaxaMatrix):
     """
@@ -36,11 +38,35 @@ class GenicVarianceMatrix(SquareTaxaMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
+    ######## Expected parental genome contributions ########
+    @property
+    def epgc(self) -> tuple:
+        """Expected parental genome contribution to the offspring."""
+        raise NotImplementedError("property is abstract")
+    @epgc.getter
+    def epgc(self) -> tuple:
+        """Get a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")
+    @epgc.setter
+    def epgc(self, value: tuple) -> None:
+        """Set a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")    
+    @epgc.deleter
+    def epgc(self) -> None:
+        """Delete the expected parental genome contributions tuple."""
+        raise NotImplementedError("property is abstract")
+
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     @classmethod
-    def from_gmod(cls, gmod, pgmat, nprogeny):
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            nprogeny: int,
+            **kwargs: dict
+        ):
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -53,10 +79,12 @@ class GenicVarianceMatrix(SquareTaxaMatrix):
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
-        out : GeneticVarianceMatrix
+        out : GenicVarianceMatrix
             A matrix of genic variance estimations.
         """
         raise NotImplementedError("method is abstract")

@@ -9,14 +9,15 @@ from typing import Optional, Union
 import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.util.subroutines import srange
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.util import cov_D2s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     """
@@ -174,9 +175,25 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         out : DenseTwoWayDHAdditiveGeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
+        # type checks
+        check_is_GenomicModel(gmod, "gmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        check_is_int(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+
         # if genomic model is an additive linear genomic model, then use specialized routine
         if isinstance(gmod, AdditiveLinearGenomicModel):
-            return cls.from_algmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
+            return cls.from_algmod(
+                algmod = gmod, 
+                pgmat = pgmat, 
+                ncross = ncross, 
+                nprogeny = nprogeny, 
+                nself = nself, 
+                gmapfn = gmapfn, 
+                **kwargs
+            )
         # otherwise raise error since non-linear support hasn't been implemented yet
         else:
             raise NotImplementedError("support for non-linear models not implemented yet")
@@ -243,9 +260,22 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         out : GeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
+        # type checks
+        check_is_AdditiveLinearGenomicModel(algmod, "algmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_int(ncross, "ncross")
+        check_is_int(nprogeny, "nprogeny")
+        check_is_int(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_int(mem, "mem")
+        
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():
             raise RuntimeError("pgmat must be grouped along the vrnt axis")
+
+        # check for genetic positions
+        if pgmat.vrnt_genpos is None:
+            raise RuntimeError("pgmat must have genetic positions")
 
         # gather shapes of data input
         ntrait = algmod.ntrait                  # number ot traits (t)

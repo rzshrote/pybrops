@@ -86,6 +86,14 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
             self, 
             fname: str
         ) -> None:
+        """
+        Save a dense four-way DH additive genetic variance matrix to a csv file.
+
+        Parameters
+        ----------
+        fname : str
+            Name of the file to which to save.
+        """
         # get names for taxa and traits
         taxa = [str(e) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
         trait = [str(e) for e in range(self.mat_shape[4])]
@@ -275,6 +283,10 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():
             raise RuntimeError("pgmat must be grouped along the vrnt axis")
+
+        # check for genetic positions
+        if pgmat.vrnt_genpos is None:
+            raise RuntimeError("pgmat must have genetic positions")
 
         # gather shapes of data input
         ntrait = algmod.ntrait                  # number ot traits (t)

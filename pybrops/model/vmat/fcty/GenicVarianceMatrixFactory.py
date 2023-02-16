@@ -1,14 +1,16 @@
 from typing import Any
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
+class GenicVarianceMatrixFactory:
     """
-    Abstract factory class for producing AdditiveGeneticVarianceMatrix objects.
+    Abstract class for GenicVarianceMatrix factory classes.
+
+    The purpose of this abstract interface is to provide functionality for:
+        1) Construction of genetic variance matrices.
     """
 
     ############################################################################
@@ -19,36 +21,32 @@ class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for AdditiveGeneticVarianceMatrixFactory.
+        Constructor for GenicVarianceMatrixFactory.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(AdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
+        super(GenicVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def from_algmod(
+    def from_gmod(
             self, 
-            algmod: AdditiveLinearGenomicModel, 
+            gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
             nprogeny: int, 
-            nself: int, 
-            gmapfn: GeneticMapFunction, 
-            mem: int,
             **kwargs: dict
-        ) -> AdditiveGeneticVarianceMatrix:
+        ) -> GenicVarianceMatrix:
         """
-        Estimate genetic variances from a GenomicModel.
+        Estimate genetic variances from a GenomicModel and PhasedGenotypeMatrix.
 
         Parameters
         ----------
-        algmod : AdditiveLinearGenomicModel
-            AdditiveLinearGenomicModel with which to estimate genetic variances.
+        gmod : GenomicModel
+            GenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
         ncross : int
@@ -61,17 +59,14 @@ class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
-            GeneticMapFunction to use to estimate covariance induced by
-            recombination.
-        mem : int
-            Memory chunk size to use during matrix operations.
+            Genetic map function with which to calculate recombination probabilities.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : GeneticVarianceMatrix
-            A matrix of additive genetic variance estimations.
+        out : GenicVarianceMatrix
+            A matrix of genetic variance estimations.
         """
         raise NotImplementedError("method is abstract")
 
@@ -80,9 +75,9 @@ class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_AdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
+def check_is_GenicVarianceMatrixFactory(v: Any, vname: str) -> None:
     """
-    Check if object is of type ``AdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
+    Check if object is of type ``GenicVarianceMatrixFactory``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -91,5 +86,5 @@ def check_is_AdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, AdditiveGeneticVarianceMatrixFactory):
-        raise TypeError("'{0}' must be a AdditiveGeneticVarianceMatrixFactory".format(vname))
+    if not isinstance(v, GenicVarianceMatrixFactory):
+        raise TypeError("'{0}' must be a GenicVarianceMatrixFactory".format(vname))
