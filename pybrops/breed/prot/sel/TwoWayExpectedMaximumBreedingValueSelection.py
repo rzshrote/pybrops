@@ -4,6 +4,7 @@ Module implementing selection protocols for two-way expected maximum breeding
 value selection.
 """
 
+from typing import Union
 import numpy
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -11,6 +12,7 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_is_bool
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
+from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 
 class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
@@ -76,35 +78,35 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
         return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
     traitwt_p = property(**traitwt_p())
 
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            """Get value for ncross."""
-            return self._ncross
-        def fset(self, value):
-            """Set value for ncross."""
-            check_is_int(value, "ncross")
-            self._ncross = value
-        def fdel(self):
-            """Delete value for ncross."""
-            del self._ncross
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ncross = property(**ncross())
+    @property
+    def ncross(self) -> int:
+        """Number of crosses per configuration."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: int) -> None:
+        """Set number of crosses per configuration."""
+        check_is_int(value, "ncross")       # must be int
+        check_is_gt(value, "ncross", 0)     # int must be >0
+        self._ncross = value
+    @ncross.deleter
+    def ncross(self) -> None:
+        """Delete number of crosses per configuration."""
+        del self._ncross
 
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            """Get value for nprogeny."""
-            return self._nprogeny
-        def fset(self, value):
-            """Set value for nprogeny."""
-            check_is_int(value, "nprogeny")
-            self._nprogeny = value
-        def fdel(self):
-            """Delete value for nprogeny."""
-            del self._nprogeny
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nprogeny = property(**nprogeny())
+    @property
+    def nprogeny(self) -> int:
+        """Number of progeny to derive from each cross configuration."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: int) -> None:
+        """Set number of progeny to derive from each cross configuration."""
+        check_is_int(value, "nprogeny")     # must be int
+        check_is_gt(value, "nprogeny", 0)   # int must be >0
+        self._nprogeny = value
+    @nprogeny.deleter
+    def nprogeny(self) -> None:
+        """Delete number of progeny to derive from each cross configuration."""
+        del self._nprogeny
 
     def nrep():
         doc = "The nrep property."
@@ -136,23 +138,21 @@ class TwoWayExpectedMaximumBreedingValueSelection(SelectionProtocol):
         return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
     selfing = property(**selfing())
 
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            """Get value for rng."""
-            return self._rng
-        def fset(self, value):
-            """Set value for rng."""
-            if value is not None:
-                check_is_Generator_or_RandomState(value, "rng")
-            else:
-                value = global_prng
-            self._rng = value
-        def fdel(self):
-            """Delete value for rng."""
-            del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    rng = property(**rng())
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################

@@ -2,18 +2,17 @@
 Module implementing selection protocols for optimal contribution selection.
 """
 
-from distutils.log import warn
-from optparse import Option
 import cvxpy
 import math
 import numpy
 import warnings
 import types
-from typing import Callable
+from typing import Any, Callable
 from typing import Union
 from typing import Optional
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_callable
@@ -42,11 +41,25 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent: int, ncross: int, nprogeny: int, inbfn: Callable,
-        cmatcls: type = DenseVanRadenCoancestryMatrix, bvtype = "gebv", method = "single",
-        objfn_trans: Callable = None, objfn_trans_kwargs: dict = None, objfn_wt: Union[float,numpy.ndarray] = 1.0,
-        ndset_trans: Callable = None, ndset_trans_kwargs: dict = None, ndset_wt: float = -1.0,
-        moalgo = None, rng = global_prng, **kwargs: dict):
+    def __init__(
+            self, 
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            inbfn: Callable,
+            cmatcls: type = DenseVanRadenCoancestryMatrix, 
+            bvtype = "gebv", 
+            method = "single",
+            objfn_trans: Callable = None, 
+            objfn_trans_kwargs: dict = None, 
+            objfn_wt: Union[float,numpy.ndarray] = 1.0,
+            ndset_trans: Callable = None, 
+            ndset_trans_kwargs: dict = None, 
+            ndset_wt: float = -1.0,
+            moalgo = None, 
+            rng = global_prng, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -204,218 +217,244 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def nparent():
-        doc = "The nparent property."
-        def fget(self):
-            return self._nparent
-        def fset(self, value):
-            check_is_int(value, "nparent")      # must be int
-            check_is_gt(value, "nparent", 0)    # int must be >0
-            self._nparent = value
-        def fdel(self):
-            del self._nparent
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nparent = property(**nparent())
+    @property
+    def nparent(self) -> int:
+        """Number of parents to select."""
+        return self._nparent
+    @nparent.setter
+    def nparent(self, value: int) -> None:
+        """Set number of parents to select."""
+        check_is_int(value, "nparent")      # must be int
+        check_is_gt(value, "nparent", 0)    # int must be >0
+        self._nparent = value
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete number of parents to select."""
+        del self._nparent
 
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            return self._ncross
-        def fset(self, value):
-            check_is_int(value, "ncross")       # must be int
-            check_is_gt(value, "ncross", 0)     # int must be >0
-            self._ncross = value
-        def fdel(self):
-            del self._ncross
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ncross = property(**ncross())
+    @property
+    def ncross(self) -> int:
+        """Number of crosses per configuration."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: int) -> None:
+        """Set number of crosses per configuration."""
+        check_is_int(value, "ncross")       # must be int
+        check_is_gt(value, "ncross", 0)     # int must be >0
+        self._ncross = value
+    @ncross.deleter
+    def ncross(self) -> None:
+        """Delete number of crosses per configuration."""
+        del self._ncross
 
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            return self._nprogeny
-        def fset(self, value):
-            check_is_int(value, "nprogeny")     # must be int
-            check_is_gt(value, "nprogeny", 0)   # int must be >0
-            self._nprogeny = value
-        def fdel(self):
-            del self._nprogeny
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nprogeny = property(**nprogeny())
+    @property
+    def nprogeny(self) -> int:
+        """Number of progeny to derive from each cross configuration."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: int) -> None:
+        """Set number of progeny to derive from each cross configuration."""
+        check_is_int(value, "nprogeny")     # must be int
+        check_is_gt(value, "nprogeny", 0)   # int must be >0
+        self._nprogeny = value
+    @nprogeny.deleter
+    def nprogeny(self) -> None:
+        """Delete number of progeny to derive from each cross configuration."""
+        del self._nprogeny
 
-    def inbfn():
-        doc = "Inbreeding control function."
-        def fget(self):
-            return self._inbfn
-        def fset(self, value):
-            check_is_callable(value, "inbfn")
-            self._inbfn = value
-        def fdel(self):
-            del self._inbfn
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    inbfn = property(**inbfn())
+    @property
+    def inbfn(self) -> Callable:
+        """Inbreeding control function."""
+        return self._inbfn
+    @inbfn.setter
+    def inbfn(self, value: Callable) -> None:
+        """Set inbreeding control function."""
+        check_is_callable(value, "inbfn")
+        self._inbfn = value
+    @inbfn.deleter
+    def inbfn(self) -> None:
+        """Delete inbreeding control function."""
+        del self._inbfn
 
-    def cmatcls():
-        doc = "Coancestry matrix class."
-        def fget(self):
-            return self._cmatcls
-        def fset(self, value):
-            check_inherits(value, "cmatcls", CoancestryMatrix)
-            self._cmatcls = value
-        def fdel(self):
-            del self._cmatcls
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    cmatcls = property(**cmatcls())
+    @property
+    def cmatcls(self) -> Any:
+        """CoancestryMatrix class used for calculating coancestries."""
+        return self._cmatcls
+    @cmatcls.setter
+    def cmatcls(self, value: Any) -> None:
+        """Set CoancestryMatrix class used for calculating coancestries."""
+        check_inherits(value, "cmatcls", CoancestryMatrix)
+        self._cmatcls = value
+    @cmatcls.deleter
+    def cmatcls(self) -> None:
+        """Delete CoancestryMatrix class used for calculating coancestries."""
+        del self._cmatcls
 
-    def bvtype():
-        doc = "Breeding value matrix type."
-        def fget(self):
-            return self._bvtype
-        def fset(self, value):
-            check_is_str(value, "bvtype")   # must be string
-            value = value.lower()           # convert to lowercase
-            options = ("gebv", "ebv")       # method options
-            if value not in options:            # if not method supported
-                raise ValueError(               # raise ValueError
-                    "Unsupported 'method'. Options are: " +
-                    ", ".join(map(str, options))
-                )
-            self._bvtype = value
-        def fdel(self):
-            del self._bvtype
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    bvtype = property(**bvtype())
+    @property
+    def bvtype(self) -> str:
+        """Breeding value matrix type."""
+        return self._bvtype
+    @bvtype.setter
+    def bvtype(self, value: str) -> None:
+        """Set breeding value matrix type."""
+        check_is_str(value, "bvtype")   # must be string
+        value = value.lower()           # convert to lowercase
+        options = ("gebv", "ebv")       # method options
+        # if not method supported raise ValueError
+        if value not in options:
+            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
+        self._bvtype = value
+    @bvtype.deleter
+    def bvtype(self) -> None:
+        """Delete breeding value matrix type."""
+        del self._bvtype
 
-    def method():
-        doc = "The method property."
-        def fget(self):
-            return self._method
-        def fset(self, value):
-            check_is_str(value, "method")       # must be string
-            value = value.lower()               # convert to lowercase
-            options = ("single", "pareto")      # method options
-            if value not in options:            # if not method supported
-                raise ValueError(               # raise ValueError
-                    "Unsupported 'method'. Options are: " +
-                    ", ".join(map(str, options))
-                )
-            self._method = value
-        def fdel(self):
-            del self._method
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    method = property(**method())
+    @property
+    def method(self) -> str:
+        """Selection method."""
+        return self._method
+    @method.setter
+    def method(self, value: str) -> None:
+        """Set selection method."""
+        check_is_str(value, "method")       # must be string
+        value = value.lower()               # convert to lowercase
+        options = ("single", "pareto")      # method options
+        # if not method supported raise ValueError
+        if value not in options:
+            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
+        self._method = value
+    @method.deleter
+    def method(self) -> None:
+        """Delete selection method."""
+        del self._method
 
-    def objfn_trans():
-        doc = "The objfn_trans property."
-        def fget(self):
-            return self._objfn_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "objfn_trans") # must be callable
-            self._objfn_trans = value
-        def fdel(self):
-            del self._objfn_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans = property(**objfn_trans())
+    @property
+    def objfn_trans(self) -> Union[Callable,None]:
+        """Objective function transformation function."""
+        return self._objfn_trans
+    @objfn_trans.setter
+    def objfn_trans(self, value: Union[Callable,None]) -> None:
+        """Set objective function transformation function."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "objfn_trans") # must be callable
+        self._objfn_trans = value
+    @objfn_trans.deleter
+    def objfn_trans(self) -> None:
+        """Delete objective function transformation function."""
+        del self._objfn_trans
 
-    def objfn_trans_kwargs():
-        doc = "The objfn_trans_kwargs property."
-        def fget(self):
-            return self._objfn_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
-            self._objfn_trans_kwargs = value
-        def fdel(self):
-            del self._objfn_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+    @property
+    def objfn_trans_kwargs(self) -> dict:
+        """Objective function transformation function keyword arguments."""
+        return self._objfn_trans_kwargs
+    @objfn_trans_kwargs.setter
+    def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set objective function transformation function keyword arguments."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+        self._objfn_trans_kwargs = value
+    @objfn_trans_kwargs.deleter
+    def objfn_trans_kwargs(self) -> None:
+        """Delete objective function transformation function keyword arguments."""
+        del self._objfn_trans_kwargs
 
-    def objfn_wt():
-        doc = "The objfn_wt property."
-        def fget(self):
-            return self._objfn_wt
-        def fset(self, value):
-            self._objfn_wt = value
-        def fdel(self):
-            del self._objfn_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_wt = property(**objfn_wt())
+    @property
+    def objfn_wt(self) -> Union[float,numpy.ndarray]:
+        """Objective function weights."""
+        return self._objfn_wt
+    @objfn_wt.setter
+    def objfn_wt(self, value: Union[float,numpy.ndarray]) -> None:
+        """Set objective function weights."""
+        self._objfn_wt = value
+    @objfn_wt.deleter
+    def objfn_wt(self) -> None:
+        """Delete objective function weights."""
+        del self._objfn_wt
 
-    def ndset_trans():
-        doc = "The ndset_trans property."
-        def fget(self):
-            return self._ndset_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "ndset_trans") # must be callable
-            self._ndset_trans = value
-        def fdel(self):
-            del self._ndset_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans = property(**ndset_trans())
+    @property
+    def ndset_trans(self) -> Union[Callable,None]:
+        """Nondominated set transformation function."""
+        return self._ndset_trans
+    @ndset_trans.setter
+    def ndset_trans(self, value: Union[Callable,None]) -> None:
+        """Set nondominated set transformation function."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "ndset_trans") # must be callable
+        self._ndset_trans = value
+    @ndset_trans.deleter
+    def ndset_trans(self) -> None:
+        """Delete nondominated set transformation function."""
+        del self._ndset_trans
 
-    def ndset_trans_kwargs():
-        doc = "The ndset_trans_kwargs property."
-        def fget(self):
-            return self._ndset_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
-            self._ndset_trans_kwargs = value
-        def fdel(self):
-            del self._ndset_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+    @property
+    def ndset_trans_kwargs(self) -> dict:
+        """Nondominated set transformation function keyword arguments."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.setter
+    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set nondominated set transformation function keyword arguments."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+        self._ndset_trans_kwargs = value
+    @ndset_trans_kwargs.deleter
+    def ndset_trans_kwargs(self) -> None:
+        """Delete nondominated set transformation function keyword arguments."""
+        del self._ndset_trans_kwargs
 
-    def ndset_wt():
-        doc = "The ndset_wt property."
-        def fget(self):
-            return self._ndset_wt
-        def fset(self, value):
-            self._ndset_wt = value
-        def fdel(self):
-            del self._ndset_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_wt = property(**ndset_wt())
+    @property
+    def ndset_wt(self) -> Union[float,numpy.ndarray]:
+        """Nondominated set weights."""
+        return self._ndset_wt
+    @ndset_wt.setter
+    def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
+        """Set nondominated set weights."""
+        self._ndset_wt = value
+    @ndset_wt.deleter
+    def ndset_wt(self) -> None:
+        """Delete nondominated set weights."""
+        del self._ndset_wt
 
-    def moalgo():
-        doc = "The moalgo property."
-        def fget(self):
-            return self._moalgo
-        def fset(self, value):
-            if value is None:
-                value = NSGA3UnityConstraintGeneticAlgorithm(
-                    ngen = 600,             # number of generations to evolve
-                    mu = 100,               # number of parents in population
-                    lamb = 100,             # number of progeny to produce
-                    cxeta = 30.0,           # crossover variance parameter
-                    muteta = 20.0,          # mutation crossover parameter
-                    refpnts = None,         # hyperplane reference points
-                    save_logbook = False,   # whether to save logs or not
-                    rng = self.rng          # PRNG source
-                )
-            self._moalgo = value
-        def fdel(self):
-            del self._moalgo
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    moalgo = property(**moalgo())
+    @property
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Multi-objective optimization algorithm."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set multi-objective optimization algorithm."""
+        if value is None:
+            value = NSGA3UnityConstraintGeneticAlgorithm(
+                ngen = 600,             # number of generations to evolve
+                mu = 100,               # number of parents in population
+                lamb = 100,             # number of progeny to produce
+                cxeta = 30.0,           # crossover variance parameter
+                muteta = 20.0,          # mutation crossover parameter
+                refpnts = None,         # hyperplane reference points
+                save_logbook = False,   # whether to save logs or not
+                rng = self.rng          # PRNG source
+            )
+        self._moalgo = value
+    @moalgo.deleter
+    def moalgo(self) -> None:
+        """Delete multi-objective optimization algorithm."""
+        del self._moalgo
 
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            if value is None:               # if rng is None
-                value = global_prng         # use default random number generator
-            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    rng = property(**rng())
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
 
     ############################################################################
     ########################## Private Object Methods ##########################

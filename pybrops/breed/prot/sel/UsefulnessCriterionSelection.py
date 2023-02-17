@@ -177,10 +177,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def nconfig(self) -> int:
         """Number of cross configurations to consider."""
         return self._nconfig
-    @nconfig.getter
-    def nconfig(self) -> int:
-        """Get number of cross configurations to consider."""
-        return self._nconfig
     @nconfig.setter
     def nconfig(self, value: int) -> None:
         """Set number of cross configurations to consider."""
@@ -195,10 +191,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def nparent(self) -> int:
         """Description for property nparent."""
-        return self._nparent
-    @nparent.getter
-    def nparent(self) -> int:
-        """Get data for property nparent."""
         return self._nparent
     @nparent.setter
     def nparent(self, value: int) -> None:
@@ -215,10 +207,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def ncross(self) -> int:
         """Description for property ncross."""
         return self._ncross
-    @ncross.getter
-    def ncross(self) -> int:
-        """Get data for property ncross."""
-        return self._ncross
     @ncross.setter
     def ncross(self, value: int) -> None:
         """Set data for property ncross."""
@@ -233,10 +221,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def nprogeny(self) -> int:
         """Description for property nprogeny."""
-        return self._nprogeny
-    @nprogeny.getter
-    def nprogeny(self) -> int:
-        """Get data for property nprogeny."""
         return self._nprogeny
     @nprogeny.setter
     def nprogeny(self, value: int) -> None:
@@ -253,10 +237,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def nself(self) -> int:
         """Description for property nself."""
         return self._nself
-    @nself.getter
-    def nself(self) -> int:
-        """Get data for property nself."""
-        return self._nself
     @nself.setter
     def nself(self, value: int) -> None:
         """Set data for property nself."""
@@ -272,10 +252,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def unique_parents(self) -> bool:
         """Description for property unique_parents."""
         return self._unique_parents
-    @unique_parents.getter
-    def unique_parents(self) -> bool:
-        """Get data for property unique_parents."""
-        return self._unique_parents
     @unique_parents.setter
     def unique_parents(self, value: bool) -> None:
         """Set data for property unique_parents."""
@@ -289,10 +265,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def upper_percentile(self) -> numbers.Number:
         """Description for property upper_percentile."""
-        return self._upper_percentile
-    @upper_percentile.getter
-    def upper_percentile(self) -> numbers.Number:
-        """Get data for property upper_percentile."""
         return self._upper_percentile
     @upper_percentile.setter
     def upper_percentile(self, value: numbers.Number) -> None:
@@ -312,10 +284,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def selection_intensity(self) -> numbers.Number:
         """Description for property selection_intensity."""
         return self._selection_intensity
-    @selection_intensity.getter
-    def selection_intensity(self) -> numbers.Number:
-        """Get data for property selection_intensity."""
-        return self._selection_intensity
     @selection_intensity.setter
     def selection_intensity(self, value: numbers.Number) -> None:
         """Set data for property selection_intensity."""
@@ -328,10 +296,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def vmatfcty(self) -> GeneticVarianceMatrixFactory:
         """Description for property vmatfcty."""
-        return self._vmatfcty
-    @vmatfcty.getter
-    def vmatfcty(self) -> GeneticVarianceMatrixFactory:
-        """Get data for property vmatfcty."""
         return self._vmatfcty
     @vmatfcty.setter
     def vmatfcty(self, value: GeneticVarianceMatrixFactory) -> None:
@@ -347,10 +311,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def gmapfn(self) -> GeneticMapFunction:
         """Description for property gmapfn."""
         return self._gmapfn
-    @gmapfn.getter
-    def gmapfn(self) -> GeneticMapFunction:
-        """Get data for property gmapfn."""
-        return self._gmapfn
     @gmapfn.setter
     def gmapfn(self, value: GeneticMapFunction) -> None:
         """Set data for property gmapfn."""
@@ -363,10 +323,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def method(self) -> str:
         """Description for property method."""
-        return self._method
-    @method.getter
-    def method(self) -> str:
-        """Get data for property method."""
         return self._method
     @method.setter
     def method(self, value: str) -> None:
@@ -387,10 +343,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def objfn_trans(self) -> Callable:
         """Description for property objfn_trans."""
         return self._objfn_trans
-    @objfn_trans.getter
-    def objfn_trans(self) -> Callable:
-        """Get data for property objfn_trans."""
-        return self._objfn_trans
     @objfn_trans.setter
     def objfn_trans(self, value: Union[Callable,None]) -> None:
         """Set data for property objfn_trans."""
@@ -405,10 +357,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def objfn_trans_kwargs(self) -> dict:
         """Description for property objfn_trans_kwargs."""
-        return self._objfn_trans_kwargs
-    @objfn_trans_kwargs.getter
-    def objfn_trans_kwargs(self) -> dict:
-        """Get data for property objfn_trans_kwargs."""
         return self._objfn_trans_kwargs
     @objfn_trans_kwargs.setter
     def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
@@ -426,10 +374,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def objfn_wt(self) -> numpy.ndarray:
         """Description for property objfn_wt."""
         return self._objfn_wt
-    @objfn_wt.getter
-    def objfn_wt(self) -> numpy.ndarray:
-        """Get data for property objfn_wt."""
-        return self._objfn_wt
     @objfn_wt.setter
     def objfn_wt(self, value: numpy.ndarray) -> None:
         """Set data for property objfn_wt."""
@@ -442,10 +386,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def ndset_trans(self) -> Union[Callable,None]:
         """Description for property ndset_trans."""
-        return self._ndset_trans
-    @ndset_trans.getter
-    def ndset_trans(self) -> Union[Callable,None]:
-        """Get data for property ndset_trans."""
         return self._ndset_trans
     @ndset_trans.setter
     def ndset_trans(self, value: Union[Callable,None]) -> None:
@@ -461,10 +401,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def ndset_trans_kwargs(self) -> dict:
         """Description for property ndset_trans_kwargs."""
-        return self._ndset_trans_kwargs
-    @ndset_trans_kwargs.getter
-    def ndset_trans_kwargs(self) -> dict:
-        """Get data for property ndset_trans_kwargs."""
         return self._ndset_trans_kwargs
     @ndset_trans_kwargs.setter
     def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
@@ -482,10 +418,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def ndset_wt(self) -> numpy.ndarray:
         """Description for property ndset_wt."""
         return self._ndset_wt
-    @ndset_wt.getter
-    def ndset_wt(self) -> numpy.ndarray:
-        """Get data for property ndset_wt."""
-        return self._ndset_wt
     @ndset_wt.setter
     def ndset_wt(self, value: numpy.ndarray) -> None:
         """Set data for property ndset_wt."""
@@ -498,10 +430,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
         """Description for property rng."""
-        return self._rng
-    @rng.getter
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
-        """Get data for property rng."""
         return self._rng
     @rng.setter
     def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
@@ -520,10 +448,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     def soalgo(self) -> OptimizationAlgorithm:
         """Description for property soalgo."""
         return self._soalgo
-    @soalgo.getter
-    def soalgo(self) -> OptimizationAlgorithm:
-        """Get data for property soalgo."""
-        return self._soalgo
     @soalgo.setter
     def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
         """Set data for property soalgo."""
@@ -539,15 +463,11 @@ class UsefulnessCriterionSelection(SelectionProtocol):
     
     @property
     def moalgo(self) -> OptimizationAlgorithm:
-        """Description for property moalgo."""
-        return self._moalgo
-    @moalgo.getter
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Get data for property moalgo."""
+        """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
     def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set data for property moalgo."""
+        """Set multi-objective opimization algorithm."""
         if value is None:
             value = NSGA2SetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
@@ -559,13 +479,13 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         self._moalgo = value
     @moalgo.deleter
     def moalgo(self) -> None:
-        """Delete data for property moalgo."""
+        """Delete multi-objective opimization algorithm."""
         del self._moalgo
     
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _calc_xmap(self, ntaxa):
+    def _calc_xmap(self, ntaxa: int) -> numpy.ndarray:
         """
         Calculate the cross map.
 

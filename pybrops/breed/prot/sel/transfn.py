@@ -5,9 +5,19 @@ Module containing functions for transforming objective function outputs.
 import numpy
 from typing import Union
 
-__all__ = ["trans_ndpt_to_vec_dist", "trans_sum", "trans_dot", "trans_flatten"]
+__all__ = [
+    "trans_ndpt_to_vec_dist", 
+    "trans_sum", 
+    "trans_dot", 
+    "trans_flatten"
+]
 
-def trans_ndpt_to_vec_dist(mat: numpy.ndarray, objfn_wt: numpy.ndarray, wt: numpy.ndarray, **kwargs: dict):
+def trans_ndpt_to_vec_dist(
+        mat: numpy.ndarray, 
+        objfn_wt: numpy.ndarray, 
+        wt: numpy.ndarray, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
     """
     Transform a set of non-dominated points by calculating their distances to a
     vector.
@@ -94,7 +104,11 @@ def trans_ndpt_to_vec_dist(mat: numpy.ndarray, objfn_wt: numpy.ndarray, wt: nump
 
     return d
 
-def trans_sum(mat: numpy.ndarray, axis: Union[int,tuple,None] = None, **kwargs: dict):
+def trans_sum(
+        mat: numpy.ndarray, 
+        axis: Union[int,tuple,None] = None, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
     """
     Transform a numpy.ndarray by taking a summation across an axis.
 
@@ -114,7 +128,11 @@ def trans_sum(mat: numpy.ndarray, axis: Union[int,tuple,None] = None, **kwargs: 
     """
     return mat.sum(axis = axis)
 
-def trans_dot(mat: numpy.ndarray, wt: numpy.ndarray, **kwargs: dict):
+def trans_dot(
+        mat: numpy.ndarray, 
+        wt: numpy.ndarray, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
     """
     Transform a numpy.ndarray by taking the dot product with a vector of weights
 
@@ -140,7 +158,10 @@ def trans_dot(mat: numpy.ndarray, wt: numpy.ndarray, **kwargs: dict):
     """
     return mat.dot(wt)
 
-def trans_flatten(mat: numpy.ndarray, **kwargs: dict):
+def trans_flatten(
+        mat: numpy.ndarray, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
     """
     Transform a numpy.ndarray by flattening it.
 

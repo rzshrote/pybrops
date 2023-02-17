@@ -688,7 +688,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
     
     @property
     def moalgo(self) -> OptimizationAlgorithm:
-        """Description for property moalgo."""
+        """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.getter
     def moalgo(self) -> OptimizationAlgorithm:
@@ -696,7 +696,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         return self._moalgo
     @moalgo.setter
     def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set data for property moalgo."""
+        """Set multi-objective opimization algorithm."""
         # if value is None, use a default nsga-ii algorithm
         if value is None:
             value = NSGA2SetGeneticAlgorithm(
@@ -710,7 +710,7 @@ class MultiObjectiveGenomicMating(SelectionProtocol):
         self._moalgo = value
     @moalgo.deleter
     def moalgo(self) -> None:
-        """Delete data for property moalgo."""
+        """Delete multi-objective opimization algorithm."""
         del self._moalgo
     
     ############################################################################

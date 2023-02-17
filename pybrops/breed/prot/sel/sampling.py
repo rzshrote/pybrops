@@ -2,10 +2,20 @@
 Module containing utility functions for sampling individuals.
 """
 
+from typing import Union
 import numpy
 from pybrops.core.random import global_prng
 
-def stochastic_universal_sampling(k: int, contrib: numpy.ndarray, rng = None):
+__all__ = [
+    "stochastic_universal_sampling",
+    "two_way_outcross_shuffle"
+]
+
+def stochastic_universal_sampling(
+        k: int, 
+        contrib: numpy.ndarray, 
+        rng: Union[numpy.random.Generator,numpy.random.RandomState] = None
+    ) -> numpy.ndarray:
     """
     Perform stochastic universal sampling.
     
@@ -49,7 +59,10 @@ def stochastic_universal_sampling(k: int, contrib: numpy.ndarray, rng = None):
     sel = numpy.array(sel)                          # convert to ndarray
     return sel
 
-def two_way_outcross_shuffle(sel, rng):
+def two_way_outcross_shuffle(
+        sel: numpy.ndarray, 
+        rng: Union[numpy.random.Generator,numpy.random.RandomState] = None
+    ) -> numpy.ndarray:
     """
     Shuffle individuals ensuring they do not mate with themselves.
 

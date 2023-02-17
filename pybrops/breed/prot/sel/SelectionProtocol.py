@@ -2,7 +2,12 @@
 Module defining interfaces and error checking routines for selection protocols.
 """
 
-from typing import Any
+from typing import Any, Optional
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
 class SelectionProtocol:
@@ -40,7 +45,18 @@ class SelectionProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
+    def select(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> tuple:
         """
         Select individuals for breeding.
 

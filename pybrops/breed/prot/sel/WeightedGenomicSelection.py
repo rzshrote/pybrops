@@ -2,8 +2,10 @@
 Module implementing selection protocols for weighted genomic selection.
 """
 
+from typing import Callable, Union
 import numpy
 import types
+from pybrops.core.error.error_value_python import check_is_gt
 
 import pybrops.core.random
 from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
@@ -52,166 +54,156 @@ class WeightedGenomicSelection(SelectionProtocol):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def nparent():
-        doc = "The nparent property."
-        def fget(self):
-            """Get value for nparent."""
-            return self._nparent
-        def fset(self, value):
-            """Set value for nparent."""
-            check_is_int(value, "nparent")
-            self._nparent = value
-        def fdel(self):
-            """Delete value for nparent."""
-            del self._nparent
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nparent = property(**nparent())
+    @property
+    def nparent(self) -> int:
+        """Number of parents to select."""
+        return self._nparent
+    @nparent.setter
+    def nparent(self, value: int) -> None:
+        """Set number of parents to select."""
+        check_is_int(value, "nparent")      # must be int
+        check_is_gt(value, "nparent", 0)    # int must be >0
+        self._nparent = value
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete number of parents to select."""
+        del self._nparent
 
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            """Get value for ncross."""
-            return self._ncross
-        def fset(self, value):
-            """Set value for ncross."""
-            check_is_int(value, "ncross")
-            self._ncross = value
-        def fdel(self):
-            """Delete value for ncross."""
-            del self._ncross
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ncross = property(**ncross())
+    @property
+    def ncross(self) -> int:
+        """Number of crosses per configuration."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: int) -> None:
+        """Set number of crosses per configuration."""
+        check_is_int(value, "ncross")       # must be int
+        check_is_gt(value, "ncross", 0)     # int must be >0
+        self._ncross = value
+    @ncross.deleter
+    def ncross(self) -> None:
+        """Delete number of crosses per configuration."""
+        del self._ncross
 
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            """Get value for nprogeny."""
-            return self._nprogeny
-        def fset(self, value):
-            """Set value for nprogeny."""
-            check_is_int(value, "nprogeny")
-            self._nprogeny = value
-        def fdel(self):
-            """Delete value for nprogeny."""
-            del self._nprogeny
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nprogeny = property(**nprogeny())
+    @property
+    def nprogeny(self) -> int:
+        """Number of progeny to derive from each cross configuration."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: int) -> None:
+        """Set number of progeny to derive from each cross configuration."""
+        check_is_int(value, "nprogeny")     # must be int
+        check_is_gt(value, "nprogeny", 0)   # int must be >0
+        self._nprogeny = value
+    @nprogeny.deleter
+    def nprogeny(self) -> None:
+        """Delete number of progeny to derive from each cross configuration."""
+        del self._nprogeny
 
-    def objfn_trans():
-        doc = "The objfn_trans property."
-        def fget(self):
-            """Get value for objfn_trans."""
-            return self._objfn_trans
-        def fset(self, value):
-            """Set value for objfn_trans."""
-            if value is not None:
-                check_is_callable(value, "objfn_trans")
-            self._objfn_trans = value
-        def fdel(self):
-            """Delete value for objfn_trans."""
-            del self._objfn_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans = property(**objfn_trans())
+    @property
+    def objfn_trans(self) -> Union[Callable,None]:
+        """Objective function transformation function."""
+        return self._objfn_trans
+    @objfn_trans.setter
+    def objfn_trans(self, value: Union[Callable,None]) -> None:
+        """Set objective function transformation function."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "objfn_trans") # must be callable
+        self._objfn_trans = value
+    @objfn_trans.deleter
+    def objfn_trans(self) -> None:
+        """Delete objective function transformation function."""
+        del self._objfn_trans
 
-    def objfn_trans_kwargs():
-        doc = "The objfn_trans_kwargs property."
-        def fget(self):
-            """Get value for objfn_trans_kwargs."""
-            return self._objfn_trans_kwargs
-        def fset(self, value):
-            """Set value for objfn_trans_kwargs."""
-            if value is not None:
-                check_is_dict(value, "objfn_trans_kwargs")
-            else:
-                value = {}
-            self._objfn_trans_kwargs = value
-        def fdel(self):
-            """Delete value for objfn_trans_kwargs."""
-            del self._objfn_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+    @property
+    def objfn_trans_kwargs(self) -> dict:
+        """Objective function transformation function keyword arguments."""
+        return self._objfn_trans_kwargs
+    @objfn_trans_kwargs.setter
+    def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set objective function transformation function keyword arguments."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "objfn_trans_kwargs")  # check is dict
+        self._objfn_trans_kwargs = value
+    @objfn_trans_kwargs.deleter
+    def objfn_trans_kwargs(self) -> None:
+        """Delete objective function transformation function keyword arguments."""
+        del self._objfn_trans_kwargs
 
     # TODO: finish error checks
-    def objfn_wt():
-        doc = "The objfn_wt property."
-        def fget(self):
-            """Get value for objfn_wt."""
-            return self._objfn_wt
-        def fset(self, value):
-            """Set value for objfn_wt."""
-            self._objfn_wt = value
-        def fdel(self):
-            """Delete value for objfn_wt."""
-            del self._objfn_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_wt = property(**objfn_wt())
+    @property
+    def objfn_wt(self) -> Union[float,numpy.ndarray]:
+        """Objective function weights."""
+        return self._objfn_wt
+    @objfn_wt.setter
+    def objfn_wt(self, value: Union[float,numpy.ndarray]) -> None:
+        """Set objective function weights."""
+        self._objfn_wt = value
+    @objfn_wt.deleter
+    def objfn_wt(self) -> None:
+        """Delete objective function weights."""
+        del self._objfn_wt
 
-    def ndset_trans():
-        doc = "The ndset_trans property."
-        def fget(self):
-            """Get value for ndset_trans."""
-            return self._ndset_trans
-        def fset(self, value):
-            """Set value for ndset_trans."""
-            if value is not None:
-                check_is_callable(value, "ndset_trans")
-            self._ndset_trans = value
-        def fdel(self):
-            """Delete value for ndset_trans."""
-            del self._ndset_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans = property(**ndset_trans())
+    @property
+    def ndset_trans(self) -> Union[Callable,None]:
+        """Nondominated set transformation function."""
+        return self._ndset_trans
+    @ndset_trans.setter
+    def ndset_trans(self, value: Union[Callable,None]) -> None:
+        """Set nondominated set transformation function."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "ndset_trans") # must be callable
+        self._ndset_trans = value
+    @ndset_trans.deleter
+    def ndset_trans(self) -> None:
+        """Delete nondominated set transformation function."""
+        del self._ndset_trans
 
-    def ndset_trans_kwargs():
-        doc = "The ndset_trans_kwargs property."
-        def fget(self):
-            """Get value for ndset_trans_kwargs."""
-            return self._ndset_trans_kwargs
-        def fset(self, value):
-            """Set value for ndset_trans_kwargs."""
-            if value is not None:
-                check_is_dict(value, "ndset_trans_kwargs")
-            else:
-                value = {}
-            self._ndset_trans_kwargs = value
-        def fdel(self):
-            """Delete value for ndset_trans_kwargs."""
-            del self._ndset_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+    @property
+    def ndset_trans_kwargs(self) -> dict:
+        """Nondominated set transformation function keyword arguments."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.setter
+    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set nondominated set transformation function keyword arguments."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+        self._ndset_trans_kwargs = value
+    @ndset_trans_kwargs.deleter
+    def ndset_trans_kwargs(self) -> None:
+        """Delete nondominated set transformation function keyword arguments."""
+        del self._ndset_trans_kwargs
 
     # TODO: finish error checks
-    def ndset_wt():
-        doc = "The ndset_wt property."
-        def fget(self):
-            """Get value for ndset_wt."""
-            return self._ndset_wt
-        def fset(self, value):
-            """Set value for ndset_wt."""
-            self._ndset_wt = value
-        def fdel(self):
-            """Delete value for ndset_wt."""
-            del self._ndset_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_wt = property(**ndset_wt())
+    @property
+    def ndset_wt(self) -> Union[float,numpy.ndarray]:
+        """Nondominated set weights."""
+        return self._ndset_wt
+    @ndset_wt.setter
+    def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
+        """Set nondominated set weights."""
+        self._ndset_wt = value
+    @ndset_wt.deleter
+    def ndset_wt(self) -> None:
+        """Delete nondominated set weights."""
+        del self._ndset_wt
 
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            """Get value for rng."""
-            return self._rng
-        def fset(self, value):
-            """Set value for rng."""
-            if value is not None:
-                check_is_Generator_or_RandomState(value, "rng")
-            else:
-                value = global_prng
-            self._rng = value
-        def fdel(self):
-            """Delete value for rng."""
-            del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    rng = property(**rng())
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################
