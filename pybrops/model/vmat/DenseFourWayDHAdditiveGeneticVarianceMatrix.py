@@ -9,7 +9,9 @@ from typing import Any, Optional, Union
 import numpy
 import pandas
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_int, check_is_int_or_None
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.subroutines import srange
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
@@ -64,20 +66,25 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
     ############################ Object Properties #############################
     ############################################################################
 
+    ##################### Matrix Data ######################
+    @DenseAdditiveGeneticVarianceMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim(value, "mat", 5) # (ntaxa,ntaxa,ntaxa,ntaxa,ntrait)
+        self._mat = value
+
     ############## Square Metadata Properties ##############
-    def square_axes():
-        doc = "Axis indices for axes that are square"
-        def fget(self):
-            """Get axis indices for axes that are square"""
-            return (0,1,2,3) # (female2, male2, female1, male1)
-        def fset(self, value):
-            """Set axis indices for axes that are square"""
-            error_readonly("square_axes")
-        def fdel(self):
-            """Delete axis indices for axes that are square"""
-            error_readonly("square_axes")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes = property(**square_axes())
+    @DenseAdditiveGeneticVarianceMatrix.square_axes.getter
+    def square_axes(self) -> tuple:
+        """Get axis indices for axes that are square"""
+        return (0,1,2,3) # (female2, male2, female1, male1)
+
+    ######## Expected parental genome contributions ########
+    @DenseAdditiveGeneticVarianceMatrix.epgc.getter
+    def epgc(self) -> tuple:
+        """Get a tuple of the expected parental genome contributions."""
+        return (0.25, 0.25, 0.25, 0.25)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -218,7 +225,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
             nprogeny: int, 
             nself: int, 
             gmapfn: GeneticMapFunction, 
-            mem: int = 1024
+            mem: Union[int,None] = 1024
         ) -> 'DenseFourWayDHAdditiveGeneticVarianceMatrix':
         """
         Calculate a symmetrical tensor of progeny variances for each possible
@@ -278,7 +285,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
         check_is_int(nprogeny, "nprogeny")
         check_is_int(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_int(mem, "mem")
+        check_is_int_or_None(mem, "mem")
         
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():

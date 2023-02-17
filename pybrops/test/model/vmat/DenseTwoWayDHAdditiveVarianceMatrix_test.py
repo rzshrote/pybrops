@@ -245,8 +245,8 @@ def test_class_docstring():
 def test_init_is_concrete():
     generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "__init__")
 
-# def test_from_gmod_is_concrete():
-#     generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_gmod")
+def test_from_gmod_is_concrete():
+    generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_gmod")
 
 def test_from_algmod_is_concrete():
     generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_algmod")

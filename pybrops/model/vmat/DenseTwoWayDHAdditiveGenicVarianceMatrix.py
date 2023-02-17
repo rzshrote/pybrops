@@ -5,6 +5,8 @@ storing dense additive genic variance estimates calculated using two-way DH
 formulae.
 """
 
+from typing import Optional
+import numpy
 from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 
 # TODO: implement me
@@ -18,6 +20,16 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         1) Genic variance estimation for two-way DH progenies.
     """
 
-    def __init__(self, arg):
-        super(DenseTwoWayDHAdditiveGenicVarianceMatrix, self).__init__()
-        self.arg = arg
+    def __init__(
+            self,
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ):
+        super(DenseTwoWayDHAdditiveGenicVarianceMatrix, self).__init__(
+            mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )

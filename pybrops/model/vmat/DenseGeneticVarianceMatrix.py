@@ -6,10 +6,12 @@ storing dense genetic variance estimates.
 from typing import Any, Optional
 
 import numpy
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
+from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 
-class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
+class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticVarianceMatrix):
     """
     A semi-concrete class for dense genetic variance matrices.
 
@@ -28,6 +30,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
             mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ):
         """
@@ -44,16 +47,36 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,GeneticVarianceMatrix):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseGeneticVarianceMatrix, self).__init__(
-            mat = mat,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
-            **kwargs
-        )
+        # since this is multiple inheritance, do not use parental constructors
+        self.mat = mat
+        self.taxa = taxa
+        self.taxa_grp = taxa_grp
+        self.trait = trait
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+
+    ############## Square Metadata Properties ##############
+    @DenseSquareTaxaMatrix.square_axes.getter
+    def square_axes(self) -> tuple:
+        """Get axis indices for axes that are square"""
+        return (0,1) # (female, male); same as default in DenseSquareTaxaMatrix
+
+    ######## Expected parental genome contributions ########
+    @property
+    def epgc(self) -> tuple:
+        """Description for property epgc."""
+        return (0.5, 0.5)
+    @epgc.setter
+    def epgc(self, value: tuple) -> None:
+        """Set data for property epgc."""
+        error_readonly("epgc")
+    @epgc.deleter
+    def epgc(self) -> None:
+        """Delete data for property epgc."""
+        error_readonly("epgc")
+
 
     ############################################################################
     ############################## Object Methods ##############################

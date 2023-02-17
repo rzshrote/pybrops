@@ -147,6 +147,20 @@ def check_is_int_or_inf(v: Any, vname: str) -> None:
     if (v != math.inf) and (not isinstance(v, int)):
         raise TypeError("variable '{0}' must be of type 'int' or be infinite".format(vname))
 
+def check_is_int_or_None(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is an int or if it is None. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (not isinstance(v, int)) and (v is not None):
+        raise TypeError("variable '{0}' must be of type 'int' or None".format(vname))
+
 def check_is_list(v: Any, vname: str) -> None:
     """
     Check if a Python object is a list. Raise error if not.

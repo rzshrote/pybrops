@@ -124,24 +124,7 @@ def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp)
 ############################################################
 @pytest.fixture
 def mat_var():
-    out = numpy.array(
-        [[[0.39, 0.62, 0.45, 0.29, 0.33],
-          [0.62, 1.27, 0.94, 0.56, 0.74],
-          [0.45, 0.94, 1.13, 0.40, 0.88],
-          [0.29, 0.56, 0.40, 0.47, 0.42],
-          [0.33, 0.74, 0.88, 0.42, 0.75]],
-         [[0.91, 0.60, 0.38, 0.51, 0.60],
-          [0.60, 1.07, 0.48, 0.53, 0.41],
-          [0.38, 0.48, 0.28, 0.25, 0.32],
-          [0.51, 0.53, 0.25, 0.49, 0.39],
-          [0.60, 0.41, 0.32, 0.39, 0.57]],
-         [[0.93, 0.82, 0.61, 0.71, 0.74],
-          [0.82, 1.01, 0.57, 0.75, 0.85],
-          [0.61, 0.57, 0.59, 0.43, 0.48],
-          [0.71, 0.75, 0.43, 0.99, 0.72],
-          [0.74, 0.85, 0.48, 0.72, 0.74]]]
-    )
-    out = out.transpose(1,2,0)
+    out = numpy.random.random((5,5,3))
     yield out
 
 @pytest.fixture
@@ -165,6 +148,24 @@ def test_class_docstring():
 ################################################################################
 ########################### Test concrete properties ###########################
 ################################################################################
+def test_mat_fget(vmat, mat_var):
+    assert numpy.all(vmat.mat == mat_var)
+
+def test_mat_fset(vmat):
+    with pytest.raises(ValueError):
+        vmat.mat = numpy.random.random((5,))
+
+def test_mat_ndim_fget(vmat):
+    assert vmat.mat_ndim == 3
+
+def test_mat_ndim_fset(vmat):
+    with pytest.raises(AttributeError):
+        vmat.mat_ndim = -1
+
+def test_mat_ndim_fdel(vmat):
+    with pytest.raises(AttributeError):
+        del vmat.mat_ndim
+
 def test_square_axes_fget(vmat):
     assert vmat.square_axes == (0,1)
 

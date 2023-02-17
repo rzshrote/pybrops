@@ -5,11 +5,12 @@ storing genetic variance estimates.
 
 from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class GeneticVarianceMatrix(SquareTaxaMatrix):
+class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
     """
     An abstract class for additive genetic variance matrices.
 
