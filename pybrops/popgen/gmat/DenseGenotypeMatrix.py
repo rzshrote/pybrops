@@ -217,93 +217,65 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     ############################################################################
 
     ############## Genotype Data Properites ##############
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_ndarray_dtype_is_int8(value, "mat")
-            check_ndarray_is_2d(value, "mat")
-            # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseTaxaVariantMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        check_is_ndarray(value, "mat")
+        check_ndarray_dtype_is_int8(value, "mat")
+        check_ndarray_is_2d(value, "mat")
+        # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
+        self._mat = value
 
     ############## General matrix properties ###############
-    def ploidy():
-        doc = "Ploidy number represented by matrix property."
-        def fget(self):
-            """Get matrix ploidy number"""
-            return self._ploidy
-        def fset(self, value):
-            """Set matrix ploidy number"""
-            error_readonly("ploidy")
-        def fdel(self):
-            """Delete matrix ploidy number"""
-            error_readonly("ploidy")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ploidy = property(**ploidy())
+    @property
+    def ploidy(self) -> int:
+        """Genome ploidy number represented by matrix."""
+        return self._ploidy
+    @ploidy.setter
+    def ploidy(self, value: int) -> None:
+        """Set matrix ploidy number"""
+        error_readonly("ploidy")
+    @ploidy.deleter
+    def ploidy(self) -> None:
+        """Delete matrix ploidy number"""
+        error_readonly("ploidy")
 
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            return 0
-        def fset(self, value):
-            """Set number of phases"""
-            error_readonly("nphase")
-        def fdel(self):
-            """Delete number of phases"""
-            error_readonly("nphase")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
+    @property
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        return 0
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        error_readonly("nphase")
+    @nphase.deleter
+    def nphase(self) -> None:
+        """Delete number of phases"""
+        error_readonly("nphase")
 
-    def mat_format():
-        doc = "Matrix representation format property."
-        def fget(self):
-            """Get matrix representation format"""
-            return "{0,1,2}"
-        def fset(self, value):
-            """Set matrix representation format"""
-            error_readonly("mat_format")
-        def fdel(self):
-            """Delete matrix representation format"""
-            error_readonly("mat_format")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_format = property(**mat_format())
+    @property
+    def mat_format(self) -> str:
+        """Matrix representation format."""
+        return "{0,1,2}"
+    @mat_format.setter
+    def mat_format(self, value: str) -> None:
+        """Set matrix representation format"""
+        error_readonly("mat_format")
+    @mat_format.deleter
+    def mat_format(self) -> None:
+        """Delete matrix representation format"""
+        error_readonly("mat_format")
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaVariantMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 0
 
     ############# Variant Metadata Properites ##############
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 1
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("vrnt_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("vrnt_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
+    @DenseTaxaVariantMatrix.vrnt_axis.getter
+    def vrnt_axis(self) -> int:
+        """Get variant axis"""
+        return 1
 
     ############################################################################
     ############################## Object Methods ##############################

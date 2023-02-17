@@ -47,54 +47,54 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     ############################################################################
 
     ############## Matrix Metadata Properites ##############
-    def ploidy():
-        doc = "The ploidy level represented by the genotype matrix."
-        def fget(self):
-            """Get ploidy level"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set ploidy level"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete ploidy level"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ploidy = property(**ploidy())
-
-    def nphase():
-        doc = "The number of phases represented by the genotype matrix."
-        def fget(self):
-            """Get number of phases represented by the genotype matrix"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of phases represented by the genotype matrix"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of phases represented by the genotype matrix"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
-
-    def mat_format():
-        doc = "Matrix representation format property."
-        def fget(self):
-            """Get matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_format = property(**mat_format())
+    @property
+    def ploidy(self) -> int:
+        """The ploidy level represented by the genotype matrix."""
+        raise NotImplementedError("property is abstract")
+    @ploidy.setter
+    def ploidy(self, value: int) -> None:
+        """Set ploidy level"""
+        raise NotImplementedError("property is abstract")
+    @ploidy.deleter
+    def ploidy(self) -> None:
+        """Delete ploidy level"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def nphase(self) -> int:
+        """The number of phases represented by the genotype matrix."""
+        raise NotImplementedError("property is abstract")
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases represented by the genotype matrix"""
+        raise NotImplementedError("property is abstract")
+    @nphase.deleter
+    def nphase(self) -> None:
+        """Delete number of phases represented by the genotype matrix"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def mat_format(self) -> str:
+        """Matrix representation format."""
+        raise NotImplementedError("property is abstract")
+    @mat_format.setter
+    def mat_format(self, value: str) -> None:
+        """Set matrix representation format"""
+        raise NotImplementedError("property is abstract")
+    @mat_format.deleter
+    def mat_format(self) -> None:
+        """Delete matrix representation format"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
     ################## Matrix conversion ###################
-    def mat_asformat(self, format: str) -> numpy.ndarray:
+    def mat_asformat(
+            self, 
+            format: str
+        ) -> numpy.ndarray:
         """
         Get mat in a specific format type.
 
