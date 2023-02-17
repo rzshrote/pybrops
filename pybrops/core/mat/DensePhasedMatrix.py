@@ -95,33 +95,31 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     ############################################################################
 
     ############## Phase Metadata Properites ###############
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            return self._mat.shape[self.phase_axis]
-        def fset(self, value):
-            """Set number of phases"""
-            error_readonly("nphase")
-        def fdel(self):
-            """Delete number of phases"""
-            error_readonly("nphase")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
-
-    def phase_axis():
-        doc = "Axis along which phases are stored property."
-        def fget(self):
-            """Get phase axis number"""
-            return 0
-        def fset(self, value):
-            """Set phase axis number"""
-            error_readonly("phase_axis")
-        def fdel(self):
-            """Delete phase axis number"""
-            error_readonly("phase_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    phase_axis = property(**phase_axis())
+    @property
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        return self._mat.shape[self.phase_axis]
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        error_readonly("nphase")
+    @nphase.deleter
+    def nphase(self) -> None:
+        """Delete number of phases"""
+        error_readonly("nphase")
+    
+    @property
+    def phase_axis(self) -> int:
+        """Axis along which phases are stored."""
+        return 0
+    @phase_axis.setter
+    def phase_axis(self, value: int) -> None:
+        """Set phase axis number"""
+        error_readonly("phase_axis")
+    @phase_axis.deleter
+    def phase_axis(self) -> None:
+        """Delete phase axis number"""
+        error_readonly("phase_axis")
 
     ############################################################################
     ############################## Object Methods ##############################

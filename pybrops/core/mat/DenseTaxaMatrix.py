@@ -131,161 +131,144 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "Pointer to raw matrix object."
-        def fget(self):
-            """Get pointer to raw matrix object"""
-            return self._mat
-        def fset(self, value):
-            """Set pointer to raw matrix object"""
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_1d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            """Delete raw matrix object"""
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseMutableMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_at_least_1d(value, "mat")
+        self._mat = value
 
     ################# Taxa Data Properites #################
-    def taxa():
-        doc = "Taxa label property."
-        def fget(self):
-            """Get taxa label array"""
-            return self._taxa
-        def fset(self, value):
-            """Set taxa label array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa")
-                check_ndarray_dtype_is_object(value, "taxa")
-                check_ndarray_ndim(value, "taxa", 1)
-                check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
-            self._taxa = value
-        def fdel(self):
-            """Delete taxa label array"""
-            del self._taxa
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa = property(**taxa())
+    @property
+    def taxa(self) -> Union[numpy.ndarray,None]:
+        """Taxa label array"""
+        return self._taxa
+    @taxa.setter
+    def taxa(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa")
+            check_ndarray_dtype_is_object(value, "taxa")
+            check_ndarray_ndim(value, "taxa", 1)
+            check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
+        self._taxa = value
+    @taxa.deleter
+    def taxa(self) -> None:
+        """Delete taxa label array"""
+        del self._taxa
 
-    def taxa_grp():
-        doc = "Taxa group label property."
-        def fget(self):
-            """Get taxa group label array"""
-            return self._taxa_grp
-        def fset(self, value):
-            """Set taxa group label array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp")
-                check_ndarray_dtype_is_int64(value, "taxa_grp")
-                check_ndarray_ndim(value, "taxa_grp", 1)
-                check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
-            self._taxa_grp = value
-        def fdel(self):
-            """Delete taxa group label array"""
-            del self._taxa_grp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp = property(**taxa_grp())
+    @property
+    def taxa_grp(self) -> Union[numpy.ndarray,None]:
+        """Taxa group label."""
+        return self._taxa_grp
+    @taxa_grp.setter
+    def taxa_grp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp")
+            check_ndarray_dtype_is_int64(value, "taxa_grp")
+            check_ndarray_ndim(value, "taxa_grp", 1)
+            check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
+        self._taxa_grp = value
+    @taxa_grp.deleter
+    def taxa_grp(self) -> None:
+        """Delete taxa group label array"""
+        del self._taxa_grp
 
     ############### Taxa Metadata Properites ###############
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            return self._mat.shape[self.taxa_axis]
-        def fset(self, value):
-            """Set number of taxa"""
-            error_readonly("ntaxa")
-        def fdel(self):
-            """Delete number of taxa"""
-            error_readonly("ntaxa")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntaxa = property(**ntaxa())
+    @property
+    def ntaxa(self) -> int:
+        """Number of taxa"""
+        return self._mat.shape[self.taxa_axis]
+    @ntaxa.setter
+    def ntaxa(self, value: int) -> None:
+        """Set number of taxa"""
+        error_readonly("ntaxa")
+    @ntaxa.deleter
+    def ntaxa(self) -> None:
+        """Delete number of taxa"""
+        error_readonly("ntaxa")
+    
+    @property
+    def taxa_axis(self) -> int:
+        """Axis along which taxa are stored"""
+        return 0
+    @taxa_axis.setter
+    def taxa_axis(self, value: int) -> None:
+        """Set taxa axis number"""
+        error_readonly("taxa_axis")
+    @taxa_axis.deleter
+    def taxa_axis(self) -> None:
+        """Delete taxa axis number"""
+        error_readonly("taxa_axis")
+    
+    @property
+    def taxa_grp_name(self) -> Union[numpy.ndarray,None]:
+        """Taxa group name."""
+        return self._taxa_grp_name
+    @taxa_grp_name.setter
+    def taxa_grp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group name array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_name")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_name")
+            check_ndarray_ndim(value, "taxa_grp_name", 1)
+        self._taxa_grp_name = value
+    @taxa_grp_name.deleter
+    def taxa_grp_name(self) -> None:
+        """Delete taxa group array"""
+        del self._taxa_grp_name
 
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @property
+    def taxa_grp_stix(self) -> Union[numpy.ndarray,None]:
+        """Taxa group start index."""
+        return self._taxa_grp_stix
+    @taxa_grp_stix.setter
+    def taxa_grp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group start indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_stix")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
+            check_ndarray_ndim(value, "taxa_grp_stix", 1)
+        self._taxa_grp_stix = value
+    @taxa_grp_stix.deleter
+    def taxa_grp_stix(self) -> None:
+        """Delete taxa group start indices array"""
+        del self._taxa_grp_stix
 
-    def taxa_grp_name():
-        doc = "Taxa group name property."
-        def fget(self):
-            """Get taxa group name array"""
-            return self._taxa_grp_name
-        def fset(self, value):
-            """Set taxa group name array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_name")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_name")
-                check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            """Delete taxa group array"""
-            del self._taxa_grp_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_name = property(**taxa_grp_name())
+    @property
+    def taxa_grp_spix(self) -> Union[numpy.ndarray,None]:
+        """Taxa group stop index."""
+        return self._taxa_grp_spix
+    @taxa_grp_spix.setter
+    def taxa_grp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group stop indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_spix")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
+            check_ndarray_ndim(value, "taxa_grp_spix", 1)
+        self._taxa_grp_spix = value
+    @taxa_grp_spix.deleter
+    def taxa_grp_spix(self) -> None:
+        """Delete taxa group stop indices array"""
+        del self._taxa_grp_spix
 
-    def taxa_grp_stix():
-        doc = "Taxa group start index property."
-        def fget(self):
-            """Get taxa group start indices array"""
-            return self._taxa_grp_stix
-        def fset(self, value):
-            """Set taxa group start indices array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_stix")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
-                check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            """Delete taxa group start indices array"""
-            del self._taxa_grp_stix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_stix = property(**taxa_grp_stix())
-
-    def taxa_grp_spix():
-        doc = "Taxa group stop index property."
-        def fget(self):
-            """Get taxa group stop indices array"""
-            return self._taxa_grp_spix
-        def fset(self, value):
-            """Set taxa group stop indices array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_spix")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
-                check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            """Delete taxa group stop indices array"""
-            del self._taxa_grp_spix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "Taxa group length property."
-        def fget(self):
-            """Get taxa group length array"""
-            return self._taxa_grp_len
-        def fset(self, value):
-            """Set taxa group length array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_len")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_len")
-                check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            """Delete taxa group length array"""
-            del self._taxa_grp_len
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_len = property(**taxa_grp_len())
+    @property
+    def taxa_grp_len(self) -> Union[numpy.ndarray,None]:
+        """Taxa group length."""
+        return self._taxa_grp_len
+    @taxa_grp_len.setter
+    def taxa_grp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group length array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_len")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_len")
+            check_ndarray_ndim(value, "taxa_grp_len", 1)
+        self._taxa_grp_len = value
+    @taxa_grp_len.deleter
+    def taxa_grp_len(self) -> None:
+        """Delete taxa group length array"""
+        del self._taxa_grp_len
 
     ############################################################################
     ############################## Object Methods ##############################

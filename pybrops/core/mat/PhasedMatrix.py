@@ -42,34 +42,32 @@ class PhasedMatrix(MutableMatrix):
     ############################################################################
 
     ############## Phase Metadata Properites ###############
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of phases"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
-
-    def phase_axis():
-        doc = "Axis along which phases are stored property."
-        def fget(self):
-            """Get phase axis number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set phase axis number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete phase axis number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    phase_axis = property(**phase_axis())
-
+    @property
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        raise NotImplementedError("property is abstract")
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        raise NotImplementedError("property is abstract")
+    @nphase.deleter
+    def nphase(self) -> None:
+        """Delete number of phases"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def phase_axis(self) -> int:
+        """Axis along which phases are stored."""
+        raise NotImplementedError("property is abstract")
+    @phase_axis.setter
+    def phase_axis(self, value: int) -> None:
+        """Set phase axis number"""
+        raise NotImplementedError("property is abstract")
+    @phase_axis.deleter
+    def phase_axis(self) -> None:
+        """Delete phase axis number"""
+        raise NotImplementedError("property is abstract")
+    
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################

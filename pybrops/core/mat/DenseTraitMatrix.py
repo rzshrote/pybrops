@@ -108,54 +108,51 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     ############################################################################
 
     ###################### Trait data ######################
-    def trait():
-        doc = "Trait label property."
-        def fget(self):
-            """Get trait label array"""
-            return self._trait
-        def fset(self, value):
-            """Set trait label array"""
-            if value is not None:
-                check_is_ndarray(value, "trait")
-                check_ndarray_dtype_is_object(value, "trait")
-                check_ndarray_ndim(value, "trait", 1)
-                check_ndarray_axis_len(value, "trait", 0, self.ntrait)
-            self._trait = value
-        def fdel(self):
-            """Delete trait label array"""
-            del self._trait
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait = property(**trait())
-
+    @property
+    def trait(self) -> Union[numpy.ndarray,None]:
+        """Trait label."""
+        return self._trait
+    @trait.setter
+    def trait(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set trait label array"""
+        if value is not None:
+            check_is_ndarray(value, "trait")
+            check_ndarray_dtype_is_object(value, "trait")
+            check_ndarray_ndim(value, "trait", 1)
+            check_ndarray_axis_len(value, "trait", 0, self.ntrait)
+        self._trait = value
+    @trait.deleter
+    def trait(self) -> None:
+        """Delete trait label array"""
+        del self._trait
+    
     #################### Trait metadata ####################
-    def ntrait():
-        doc = "Number of traits property."
-        def fget(self):
-            """Get number of traits"""
-            return self._mat.shape[self.trait_axis]
-        def fset(self, value):
-            """Set number of traits"""
-            error_readonly("ntrait")
-        def fdel(self):
-            """Delete number of traits"""
-            error_readonly("ntrait")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntrait = property(**ntrait())
-
-    def trait_axis():
-        doc = "Axis along which traits are stored property."
-        def fget(self):
-            """Get trait axis number"""
-            return 0
-        def fset(self, value):
-            """Set trait axis number"""
-            error_readonly("ntrait")
-        def fdel(self):
-            """Delete trait axis number"""
-            error_readonly("ntrait")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait_axis = property(**trait_axis())
-
+    @property
+    def ntrait(self) -> int:
+        """Number of traits."""
+        return self._mat.shape[self.trait_axis]
+    @ntrait.setter
+    def ntrait(self, value: int) -> None:
+        """Set number of traits"""
+        error_readonly("ntrait")
+    @ntrait.deleter
+    def ntrait(self) -> None:
+        """Delete number of traits"""
+        error_readonly("ntrait")
+    
+    @property
+    def trait_axis(self) -> int:
+        """Axis along which traits are stored."""
+        return 0
+    @trait_axis.setter
+    def trait_axis(self, value: int) -> None:
+        """Set trait axis number"""
+        error_readonly("ntrait")
+    @trait_axis.deleter
+    def trait_axis(self) -> None:
+        """Delete trait axis number"""
+        error_readonly("ntrait")
+    
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
             self, 

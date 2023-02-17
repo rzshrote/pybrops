@@ -42,119 +42,111 @@ class TaxaMatrix(GroupableMatrix):
     ############################################################################
 
     ################# Taxa Data Properites #################
-    def taxa():
-        doc = "Taxa label property."
-        def fget(self):
-            """Get taxa label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa = property(**taxa())
-
-    def taxa_grp():
-        doc = "Taxa group label property."
-        def fget(self):
-            """Get taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp = property(**taxa_grp())
-
+    @property
+    def taxa(self) -> Any:
+        """Taxa label."""
+        raise NotImplementedError("property is abstract")
+    @taxa.setter
+    def taxa(self, value: Any) -> None:
+        """Set taxa label array"""
+        raise NotImplementedError("property is abstract")
+    @taxa.deleter
+    def taxa(self) -> None:
+        """Delete taxa label array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_grp(self) -> Any:
+        """Taxa group label."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp.setter
+    def taxa_grp(self, value: Any) -> None:
+        """Set taxa group label array"""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp.deleter
+    def taxa_grp(self) -> None:
+        """Delete taxa group label array"""
+        raise NotImplementedError("property is abstract")
+    
     ############### Taxa Metadata Properites ###############
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of taxa"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntaxa = property(**ntaxa())
-
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
-
-    def taxa_grp_name():
-        doc = "Taxa group name property."
-        def fget(self):
-            """Get taxa group name array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group name array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_name = property(**taxa_grp_name())
-
-    def taxa_grp_stix():
-        doc = "Taxa group start index property."
-        def fget(self):
-            """Get taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_stix = property(**taxa_grp_stix())
-
-    def taxa_grp_spix():
-        doc = "Taxa group stop index property."
-        def fget(self):
-            """Get taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "Taxa group length property."
-        def fget(self):
-            """Get taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_len = property(**taxa_grp_len())
-
+    @property
+    def ntaxa(self) -> int:
+        """Number of taxa."""
+        raise NotImplementedError("property is abstract")
+    @ntaxa.setter
+    def ntaxa(self, value: int) -> None:
+        """Set number of taxa"""
+        raise NotImplementedError("property is abstract")
+    @ntaxa.deleter
+    def ntaxa(self) -> None:
+        """Delete number of taxa"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_axis(self) -> int:
+        """Axis along which taxa are stored."""
+        raise NotImplementedError("property is abstract")
+    @taxa_axis.setter
+    def taxa_axis(self, value: int) -> None:
+        """Set taxa axis number"""
+        raise NotImplementedError("property is abstract")
+    @taxa_axis.deleter
+    def taxa_axis(self) -> None:
+        """Delete taxa axis number"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_grp_name(self) -> Any:
+        """Taxa group name."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_name.setter
+    def taxa_grp_name(self, value: Any) -> None:
+        """Set taxa group name array"""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_name.deleter
+    def taxa_grp_name(self) -> None:
+        """Delete taxa group array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_grp_stix(self) -> Any:
+        """Taxa group start index."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_stix.setter
+    def taxa_grp_stix(self, value: Any) -> None:
+        """Set taxa group start indices array"""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_stix.deleter
+    def taxa_grp_stix(self) -> None:
+        """Delete taxa group start indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_grp_spix(self) -> Any:
+        """Taxa group stop index."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_spix.setter
+    def taxa_grp_spix(self, value: Any) -> None:
+        """Set taxa group stop indices array"""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_spix.deleter
+    def taxa_grp_spix(self) -> None:
+        """Delete taxa group stop indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def taxa_grp_len(self) -> Any:
+        """Taxa group length."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_len.setter
+    def taxa_grp_len(self, value: Any) -> None:
+        """Set taxa group length array"""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_len.deleter
+    def taxa_grp_len(self) -> None:
+        """Delete taxa group length array"""
+        raise NotImplementedError("property is abstract")
+    
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################

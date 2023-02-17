@@ -288,48 +288,48 @@ class DenseMatrix(Matrix):
     ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            # The only assumption is that mat is a numpy.ndarray matrix.
-            # Let the user decide whether to overwrite error checks.
-            check_is_ndarray(value, "mat")
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
-
-    def mat_ndim():
-        doc = "Number of dimensions of the raw matrix property."
-        def fget(self):
-            """Get number of dimensions of the raw matrix"""
-            return self._mat.ndim
-        def fset(self, value):
-            """Set number of dimensions of the raw matrix"""
-            error_readonly("mat_ndim")
-        def fdel(self):
-            """Delete number of dimensions of the raw matrix"""
-            error_readonly("mat_ndim")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_ndim = property(**mat_ndim())
-
-    def mat_shape():
-        doc = "Shape of the raw matrix property."
-        def fget(self):
-            """Get the shape of the raw matrix"""
-            return self._mat.shape
-        def fset(self, value):
-            """Set the shape of the raw matrix"""
-            error_readonly("mat_shape")
-        def fdel(self):
-            """Delete the shape of the raw matrix"""
-            error_readonly("mat_shape")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_shape = property(**mat_shape())
-
+    @property
+    def mat(self) -> numpy.ndarray:
+        """Pointer to raw numpy.ndarray object."""
+        return self._mat
+    @mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        # The only assumption is that mat is a numpy.ndarray matrix.
+        # Let the user decide whether to overwrite error checks.
+        check_is_ndarray(value, "mat")
+        self._mat = value
+    @mat.deleter
+    def mat(self) -> None:
+        """Delete pointer to raw numpy.ndarray object."""
+        del self._mat
+    
+    @property
+    def mat_ndim(self) -> int:
+        """Number of dimensions of the raw numpy.ndarray."""
+        return self._mat.ndim
+    @mat_ndim.setter
+    def mat_ndim(self, value: int) -> None:
+        """Set number of dimensions of the raw numpy.ndarray"""
+        error_readonly("mat_ndim")
+    @mat_ndim.deleter
+    def mat_ndim(self) -> None:
+        """Delete number of dimensions of the raw numpy.ndarray"""
+        error_readonly("mat_ndim")
+    
+    @property
+    def mat_shape(self) -> tuple:
+        """Shape of the raw numpy.ndarray."""
+        return self._mat.shape
+    @mat_shape.setter
+    def mat_shape(self, value: tuple) -> None:
+        """Set the shape of the raw numpy.ndarray"""
+        error_readonly("mat_shape")
+    @mat_shape.deleter
+    def mat_shape(self) -> None:
+        """Delete the shape of the raw numpy.ndarray"""
+        error_readonly("mat_shape")
+    
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################

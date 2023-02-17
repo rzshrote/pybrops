@@ -42,49 +42,46 @@ class TraitMatrix(SortableMatrix):
     ############################################################################
 
     ###################### Trait data ######################
-    def trait():
-        doc = "Trait label property."
-        def fget(self):
-            """Get trait label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set trait label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete trait label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait = property(**trait())
-
+    @property
+    def trait(self) -> Any:
+        """Trait label."""
+        raise NotImplementedError("property is abstract")
+    @trait.setter
+    def trait(self, value: Any) -> None:
+        """Set trait label array"""
+        raise NotImplementedError("property is abstract")
+    @trait.deleter
+    def trait(self) -> None:
+        """Delete trait label array"""
+        raise NotImplementedError("property is abstract")
+    
     #################### Trait metadata ####################
-    def ntrait():
-        doc = "Number of traits property."
-        def fget(self):
-            """Get number of traits"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of traits"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of traits"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntrait = property(**ntrait())
-
-    def trait_axis():
-        doc = "Axis along which traits are stored property."
-        def fget(self):
-            """Get trait axis number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set trait axis number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete trait axis number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait_axis = property(**trait_axis())
-
+    @property
+    def ntrait(self) -> int:
+        """Number of traits."""
+        raise NotImplementedError("property is abstract")
+    @ntrait.setter
+    def ntrait(self, value: int) -> None:
+        """Set number of traits"""
+        raise NotImplementedError("property is abstract")
+    @ntrait.deleter
+    def ntrait(self) -> None:
+        """Delete number of traits"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def trait_axis(self) -> int:
+        """Axis along which traits are stored."""
+        raise NotImplementedError("property is abstract")
+    @trait_axis.setter
+    def trait_axis(self, value: int) -> None:
+        """Set trait axis number"""
+        raise NotImplementedError("property is abstract")
+    @trait_axis.deleter
+    def trait_axis(self) -> None:
+        """Delete trait axis number"""
+        raise NotImplementedError("property is abstract")
+    
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
@@ -114,7 +111,7 @@ class TraitMatrix(SortableMatrix):
             A copy of the TraitMatrix with values appended to axis. Note that adjoin does
             not occur in-place: a new TraitMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
     def delete_trait(
             self, 
@@ -137,7 +134,7 @@ class TraitMatrix(SortableMatrix):
             A TraitMatrix with deleted elements. Note that concat does not occur
             in-place: a new TraitMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
     def insert_trait(
             self, 
@@ -167,7 +164,7 @@ class TraitMatrix(SortableMatrix):
             A TraitMatrix with values inserted. Note that insert does not occur
             in-place: a new TraitMatrix is allocated and filled.
         """
-        raise NotImplementedError("static method is abstract")
+        raise NotImplementedError("method is abstract")
 
     def select_trait(
             self, 

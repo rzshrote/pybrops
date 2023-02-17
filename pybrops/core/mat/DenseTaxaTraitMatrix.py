@@ -134,34 +134,16 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
     ############################################################################
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 0
 
     ############# Variant Metadata Properites ##############
-    def trait_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 1
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("trait_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("trait_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait_axis = property(**trait_axis())
+    @DenseTraitMatrix.trait_axis.getter
+    def trait_axis(self):
+        """Get variant axis"""
+        return 1
 
     ############################################################################
     ############################## Object Methods ##############################

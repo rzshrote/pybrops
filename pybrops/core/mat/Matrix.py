@@ -384,47 +384,44 @@ class Matrix(HDF5InputOutput):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def mat():
-        doc = "Pointer to raw matrix object."
-        def fget(self):
-            """Get pointer to raw matrix object"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set pointer to raw matrix object"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete raw matrix object"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
-
-    def mat_ndim():
-        doc = "Number of dimensions of the raw matrix property."
-        def fget(self):
-            """Get number of dimensions of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of dimensions of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of dimensions of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_ndim = property(**mat_ndim())
-
-    def mat_shape():
-        doc = "Shape of the raw matrix property."
-        def fget(self):
-            """Get the shape of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the shape of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the shape of the raw matrix"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_shape = property(**mat_shape())
+    @property
+    def mat(self) -> Any:
+        """Pointer to raw matrix object."""
+        raise NotImplementedError("property is abstract")
+    @mat.setter
+    def mat(self, value: Any) -> None:
+        """Set pointer to raw matrix object"""
+        raise NotImplementedError("property is abstract")
+    @mat.deleter
+    def mat(self) -> None:
+        """Delete raw matrix object"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def mat_ndim(self) -> int:
+        """Number of dimensions of the raw matrix."""
+        raise NotImplementedError("property is abstract")
+    @mat_ndim.setter
+    def mat_ndim(self, value: int) -> None:
+        """Set number of dimensions of the raw matrix"""
+        raise NotImplementedError("property is abstract")
+    @mat_ndim.deleter
+    def mat_ndim(self) -> None:
+        """Delete number of dimensions of the raw matrix"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def mat_shape(self) -> tuple:
+        """Shape of the raw matrix."""
+        raise NotImplementedError("property is abstract")
+    @mat_shape.setter
+    def mat_shape(self, value: tuple) -> None:
+        """Set the shape of the raw matrix"""
+        raise NotImplementedError("property is abstract")
+    @mat_shape.deleter
+    def mat_shape(self) -> None:
+        """Delete the shape of the raw matrix"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
