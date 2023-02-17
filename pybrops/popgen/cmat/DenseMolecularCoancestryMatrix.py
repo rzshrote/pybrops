@@ -156,7 +156,6 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
-    # FIXME: there is a bug here. gmat with phased and unphased matrices return different values.
     @classmethod
     def from_gmat(
             cls, 
