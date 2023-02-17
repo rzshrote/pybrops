@@ -2,7 +2,7 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
-from typing import Any, Optional
+from typing import Any, Optional, Union
 import numpy
 import warnings
 
@@ -28,7 +28,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseCoancestryMatrix class.
 
@@ -57,115 +63,71 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     ############################ Object Properties #############################
     ############################################################################
 
-    ################# Taxa Data Properites #################
-    def taxa():
-        doc = "The taxa property."
-        def fget(self):
-            return self._taxa
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa")
-                check_ndarray_dtype_is_object(value, "taxa")
-                check_ndarray_ndim(value, "taxa", 1)
-                check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
-            self._taxa = value
-        def fdel(self):
-            del self._taxa
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa = property(**taxa())
+    ############## Coancestry Data Properites ##############
+    @DenseSquareTaxaMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        check_is_ndarray(value, "mat")
+        check_all_equal(value.shape, "mat.shape")
+        check_ndarray_dtype(value, "mat", numpy.float64)
+        check_ndarray_ndim(value, "mat", 2)
+        self._mat = value
 
-    def taxa_grp():
-        doc = "The taxa_grp property."
-        def fget(self):
-            return self._taxa_grp
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp")
-                check_ndarray_dtype(value, "taxa_grp", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp", 1)
-                check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
-            self._taxa_grp = value
-        def fdel(self):
-            del self._taxa_grp
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp = property(**taxa_grp())
+    ################# Taxa Data Properites #################
+    @DenseSquareTaxaMatrix.taxa.setter
+    def taxa(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa")
+            check_ndarray_dtype_is_object(value, "taxa")
+            check_ndarray_ndim(value, "taxa", 1)
+            check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
+        self._taxa = value
+
+    @DenseSquareTaxaMatrix.taxa_grp.setter
+    def taxa_grp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp")
+            check_ndarray_dtype(value, "taxa_grp", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp", 1)
+            check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
+        self._taxa_grp = value
 
     ############### Taxa Metadata Properites ###############
-    def taxa_grp_name():
-        doc = "The taxa_grp_name property."
-        def fget(self):
-            return self._taxa_grp_name
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_name")
-                check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            del self._taxa_grp_name
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_name = property(**taxa_grp_name())
+    @DenseSquareTaxaMatrix.taxa_grp_name.setter
+    def taxa_grp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group name array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_name")
+            check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_name", 1)
+        self._taxa_grp_name = value
 
-    def taxa_grp_stix():
-        doc = "The taxa_grp_stix property."
-        def fget(self):
-            return self._taxa_grp_stix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_stix")
-                check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            del self._taxa_grp_stix
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_stix = property(**taxa_grp_stix())
+    @DenseSquareTaxaMatrix.taxa_grp_stix.setter
+    def taxa_grp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group start indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_stix")
+            check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_stix", 1)
+        self._taxa_grp_stix = value
 
-    def taxa_grp_spix():
-        doc = "The taxa_grp_spix property."
-        def fget(self):
-            return self._taxa_grp_spix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_spix")
-                check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            del self._taxa_grp_spix
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_spix = property(**taxa_grp_spix())
+    @DenseSquareTaxaMatrix.taxa_grp_spix.setter
+    def taxa_grp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group stop indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_spix")
+            check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_spix", 1)
+        self._taxa_grp_spix = value
 
-    def taxa_grp_len():
-        doc = "The taxa_grp_len property."
-        def fget(self):
-            return self._taxa_grp_len
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_len")
-                check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            del self._taxa_grp_len
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_len = property(**taxa_grp_len())
-
-    ############## Coancestry Data Properites ##############
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_all_equal(value.shape, "mat.shape")
-            check_ndarray_dtype(value, "mat", numpy.float64)
-            check_ndarray_ndim(value, "mat", 2)
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    mat = property(**mat())
+    @DenseSquareTaxaMatrix.taxa_grp_len.setter
+    def taxa_grp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_len")
+            check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_len", 1)
+        self._taxa_grp_len = value
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -224,7 +186,10 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         """
         return 0.5 * self._mat[args]
 
-    def is_positive_semidefinite(self, eigvaltol = 2e-14):
+    def is_positive_semidefinite(
+            self, 
+            eigvaltol = 2e-14
+        ) -> bool:
         """
         Determine whether the coancestry matrix is positive semidefinite.
         
@@ -245,7 +210,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             eigvaltol = 0.0
         return numpy.all(numpy.linalg.eigvals(self._mat) >= eigvaltol)
     
-    def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6, nattempt = 100):
+    def apply_jitter(
+            self, 
+            eigvaltol = 2e-14, 
+            minjitter = 1e-10, 
+            maxjitter = 1e-6, 
+            nattempt = 100
+        ) -> bool:
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
         all eigenvalues exceed the provided eigenvalue tolerance.

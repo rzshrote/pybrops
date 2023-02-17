@@ -35,7 +35,16 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            location: numpy.ndarray, 
+            scale: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseEstimatedBreedingValueMatrix.
 

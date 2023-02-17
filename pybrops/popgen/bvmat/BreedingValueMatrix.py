@@ -55,40 +55,38 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def location():
-        doc = "Mean of the phenotype values used to calculate breeding values"
-        def fget(self):
-            """Get the mean of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the mean of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the mean of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    location = property(**location())
-
-    def scale():
-        doc = "Standard deviation of the phenotype values used to calculate breeding values"
-        def fget(self):
-            """Get the standard deviation of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the standard deviation of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the standard deviation of the phenotype values used to calculate breeding values"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    scale = property(**scale())
+    @property
+    def location(self) -> Any:
+        """Mean of the phenotype values used to calculate breeding values."""
+        raise NotImplementedError("property is abstract")
+    @location.setter
+    def location(self, value: Any) -> None:
+        """Set the mean of the phenotype values used to calculate breeding values"""
+        raise NotImplementedError("property is abstract")
+    @location.deleter
+    def location(self) -> None:
+        """Delete the mean of the phenotype values used to calculate breeding values"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def scale(self) -> Any:
+        """Standard deviation of the phenotype values used to calculate breeding values."""
+        raise NotImplementedError("property is abstract")
+    @scale.setter
+    def scale(self, value: Any) -> None:
+        """Set the standard deviation of the phenotype values used to calculate breeding values"""
+        raise NotImplementedError("property is abstract")
+    @scale.deleter
+    def scale(self) -> None:
+        """Delete the standard deviation of the phenotype values used to calculate breeding values"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
     ############## Matrix summary statistics ###############
-    def targmax(self):
+    def targmax(self) -> numpy.ndarray:
         """
         Return indices of the maximum values along the trait axis.
 
@@ -104,7 +102,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def targmin(self):
+    def targmin(self) -> numpy.ndarray:
         """
         Return indices of the minimum values along the trait axis.
 
@@ -126,7 +124,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns
@@ -147,7 +145,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns
@@ -168,7 +166,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns
@@ -189,7 +187,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns
@@ -210,7 +208,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns
@@ -231,7 +229,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
         Parameters
         ----------
-        descale : boolean
+        descale : bool
             whether to transform results to their de-scaled values.
 
         Returns

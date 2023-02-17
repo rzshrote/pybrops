@@ -3,6 +3,8 @@ Module defining basal coancestry matrix interfaces and associated error checking
 """
 
 from typing import Any
+
+import numpy
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -51,7 +53,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################################################################
 
     ################## Matrix conversion ###################
-    def mat_asformat(self, format: str):
+    def mat_asformat(self, format: str) -> numpy.ndarray:
         """
         Get matrix in a specific format.
         
@@ -68,7 +70,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         raise NotImplementedError("method is abstract")
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args, **kwargs: dict):
+    def coancestry(self, *args: tuple, **kwargs: dict):
         """
         Retrieve the coancestry between individuals.
 
@@ -81,7 +83,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def kinship(self, *args, **kwargs: dict):
+    def kinship(self, *args: tuple, **kwargs: dict):
         """
         Retrieve the kinship between individuals.
 
@@ -94,7 +96,10 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
     
-    def is_positive_semidefinite(self, eigvaltol: float):
+    def is_positive_semidefinite(
+            self, 
+            eigvaltol: float
+        ) ->  bool:
         """
         Determine whether the coancestry matrix is positive semidefinite.
         
@@ -110,7 +115,13 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def apply_jitter(self, eigvaltol: float, minjitter: float, maxjitter: float, nattempt: int):
+    def apply_jitter(
+            self, 
+            eigvaltol: float, 
+            minjitter: float, 
+            maxjitter: float, 
+            nattempt: int
+        ) -> bool:
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
         all eigenvalues exceed the provided eigenvalue tolerance.
@@ -140,7 +151,11 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################## Class Methods ###############################
     ############################################################################
     @classmethod
-    def from_gmat(cls, gmat: GenotypeMatrix, **kwargs: dict):
+    def from_gmat(
+            cls, 
+            gmat: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> 'CoancestryMatrix':
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 
@@ -153,7 +168,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
 
         Returns
         -------
-        out : cls
+        out : CoancestryMatrix
             A coancestry matrix.
         """
         raise NotImplementedError("class method is abstract")

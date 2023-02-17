@@ -7,6 +7,7 @@ from typing import Any, Optional
 import numpy
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """
@@ -21,7 +22,13 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseMolecularCoancestryMatrix class.
 
@@ -151,7 +158,11 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     # FIXME: there is a bug here. gmat with phased and unphased matrices return different values.
     @classmethod
-    def from_gmat(cls, gmat, **kwargs: dict):
+    def from_gmat(
+            cls, 
+            gmat: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> 'DenseMolecularCoancestryMatrix':
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 

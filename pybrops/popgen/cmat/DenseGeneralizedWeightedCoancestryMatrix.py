@@ -24,12 +24,12 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-        self, 
-        mat: numpy.ndarray,
-        taxa: Union[numpy.ndarray,None] = None,
-        taxa_grp: Union[numpy.ndarray,None] = None,
-        **kwargs: dict
-        ):
+            self, 
+            mat: numpy.ndarray,
+            taxa: Union[numpy.ndarray,None] = None,
+            taxa_grp: Union[numpy.ndarray,None] = None,
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseGeneralizedWeightedCoancestryMatrix.
         
@@ -50,12 +50,12 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     @classmethod
     def from_gmat(
-        cls, 
-        gmat: GenotypeMatrix, 
-        mkrwt: Union[numpy.ndarray,numbers.Number,None] = None,
-        afreq: Union[numpy.ndarray,numbers.Number,None] = None, 
-        **kwargs: dict
-        ):
+            cls, 
+            gmat: GenotypeMatrix, 
+            mkrwt: Union[numpy.ndarray,numbers.Number,None] = None,
+            afreq: Union[numpy.ndarray,numbers.Number,None] = None, 
+            **kwargs: dict
+        ) -> 'DenseGeneralizedWeightedCoancestryMatrix':
         """
         Construct a generalized weighted genomic relationship matrix.
         

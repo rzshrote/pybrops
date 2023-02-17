@@ -58,47 +58,53 @@ class StandardGeneticMap(GeneticMap):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def vrnt_chrgrp():
-        doc = "The vrnt_chrgrp property."
-        def fget(self):
-            return self._vrnt_chrgrp
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_chrgrp")
-            check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_chrgrp", 1)
-            self._vrnt_chrgrp = value
-        def fdel(self):
-            del self._vrnt_chrgrp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp = property(**vrnt_chrgrp())
+    @property
+    def vrnt_chrgrp(self) -> numpy.ndarray:
+        """Description for property vrnt_chrgrp."""
+        return self._vrnt_chrgrp
+    @vrnt_chrgrp.setter
+    def vrnt_chrgrp(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_chrgrp."""
+        check_is_ndarray(value, "vrnt_chrgrp")
+        check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
+        check_ndarray_ndim(value, "vrnt_chrgrp", 1)
+        self._vrnt_chrgrp = value
+    @vrnt_chrgrp.deleter
+    def vrnt_chrgrp(self) -> None:
+        """Delete data for property vrnt_chrgrp."""
+        del self._vrnt_chrgrp
 
-    def vrnt_phypos():
-        doc = "The vrnt_phypos property."
-        def fget(self):
-            return self._vrnt_phypos
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_phypos")
-            check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_phypos", 1)
-            self._vrnt_phypos = value
-        def fdel(self):
-            del self._vrnt_phypos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_phypos = property(**vrnt_phypos())
+    @property
+    def vrnt_phypos(self) -> numpy.ndarray:
+        """Description for property vrnt_phypos."""
+        return self._vrnt_phypos
+    @vrnt_phypos.setter
+    def vrnt_phypos(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_phypos."""
+        check_is_ndarray(value, "vrnt_phypos")
+        check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
+        check_ndarray_ndim(value, "vrnt_phypos", 1)
+        self._vrnt_phypos = value
+    @vrnt_phypos.deleter
+    def vrnt_phypos(self) -> None:
+        """Delete data for property vrnt_phypos."""
+        del self._vrnt_phypos
 
-    def vrnt_genpos():
-        doc = "The vrnt_genpos property."
-        def fget(self):
-            return self._vrnt_genpos
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_genpos")
-            check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
-            check_ndarray_ndim(value, "vrnt_genpos", 1)
-            self._vrnt_genpos = value
-        def fdel(self):
-            del self._vrnt_genpos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_genpos = property(**vrnt_genpos())
+    @property
+    def vrnt_genpos(self) -> numpy.ndarray:
+        """Description for property vrnt_genpos."""
+        return self._vrnt_genpos
+    @vrnt_genpos.setter
+    def vrnt_genpos(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_genpos."""
+        check_is_ndarray(value, "vrnt_genpos")
+        check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
+        check_ndarray_ndim(value, "vrnt_genpos", 1)
+        self._vrnt_genpos = value
+    @vrnt_genpos.deleter
+    def vrnt_genpos(self) -> None:
+        """Delete data for property vrnt_genpos."""
+        del self._vrnt_genpos
 
     ############################################################################
     ############################# Static Methods ###############################
