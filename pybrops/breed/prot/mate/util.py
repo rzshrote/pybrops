@@ -2,11 +2,21 @@
 Module containing mating utilities.
 """
 
+from typing import Union
 import numpy
 
-__all__ = ["mat_meiosis", "mat_dh", "mat_mate"]
+__all__ = [
+    "mat_meiosis", 
+    "mat_dh", 
+    "mat_mate"
+]
 
-def mat_meiosis(geno, sel, xoprob, rng):
+def mat_meiosis(
+        geno: numpy.ndarray, 
+        sel: numpy.ndarray, 
+        xoprob: numpy.ndarray, 
+        rng: Union[numpy.random.Generator,numpy.random.RandomState]
+    ) -> numpy.ndarray:
     """
     Perform meiosis on matrix inputs.
 
@@ -62,20 +72,30 @@ def mat_meiosis(geno, sel, xoprob, rng):
 
     return gamete
 
-def mat_dh(geno, sel, xoprob, rng):
+def mat_dh(
+        geno: numpy.ndarray, 
+        sel: numpy.ndarray, 
+        xoprob: numpy.ndarray, 
+        rng: Union[numpy.random.Generator,numpy.random.RandomState]
+    ) -> numpy.ndarray:
     """
     Perform doubled haploid production on matrix inputs.
 
     Parameters
     ----------
     geno : numpy.ndarray
+        Genotype matrix.
     sel : numpy.ndarray
+        Selection configuration array.
     xoprob : numpy.ndarray
-    seed : int
+        Crossover porbability array.
+    rng : numpy.random.Generator, numpy.random.RandomState
+        Random number generator instance
 
     Returns
     -------
     progeny : numpy.ndarray
+        Genotype matrix of progenies.
     """
     # generate gametes
     gamete = mat_meiosis(geno, sel, xoprob, rng)
@@ -85,21 +105,36 @@ def mat_dh(geno, sel, xoprob, rng):
 
     return progeny
 
-def mat_mate(fgeno, mgeno, fsel, msel, xoprob, rng):
+def mat_mate(
+        fgeno: numpy.ndarray, 
+        mgeno: numpy.ndarray, 
+        fsel: numpy.ndarray, 
+        msel: numpy.ndarray, 
+        xoprob: numpy.ndarray, 
+        rng: Union[numpy.random.Generator,numpy.random.RandomState]
+    ) -> numpy.ndarray:
     """
     Perform mating on matrix inputs.
 
     Parameters
     ----------
-    geno : numpy.ndarray
+    fgeno : numpy.ndarray
+        Female genotype matrix.
+    mgeno : numpy.ndarray
+        Male genotype matrix.
     fsel : numpy.ndarray
+        Female selection configuration array.
     msel : numpy.ndarray
+        Male selection configuration array.
     xoprob : numpy.ndarray
-    seed : int
+        Crossover porbability array.
+    rng : numpy.random.Generator, numpy.random.RandomState
+        Random number generator instance
 
     Returns
     -------
     progeny : numpy.ndarray
+        Genotype matrix of progenies.
     """
     # generate gametes
     fgamete = mat_meiosis(fgeno, fsel, xoprob, rng)

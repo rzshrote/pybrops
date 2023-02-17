@@ -62,7 +62,7 @@ class MyInitMatingOperator(MatingOperator):
             family_counter = fcnt
         )
     def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout = None, **kwargs):
-        progeny = self.mprot.mate(**mcfg, s = 0, miscout = miscout)  # mate parents
+        progeny = self.mprot.mate(**mcfg, nself = 0, miscout = miscout)  # mate parents
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 
@@ -214,7 +214,7 @@ class MyMatingOperator(MatingOperator):
             family_counter = fcnt
         )
     def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout = None, **kwargs):
-        progeny = self.mprot.mate(**mcfg, s = 0, miscout = miscout)  # mate parents
+        progeny = self.mprot.mate(**mcfg, nself = 0, miscout = miscout)  # mate parents
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 

@@ -100,7 +100,7 @@ class FamilyGroupTwoWayDHCross(TwoWayDHCross):
             ncross = ncross,
             nprogeny = nprogeny,
             miscout = miscout,
-            s = s,
+            nself = s,
             taxa_grp = taxa_grp,    # add taxa_grp as keyword argument for object construction
             **kwargs
         )

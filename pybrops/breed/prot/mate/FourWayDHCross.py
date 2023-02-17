@@ -2,7 +2,7 @@
 Module implementing mating protocols for four-way DH crosses.
 """
 
-from typing import Any
+from typing import Any, Optional, Union
 import numpy
 
 from pybrops.breed.prot.mate.util import mat_dh
@@ -10,8 +10,10 @@ from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_ndarray_len_is_multiple_of_4
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_python import check_is_int
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class FourWayDHCross(MatingProtocol):
     """
@@ -21,7 +23,13 @@ class FourWayDHCross(MatingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = None, **kwargs: dict):
+    def __init__(
+            self, 
+            progeny_counter: int = 0, 
+            family_counter: int = 0, 
+            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class FourWayDHCross.
 
@@ -35,32 +43,70 @@ class FourWayDHCross(MatingProtocol):
         super(FourWayDHCross, self).__init__(**kwargs)
 
         # make assignments
+        self.progeny_counter = progeny_counter
+        self.family_counter = family_counter
         self.rng = rng
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            """Get value for rng."""
-            return self._rng
-        def fset(self, value):
-            """Set value for rng."""
-            if value is None:
-                value = global_prng
-            check_is_Generator_or_RandomState(value, "rng")
-            self._rng = value
-        def fdel(self):
-            """Delete value for rng."""
-            del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    rng = property(**rng())
+    @property
+    def progeny_counter(self) -> int:
+        """Description for property progeny_counter."""
+        return self._progeny_counter
+    @progeny_counter.setter
+    def progeny_counter(self, value: int) -> None:
+        """Set data for property progeny_counter."""
+        check_is_int(value, "progeny_counter")
+        self._progeny_counter = value
+    @progeny_counter.deleter
+    def progeny_counter(self) -> None:
+        """Delete data for property progeny_counter."""
+        del self._progeny_counter
+
+    @property
+    def family_counter(self) -> int:
+        """Description for property family_counter."""
+        return self._family_counter
+    @family_counter.setter
+    def family_counter(self, value: int) -> None:
+        """Set data for property family_counter."""
+        check_is_int(value, "family_counter")
+        self._family_counter = value
+    @family_counter.deleter
+    def family_counter(self) -> None:
+        """Delete data for property family_counter."""
+        del self._family_counter
+
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+        """Set random number generator."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator."""
+        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout = None, s = 0, **kwargs: dict):
+    def mate(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            sel: numpy.ndarray, 
+            ncross: Union[int,numpy.ndarray], 
+            nprogeny: Union[int,numpy.ndarray], 
+            miscout: Optional[dict] = None, 
+            nself: int = 0, 
+            **kwargs: dict
+        ) -> PhasedGenotypeMatrix:
         """
         Mate individuals according to a 4-way mate selection scheme.
 
@@ -138,7 +184,7 @@ class FourWayDHCross(MatingProtocol):
         dihsel = numpy.arange(dihgeno.shape[1])
 
         # self down hybrids if needed
-        for i in range(s):
+        for i in range(nself):
             # self hybrids
             dihgeno = mat_mate(dihgeno, dihgeno, dihsel, dihsel, xoprob, self.rng)
 

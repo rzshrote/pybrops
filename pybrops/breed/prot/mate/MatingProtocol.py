@@ -3,7 +3,10 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
-from typing import Any
+from typing import Any, Optional, Union
+import numpy
+
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
 class MatingProtocol:
@@ -34,7 +37,15 @@ class MatingProtocol:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs: dict):
+    def mate(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            sel: numpy.ndarray, 
+            ncross: Union[int,numpy.ndarray], 
+            nprogeny: Union[int,numpy.ndarray], 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> PhasedGenotypeMatrix:
         """
         Mate individuals according to a mating scheme.
 
@@ -84,7 +95,7 @@ def is_MatingProtocol(v: Any) -> bool:
     """
     return isinstance(v, MatingProtocol)
 
-def check_is_MatingProtocol(v: Any, varname: str) -> None:
+def check_is_MatingProtocol(v: Any, vname: str) -> None:
     """
     Check if object is of type MatingProtocol. Otherwise raise TypeError.
 
@@ -96,4 +107,4 @@ def check_is_MatingProtocol(v: Any, varname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingProtocol):
-        raise TypeError("'%s' must be a MatingProtocol." % varname)
+        raise TypeError("'%s' must be a MatingProtocol." % vname)
