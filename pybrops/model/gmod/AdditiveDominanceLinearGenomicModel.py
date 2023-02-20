@@ -81,19 +81,18 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################ Object Properties #############################
     ############################################################################
 
-    def u_d():
-        doc = "Dominance genomic marker effects."
-        def fget(self):
-            """Get dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_d = property(**u_d())
+    @property
+    def u_d(self) -> Any:
+        """Dominance genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_d.setter
+    def u_d(self, value: Any) -> None:
+        """Set dominance genomic marker effects"""
+        raise NotImplementedError("property is abstract")
+    @u_d.deleter
+    def u_d(self) -> None:
+        """Delete dominance genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 

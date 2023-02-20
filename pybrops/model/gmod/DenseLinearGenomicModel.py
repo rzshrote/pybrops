@@ -150,95 +150,100 @@ class DenseLinearGenomicModel(LinearGenomicModel):
     ############################################################################
 
     ############## Linear Genomic Model Data ###############
-    def beta():
-        doc = "Fixed effect regression coefficients"
-        def fget(self):
-            """Get fixed effect regression coefficients"""
-            return self._beta
-        def fset(self, value):
-            """Set fixed effect regression coefficients"""
-            check_is_ndarray(value, "beta")
-            check_ndarray_ndim(value, "beta", 2)
-            check_ndarray_dtype_is_float64(value, "beta")
-            self._beta = value
-        def fdel(self):
-            """Delete fixed effect regression coefficients"""
-            del self._beta
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    beta = property(**beta())
+    @property
+    def beta(self) -> numpy.ndarray:
+        """Fixed effect regression coefficients."""
+        return self._beta
+    @beta.setter
+    def beta(self, value: numpy.ndarray) -> None:
+        """Set fixed effect regression coefficients"""
+        check_is_ndarray(value, "beta")
+        check_ndarray_ndim(value, "beta", 2)
+        check_ndarray_dtype_is_float64(value, "beta")
+        self._beta = value
+    @beta.deleter
+    def beta(self) -> None:
+        """Delete fixed effect regression coefficients"""
+        del self._beta
 
-    def u():
-        doc = "Random effect regression coefficients"
-        def fget(self):
-            """Get random effect regression coefficients"""
-            return self._u
-        def fset(self, value):
-            """Set random effect regression coefficients"""
-            check_is_ndarray(value, "u")
-            check_ndarray_ndim(value, "u", 2)
-            check_ndarray_dtype_is_float64(value, "u")
-            self._u = value
-        def fdel(self):
-            """Delete random effect regression coefficients"""
-            del self._u
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u = property(**u())
+    @property
+    def u(self) -> numpy.ndarray:
+        """Random effect regression coefficients."""
+        return self._u
+    @u.setter
+    def u(self, value: numpy.ndarray) -> None:
+        """Set random effect regression coefficients"""
+        check_is_ndarray(value, "u")
+        check_ndarray_ndim(value, "u", 2)
+        check_ndarray_dtype_is_float64(value, "u")
+        self._u = value
+    @u.deleter
+    def u(self) -> None:
+        """Delete random effect regression coefficients"""
+        del self._u
 
     ################## Genomic Model Data ##################
-    def model_name():
-        doc = "The model_name property."
-        def fget(self):
-            return self._model_name
-        def fset(self, value):
-            if value is not None:
-                check_is_str(value, "model_name")
-            self._model_name = value
-        def fdel(self):
-            del self._model_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    model_name = property(**model_name())
+    @property
+    def model_name(self) -> str:
+        """Name of the model."""
+        return self._model_name
+    @model_name.setter
+    def model_name(self, value: Union[str,None]) -> None:
+        """Set name of the model."""
+        if value is None:
+            value = "unnamed"
+        check_is_str(value, "model_name")
+        self._model_name = value
+    @model_name.deleter
+    def model_name(self) -> None:
+        """Delete name of the model."""
+        del self._model_name
+    
+    @property
+    def params(self) -> dict:
+        """Model parameters."""
+        return self._params
+    @params.setter
+    def params(self, value: Union[dict,None]) -> None:
+        """Set model parameters."""
+        if value is None:
+            value = {}
+        check_is_dict(value, "params")
+        self._params = value
+    @params.deleter
+    def params(self) -> None:
+        """Delete model parameters."""
+        del self._params
 
-    def params():
-        doc = "The params property."
-        def fget(self):
-            return self._params
-        def fset(self, value):
-            if value is not None:
-                check_is_dict(value, "params")
-            self._params = value
-        def fdel(self):
-            del self._params
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    params = property(**params())
+    @property
+    def trait(self) -> Union[numpy.ndarray,None]:
+        """Names of the traits predicted by the model."""
+        return self._trait
+    @trait.setter
+    def trait(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set names of the traits predicted by the model."""
+        if value is not None:
+            check_is_ndarray(value, "trait")
+            check_ndarray_ndim(value, "trait", 1)
+            check_ndarray_dtype_is_object(value, "trait")
+        self._trait = value
+    @trait.deleter
+    def trait(self) -> None:
+        """Delete names of the traits predicted by the model."""
+        del self._trait
 
-    def trait():
-        doc = "The trait property."
-        def fget(self):
-            return self._trait
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "trait")
-                check_ndarray_ndim(value, "trait", 1)
-                check_ndarray_dtype_is_object(value, "trait")
-            self._trait = value
-        def fdel(self):
-            del self._trait
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait = property(**trait())
-
-    def ntrait():
-        doc = "Number of traits predicted by the model"
-        def fget(self):
-            """Get the number of traits predicted by the model"""
-            return len(self._trait)
-        def fset(self, value):
-            """Set the number of traits predicted by the model"""
-            error_readonly("ntrait")
-        def fdel(self):
-            """Delete the number of traits predicted by the model"""
-            error_readonly("ntrait")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntrait = property(**ntrait())
+    @property
+    def ntrait(self) -> int:
+        """Number of traits predicted by the model."""
+        return len(self._trait)
+    @ntrait.setter
+    def ntrait(self, value: int) -> None:
+        """Set number of traits predicted by the model."""
+        error_readonly("ntrait")
+    @ntrait.deleter
+    def ntrait(self) -> None:
+        """Delete number of traits predicted by the model."""
+        error_readonly("ntrait")
 
     ############################################################################
     ############################## Object Methods ##############################

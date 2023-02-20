@@ -52,18 +52,18 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(self, 
-        nparent: int, 
-        ncross: int, 
-        nprogeny: int,
-        gtype: str = "gmat", 
-        gcls: Type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
-        method: str = "single",
-        objfn_trans: Callable = None, 
-        objfn_trans_kwargs: dict = None, 
-        objfn_wt = -1.0,
-        rng = global_prng, 
-        soalgo = None, 
-        **kwargs: dict
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int,
+            gtype: str = "gmat", 
+            gcls: Type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
+            method: str = "single",
+            objfn_trans: Callable = None, 
+            objfn_trans_kwargs: dict = None, 
+            objfn_wt = -1.0,
+            rng = global_prng, 
+            soalgo = None, 
+            **kwargs: dict
         ):
         """
         Constructor for Optimal Contribution Selection (OCS).

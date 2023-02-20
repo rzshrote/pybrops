@@ -3,8 +3,13 @@ Module implementing a Pandas DataFrame and associated error checking routines.
 """
 
 from typing import Any
+
+import numpy
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.error import check_is_pandas_df
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_python import check_len
 
 class PandasDataFrame(DataFrame):
     """

@@ -83,20 +83,18 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-
-    def u_i():
-        doc = "Epistatic genomic marker effects."
-        def fget(self):
-            """Get epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_i = property(**u_i())
+    @property
+    def u_i(self) -> Any:
+        """Epistatic genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_i.setter
+    def u_i(self, value: Any) -> None:
+        """Set epistatic genomic marker effects"""
+        raise NotImplementedError("property is abstract")
+    @u_i.deleter
+    def u_i(self) -> None:
+        """Delete epistatic genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 

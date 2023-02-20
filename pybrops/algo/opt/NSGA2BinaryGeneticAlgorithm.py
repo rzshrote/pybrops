@@ -3,6 +3,7 @@ Module implementing an NSGA-II genetic algorithm adapted for subset selection
 optimization.
 """
 
+from typing import Union
 import numpy
 import math
 from deap import algorithms
@@ -56,58 +57,66 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def ngen():
-        doc = "Number of generations."
-        def fget(self):
-            return self._ngen
-        def fset(self, value):
-            check_is_int(value, "ngen")     # must be int
-            check_is_gt(value, "ngen", 0)   # int must be >0
-            self._ngen = value
-        def fdel(self):
-            del self._ngen
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ngen = property(**ngen())
+    @property
+    def ngen(self) -> int:
+        """Number of generations."""
+        return self._ngen
+    @ngen.setter
+    def ngen(self, value: int) -> None:
+        """Set number of generations."""
+        check_is_int(value, "ngen")     # must be int
+        check_is_gt(value, "ngen", 0)   # int must be >0
+        self._ngen = value
+    @ngen.deleter
+    def ngen(self) -> None:
+        """Delete number of generations."""
+        del self._ngen
 
-    def mu():
-        doc = "Number of individuals in the main chromosome population."
-        def fget(self):
-            return self._mu
-        def fset(self, value):
-            check_is_int(value, "mu")   # must be int
-            check_is_gt(value, "mu", 0) # int must be >0
-            self._mu = value
-        def fdel(self):
-            del self._mu
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mu = property(**mu())
+    @property
+    def mu(self) -> int:
+        """Number of individuals in the main chromosome population."""
+        return self._mu
+    @mu.setter
+    def mu(self, value: int) -> None:
+        """Set number of individuals in the main chromosome population."""
+        check_is_int(value, "mu")   # must be int
+        check_is_gt(value, "mu", 0) # int must be >0
+        self._mu = value
+    @mu.deleter
+    def mu(self) -> None:
+        """Delete number of individuals in the main chromosome population."""
+        del self._mu
 
-    def lamb():
-        doc = "Number of progenies to generate from the main chromosome population."
-        def fget(self):
-            return self._lamb
-        def fset(self, value):
-            check_is_int(value, "lamb")     # must be int
-            check_is_gt(value, "lamb", 0)   # int must be >0
-            self._lamb = value
-        def fdel(self):
-            del self._lamb
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    lamb = property(**lamb())
+    @property
+    def lamb(self) -> int:
+        """Number of progenies to generate from the main chromosome population."""
+        return self._lamb
+    @lamb.setter
+    def lamb(self, value: int) -> None:
+        """Set number of progenies to generate from the main chromosome population."""
+        check_is_int(value, "lamb")     # must be int
+        check_is_gt(value, "lamb", 0)   # int must be >0
+        self._lamb = value
+    @lamb.deleter
+    def lamb(self) -> None:
+        """Delete number of progenies to generate from the main chromosome population."""
+        del self._lamb
 
-    def rng():
-        doc = "Random number generator source."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            if value is None:
-                value = global_prng
-            check_is_Generator_or_RandomState(value, "rng")
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rng = property(**rng())
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################

@@ -3,6 +3,7 @@ Module implementing a steepest ascent hill climber algorithm adapted for subset
 selection optimization.
 """
 
+from typing import Union
 import numpy
 
 import pybrops.core.random
@@ -45,19 +46,21 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def rng():
-        doc = "Random number generator source."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            if value is None:
-                value = global_prng
-            check_is_Generator_or_RandomState(value, "rng")
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rng = property(**rng())
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################

@@ -77,33 +77,31 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def u_misc():
-        doc = "Miscellaneous random effects."
-        def fget(self):
-            """Get miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_misc = property(**u_misc())
+    @property
+    def u_misc(self) -> Any:
+        """Miscellaneous random effects."""
+        raise NotImplementedError("property is abstract")
+    @u_misc.setter
+    def u_misc(self, value: Any) -> None:
+        """Set miscellaneous random effects"""
+        raise NotImplementedError("property is abstract")
+    @u_misc.deleter
+    def u_misc(self) -> None:
+        """Delete miscellaneous random effects"""
+        raise NotImplementedError("property is abstract")
 
-    def u_a():
-        doc = "Additive genomic marker effects."
-        def fget(self):
-            """Get additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_a = property(**u_a())
+    @property
+    def u_a(self) -> Any:
+        """Additive genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_a.setter
+    def u_a(self, value: Any) -> None:
+        """Set additive genomic marker effects"""
+        raise NotImplementedError("property is abstract")
+    @u_a.deleter
+    def u_a(self) -> None:
+        """Delete additive genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 

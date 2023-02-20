@@ -79,7 +79,7 @@ def test_init_is_concrete():
 ###################### Test concrete method functionality ######################
 ################################################################################
 def test_mate(mprot, dpgvmat, sel, rng):
-    progeny = mprot.mate(dpgvmat, sel, 1, 2, s = 0)
+    progeny = mprot.mate(dpgvmat, sel, 1, 2, nself = 0)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")

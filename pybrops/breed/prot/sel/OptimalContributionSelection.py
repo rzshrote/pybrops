@@ -2,7 +2,7 @@
 Module implementing selection protocols for optimal contribution selection.
 """
 
-from typing import Callable, Union
+from typing import Any, Callable, Union
 import cvxpy
 import math
 import numpy
@@ -10,6 +10,7 @@ import warnings
 import types
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_callable

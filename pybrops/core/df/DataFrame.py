@@ -59,133 +59,124 @@ class DataFrame:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def data():
-        doc = "Access to raw data frame object."
-        def fget(self):
-            """Get dataframe"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set dataframe"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete dataframe"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    data = property(**data())
+    @property
+    def data(self) -> Any:
+        """Access to raw data frame object."""
+        raise NotImplementedError("property is abstract")
+    @data.setter
+    def data(self, value: Any) -> None:
+        """Set dataframe"""
+        raise NotImplementedError("property is abstract")
+    @data.deleter
+    def data(self) -> None:
+        """Delete dataframe"""
+        raise NotImplementedError("property is abstract")
 
     ################## Column attributes ###################
-    def ncol():
-        doc = "Number of columns"
-        def fget(self):
-            """Get number of columns"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of columns"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of columns"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ncol = property(**ncol())
+    @property
+    def ncol(self) -> Any:
+        """Number of columns."""
+        raise NotImplementedError("property is abstract")
+    @ncol.setter
+    def ncol(self, value: Any) -> None:
+        """Set number of columns"""
+        raise NotImplementedError("property is abstract")
+    @ncol.deleter
+    def ncol(self) -> None:
+        """Delete number of columns"""
+        raise NotImplementedError("property is abstract")
 
-    def col_axis():
-        doc = "Column axis index"
-        def fget(self):
-            """Get column axis index"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set column axis index"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete column axis index"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_axis = property(**col_axis())
+    @property
+    def col_axis(self) -> int:
+        """Column axis index."""
+        raise NotImplementedError("property is abstract")
+    @col_axis.setter
+    def col_axis(self, value: int) -> None:
+        """Set column axis index"""
+        raise NotImplementedError("property is abstract")
+    @col_axis.deleter
+    def col_axis(self) -> None:
+        """Delete column axis index"""
+        raise NotImplementedError("property is abstract")
 
-    def col_dtype():
-        doc = "Column data types."
-        def fget(self):
-            """Get column data types"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set column data types"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete column data types"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_dtype = property(**col_dtype())
-
-    def col_name():
-        doc = "Column names."
-        def fget(self):
-            """Get column names"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set column names"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete column names"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_name = property(**col_name())
-
-    def col_grp():
-        doc = "Column groups used for classifying variables"
-        def fget(self):
-            """Get column groups"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set column groups"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete column groups"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_grp = property(**col_grp())
+    @property
+    def col_dtype(self) -> Any:
+        """Column data types."""
+        raise NotImplementedError("property is abstract")
+    @col_dtype.setter
+    def col_dtype(self, value: Any) -> None:
+        """Set column data types"""
+        raise NotImplementedError("property is abstract")
+    @col_dtype.deleter
+    def col_dtype(self) -> None:
+        """Delete column data types"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def col_name(self) -> Any:
+        """Column names."""
+        raise NotImplementedError("property is abstract")
+    @col_name.setter
+    def col_name(self, value: Any) -> None:
+        """Set column names"""
+        raise NotImplementedError("property is abstract")
+    @col_name.deleter
+    def col_name(self) -> None:
+        """Delete column names"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def col_grp(self) -> Any:
+        """Column groups used for classifying variables."""
+        raise NotImplementedError("property is abstract")
+    @col_grp.setter
+    def col_grp(self, value: Any) -> None:
+        """Set column groups"""
+        raise NotImplementedError("property is abstract")
+    @col_grp.deleter
+    def col_grp(self) -> None:
+        """Delete column groups"""
+        raise NotImplementedError("property is abstract")
 
     #################### Row attributes ####################
-    def nrow():
-        doc = "Number of rows"
-        def fget(self):
-            """Get number of rows"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of rows"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of rows"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nrow = property(**nrow())
+    @property
+    def nrow(self) -> int:
+        """Number of rows."""
+        raise NotImplementedError("property is abstract")
+    @nrow.setter
+    def nrow(self, value: int) -> None:
+        """Set number of rows"""
+        raise NotImplementedError("property is abstract")
+    @nrow.deleter
+    def nrow(self) -> None:
+        """Delete number of rows"""
+        raise NotImplementedError("property is abstract")
 
-    def row_axis():
-        doc = "Row axis index"
-        def fget(self):
-            """Get row axis index"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set row axis index"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete row axis index"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_axis = property(**row_axis())
+    @property
+    def row_axis(self) -> int:
+        """Row axis index."""
+        raise NotImplementedError("property is abstract")
+    @row_axis.setter
+    def row_axis(self, value: int) -> None:
+        """Set row axis index"""
+        raise NotImplementedError("property is abstract")
+    @row_axis.deleter
+    def row_axis(self) -> None:
+        """Delete row axis index"""
+        raise NotImplementedError("property is abstract")
 
-    def row_name():
-        doc = "Row names."
-        def fget(self):
-            """Get row names"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set row names"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete row names"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_name = property(**row_name())
+    @property
+    def row_name(self) -> Any:
+        """Row names."""
+        raise NotImplementedError("property is abstract")
+    @row_name.setter
+    def row_name(self, value: Any) -> None:
+        """Set row names"""
+        raise NotImplementedError("property is abstract")
+    @row_name.deleter
+    def row_name(self) -> None:
+        """Delete row names"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################

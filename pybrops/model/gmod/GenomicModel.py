@@ -68,68 +68,70 @@ class GenomicModel(HDF5InputOutput):
     ############################################################################
 
     ################## Genomic Model Data ##################
-    def model_name():
-        doc = "Name of the model"
-        def fget(self):
-            """Get the name of the model"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the name of the model"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the name of the model"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    model_name = property(**model_name())
+    @property
+    def model_name(self) -> str:
+        """Name of the model."""
+        raise NotImplementedError("property is abstract")
+    @model_name.setter
+    def model_name(self, value: str) -> None:
+        """Set the name of the model"""
+        raise NotImplementedError("property is abstract")
+    @model_name.deleter
+    def model_name(self) -> None:
+        """Delete the name of the model"""
+        raise NotImplementedError("property is abstract")
 
-    def params():
-        doc = "Model parameters"
-        def fget(self):
-            """Get the model parameters"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the model parameters"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the model parameters"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    params = property(**params())
+    @property
+    def params(self) -> dict:
+        """Model parameters."""
+        raise NotImplementedError("property is abstract")
+    @params.setter
+    def params(self, value: dict) -> None:
+        """Set the model parameters"""
+        raise NotImplementedError("property is abstract")
+    @params.deleter
+    def params(self) -> None:
+        """Delete the model parameters"""
+        raise NotImplementedError("property is abstract")
 
-    def trait():
-        doc = "Names of the traits predicted by the model"
-        def fget(self):
-            """Get the names of the traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the names of the traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the names of the traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait = property(**trait())
+    @property
+    def trait(self) -> Any:
+        """Names of the traits predicted by the model."""
+        raise NotImplementedError("property is abstract")
+    @trait.setter
+    def trait(self, value: Any) -> None:
+        """Set the names of the traits predicted by the model"""
+        raise NotImplementedError("property is abstract")
+    @trait.deleter
+    def trait(self) -> None:
+        """Delete the names of the traits predicted by the model"""
+        raise NotImplementedError("property is abstract")
 
-    def ntrait():
-        doc = "Number of traits predicted by the model"
-        def fget(self):
-            """Get the number of traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the number of traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the number of traits predicted by the model"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntrait = property(**ntrait())
+    @property
+    def ntrait(self) -> int:
+        """Number of traits predicted by the model."""
+        raise NotImplementedError("property is abstract")
+    @ntrait.setter
+    def ntrait(self, value: int) -> None:
+        """Set the number of traits predicted by the model"""
+        raise NotImplementedError("property is abstract")
+    @ntrait.deleter
+    def ntrait(self) -> None:
+        """Delete the number of traits predicted by the model"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
     ####### methods for model fitting and prediction #######
-    def fit_numpy(self, Y, X, Z, **kwargs: dict):
+    def fit_numpy(
+            self, 
+            Y: numpy.ndarray, 
+            X: numpy.ndarray, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ):
         """
         Fit the model.
 

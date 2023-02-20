@@ -58,33 +58,31 @@ class LinearGenomicModel(GenomicModel):
     ############################################################################
 
     ############## Linear Genomic Model Data ###############
-    def beta():
-        doc = "Fixed effect regression coefficients"
-        def fget(self):
-            """Get fixed effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set fixed effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete fixed effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    beta = property(**beta())
+    @property
+    def beta(self) -> Any:
+        """Fixed effect regression coefficients."""
+        raise NotImplementedError("property is abstract")
+    @beta.setter
+    def beta(self, value: Any) -> None:
+        """Set fixed effect regression coefficients"""
+        raise NotImplementedError("property is abstract")
+    @beta.deleter
+    def beta(self) -> None:
+        """Delete fixed effect regression coefficients"""
+        raise NotImplementedError("property is abstract")
 
-    def u():
-        doc = "Random effect regression coefficients"
-        def fget(self):
-            """Get random effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set random effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete random effect regression coefficients"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u = property(**u())
+    @property
+    def u(self) -> Any:
+        """Random effect regression coefficients."""
+        raise NotImplementedError("property is abstract")
+    @u.setter
+    def u(self, value: Any) -> None:
+        """Set random effect regression coefficients"""
+        raise NotImplementedError("property is abstract")
+    @u.deleter
+    def u(self) -> None:
+        """Delete random effect regression coefficients"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
