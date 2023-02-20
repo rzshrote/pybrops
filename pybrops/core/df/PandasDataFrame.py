@@ -5,6 +5,7 @@ Module implementing a Pandas DataFrame and associated error checking routines.
 from typing import Any
 
 import numpy
+import pandas
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.error import check_is_pandas_df
 from pybrops.core.error.error_attr_python import error_readonly
@@ -39,145 +40,136 @@ class PandasDataFrame(DataFrame):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def df():
-        doc = "Access to raw dataframe."
-        def fget(self):
-            """Get dataframe"""
-            return self._df
-        def fset(self, value):
-            """Set dataframe"""
-            check_is_pandas_df(value, "df")
-            self._df = value
-        def fdel(self):
-            """Delete dataframe"""
-            del self._df
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    df = property(**df())
+    @property
+    def data(self) -> pandas.DataFrame:
+        """Access to raw dataframe."""
+        return self._data
+    @data.setter
+    def data(self, value: pandas.DataFrame) -> None:
+        """Set dataframe"""
+        check_is_pandas_df(value, "df")
+        self._data = value
+    @data.deleter
+    def data(self) -> None:
+        """Delete dataframe"""
+        del self._data
 
     ################## Column attributes ###################
-    def ncol():
-        doc = "Number of columns"
-        def fget(self):
-            """Get number of columns"""
-            return len(self._df.columns)
-        def fset(self, value):
-            """Set number of columns"""
-            error_readonly("ncol")
-        def fdel(self):
-            """Delete number of columns"""
-            error_readonly("ncol")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ncol = property(**ncol())
+    @property
+    def ncol(self) -> int:
+        """Number of columns."""
+        return len(self._data.columns)
+    @ncol.setter
+    def ncol(self, value: int) -> None:
+        """Set number of columns"""
+        error_readonly("ncol")
+    @ncol.deleter
+    def ncol(self) -> None:
+        """Delete number of columns"""
+        error_readonly("ncol")
 
-    def col_axis():
-        doc = "Column axis index"
-        def fget(self):
-            """Get column axis index"""
-            return 1
-        def fset(self, value):
-            """Set column axis index"""
-            error_readonly("col_axis")
-        def fdel(self):
-            """Delete column axis index"""
-            error_readonly("col_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_axis = property(**col_axis())
+    @property
+    def col_axis(self) -> int:
+        """Column axis index."""
+        return self._col_axis
+    @col_axis.setter
+    def col_axis(self, value: int) -> None:
+        """Set column axis index"""
+        error_readonly("col_axis")
+    @col_axis.deleter
+    def col_axis(self) -> None:
+        """Delete column axis index"""
+        error_readonly("col_axis")
+    
+    @property
+    def col_dtype(self) -> numpy.ndarray:
+        """Column data types."""
+        return self._col_dtype
+    @col_dtype.setter
+    def col_dtype(self, value: numpy.ndarray) -> None:
+        """Set column data types"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):
+            check_len(value, "col_dtype", self.ncol)     # check input length
+            names = self.col_name                        # get column names
+            dtypes = self.col_dtype                      # get column dtypes
+            # construct dict of different types
+            value = dict((a,v) for a,b,v in zip(names,dtypes,value) if b != v)
+        if isinstance(value, dict):
+            self._data = self._data.astype(value)           # convert data types
+        else:
+            raise TypeError("unknown type: available types are numpy.ndarray, list, tuple, and dict")
+    @col_dtype.deleter
+    def col_dtype(self) -> None:
+        """Delete column data types"""
+        error_readonly("col_dtype")
+    
+    @property
+    def col_name(self) -> numpy.ndarray:
+        """Column names."""
+        return self._col_name
+    @col_name.setter
+    def col_name(self, value: numpy.ndarray) -> None:
+        """Set column names"""
+        self._data.columns = value
+    @col_name.deleter
+    def col_name(self) -> None:
+        """Delete column names"""
+        del self._data.columns
 
-    def col_dtype():
-        doc = "Column data types."
-        def fget(self):
-            """Get column data types"""
-            return self._df.dtypes.values
-        def fset(self, value):
-            """Set column data types"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):
-                check_len(value, "col_dtype", self.ncol)     # check input length
-                names = self.col_name                        # get column names
-                dtypes = self.col_dtype                      # get column dtypes
-                # construct dict of different types
-                value = dict((a,v) for a,b,v in zip(names,dtypes,value) if b != v)
-            if isinstance(value, dict):
-                self._df = self._df.astype(value)           # convert data types
-            else:
-                raise TypeError("unknown type: available types are numpy.ndarray, list, tuple, and dict")
-        def fdel(self):
-            """Delete column data types"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_dtype = property(**col_dtype())
-
-    def col_name():
-        doc = "Column names."
-        def fget(self):
-            """Get column names"""
-            return self._df.columns.values
-        def fset(self, value):
-            """Set column names"""
-            self._df.columns = value
-        def fdel(self):
-            """Delete column names"""
-            del self._df.columns
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_name = property(**col_name())
-
-    def col_ctype():
-        doc = "Column types used for classifying variables"
-        def fget(self):
-            """Get column types"""
-            return self._col_ctype
-        def fset(self, value):
-            """Set column types"""
-            check_is_ndarray(value, "col_ctype")
-            check_len(value, "col_ctype", self.ncol)
-            self._col_ctype = value
-        def fdel(self):
-            """Delete column types"""
-            del self._col_ctype
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_ctype = property(**col_ctype())
+    @property
+    def col_ctype(self) -> numpy.ndarray:
+        """Column types used for classifying variables."""
+        return self._col_ctype
+    @col_ctype.setter
+    def col_ctype(self, value: numpy.ndarray) -> None:
+        """Set column types"""
+        check_is_ndarray(value, "col_ctype")
+        check_len(value, "col_ctype", self.ncol)
+        self._col_ctype = value
+    @col_ctype.deleter
+    def col_ctype(self) -> None:
+        """Delete column types"""
+        del self._col_ctype
 
     #################### Row attributes ####################
-    def nrow():
-        doc = "Number of rows"
-        def fget(self):
-            """Get number of rows"""
-            return len(self._df.index)
-        def fset(self, value):
-            """Set number of rows"""
-            error_readonly("nrow")
-        def fdel(self):
-            """Delete number of rows"""
-            error_readonly("nrow")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nrow = property(**nrow())
+    @property
+    def nrow(self) -> int:
+        """Number of rows."""
+        return len(self._data.index)
+    @nrow.setter
+    def nrow(self, value: int) -> None:
+        """Set number of rows"""
+        error_readonly("nrow")
+    @nrow.deleter
+    def nrow(self) -> None:
+        """Delete number of rows"""
+        error_readonly("nrow")
 
-    def row_axis():
-        doc = "Row axis index"
-        def fget(self):
-            """Get row axis index"""
-            return 0
-        def fset(self, value):
-            """Set row axis index"""
-            error_readonly("row_axis")
-        def fdel(self):
-            """Delete row axis index"""
-            error_readonly("row_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_axis = property(**row_axis())
+    @property
+    def row_axis(self) -> int:
+        """Row axis index."""
+        return 0
+    @row_axis.setter
+    def row_axis(self, value: int) -> None:
+        """Set row axis index"""
+        error_readonly("row_axis")
+    @row_axis.deleter
+    def row_axis(self) -> None:
+        """Delete row axis index"""
+        error_readonly("row_axis")
 
-    def row_name():
-        doc = "Row names."
-        def fget(self):
-            """Get row names"""
-            return self._df.index.values
-        def fset(self, value):
-            """Set row names"""
-            self._df.index = value
-        def fdel(self):
-            """Delete row names"""
-            del self._df.index
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_name = property(**row_name())
+    @property
+    def row_name(self) -> numpy.ndarray:
+        """Row names."""
+        return self._data.index.values
+    @row_name.setter
+    def row_name(self, value: numpy.ndarray) -> None:
+        """Set row names"""
+        self._data.index = value
+    @row_name.deleter
+    def row_name(self) -> None:
+        """Delete row names"""
+        del self._data.index
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -268,13 +260,13 @@ class PandasDataFrame(DataFrame):
         """
         Get dataframe as a pandas.DataFrame.
         """
-        return self._df
+        return self._data
 
     def to_dict(self, **kwargs: dict):
         """
         Get dataframe as a dictionary of numpy.ndarray's.
         """
-        df = self._df                                   # get pointer to pandas.DataFrame
+        df = self._data                                   # get pointer to pandas.DataFrame
         d = dict((e, df[e].values) for e in df.columns) # construct dictionary: col_name,array
         return d
 

@@ -4,7 +4,7 @@ Module implementing a Dictionary DataFrame and associated error checking routine
 
 import copy
 import numbers
-from typing import Any
+from typing import Any, Union
 import numpy
 import pandas
 
@@ -84,223 +84,223 @@ class DictDataFrame(DataFrame):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def data():
-        doc = "Access to raw data frame object."
-        def fget(self):
-            """Get dataframe"""
-            return self._data
-        def fset(self, value):
-            """Set dataframe"""
-            check_is_dict(value, "data")
-            check_keys_in_dict_all_type(value, "data", str)
-            check_values_in_dict_all_type(value, "data", numpy.ndarray)
-            check_values_in_dict_equal_len(value, "data")
-            self._data = value
-        def fdel(self):
-            """Delete dataframe"""
-            del self._data
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    data = property(**data())
+    @property
+    def data(self) -> dict:
+        """Access to raw data frame object."""
+        return self._data
+    @data.setter
+    def data(self, value: dict) -> None:
+        """Set dataframe"""
+        check_is_dict(value, "data")
+        check_keys_in_dict_all_type(value, "data", str)
+        check_values_in_dict_all_type(value, "data", numpy.ndarray)
+        check_values_in_dict_equal_len(value, "data")
+        self._data = value
+    @data.deleter
+    def data(self) -> None:
+        """Delete dataframe"""
+        del self._data
 
     ################## Column attributes ###################
-    def ncol():
-        doc = "Number of columns"
-        def fget(self):
-            """Get number of columns"""
-            return len(self._data)
-        def fset(self, value):
-            """Set number of columns"""
-            error_readonly("ncol")
-        def fdel(self):
-            """Delete number of columns"""
-            error_readonly("ncol")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ncol = property(**ncol())
+    @property
+    def ncol(self) -> int:
+        """Number of columns."""
+        return len(self._data)
+    @ncol.setter
+    def ncol(self, value: int) -> None:
+        """Set number of columns"""
+        error_readonly("ncol")
+    @ncol.deleter
+    def ncol(self) -> None:
+        """Delete number of columns"""
+        error_readonly("ncol")
 
-    def col_axis():
-        doc = "Column axis index"
-        def fget(self):
-            """Get column axis index"""
-            return 1
-        def fset(self, value):
-            """Set column axis index"""
-            error_readonly("col_axis")
-        def fdel(self):
-            """Delete column axis index"""
-            error_readonly("col_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_axis = property(**col_axis())
+    @property
+    def col_axis(self) -> int:
+        """Column axis index."""
+        return 1
+    @col_axis.setter
+    def col_axis(self, value: int) -> None:
+        """Set column axis index"""
+        error_readonly("col_axis")
+    @col_axis.deleter
+    def col_axis(self) -> None:
+        """Delete column axis index"""
+        error_readonly("col_axis")
 
-    def col_dtype():
-        doc = "Column data types."
-        def fget(self):
-            """Get column data types as numpy.ndarray"""
-            return numpy.object_(list(e.dtype for e in self._data.values()))
-        def fset(self, value):
-            """Set column data types"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):
-                check_len(value, "col_dtype", self.ncol)    # check input length
-                names = self.col_name                       # get column names
-                dtypes = value                              # get column dtypes
-                value = dict(zip(names,dtypes))             # construct dict of dtypes
-            if isinstance(value, dict):
-                names = self.col_name
-                for k in value.keys():
-                    if isinstance(k, numbers.Integral):     # if key is an integer
-                        if (k >= 0) and (k < len(names)):   # if integer range is acceptable
-                            new_key = names[k]              # get new key
-                            value[new_key] = value.pop(k)   # rename old key
-                        else:                               # otherwise integer range is unacceptable
-                            value.pop(k)                    # remove key from dictionary
-                    elif isinstance(k, str):                # if key is a string
-                        if k not in names:                  # if key is not in column names
-                            value.pop(k)                    # remove key from dictionary
-                    else:                                   # if key type not recognized
-                        value.pop(k)                        # remove key from dictionary
-                check_values_in_dict_all_type(value, "col_dtype", (str,numpy.dtype))
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-            for k,v in value.items():                   # for each key, value pair
-                if self._data[k].dtype != v:              # if dtypes do not match up
-                    self._data[k] = self._data[k].astype(v) # convert data types
-        def fdel(self):
-            """Delete column data types"""
-            error_readonly("col_dtype")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_dtype = property(**col_dtype())
+    @property
+    def col_dtype(self) -> numpy.ndarray:
+        """Column data types."""
+        return numpy.object_(list(e.dtype for e in self._data.values()))
+    @col_dtype.setter
+    def col_dtype(self, value: numpy.ndarray) -> None:
+        """Set column data types"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):
+            check_len(value, "col_dtype", self.ncol)    # check input length
+            names = self.col_name                       # get column names
+            dtypes = value                              # get column dtypes
+            value = dict(zip(names,dtypes))             # construct dict of dtypes
+        if isinstance(value, dict):
+            names = self.col_name
+            for k in value.keys():
+                if isinstance(k, numbers.Integral):     # if key is an integer
+                    if (k >= 0) and (k < len(names)):   # if integer range is acceptable
+                        new_key = names[k]              # get new key
+                        value[new_key] = value.pop(k)   # rename old key
+                    else:                               # otherwise integer range is unacceptable
+                        value.pop(k)                    # remove key from dictionary
+                elif isinstance(k, str):                # if key is a string
+                    if k not in names:                  # if key is not in column names
+                        value.pop(k)                    # remove key from dictionary
+                else:                                   # if key type not recognized
+                    value.pop(k)                        # remove key from dictionary
+            check_values_in_dict_all_type(value, "col_dtype", (str,numpy.dtype))
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+        for k,v in value.items():                   # for each key, value pair
+            if self._data[k].dtype != v:              # if dtypes do not match up
+                self._data[k] = self._data[k].astype(v) # convert data types
+    @col_dtype.deleter
+    def col_dtype(self) -> None:
+        """Delete column data types"""
+        error_readonly("col_dtype")
 
-    def col_name():
-        doc = "Column names."
-        def fget(self):
-            """Get column names as numpy.ndarray"""
-            return numpy.object_(list(self._data.keys()))
-        def fset(self, value):
-            """Set column names"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):
-                check_len(value, "col_name", self.ncol)     # check input length
-                names = self.col_name                       # get column names
-                new_names = value                           # get new column names
-                value = dict(zip(names,new_names))          # construct dict of names
-            if isinstance(value, dict):
-                names = self.col_name
-                for k in value.keys():
-                    if isinstance(k, numbers.Integral):     # if key is an integer
-                        if (k >= 0) and (k < len(names)):   # if integer range is acceptable
-                            new_key = names[k]              # get new key
-                            value[new_key] = value.pop(k)   # rename old key
-                        else:                               # otherwise integer range is unacceptable
-                            value.pop(k)                    # remove key from dictionary
-                    elif isinstance(k, str):                # if key is a string
-                        if k not in names:                  # if key is not in column names
-                            value.pop(k)                    # remove key from dictionary
-                    else:                                   # if key type not recognized
-                        value.pop(k)                        # remove key from dictionary
-                check_values_in_dict_all_type(value, "col_name", (str,numpy.dtype))
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-            for k,v in value.items():                       # for each key, value pair
-                self._data[v] = self._data.pop(k)           # rename old key
-        def fdel(self):
-            """Delete column names"""
-            error_readonly("col_name")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_name = property(**col_name())
+    @property
+    def col_name(self) -> numpy.ndarray:
+        """Column names."""
+        return numpy.object_(list(self._data.keys()))
+    @col_name.setter
+    def col_name(self, value: numpy.ndarray) -> None:
+        """Set column names"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):
+            check_len(value, "col_name", self.ncol)     # check input length
+            names = self.col_name                       # get column names
+            new_names = value                           # get new column names
+            value = dict(zip(names,new_names))          # construct dict of names
+        if isinstance(value, dict):
+            names = self.col_name
+            for k in value.keys():
+                if isinstance(k, numbers.Integral):     # if key is an integer
+                    if (k >= 0) and (k < len(names)):   # if integer range is acceptable
+                        new_key = names[k]              # get new key
+                        value[new_key] = value.pop(k)   # rename old key
+                    else:                               # otherwise integer range is unacceptable
+                        value.pop(k)                    # remove key from dictionary
+                elif isinstance(k, str):                # if key is a string
+                    if k not in names:                  # if key is not in column names
+                        value.pop(k)                    # remove key from dictionary
+                else:                                   # if key type not recognized
+                    value.pop(k)                        # remove key from dictionary
+            check_values_in_dict_all_type(value, "col_name", (str,numpy.dtype))
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+        for k,v in value.items():                       # for each key, value pair
+            self._data[v] = self._data.pop(k)           # rename old key
+    @col_name.deleter
+    def col_name(self) -> None:
+        """Delete column names"""
+        error_readonly("col_name")
 
-    def col_grp():
-        doc = "Column groups used for classifying variables"
-        def fget(self):
-            """Get column groups as numpy.ndarray or None if empty."""
-            if hasattr(self, "_col_grp") and isinstance(self._col_grp, dict):
-                return numpy.object_(list(self._col_grp.values()))
-            return None
-        def fset(self, value):
-            """Set column groups"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):   # if array_like
-                check_len(value, "col_grp", self.ncol)          # check input length
-                names = self.col_name                           # get column names
-                grps = value                                    # get column grps
-                value = dict(zip(names,grps))                   # construct dict of grps
-            if value is None:                                   # if is None
-                self._col_grp = value                           # set to None
-            elif isinstance(value, dict):                       # if is dict
-                check_keys_in_dict(value, "col_grp", *self._data.keys())
-                check_values_in_dict_all_type(value, "col_grp", str)
-                self._col_grp = {k: value[k] for k in self._data.keys()}
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-        def fdel(self):
-            """Delete column groups"""
-            del self._col_grp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_grp = property(**col_grp())
+    @property
+    def col_grp(self) -> Union[numpy.ndarray,None]:
+        """Column groups used for classifying variables."""
+        return self._col_grp
+    @col_grp.setter
+    def col_grp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set column groups"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):   # if array_like
+            check_len(value, "col_grp", self.ncol)          # check input length
+            names = self.col_name                           # get column names
+            grps = value                                    # get column grps
+            value = dict(zip(names,grps))                   # construct dict of grps
+        if value is None:                                   # if is None
+            self._col_grp = value                           # set to None
+        elif isinstance(value, dict):                       # if is dict
+            check_keys_in_dict(value, "col_grp", *self._data.keys())
+            check_values_in_dict_all_type(value, "col_grp", str)
+            self._col_grp = {k: value[k] for k in self._data.keys()}
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+    @col_grp.deleter
+    def col_grp(self) -> None:
+        """Delete column groups"""
+        del self._col_grp
 
     #################### Row attributes ####################
-    def nrow():
-        doc = "Number of rows"
-        def fget(self):
-            """Get number of rows"""
-            try:
-                k0 = next(iter(self._data))
-                return len(self._data[k0])
-            except StopIteration:
-                return 0
-        def fset(self, value):
-            """Set number of rows"""
-            error_readonly("nrow")
-        def fdel(self):
-            """Delete number of rows"""
-            error_readonly("nrow")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nrow = property(**nrow())
-
-    def row_axis():
-        doc = "Row axis index"
-        def fget(self):
-            """Get row axis index"""
+    @property
+    def nrow(self) -> int:
+        """Number of rows."""
+        try:
+            k0 = next(iter(self._data))
+            return len(self._data[k0])
+        except StopIteration:
             return 0
-        def fset(self, value):
-            """Set row axis index"""
-            error_readonly("row_axis")
-        def fdel(self):
-            """Delete row axis index"""
-            error_readonly("row_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_axis = property(**row_axis())
+    @nrow.setter
+    def nrow(self, value: int) -> None:
+        """Set number of rows"""
+        error_readonly("nrow")
+    @nrow.deleter
+    def nrow(self) -> None:
+        """Delete number of rows"""
+        error_readonly("nrow")
 
-    def row_name():
-        doc = "Row names."
-        def fget(self):
-            """Get row names as numpy.ndarray or None if empty."""
-            if hasattr(self, "_row_name") and isinstance(self._row_name, dict):
-                return self._row_name["row_name"]
-            return None
-        def fset(self, value):
-            """Set row names"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):
-                check_len(value, "row_name", self.nrow)
-                value = {"row_name": numpy.object_(value)}
-            if value is None:
-                self._row_name = value
-            elif isinstance(value, dict):
-                check_is_dict(value, "row_name")
-                check_keys_in_dict(value, "row_name", "row_name")
-                check_keys_in_dict_all_type(value, "row_name", str)
-                check_values_in_dict_all_type(value, "row_name", numpy.ndarray)
-                check_values_in_dict_len(value, "row_name", self.nrow)
-                check_values_in_dict_equal_len(value, "row_name")
-                self._row_name = value
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-        def fdel(self):
-            """Delete row names"""
-            del self._row_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    row_name = property(**row_name())
+    @property
+    def row_axis(self) -> int:
+        """Row axis index."""
+        return 0
+    @row_axis.setter
+    def row_axis(self, value: int) -> None:
+        """Set row axis index"""
+        error_readonly("row_axis")
+    @row_axis.deleter
+    def row_axis(self) -> None:
+        """Delete row axis index"""
+        error_readonly("row_axis")
+
+    @property
+    def row_name(self) -> Union[numpy.ndarray,None]:
+        """Row names."""
+        if hasattr(self, "_row_name") and isinstance(self._row_name, dict):
+            return self._row_name["row_name"]
+        return None
+    @row_name.setter
+    def row_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set row names"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):
+            check_len(value, "row_name", self.nrow)
+            value = {"row_name": numpy.object_(value)}
+        if value is None:
+            self._row_name = value
+        elif isinstance(value, dict):
+            check_is_dict(value, "row_name")
+            check_keys_in_dict(value, "row_name", "row_name")
+            check_keys_in_dict_all_type(value, "row_name", str)
+            check_values_in_dict_all_type(value, "row_name", numpy.ndarray)
+            check_values_in_dict_len(value, "row_name", self.nrow)
+            check_values_in_dict_equal_len(value, "row_name")
+            self._row_name = value
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+    @row_name.deleter
+    def row_name(self) -> None:
+        """Delete row names"""
+        del self._row_name
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, grp = None, dtype = None, return_index = False, return_name = False, return_grp = False, return_dtype = False, **kwargs: dict):
+    def col_data(
+            self, 
+            index = None, 
+            name = None, 
+            grp = None, 
+            dtype = None, 
+            return_index = False, 
+            return_name = False, 
+            return_grp = False, 
+            return_dtype = False, 
+            **kwargs: dict
+        ):
         """
         Get a column's (or columns') data from the dataframe.
 
