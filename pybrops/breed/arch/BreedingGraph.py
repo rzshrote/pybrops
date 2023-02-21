@@ -40,16 +40,18 @@ class BreedingGraph:
     ############################################################################
 
     ################### Graph properties ###################
-    def graph():
-        doc = "Access to the underlying graph structure."
-        def fget(self):
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    graph = property(**graph())
+    @property
+    def graph(self) -> Any:
+        """Graph data structure."""
+        raise NotImplementedError("property is abstract")
+    @graph.setter
+    def graph(self, value: Any) -> None:
+        """Set graph data structure."""
+        raise NotImplementedError("property is abstract")
+    @graph.deleter
+    def graph(self) -> None:
+        """Delete graph data structure."""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################

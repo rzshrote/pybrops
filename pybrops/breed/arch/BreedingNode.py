@@ -40,104 +40,97 @@ class BreedingNode:
     ############################################################################
 
     ############ Program information containers ############
-    def genome():
-        doc = "Genomes for individuals in the breeding program."
-        def fget(self):
-            """Get genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    genome = property(**genome())
+    @property
+    def genome(self) -> Any:
+        """Genomes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @genome.setter
+    def genome(self, value: Any) -> None:
+        """Set genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @genome.deleter
+    def genome(self) -> None:
+        """Delete genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def geno():
-        doc = "Genotypes for individuals in the breeding program."
-        def fget(self):
-            """Get genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    geno = property(**geno())
+    @property
+    def geno(self) -> Any:
+        """Genotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @geno.setter
+    def geno(self, value: Any) -> None:
+        """Set genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @geno.deleter
+    def geno(self) -> None:
+        """Delete genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def pheno():
-        doc = "Phenotypes for individuals in the breeding program."
-        def fget(self):
-            """Get phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    pheno = property(**pheno())
+    @property
+    def pheno(self) -> Any:
+        """Phenotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @pheno.setter
+    def pheno(self, value: Any) -> None:
+        """Set phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @pheno.deleter
+    def pheno(self) -> None:
+        """Delete phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def bval():
-        doc = "Breeding values for individuals in the breeding program."
-        def fget(self):
-            """Get breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    bval = property(**bval())
+    @property
+    def bval(self) -> Any:
+        """Breeding values for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @bval.setter
+    def bval(self, value: Any) -> None:
+        """Set breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @bval.deleter
+    def bval(self) -> None:
+        """Delete breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def gmod():
-        doc = "Genomic models for individuals in the breeding program."
-        def fget(self):
-            """Get genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gmod = property(**gmod())
+    @property
+    def gmod(self) -> Any:
+        """Genomic models for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @gmod.setter
+    def gmod(self, value: Any) -> None:
+        """Set genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @gmod.deleter
+    def gmod(self) -> None:
+        """Delete genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
     ############# Generation number properties #############
-    def t_cur():
-        doc = "Current time of the BreedingNode."
-        def fget(self):
-            """Get the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    t_cur = property(**t_cur())
+    @property
+    def t_cur(self) -> int:
+        """Current time of the BreedingNode."""
+        raise NotImplementedError("property is abstract")
+    @t_cur.setter
+    def t_cur(self, value: int) -> None:
+        """Set the current time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
+    @t_cur.deleter
+    def t_cur(self) -> None:
+        """Delete the current time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
 
-    def t_max():
-        doc = "Maximum time of the BreedingNode."
-        def fget(self):
-            """Get the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    t_max = property(**t_max())
+    @property
+    def t_max(self) -> int:
+        """Maximum time of the BreedingNode."""
+        raise NotImplementedError("property is abstract")
+    @t_max.setter
+    def t_max(self, value: int) -> None:
+        """Set the maximum time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
+    @t_max.deleter
+    def t_max(self) -> None:
+        """Delete the maximum time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################

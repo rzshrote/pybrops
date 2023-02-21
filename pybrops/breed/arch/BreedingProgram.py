@@ -39,146 +39,136 @@ class BreedingProgram(BreedingNode):
     ############################################################################
 
     ############ Starting condition containers #############
-    def start_genome():
-        doc = "Starting genomes for individuals in the breeding program."
-        def fget(self):
-            """Get starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_genome = property(**start_genome())
+    @property
+    def start_genome(self) -> Any:
+        """Starting genomes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_genome.setter
+    def start_genome(self, value: Any) -> None:
+        """Set starting genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @start_genome.deleter
+    def start_genome(self) -> None:
+        """Delete starting genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_geno():
-        doc = "Starting genotypes for individuals in the breeding program."
-        def fget(self):
-            """Get starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_geno = property(**start_geno())
+    @property
+    def start_geno(self) -> Any:
+        """Starting genotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_geno.setter
+    def start_geno(self, value: Any) -> None:
+        """Set starting genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @start_geno.deleter
+    def start_geno(self) -> None:
+        """Delete starting genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_pheno():
-        doc = "Starting phenotypes for individuals in the breeding program."
-        def fget(self):
-            """Get starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_pheno = property(**start_pheno())
+    @property
+    def start_pheno(self) -> Any:
+        """Starting phenotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_pheno.setter
+    def start_pheno(self, value: Any) -> None:
+        """Set starting phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @start_pheno.deleter
+    def start_pheno(self) -> None:
+        """Delete starting phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_bval():
-        doc = "Starting breeding values for individuals in the breeding program."
-        def fget(self):
-            """Get starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_bval = property(**start_bval())
+    @property
+    def start_bval(self) -> Any:
+        """Starting breeding values for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_bval.setter
+    def start_bval(self, value: Any) -> None:
+        """Set starting breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @start_bval.deleter
+    def start_bval(self) -> None:
+        """Delete starting breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_gmod():
-        doc = "Starting genomic models for individuals in the breeding program."
-        def fget(self):
-            """Get starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_gmod = property(**start_gmod())
+    @property
+    def start_gmod(self) -> Any:
+        """Starting genomic models for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_gmod.setter
+    def start_gmod(self, value: Any) -> None:
+        """Set starting genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
+    @start_gmod.deleter
+    def start_gmod(self) -> None:
+        """Delete starting genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
     ######### Breeding program operator properties #########
-    def initop():
-        doc = "Initialization operator"
-        def fget(self):
-            """Get the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    initop = property(**initop())
+    @property
+    def initop(self) -> Any:
+        """Initialization operator."""
+        raise NotImplementedError("property is abstract")
+    @initop.setter
+    def initop(self, value: Any) -> None:
+        """Set the initialization operator"""
+        raise NotImplementedError("property is abstract")
+    @initop.deleter
+    def initop(self) -> None:
+        """Delete the initialization operator"""
+        raise NotImplementedError("property is abstract")
 
-    def pselop():
-        doc = "Parent selection operator."
-        def fget(self):
-            """Get the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    pselop = property(**pselop())
+    @property
+    def pselop(self) -> Any:
+        """Parent selection operator."""
+        raise NotImplementedError("property is abstract")
+    @pselop.setter
+    def pselop(self, value: Any) -> None:
+        """Set the parent selection operator"""
+        raise NotImplementedError("property is abstract")
+    @pselop.deleter
+    def pselop(self) -> None:
+        """Delete the parent selection operator"""
+        raise NotImplementedError("property is abstract")
 
-    def mateop():
-        doc = "Mating operator."
-        def fget(self):
-            """Get the mating operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the mating operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the mating operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mateop = property(**mateop())
+    @property
+    def mateop(self) -> Any:
+        """Mating operator."""
+        raise NotImplementedError("property is abstract")
+    @mateop.setter
+    def mateop(self, value: Any) -> None:
+        """Set the mating operator"""
+        raise NotImplementedError("property is abstract")
+    @mateop.deleter
+    def mateop(self) -> None:
+        """Delete the mating operator"""
+        raise NotImplementedError("property is abstract")
 
-    def evalop():
-        doc = "Evaluation operator."
-        def fget(self):
-            """Get the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    evalop = property(**evalop())
+    @property
+    def evalop(self) -> Any:
+        """Evaluation operator."""
+        raise NotImplementedError("property is abstract")
+    @evalop.setter
+    def evalop(self, value: Any) -> None:
+        """Set the evaluation operator"""
+        raise NotImplementedError("property is abstract")
+    @evalop.deleter
+    def evalop(self) -> None:
+        """Delete the evaluation operator"""
+        raise NotImplementedError("property is abstract")
 
-    def sselop():
-        doc = "Survivor selection operator."
-        def fget(self):
-            """Get the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    sselop = property(**sselop())
+    @property
+    def sselop(self) -> Any:
+        """Survivor selection operator."""
+        raise NotImplementedError("property is abstract")
+    @sselop.setter
+    def sselop(self, value: Any) -> None:
+        """Set the survivor selection operator"""
+        raise NotImplementedError("property is abstract")
+    @sselop.deleter
+    def sselop(self) -> None:
+        """Delete the survivor selection operator"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################

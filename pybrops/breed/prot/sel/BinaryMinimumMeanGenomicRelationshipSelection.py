@@ -6,7 +6,7 @@ import cvxpy
 import numpy
 import warnings
 import types
-from typing import Optional, Union
+from typing import Any, Optional, Union
 from typing import Callable
 from typing import Type
 from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
@@ -244,33 +244,37 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         """Delete number of progeny to derive from each cross configuration."""
         del self._nprogeny
 
-    def gtype():
-        doc = "Genomic relationship matrix type"
-        def fget(self):
-            return self._gtype
-        def fset(self, value):
-            check_is_str(value, "gtype")
-            value = value.lower()
-            if value not in ["gmat","pgmat"]:
-                raise ValueError("'gtype' must be 'gmat' or 'pgmat'")
-            self._gtype = value
-        def fdel(self):
-            del self._gtype
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gtype = property(**gtype())
+    @property
+    def gtype(self) -> str:
+        """Genomic relationship matrix type."""
+        return self._gtype
+    @gtype.setter
+    def gtype(self, value: str) -> None:
+        """Set genomic relationship matrix type."""
+        check_is_str(value, "gtype")
+        value = value.lower()
+        if value not in ["gmat","pgmat"]:
+            raise ValueError("'gtype' must be 'gmat' or 'pgmat'")
+        self._gtype = value
+    @gtype.deleter
+    def gtype(self) -> None:
+        """Delete genomic relationship matrix type."""
+        del self._gtype
 
-    def gcls():
-        doc = "Genomic relationship matrix class"
-        def fget(self):
-            return self._gcls
-        def fset(self, value):
-            check_is_class(value, "gcls")
-            check_inherits(value, "gcls", CoancestryMatrix)
-            self._gcls = value
-        def fdel(self):
-            del self._gcls
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gcls = property(**gcls())
+    @property
+    def gcls(self) -> Any:
+        """Genomic relationship matrix class."""
+        return self._gcls
+    @gcls.setter
+    def gcls(self, value: Any) -> None:
+        """Set genomic relationship matrix class."""
+        check_is_class(value, "gcls")
+        check_inherits(value, "gcls", CoancestryMatrix)
+        self._gcls = value
+    @gcls.deleter
+    def gcls(self) -> None:
+        """Delete genomic relationship matrix class."""
+        del self._gcls
 
     @property
     def method(self) -> str:
