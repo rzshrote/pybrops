@@ -1,13 +1,13 @@
 import math
-import numbers
-from typing import Any
+from numbers import Complex, Integral, Number, Real
+from typing import Any, Callable, Container, Sequence
 from typing import Union
 import inspect
 
 ################################################################################
 ###################### basic inheritance check functions #######################
 ################################################################################
-def check_inherits(v, vname, vtype):
+def check_inherits(v: Any, vname: str, vtype: type) -> None:
     """
     Generic check of inheritance using method resolution order metadata.
 
@@ -248,9 +248,12 @@ def check_is_type(v: Any, vname: str) -> None:
     if not isinstance(v, type):
         raise TypeError("variable '{0}' must be of type 'type'".format(vname))
 
-def check_is_Number(v: Any, vname: str) -> None:
+################################################################################
+#################### basic check functions for number types ####################
+################################################################################
+def check_is_Complex(v: Any, vname: str) -> None:
     """
-    Check if a Python object is a numbers.Number. Raise error if not.
+    Check if a Python object is a numbers.Complex. Raise error if not.
 
     Parameters
     ----------
@@ -259,8 +262,8 @@ def check_is_Number(v: Any, vname: str) -> None:
     vname : str
         Name associated with the Python object.
     """
-    if not isinstance(v, numbers.Number):
-        raise TypeError("variable '{0}' must be of type 'numbers.Number'".format(vname))
+    if not isinstance(v, Complex):
+        raise TypeError("variable '{0}' must be of type 'numbers.Complex'".format(vname))
 
 def check_is_Integral(v: Any, vname: str) -> None:
     """
@@ -273,8 +276,81 @@ def check_is_Integral(v: Any, vname: str) -> None:
     vname : str
         Name associated with the Python object.
     """
-    if not isinstance(v, numbers.Integral):
+    if not isinstance(v, Integral):
         raise TypeError("variable '{0}' must be of type 'numbers.Integral'".format(vname))
+
+def check_is_Number(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is a numbers.Number. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, Number):
+        raise TypeError("variable '{0}' must be of type 'numbers.Number'".format(vname))
+
+def check_is_Real(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is a numbers.Real. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, Real):
+        raise TypeError("variable '{0}' must be of type 'numbers.Real'".format(vname))
+
+################################################################################
+#################### basic check functions for typing types ####################
+################################################################################
+def check_is_Callable(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is a typing.Callable. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, Callable):
+        raise TypeError("variable '{0}' must be of type 'typing.Callable'".format(vname))
+
+def check_is_Container(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is a typing.Container. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, Container):
+        raise TypeError("variable '{0}' must be of type 'typing.Container'".format(vname))
+
+def check_is_Sequence(v: Any, vname: str) -> None:
+    """
+    Check if a Python object is a typing.Sequence. Raise error if not.
+
+    Parameters
+    ----------
+    v : Any
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, Sequence):
+        raise TypeError("variable '{0}' must be of type 'typing.Sequence'".format(vname))
 
 ################################################################################
 ################ compound check functions for basic data types #################
