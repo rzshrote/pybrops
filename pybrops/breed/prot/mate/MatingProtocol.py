@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
+from numbers import Integral
 from typing import Any, Optional, Union
 import numpy
 
@@ -33,6 +34,23 @@ class MatingProtocol:
             Additional keyword arguments.
         """
         super(MatingProtocol, self).__init__()
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    @property
+    def nparent(self) -> Integral:
+        """Number of parents the mating protocol requires."""
+        raise NotImplementedError("property is abstract")
+    @nparent.setter
+    def nparent(self, value: Integral) -> None:
+        """Set number of parents the mating protocol requires."""
+        raise NotImplementedError("property is abstract")
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete number of parents the mating protocol requires."""
+        raise NotImplementedError("property is abstract")
+    
 
     ############################################################################
     ############################## Object Methods ##############################

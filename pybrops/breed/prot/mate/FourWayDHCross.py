@@ -2,6 +2,7 @@
 Module implementing mating protocols for four-way DH crosses.
 """
 
+from numbers import Integral
 from typing import Any, Optional, Union
 import numpy
 
@@ -10,6 +11,7 @@ from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_ndarray_len_is_multiple_of_4
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
@@ -50,6 +52,19 @@ class FourWayDHCross(MatingProtocol):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
+    @property
+    def nparent(self) -> Integral:
+        """Number of parents the mating protocol requires."""
+        return 4
+    @nparent.setter
+    def nparent(self, value: Integral) -> None:
+        """Set number of parents the mating protocol requires."""
+        error_readonly("nparent")
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete number of parents the mating protocol requires."""
+        error_readonly("nparent")
+
     @property
     def progeny_counter(self) -> int:
         """Description for property progeny_counter."""
