@@ -29,34 +29,32 @@ class PhenotypeDataFrame(DataFrame):
     ############################ Object Properties #############################
     ############################################################################
     # TODO: maybe eliminate these. it seems like this information should go in other modules
-    def col_analysis_type():
-        doc = "Analysis variable type array."
-        def fget(self):
-            """Get analysis variable type array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set analysis variable type array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete analysis variable type array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_analysis_type = property(**col_analysis_type())
+    @property
+    def col_analysis_type(self) -> Any:
+        """Analysis variable type array."""
+        raise NotImplementedError("property is abstract")
+    @col_analysis_type.setter
+    def col_analysis_type(self, value: Any) -> None:
+        """Set analysis variable type array"""
+        raise NotImplementedError("property is abstract")
+    @col_analysis_type.deleter
+    def col_analysis_type(self) -> None:
+        """Delete analysis variable type array"""
+        raise NotImplementedError("property is abstract")
 
     # TODO: maybe eliminate these. it seems like this information should go in other modules
-    def col_analysis_effect():
-        doc = "Analysis variable effect type {'response','fixed','random',None} array."
-        def fget(self):
-            """Get analysis variable effect type array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set analysis variable effect type array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete analysis variable effect type array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_analysis_effect = property(**col_analysis_effect())
+    @property
+    def col_analysis_effect(self) -> Any:
+        """Analysis variable effect type {'response','fixed','random',None} array."""
+        raise NotImplementedError("property is abstract")
+    @col_analysis_effect.setter
+    def col_analysis_effect(self, value: Any) -> None:
+        """Set analysis variable effect type array"""
+        raise NotImplementedError("property is abstract")
+    @col_analysis_effect.deleter
+    def col_analysis_effect(self) -> None:
+        """Delete analysis variable effect type array"""
+        raise NotImplementedError("property is abstract")
 
 
 

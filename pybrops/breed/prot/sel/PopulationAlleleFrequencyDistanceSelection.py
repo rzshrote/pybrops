@@ -252,49 +252,47 @@ class PopulationAlleleFrequencyDistanceSelection(SelectionProtocol):
         """Delete number of progeny to derive from each cross configuration."""
         del self._nprogeny
 
-    def target():
-        doc = "The target property."
-        def fget(self):
-            return self._target
-        def fset(self, value):
-            check_isinstance(value, "target", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = (                         # target options
-                    'positive',
-                    'negative',
-                    'stabilizing'
-                )
-                if value not in options:            # if target not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'target'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
-            self._target = value
-        def fdel(self):
-            del self._target
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    target = property(**target())
+    @property
+    def target(self) -> Union[numpy.ndarray,str]:
+        """Ideal marker target allele frequency."""
+        return self._target
+    @target.setter
+    def target(self, value: Union[numpy.ndarray,str]) -> None:
+        """Set ideal marker target allele frequency."""
+        check_isinstance(value, "target", (str, numpy.ndarray))
+        if isinstance(value, str):
+            # convert to lowercase
+            value = value.lower()
+            # target options
+            options = ('positive','negative','stabilizing')
+            # if target is not supported raise ValueError
+            if value not in options:
+                raise ValueError("Unsupported 'target'. Options are: " + ", ".join(map(str, options)))
+        self._target = value
+    @target.deleter
+    def target(self) -> None:
+        """Delete ideal marker target allele frequency."""
+        del self._target
 
-    def weight():
-        doc = "The weight property."
-        def fget(self):
-            return self._weight
-        def fset(self, value):
-            check_isinstance(value, "weight", (str, numpy.ndarray))
-            if isinstance(value, str):
-                value = value.lower()               # convert to lowercase
-                options = ('magnitude', 'equal')    # weight options
-                if value not in options:            # if weight not supported
-                    raise ValueError(               # raise ValueError
-                        "Unsupported 'weight'. Options are: " +
-                        ", ".join(map(str, options))
-                    )
-            self._weight = value
-        def fdel(self):
-            del self._weight
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    weight = property(**weight())
+    @property
+    def weight(self) -> Union[numpy.ndarray,str]:
+        """Description for property weight."""
+        return self._weight
+    @weight.setter
+    def weight(self, value: Union[numpy.ndarray,str]) -> None:
+        """Set data for property weight."""
+        check_isinstance(value, "weight", (str, numpy.ndarray))
+        if isinstance(value, str):
+            value = value.lower()               # convert to lowercase
+            options = ('magnitude', 'equal')    # weight options
+            # if weight is not supported raise ValueError
+            if value not in options:
+                raise ValueError("Unsupported 'weight'. Options are: " + ", ".join(map(str, options)))
+        self._weight = value
+    @weight.deleter
+    def weight(self) -> None:
+        """Delete data for property weight."""
+        del self._weight
 
     @property
     def method(self) -> str:

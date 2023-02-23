@@ -3,9 +3,9 @@ Module implementing phenotyping protocols for simulating phenotyping with no GxE
 interaction.
 """
 
+from typing import Union
 import numpy
 import numbers
-import pandas
 
 import pybrops.core.random
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
@@ -15,7 +15,7 @@ from pybrops.core.error import check_ndarray_is_1d
 from pybrops.core.error import check_ndarray_is_positive
 from pybrops.core.error import check_ndarray_dtype_is_integer
 from pybrops.core.error import check_ndarray_size
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 
 class G_E_Phenotyping(PhenotypingProtocol):
@@ -27,7 +27,17 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, nenv = 1, nrep = 1, var_env = 0, var_rep = 0, var_err = 0, rng = None, **kwargs: dict):
+    def __init__(
+            self, 
+            gpmod: GenomicModel, 
+            nenv: int = 1, 
+            nrep: Union[int,numpy.ndarray] = 1, 
+            var_env = 0, 
+            var_rep = 0, 
+            var_err = 0, 
+            rng = None, 
+            **kwargs: dict
+        ):
         """
         Construct a phenotyping protocol that simulates environments as having
         a fixed effect, but no genotype by environment interaction. Variance
@@ -83,166 +93,174 @@ class G_E_Phenotyping(PhenotypingProtocol):
     ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            return self._gpmod
-        def fset(self, value):
-            """Set genomic prediction model"""
-            check_is_GenomicModel(value, "gpmod")
-            self._gpmod = value
-        def fdel(self):
-            """Delete genomic prediction model"""
-            del self._gpmod
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        return self._gpmod
+    @gpmod.setter
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model."""
+        check_is_GenomicModel(value, "gpmod")
+        self._gpmod = value
+    @gpmod.deleter
+    def gpmod(self) -> None:
+        """Delete genomic prediction model."""
+        del self._gpmod
 
     ################ Stochastic Parameters #################
-    def var_env():
-        doc = "Variance across environments"
-        def fget(self):
-            """Get variance across environments"""
-            return self._var_env
-        def fset(self, value):
-            """Set variance across environments"""
-            if isinstance(value, numbers.Number):
-                check_is_positive(value, "var_env") # make sure >= 0 variance
-                self._var_env = numpy.full(         # allocate empty array
-                    self.gpmod.ntrait,              # ntrait length
-                    value,                          # fill value
-                    dtype = "float64"               # must be float64
-                )
-            elif isinstance(value, numpy.ndarray):
-                check_ndarray_is_1d(value, "var_env")   # make sure is 1d array
-                check_ndarray_size(                     # make sure size aligns with number of traits
-                    value,
-                    "var_env",
-                    self.gpmod.ntrait
-                )
-                check_ndarray_is_positive(value, "var_env") # make sure we don't have negative variance
-                if value.dtype != "float64":                # if dtype != float64
-                    value = numpy.float64(value)            # convert array to float64
-                self._var_env = value                       # set var_env
-            else:
-                raise TypeError("'var_env' must be a numeric or numpy.ndarray type")
-        def fdel(self):
-            """Delete variance across environments"""
-            del self._var_env
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_env = property(**var_env())
+    @property
+    def var_env(self) -> numpy.ndarray:
+        """Variance across environments."""
+        return self._var_env
+    @var_env.setter
+    def var_env(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+        """Set variance across environments"""
+        if isinstance(value, numbers.Number):
+            check_is_positive(value, "var_env") # make sure >= 0 variance
+            self._var_env = numpy.full(         # allocate empty array
+                self.gpmod.ntrait,              # ntrait length
+                value,                          # fill value
+                dtype = "float64"               # must be float64
+            )
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "var_env")   # make sure is 1d array
+            check_ndarray_size(                     # make sure size aligns with number of traits
+                value,
+                "var_env",
+                self.gpmod.ntrait
+            )
+            check_ndarray_is_positive(value, "var_env") # make sure we don't have negative variance
+            if value.dtype != "float64":                # if dtype != float64
+                value = numpy.float64(value)            # convert array to float64
+            self._var_env = value                       # set var_env
+        else:
+            raise TypeError("'var_env' must be a numeric or numpy.ndarray type")
+        self._var_env = value
+    @var_env.deleter
+    def var_env(self) -> None:
+        """Delete variance across environments"""
+        del self._var_env
 
-    def var_rep():
-        doc = "Variance across replicates"
-        def fget(self):
-            """Get replicate variance"""
-            return self._var_rep
-        def fset(self, value):
-            """Set replicate variance"""
-            if isinstance(value, numbers.Number):
-                check_is_positive(value, "var_rep") # make sure >= 0 variance
-                self._var_rep = numpy.full(         # allocate empty array
-                    self.gpmod.ntrait,              # ntrait length
-                    value,                          # fill value
-                    dtype = "float64"               # must be float64
-                )
-            elif isinstance(value, numpy.ndarray):
-                check_ndarray_is_1d(value, "var_rep")   # make sure is 1d array
-                check_ndarray_size(                     # make sure size aligns with number of traits
-                    value,
-                    "var_rep",
-                    self.gpmod.ntrait
-                )
-                check_ndarray_is_positive(value, "var_rep") # make sure we don't have negative variance
-                if value.dtype != "float64":                # if dtype != float64
-                    value = numpy.float64(value)            # convert array to float64
-                self._var_rep = value                       # set var_rep
-            else:
-                raise TypeError("'var_rep' must be a numeric or numpy.ndarray type")
-            self._var_rep = value
-        def fdel(self):
-            """Delete replicate variance"""
-            del self._var_rep
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_rep = property(**var_rep())
+    @property
+    def var_rep(self) -> numpy.ndarray:
+        """Variance across replicates."""
+        return self._var_rep
+    @var_rep.setter
+    def var_rep(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+        """Set replicate variance"""
+        if isinstance(value, numbers.Number):
+            check_is_positive(value, "var_rep") # make sure >= 0 variance
+            self._var_rep = numpy.full(         # allocate empty array
+                self.gpmod.ntrait,              # ntrait length
+                value,                          # fill value
+                dtype = "float64"               # must be float64
+            )
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "var_rep")   # make sure is 1d array
+            check_ndarray_size(                     # make sure size aligns with number of traits
+                value,
+                "var_rep",
+                self.gpmod.ntrait
+            )
+            check_ndarray_is_positive(value, "var_rep") # make sure we don't have negative variance
+            if value.dtype != "float64":                # if dtype != float64
+                value = numpy.float64(value)            # convert array to float64
+            self._var_rep = value                       # set var_rep
+        else:
+            raise TypeError("'var_rep' must be a numeric or numpy.ndarray type")
+        self._var_rep = value
+    @var_rep.deleter
+    def var_rep(self) -> None:
+        """Delete replicate variance"""
+        del self._var_rep
 
-    def var_err():
-        doc = "Error variance for each trait."
-        def fget(self):
-            """Get error variance"""
-            return self._var_err
-        def fset(self, value):
-            """Set error variance"""
-            if isinstance(value, numbers.Number):
-                check_is_positive(value, "var_err") # make sure >= 0 variance
-                self._var_err = numpy.full(         # allocate empty array
-                    self.gpmod.ntrait,              # ntrait length
-                    value,                          # fill value
-                    dtype = "float64"               # must be float64
-                )
-            elif isinstance(value, numpy.ndarray):
-                check_ndarray_is_1d(value, "var_err")   # make sure is 1d array
-                check_ndarray_size(                     # make sure size aligns with number of traits
-                    value,
-                    "var_err",
-                    self.gpmod.ntrait
-                )
-                check_ndarray_is_positive(value, "var_err") # make sure we don't have negative variance
-                if value.dtype != "float64":                # if dtype != float64
-                    value = numpy.float64(value)            # convert array to float64
-                self._var_err = value                       # set var_err
-            else:
-                raise TypeError("'var_err' must be a numeric or numpy.ndarray type")
-        def fdel(self):
-            """Delete error variance"""
-            del self._var_err
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_err = property(**var_err())
+    @property
+    def var_err(self) -> numpy.ndarray:
+        """Error variance for each trait."""
+        return self._var_err
+    @var_err.setter
+    def var_err(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+        """Set error variance"""
+        if isinstance(value, numbers.Number):
+            check_is_positive(value, "var_err") # make sure >= 0 variance
+            self._var_err = numpy.full(         # allocate empty array
+                self.gpmod.ntrait,              # ntrait length
+                value,                          # fill value
+                dtype = "float64"               # must be float64
+            )
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "var_err")   # make sure is 1d array
+            check_ndarray_size(                     # make sure size aligns with number of traits
+                value,
+                "var_err",
+                self.gpmod.ntrait
+            )
+            check_ndarray_is_positive(value, "var_err") # make sure we don't have negative variance
+            if value.dtype != "float64":                # if dtype != float64
+                value = numpy.float64(value)            # convert array to float64
+            self._var_err = value                       # set var_err
+        else:
+            raise TypeError("'var_err' must be a numeric or numpy.ndarray type")
+        self._var_err = value
+    @var_err.deleter
+    def var_err(self) -> None:
+        """Delete error variance"""
+        del self._var_err
 
     ################ Replication Parameters ################
-    def nenv():
-        doc = "Number of environments"
-        def fget(self):
-            """Get number of environments"""
-            return self._nenv
-        def fset(self, value):
-            """Set number of environments"""
-            check_is_Integral(value, "nenv")
-            self._nenv = value
-        def fdel(self):
-            """Delete number of environments"""
-            del self._nenv
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nenv = property(**nenv())
+    @property
+    def nenv(self) -> numbers.Integral:
+        """Number of environments."""
+        return self._nenv
+    @nenv.setter
+    def nenv(self, value: numbers.Integral) -> None:
+        """Set number of environments"""
+        check_is_Integral(value, "nenv")
+        self._nenv = value
+    @nenv.deleter
+    def nenv(self) -> None:
+        """Delete number of environments"""
+        del self._nenv
 
-    def nrep():
-        doc = "Number of replications per environment"
-        def fget(self):
-            """Get number of replications per environment"""
-            return self._nrep
-        def fset(self, value):
-            """Set number of replications per environment"""
-            if isinstance(value, numbers.Integral):
-                check_is_positive(value, "nrep")
-                self._nrep = numpy.repeat(value, self.nenv)
-            elif isinstance(value, numpy.ndarray):
-                check_ndarray_dtype_is_integer(value, "nrep")
-                check_ndarray_is_1d(value, "nrep")
-                check_ndarray_is_positive(value, "nrep")
-                check_ndarray_size(value, "nrep", self.nenv)
-                self._nrep = value
-            else:
-                raise TypeError("'nrep' must be an integer type or numpy.ndarray")
-        def fdel(self):
-            """Delete number of replications per environment"""
-            del self._nrep
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nrep = property(**nrep())
+    @property
+    def nrep(self) -> numpy.ndarray:
+        """Number of replications per environment."""
+        return self._nrep
+    @nrep.setter
+    def nrep(self, value: numpy.ndarray) -> None:
+        """Set number of replications per environment."""
+        if isinstance(value, numbers.Integral):
+            check_is_positive(value, "nrep")
+            self._nrep = numpy.repeat(value, self.nenv)
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "nrep")
+            check_ndarray_is_1d(value, "nrep")
+            check_ndarray_is_positive(value, "nrep")
+            check_ndarray_size(value, "nrep", self.nenv)
+            self._nrep = value
+        else:
+            raise TypeError("'nrep' must be an integer type or numpy.ndarray")
+        self._nrep = value
+    @nrep.deleter
+    def nrep(self) -> None:
+        """Delete number of replications per environment"""
+        del self._nrep
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout = None, gpmod = None, nenv = None, nrep = None, var_env = None, var_rep = None, var_err = None, **kwargs: dict):
+    def phenotype(
+            self, 
+            pgmat, 
+            miscout = None, 
+            gpmod = None, 
+            nenv = None, 
+            nrep = None, 
+            var_env = None, 
+            var_rep = None, 
+            var_err = None, 
+            **kwargs: dict
+        ):
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -298,7 +316,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
             check_ndarray_is_1d(nrep, "nrep")
             check_ndarray_is_positive(nrep, "nrep")
             check_ndarray_size(nrep, "nrep", nenv)
-            nrep = value
         else:
             raise TypeError("'nrep' must be an integer type or numpy.ndarray")
 

@@ -22,7 +22,15 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, data, col_grp = None, col_analysis_type = None, col_analysis_effect = None, row_name = None, **kwargs: dict):
+    def __init__(
+            self, 
+            data, 
+            col_grp = None, 
+            col_analysis_type = None, 
+            col_analysis_effect = None, 
+            row_name = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DictPhenotypeDataFrame.
 
@@ -86,79 +94,88 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def col_analysis_type():
-        doc = "Analysis variable type array."
-        def fget(self):
-            """Get analysis types as numpy.ndarray or None if empty."""
-            if hasattr(self, "_col_analysis_type") and isinstance(self._col_analysis_type, dict):
-                return numpy.object_(list(self._col_analysis_type.values()))
-            return None
-        def fset(self, value):
-            """Set analysis variable type array"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):   # if array_like
-                check_len(value, "col_analysis_type", self.ncol)# check input length
-                names = self.col_name                           # get column names
-                grps = value                                    # get column grps
-                value = dict(zip(names,grps))                   # construct dict of grps
-            if value is None:                                   # if is None
-                self._col_analysis_type = value                 # set to None
-            elif isinstance(value, dict):                       # if is dict
-                check_keys_in_dict(value, "col_analysis_type", *self._data.keys())
-                check_values_in_dict_all_type(value, "col_analysis_type", (str,type(None)))
-                options = ['bool', 'complex', 'double', 'int', 'raw', 'str',
-                    'factor(bool)', 'factor(complex)', 'factor(double)',
-                    'factor(int)', 'factor(str)', None
-                ]
-                if any(e not in options for e in value.values()):
-                    raise ValueError("unsupported value: supported values are {0}".format(options))
-                self._col_analysis_type = {k: value[k] for k in self._data.keys()}
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-        def fdel(self):
-            """Delete analysis variable type array"""
-            del self._col_analysis_type
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_analysis_type = property(**col_analysis_type())
+    @property
+    def col_analysis_type(self) -> numpy.ndarray:
+        """Analysis variable type array."""
+        if hasattr(self, "_col_analysis_type") and isinstance(self._col_analysis_type, dict):
+            return numpy.object_(list(self._col_analysis_type.values()))
+        return None
+    @col_analysis_type.setter
+    def col_analysis_type(self, value: numpy.ndarray) -> None:
+        """Set analysis variable type array"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):   # if array_like
+            check_len(value, "col_analysis_type", self.ncol)# check input length
+            names = self.col_name                           # get column names
+            grps = value                                    # get column grps
+            value = dict(zip(names,grps))                   # construct dict of grps
+        if value is None:                                   # if is None
+            self._col_analysis_type = value                 # set to None
+        elif isinstance(value, dict):                       # if is dict
+            check_keys_in_dict(value, "col_analysis_type", *self._data.keys())
+            check_values_in_dict_all_type(value, "col_analysis_type", (str,type(None)))
+            options = ['bool', 'complex', 'double', 'int', 'raw', 'str',
+                'factor(bool)', 'factor(complex)', 'factor(double)',
+                'factor(int)', 'factor(str)', None
+            ]
+            if any(e not in options for e in value.values()):
+                raise ValueError("unsupported value: supported values are {0}".format(options))
+            self._col_analysis_type = {k: value[k] for k in self._data.keys()}
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+    @col_analysis_type.deleter
+    def col_analysis_type(self) -> None:
+        """Delete analysis variable type array"""
+        del self._col_analysis_type
 
-    def col_analysis_effect():
-        doc = "Analysis variable effect type {'response','fixed','random',None} array."
-        def fget(self):
-            """Get analysis variable effect type array"""
-            if hasattr(self, "_col_analysis_effect") and isinstance(self._col_analysis_effect, dict):
-                return numpy.object_(list(self._col_analysis_effect.values()))
-            return None
-        def fset(self, value):
-            """Set analysis variable effect type array"""
-            if isinstance(value, (list,tuple,numpy.ndarray)):       # if array_like
-                check_len(value, "col_analysis_effect", self.ncol)  # check input length
-                names = self.col_name                               # get column names
-                grps = value                                        # get column grps
-                value = dict(zip(names,grps))                       # construct dict of grps
-            if value is None:                                       # if is None
-                self._col_analysis_effect = value                   # set to None
-            elif isinstance(value, dict):                           # if is dict
-                check_keys_in_dict(value, "col_analysis_effect", *self._data.keys())
-                check_values_in_dict_all_type(value, "col_analysis_effect", (str,type(None)))
-                options = ['response', 'fixed', 'random', None]
-                if any(e not in options for e in value.values()):
-                    raise ValueError("unsupported value: supported values are {0}".format(options))
-                self._col_analysis_effect = {k: value[k] for k in self._data.keys()}
-            else:
-                raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-        def fdel(self):
-            """Delete analysis variable effect type array"""
-            del self._col_analysis_effect
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_analysis_effect = property(**col_analysis_effect())
+    @property
+    def col_analysis_effect(self) -> numpy.ndarray:
+        """Analysis variable effect type {'response','fixed','random',None} array."""
+        if hasattr(self, "_col_analysis_effect") and isinstance(self._col_analysis_effect, dict):
+            return numpy.object_(list(self._col_analysis_effect.values()))
+        return None
+    @col_analysis_effect.setter
+    def col_analysis_effect(self, value: numpy.ndarray) -> None:
+        """Set analysis variable effect type array"""
+        if isinstance(value, (list,tuple,numpy.ndarray)):       # if array_like
+            check_len(value, "col_analysis_effect", self.ncol)  # check input length
+            names = self.col_name                               # get column names
+            grps = value                                        # get column grps
+            value = dict(zip(names,grps))                       # construct dict of grps
+        if value is None:                                       # if is None
+            self._col_analysis_effect = value                   # set to None
+        elif isinstance(value, dict):                           # if is dict
+            check_keys_in_dict(value, "col_analysis_effect", *self._data.keys())
+            check_values_in_dict_all_type(value, "col_analysis_effect", (str,type(None)))
+            options = ['response', 'fixed', 'random', None]
+            if any(e not in options for e in value.values()):
+                raise ValueError("unsupported value: supported values are {0}".format(options))
+            self._col_analysis_effect = {k: value[k] for k in self._data.keys()}
+        else:
+            raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
+    @col_analysis_effect.deleter
+    def col_analysis_effect(self) -> None:
+        """Delete analysis variable effect type array"""
+        del self._col_analysis_effect
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, grp = None,
-                 analysis_type = None, analysis_effect = None, dtype = None,
-                 return_index = False, return_name = False, return_grp = False,
-                 return_analysis_type = None, return_analysis_effect = None,
-                 return_dtype = False, **kwargs: dict):
+    def col_data(
+            self, 
+            index = None, 
+            name = None, 
+            grp = None,
+            analysis_type = None, 
+            analysis_effect = None, 
+            dtype = None,
+            return_index = False, 
+            return_name = False, 
+            return_grp = False,
+            return_analysis_type = None, 
+            return_analysis_effect = None,
+            return_dtype = False, 
+            **kwargs: dict
+        ):
         """
         Get a column's (or columns') data from the dataframe.
 

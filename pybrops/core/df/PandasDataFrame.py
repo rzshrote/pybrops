@@ -21,7 +21,7 @@ class PandasDataFrame(DataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, df, col_name = None, col_ctype = None, col_dtype = None, **kwargs: dict):
+    def __init__(self, data, col_name = None, col_ctype = None, col_dtype = None, **kwargs: dict):
         """
         Constructor for the concrete class PandasDataFrame.
 
@@ -30,7 +30,7 @@ class PandasDataFrame(DataFrame):
         df : pandas.DataFrame
         """
         super(PandasDataFrame, self).__init__(**kwargs)
-        self.df = df
+        self.data = data
         if col_name is not None:
             self.col_name = col_name
         self.col_ctype = col_ctype
@@ -236,7 +236,7 @@ class PandasDataFrame(DataFrame):
             raise KeyError(err)
 
         # extract column arrays as a numpy.ndarray
-        out_arr = [self.df.iloc[:,ix].values for ix in cix]
+        out_arr = [self.data.iloc[:,ix].values for ix in cix]
 
         # construct extra output list
         out_extra = []

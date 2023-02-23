@@ -6,7 +6,7 @@ import numpy
 
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.core.error import error_readonly
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
@@ -18,7 +18,11 @@ class TruePhenotyping(PhenotypingProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, gpmod, **kwargs: dict):
+    def __init__(
+            self, 
+            gpmod: GenomicModel, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class TruePhenotyping.
 
@@ -37,35 +41,33 @@ class TruePhenotyping(PhenotypingProtocol):
     ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            return self._gpmod
-        def fset(self, value):
-            """Set genomic prediction model"""
-            check_is_GenomicModel(value, "gpmod")
-            self._gpmod = value
-        def fdel(self):
-            """Delete genomic prediction model"""
-            del self._gpmod
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        return self._gpmod
+    @gpmod.setter
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model"""
+        check_is_GenomicModel(value, "gpmod")
+        self._gpmod = value
+    @gpmod.deleter
+    def gpmod(self) -> None:
+        """Delete genomic prediction model"""
+        del self._gpmod
 
     ################ Stochastic Parameters #################
-    def var_err():
-        doc = "Error variance for each trait."
-        def fget(self):
-            """Get error variance"""
-            return numpy.repeat(1.0, self.gpmod.ntrait)
-        def fset(self, value):
-            """Set error variance"""
-            error_readonly("var_err")
-        def fdel(self):
-            """Delete error variance"""
-            error_readonly("var_err")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_err = property(**var_err())
+    @property
+    def var_err(self) -> numpy.ndarray:
+        """Error variance for each trait."""
+        return numpy.repeat(0.0, self.gpmod.ntrait)
+    @var_err.setter
+    def var_err(self, value: numpy.ndarray) -> None:
+        """Set error variance"""
+        error_readonly("var_err")
+    @var_err.deleter
+    def var_err(self) -> None:
+        """Delete error variance"""
+        error_readonly("var_err")
 
     ############################################################################
     ############################## Object Methods ##############################

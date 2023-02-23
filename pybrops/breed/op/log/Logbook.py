@@ -35,33 +35,31 @@ class Logbook:
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    def data():
-        doc = "The data property."
-        def fget(self):
-            """Get Logbook data"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set Logbook data"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete Logbook data"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    data = property(**data())
+    @property
+    def data(self) -> Any:
+        """Logbook data."""
+        raise NotImplementedError("property is abstract")
+    @data.setter
+    def data(self, value: Any) -> None:
+        """Set logbook data."""
+        raise NotImplementedError("property is abstract")
+    @data.deleter
+    def data(self) -> None:
+        """Delete logbook data."""
+        raise NotImplementedError("property is abstract")
 
-    def rep():
-        doc = "The rep property."
-        def fget(self):
-            """Get replicate number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set replicate number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete replicate number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rep = property(**rep())
+    @property
+    def rep(self) -> int:
+        """Replicate number."""
+        raise NotImplementedError("property is abstract")
+    @rep.setter
+    def rep(self, value: int) -> None:
+        """Set replicate number."""
+        raise NotImplementedError("property is abstract")
+    @rep.deleter
+    def rep(self) -> None:
+        """Delete replicate number."""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################

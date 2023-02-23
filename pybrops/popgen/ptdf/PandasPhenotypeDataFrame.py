@@ -20,9 +20,9 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, df, col_atype, col_aefct, **kwargs: dict):
+    def __init__(self, data, col_atype, col_aefct, **kwargs: dict):
         super(PandasPhenotypeDataFrame, self).__init__(
-            df = df,
+            data = data,
             **kwargs
         )
         self.col_atype = col_atype
@@ -33,70 +33,82 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     ############################################################################
 
     ################## Column attributes ###################
-    def col_ctype():
-        doc = "Column types used for classifying variables"
-        def fget(self):
-            """Get column types"""
-            return self._col_ctype
-        def fset(self, value):
-            """Set column types"""
-            check_is_ndarray(value, "col_ctype")
-            check_len(value, "col_ctype", self.ncol)
-            options = ["response","predictor",None]
-            if any(e not in options for e in value):
-                raise ValueError("elements in 'col_ctype' must be in {0}".format(options))
-            self._col_ctype = value
-        def fdel(self):
-            """Delete column types"""
-            del self._col_ctype
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_ctype = property(**col_ctype())
+    @property
+    def col_ctype(self) -> numpy.ndarray:
+        """Column types used for classifying variables."""
+        return self._col_ctype
+    @col_ctype.setter
+    def col_ctype(self, value: numpy.ndarray) -> None:
+        """Set column types"""
+        check_is_ndarray(value, "col_ctype")
+        check_len(value, "col_ctype", self.ncol)
+        options = ["response","predictor",None]
+        if any(e not in options for e in value):
+            raise ValueError("elements in 'col_ctype' must be in {0}".format(options))
+        self._col_ctype = value
+    @col_ctype.deleter
+    def col_ctype(self) -> None:
+        """Delete column types"""
+        del self._col_ctype
 
-    def col_atype():
-        doc = "Analysis variable type array."
-        def fget(self):
-            """Get analysis variable type array"""
-            return self._col_atype
-        def fset(self, value):
-            """Set analysis variable type array"""
-            check_is_ndarray(value, "col_atype")
-            check_len(value, "col_atype", self.ncol)
-            options = ['bool', 'complex', 'double', 'int', 'raw', 'str',
-                'factor(bool)', 'factor(complex)', 'factor(double)',
-                'factor(int)', 'factor(str)', None
-            ]
-            if any(e not in options for e in value):
-                raise ValueError("elements in 'col_atype' must be in {0}".format(options))
-            self._col_atype = value
-        def fdel(self):
-            """Delete analysis variable type array"""
-            del self._col_atype
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_atype = property(**col_atype())
+    @property
+    def col_atype(self) -> numpy.ndarray:
+        """Analysis variable type array."""
+        return self._col_atype
+    @col_atype.setter
+    def col_atype(self, value: numpy.ndarray) -> None:
+        """Set analysis variable type array"""
+        check_is_ndarray(value, "col_atype")
+        check_len(value, "col_atype", self.ncol)
+        options = ['bool', 'complex', 'double', 'int', 'raw', 'str',
+            'factor(bool)', 'factor(complex)', 'factor(double)',
+            'factor(int)', 'factor(str)', None
+        ]
+        if any(e not in options for e in value):
+            raise ValueError("elements in 'col_atype' must be in {0}".format(options))
+        self._col_atype = value
+    @col_atype.deleter
+    def col_atype(self) -> None:
+        """Delete analysis variable type array"""
+        del self._col_atype
 
-    def col_aefct():
-        doc = "Analysis variable effect type {'response', 'fixed', 'random', None} array."
-        def fget(self):
-            """Get analysis variable effect type array"""
-            return self._col_aefct
-        def fset(self, value):
-            """Set analysis variable effect type array"""
-            check_is_ndarray(value, "col_aefct")
-            check_len(value, "col_aefct", self.ncol)
-            col_aefct_options = ['response', 'fixed', 'random', None]
-            if any(e not in col_aefct_options for e in value):
-                raise ValueError("elements in 'col_aefct' must be in {0}".format(col_aefct_options))
-            self._col_aefct = value
-        def fdel(self):
-            """Delete analysis variable effect type array"""
-            del self._col_aefct
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    col_aefct = property(**col_aefct())
+    @property
+    def col_aefct(self) -> numpy.ndarray:
+        """Analysis variable effect type {'response', 'fixed', 'random', None} array."""
+        return self._col_aefct
+    @col_aefct.setter
+    def col_aefct(self, value: numpy.ndarray) -> None:
+        """Set analysis variable effect type array"""
+        check_is_ndarray(value, "col_aefct")
+        check_len(value, "col_aefct", self.ncol)
+        col_aefct_options = ['response', 'fixed', 'random', None]
+        if any(e not in col_aefct_options for e in value):
+            raise ValueError("elements in 'col_aefct' must be in {0}".format(col_aefct_options))
+        self._col_aefct = value
+    @col_aefct.deleter
+    def col_aefct(self) -> None:
+        """Delete analysis variable effect type array"""
+        del self._col_aefct
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def col_data(self, index = None, name = None, ctype = None, dtype = None, atype = None, aefct = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, return_atype = False, return_aefct = False, **kwargs: dict):
+    def col_data(
+            self, 
+            index = None, 
+            name = None, 
+            ctype = None, 
+            dtype = None, 
+            atype = None, 
+            aefct = None, 
+            return_index = False, 
+            return_name = False, 
+            return_ctype = False, 
+            return_dtype = False, 
+            return_atype = False, 
+            return_aefct = False, 
+            **kwargs: dict
+        ):
         """
         Get a column's (or columns') data from the dataframe.
 

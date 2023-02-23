@@ -10,6 +10,7 @@ import warnings
 import types
 
 from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
@@ -42,13 +43,24 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self,
-    nparent, ncross, nprogeny, mehfn,
-    bvtype = "gebv", method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = -1.0,
-    moalgo = None,
-    rng = global_prng, **kwargs: dict):
+    def __init__(
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            mehfn: Callable,
+            bvtype: str = "gebv", 
+            method: str = "single",
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = -1.0,
+            moalgo = None,
+            rng = global_prng, 
+            **kwargs: dict
+        ):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -235,36 +247,38 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         """Delete number of progeny to derive from each cross configuration."""
         del self._nprogeny
 
-    def mehfn():
-        doc = "Mean expected heterozygosity control function."
-        def fget(self):
-            return self._mehfn
-        def fset(self, value):
-            check_is_callable(value, "mehfn")
-            self._mehfn = value
-        def fdel(self):
-            del self._mehfn
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mehfn = property(**mehfn())
+    @property
+    def mehfn(self) -> Callable:
+        """Mean expected heterozygosity control function."""
+        return self._mehfn
+    @mehfn.setter
+    def mehfn(self, value: Callable) -> None:
+        """Set mean expected heterozygosity control function."""
+        check_is_callable(value, "mehfn")
+        self._mehfn = value
+    @mehfn.deleter
+    def mehfn(self) -> None:
+        """Delete mean expected heterozygosity control function."""
+        del self._mehfn
 
-    def bvtype():
-        doc = "Breeding value matrix type."
-        def fget(self):
-            return self._bvtype
-        def fset(self, value):
-            check_is_str(value, "bvtype")   # must be string
-            value = value.lower()           # convert to lowercase
-            options = ("gebv", "ebv")       # method options
-            if value not in options:            # if not method supported
-                raise ValueError(               # raise ValueError
-                    "Unsupported 'method'. Options are: " +
-                    ", ".join(map(str, options))
-                )
-            self._bvtype = value
-        def fdel(self):
-            del self._bvtype
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    bvtype = property(**bvtype())
+    @property
+    def bvtype(self) -> str:
+        """Breeding value matrix type."""
+        return self._bvtype
+    @bvtype.setter
+    def bvtype(self, value: str) -> None:
+        """Set breeding value matrix type."""
+        check_is_str(value, "bvtype")   # must be string
+        value = value.lower()           # convert to lowercase
+        options = ("gebv", "ebv")       # method options
+        # if not method supported raise ValueError
+        if value not in options:
+            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
+        self._bvtype = value
+    @bvtype.deleter
+    def bvtype(self) -> None:
+        """Delete breeding value matrix type."""
+        del self._bvtype
 
     @property
     def method(self) -> str:
@@ -373,27 +387,30 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         """Delete nondominated set weights."""
         del self._ndset_wt
 
-    def moalgo():
-        doc = "The moalgo property."
-        def fget(self):
-            return self._moalgo
-        def fset(self, value):
-            if value is None:
-                value = NSGA3UnityConstraintGeneticAlgorithm(
-                    ngen = 600,             # number of generations to evolve
-                    mu = 100,               # number of parents in population
-                    lamb = 100,             # number of progeny to produce
-                    cxeta = 30.0,           # crossover variance parameter
-                    muteta = 20.0,          # mutation crossover parameter
-                    refpnts = None,         # hyperplane reference points
-                    save_logbook = False,   # whether to save logs or not
-                    rng = self.rng          # PRNG source
-                )
-            self._moalgo = value
-        def fdel(self):
-            del self._moalgo
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    moalgo = property(**moalgo())
+    @property
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Multi-objective algorithm."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set multi-objective algorithm."""
+        if value is None:
+            value = NSGA3UnityConstraintGeneticAlgorithm(
+                ngen = 600,             # number of generations to evolve
+                mu = 100,               # number of parents in population
+                lamb = 100,             # number of progeny to produce
+                cxeta = 30.0,           # crossover variance parameter
+                muteta = 20.0,          # mutation crossover parameter
+                refpnts = None,         # hyperplane reference points
+                save_logbook = False,   # whether to save logs or not
+                rng = self.rng          # PRNG source
+            )
+        check_is_OptimizationAlgorithm(value, "moalgo")
+        self._moalgo = value
+    @moalgo.deleter
+    def moalgo(self) -> None:
+        """Delete multi-objective algorithm."""
+        del self._moalgo
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:

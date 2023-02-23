@@ -2,7 +2,14 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
-from typing import Any
+import numbers
+from typing import Any, Union
+
+import numpy
+
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
 class PhenotypingProtocol:
@@ -37,39 +44,42 @@ class PhenotypingProtocol:
     ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        raise NotImplementedError("property is abstract")
+    @gpmod.setter
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model"""
+        raise NotImplementedError("property is abstract")
+    @gpmod.deleter
+    def gpmod(self) -> None:
+        """Delete genomic prediction model"""
+        raise NotImplementedError("property is abstract")
 
     ################ Stochastic Parameters #################
-    def var_err():
-        doc = "Error variance for each trait."
-        def fget(self):
-            """Get error variance"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set error variance"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete error variance"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_err = property(**var_err())
+    @property
+    def var_err(self) -> Any:
+        """Error variance for each trait."""
+        raise NotImplementedError("property is abstract")
+    @var_err.setter
+    def var_err(self, value: Any) -> None:
+        """Set error variance"""
+        raise NotImplementedError("property is abstract")
+    @var_err.deleter
+    def var_err(self) -> None:
+        """Delete error variance"""
+        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def phenotype(self, pgmat, miscout, **kwargs: dict):
+    def phenotype(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            miscout: dict, 
+            **kwargs: dict
+        ) -> PhenotypeDataFrame:
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -91,7 +101,12 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_h2(self, h2, pgmat, **kwargs: dict):
+    def set_h2(
+            self, 
+            h2: Union[numbers.Number,numpy.ndarray], 
+            pgmat: PhasedGenotypeMatrix, 
+            **kwargs: dict
+        ) -> None:
         """
         Set the narrow sense heritability for environments.
 
@@ -106,7 +121,12 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_H2(self, H2, pgmat, **kwargs: dict):
+    def set_H2(
+            self, 
+            H2: Union[numbers.Number,numpy.ndarray], 
+            pgmat: PhasedGenotypeMatrix, 
+            **kwargs: dict
+        ) -> None:
         """
         Set the broad sense heritability for environments.
 

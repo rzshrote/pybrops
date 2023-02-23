@@ -3,7 +3,7 @@ Module implementing the extraction of true breeding value.
 """
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class TrueBreedingValue(BreedingValueProtocol):
@@ -32,20 +32,19 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            return self._gpmod
-        def fset(self, value):
-            """Set genomic prediction model"""
-            check_is_GenomicModel(value, "gpmod")
-            self._gpmod = value
-        def fdel(self):
-            """Delete genomic prediction model"""
-            del self._gpmod
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        return self._gpmod
+    @gpmod.setter
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model."""
+        check_is_GenomicModel(value, "gpmod")
+        self._gpmod = value
+    @gpmod.deleter
+    def gpmod(self) -> None:
+        """Delete genomic prediction model."""
+        del self._gpmod
 
     ############################################################################
     ############################## Object Methods ##############################
