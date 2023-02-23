@@ -561,20 +561,9 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # get selection parameters
-        nconfig = self.nconfig
-        nparent = self.nparent
-        ncross = self.ncross
-        nprogeny = self.nprogeny
-        objfn_wt = self.objfn_wt
-        ndset_trans = self.ndset_trans
-        ndset_trans_kwargs = self.ndset_trans_kwargs
-        ndset_wt = self.ndset_wt
-        method = self.method
-
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
-        if method == "single":
+        if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
                 pgmat = pgmat,
@@ -592,17 +581,14 @@ class OptimalHaploidValueSelection(SelectionProtocol):
 
             # get all OHVs for each configuration
             # (s,)
-            ohv = [objfn([i]) for i in range(len(xmap))]
-
-            # convert to numpy.ndarray
-            ohv = numpy.array(ohv)
+            ohv = numpy.array([objfn([i]) for i in range(len(xmap))])
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
-            ohv = ohv * objfn_wt
+            ohv = ohv * self.objfn_wt
 
             # get indices of top nconfig OHVs
-            sel = ohv.argsort()[::-1][:nconfig]
+            sel = ohv.argsort()[::-1][:self.nconfig]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
@@ -611,20 +597,17 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             # (kd,)
             sel = xmap[sel,:].flatten()
 
-            # get GEBVs for reference
-            misc = {"ohv" : ohv}
+            # add optimization details to miscellaneous output if miscout was provided
+            if miscout is not None:
+                miscout["ohv"] = ohv
 
-            # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(misc)    # add dict to dict
-
-            return pgmat, sel, ncross, nprogeny
+            return pgmat, sel, self.ncross, self.nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
-        elif method == "pareto":
+        elif self.method == "pareto":
             # get the pareto frontier
-            frontier, sel_config, misc = self.pareto(
+            frontier, sel_config = self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -632,21 +615,31 @@ class OptimalHaploidValueSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                nparent = nparent,
                 **kwargs
             )
 
             # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
 
             # get index of maximum score
             ix = score.argmax()
 
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
+            # get selection
+            sel = sel_config[ix]
 
-            return pgmat, sel_config[ix], ncross, nprogeny, misc
+            # calculate xmap
+            xmap = self._calc_xmap(pgmat.ntaxa)
+
+            # convert 'sel' to parent selections (ordered)
+            # (kd,)
+            sel = xmap[sel,:].flatten()
+
+            # add optimization details to miscellaneous output if miscout was provided
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel, self.ncross, self.nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
@@ -771,14 +764,6 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get selection parameters
-        nparent = self.nparent
-        objfn_wt = self.objfn_wt
-        moalgo = self.moalgo
-
-        # get number of taxa
-        ntaxa = pgmat.ntaxa
-
         # create objective function
         objfn = self.objfn(
             pgmat = pgmat,
@@ -792,11 +777,11 @@ class OptimalHaploidValueSelection(SelectionProtocol):
         )
 
         # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt             # weights to apply to each objective
+        frontier, sel_config, misc = self.moalgo.optimize(
+            objfn = objfn,                      # objective function
+            k = self.nparent,                   # vector length to optimize (sspace^k)
+            sspace = numpy.arange(pgmat.ntaxa), # search space options
+            objfn_wt = self.objfn_wt            # weights to apply to each objective
         )
 
         # handle miscellaneous output

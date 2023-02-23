@@ -4,7 +4,7 @@ Module implementing selection protocols for Usefulness Criterion selection.
 
 import numbers
 import types
-from typing import Callable, Optional, Type, Union
+from typing import Callable, Optional, Union
 import numpy
 import scipy.stats
 
@@ -20,16 +20,14 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_Number
+from pybrops.core.error.error_type_python import check_is_Real
 from pybrops.core.error.error_value_python import check_is_gteq, check_is_lt
 from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class UsefulnessCriterionSelection(SelectionProtocol):
@@ -49,17 +47,17 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             ncross: int, 
             nprogeny: int, 
             nself: int,
-            upper_percentile: numbers.Number,
+            upper_percentile: numbers.Real,
             vmatfcty: GeneticVarianceMatrixFactory,
             gmapfn: GeneticMapFunction,
             unique_parents: bool = True, 
             method: str = "single",
             objfn_trans: Optional[Callable] = None, 
             objfn_trans_kwargs: Optional[dict] = None, 
-            objfn_wt: Union[numpy.ndarray,numbers.Number] = 1.0,
+            objfn_wt: Union[numpy.ndarray,numbers.Real] = 1.0,
             ndset_trans: Optional[Callable] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
-            ndset_wt: Union[numpy.ndarray,numbers.Number] = 1.0,
+            ndset_wt: Union[numpy.ndarray,numbers.Real] = 1.0,
             rng: Union[numpy.random.Generator,numpy.random.RandomState] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None, 
             moalgo: Optional[OptimizationAlgorithm] = None,
@@ -263,13 +261,13 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         del self._unique_parents
     
     @property
-    def upper_percentile(self) -> numbers.Number:
+    def upper_percentile(self) -> numbers.Real:
         """Description for property upper_percentile."""
         return self._upper_percentile
     @upper_percentile.setter
-    def upper_percentile(self, value: numbers.Number) -> None:
+    def upper_percentile(self, value: numbers.Real) -> None:
         """Set data for property upper_percentile."""
-        check_is_Number(value, "upper_percentile")  # must be a number
+        check_is_Real(value, "upper_percentile")  # must be a number
         check_is_gt(value, "upper_percentile", 0)   # number must be >0
         check_is_lt(value, "upper_percentile", 1)   # number must be <1
         self._upper_percentile = value
@@ -281,11 +279,11 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         del self._upper_percentile
     
     @property
-    def selection_intensity(self) -> numbers.Number:
+    def selection_intensity(self) -> numbers.Real:
         """Description for property selection_intensity."""
         return self._selection_intensity
     @selection_intensity.setter
-    def selection_intensity(self, value: numbers.Number) -> None:
+    def selection_intensity(self, value: numbers.Real) -> None:
         """Set data for property selection_intensity."""
         error_readonly("selection_intensity")
     @selection_intensity.deleter
@@ -612,20 +610,9 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # get selection parameters
-        nconfig = self.nconfig
-        nparent = self.nparent
-        ncross = self.ncross
-        nprogeny = self.nprogeny
-        objfn_wt = self.objfn_wt
-        ndset_trans = self.ndset_trans
-        ndset_trans_kwargs = self.ndset_trans_kwargs
-        ndset_wt = self.ndset_wt
-        method = self.method
-
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
-        if method == "single":
+        if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
                 pgmat = pgmat,
@@ -643,17 +630,14 @@ class UsefulnessCriterionSelection(SelectionProtocol):
 
             # get all UCSs for each configuration
             # (s,)
-            ucs = [objfn([i]) for i in range(len(xmap))]
-
-            # convert to numpy.ndarray
-            ucs = numpy.array(ucs)
+            ucs = numpy.array([objfn([i]) for i in range(len(xmap))])
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
-            ucs = ucs * objfn_wt
+            ucs = ucs * self.objfn_wt
 
             # get indices of top nconfig UCSs
-            sel = ucs.argsort()[::-1][:nconfig]
+            sel = ucs.argsort()[::-1][:self.nconfig]
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
@@ -662,20 +646,17 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             # (kd,)
             sel = xmap[sel,:].flatten()
 
-            # get GEBVs for reference
-            misc = {"UCS" : ucs}
+            # add optimization details to miscellaneous output if miscout was provided
+            if miscout is not None:
+                miscout["ucs"] = ucs
 
-            # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(misc)    # add dict to dict
-
-            return pgmat, sel, ncross, nprogeny
+            return pgmat, sel, self.ncross, self.nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
-        elif method == "pareto":
+        elif self.method == "pareto":
             # get the pareto frontier
-            frontier, sel_config, misc = self.pareto(
+            frontier, sel_config = self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -683,21 +664,31 @@ class UsefulnessCriterionSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                nparent = nparent,
                 **kwargs
             )
 
             # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
 
             # get index of maximum score
             ix = score.argmax()
 
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
+            # get selection
+            sel = sel_config[ix]
 
-            return pgmat, sel_config[ix], ncross, nprogeny, misc
+            # calculate xmap
+            xmap = self._calc_xmap(pgmat.ntaxa)
+
+            # convert 'sel' to parent selections (ordered)
+            # (kd,)
+            sel = xmap[sel,:].flatten()
+
+            # add optimization details to miscellaneous output if miscout was provided
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel, self.ncross, self.nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
@@ -819,14 +810,6 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get selection parameters
-        nparent = self.nparent
-        objfn_wt = self.objfn_wt
-        moalgo = self.moalgo
-
-        # get number of taxa
-        ntaxa = pgmat.ntaxa
-
         # create objective function
         objfn = self.objfn(
             pgmat = pgmat,
@@ -840,11 +823,11 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         )
 
         # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt             # weights to apply to each objective
+        frontier, sel_config, misc = self.moalgo.optimize(
+            objfn = objfn,                      # objective function
+            k = self.nparent,                   # vector length to optimize (sspace^k)
+            sspace = numpy.arange(pgmat.ntaxa), # search space options
+            objfn_wt = self.objfn_wt            # weights to apply to each objective
         )
 
         # handle miscellaneous output
