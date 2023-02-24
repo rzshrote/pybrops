@@ -21,6 +21,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.core.util.haplo import calc_nhaploblk_chrom
 from pybrops.core.util.haplo import calc_haplobin
 from pybrops.core.util.haplo import calc_haplobin_bounds
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 class OptimalPopulationValueSelection(SelectionProtocol):
     """
@@ -317,14 +320,14 @@ class OptimalPopulationValueSelection(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _calc_hmat(self, gmat, mod):
+    def _calc_hmat(self, pgmat: PhasedGenotypeMatrix, algpmod: AdditiveLinearGenomicModel):
         """
         Calculate a haplotype matrix from a genome matrix and model.
 
         Parameters
         ----------
         gmat : PhasedGenotypeMatrix
-            A genome matrix.
+            A phased genome matrix of shape (m,n,p).
         mod : DenseAdditiveLinearGenomicModel
             A genomic prediction model.
 
@@ -333,12 +336,12 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         hmat : numpy.ndarray
             A haplotype effect matrix of shape ``(m,n,b,t)``.
         """
-        mat         = gmat.mat              # get genotypes
-        genpos      = gmat.vrnt_genpos      # get genetic positions
-        chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
-        chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
-        chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        u           = mod.u_a               # get regression coefficients
+        mat         = pgmat.mat              # get genotypes
+        genpos      = pgmat.vrnt_genpos      # get genetic positions
+        chrgrp_stix = pgmat.vrnt_chrgrp_stix # get chromosome start indices
+        chrgrp_spix = pgmat.vrnt_chrgrp_spix # get chromosome stop indices
+        chrgrp_len  = pgmat.vrnt_chrgrp_len  # get chromosome marker lengths
+        u           = algpmod.u_a               # get regression coefficients
 
         if (chrgrp_stix is None) or (chrgrp_spix is None):
             raise RuntimeError("markers are not sorted by chromosome position")
@@ -428,6 +431,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # get selection parameters
         nparent = self.nparent
         ncross = self.ncross
@@ -530,6 +537,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         outfn : function
             A selection objective function for the specified problem.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # get selection parameters
         mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t) get haplotype matrix
         trans = self.objfn_trans
@@ -569,6 +580,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         outfn : function
             A vectorized selection objective function for the specified problem.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # get selection parameters
         mat = self._calc_hmat(pgmat, gpmod)    # (m,n,b,t) get haplotype matrix
         trans = self.objfn_trans
@@ -632,6 +647,10 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # get selection parameters
         nparent = self.nparent
         objfn_trans = self.objfn_trans

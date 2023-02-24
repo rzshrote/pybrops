@@ -242,21 +242,6 @@ def test_select_single(ucs, ncross, nprogeny, dpgmat, dgmat, dalgmod):
     assert sel_ncross == ncross
     assert sel_nprogeny == nprogeny
 
-    # make selections
-    sel_pgmat, sel, sel_ncross, sel_nprogeny = ucs.select(
-        pgmat = dpgmat,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = None,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-    assert id(sel_pgmat) == id(dpgmat)
-    assert sel.ndim == 1
-    assert sel_ncross == ncross
-    assert sel_nprogeny == nprogeny
-
 def test_select_pareto_TypeError(ucs, dpgmat, dalgmod):
     # set to pareto selection
     ucs.method = "pareto"

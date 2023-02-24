@@ -559,7 +559,7 @@ def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, 
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_zlabel(zlabel)
-    pyplot.savefig("ocs_3d_frontier.png", dpi = 250)
+    pyplot.savefig("OCS_3d_frontier.png", dpi = 250)
 
     # create animation
     fig = pyplot.figure()
@@ -586,14 +586,14 @@ def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, 
     for i in range(100):
     # for i in range(360):
         animate(i)
-        s = outdir + "/" + "ocs_3d_frontier_" + str(i).zfill(3) + ".png"
+        s = outdir + "/" + "OCS_3d_frontier_" + str(i).zfill(3) + ".png"
         pyplot.savefig(s, dpi = 250)
 
     # does not want to work!
     # anim = animation.FuncAnimation(fig, animate, init_func = init, frames = 100, interval = 100, blit = True)
     # writer = animation.PillowWriter(fps=30)
     # writer = animation.FFMpegWriter(fps = 10)
-    # anim.save('ocs_3d_frontier.gif', writer = writer)
+    # anim.save('OCS_3d_frontier.gif', writer = writer)
 
 
 # def test_objfn_static_multiobjective(ocs, mat_int8, mat_u_a):
