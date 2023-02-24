@@ -1,13 +1,13 @@
 from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 from pybrops.model.vmat.DenseTwoWayDHAdditiveGenicVarianceMatrix import DenseTwoWayDHAdditiveGenicVarianceMatrix
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
+from pybrops.model.vmat.fcty.DenseAdditiveGenicVarianceMatrixFactory import DenseAdditiveGenicVarianceMatrixFactory
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVarianceMatrix):
+class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVarianceMatrixFactory):
     """
     docstring for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
     """

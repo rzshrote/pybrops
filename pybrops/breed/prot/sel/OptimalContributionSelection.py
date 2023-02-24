@@ -751,8 +751,6 @@ class OptimalContributionSelection(SelectionProtocol):
         # get default parameters
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
         mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
@@ -777,8 +775,6 @@ class OptimalContributionSelection(SelectionProtocol):
         # get default parameters if any are None
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
         mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
@@ -838,15 +834,6 @@ class OptimalContributionSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get selection parameters
-        nparent = self.nparent
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
-        objfn_wt = self.objfn_wt
-
-        # get number of taxa
-        ntaxa = gmat.ntaxa
-
         # create objective function
         objfn = self.objfn(
             pgmat = pgmat,
@@ -860,15 +847,15 @@ class OptimalContributionSelection(SelectionProtocol):
 
         # create search space
         sspace = numpy.stack(
-            [numpy.repeat(0.0, ntaxa), numpy.repeat(1.0, ntaxa)]
+            [numpy.repeat(0.0, gmat.ntaxa), numpy.repeat(1.0, gmat.ntaxa)]
         )
 
         # use multi-objective optimization to approximate Pareto front.
         frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,          # objective function
-            k = ntaxa,              # vector length to optimize (sspace^k)
-            sspace = sspace,        # search space options
-            objfn_wt = objfn_wt,    # weights to apply to each objective
+            objfn = objfn,              # objective function
+            k = gmat.ntaxa,             # vector length to optimize (sspace^k)
+            sspace = sspace,            # search space options
+            objfn_wt = self.objfn_wt,   # weights to apply to each objective
             **kwargs
         )
 

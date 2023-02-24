@@ -25,5 +25,4 @@ from . import MultiObjectiveGenomicSelection
 from . import OptimalContributionSelection
 from . import OptimalPopulationValueSelection
 from . import RandomSelection
-from . import TwoWayExpectedMaximumBreedingValueSelection
 from . import WeightedGenomicSelection

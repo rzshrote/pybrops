@@ -25,10 +25,10 @@ from pybrops.core.error.error_value_python import check_is_gteq, check_is_lt
 from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import triuix
 from pybrops.core.util.arrayix import triudix
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 class UsefulnessCriterionSelection(SelectionProtocol):
     """
@@ -537,8 +537,8 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         )
 
         # get expected genome contributions
-        # (1,p)
-        epgc = numpy.ndarray(vmat_obj.epgc)
+        # (p,)
+        epgc = numpy.array(vmat_obj.epgc)
         
         # extract decentered and descaled
         bvmat = bvmat_obj.descale()     # (n,t)
@@ -610,6 +610,10 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # single-objective method: objfn_trans returns a single value for each
         # selection configuration
         if self.method == "single":
@@ -707,6 +711,11 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
+        # make function inputs
         xmap = self._calc_xmap(pgmat.ntaxa)     # (s,p) get the cross map
         uc = self._calc_uc(pgmat, gpmod, xmap)  # (s,t) get usefulness criterion matrix
         trans = self.objfn_trans                # get transformation function
@@ -746,6 +755,10 @@ class UsefulnessCriterionSelection(SelectionProtocol):
         outfn : function
             A vectorized selection objective function for the specified problem.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # get selection parameters
         xmap = self._calc_xmap(pgmat.ntaxa)     # (s,p) get the cross map
         uc = self._calc_uc(pgmat, gpmod, xmap)  # (s,t) get usefulness criterion matrix
@@ -810,6 +823,10 @@ class UsefulnessCriterionSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
+        # error checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+
         # create objective function
         objfn = self.objfn(
             pgmat = pgmat,
