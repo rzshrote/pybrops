@@ -46,9 +46,9 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             ndset_trans = None, 
             ndset_trans_kwargs = None, 
             ndset_wt = -1.0,
+            rng = global_prng, 
             soalgo = None, 
             moalgo = None,
-            rng = global_prng, 
             **kwargs
         ):
         """

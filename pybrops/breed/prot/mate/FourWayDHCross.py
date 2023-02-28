@@ -29,7 +29,7 @@ class FourWayDHCross(MatingProtocol):
             self, 
             progeny_counter: int = 0, 
             family_counter: int = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
+            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
             **kwargs: dict
         ) -> None:
         """
@@ -125,6 +125,21 @@ class FourWayDHCross(MatingProtocol):
         """
         Mate individuals according to a 4-way mate selection scheme.
 
+        Example crossing diagram::
+
+            sel = [F2,M2,F1,M1,...], ncross = 2, nprogeny = 2, nself = 2
+                                                 pgmat
+                                                   │                        sel = [F2,M2,F1,M1,...]
+                                            (F2xM2)x(F1xM1)
+                                   ┌───────────────┴───────────────┐        ncross = 2
+                            (F2xM2)x(F1xM1)                       ...       duplicate cross 2x
+                                   │                               │        nself = 2
+                          S0((F2xM2)x(F1xM1))                     ...       first self
+                                   │                               │
+                          S1((F2xM2)x(F1xM1))                     ...       second self
+                       ┌───────────┴───────────┐               ┌───┴───┐    DH, nprogeny = 2
+            DH(S1((F2xM2)x(F1xM1))) DH(S1((F2xM2)x(F1xM1)))   ...     ...   final result
+
         Parameters
         ----------
         pgmat : DensePhasedGenotypeMatrix
@@ -145,7 +160,7 @@ class FourWayDHCross(MatingProtocol):
 
             Example::
 
-                sel = [1,5,3,8]
+                sel = [1,5,3,8,...,F2,M2,F1,M1]
                 female2 = 1
                 male2 = 5
                 female1 = 3
@@ -209,9 +224,40 @@ class FourWayDHCross(MatingProtocol):
         # generate doubled haploids
         dhgeno = mat_dh(dihgeno, psel, xoprob, self.rng)
 
+        ########################################################################
+        ######################### Metadata generation ##########################
+        # generate line names
+        progcnt = dhgeno.shape[1]               # get number of hybrid progeny generated
+        riter = range(                          # range iterator for line names
+            self.progeny_counter,               # start progeny number (inclusive)
+            self.progeny_counter + progcnt      # stop progeny number (exclusive)
+        )
+        # create taxa names
+        taxa = numpy.array(["dh"+str(i).zfill(7) for i in riter], dtype = "object")
+        self.progeny_counter += progcnt         # increment counter
+
+        # calculate taxa family groupings
+        nfam = len(sel) // 4                    # calculate number of families
+        taxa_grp = numpy.repeat(                # construct taxa_grp
+            numpy.repeat(                       # repeat for progeny
+                numpy.arange(                   # repeat for crosses
+                    self.family_counter,        # start family number (inclusive)
+                    self.family_counter + nfam, # stop family number (exclusive)
+                    dtype = 'int64'
+                ),
+                ncross
+            ), 
+            nprogeny
+        )
+        self.family_counter += nfam             # increment counter
+
+        ########################################################################
+        ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
             mat = dhgeno,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,
             vrnt_phypos = pgmat.vrnt_phypos,
             vrnt_name = pgmat.vrnt_name,
@@ -227,6 +273,9 @@ class FourWayDHCross(MatingProtocol):
         progeny.vrnt_chrgrp_stix = pgmat.vrnt_chrgrp_stix
         progeny.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
         progeny.vrnt_chrgrp_len = pgmat.vrnt_chrgrp_len
+
+        # group progeny taxa
+        progeny.group_taxa()
 
         return progeny
 

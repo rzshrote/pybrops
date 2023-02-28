@@ -2,6 +2,7 @@
 Module containing functions for transforming objective function outputs.
 """
 
+from numbers import Real
 import numpy
 from typing import Union
 
@@ -178,3 +179,60 @@ def trans_flatten(
         A flattened array.
     """
     return mat.flatten()
+
+def trans_inbmax_penalty(
+        mat: numpy.ndarray,
+        inbmax: Real,
+        penalty_wt: Real,
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    Transform a numpy.ndarray by applying a penalty for solutions exceeding a 
+    provided maximum inbreeding level. The penalty is of the form:
+
+    f*(x) = f(x) + w*max(0,(inb-inbmax)/abs(inbmax))
+
+    Parameters
+    ----------
+    mat : numpy.ndarray
+        A (1+d,) array to transform. The first element in this array must be the 
+        inbreeding level. Where ``d`` is the number of objectives.
+    inbmax : Real
+        A maximum inbreeding level which must not be exceeded.
+    penalty_wt : Real
+        A penalty multiplier.
+    
+    Returns
+    -------
+    out : numpy.ndarray
+        A (d,) array with a penalty applied if applicable.
+    """
+    divisor = 1 if inbmax == 0 else abs(inbmax)
+    return mat[1:] + penalty_wt * max(0, (mat[0]-inbmax)/divisor)
+
+def trans_sum_inbmax_penalty(
+        mat: numpy.ndarray, 
+        inbmax: Real,
+        penalty_wt: Real,
+        axis: Union[int,tuple,None] = None, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    Transform a numpy.ndarray by taking a summation across an axis.
+
+    Parameters
+    ----------
+    mat : numpy.ndarray
+        An array to be transformed through summation.
+    axis : None, int, tuple of ints
+        Axis along which to take the summation.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
+
+    Returns
+    -------
+    out : numpy.ndarray
+        A summation transformed array.
+    """
+    divisor = 1 if inbmax == 0 else abs(inbmax)
+    return mat[1:].sum(axis = axis) + penalty_wt * max(0, (mat[0]-inbmax)/divisor)

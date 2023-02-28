@@ -10,7 +10,7 @@ from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
@@ -26,8 +26,8 @@ class ThreeWayCross(MatingProtocol):
     ############################################################################
     def __init__(
             self, 
-            progeny_counter: int = 0, 
-            family_counter: int = 0, 
+            progeny_counter: Integral = 0, 
+            family_counter: Integral = 0, 
             rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
             **kwargs: dict
         ) -> None:
@@ -65,13 +65,13 @@ class ThreeWayCross(MatingProtocol):
         error_readonly("nparent")
 
     @property
-    def progeny_counter(self) -> int:
+    def progeny_counter(self) -> Integral:
         """Description for property progeny_counter."""
         return self._progeny_counter
     @progeny_counter.setter
-    def progeny_counter(self, value: int) -> None:
+    def progeny_counter(self, value: Integral) -> None:
         """Set data for property progeny_counter."""
-        check_is_int(value, "progeny_counter")
+        check_is_Integral(value, "progeny_counter")
         self._progeny_counter = value
     @progeny_counter.deleter
     def progeny_counter(self) -> None:
@@ -79,13 +79,13 @@ class ThreeWayCross(MatingProtocol):
         del self._progeny_counter
 
     @property
-    def family_counter(self) -> int:
+    def family_counter(self) -> Integral:
         """Description for property family_counter."""
         return self._family_counter
     @family_counter.setter
-    def family_counter(self, value: int) -> None:
+    def family_counter(self, value: Integral) -> None:
         """Set data for property family_counter."""
-        check_is_int(value, "family_counter")
+        check_is_Integral(value, "family_counter")
         self._family_counter = value
     @family_counter.deleter
     def family_counter(self) -> None:
@@ -192,9 +192,40 @@ class ThreeWayCross(MatingProtocol):
             # self hybrids
             hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
 
+        ########################################################################
+        ######################### Metadata generation ##########################
+        # generate line names
+        progcnt = hgeno.shape[1]                # get number of hybrid progeny generated
+        riter = range(                          # range iterator for line names
+            self.progeny_counter,               # start progeny number (inclusive)
+            self.progeny_counter + progcnt      # stop progeny number (exclusive)
+        )
+        # create taxa names
+        taxa = numpy.array(["3w"+str(i).zfill(7) for i in riter], dtype = "object")
+        self.progeny_counter += progcnt         # increment counter
+
+        # calculate taxa family groupings
+        nfam = len(sel) // 3                    # calculate number of families
+        taxa_grp = numpy.repeat(                # construct taxa_grp
+            numpy.repeat(                       # repeat for progeny
+                numpy.arange(                   # repeat for crosses
+                    self.family_counter,        # start family number (inclusive)
+                    self.family_counter + nfam, # stop family number (exclusive)
+                    dtype = 'int64'
+                ),
+                ncross
+            ), 
+            nprogeny
+        )
+        self.family_counter += nfam             # increment counter
+
+        ########################################################################
+        ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
             mat = hgeno,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,
             vrnt_phypos = pgmat.vrnt_phypos,
             vrnt_name = pgmat.vrnt_name,
@@ -210,6 +241,9 @@ class ThreeWayCross(MatingProtocol):
         progeny.vrnt_chrgrp_stix = pgmat.vrnt_chrgrp_stix
         progeny.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
         progeny.vrnt_chrgrp_len = pgmat.vrnt_chrgrp_len
+
+        # group progeny taxa
+        progeny.group_taxa()
 
         return progeny
 

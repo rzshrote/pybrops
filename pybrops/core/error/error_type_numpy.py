@@ -1,3 +1,4 @@
+from numbers import Integral, Number, Real
 import numpy
 from typing import Any
 from typing import Union
@@ -20,6 +21,21 @@ def check_is_RandomState(v: Any, vname: str) -> None:
 def check_is_Generator_or_RandomState(v: Any, vname: str) -> None:
     if not (isinstance(v, numpy.random.Generator) or isinstance(v, numpy.random.RandomState)):
         raise TypeError("variable '{0}' must be of type 'numpy.random.Generator' or 'numpy.random.RandomState'".format(vname))
+
+################################################################################
+##################### compound isinstance check functions ######################
+################################################################################
+def check_is_Integral_or_ndarray(v: Any, vname: str) -> None:
+    if not isinstance(v, (Integral,numpy.ndarray)):
+        raise TypeError("variable '{0}' must be an Integral type or of type 'numpy.ndarray'".format(vname))
+
+def check_is_Number_or_ndarray(v: Any, vname: str) -> None:
+    if not isinstance(v, (Number,numpy.ndarray)):
+        raise TypeError("variable '{0}' must be a Number type or of type 'numpy.ndarray'".format(vname))
+
+def check_is_Real_or_ndarray(v: Any, vname: str) -> None:
+    if not isinstance(v, (Real,numpy.ndarray)):
+        raise TypeError("variable '{0}' must be a Real type or of type 'numpy.ndarray'".format(vname))
 
 ################################################################################
 ############################ dtype check functions #############################

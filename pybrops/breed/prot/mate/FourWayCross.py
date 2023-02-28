@@ -28,7 +28,7 @@ class FourWayCross(MatingProtocol):
             self, 
             progeny_counter: int = 0, 
             family_counter: int = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
+            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
             **kwargs: dict
         ) -> None:
         super(FourWayCross, self).__init__(**kwargs)
@@ -186,9 +186,40 @@ class FourWayCross(MatingProtocol):
             # self hybrids
             hgeno = mat_mate(hgeno, hgeno, asel, asel, xoprob, self.rng)
 
+        ########################################################################
+        ######################### Metadata generation ##########################
+        # generate line names
+        progcnt = hgeno.shape[1]                # get number of hybrid progeny generated
+        riter = range(                          # range iterator for line names
+            self.progeny_counter,               # start progeny number (inclusive)
+            self.progeny_counter + progcnt      # stop progeny number (exclusive)
+        )
+        # create taxa names
+        taxa = numpy.array(["3w"+str(i).zfill(7) for i in riter], dtype = "object")
+        self.progeny_counter += progcnt         # increment counter
+
+        # calculate taxa family groupings
+        nfam = len(sel) // 4                    # calculate number of families
+        taxa_grp = numpy.repeat(                # construct taxa_grp
+            numpy.repeat(                       # repeat for progeny
+                numpy.arange(                   # repeat for crosses
+                    self.family_counter,        # start family number (inclusive)
+                    self.family_counter + nfam, # stop family number (exclusive)
+                    dtype = 'int64'
+                ),
+                ncross
+            ), 
+            nprogeny
+        )
+        self.family_counter += nfam             # increment counter
+
+        ########################################################################
+        ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
         progeny = pgmat.__class__(
             mat = hgeno,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
             vrnt_chrgrp = pgmat.vrnt_chrgrp,
             vrnt_phypos = pgmat.vrnt_phypos,
             vrnt_name = pgmat.vrnt_name,
@@ -204,6 +235,9 @@ class FourWayCross(MatingProtocol):
         progeny.vrnt_chrgrp_stix = pgmat.vrnt_chrgrp_stix
         progeny.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
         progeny.vrnt_chrgrp_len = pgmat.vrnt_chrgrp_len
+
+        # group progeny taxa
+        progeny.group_taxa()
 
         return progeny
 

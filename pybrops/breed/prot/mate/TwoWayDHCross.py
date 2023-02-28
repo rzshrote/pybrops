@@ -9,12 +9,11 @@ import numpy
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_ndarray_len_is_multiple_of_2
 from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
@@ -28,9 +27,9 @@ class TwoWayDHCross(MatingProtocol):
     ############################################################################
     def __init__(
             self, 
-            progeny_counter: int = 0, 
-            family_counter: int = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
+            progeny_counter: Integral = 0, 
+            family_counter: Integral = 0, 
+            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
             **kwargs: dict
         ) -> None:
         """
@@ -67,13 +66,13 @@ class TwoWayDHCross(MatingProtocol):
         error_readonly("nparent")
 
     @property
-    def progeny_counter(self) -> int:
+    def progeny_counter(self) -> Integral:
         """Description for property progeny_counter."""
         return self._progeny_counter
     @progeny_counter.setter
-    def progeny_counter(self, value: int) -> None:
+    def progeny_counter(self, value: Integral) -> None:
         """Set data for property progeny_counter."""
-        check_is_int(value, "progeny_counter")
+        check_is_Integral(value, "progeny_counter")
         self._progeny_counter = value
     @progeny_counter.deleter
     def progeny_counter(self) -> None:
@@ -81,13 +80,13 @@ class TwoWayDHCross(MatingProtocol):
         del self._progeny_counter
 
     @property
-    def family_counter(self) -> int:
+    def family_counter(self) -> Integral:
         """Description for property family_counter."""
         return self._family_counter
     @family_counter.setter
-    def family_counter(self, value: int) -> None:
+    def family_counter(self, value: Integral) -> None:
         """Set data for property family_counter."""
-        check_is_int(value, "family_counter")
+        check_is_Integral(value, "family_counter")
         self._family_counter = value
     @family_counter.deleter
     def family_counter(self) -> None:
@@ -131,15 +130,15 @@ class TwoWayDHCross(MatingProtocol):
 
                                  pgmat
                                    │                        sel = [A,B,...]
-                                  A×B
+                                  AxB
                        ┌───────────┴───────────┐            ncross = 2
-                      A×B                     A×B           duplicate cross 2x
-                       │                       │            s = 2
-                    S0(A×B)                 S0(A×B)         first self
+                      AxB                     AxB           duplicate cross 2x
+                       │                       │            nself = 2
+                    S0(AxB)                 S0(AxB)         first self
                        │                       │
-                    S1(A×B)                 S1(A×B)         second self
+                    S1(AxB)                 S1(AxB)         second self
                  ┌─────┴─────┐           ┌─────┴─────┐      DH, nprogeny = 2
-            DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) DH(S1(A×B)) final result
+            DH(S1(AxB)) DH(S1(AxB)) DH(S1(AxB)) DH(S1(AxB)) final result
 
         Parameters
         ----------
@@ -160,7 +159,7 @@ class TwoWayDHCross(MatingProtocol):
 
             Example::
 
-                sel = [1,5,3,8,2,7]
+                sel = [1,5,3,8,2,7,...,F,M]
                 female = 1,3,2
                 male = 5,8,7
         ncross : numpy.ndarray
@@ -235,8 +234,10 @@ class TwoWayDHCross(MatingProtocol):
                     self.family_counter,        # start family number (inclusive)
                     self.family_counter + nfam, # stop family number (exclusive)
                     dtype = 'int64'
-                ), ncross
-            ), nprogeny
+                ), 
+                ncross
+            ), 
+            nprogeny
         )
         self.family_counter += nfam             # increment counter
 

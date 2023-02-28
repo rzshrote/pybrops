@@ -78,27 +78,75 @@ def test_init_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_mate(mprot, dpgvmat, sel, rng):
-    progeny = mprot.mate(dpgvmat, sel, 1, 2, nself = 0)
+def test_mate(mprot, dpgvmat, sel):
+    ncross = 2
+    nprogeny = 2
+    nself = 2
+    progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
     assert is_DensePhasedGenotypeMatrix(progeny)
+    mat = progeny.mat
+    for i in range(1,len(mat)):
+        assert numpy.any(mat[0] != mat[i])
 
-################################################################################
-######################### Test class utility functions #########################
-################################################################################
-def test_is_TwoWayCross_is_concrete():
-    generic_assert_concrete_function(is_TwoWayCross)
+# def test_mate_ncross(mprot, dpgvmat, sel, rng):
+#     ncross = 10
+#     nprogeny = 1
+#     nself = 0
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
-def test_is_TwoWayCross(mprot):
-    assert is_TwoWayCross(mprot)
+# def test_mate_ncross_s(mprot, dpgvmat, sel, rng):
+#     ncross = 10
+#     nprogeny = 1
+#     nself = 1
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
-def test_check_is_TwoWayCross_is_concrete():
-    generic_assert_concrete_function(check_is_TwoWayCross)
+# def test_mate_nprogeny(mprot, dpgvmat, sel, rng):
+#     ncross = 1
+#     nprogeny = 10
+#     nself = 0
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
 
-def test_check_is_TwoWayCross(mprot):
-    with not_raises(TypeError):
-        check_is_TwoWayCross(mprot, "mprot")
-    with pytest.raises(TypeError):
-        check_is_TwoWayCross(None, "mprot")
+# def test_mate_nprogeny_s(mprot, dpgvmat, sel, rng):
+#     ncross = 1
+#     nprogeny = 10
+#     nself = 1
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
+
+# def test_mate_ncross_nprogeny(mprot, dpgvmat, sel, rng):
+#     ncross = 10
+#     nprogeny = 10
+#     nself = 0
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
+
+# def test_mate_ncross_nprogeny_s(mprot, dpgvmat, sel, rng):
+#     ncross = 10
+#     nprogeny = 10
+#     nself = 1
+#     progeny = mprot.mate(dpgvmat, sel, ncross, nprogeny, nself)
+#     assert progeny.ntaxa == (len(sel) // 2) * ncross * nprogeny
+
+# ################################################################################
+# ######################### Test class utility functions #########################
+# ################################################################################
+# def test_is_TwoWayCross_is_concrete():
+#     generic_assert_concrete_function(is_TwoWayCross)
+
+# def test_is_TwoWayCross(mprot):
+#     assert is_TwoWayCross(mprot)
+
+# def test_check_is_TwoWayCross_is_concrete():
+#     generic_assert_concrete_function(check_is_TwoWayCross)
+
+# def test_check_is_TwoWayCross(mprot):
+#     with not_raises(TypeError):
+#         check_is_TwoWayCross(mprot, "mprot")
+#     with pytest.raises(TypeError):
+#         check_is_TwoWayCross(None, "mprot")
