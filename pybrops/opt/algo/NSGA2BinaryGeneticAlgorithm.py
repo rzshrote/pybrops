@@ -13,7 +13,7 @@ from deap import tools
 from deap import benchmarks
 
 from pybrops.core.random import global_prng
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_int

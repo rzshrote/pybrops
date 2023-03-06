@@ -5,7 +5,7 @@ from matplotlib import pyplot
 from matplotlib import animation
 
 import pybrops
-from pybrops.algo.opt.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
+from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap

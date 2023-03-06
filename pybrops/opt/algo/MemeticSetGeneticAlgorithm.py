@@ -14,14 +14,15 @@ from deap import benchmarks
 import random
 
 from pybrops.core.random import global_prng
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_float
+from pybrops.core.error import check_is_lteq
 from pybrops.core.error import check_is_Generator_or_RandomState
 
-class SetGeneticAlgorithm(OptimizationAlgorithm):
+class MemeticSetGeneticAlgorithm(OptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -30,7 +31,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = global_prng, **kwargs: dict):
+    def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, meme = 10, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
 
@@ -49,11 +50,12 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SetGeneticAlgorithm, self).__init__(**kwargs)
+        super(MemeticSetGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.mu = mu
         self.lamb = lamb
         self.M = M
+        self.meme = meme
         self.rng = rng
 
     ############################################################################
@@ -118,6 +120,21 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
     def M(self) -> None:
         """Delete length of the genetic map in Morgans."""
         del self._M
+
+    @property
+    def meme(self) -> int:
+        """Number of individuals on which to perform local search."""
+        return self._meme
+    @meme.setter
+    def meme(self, value: int) -> None:
+        """Set number of individuals on which to perform local search."""
+        check_is_int(value, "meme")
+        check_is_lteq(value, "meme", self.mu)
+        self._meme = value
+    @meme.deleter
+    def meme(self) -> None:
+        """Delete number of individuals on which to perform local search."""
+        del self._meme
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
@@ -200,6 +217,76 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
                 ind[i] = self.rng.choice(sspace[mab], 1, False)[0]
         return ind
 
+    def memeStochasticAscentSet(self, ind, sspace, objfn, objwt, npass):
+        """
+        Perform set stochastic ascent hillclimb.  
+        """
+        # initialize
+        wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, ind))]     # get search space elements not in chromosome
+        self.rng.shuffle(wrkss)                     # shuffle working space
+
+        # get starting solution and score
+        gbest_score = objfn(ind)
+        gbest_wscore = numpy.dot(gbest_score, objwt)    # evaluate and weight
+
+        # hillclimber
+        indix = numpy.arange(len(ind))                  # loci indices
+        for _ in range(npass):                          # for each pass
+            self.rng.shuffle(indix)                     # shuffle loci visitation order
+            for i in indix:                             # for each locus
+                j = self.rng.choice(len(wrkss))         # choose random exchange allele
+                ind[i], wrkss[j] = wrkss[j], ind[i]     # exchange values
+                score = objfn(ind)
+                wscore = numpy.dot(score, objwt)   # evaluate and weigh new solution
+                if wscore > gbest_wscore:               # if weighted score is better
+                    gbest_score = score
+                    gbest_wscore = wscore               # assign new best score
+                else:                                   # otherwise new solution is not better
+                    ind[i], wrkss[j] = wrkss[j], ind[i] # exchange values back to original
+        ind.fitness.values = score if hasattr(score, "__iter__") else (score,)
+        return ind
+
+    def memeStratifiedSteepestAscentSet(self, ind, sspace, objfn, objwt, locus):
+        """
+        Stratified memetic improvement.
+        """
+        # initialize
+        wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, ind))]     # get search space elements not in chromosome
+
+        # if individual fitness values are not assigned, calculate and assign them
+        if not ind.fitness.valid:
+            ind.fitness.values = objfn(ind)
+
+        # hillclimber
+        gbest_score = ind.fitness.values                    # get starting score
+        gbest_wscore = numpy.dot(gbest_score, objwt)        # get starting weighted score
+        for i in range(len(wrkss)):                         # for each alternative allele
+            ind[locus], wrkss[i] = wrkss[i], ind[locus]     # exchange values
+            score = objfn(ind)                              # calculate score
+            wscore = numpy.dot(score, objwt)                # calculate weighted score
+            if wscore > gbest_wscore:                       # if weighted score is better
+                gbest_score = score                         # assign new best score
+                gbest_wscore = wscore                       # assign new best weighted score
+            else:                                           # otherwise new solution is not better
+                ind[locus], wrkss[i] = wrkss[i], ind[locus] # exchange values back to original
+        
+        # assign newly found values
+        ind.fitness.values = score if hasattr(score, "__iter__") else (score,)
+
+        return ind
+
+    def memeStratifiedSteepestAscentSet_pop(self, inds, sspace, objfn, objwt):
+        ix = [i for i in range(len(inds[0]))]
+        lociix = []
+        while len(lociix) + len(ix) <= len(inds):
+            lociix += ix
+        rem = len(inds) % len(lociix) if len(lociix) > 0 else len(inds)
+        lociix += random.sample(ix, rem)
+        random.shuffle(lociix)
+        for i in range(len(inds)):
+            inds[i] = self.memeStratifiedSteepestAscentSet(inds[i], sspace, objfn, objwt, lociix[i])
+        return inds
+
     def selRandomReplacement(self, individuals, k):
         sel = []
         while len(sel) + len(individuals) <= k:
@@ -211,6 +298,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         tourn = []
         while len(tourn) + len(individuals) <= (k*tournsize):
             tourn += random.sample(individuals, len(individuals))
+        rem = (k*tournsize) % len(tourn) if len(tourn) > 0 else (k*tournsize)
         tourn += random.sample(individuals, (k*tournsize) % len(tourn))
         sel = []
         for i in range(0, len(tourn), tournsize):
@@ -310,6 +398,15 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             indpb = 2.0 / k         # probability of mutation
         )
 
+        # register the memetic operator
+        toolbox.register(
+            "memetic",
+            self.memeStratifiedSteepestAscentSet_pop,
+            sspace = sspace, 
+            objfn = toolbox.evaluate, 
+            objwt = tuple(objfn_wt) if hasattr(objfn_wt, "__iter__") else (objfn_wt,)
+        )
+
         # register logbook statistics to take
         stats = tools.Statistics(lambda ind: ind.fitness.values)
         stats.register("min", numpy.min, axis=0)
@@ -338,7 +435,6 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
 
         # main genetic algorithm loop
         for gen in range(1, self.ngen):
-            # create lambda progeny using distance crowding tournament selection
             # random selection with replacement
             offspring = self.selRandomReplacement(pop, self.lamb)
 
@@ -352,6 +448,8 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
                 toolbox.mutate(ind2)        # mutate ind2
                 del ind1.fitness.values     # delete fitness value since ind1 is modified
                 del ind2.fitness.values     # delete fitness value since ind1 is modified
+                # toolbox.memetic(ind1)       # memetic mutate ind1
+                # toolbox.memetic(ind2)       # memetic mutate ind2
 
             # Evaluate the individuals with an invalid fitness
             invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
@@ -361,7 +459,13 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
 
             # Select the next generation population
             # this is where the selection pressure occurs
+            # pop = self.selTournamentReplacement(pop + offspring, self.mu, 2, "fitness")
+            # pop = tools.selBest(pop + offspring, self.mu)
             pop = self.selTournamentReplacement(pop + offspring, self.mu, 2, "fitness")
+            toolbox.memetic(pop)
+
+            # # memetic mutate worst parents before next round
+            # toolbox.memetic(tools.selWorst(pop, self.meme))
 
             # save logs
             record = stats.compile(pop)

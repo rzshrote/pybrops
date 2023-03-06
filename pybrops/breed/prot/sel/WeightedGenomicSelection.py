@@ -8,7 +8,7 @@ import numpy
 import types
 from pybrops.core.error.error_value_python import check_is_gt
 
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray

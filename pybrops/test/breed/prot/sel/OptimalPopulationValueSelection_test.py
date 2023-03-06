@@ -18,7 +18,7 @@ from pybrops.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopula
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist, trans_sum
 
 ################################################################################

@@ -11,8 +11,8 @@ from typing import Any, Callable
 from typing import Union
 from typing import Optional
 
-from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_callable

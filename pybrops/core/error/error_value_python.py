@@ -129,6 +129,22 @@ def check_number_in_interval(v: numbers.Number, vname: str, vmin: numbers.Number
     if (v < vmin) or (v > vmax):
         raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
 
+def check_str_value(v: str, vname: str, *args: tuple) -> None:
+    """
+    Check if a string has an accepted value:
+
+    Parameters
+    ----------
+    v : str
+        Input string.
+    vname : str
+        Name of the variable for the string.
+    args : tuple
+        Acceptable values for the string.
+    """
+    if v not in args:
+        raise ValueError("string '{0}' must be one of: {1}".format(vname, args))
+
 ##################################################
 ########### Dictionary check functions ###########
 ##################################################

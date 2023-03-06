@@ -6,7 +6,7 @@ from deap import creator
 from deap import tools
 from math import factorial
 
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_float
 from pybrops.core.error import check_is_Generator_or_RandomState

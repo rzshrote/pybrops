@@ -5,7 +5,7 @@ subset selection optimization.
 
 import numpy
 
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 
 class StochasticAscentSetHillClimber(OptimizationAlgorithm):
     """

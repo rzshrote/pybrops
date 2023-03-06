@@ -9,8 +9,8 @@ import types
 from typing import Any, Optional, Union
 from typing import Callable
 from typing import Type
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
@@ -28,7 +28,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
 from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
-from pybrops.algo.opt.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
+from pybrops.opt.algo.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
 class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     """

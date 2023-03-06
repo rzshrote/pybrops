@@ -2,9 +2,10 @@
 Module defining basal coancestry matrix interfaces and associated error checking routines.
 """
 
-from typing import Any
-
+from numbers import Real
+from typing import Any, Optional, Union
 import numpy
+from numpy.typing import DTypeLike
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -146,6 +147,102 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    ############## Matrix summary statistics ###############
+    def inverse(
+            self,
+            format: str
+        ) -> numpy.ndarray:
+        """
+        Calculate the inverse of the coancestry matrix.
+
+        Parameters
+        ----------
+        format : str
+            Desired matrix type on which to calculate the inverse. 
+            Options are "coancestry", "kinship".
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Inverse of the coancestry or kinship matrix.
+        """
+        raise NotImplementedError("method is abstract")
+    
+    def max(
+            self,
+            format: str,
+            axis: Union[int,tuple,None]
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the maximum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the maximum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Maximum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        raise NotImplementedError("method is abstract")
+    
+    def mean(
+            self,
+            format: str,
+            axis: Union[int,tuple,None],
+            dtype: Optional[DTypeLike]
+        ) -> Real:
+        """
+        Calculate the mean coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the mean value.
+        dtype : DTypeLike, None
+            Type to use in computing the mean. If ``None`` use the native 
+            float type.
+
+        Returns
+        -------
+        out : Real
+            Mean coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def min(
+            self,
+            format: str,
+            axis: Union[int,tuple,None]
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the minimum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the minimum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Minimum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        raise NotImplementedError("method is abstract")
 
     ############################################################################
     ############################## Class Methods ###############################

@@ -1,4 +1,4 @@
 # order dependent
-from . import opt
+from . import algo
 
 # from . import ga

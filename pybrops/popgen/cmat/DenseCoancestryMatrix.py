@@ -2,10 +2,11 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
+from numbers import Real
 from typing import Any, Optional, Union
 import numpy
 import warnings
-
+from numpy.typing import DTypeLike
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_all_equal
 from pybrops.core.error import check_is_ndarray
@@ -13,6 +14,8 @@ from pybrops.core.error import check_ndarray_dtype
 from pybrops.core.error import check_ndarray_ndim
 from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
@@ -259,6 +262,148 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             return False
         
         return True
+
+    ############## Matrix summary statistics ###############
+    def inverse(
+            self,
+            format: str = "coancestry"
+        ) -> numpy.ndarray:
+        """
+        Calculate the inverse of the coancestry matrix.
+
+        Parameters
+        ----------
+        format : str
+            Desired matrix type on which to calculate the inverse. 
+            Options are "coancestry", "kinship".
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Inverse of the coancestry or kinship matrix.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # invert matrix
+        if format == "coancestry":
+            out = numpy.linalg.inv(self._mat)
+        elif format == "kinship":
+            out = numpy.linalg.inv(0.5 * self._mat)
+        
+        return out
+
+    def max(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the maximum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the maximum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Maximum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.max(axis = axis)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
+
+    def mean(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None,
+            dtype: Optional[DTypeLike] = None
+        ) -> Real:
+        """
+        Calculate the mean coancestry or kinship for the CoancestryMatrix.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the mean value.
+        dtype : DTypeLike, None
+            Type to use in computing the mean. If ``None`` use the native 
+            float type.
+
+        Returns
+        -------
+        out : Real
+            Mean coancestry or kinship for the CoancestryMatrix.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.mean(axis = axis, dtype = dtype)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
+
+    def min(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the minimum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the minimum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Minimum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.min(axis = axis)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
 
 
 

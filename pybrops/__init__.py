@@ -9,7 +9,7 @@ breeding programs.
 from . import core
 
 # algorithms
-from . import algo
+from . import opt
 
 # order dependent submodules
 from . import popgen

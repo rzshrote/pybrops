@@ -3,9 +3,9 @@ import types
 from typing import Callable, Optional, Union
 
 import numpy
-from pybrops.algo.opt.NSGA2GroupedSetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.NSGA2GroupedSetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_attr_python import check_is_callable

@@ -7,15 +7,15 @@ from typing import Callable, Union
 import numpy
 import math
 import types
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.breed.prot.sel.targetfn import target_negative, target_positive, target_stabilizing
 from pybrops.breed.prot.sel.weightfn import weight_absolute, weight_one
 from pybrops.core.error.error_type_python import check_is_int_or_inf
 from pybrops.core.error.error_value_python import check_is_gteq
 
 from pybrops.core.random.prng import global_prng
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_bool

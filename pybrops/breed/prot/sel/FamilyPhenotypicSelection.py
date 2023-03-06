@@ -5,7 +5,7 @@ Module implementing selection protocols for family-based phenotypic selection.
 from typing import Callable, Union
 import numpy
 import types
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 
 from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -15,7 +15,7 @@ from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
 class FamilyPhenotypicSelection(SelectionProtocol):
     """

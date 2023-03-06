@@ -17,8 +17,8 @@ from pybrops.breed.prot.sel.MultiObjectiveGenomicSelection import MultiObjective
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.algo.opt.StochasticAscentSetHillClimber import StochasticAscentSetHillClimber
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.StochasticAscentSetHillClimber import StochasticAscentSetHillClimber
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist

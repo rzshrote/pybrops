@@ -10,7 +10,7 @@ import types
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
 from pybrops.core.error.error_value_python import check_is_gt, check_is_lteq
 
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict

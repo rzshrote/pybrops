@@ -7,7 +7,7 @@ from typing import Union
 import numpy
 
 import pybrops.core.random
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.random.prng import global_prng
 from pybrops.core.error import check_is_Generator_or_RandomState
 

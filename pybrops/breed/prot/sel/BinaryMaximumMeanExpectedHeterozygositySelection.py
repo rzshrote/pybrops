@@ -6,8 +6,8 @@ import numpy
 import types
 from typing import Optional, Union
 from typing import Callable
-from pybrops.algo.opt.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error import check_is_callable
@@ -22,7 +22,7 @@ from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoa
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.breed.prot.sel.transfn import trans_sum
-from pybrops.algo.opt.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
+from pybrops.opt.algo.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
 class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
     """
