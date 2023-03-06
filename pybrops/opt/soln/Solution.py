@@ -1,14 +1,13 @@
 """
-Module defining optimization problems.
+Module defining optimization solutions.
 """
 
 from numbers import Integral
-from typing import Tuple
 import numpy
 
-class Problem:
+class Solution:
     """
-    Base class for all optimization problems.
+    Base class for all optimization problem solutions.
     """
 
     ############################################################################
@@ -19,14 +18,14 @@ class Problem:
             **kwargs: dict
         ) -> None:
         """
-        Constructor for Problem.
+        Constructor for Solution.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(Problem, self).__init__(**kwargs)
+        super(Solution, self).__init__(**kwargs)
 
     ############################################################################
     ############################ Object Properties #############################
@@ -135,51 +134,79 @@ class Problem:
         """Delete equality constraint violation function weights."""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def evalfn(
-            self, 
-            x: numpy.ndarray, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
-        """
-        Evaluate a candidate solution for the given Problem.
-        
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(ndecn,)``.
-        args : tuple
-            Additional non-keyword arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : tuple
-            A tuple ``(obj, ineqcv, eqcv)``.
-            
-            Where:
-            
-            - ``obj`` is a numpy.ndarray of shape ``(nobj,)`` that contains 
-                objective function evaluations.
-            - ``ineqcv`` is a numpy.ndarray of shape ``(nineqcv,)`` that contains 
-                inequality constraint violation values.
-            - ``eqcv`` is a numpy.ndarray of shape ``(neqcv,)`` that contains 
-                equality constraint violation values.
-        """
-        raise NotImplementedError("method is abstract")
+    @property
+    def nsoln(self) -> Integral:
+        """Number of solutions to the problem."""
+        raise NotImplementedError("property is abstract")
+    @nsoln.setter
+    def nsoln(self, value: Integral) -> None:
+        """Set number of solutions to the problem."""
+        raise NotImplementedError("property is abstract")
+    @nsoln.deleter
+    def nsoln(self) -> None:
+        """Delete number of solutions to the problem."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def soln(self) -> numpy.ndarray:
+        """Matrix of solution vectors in the decision space."""
+        raise NotImplementedError("property is abstract")
+    @soln.setter
+    def soln(self, value: numpy.ndarray) -> None:
+        """Set matrix of solution vectors in the decision space."""
+        raise NotImplementedError("property is abstract")
+    @soln.deleter
+    def soln(self) -> None:
+        """Delete matrix of solution vectors in the decision space."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def soln_obj(self) -> numpy.ndarray:
+        """Solution objective function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_obj.setter
+    def soln_obj(self, value: numpy.ndarray) -> None:
+        """Set solution objective function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_obj.deleter
+    def soln_obj(self) -> None:
+        """Delete solution objective function values."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def soln_ineqcv(self) -> numpy.ndarray:
+        """Solution inequality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_ineqcv.setter
+    def soln_ineqcv(self, value: numpy.ndarray) -> None:
+        """Set solution inequality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_ineqcv.deleter
+    def soln_ineqcv(self) -> None:
+        """Delete solution inequality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def soln_eqcv(self) -> numpy.ndarray:
+        """Solution equality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_eqcv.setter
+    def soln_eqcv(self, value: numpy.ndarray) -> None:
+        """Set solution equality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
+    @soln_eqcv.deleter
+    def soln_eqcv(self) -> None:
+        """Delete solution equality constraint violation function values."""
+        raise NotImplementedError("property is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_Problem(v: object, vname: str) -> None:
+def check_is_Solution(v: object, vname: str) -> None:
     """
-    Check if object is of type Problem, otherwise raise TypeError.
+    Check if object is of type Solution, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -188,5 +215,5 @@ def check_is_Problem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, Problem):
-        raise TypeError("'{0}' must be of type Problem.".format(vname))
+    if not isinstance(v, Solution):
+        raise TypeError("'{0}' must be of type Solution.".format(vname))

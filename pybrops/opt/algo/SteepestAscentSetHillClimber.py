@@ -6,7 +6,6 @@ selection optimization.
 from typing import Union
 import numpy
 
-import pybrops.core.random
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.random.prng import global_prng
 from pybrops.core.error import check_is_Generator_or_RandomState
@@ -21,22 +20,18 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, rng = global_prng, **kwargs: dict):
+    def __init__(
+            self, 
+            rng = global_prng, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for a steepest ascent set hill-climber.
 
         Parameters
         ----------
-        k : int
-            Number of states to select in set space. Select n choose k.
-        sspace : numpy.ndarray
-            Array of shape (n,) where 'n' is the size of the set space.
         rng : numpy.random.Generator, numpy.random.RandomState
             Random number generator.
-        objfn_wt : float, numpy.ndarray
-            Weight to apply to objective function.
-            If the function is a maximizing function, provide a positive weight.
-            If the function is a minimizing function, provide a negative weight.
         kwargs : dict
             Additional keyword arguments.
         """

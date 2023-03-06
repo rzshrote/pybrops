@@ -1,13 +1,7 @@
 from typing import Any
 import numpy
 
-from . import generic_check_ndarray_eq
-from . import generic_check_ndarray_sum
-from . import generic_check_ndarray_ndim
-from . import generic_check_ndarray_size
 from . import generic_check_ndarray_shape
-from . import generic_check_ndarray_is_square
-from . import generic_check_ndarray_ndim_gteq
 
 ################################################################################
 ############################### check functions ################################
@@ -17,7 +11,7 @@ def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: float, vmax: f
     if numpy.any(v < vmin) or numpy.any(v > vmax):
         raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
 
-################# generic_check_ndarray_eq #################
+################# check_ndarray_eq #################
 def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
     if not numpy.all(v == w):
         raise ValueError("variable '{0}' must have values equal to {1}".format(vname, wname))
@@ -30,7 +24,7 @@ def check_ndarray_is_positive(v: numpy.ndarray, vname: str) -> None:
     if numpy.any(v < 0):
         raise ValueError("variable '{0}' must have all positive values".format(vname))
 
-################ generic_check_ndarray_ndim ################
+################ check_ndarray_ndim ################
 def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:
     if v.ndim != vndim:
         raise ValueError("variable '{0}' must have dimension equal to {1}".format(vname, vndim))
@@ -38,8 +32,8 @@ def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:
 def check_ndarray_is_1d(v: numpy.ndarray, vname: str) -> None:
     check_ndarray_ndim(v, vname, 1)
 
-def check_ndarray_at_least_2d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim_gteq(v, vname, 2)
+def check_ndarray_is_2d(v: numpy.ndarray, vname: str) -> None:
+    check_ndarray_ndim(v, vname, 2)
 
 def check_ndarray_is_3d(v: numpy.ndarray, vname: str) -> None:
     check_ndarray_ndim(v, vname, 3)
@@ -51,18 +45,18 @@ def check_ndarray_ndim_gteq(v: numpy.ndarray, vname: str, vndim: int) -> None:
 def check_ndarray_at_least_1d(v: numpy.ndarray, vname: str) -> None:
     check_ndarray_ndim_gteq(v, vname, 1)
 
-def check_ndarray_is_2d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim(v, vname, 2)
+def check_ndarray_at_least_2d(v: numpy.ndarray, vname: str) -> None:
+    check_ndarray_ndim_gteq(v, vname, 2)
 
 def check_ndarray_at_least_3d(v: numpy.ndarray, vname: str) -> None:
     check_ndarray_ndim_gteq(v, vname, 3)
 
-################ generic_check_ndarray_size ################
+################ check_ndarray_size ################
 def check_ndarray_size(v: numpy.ndarray, vname: str, vsize: int):
     if v.size != vsize:
         raise ValueError("variable '{0}' must have size equal to {1}".format(vname, vsize))
 
-################ generic_check_ndarray_sum #################
+################ check_ndarray_sum #################
 def check_ndarray_sum(v: numpy.ndarray, vname: str, vsum: numpy.ndarray, vaxis: int):
     if numpy.any(v.sum(vaxis) != vsum):
         raise ValueError("variable '{0}' must have sum equal to {1} along axis {2}".format(vname, vsum, vaxis))
@@ -75,19 +69,19 @@ def check_ndarray_std_is_approx(v, vname, vstd, vaxis = None, rtol = 1e-5, atol 
     if not numpy.allclose(v.std(vaxis), vstd, rtol = rtol, atol = atol):
         raise ValueError("'{0}' must have a standard deviation of {1} along axis {2}".format(vname,vstd,vaxis))
 
+################ check_ndarray_len #################
+def check_ndarray_len_eq(v: numpy.ndarray, vname: str, vlen: int) -> None:
+    if len(v) != vlen:
+        raise ValueError("variable '{0}' must have length equal to {1}".format(vname, vlen))
+
+def check_ndarray_len_gteq(v: numpy.ndarray, vname: str, vlen: int) -> None:
+    if len(v) < vlen:
+        raise ValueError("variable '{0}' must have length greater than or equal to {1}".format(vname, vlen))
+
 ############### generic_check_ndarray_shape ################
-def check_ndarray_shape(v, vname, vshape, vaxis = None):
-    error = True
-    if vaxis is None:
-        error = (v.shape != vshape)
-    elif isinstance(vaxis, int):
-        error = (v.shape[vaxis] != vshape)
-    elif isinstance(vaxis, tuple):
-        error = any(v.shape[e] != vshape[i] for e,i in enumerate(vaxis))
-    else:
-        raise TypeError("vaxis must be of type None, int, or tuple")
-    if error:
-        raise ValueError("variable '{0}' must have shape equal to {1} along axis {2}".format(vname, vshape, vaxis))
+def check_ndarray_shape_eq(v: numpy.ndarray, vname: str, vshape: tuple):
+    if v.shape != vshape:
+        raise ValueError("variable '{0}' must have shape equal to {1}".format(vname, vshape))
 
 def check_ndarray_axis_len(v, vname, vaxis, vlen):
     generic_check_ndarray_shape(v, vname, vlen, vaxis)
