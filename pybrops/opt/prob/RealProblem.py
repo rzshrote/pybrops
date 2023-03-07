@@ -2,6 +2,13 @@
 Module for defining optimization problems with real decision variables.
 """
 
+# list of public objects in this module
+__all__ = [
+    "RealProblem",
+    "check_is_RealProblem"
+]
+
+# imports
 import numpy
 from pybrops.opt.prob.Problem import Problem
 

@@ -2,6 +2,13 @@
 Module for defining optimization problem solutions with real decision variables.
 """
 
+# list of all public imports in the module
+__all__ = [
+    "RealSolution",
+    "check_is_RealSolution"
+]
+
+# imports
 import numpy
 from pybrops.opt.soln.Solution import Solution
 

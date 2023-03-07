@@ -2,6 +2,13 @@
 Module for defining optimization problems with nominal decision variables.
 """
 
+# list of public objects in this module
+__all__ = [
+    "SetProblem",
+    "check_is_SetProblem"
+]
+
+# imports
 from pybrops.opt.prob.Problem import Problem
 
 class SetProblem(Problem):

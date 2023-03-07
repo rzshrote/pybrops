@@ -2,6 +2,13 @@
 Module for defining optimization problem solutions with nominal decision variables.
 """
 
+# list of all public imports in the module
+__all__ = [
+    "SetSolution",
+    "check_is_SetSolution"
+]
+
+# imports
 from pybrops.opt.soln.Solution import Solution
 
 class SetSolution(Solution):
