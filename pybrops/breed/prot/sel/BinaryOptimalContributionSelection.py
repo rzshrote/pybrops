@@ -9,10 +9,9 @@ import types
 from typing import Optional, Union
 from typing import Callable
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.NSGA2GroupedSetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.core.error.error_attr_python import check_is_callable
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Real, check_is_dict, check_is_int, check_is_str
@@ -26,7 +25,7 @@ from pybrops.breed.prot.sel.transfn import trans_sum_inbmax_penalty
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class BinaryOptimalContributionSelection(SelectionProtocol):
+class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
     """
     Class implementing selection protocols for optimal mean expected heterozygosity selection.
 
@@ -765,181 +764,3 @@ class BinaryOptimalContributionSelection(SelectionProtocol):
             miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
 
         return frontier, sel_config
-
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
-    @staticmethod
-    def objfn_static(sel: numpy.ndarray, bv: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
-        """
-        Score a parent contribution vector according to its mean genomic 
-        relationship and breeding value.
-
-        Parameters
-        ----------
-        sel : numpy.ndarray
-            A selection indices matrix of shape ``(k,)``.
-
-            Where:
-
-            - ``k`` is the number of individuals to select.
-
-            Each index indicates which individuals to select.
-            Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is ``None``, use all individuals.
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard:
-
-            - Must accept a single ``numpy.ndarray`` argument.
-            - Must return a single object, whether scalar or ``numpy.ndarray``.
-        kwargs : dict
-            Dictionary of keyword arguments to pass to ``trans`` function.
-
-        Returns
-        -------
-        meh : numpy.ndarray
-            A matrix of shape (1+t,) if ``trans`` is ``None``.
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the breeding values for 
-            each of ``t`` traits.
-                
-            Other indices are the mean expected trait values for the other ``t``
-            traits. Otherwise, of shape specified by ``trans``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-        """
-        # calculate MEH
-        # (n,n)[:,(k,)] -> (n,k)
-        # scalar * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / len(sel)) * C[:,sel].sum(1)
-
-        # calculate mean genomic relationship
-        # norm2( (n,) ) -> scalar
-        mgr = numpy.linalg.norm(Cx, ord = 2)
-
-        # calculate breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = bv[sel,:].sum(0)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        ocs = numpy.concatenate([[mgr],gain])
-
-        # apply transformations if needed
-        # (1+t,) -> (?,)
-        if trans:
-            ocs = trans(ocs, **kwargs)
-        
-        return ocs
-
-    @staticmethod
-    def objfn_vec_static(sel: numpy.ndarray, bv: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
-        """
-        Score a parent contribution vector according to its mean expected heterozygosity.
-
-        Parameters
-        ----------
-        sel : numpy.ndarray
-            A selection indices matrix of shape ``(j,k)``.
-
-            Where:
-
-            - ``j`` is the number of configurations to score.
-            - ``k`` is the number of individuals to select.
-
-            Each index indicates which individuals to select.
-            Each index in ``sel`` represents a single individual's row.
-            ``sel`` cannot be ``None``.
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably these 
-            breeding values are centered and scaled to make the penalies less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape (n,n) resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard:
-
-            - Must accept a single ``numpy.ndarray`` argument.
-            - Must return a single object, whether scalar or ``numpy.ndarray``.
-        kwargs : dict
-            Dictionary of keyword arguments to pass to ``trans`` function.
-
-        Returns
-        -------
-        meh : numpy.ndarray
-            A matrix of shape (j,1) if ``trans`` is ``None``.
-
-            The first index in the array is the mean expected heterozygosity:
-
-            .. math::
-                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
-
-            Other indices are the mean expected trait values for the other ``t``
-            traits. Otherwise, of shape specified by ``trans``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-        """
-        # calculate MEH
-        # (n,n)[:,(j,k)] -> (n,j,k)
-        # (n,j,k).sum(2) -> (n,j)
-        Cx = (1.0 / sel.shape[1]) * C[:,sel].sum(2)
-        
-        # norm2( (n,j), axis=0 ) -> (j,)
-        # (j,)[:,None] -> (j,1)
-        mgr = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
-
-        # calculate breeding value of the selection
-        # (n,t)[(j,k),:] -> (j,k,t)
-        # (j,k,t).sum(1) -> (j,t)
-        gain = bv[sel,:].sum(1)
-        
-        # concatenate everything
-        # (j,1) concat (j,t) -> (j,1+t)
-        ocs = numpy.concatenate([mgr,gain], axis = 1)
-
-        # apply transformations if needed
-        # (j,1+t) -> (j,?)
-        if trans:
-            ocs = trans(ocs, **kwargs)
-        
-        return ocs
