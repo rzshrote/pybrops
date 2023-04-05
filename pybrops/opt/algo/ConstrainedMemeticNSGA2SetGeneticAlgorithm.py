@@ -1,0 +1,678 @@
+"""
+Module implementing an NSGA-II genetic algorithm adapted for subset selection
+optimization.
+"""
+
+# all public classes and functions available in this module
+__all__ = [
+    "ConstrainedMemeticNSGA2SetGeneticAlgorithm"
+]
+
+# imports
+from numbers import Integral, Real
+from operator import mul, truediv
+from numpy.random import Generator,RandomState
+from typing import Optional, Union
+import numpy
+import math
+import copy
+import random
+from deap import base
+from deap import creator
+from deap import tools
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
+from pybrops.core.error.error_value_python import check_is_gt, check_is_lteq
+from pybrops.core.random import global_prng
+from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
+from pybrops.core.util.pareto import is_pareto_efficient
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
+from pybrops.opt.soln.SubsetSolution import SubsetSolution
+
+class ConstrainedFitness(base.Fitness):
+    """
+    Fitness value class used to measure the quality of a solution.
+    This is a constrained version of base.Fitness to accomodate for constraints.
+    """
+    ineqcv_wt: numpy.ndarray = None
+    eqcv_wt: numpy.ndarray = None
+
+    def __init__(
+            self,
+            values: tuple = (),
+            ineqcv: numpy.ndarray = numpy.array([], dtype=float),
+            eqcv: numpy.ndarray = numpy.array([], dtype=float),
+        ) -> None:
+        """
+        Constructor for ConstrainedFitness.
+        
+        Parameters
+        ----------
+        values : tuple
+            Objective function values for which to transform to fitness values.
+        cv : Real
+            Constraint violations.
+        """
+        super(ConstrainedFitness, self).__init__(values)
+        self.ineqcv = ineqcv
+        self.eqcv = eqcv
+
+    @property
+    def ineqcv(self) -> numpy.ndarray:
+        """ineqcv."""
+        return self._ineqcv
+    @ineqcv.setter
+    def ineqcv(self, value: numpy.ndarray) -> None:
+        """Set ineqcv."""
+        check_is_ndarray(value, "ineqcv")
+        self._ineqcv = value
+    @ineqcv.deleter
+    def ineqcv(self) -> None:
+        """Delete ineqcv."""
+        del self._ineqcv
+
+    @property
+    def eqcv(self) -> numpy.ndarray:
+        """eqcv."""
+        return self._eqcv
+    @eqcv.setter
+    def eqcv(self, value: numpy.ndarray) -> None:
+        """Set eqcv."""
+        check_is_ndarray(value, "eqcv")
+        self._eqcv = value
+    @eqcv.deleter
+    def eqcv(self) -> None:
+        """Delete eqcv."""
+        del self._eqcv
+    
+    @property
+    def cv(self) -> Real:
+        """Constraint violations. Zero is no constraint violations"""
+        return self.ineqcv_wt.dot(self.ineqcv) + self.eqcv_wt.dot(self.eqcv)
+
+    def dominates(
+            self, 
+            other: 'ConstrainedFitness', 
+            obj: slice = slice(None)
+        ) -> bool:
+        """
+        Return true if each objective of *self* is not strictly worse than
+        the corresponding objective of *other* and at least one objective is
+        strictly better.
+
+        Parameters
+        ----------
+        other : ConstrainedFitness
+            Another fitness value with which to compare.
+        obj : slice
+            Slice indicating on which objectives the domination is tested. The 
+            default value is `slice(None)`, representing every objectives.
+        """
+        # if both fitnesses have constraint violations, return the one with 
+        # the least constraint violations
+        if (self.cv > 0) and (other.cv > 0):
+            return self.cv < other.cv
+        # if both fitnesses do not have constraint violations, return the 
+        # one that dominates the other
+        elif (self.cv <= 0) and (other.cv <= 0):
+            not_equal = False
+            for self_wvalue, other_wvalue in zip(self.wvalues[obj], other.wvalues[obj]):
+                if self_wvalue > other_wvalue:
+                    not_equal = True
+                elif self_wvalue < other_wvalue:
+                    return False
+            return not_equal
+        # otherwise, return which one does not have a constraint violation.
+        elif (self.cv <= 0) and (other.cv > 0):
+            return True
+        elif (self.cv > 0) and (other.cv <= 0):
+            return False
+
+    @property
+    def feasible(self) -> bool:
+        """Return whether or not a solution is feasible."""
+        return self.cv <= 0.0
+
+    def __deepcopy__(self, memo):
+        """Replace the basic deepcopy function with a faster one.
+
+        It assumes that the elements in the :attr:`values` tuple are
+        immutable and the fitness does not contain any other object
+        than :attr:`values` and :attr:`weights`.
+        """
+        copy_ = self.__class__()
+        copy_.wvalues = self.wvalues
+        copy_.ineqcv = self.ineqcv.copy()
+        copy_.eqcv = self.eqcv.copy()
+        return copy_
+
+    def __repr__(self):
+        """Return the Python code to build a copy of the object."""
+        return "%s.%s(%r,numpy.%s,numpy.%s)" % (
+            self.__module__, 
+            self.__class__.__name__,
+            self.values if self.valid else tuple(),
+            self.ineqcv,
+            self.eqcv
+        )
+
+
+class ConstrainedMemeticNSGA2SetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
+    """
+    Class implementing an NSGA-II genetic algorithm adapted for subset selection
+    optimization. The search space is discrete and nominal in nature.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    def __init__(
+            self, 
+            ngen: Integral = 250, 
+            mu: Integral = 100, 
+            lamb: Integral = 100, 
+            M: Real = 1.5, 
+            mememu: Integral = 10, 
+            memelamb: Integral = 10, 
+            rng: Union[Generator,RandomState] = global_prng, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for NSGA-II set optimization algorithm.
+
+        Parameters
+        ----------
+        ngen : int
+            Number of generations to evolve population.
+        mu : int
+            Number of parental candidates to keep in population.
+        lamb : int
+            Number of progeny to generate.
+        M : float
+            Length of the chromosome genetic map, in Morgans.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number generator source.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        super(ConstrainedMemeticNSGA2SetGeneticAlgorithm, self).__init__(**kwargs)
+        self.ngen = ngen
+        self.mu = mu
+        self.lamb = lamb
+        self.M = M
+        self.mememu = mememu # must be assigned after mu
+        self.memelamb = memelamb # must be assigned after lamb
+        self.rng = rng
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    @property
+    def ngen(self) -> Integral:
+        """Number of generations."""
+        return self._ngen
+    @ngen.setter
+    def ngen(self, value: Integral) -> None:
+        """Set number of generations."""
+        check_is_Integral(value, "ngen")    # must be int
+        check_is_gt(value, "ngen", 0)       # int must be >0
+        self._ngen = value
+    @ngen.deleter
+    def ngen(self) -> None:
+        """Delete number of generations."""
+        del self._ngen
+
+    @property
+    def mu(self) -> Integral:
+        """Number of individuals in the main chromosome population."""
+        return self._mu
+    @mu.setter
+    def mu(self, value: Integral) -> None:
+        """Set number of individuals in the main chromosome population."""
+        check_is_Integral(value, "mu")      # must be int
+        check_is_gt(value, "mu", 0)         # int must be >0
+        self._mu = value
+    @mu.deleter
+    def mu(self) -> None:
+        """Delete number of individuals in the main chromosome population."""
+        del self._mu
+
+    @property
+    def lamb(self) -> Integral:
+        """Number of progenies to generate from the main chromosome population."""
+        return self._lamb
+    @lamb.setter
+    def lamb(self, value: Integral) -> None:
+        """Set number of progenies to generate from the main chromosome population."""
+        check_is_Integral(value, "lamb")    # must be int
+        check_is_gt(value, "lamb", 0)       # int must be >0
+        self._lamb = value
+    @lamb.deleter
+    def lamb(self) -> None:
+        """Delete number of progenies to generate from the main chromosome population."""
+        del self._lamb
+
+    @property
+    def M(self) -> Real:
+        """Length of the genetic map in Morgans."""
+        return self._M
+    @M.setter
+    def M(self, value: Real) -> None:
+        """Set length of the genetic map in Morgans."""
+        check_is_Real(value, "M")   # must be Real
+        check_is_gt(value, "M", 0)  # int must be >0
+        self._M = value
+    @M.deleter
+    def M(self) -> None:
+        """Delete length of the genetic map in Morgans."""
+        del self._M
+
+    @property
+    def mememu(self) -> int:
+        """Number of individuals to memetically modify in the parental population."""
+        return self._mememu
+    @mememu.setter
+    def mememu(self, value: int) -> None:
+        """Set number of individuals to memetically modify in the parental population."""
+        check_is_Integral(value, "mememu")
+        check_is_lteq(value, "mememu", self.mu)
+        self._mememu = value
+    @mememu.deleter
+    def mememu(self) -> None:
+        """Delete number of individuals to memetically modify in the parental population."""
+        del self._mememu
+
+    @property
+    def memelamb(self) -> int:
+        """Number of individuals to memetically modify in the offspring population."""
+        return self._memelamb
+    @memelamb.setter
+    def memelamb(self, value: int) -> None:
+        """Set number of individuals to memetically modify in the offspring population."""
+        check_is_Integral(value, "memelamb")
+        check_is_lteq(value, "memelamb", self.lamb)
+        self._memelamb = value
+    @memelamb.deleter
+    def memelamb(self) -> None:
+        """Delete number of individuals to memetically modify in the offspring population."""
+        del self._memelamb
+
+    @property
+    def rng(self) -> Union[Generator,RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[Generator,RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    # define set crossover operator
+    def cxSet(self, ind1, ind2, indpb):
+        """
+        Set crossover operator.
+
+        Parameters
+        ----------
+        ind1 : numpy.ndarray
+            Chromosome of the first parent (modified in place).
+        ind2 : numpy.ndarray
+            Chromosome of the second parent (modified in place).
+        indpb : float
+            Probability of initiating a crossover at a specific chromosome
+            locus.
+
+        Returns
+        -------
+        out : tuple
+            A tuple of length 2 containing progeny resulting from the crossover.
+        """
+        mab = ~numpy.isin(ind1,ind2)        # get mask for ind1 not in ind2
+        mba = ~numpy.isin(ind2,ind1)        # get mask for ind2 not in ind1
+        ap = ind1[mab]                      # get reduced ind1 chromosome
+        bp = ind2[mba]                      # get reduced ind2 chromosome
+        clen = min(len(ap), len(bp))        # get minimum chromosome length
+        # crossover algorithm
+        p = 0                               # get starting individual phase index
+        for i in range(clen):               # for each point in the chromosome
+            if self.rng.random() < indpb:   # if a crossover has occured
+                p = 1 - p                   # switch parent
+            if p == 1:                      # if using second parent
+                ap[i], bp[i] = bp[i], ap[i] # exchange alleles
+        ind1[mab] = ap                      # copy over exchanges
+        ind2[mba] = bp                      # copy over exchanges
+        return ind1, ind2
+
+    # define set mutation operator
+    def mutSet(self, ind, sspace, indpb):
+        """
+        Set mutation operator.
+
+        Parameters
+        ----------
+        ind : numpy.ndarray
+            Individual chromosome to mutate (modified in place).
+        sspace : numpy.ndarray
+            Array representing the set search space.
+        indpb : float
+            Probability of mutation at a single locus.
+
+        Returns
+        -------
+        ind : array_like
+            A mutated chromosome.
+        """
+        for i in range(len(ind)):
+            if self.rng.random() < indpb:
+                mab = ~numpy.isin(sspace,ind)
+                ind[i] = self.rng.choice(sspace[mab], 1, False)[0]
+        return ind
+
+    def memeStochasticAscentSet(self, ind, sspace, objfn, objwt, npass):
+        """
+        Perform set stochastic ascent hillclimb.  
+        """
+        # initialize
+        wrkss = sspace[numpy.logical_not(numpy.in1d(sspace, ind))]     # get search space elements not in chromosome
+        self.rng.shuffle(wrkss)                     # shuffle working space
+        objwt = numpy.array(objwt)                  # convert objective weights to numpy.ndarray
+
+        # if individual fitness values are not assigned, calculate and assign them
+        if not ind.fitness.valid:
+            ind.fitness.values = objfn(ind)
+
+        # get starting solution and score
+        gbest_score = ind.fitness.values
+        gbest_wscore = numpy.multiply(gbest_score, objwt)   # evaluate and weight
+
+        # define a dominates b function
+        def dominates(a, b):
+            return numpy.all(a >= b) and numpy.any(a > b)
+        
+        # output individuals list
+        ndinds = []
+
+        # hillclimber
+        indix = numpy.arange(len(ind))                      # loci indices
+        for _ in range(npass):                              # for each pass
+            self.rng.shuffle(indix)                         # shuffle loci visitation order
+            for i in indix:                                 # for each locus
+                j = self.rng.choice(len(wrkss))             # choose random exchange allele
+                ind[i], wrkss[j] = wrkss[j], ind[i]         # exchange values
+                score = objfn(ind)                          # score the individual
+                wscore = numpy.multiply(score, objwt)       # evaluate and weigh new solution
+                
+                # if new solution dominates old solution, update search origin
+                if dominates(wscore, gbest_wscore):
+                    gbest_score = score                     # assign new global best score
+                    gbest_wscore = wscore                   # assign new global best weighted score
+                
+                # if new solution is non-dominated, copy to archive, do not update search origin
+                elif not dominates(gbest_wscore, wscore):
+                    # clone the individual and assign it a fitness value
+                    c = copy.deepcopy(ind)
+                    c.fitness.values = score if hasattr(score, "__iter__") else (score,)
+                    # add cloned individual to pool of locally found ND solutions
+                    ndinds.append(c)
+                    # exchange values back to origin to search again for dominated solution
+                    ind[i], wrkss[j] = wrkss[j], ind[i]
+                
+                # otherwise new solution is dominated, do not update search origin
+                else:
+                    # exchange values back to origin to search again for dominated solution
+                    ind[i], wrkss[j] = wrkss[j], ind[i]
+
+        # clone the individual and assign it a fitness value
+        c = copy.deepcopy(ind)
+        c.fitness.values = gbest_score if hasattr(gbest_score, "__iter__") else (gbest_score,)
+        # add cloned individual to pool of locally found ND solutions
+        ndinds.append(c)
+
+        # get objective function scores for each ND candidate
+        ndinds_score = numpy.array([ndind.fitness.values for ndind in ndinds])
+
+        # from ND candidate individiuals, get true ND solutions
+        pareto_mask = is_pareto_efficient(
+            ndinds_score,
+            wt = objwt,
+            return_mask = True
+        )
+
+        # extract pareto individuals
+        pareto_ind = [ndind for i,ndind in enumerate(ndinds) if pareto_mask[i]]
+
+        return pareto_ind
+
+    def optimize(
+            self, 
+            prob: SubsetProblem,
+            miscout: Optional[dict] = None,
+            **kwargs: dict
+        ) -> SubsetSolution:
+        """
+        Optimize an objective function.
+
+        Parameters
+        ----------
+        prob : SetProblem
+            A problem definition object on which to optimize.
+        miscout : dict
+            Miscellaneous output from the constrained optimizaiont algorithm.
+        kwargs : dict
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : SetSolution
+            An object containing the solution to the provided problem.
+        """
+        # make fitness with objective weights (DEAP uses larger fitness as better)
+        creator.create(
+            "FitnessMax",
+            ConstrainedFitness,
+            weights = tuple(prob.obj_wt),
+            ineqcv_wt = prob.ineqcv_wt,
+            eqcv_wt = prob.eqcv_wt
+        )
+
+        # create an individual, which is a numpy.ndarray representation
+        creator.create(
+            "Individual", 
+            numpy.ndarray, 
+            fitness=creator.FitnessMax
+        )
+
+        # create a toolbox
+        toolbox = base.Toolbox()
+
+        # since this is a subset problem, represent individual as a permutation
+        toolbox.register(
+            "permutation",          # create a permutation protocol
+            self.rng.choice,        # randomly sample
+            prob.decn_space,        # from decision space
+            size = prob.ndecn,      # select 'ndecn' from decision space
+            replace = False         # no replacement
+        )
+
+        # register individual creation protocol
+        toolbox.register(
+            "individual",           # name of function in toolbox
+            tools.initIterate,
+            creator.Individual,
+            toolbox.permutation
+        )
+
+        # register population creation protocol
+        toolbox.register(
+            "population",           # name of function in toolbox
+            tools.initRepeat,       # list of toolbox.individual objects
+            list,                   # containter type
+            toolbox.individual      # function to execute
+        )
+
+        # register the objective function
+        toolbox.register(
+            "evaluate",             # name of function in toolbox
+            prob.evalfn             # function to execute
+        )
+
+        ### register the crossover operator
+        indpb = 0.5 * (1.0 - math.exp(-2.0 * self.M / prob.ndecn))
+        toolbox.register(
+            "mate",                 # name of function
+            self.cxSet,             # function to execute
+            indpb = indpb           # average of M crossovers
+        )
+
+        # register the mutation operator
+        toolbox.register(
+            "mutate",                   # name of function
+            self.mutSet,                # custom mutation operator
+            sspace = prob.decn_space,   # set space
+            indpb = 2.0 / prob.ndecn    # probability of mutation
+        )
+
+        # register the selection operator
+        toolbox.register(
+            "select",
+            tools.selNSGA2
+        )
+
+        # register the memetic operator
+        toolbox.register(
+            "memetic",
+            self.memeStochasticAscentSet,
+            sspace = prob.decn_space, 
+            objfn = toolbox.evaluate, 
+            objwt = prob.obj_wt, 
+            npass = 1
+        )
+
+        # register logbook statistics to take
+        stats = tools.Statistics(lambda ind: ind.fitness.values)
+        stats.register("min", numpy.min, axis=0)
+        stats.register("max", numpy.max, axis=0)
+        stats.register("avg", numpy.mean, axis=0)
+        stats.register("std", numpy.std, axis=0)
+
+        # create logbook
+        logbook = tools.Logbook()
+        logbook.header = ("gen", "evals", "min", "max", "avg", "std")
+
+        # create population
+        pop = toolbox.population(n = self.mu)
+
+        # evaluate individuals with an invalid fitness
+        invalid_ind = [ind for ind in pop if not ind.fitness.valid]
+        fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+        for ind, fit in zip(invalid_ind, fitnesses):
+            ind.fitness.values = fit[0]
+            ind.fitness.ineqcv = fit[1]
+            ind.fitness.eqcv = fit[2]
+
+        # assign crowding distances (no actual selection is done)
+        pop = toolbox.select(pop, len(pop))
+
+        # compile population statistics
+        record = stats.compile(pop)
+
+        # record statistics in logbook
+        logbook.record(gen=0, evals=len(invalid_ind), **record)
+
+        # main genetic algorithm loop
+        for gen in range(1, self.ngen):
+            # create lambda progeny using distance crowding tournament selection
+            offspring = tools.selTournamentDCD(pop, self.lamb)
+
+            # clone individuals for modification
+            offspring = [toolbox.clone(ind) for ind in offspring]
+
+            # for each offspring pair
+            for ind1, ind2 in zip(offspring[::2], offspring[1::2]):
+                toolbox.mate(ind1, ind2)    # mating is guaranteed
+                toolbox.mutate(ind1)        # mutate ind1
+                toolbox.mutate(ind2)        # mutate ind2
+                del ind1.fitness.values     # delete fitness value since ind1 is modified
+                del ind2.fitness.values     # delete fitness value since ind1 is modified
+                del ind1.fitness.ineqcv
+                del ind2.fitness.ineqcv
+                del ind1.fitness.eqcv
+                del ind2.fitness.eqcv
+
+            # Evaluate the individuals with an invalid fitness
+            invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
+            fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
+            for ind, fit in zip(invalid_ind, fitnesses):
+                ind.fitness.values = fit[0]
+                ind.fitness.ineqcv = fit[1]
+                ind.fitness.eqcv = fit[2]
+
+            # shuffle parents and offspring
+            random.shuffle(pop)
+            random.shuffle(offspring)
+
+            # partition into subset for memetic operator and unaltered population
+            pop_memetic = pop[:self.mememu]
+            pop_unaltered = pop[self.mememu:]
+            offspring_memetic = offspring[:self.memelamb]
+            offspring_unaltered = offspring[self.memelamb:]
+
+            # for each individual in memetic set, do local search, add to unaltered list
+            for ind in pop_memetic:
+                pop_unaltered += toolbox.memetic(ind)
+            for ind in offspring_memetic:
+                offspring_unaltered += toolbox.memetic(ind)
+
+            # change pointers
+            pop = pop_unaltered
+            offspring = offspring_unaltered
+
+            # Select the next generation population
+            pop = toolbox.select(pop + offspring, self.mu)
+
+            # save logs
+            record = stats.compile(pop)
+            logbook.record(gen = gen, evals = len(invalid_ind), **record)
+
+        # extract population fitnesses (solutions)
+        pop_soln = numpy.array([ind.fitness.values for ind in pop])
+
+        # extract population constraint violations
+        pop_soln_ineqcv = numpy.array([ind.fitness.ineqcv for ind in pop])
+        pop_soln_eqcv = numpy.array([ind.fitness.eqcv for ind in pop])
+
+        # extract population decision configurations
+        pop_decn = numpy.array(pop)
+
+        # get pareto frontier mask
+        pareto_mask = is_pareto_efficient(
+            pop_soln,
+            wt = prob.obj_wt,
+            return_mask = True
+        )
+
+        # get pareto frontier
+        frontier = pop_soln[pareto_mask]
+
+        # get selection configurations
+        sel_config = pop_decn[pareto_mask]
+
+        # stuff everything else into a dictionary
+        misc = {
+            "pop_soln" : pop_soln,
+            "pop_decn" : pop_decn,
+            "pop" : pop,
+            "logbook" : logbook
+        }
+
+        return frontier, sel_config, misc

@@ -151,16 +151,16 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         out : numpy.ndarray
             Matrix in the desired output format.
         """
-        # input type check
-        if not isinstance(format, str):
-            raise TypeError("'format' argument must be of type 'str'")
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
         # process string
-        if format.lower() == "coancestry":
+        if format == "coancestry":
             return self._mat.copy()
-        elif format.lower() == "kinship":
+        elif format == "kinship":
             return 0.5 * self._mat
-        else:
-            raise ValueError('Format not recognized. Options are "coancestry" or "kinship"')
 
     ############## Coancestry/kinship Methods ##############
     def coancestry(self, *args, **kwargs: dict):
@@ -262,6 +262,89 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             return False
         
         return True
+
+    def max_inbreeding(
+            self,
+            format: str
+        ) -> Real:
+        """
+        Calculate the maximum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\max(\\mathrm{diag}(\\mathbf{G}))
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\max(\\mathrm{diag}(\\mathbf{K}))
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The maximum attainable inbreeding after one generation.
+        """
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # get output in coancestry format
+        out = self.mat.diagonal().max()
+
+        # if requested format is kinship, then convert coancestry to kinship
+        if format == "kinship":
+            out = 0.5 * out
+        
+        return out
+
+    def min_inbreeding(
+            self,
+            format: str
+        ) -> Real:
+        """
+        Calculate the minimum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\frac{1}{\\mathbf{1'G1}}
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\frac{1}{\\mathbf{1'K1}}
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The minimum attainable inbreeding after one generation.
+        """
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # calculate G inverse
+        Ginv = numpy.linalg.inv(self.mat)
+
+        # calculate min inbreeding
+        out = 1.0 / Ginv.sum()
+
+        # if requested format is kinship, then convert coancestry to kinship
+        if format == "kinship":
+            out = 0.5 * out
+        
+        return out
 
     ############## Matrix summary statistics ###############
     def inverse(

@@ -10,10 +10,10 @@ __all__ = [
 
 # imports
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.opt.prob.SetProblem import SetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inheritance order not super important here since both abstract
-class SetSelectionProblem(SetProblem,SelectionProblem):
+class SetSelectionProblem(SubsetProblem,SelectionProblem):
     """
     docstring for SetSelectionProblem.
     """

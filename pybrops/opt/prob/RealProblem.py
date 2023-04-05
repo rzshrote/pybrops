@@ -9,7 +9,6 @@ __all__ = [
 ]
 
 # imports
-import numpy
 from pybrops.opt.prob.Problem import Problem
 
 class RealProblem(Problem):
@@ -33,35 +32,6 @@ class RealProblem(Problem):
             Additional keyword arguments used for cooperative inheritance.
         """
         super(RealProblem, self).__init__(**kwargs)
-
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-    @property
-    def decn_lower(self) -> numpy.ndarray:
-        """Lower bound of decision space."""
-        raise NotImplementedError("property is abstract")
-    @decn_lower.setter
-    def decn_lower(self, value: numpy.ndarray) -> None:
-        """Set lower bound of decision space."""
-        raise NotImplementedError("property is abstract")
-    @decn_lower.deleter
-    def decn_lower(self) -> None:
-        """Delete lower bound of decision space."""
-        raise NotImplementedError("property is abstract")
-    
-    @property
-    def decn_upper(self) -> numpy.ndarray:
-        """Upper bound of the decision space."""
-        raise NotImplementedError("property is abstract")
-    @decn_upper.setter
-    def decn_upper(self, value: numpy.ndarray) -> None:
-        """Set upper bound of the decision space."""
-        raise NotImplementedError("property is abstract")
-    @decn_upper.deleter
-    def decn_upper(self) -> None:
-        """Delete upper bound of the decision space."""
-        raise NotImplementedError("property is abstract")
 
 
 

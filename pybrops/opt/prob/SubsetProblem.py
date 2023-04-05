@@ -1,19 +1,19 @@
 """
-Module for defining optimization problem solutions with nominal decision variables.
+Module for defining optimization problems with nominal decision variables.
 """
 
-# list of all public imports in the module
+# list of public objects in this module
 __all__ = [
-    "SetSolution",
-    "check_is_SetSolution"
+    "SubsetProblem",
+    "check_is_SubsetProblem"
 ]
 
 # imports
-from pybrops.opt.soln.Solution import Solution
+from pybrops.opt.prob.Problem import Problem
 
-class SetSolution(Solution):
+class SubsetProblem(Problem):
     """
-    Base class for all optimization problem solutions with nominal decision variables.
+    Base class for all optimization problems with nominal decision variables.
     """
 
     ############################################################################
@@ -24,23 +24,23 @@ class SetSolution(Solution):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SetSolution.
+        Constructor for SubsetProblem.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(SetSolution, self).__init__(**kwargs)
+        super(SubsetProblem, self).__init__(**kwargs)
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_SetSolution(v: object, vname: str) -> None:
+def check_is_SubsetProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type SetSolution, otherwise raise TypeError.
+    Check if object is of type SubsetProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -49,5 +49,5 @@ def check_is_SetSolution(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, SetSolution):
-        raise TypeError("'{0}' must be of type SetSolution.".format(vname))
+    if not isinstance(v, SubsetProblem):
+        raise TypeError("'{0}' must be of type SubsetProblem.".format(vname))

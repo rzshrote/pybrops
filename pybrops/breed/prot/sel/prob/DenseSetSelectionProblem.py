@@ -15,10 +15,10 @@ from typing import Callable, Tuple
 import numpy
 from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem
 from pybrops.breed.prot.sel.prob.SetSelectionProblem import SetSelectionProblem
-from pybrops.opt.prob.DenseSetProblem import DenseSetProblem
+from pybrops.opt.prob.DenseSubsetProblem import DenseSubsetProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class DenseSetSelectionProblem(DenseSetProblem,DenseSelectionProblem,SetSelectionProblem):
+class DenseSetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,SetSelectionProblem):
     """
     docstring for DenseSetSelectionProblem.
     """
@@ -66,6 +66,7 @@ class DenseSetSelectionProblem(DenseSetProblem,DenseSelectionProblem,SetSelectio
     ############################################################################
     # leave encodefn abstract
     # leave evalfn abstract
+    # leave _evaluate abstract
 
 
 

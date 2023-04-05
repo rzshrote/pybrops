@@ -4,8 +4,8 @@ Partial implementation of the SetSolution interface.
 
 # list of all public imports in the module
 __all__ = [
-    "DenseSetSolution",
-    "check_is_DenseSetSolution"
+    "DenseSubsetSolution",
+    "check_is_DenseSubsetSolution"
 ]
 
 # imports
@@ -14,9 +14,9 @@ import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_gteq
 from pybrops.opt.soln.DenseSolution import DenseSolution
-from pybrops.opt.soln.SetSolution import SetSolution
+from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class DenseSetSolution(DenseSolution,SetSolution):
+class DenseSubsetSolution(DenseSolution,SubsetSolution):
     """
     Partially implemented class for optimization problems with nominal decision variables.
     """
@@ -35,21 +35,21 @@ class DenseSetSolution(DenseSolution,SetSolution):
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
             nsoln: Integral,
-            soln: numpy.ndarray,
+            soln_decn: numpy.ndarray,
             soln_obj: numpy.ndarray,
             soln_ineqcv: numpy.ndarray,
             soln_eqcv: numpy.ndarray,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseSetSolution.
+        Constructor for DenseSubsetSolution.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseSetSolution, self).__init__(
+        super(DenseSubsetSolution, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             nobj = nobj,
@@ -59,7 +59,7 @@ class DenseSetSolution(DenseSolution,SetSolution):
             neqcv = neqcv,
             eqcv_wt = eqcv_wt,
             nsoln = nsoln,
-            soln = soln,
+            soln_decn = soln_decn,
             soln_obj = soln_obj,
             soln_ineqcv = soln_ineqcv,
             soln_eqcv = soln_eqcv,
@@ -83,9 +83,9 @@ class DenseSetSolution(DenseSolution,SetSolution):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseSetSolution(v: object, vname: str) -> None:
+def check_is_DenseSubsetSolution(v: object, vname: str) -> None:
     """
-    Check if object is of type DenseSetSolution, otherwise raise TypeError.
+    Check if object is of type DenseSubsetSolution, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -94,5 +94,5 @@ def check_is_DenseSetSolution(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, DenseSetSolution):
-        raise TypeError("'{0}' must be of type DenseSetSolution.".format(vname))
+    if not isinstance(v, DenseSubsetSolution):
+        raise TypeError("'{0}' must be of type DenseSubsetSolution.".format(vname))

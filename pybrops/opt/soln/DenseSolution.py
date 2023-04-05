@@ -7,7 +7,8 @@ __all__ = [
 
 ]
 
-from numbers import Integral
+from numbers import Integral, Number
+from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -28,6 +29,8 @@ class DenseSolution(Solution):
             self,
             ndecn: Integral,
             decn_space: numpy.ndarray,
+            decn_space_lower: numpy.ndarray,
+            decn_space_upper: numpy.ndarray,
             nobj: Integral,
             obj_wt: numpy.ndarray,
             nineqcv: Integral,
@@ -35,7 +38,7 @@ class DenseSolution(Solution):
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
             nsoln: Integral,
-            soln: numpy.ndarray,
+            soln_decn: numpy.ndarray,
             soln_obj: numpy.ndarray,
             soln_ineqcv: numpy.ndarray,
             soln_eqcv: numpy.ndarray,
@@ -53,6 +56,8 @@ class DenseSolution(Solution):
         # order dependent assignments
         self.ndecn = ndecn
         self.decn_space = decn_space
+        self.decn_space_lower = decn_space_lower
+        self.decn_space_upper = decn_space_upper
         self.nobj = nobj
         self.obj_wt = obj_wt
         self.nineqcv = nineqcv
@@ -60,7 +65,7 @@ class DenseSolution(Solution):
         self.neqcv = neqcv
         self.eqcv_wt = eqcv_wt
         self.nsoln = nsoln
-        self.soln = soln
+        self.soln_decn = soln_decn
         self.soln_obj = soln_obj
         self.soln_ineqcv = soln_ineqcv
         self.soln_eqcv = soln_eqcv
@@ -84,18 +89,67 @@ class DenseSolution(Solution):
         del self._ndecn
     
     @property
-    def decn_space(self) -> numpy.ndarray:
+    def decn_space(self) -> Union[numpy.ndarray,None]:
         """Decision space boundaries."""
         return self._decn_space
     @decn_space.setter
-    def decn_space(self, value: numpy.ndarray) -> None:
+    def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
-        check_is_ndarray(value, "decn_space")
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space' must be of type numpy.ndarrray or None")
         self._decn_space = value
     @decn_space.deleter
     def decn_space(self) -> None:
         """Delete decision space boundaries."""
         del self._decn_space
+
+    @property
+    def decn_space_lower(self) -> Union[numpy.ndarray,None]:
+        """Lower boundary of the decision space."""
+        return self._decn_space_lower
+    @decn_space_lower.setter
+    def decn_space_lower(self, value: Union[numpy.ndarray,Number,None]) -> None:
+        """Set lower boundary of the decision space."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_len_eq(value, "xl", self.ndecn)
+        elif isinstance(value, Number):
+            value = numpy.repeat(value, self.ndecn)
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, Number, or None")
+        self._decn_space_lower = value
+        self._xl = value
+    @decn_space_lower.deleter
+    def decn_space_lower(self) -> None:
+        """Delete lower boundary of the decision space."""
+        del self._decn_space_lower
+    
+    @property
+    def decn_space_upper(self) -> Union[numpy.ndarray,None]:
+        """Upper boundary of the decision space."""
+        return self._decn_space_upper
+    @decn_space_upper.setter
+    def decn_space_upper(self, value: Union[numpy.ndarray,Number,None]) -> None:
+        """Set upper boundary of the decision space."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_len_eq(value, "xl", self.ndecn)
+        elif isinstance(value, Number):
+            value = numpy.repeat(value, self.ndecn)
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Number, or None")
+        self._decn_space_upper = value
+        self._xu = value
+    @decn_space_upper.deleter
+    def decn_space_upper(self) -> None:
+        """Delete upper boundary of the decision space."""
+        del self._decn_space_upper
 
     @property
     def nobj(self) -> Integral:
@@ -117,11 +171,15 @@ class DenseSolution(Solution):
         """Objective function weights."""
         return self._obj_wt
     @obj_wt.setter
-    def obj_wt(self, value: numpy.ndarray) -> None:
+    def obj_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set objective function weights."""
-        check_is_ndarray(value, "obj_wt")
-        check_ndarray_is_1d(value, "obj_wt")
-        check_ndarray_len_eq(value, "obj_wt", self.nobj)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "obj_wt")
+            check_ndarray_len_eq(value, "obj_wt", self.nobj)
+        elif isinstance(value, Number):
+            value = numpy.repeat(value, self.nobj)
+        else:
+            raise TypeError("'obj_wt' must be of type numpy.ndarray or a numeric type")
         self._obj_wt = value
     @obj_wt.deleter
     def obj_wt(self) -> None:
@@ -148,11 +206,15 @@ class DenseSolution(Solution):
         """Inequality constraint violation function weights."""
         return self._ineqcv_wt
     @ineqcv_wt.setter
-    def ineqcv_wt(self, value: numpy.ndarray) -> None:
+    def ineqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set inequality constraint violation function weights."""
-        check_is_ndarray(value, "ineqcv_wt")
-        check_ndarray_is_1d(value, "ineqcv_wt")
-        check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "ineqcv_wt")
+            check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
+        elif isinstance(value, Number):
+            value = numpy.repeat(value, self.nineqcv)
+        else:
+            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray or a numeric type")
         self._ineqcv_wt = value
     @ineqcv_wt.deleter
     def ineqcv_wt(self) -> None:
@@ -179,11 +241,15 @@ class DenseSolution(Solution):
         """Equality constraint violation function weights."""
         return self._eqcv_wt
     @eqcv_wt.setter
-    def eqcv_wt(self, value: numpy.ndarray) -> None:
+    def eqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set equality constraint violation function weights."""
-        check_is_ndarray(value, "eqcv_wt")
-        check_ndarray_is_1d(value, "eqcv_wt")
-        check_is_gteq(value, "eqcv_wt", self.neqcv)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_is_1d(value, "eqcv_wt")
+            check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
+        elif isinstance(value, Number):
+            value = numpy.repeat(value, self.neqcv)
+        else:
+            raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a numeric type")
         self._eqcv_wt = value
     @eqcv_wt.deleter
     def eqcv_wt(self) -> None:
@@ -206,18 +272,18 @@ class DenseSolution(Solution):
         del self._nsoln
 
     @property
-    def soln(self) -> numpy.ndarray:
+    def soln_decn(self) -> numpy.ndarray:
         """Matrix of solution vectors in the decision space."""
         return self._soln
-    @soln.setter
-    def soln(self, value: numpy.ndarray) -> None:
+    @soln_decn.setter
+    def soln_decn(self, value: numpy.ndarray) -> None:
         """Set matrix of solution vectors in the decision space."""
         check_is_ndarray(value, "soln")
         check_ndarray_is_2d(value, "soln")
         check_ndarray_shape_eq(value, "soln", (self.nsoln,self.ndecn))
         self._soln = value
-    @soln.deleter
-    def soln(self) -> None:
+    @soln_decn.deleter
+    def soln_decn(self) -> None:
         """Delete matrix of solution vectors in the decision space."""
         del self._soln
     

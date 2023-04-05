@@ -9,7 +9,8 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral
+from numbers import Integral, Number
+from typing import Union
 import numpy
 
 class Solution:
@@ -61,6 +62,32 @@ class Solution:
     @decn_space.deleter
     def decn_space(self) -> None:
         """Delete decision space boundaries."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    def decn_space_lower(self) -> Union[numpy.ndarray,None]:
+        """Lower boundary of the decision space."""
+        raise NotImplementedError("property is abstract")
+    @decn_space_lower.setter
+    def decn_space_lower(self, value: Union[numpy.ndarray,Number,None]) -> None:
+        """Set lower boundary of the decision space."""
+        raise NotImplementedError("property is abstract")
+    @decn_space_lower.deleter
+    def decn_space_lower(self) -> None:
+        """Delete lower boundary of the decision space."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    def decn_space_upper(self) -> Union[numpy.ndarray,None]:
+        """Upper boundary of the decision space."""
+        raise NotImplementedError("property is abstract")
+    @decn_space_upper.setter
+    def decn_space_upper(self, value: Union[numpy.ndarray,Number,None]) -> None:
+        """Set upper boundary of the decision space."""
+        raise NotImplementedError("property is abstract")
+    @decn_space_upper.deleter
+    def decn_space_upper(self) -> None:
+        """Delete upper boundary of the decision space."""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -155,15 +182,15 @@ class Solution:
         raise NotImplementedError("property is abstract")
     
     @property
-    def soln(self) -> numpy.ndarray:
+    def soln_decn(self) -> numpy.ndarray:
         """Matrix of solution vectors in the decision space."""
         raise NotImplementedError("property is abstract")
-    @soln.setter
-    def soln(self, value: numpy.ndarray) -> None:
+    @soln_decn.setter
+    def soln_decn(self, value: numpy.ndarray) -> None:
         """Set matrix of solution vectors in the decision space."""
         raise NotImplementedError("property is abstract")
-    @soln.deleter
-    def soln(self) -> None:
+    @soln_decn.deleter
+    def soln_decn(self) -> None:
         """Delete matrix of solution vectors in the decision space."""
         raise NotImplementedError("property is abstract")
     

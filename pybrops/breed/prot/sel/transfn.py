@@ -4,7 +4,7 @@ Module containing functions for transforming objective function outputs.
 
 from numbers import Real
 import numpy
-from typing import Union
+from typing import Tuple, Union
 
 __all__ = [
     "trans_ndpt_to_vec_dist", 
@@ -236,3 +236,44 @@ def trans_sum_inbmax_penalty(
     """
     divisor = 1 if inbmax == 0 else abs(inbmax)
     return mat[1:].sum(axis = axis) + penalty_wt * max(0, (mat[0]-inbmax)/divisor)
+
+def trans_identity_unconstrained(vec: numpy.ndarray, **kwargs: dict) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
+    """
+    Treat all elements in a latent vector as unconstrained objectives.
+
+    Parameters
+    ----------
+    vec : numpy.ndarray
+        An array of shape ``(l,)`` to be transformed.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
+    
+    Returns
+    -------
+    out : Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]
+        A tuple ``(obj, ineqcv, eqcv)`` containing objectives, inequality 
+        constraints, and equality constraints.
+    """
+    obj = vec
+    ineqcv = numpy.array([], dtype = vec.dtype)
+    eqcv = numpy.array([], dtype = vec.dtype)
+    return (obj, ineqcv, eqcv)
+
+def trans_max_inbreeding_constraint(vec: numpy.ndarray, maxinb: Real, **kwargs: dict) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
+    """
+    Convert the first element in a latent vector into an inbreeding inequality
+    constraint and leave the rest of the objectives unconstrained.
+
+    Parameters
+    ----------
+    vec : numpy.ndarray
+        An array of shape ``(l,)`` to be transformed.
+    maxinb : Real
+        Maximum inbreeding value.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
+    """
+    obj = vec[1:]
+    ineqcv = numpy.array([max(0,vec[0]-maxinb)], dtype = vec.dtype)
+    eqcv = numpy.array([], dtype = vec.dtype)
+    return (obj, ineqcv, eqcv)

@@ -25,7 +25,7 @@ class BinaryOptimalContributionSelectionProblem(DenseSetSelectionProblem):
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: numpy.ndarray,
-            encode_trans: Callable[[numpy.ndarray,dict],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]],
+            encode_trans: Callable[[numpy.ndarray,dict],Tuple],
             encode_trans_kwargs: dict,
             nobj: Integral,
             obj_wt: numpy.ndarray,
@@ -61,7 +61,7 @@ class BinaryOptimalContributionSelectionProblem(DenseSetSelectionProblem):
             Number of decision variables.
         decn_space : numpy.ndarray
             A 1d array containing the set of available elements
-        encode_trans : Callable[[numpy.ndarray],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]]
+        encode_trans : Callable[[numpy.ndarray],Tuple]
             Function which transforms outputs from ``encodefn`` to a tuple ``(obj,ineqcv,eqcv)``.
         encode_trans_kwargs : dict
             ``encodefn`` output transformation function keyword arguments.
@@ -195,7 +195,7 @@ class BinaryOptimalContributionSelectionProblem(DenseSetSelectionProblem):
             x: numpy.ndarray, 
             *args: tuple, 
             **kwargs: dict
-        ) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
+        ) -> Tuple:
         """
         Evaluate a candidate solution for the given Problem.
         

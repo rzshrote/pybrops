@@ -13,8 +13,16 @@ def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: float, vmax: f
 
 ################# check_ndarray_eq #################
 def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
-    if not numpy.all(v == w):
-        raise ValueError("variable '{0}' must have values equal to {1}".format(vname, wname))
+    if v.shape != w.shape:
+        raise ValueError("arrays '{0}' and '{1}' are not equal: must have same shape".format(vname, wname))
+    if numpy.any(v != w):
+        raise ValueError("arrays '{0}' and '{1}' are not equal: must have same values".format(vname,wname))
+
+def check_ndarray_align(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
+    if v.shape != w.shape:
+        raise ValueError("arrays '{0}' and '{1}' are not aligned: must have same shape".format(vname, wname))
+    if numpy.any(v != w):
+        raise ValueError("arrays '{0}' and '{1}' are not aligned: must have same values at same position".format(vname,wname))
 
 def check_ndarray_is_binary(v: numpy.ndarray, vname: str) -> None:
     if not numpy.all((v == 0) | (v == 1)):

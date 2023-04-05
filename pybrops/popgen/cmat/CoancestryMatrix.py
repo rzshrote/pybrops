@@ -147,6 +147,62 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    def max_inbreeding(
+            self,
+            format: str
+        ) -> Real:
+        """
+        Calculate the maximum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\max(\\mathrm{trace}(\\mathbf{G}))
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\max(\\mathrm{trace}(\\mathbf{K}))
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The maximum attainable inbreeding after one generation.
+        """
+        raise NotImplementedError("method is abstract")
+
+    def min_inbreeding(
+            self,
+            format: str
+        ) -> Real:
+        """
+        Calculate the minimum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\frac{1}{\\mathbf{1'G1}}
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\frac{1}{\\mathbf{1'K1}}
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The minimum attainable inbreeding after one generation.
+        """
+        raise NotImplementedError("method is abstract")
+
     ############## Matrix summary statistics ###############
     def inverse(
             self,

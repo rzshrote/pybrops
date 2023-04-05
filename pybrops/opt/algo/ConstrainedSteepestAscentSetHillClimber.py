@@ -9,9 +9,9 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
-from pybrops.opt.prob.SetProblem import SetProblem, check_is_SetProblem
-from pybrops.opt.soln.DenseSetSolution import DenseSetSolution
-from pybrops.opt.soln.SetSolution import SetSolution
+from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SetProblem
+from pybrops.opt.soln.DenseSubsetSolution import DenseSubsetSolution
+from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
 class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
     """
@@ -63,10 +63,10 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
     ############################################################################
     def optimize(
             self, 
-            prob: SetProblem,
+            prob: SubsetProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SetSolution:
+        ) -> SubsetSolution:
         """
         Optimize an objective function.
 
@@ -142,7 +142,7 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
             gbest_cv = best_cv
 
         # create output
-        out = DenseSetSolution(
+        out = DenseSubsetSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
             nobj = prob.nobj,
@@ -152,7 +152,7 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
             neqcv = prob.neqcv,
             eqcv_wt = prob.eqcv_wt,
             nsoln = 1,
-            soln = numpy.stack([gbest_soln]),
+            soln_decn = numpy.stack([gbest_soln]),
             soln_obj = numpy.stack([gbest_obj]),
             soln_ineqcv = numpy.stack([gbest_ineqcv]),
             soln_eqcv = numpy.stack([gbest_eqcv]),

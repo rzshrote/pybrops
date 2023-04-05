@@ -9,12 +9,13 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral
-from typing import Callable, Tuple
+from numbers import Integral, Number
+from typing import Callable, Iterable, Optional, Sequence, Tuple, Union
 import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict
 from pybrops.opt.prob.DenseProblem import DenseProblem
+from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 # inheritance order is important for method resolution order
 class DenseSelectionProblem(DenseProblem,SelectionProblem):
@@ -28,7 +29,9 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
     def __init__(
             self,
             ndecn: Integral,
-            decn_space: numpy.ndarray,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Number,None],
+            decn_space_upper: Union[numpy.ndarray,Number,None],
             encode_trans: Callable[[numpy.ndarray,dict],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]],
             encode_trans_kwargs: dict,
             nobj: Integral,
@@ -37,6 +40,15 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
             ineqcv_wt: numpy.ndarray,
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
+            vtype: Optional[type] = None,
+            vars: Optional[Sequence] = None,
+            elementwise: bool = False,
+            elementwise_func: type = ElementwiseEvaluationFunction,
+            elementwise_runner: Callable = LoopedElementwiseEvaluation(),
+            replace_nan_values_by: Optional[Number] = None,
+            exclude_from_serialization: Optional[Iterable] = None,
+            callback: Optional[Callable] = None,
+            strict: bool = True,
             **kwargs: dict
         ) -> None:
         """
@@ -50,12 +62,23 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
         super(DenseSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
             nobj = nobj,
             obj_wt = obj_wt,
             nineqcv = nineqcv,
             ineqcv_wt = ineqcv_wt,
             neqcv = neqcv,
             eqcv_wt = eqcv_wt,
+            vtype = vtype,
+            vars = vars,
+            elementwise = elementwise,
+            elementwise_func = elementwise_func,
+            elementwise_runner = elementwise_runner,
+            replace_nan_values_by = replace_nan_values_by,
+            exclude_from_serialization = exclude_from_serialization,
+            callback = callback,
+            strict = strict,
             **kwargs
         )
         # make assignments
@@ -99,6 +122,7 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
     ############################################################################
     # leave encodefn abstract
     # leave evalfn abstract
+    # leave _evaluate abstract
 
 
 

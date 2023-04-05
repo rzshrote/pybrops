@@ -5,12 +5,14 @@ Module implementing selection protocols for maximum mean expected heterozygosity
 from numbers import Integral, Real
 import warnings
 import numpy
-import types
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 from typing import Callable
+from pybrops.breed.prot.sel.prob.BinaryOptimalContributionSelectionProblem import BinaryOptimalContributionSelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.core.error.error_value_numpy import check_ndarray_align
+from pybrops.opt.algo.ConstrainedSteepestAscentSetHillClimber import ConstrainedSteepestAscentSetHillClimber
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.core.error.error_attr_python import check_is_callable
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
@@ -21,7 +23,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
-from pybrops.breed.prot.sel.transfn import trans_sum_inbmax_penalty
+from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
@@ -50,18 +52,23 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             nparent: int, 
             ncross: int, 
             nprogeny: int,
-            inbfn: Callable,
             cmatfcty: CoancestryMatrixFactory,
             method: str = "single",
-            objfn_trans = trans_sum_inbmax_penalty, 
-            objfn_trans_kwargs = None, 
-            objfn_wt = 1.0,
-            ndset_trans = None, 
-            ndset_trans_kwargs = None, 
-            ndset_wt = -1.0,
+            descale: bool = False,
+            encode_trans: Optional[Callable[[numpy.ndarray,dict],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]]] = None,
+            encode_trans_kwargs: Optional[dict] = None,
+            nobj: Optional[Integral] = None,
+            obj_wt: Optional[numpy.ndarray] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[numpy.ndarray] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[numpy.ndarray] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            ndset_wt: Optional[Real] = None,
             rng = global_prng, 
-            soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None,
+            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
+            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -152,7 +159,10 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             frontier. Indicates whether a function is maximizing or minimizing.
                 1.0 for maximizing function.
                 -1.0 for minimizing function.
-        moalgo : OptimizationAlgorithm
+        soalgo : ConstrainedOptimizationAlgorithm
+            Single objective optimization algorithm with which to optimize the
+            optimization problem.
+        moalgo : ConstrainedOptimizationAlgorithm
             Multi-objective optimization algorithm to optimize the objective
             functions. If ``None``, use a NSGA3UnityConstraintGeneticAlgorithm
             with the following parameters::
@@ -176,12 +186,19 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.inbfn = inbfn
         self.cmatfcty = cmatfcty
         self.method = method
-        self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = objfn_trans_kwargs
-        self.objfn_wt = objfn_wt
+        self.descale = descale
+
+        self.encode_trans = encode_trans
+        self.encode_trans_kwargs = encode_trans_kwargs
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+
         self.ndset_trans = ndset_trans
         self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
         self.ndset_wt = ndset_wt
@@ -238,20 +255,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         del self._nprogeny
 
     @property
-    def inbfn(self) -> Callable:
-        """Function which calculates a maximum mean genomic relationship given time parameters."""
-        return self._inbfn
-    @inbfn.setter
-    def inbfn(self, value: Callable) -> None:
-        """Set inbreeding constraint function."""
-        check_is_callable(value, "inbfn")
-        self._inbfn = value
-    @inbfn.deleter
-    def inbfn(self) -> None:
-        """Delete inbreeding constraint function."""
-        del self._inbfn
-
-    @property
     def cmatfcty(self) -> CoancestryMatrixFactory:
         """Factory for creating a coancestry matrix for use in the optimization."""
         return self._cmatfcty
@@ -285,48 +288,17 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         del self._method
 
     @property
-    def objfn_trans(self) -> Union[Callable,None]:
-        """Objective function transformation function."""
-        return self._objfn_trans
-    @objfn_trans.setter
-    def objfn_trans(self, value: Union[Callable,None]) -> None:
-        """Set objective function transformation function."""
-        if value is not None:                       # if given object
-            check_is_callable(value, "objfn_trans") # must be callable
-        self._objfn_trans = value
-    @objfn_trans.deleter
-    def objfn_trans(self) -> None:
-        """Delete objective function transformation function."""
-        del self._objfn_trans
-
-    @property
-    def objfn_trans_kwargs(self) -> dict:
-        """Objective function transformation function keyword arguments."""
-        return self._objfn_trans_kwargs
-    @objfn_trans_kwargs.setter
-    def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
-        """Set objective function transformation function keyword arguments."""
-        if value is None:                           # if given None
-            value = {}                              # set default to empty dict
-        check_is_dict(value, "objfn_trans_kwargs")  # check is dict
-        self._objfn_trans_kwargs = value
-    @objfn_trans_kwargs.deleter
-    def objfn_trans_kwargs(self) -> None:
-        """Delete objective function transformation function keyword arguments."""
-        del self._objfn_trans_kwargs
-
-    @property
-    def objfn_wt(self) -> Union[float,numpy.ndarray]:
-        """Objective function weights."""
-        return self._objfn_wt
-    @objfn_wt.setter
-    def objfn_wt(self, value: Union[float,numpy.ndarray]) -> None:
-        """Set objective function weights."""
-        self._objfn_wt = value
-    @objfn_wt.deleter
-    def objfn_wt(self) -> None:
-        """Delete objective function weights."""
-        del self._objfn_wt
+    def descale(self) -> bool:
+        """Whether to use descaled and decentered breeding values for optimization."""
+        return self._descale
+    @descale.setter
+    def descale(self, value: bool) -> None:
+        """Set descale."""
+        self._descale = value
+    @descale.deleter
+    def descale(self) -> None:
+        """Delete descale."""
+        del self._descale
 
     @property
     def ndset_trans(self) -> Union[Callable,None]:
@@ -389,15 +361,15 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         del self._rng
 
     @property
-    def soalgo(self) -> OptimizationAlgorithm:
+    def soalgo(self) -> ConstrainedOptimizationAlgorithm:
         """Description for property soalgo."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: OptimizationAlgorithm) -> None:
+    def soalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
         """Set data for property soalgo."""
         if value is None:
-            value = SteepestAscentSetHillClimber(rng = self.rng)
-        check_is_OptimizationAlgorithm(value, "soalgo")
+            value = ConstrainedSteepestAscentSetHillClimber(rng = self.rng)
+        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
     def soalgo(self) -> None:
@@ -405,11 +377,11 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         del self._soalgo
 
     @property
-    def moalgo(self) -> OptimizationAlgorithm:
+    def moalgo(self) -> ConstrainedOptimizationAlgorithm:
         """Description for property moalgo."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: OptimizationAlgorithm) -> None:
+    def moalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
         """Set data for property moalgo."""
         if value is None:
             value = MemeticNSGA2SetGeneticAlgorithm(
@@ -421,7 +393,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
                 memelamb = 15,  # number to local search in progeny population
                 rng = self.rng  # PRNG source
             )
-        check_is_OptimizationAlgorithm(value, "moalgo")
+        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
     @moalgo.deleter
     def moalgo(self) -> None:
@@ -457,6 +429,192 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # check inputs
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
+        # check dimensions
+        if gmat.ntaxa != bvmat.ntaxa:
+            raise ValueError("'gmat' and 'bvmat' do not have same number of taxa")
+
+        # make sure gmat and bvmat are aligned
+        if (gmat.taxa is not None) and (bvmat.taxa is not None):
+            check_ndarray_align(gmat.taxa, "gmat.taxa", bvmat.taxa, "bvmat.taxa")
+
+        # get genomic relationship matrix: (n,n)
+        G = self.cmatfcty.from_gmat(gmat)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        # convert G to (1/2)G (kinship analogue): (n,n)
+        K = G.mat_asformat("kinship")
+
+        # cholesky decomposition of K matrix: (n,n)
+        C = numpy.linalg.cholesky(K).T
+        
+        # get breeding value matrix (n,t)
+        bv = bvmat.descale() if self.descale else bvmat.mat
+
+        # the number of parents is the number of decision variables
+        ndecn = self.nparent
+
+        # the decision space is determined by the number of taxa
+        decn_space = numpy.arange(bvmat.ntaxa)
+
+        # if encode_trans is None, provide a default
+        if self.encode_trans is None:
+            encode_trans = trans_identity_unconstrained
+            encode_trans_kwargs = {}
+            # set objectives to minimize for inbreeding, maximize for breeding values
+            nobj = 1 + bvmat.ntrait
+            obj_wt = numpy.array([-1.0] + bvmat.ntrait * [1.0], dtype = float)
+            # no inequality constraints
+            nineqcv = 0
+            ineqcv_wt = numpy.array([], dtype = float)
+            # no equality constraints
+            neqcv = 0
+            eqcv_wt = numpy.array([], dtype = float)
+        else:
+            encode_trans = self.encode_trans
+            encode_trans_kwargs = self.encode_trans_kwargs
+            nobj = self.nobj
+            obj_wt = self.obj_wt
+            nineqcv = self.nineqcv
+            ineqcv_wt = self.ineqcv_wt
+            neqcv = self.neqcv
+            eqcv_wt = self.eqcv_wt
+            
+        # construct problem
+        prob = BinaryOptimalContributionSelectionProblem(
+            bv = bv,
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            encode_trans = encode_trans,
+            encode_trans_kwargs = encode_trans_kwargs,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
+        """
+        Calculate a Pareto frontier for objectives.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
+        """
+        # create optimization problem
+        prob = self.problem(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max
+        )
+
+        # miscellaneous output
+        misc = {}
+
+        # use multi-objective optimization to approximate Pareto front.
+        soln = self.moalgo.optimize(prop = prob, miscout = misc)
+
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
+
+        return soln.soln_obj, soln.soln_decn
+
+    ################# Selection Functions ##################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
@@ -508,8 +666,8 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
 
         # Solve problem using a single objective method
         if self.method == "single":
-            # get vectorized objective function
-            objfn = self.objfn(
+            # create optimization problem
+            prob = self.problem(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -519,21 +677,22 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
                 t_max = t_max
             )
 
-            # optimize using single objective algorithm
-            sel_score, sel, misc = self.soalgo.optimize(
-                objfn,                              # objective function
-                k = self.nparent,                   # number of parents to select
-                sspace = numpy.arange(pgmat.ntaxa), # parental indices
-                objfn_wt = self.objfn_wt,           # maximizing function
-                **kwargs
-            )
+            # miscellaneous output
+            misc = {}
+
+            # use single-objective optimization to get a solution.
+            soln = self.soalgo.optimize(prop = prob, miscout = misc)
+
+            # get first and only solution
+            obj = soln.soln_obj[0]
+            sel = soln.soln_decn[0]
 
             # shuffle selection to ensure random mating
             numpy.random.shuffle(sel)
 
             # add optimization details to miscellaneous output
             if miscout is not None:
-                miscout["sel_score"] = sel_score
+                miscout["obj"] = obj
                 miscout["sel"] = sel
                 miscout.update(misc) # add dict to dict
 
@@ -567,200 +726,3 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-    def objfn(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Real, 
-            t_max: Real, 
-            **kwargs: dict
-        ) -> Callable:
-        """
-        Return an objective function for the provided datasets.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Not used by this function; Input phased genotype matrix containing genomes.
-        gmat : GenotypeMatrix
-            Input genotype matrix from which to calculate genomic relationship.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Input breeding value matrix from which to pull breeding values.
-        gpmod : LinearGenomicModel
-            Linear genomic prediction model.
-
-        Returns
-        -------
-        outfn : function
-            A selection objective function for the specified problem.
-        """
-        # check inputs
-        check_is_GenotypeMatrix(gmat, "gmat")
-        check_is_BreedingValueMatrix(bvmat, "bvmat")
-        check_is_Real(t_cur, "t_cur")
-        check_is_Real(t_max, "t_max")
-
-        # get default parameters
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
-
-        G = self.cmatfcty.from_gmat(gmat)   # get genomic relationship matrix: (n,n)
-
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
-
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
-        bv = bvmat.mat                      # get breeding value matrix (n,t)
-
-        # calculate inbreeding constraint
-        inbmax = self._calc_inbmax(K, t_cur, t_max)
-
-        # add inbreeding constraint to trans_kwargs
-        trans_kwargs["inbmax"] = inbmax
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_static.__code__,     # byte code pointer
-            self.objfn_static.__globals__,  # global variables
-            None,                           # new name for the function
-            (bv, C, trans, trans_kwargs),   # default values for last 3 arguments
-            self.objfn_static.__closure__   # closure byte code pointer
-        )
-
-        return outfn
-
-    def objfn_vec(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            **kwargs: dict
-        ) -> Callable:
-        """
-        Return a vectorized objective function.
-        """
-        # check inputs
-        check_is_GenotypeMatrix(gmat, "gmat")
-        check_is_BreedingValueMatrix(bvmat, "bvmat")
-        check_is_Real(t_cur, "t_cur")
-        check_is_Real(t_max, "t_max")
-
-        # get default parameters
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
-
-        G = self.cmatfcty.from_gmat(gmat)   # get genomic relationship matrix: (n,n)
-
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
-
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
-        bv = bvmat.mat                      # get breeding value matrix (n,t)
-
-        # calculate inbreeding constraint
-        inbmax = self._calc_inbmax(K, t_cur, t_max)
-
-        # add inbreeding constraint to trans_kwargs
-        trans_kwargs["inbmax"] = inbmax
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,     # byte code pointer
-            self.objfn_vec_static.__globals__,  # global variables
-            None,                               # new name for the function
-            (bv, C, trans, trans_kwargs),       # default values for last 3 arguments
-            self.objfn_vec_static.__closure__   # closure byte code pointer
-        )
-
-        return outfn
-
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
-        """
-        # create objective function
-        objfn = self.objfn(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max
-        )
-
-        # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,                      # objective function
-            k = self.nparent,                   # vector length to optimize (sspace^k)
-            sspace = numpy.arange(gmat.ntaxa),  # search space options
-            objfn_wt = self.objfn_wt,           # weights to apply to each objective
-            **kwargs
-        )
-
-        # handle miscellaneous output
-        if miscout is not None:     # if miscout is provided
-            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
-
-        return frontier, sel_config
