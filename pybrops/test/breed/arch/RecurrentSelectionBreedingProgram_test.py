@@ -1,13 +1,13 @@
 import pytest
 
-from pybrops.test import generic_test_abstract_methods
+from pybrops.test import assert_abstract_methods
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
@@ -61,13 +61,13 @@ def arch(initop, pselop, mateop, evalop, sselop, t_max):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(RecurrentSelectionBreedingProgram)
+    assert_docstring(RecurrentSelectionBreedingProgram)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(RecurrentSelectionBreedingProgram, "__init__")
+    assert_concrete_method(RecurrentSelectionBreedingProgram, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -83,10 +83,10 @@ def test_init_is_concrete():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_RecurrentSelectionBreedingProgram_is_concrete():
-    generic_assert_concrete_function(is_RecurrentSelectionBreedingProgram)
+    assert_concrete_function(is_RecurrentSelectionBreedingProgram)
 
 def test_check_is_RecurrentSelectionBreedingProgram_is_concrete():
-    generic_assert_concrete_function(check_is_RecurrentSelectionBreedingProgram)
+    assert_concrete_function(check_is_RecurrentSelectionBreedingProgram)
 
 ################################################################################
 ######################### Test class utility functions #########################

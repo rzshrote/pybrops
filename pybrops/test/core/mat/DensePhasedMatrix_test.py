@@ -2,12 +2,12 @@ import pytest
 import numpy
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
 from pybrops.core.mat.DensePhasedMatrix import is_DensePhasedMatrix
@@ -29,37 +29,37 @@ def mat(mat_float64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DensePhasedMatrix)
+    assert_docstring(DensePhasedMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "__init__")
+    assert_concrete_method(DensePhasedMatrix, "__init__")
 
 def test_adjoin_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "adjoin_phase")
+    assert_concrete_method(DensePhasedMatrix, "adjoin_phase")
 
 def test_delete_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "delete_phase")
+    assert_concrete_method(DensePhasedMatrix, "delete_phase")
 
 def test_insert_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "insert_phase")
+    assert_concrete_method(DensePhasedMatrix, "insert_phase")
 
 def test_select_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "select_phase")
+    assert_concrete_method(DensePhasedMatrix, "select_phase")
 
 def test_concat_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "concat_phase")
+    assert_concrete_method(DensePhasedMatrix, "concat_phase")
 
 def test_append_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "append_phase")
+    assert_concrete_method(DensePhasedMatrix, "append_phase")
 
 def test_remove_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "remove_phase")
+    assert_concrete_method(DensePhasedMatrix, "remove_phase")
 
 def test_incorp_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedMatrix, "incorp_phase")
+    assert_concrete_method(DensePhasedMatrix, "incorp_phase")
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -179,13 +179,13 @@ def test_phase_axis_fdel(mat):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_DensePhasedMatrix_is_concrete():
-    generic_assert_concrete_function(is_DensePhasedMatrix)
+    assert_concrete_function(is_DensePhasedMatrix)
 
 def test_is_DensePhasedMatrix(mat):
     assert is_DensePhasedMatrix(mat)
 
 def test_check_is_DensePhasedMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DensePhasedMatrix)
+    assert_concrete_function(check_is_DensePhasedMatrix)
 
 def test_check_is_DensePhasedMatrix(mat):
     with not_raises(TypeError):

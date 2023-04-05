@@ -6,12 +6,12 @@ from numpy.random import PCG64
 from matplotlib import pyplot
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.sel.OptimalHaploidValueSelection import OptimalHaploidValueSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
@@ -231,31 +231,31 @@ def rng():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(OptimalHaploidValueSelection)
+    assert_docstring(OptimalHaploidValueSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "__init__")
+    assert_concrete_method(OptimalHaploidValueSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "select")
+    assert_concrete_method(OptimalHaploidValueSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "objfn")
+    assert_concrete_method(OptimalHaploidValueSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "objfn_vec")
+    assert_concrete_method(OptimalHaploidValueSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "pareto")
+    assert_concrete_method(OptimalHaploidValueSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "objfn_static")
+    assert_concrete_method(OptimalHaploidValueSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(OptimalHaploidValueSelection, "objfn_vec_static")
+    assert_concrete_method(OptimalHaploidValueSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

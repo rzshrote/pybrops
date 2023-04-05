@@ -2,12 +2,12 @@ import pytest
 import numpy
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import is_DensePhasedTaxaVariantMatrix
@@ -154,37 +154,37 @@ def mat(mat_int8, taxa_object, taxa_grp_int64, vrnt_chrgrp_int64, vrnt_phypos_in
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DensePhasedTaxaVariantMatrix)
+    assert_docstring(DensePhasedTaxaVariantMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "__init__")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "__init__")
 
 def test_adjoin_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "adjoin_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "adjoin_phase")
 
 def test_delete_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "delete_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "delete_phase")
 
 def test_insert_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "insert_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "insert_phase")
 
 def test_select_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "select_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "select_phase")
 
 def test_concat_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "concat_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "concat_phase")
 
 def test_append_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "append_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "append_phase")
 
 def test_remove_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "remove_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "remove_phase")
 
 def test_incorp_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "incorp_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "incorp_phase")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -365,13 +365,13 @@ def test_concat_phase_cls(mat, mat_int8):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(is_DensePhasedTaxaVariantMatrix)
+    assert_concrete_function(is_DensePhasedTaxaVariantMatrix)
 
 def test_is_DensePhasedTaxaVariantMatrix(mat):
     assert is_DensePhasedTaxaVariantMatrix(mat)
 
 def test_check_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DensePhasedTaxaVariantMatrix)
+    assert_concrete_function(check_is_DensePhasedTaxaVariantMatrix)
 
 def test_check_is_DensePhasedTaxaVariantMatrix(mat):
     with not_raises(TypeError):

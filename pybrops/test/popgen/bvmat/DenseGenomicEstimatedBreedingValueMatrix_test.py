@@ -3,12 +3,12 @@ import numpy
 import copy
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import is_DenseGenomicEstimatedBreedingValueMatrix
@@ -102,13 +102,13 @@ def mat(mat_float64, location_float64, scale_float64, taxa_object, taxa_grp_int6
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseGenomicEstimatedBreedingValueMatrix)
+    assert_docstring(DenseGenomicEstimatedBreedingValueMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseGenomicEstimatedBreedingValueMatrix, "__init__")
+    assert_concrete_method(DenseGenomicEstimatedBreedingValueMatrix, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -128,13 +128,13 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_DenseGenomicEstimatedBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseGenomicEstimatedBreedingValueMatrix)
+    assert_concrete_function(is_DenseGenomicEstimatedBreedingValueMatrix)
 
 def test_is_DenseGenomicEstimatedBreedingValueMatrix(mat):
     assert is_DenseGenomicEstimatedBreedingValueMatrix(mat)
 
 def test_check_is_DenseGenomicEstimatedBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseGenomicEstimatedBreedingValueMatrix)
+    assert_concrete_function(check_is_DenseGenomicEstimatedBreedingValueMatrix)
 
 def test_check_is_DenseGenomicEstimatedBreedingValueMatrix(mat):
     with not_raises(TypeError):

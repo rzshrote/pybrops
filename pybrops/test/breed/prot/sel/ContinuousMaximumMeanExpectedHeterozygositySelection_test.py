@@ -4,12 +4,12 @@ from numpy.random import Generator
 from numpy.random import PCG64
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_sum
@@ -173,31 +173,31 @@ def mmehs(nparent, ncross, nprogeny, ktype, method, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(ContinuousMaximumMeanExpectedHeterozygositySelection)
+    assert_docstring(ContinuousMaximumMeanExpectedHeterozygositySelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "__init__")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "select")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_vec")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "pareto")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_static")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_vec_static")
+    assert_concrete_method(ContinuousMaximumMeanExpectedHeterozygositySelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

@@ -1,14 +1,14 @@
 import inspect
 import pytest
 
-from pybrops.test import generic_test_abstract_methods
+from pybrops.test import assert_abstract_methods
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.df.DataFrame import DataFrame
 from pybrops.core.df.DataFrame import is_DataFrame
@@ -26,64 +26,64 @@ def df():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DataFrame)
+    assert_docstring(DataFrame)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DataFrame, "__init__")
+    assert_concrete_method(DataFrame, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_df_is_abstract():
-    generic_assert_abstract_property(DataFrame, "data")
+    assert_abstract_property(DataFrame, "data")
 
 def test_ncol_is_abstract():
-    generic_assert_abstract_property(DataFrame, "ncol")
+    assert_abstract_property(DataFrame, "ncol")
 
 def test_col_axis_is_abstract():
-    generic_assert_abstract_property(DataFrame, "col_axis")
+    assert_abstract_property(DataFrame, "col_axis")
 
 def test_col_dtype_is_abstract():
-    generic_assert_abstract_property(DataFrame, "col_dtype")
+    assert_abstract_property(DataFrame, "col_dtype")
 
 def test_col_name_is_abstract():
-    generic_assert_abstract_property(DataFrame, "col_name")
+    assert_abstract_property(DataFrame, "col_name")
 
 def test_col_ctype_is_abstract():
-    generic_assert_abstract_property(DataFrame, "col_grp")
+    assert_abstract_property(DataFrame, "col_grp")
 
 def test_nrow_is_abstract():
-    generic_assert_abstract_property(DataFrame, "nrow")
+    assert_abstract_property(DataFrame, "nrow")
 
 def test_row_axis_is_abstract():
-    generic_assert_abstract_property(DataFrame, "row_axis")
+    assert_abstract_property(DataFrame, "row_axis")
 
 def test_row_name_is_abstract():
-    generic_assert_abstract_property(DataFrame, "row_name")
+    assert_abstract_property(DataFrame, "row_name")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_col_data_is_abstract():
-    generic_assert_abstract_method(DataFrame, "col_data")
+    assert_abstract_method(DataFrame, "col_data")
 
 def test_to_pandas_df_is_abstract():
-    generic_assert_abstract_method(DataFrame, "to_pandas_df")
+    assert_abstract_method(DataFrame, "to_pandas_df")
 
 def test_to_dict_is_abstract():
-    generic_assert_abstract_method(DataFrame, "to_dict")
+    assert_abstract_method(DataFrame, "to_dict")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_DataFrame_is_concrete():
-    generic_assert_concrete_function(is_DataFrame)
+    assert_concrete_function(is_DataFrame)
 
 def test_check_is_DataFrame_is_concrete():
-    generic_assert_concrete_function(check_is_DataFrame)
+    assert_concrete_function(check_is_DataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

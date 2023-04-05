@@ -19,7 +19,19 @@ def not_raises(ForbiddenException):
     except Exception:
         pass
 
-def generic_test_operator(op, v, w):
+# TODO: generalize this to multiple exception types
+@contextmanager
+def not_raises2(ForbiddenException1, ForbiddenException2):
+    try:
+        yield
+    except ForbiddenException1:
+        raise AssertionError("{0} raised".format(ForbiddenException1.__name__))
+    except ForbiddenException2:
+        raise AssertionError("{0} raised".format(ForbiddenException2.__name__))
+    except Exception:
+        pass
+
+def assert_operator(op, v, w):
     """
     Generic test an operator.
 
@@ -34,7 +46,7 @@ def generic_test_operator(op, v, w):
     """
     assert op(*v) == op(*w)
 
-def generic_assert_docstring(obj):
+def assert_docstring(obj):
     """
     Test for the presence of a docstring in an object.
 
@@ -48,7 +60,7 @@ def generic_assert_docstring(obj):
     assert isinstance(obj.__doc__, str) # make sure attribute is a string
     assert len(obj.__doc__) > 0         # make sure docstring is not empty
 
-def generic_assert_raise_NotImplementedError(fn):
+def assert_raise_NotImplementedError(fn):
     """
     Test that a function raises NotImplementedError.
 
@@ -68,7 +80,7 @@ def generic_assert_raise_NotImplementedError(fn):
         # test for raises NotImplementedError
         fn(**kwargs)
 
-def generic_assert_not_raise_NotImplementedError(fn):
+def assert_not_raise_NotImplementedError(fn):
     """
     Test that a function does not raise NotImplementedError.
 
@@ -88,7 +100,7 @@ def generic_assert_not_raise_NotImplementedError(fn):
         # test for not raise NotImplementedError
         fn(**kwargs)
 
-def generic_assert_abstract_function(fn):
+def assert_abstract_function(fn):
     """
     Assert an abstract function for several attributes:
 
@@ -100,10 +112,10 @@ def generic_assert_abstract_function(fn):
     fn : function
         An abstract method.
     """
-    generic_assert_docstring(fn)                    # assert for having a docstring
-    generic_assert_raise_NotImplementedError(fn)    # assert that function is abstract
+    assert_docstring(fn)                    # assert for having a docstring
+    assert_raise_NotImplementedError(fn)    # assert that function is abstract
 
-def generic_assert_concrete_function(fn):
+def assert_concrete_function(fn):
     """
     Assert a concrete function for several attributes:
 
@@ -115,10 +127,10 @@ def generic_assert_concrete_function(fn):
     fn : function
         An abstract method.
     """
-    generic_assert_docstring(fn)                        # assert for having a docstring
-    generic_assert_not_raise_NotImplementedError(fn)    # assert that function is abstract
+    assert_docstring(fn)                        # assert for having a docstring
+    assert_not_raise_NotImplementedError(fn)    # assert that function is abstract
 
-def generic_assert_hasattr(obj, a):
+def assert_hasattr(obj, a):
     """
     Assert an object has an attribute.
 
@@ -131,7 +143,7 @@ def generic_assert_hasattr(obj, a):
     """
     assert hasattr(obj, a)  # assert the object has the attribute
 
-def generic_assert_abstract_method(obj, met):
+def assert_abstract_method(obj, met):
     """
     Assert an object has an abstract method. Must have several attributes:
 
@@ -146,11 +158,11 @@ def generic_assert_abstract_method(obj, met):
     met : str
         Name of the method to test
     """
-    generic_assert_hasattr(obj, met)        # assert the method exists
+    assert_hasattr(obj, met)        # assert the method exists
     fn = getattr(obj, met)                  # get the method
-    generic_assert_abstract_function(fn)    # assert the method is abstract
+    assert_abstract_function(fn)    # assert the method is abstract
 
-def generic_assert_concrete_method(obj, met):
+def assert_concrete_method(obj, met):
     """
     Assert an object has a concrete method. Must have several attributes:
 
@@ -165,11 +177,11 @@ def generic_assert_concrete_method(obj, met):
     met : str
         Name of the method to test
     """
-    generic_assert_hasattr(obj, met)        # assert the method exists
+    assert_hasattr(obj, met)        # assert the method exists
     fn = getattr(obj, met)                  # get the method
-    generic_assert_concrete_function(fn)    # assert the method is abstract
+    assert_concrete_function(fn)    # assert the method is abstract
 
-def generic_assert_abstract_property(obj, prop):
+def assert_abstract_property(obj, prop):
     """
     Assert an object has an abstract property. Must have several attributes:
 
@@ -184,14 +196,36 @@ def generic_assert_abstract_property(obj, prop):
     met : str
         Name of the method to test
     """
-    generic_assert_hasattr(obj, prop)           # assert the property exists
+    assert_hasattr(obj, prop)           # assert the property exists
     p = getattr(obj, prop)                      # get the property
-    generic_assert_docstring(p)                 # assert the property has a docstring
-    generic_assert_abstract_method(p, "fget")   # assert fget is abstract
-    generic_assert_abstract_method(p, "fset")   # assert fset is abstract
-    generic_assert_abstract_method(p, "fdel")   # assert fdel is abstract
+    assert_docstring(p)                 # assert the property has a docstring
+    assert_abstract_method(p, "fget")   # assert fget is abstract
+    assert_abstract_method(p, "fset")   # assert fset is abstract
+    assert_abstract_method(p, "fdel")   # assert fdel is abstract
 
-def generic_test_abstract_methods(obj, mets):
+def assert_concrete_property(obj, prop):
+    """
+    Assert an object has an concrete property. Must have several attributes:
+
+    1) have the property
+    2) have a docstring for the property
+    3) fget, fset, fdel methods must be concrete
+
+    Parameters
+    ----------
+    obj : object
+        Any Python object.
+    met : str
+        Name of the method to test
+    """
+    assert_hasattr(obj, prop)           # assert the property exists
+    p = getattr(obj, prop)                      # get the property
+    assert_docstring(p)                 # assert the property has a docstring
+    assert_concrete_method(p, "fget")   # assert fget is concrete
+    assert_concrete_method(p, "fset")   # assert fset is concrete
+    assert_concrete_method(p, "fdel")   # assert fdel is concrete
+
+def assert_abstract_methods(obj, mets):
     """
     Note: this is depricated.
     Test all methods for raise NotImplementedError in an object.
@@ -217,7 +251,7 @@ def generic_test_abstract_methods(obj, mets):
             # test for raises NotImplementedError
             fn(**kwargs)
 
-def generic_test_concrete_methods(obj, met):
+def assert_concrete_methods(obj, met):
     """
     Test all methods for not raising NotImplementedError in an object.
 

@@ -2,12 +2,12 @@ import inspect
 import pytest
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TaxaMatrix import is_TaxaMatrix
@@ -24,94 +24,94 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(TaxaMatrix)
+    assert_docstring(TaxaMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(TaxaMatrix, "__init__")
+    assert_concrete_method(TaxaMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_taxa_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa")
+    assert_abstract_property(TaxaMatrix, "taxa")
 
 def test_ntaxa_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "ntaxa")
+    assert_abstract_property(TaxaMatrix, "ntaxa")
 
 def test_taxa_grp_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa_grp")
+    assert_abstract_property(TaxaMatrix, "taxa_grp")
 
 def test_taxa_grp_name_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa_grp_name")
+    assert_abstract_property(TaxaMatrix, "taxa_grp_name")
 
 def test_taxa_grp_stix_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa_grp_stix")
+    assert_abstract_property(TaxaMatrix, "taxa_grp_stix")
 
 def test_taxa_grp_spix_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa_grp_spix")
+    assert_abstract_property(TaxaMatrix, "taxa_grp_spix")
 
 def test_taxa_grp_len_is_abstract():
-    generic_assert_abstract_property(TaxaMatrix, "taxa_grp_len")
+    assert_abstract_property(TaxaMatrix, "taxa_grp_len")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_lexsort_is_abstract(mat):
-    generic_assert_abstract_method(mat, "lexsort")
+    assert_abstract_method(mat, "lexsort")
 
 def test_adjoin_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "adjoin_taxa")
+    assert_abstract_method(mat, "adjoin_taxa")
 
 def test_delete_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "delete_taxa")
+    assert_abstract_method(mat, "delete_taxa")
 
 def test_insert_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "insert_taxa")
+    assert_abstract_method(mat, "insert_taxa")
 
 def test_select_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "select_taxa")
+    assert_abstract_method(mat, "select_taxa")
 
 def test_concat_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "concat_taxa")
+    assert_abstract_method(mat, "concat_taxa")
 
 def test_append_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "append_taxa")
+    assert_abstract_method(mat, "append_taxa")
 
 def test_remove_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "remove_taxa")
+    assert_abstract_method(mat, "remove_taxa")
 
 def test_incorp_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "incorp_taxa")
+    assert_abstract_method(mat, "incorp_taxa")
 
 def test_lexsort_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "lexsort_taxa")
+    assert_abstract_method(mat, "lexsort_taxa")
 
 def test_reorder_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "reorder_taxa")
+    assert_abstract_method(mat, "reorder_taxa")
 
 def test_sort_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "sort_taxa")
+    assert_abstract_method(mat, "sort_taxa")
 
 def test_group_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "group_taxa")
+    assert_abstract_method(mat, "group_taxa")
 
 def test_is_grouped_taxa_is_abstract(mat):
-    generic_assert_abstract_method(mat, "is_grouped_taxa")
+    assert_abstract_method(mat, "is_grouped_taxa")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_TaxaMatrix_is_concrete():
-    generic_assert_concrete_function(is_TaxaMatrix)
+    assert_concrete_function(is_TaxaMatrix)
 
 def test_is_TaxaMatrix(mat):
     assert is_TaxaMatrix(mat)
 
 def test_check_is_TaxaMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_TaxaMatrix)
+    assert_concrete_function(check_is_TaxaMatrix)
 
 def test_check_is_TaxaMatrix(mat):
     with not_raises(TypeError):

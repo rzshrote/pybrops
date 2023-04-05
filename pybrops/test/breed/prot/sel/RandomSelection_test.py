@@ -4,12 +4,12 @@ from numpy.random import Generator
 from numpy.random import PCG64
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.sel.RandomSelection import RandomSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
@@ -217,32 +217,32 @@ def rps(nparent, ncross, nprogeny, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(RandomSelection)
+    assert_docstring(RandomSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "__init__")
+    assert_concrete_method(RandomSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "select")
+    assert_concrete_method(RandomSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "objfn")
+    assert_concrete_method(RandomSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "objfn_vec")
+    assert_concrete_method(RandomSelection, "objfn_vec")
 
 # TODO:
 # def test_pareto_is_concrete():
 #     generic_assert_concrete_method(RandomSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "objfn_static")
+    assert_concrete_method(RandomSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(RandomSelection, "objfn_vec_static")
+    assert_concrete_method(RandomSelection, "objfn_vec_static")
 
 
 ################################################################################

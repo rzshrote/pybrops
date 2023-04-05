@@ -4,12 +4,12 @@ import copy
 import pandas
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.df.DictDataFrame import DictDataFrame
 from pybrops.core.df.DictDataFrame import is_DictDataFrame
@@ -94,19 +94,19 @@ def df(data, col_grp, row_name):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DictDataFrame)
+    assert_docstring(DictDataFrame)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DictDataFrame, "__init__")
+    assert_concrete_method(DictDataFrame, "__init__")
 
 def test_copy_is_concrete():
-    generic_assert_concrete_method(DictDataFrame, "__copy__")
+    assert_concrete_method(DictDataFrame, "__copy__")
 
 def test_deepcopy_is_concrete():
-    generic_assert_concrete_method(DictDataFrame, "__deepcopy__")
+    assert_concrete_method(DictDataFrame, "__deepcopy__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -282,10 +282,10 @@ def test_to_dict(df):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_DictDataFrame_is_concrete():
-    generic_assert_concrete_function(is_DictDataFrame)
+    assert_concrete_function(is_DictDataFrame)
 
 def test_check_is_DictDataFrame_is_concrete():
-    generic_assert_concrete_function(check_is_DictDataFrame)
+    assert_concrete_function(check_is_DictDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

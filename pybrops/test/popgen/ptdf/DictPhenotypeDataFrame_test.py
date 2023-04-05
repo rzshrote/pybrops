@@ -4,12 +4,12 @@ import copy
 import pandas
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import is_DictPhenotypeDataFrame
@@ -148,19 +148,19 @@ def df(data, col_grp, row_name, col_analysis_type, col_analysis_effect):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DictPhenotypeDataFrame)
+    assert_docstring(DictPhenotypeDataFrame)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DictPhenotypeDataFrame, "__init__")
+    assert_concrete_method(DictPhenotypeDataFrame, "__init__")
 
 def test_copy_is_concrete():
-    generic_assert_concrete_method(DictPhenotypeDataFrame, "__copy__")
+    assert_concrete_method(DictPhenotypeDataFrame, "__copy__")
 
 def test_deepcopy_is_concrete():
-    generic_assert_concrete_method(DictPhenotypeDataFrame, "__deepcopy__")
+    assert_concrete_method(DictPhenotypeDataFrame, "__deepcopy__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -266,10 +266,10 @@ def test_col_data(df, data_oil, data_taxa):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_DictPhenotypeDataFrame_is_concrete():
-    generic_assert_concrete_function(is_DictPhenotypeDataFrame)
+    assert_concrete_function(is_DictPhenotypeDataFrame)
 
 def test_check_is_DictPhenotypeDataFrame_is_concrete():
-    generic_assert_concrete_function(check_is_DictPhenotypeDataFrame)
+    assert_concrete_function(check_is_DictPhenotypeDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################

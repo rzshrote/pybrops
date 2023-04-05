@@ -3,12 +3,12 @@ import numpy
 import copy
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.DenseVariantMatrix import is_DenseVariantMatrix
@@ -113,46 +113,46 @@ def mat(mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_g
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseVariantMatrix)
+    assert_docstring(DenseVariantMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "__init__")
+    assert_concrete_method(DenseVariantMatrix, "__init__")
 
 def test_copy_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "__copy__")
+    assert_concrete_method(DenseVariantMatrix, "__copy__")
 
 def test_deepcopy_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "__deepcopy__")
+    assert_concrete_method(DenseVariantMatrix, "__deepcopy__")
 
 def test_adjoin_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "adjoin_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "adjoin_vrnt")
 
 def test_delete_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "delete_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "delete_vrnt")
 
 def test_insert_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "insert_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "insert_vrnt")
 
 def test_select_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "select_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "select_vrnt")
 
 def test_concat_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "concat_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "concat_vrnt")
 
 def test_append_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "append_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "append_vrnt")
 
 def test_remove_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "remove_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "remove_vrnt")
 
 def test_incorp_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "incorp_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "incorp_vrnt")
 
 def test_lexsort_vrnt_is_concrete():
-    generic_assert_concrete_method(DenseVariantMatrix, "lexsort_vrnt")
+    assert_concrete_method(DenseVariantMatrix, "lexsort_vrnt")
 
 # TODO: # FIXME: not_raises fails for an edge case
 # def test_sort_vrnt_is_concrete():
@@ -746,13 +746,13 @@ def test_is_grouped_vrnt(mat):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_DenseVariantMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseVariantMatrix)
+    assert_concrete_function(is_DenseVariantMatrix)
 
 def test_is_DenseVariantMatrix(mat):
     assert is_DenseVariantMatrix(mat)
 
 def test_check_is_DenseVariantMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseVariantMatrix)
+    assert_concrete_function(check_is_DenseVariantMatrix)
 
 def test_check_is_DenseVariantMatrix(mat):
     with not_raises(TypeError):

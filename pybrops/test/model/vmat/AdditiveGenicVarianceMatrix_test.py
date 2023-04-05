@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import is_AdditiveGenicVarianceMatrix
@@ -21,13 +21,13 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(AdditiveGenicVarianceMatrix)
+    assert_docstring(AdditiveGenicVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(AdditiveGenicVarianceMatrix, "__init__")
+    assert_concrete_method(AdditiveGenicVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,19 +37,19 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_algmod_is_abstract(mat):
-    generic_assert_abstract_method(mat, "from_algmod")
+    assert_abstract_method(mat, "from_algmod")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_AdditiveGenicVarianceMatrix_is_concrete():
-    generic_assert_concrete_function(is_AdditiveGenicVarianceMatrix)
+    assert_concrete_function(is_AdditiveGenicVarianceMatrix)
 
 def test_is_AdditiveGenicVarianceMatrix(mat):
     assert is_AdditiveGenicVarianceMatrix(mat)
 
 def test_check_is_AdditiveGenicVarianceMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_AdditiveGenicVarianceMatrix)
+    assert_concrete_function(check_is_AdditiveGenicVarianceMatrix)
 
 def test_check_is_AdditiveGenicVarianceMatrix(mat):
     with not_raises(TypeError):

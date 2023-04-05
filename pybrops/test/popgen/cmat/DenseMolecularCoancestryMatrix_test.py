@@ -1,14 +1,14 @@
 import pytest
 import numpy
 
-from pybrops.test import generic_test_abstract_methods
+from pybrops.test import assert_abstract_methods
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import is_DenseMolecularCoancestryMatrix
@@ -84,13 +84,13 @@ def gmat_numpy(X_mat_int8):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseMolecularCoancestryMatrix)
+    assert_docstring(DenseMolecularCoancestryMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseMolecularCoancestryMatrix, "__init__")
+    assert_concrete_method(DenseMolecularCoancestryMatrix, "__init__")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -121,10 +121,10 @@ def test_from_gmat_pgmat_vs_gmat(cmat_pgmat_sample, cmat_gmat_sample):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_DenseMolecularCoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseMolecularCoancestryMatrix)
+    assert_concrete_function(is_DenseMolecularCoancestryMatrix)
 
 def test_check_is_DenseMolecularCoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseMolecularCoancestryMatrix)
+    assert_concrete_function(check_is_DenseMolecularCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

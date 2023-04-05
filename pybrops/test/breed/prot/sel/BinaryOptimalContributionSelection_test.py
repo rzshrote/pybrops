@@ -10,15 +10,15 @@ from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import Dense
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
-from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist, trans_sum, trans_sum_inbmax_penalty
+from pybrops.breed.prot.sel.transfn import trans_max_inbreeding_constraint, trans_ndpt_to_vec_dist, trans_sum_inbmax_penalty
 from pybrops.breed.prot.sel.BinaryOptimalContributionSelection import BinaryOptimalContributionSelection
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
@@ -168,7 +168,7 @@ def cmatfcty():
     yield DenseMolecularCoancestryMatrixFactory()
 
 @pytest.fixture
-def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, rng):
+def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, mat_ntrait, rng):
     yield BinaryOptimalContributionSelection(
         nparent = nparent, 
         ncross = ncross, 
@@ -176,13 +176,19 @@ def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, rng):
         inbfn = inbfn,
         cmatfcty = cmatfcty,
         method = method,
-        objfn_trans = trans_sum_inbmax_penalty, 
-        objfn_trans_kwargs = {"penalty_wt": -10}, 
-        objfn_wt = 1.0,
+        descale = True,
+        encode_trans = trans_max_inbreeding_constraint,
+        encode_trans_kwargs = {"maxinb": 0.5},
+        nobj = mat_ntrait,
+        obj_wt = numpy.repeat(1.0, mat_ntrait),
+        nineqcv = 1,
+        ineqcv_wt = numpy.repeat(1.0, 1),
+        neqcv = 0,
+        eqcv_wt = numpy.array([], dtype=float),
         ndset_trans = None, 
         ndset_trans_kwargs = None, 
-        ndset_wt = -1.0,
-        rng = rng, 
+        ndset_wt = None,
+        rng = rng,
         soalgo = None,
         moalgo = None
     )
@@ -191,31 +197,31 @@ def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(BinaryOptimalContributionSelection)
+    assert_docstring(BinaryOptimalContributionSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "__init__")
+    assert_concrete_method(BinaryOptimalContributionSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "select")
+    assert_concrete_method(BinaryOptimalContributionSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "objfn")
+    assert_concrete_method(BinaryOptimalContributionSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec")
+    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "pareto")
+    assert_concrete_method(BinaryOptimalContributionSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "objfn_static")
+    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec_static")
+    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -391,68 +397,3 @@ def test_pareto(nconfig, nparent, ncross, nprogeny, rng, dpgmat, dgmat, bvmat, i
         animate(i)
         s = outdir + "/" + "BOCS_3d_frontier_" + str(i).zfill(3) + ".png"
         pyplot.savefig(s, dpi = 250)
-
-def test_objfn_is_function(bocs, dpgmat, dgmat, bvmat):
-    # make objective function
-    objfn = bocs.objfn(
-        pgmat = dpgmat,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = None,
-        t_cur = 0,
-        t_max = 20
-    )
-    assert callable(objfn)
-
-def test_objfn_is_function(bocs, dpgmat, dgmat, bvmat):
-    # make objective function
-    objfn = bocs.objfn_vec(
-        pgmat = dpgmat,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = None,
-        t_cur = 0,
-        t_max = 20
-    )
-    assert callable(objfn)
-
-def test_objfn_is_multiobjective(bocs, dpgmat, dgmat, bvmat, mat_ntaxa, mat_ntrait):
-    # set transformation function to None
-    bocs.objfn_trans = None
-    # make objective function
-    objfn = bocs.objfn(
-        pgmat = dpgmat,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = None,
-        t_cur = 0,
-        t_max = 20
-    )
-    # make random selection
-    x = numpy.random.choice(mat_ntaxa, 5)
-    out = objfn(x)
-    assert out.ndim == 1
-    assert out.shape[0] == (1 + mat_ntrait)
-
-def test_objfn_vec_is_multiobjective(bocs, dpgmat, dgmat, bvmat, mat_ntaxa, mat_ntrait):
-    # set transformation function to None
-    bocs.objfn_trans = None
-    # make objective function
-    objfn = bocs.objfn_vec(
-        pgmat = dpgmat,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = None,
-        t_cur = 0,
-        t_max = 20
-    )
-    # make random selection: 7 sets of 5 config
-    x = numpy.random.choice(mat_ntaxa, (7,5))
-    out = objfn(x)
-    assert out.ndim == 2
-    assert out.shape[0] == 7
-    assert out.shape[1] == (1 + mat_ntrait)

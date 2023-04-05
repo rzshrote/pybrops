@@ -8,12 +8,12 @@ from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory i
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist, trans_sum
@@ -173,31 +173,31 @@ def ucs(nconfig, nparent, ncross, nprogeny, method, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(UsefulnessCriterionSelection)
+    assert_docstring(UsefulnessCriterionSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "__init__")
+    assert_concrete_method(UsefulnessCriterionSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "select")
+    assert_concrete_method(UsefulnessCriterionSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "objfn")
+    assert_concrete_method(UsefulnessCriterionSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "objfn_vec")
+    assert_concrete_method(UsefulnessCriterionSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "pareto")
+    assert_concrete_method(UsefulnessCriterionSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "objfn_static")
+    assert_concrete_method(UsefulnessCriterionSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(UsefulnessCriterionSelection, "objfn_vec_static")
+    assert_concrete_method(UsefulnessCriterionSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

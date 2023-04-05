@@ -7,12 +7,12 @@ from matplotlib import pyplot
 from matplotlib import animation
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
@@ -257,31 +257,31 @@ def ocs(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(OptimalContributionSelection)
+    assert_docstring(OptimalContributionSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "__init__")
+    assert_concrete_method(OptimalContributionSelection, "__init__")
 
 def test_select_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "select")
+    assert_concrete_method(OptimalContributionSelection, "select")
 
 def test_objfn_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "objfn")
+    assert_concrete_method(OptimalContributionSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "objfn_vec")
+    assert_concrete_method(OptimalContributionSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "pareto")
+    assert_concrete_method(OptimalContributionSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "objfn_static")
+    assert_concrete_method(OptimalContributionSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    generic_assert_concrete_method(OptimalContributionSelection, "objfn_vec_static")
+    assert_concrete_method(OptimalContributionSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

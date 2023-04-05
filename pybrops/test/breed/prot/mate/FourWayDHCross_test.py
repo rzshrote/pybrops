@@ -4,12 +4,12 @@ from numpy.random import PCG64
 from numpy.random import Generator
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
@@ -59,13 +59,13 @@ def sel():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(FourWayDHCross)
+    assert_docstring(FourWayDHCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(FourWayDHCross, "__init__")
+    assert_concrete_method(FourWayDHCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -89,13 +89,13 @@ def test_mate(mprot, dpgvmat, sel, rng):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(is_FourWayDHCross)
+    assert_concrete_function(is_FourWayDHCross)
 
 def test_is_FourWayDHCross(mprot):
     assert is_FourWayDHCross(mprot)
 
 def test_check_is_FourWayDHCross_is_concrete():
-    generic_assert_concrete_function(check_is_FourWayDHCross)
+    assert_concrete_function(check_is_FourWayDHCross)
 
 def test_check_is_FourWayDHCross(mprot):
     with not_raises(TypeError):

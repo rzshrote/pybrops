@@ -1,14 +1,14 @@
 import pytest
 import numpy
 
-from pybrops.test import generic_test_abstract_methods
+from pybrops.test import assert_abstract_methods
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
@@ -30,13 +30,13 @@ def mapfn():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(HaldaneMapFunction)
+    assert_docstring(HaldaneMapFunction)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(HaldaneMapFunction, "__init__")
+    assert_concrete_method(HaldaneMapFunction, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -77,10 +77,10 @@ def test_mapfn_NaN(mapfn):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_is_HaldaneMapFunction_is_concrete():
-    generic_assert_concrete_function(is_HaldaneMapFunction)
+    assert_concrete_function(is_HaldaneMapFunction)
 
 def test_check_is_HaldaneMapFunction_is_concrete():
-    generic_assert_concrete_function(check_is_HaldaneMapFunction)
+    assert_concrete_function(check_is_HaldaneMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

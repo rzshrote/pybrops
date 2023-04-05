@@ -6,9 +6,9 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory import DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory import check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
@@ -138,19 +138,19 @@ def fcty():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
+    assert_docstring(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "__init__")
+    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "__init__")
 
 def test_from_gmod_is_concrete():
-    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_gmod")
+    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_gmod")
 
 def test_from_algmod_is_concrete():
-    generic_assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_algmod")
+    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, "from_algmod")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -189,7 +189,7 @@ def test_from_algmod(fcty, dalgmod, dpgmat, gmapfn, mat_taxa, mat_taxa_grp):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory_is_concrete():
-    generic_assert_concrete_function(check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
+    assert_concrete_function(check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory)
 
 def test_check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(fcty):
     with not_raises(TypeError):

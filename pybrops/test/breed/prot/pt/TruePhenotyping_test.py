@@ -5,12 +5,12 @@ from numpy.random import Generator
 from numpy.random import PCG64
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
@@ -204,22 +204,22 @@ def ptprot(gpmod):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(TruePhenotyping)
+    assert_docstring(TruePhenotyping)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "__init__")
+    assert_concrete_method(TruePhenotyping, "__init__")
 
 def test_phenotype_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "phenotype")
+    assert_concrete_method(TruePhenotyping, "phenotype")
 
 def test_set_h2_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "set_h2")
+    assert_concrete_method(TruePhenotyping, "set_h2")
 
 def test_set_H2_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "set_H2")
+    assert_concrete_method(TruePhenotyping, "set_H2")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

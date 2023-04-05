@@ -3,12 +3,12 @@ import numpy
 import copy
 
 from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test import assert_docstring
+from pybrops.test import assert_abstract_method
+from pybrops.test import assert_abstract_function
+from pybrops.test import assert_abstract_property
+from pybrops.test import assert_concrete_method
+from pybrops.test import assert_concrete_function
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import is_DenseBreedingValueMatrix
@@ -102,37 +102,37 @@ def bvmat(mat_float64, location_float64, scale_float64, taxa_object, taxa_grp_in
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseBreedingValueMatrix)
+    assert_docstring(DenseBreedingValueMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "__init__")
+    assert_concrete_method(DenseBreedingValueMatrix, "__init__")
 
 def test_targmax_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "targmax")
+    assert_concrete_method(DenseBreedingValueMatrix, "targmax")
 
 def test_targmin_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "targmin")
+    assert_concrete_method(DenseBreedingValueMatrix, "targmin")
 
 def test_tmax_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "tmax")
+    assert_concrete_method(DenseBreedingValueMatrix, "tmax")
 
 def test_tmean_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "tmean")
+    assert_concrete_method(DenseBreedingValueMatrix, "tmean")
 
 def test_tmin_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "tmin")
+    assert_concrete_method(DenseBreedingValueMatrix, "tmin")
 
 def test_trange_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "trange")
+    assert_concrete_method(DenseBreedingValueMatrix, "trange")
 
 def test_tstd_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "tstd")
+    assert_concrete_method(DenseBreedingValueMatrix, "tstd")
 
 def test_tvar_is_concrete():
-    generic_assert_concrete_method(DenseBreedingValueMatrix, "tvar")
+    assert_concrete_method(DenseBreedingValueMatrix, "tvar")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -263,13 +263,13 @@ def test_tvar(bvmat):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_is_DenseBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseBreedingValueMatrix)
+    assert_concrete_function(is_DenseBreedingValueMatrix)
 
 def test_is_DenseBreedingValueMatrix(bvmat):
     assert is_DenseBreedingValueMatrix(bvmat)
 
 def test_check_is_DenseBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseBreedingValueMatrix)
+    assert_concrete_function(check_is_DenseBreedingValueMatrix)
 
 def test_check_is_DenseBreedingValueMatrix(bvmat):
     with not_raises(TypeError):
