@@ -1,5 +1,13 @@
 # order dependent
 
+__all__ = [
+    "Solution",
+    "SubsetSolution",
+    "RealSolution",
+    "DenseSolution",
+    "DenseSubsetSolution"
+]
+
 # base interface
 from pybrops.opt.soln import Solution
 

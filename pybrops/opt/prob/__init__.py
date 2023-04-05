@@ -1,5 +1,17 @@
 # order dependent
 
+__all__ = [
+    "FunctionWeight",
+    "Problem",
+    "SubsetProblem",
+    "RealProblem",
+    "DenseProblem",
+    "DenseSubsetProblem"
+]
+
+# utilities
+from pybrops.opt.prob import FunctionWeight
+
 # base interface
 from pybrops.opt.prob import Problem
 

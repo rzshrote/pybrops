@@ -4,7 +4,8 @@ Implementation of the Solution interface.
 
 # list of all public objects in this module
 __all__ = [
-
+    "DenseSolution",
+    "check_is_DenseSolution"
 ]
 
 from numbers import Integral, Number

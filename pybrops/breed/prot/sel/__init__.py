@@ -4,6 +4,9 @@ Module containing selection protocols.
 
 # order dependent imports
 
+# import submodules
+from . import prob
+
 # import utilities
 from . import transfn
 from . import sampling
