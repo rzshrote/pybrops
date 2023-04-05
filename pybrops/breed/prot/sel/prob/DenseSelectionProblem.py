@@ -42,7 +42,7 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
             eqcv_wt: numpy.ndarray,
             vtype: Optional[type] = None,
             vars: Optional[Sequence] = None,
-            elementwise: bool = False,
+            elementwise: bool = True,
             elementwise_func: type = ElementwiseEvaluationFunction,
             elementwise_runner: Callable = LoopedElementwiseEvaluation(),
             replace_nan_values_by: Optional[Number] = None,
@@ -91,38 +91,133 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
     @property
     def encode_trans(self) -> Callable[[numpy.ndarray,dict],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]]:
         """Function which transforms outputs from ``encodefn`` to a tuple ``(obj,ineqcv,eqcv)``."""
-        return self._encd_trans
+        return self._encode_trans
     @encode_trans.setter
     def encode_trans(self, value: Callable[[numpy.ndarray,dict],Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]]) -> None:
         """Set ``encodefn`` output transformation function."""
-        check_is_Callable(value, "encd_trans")
+        check_is_Callable(value, "encode_trans")
         # TODO: check signature
-        self._encd_trans = value
+        self._encode_trans = value
     @encode_trans.deleter
     def encode_trans(self) -> None:
         """Delete ``encodefn`` output transformation function."""
-        del self._encd_trans
+        del self._encode_trans
     
     @property
     def encode_trans_kwargs(self) -> dict:
         """``encodefn`` output transformation function keyword arguments."""
-        return self._encd_trans_kwargs
+        return self._encode_trans_kwargs
     @encode_trans_kwargs.setter
-    def encode_trans_kwargs(self, value: dict) -> None:
+    def encode_trans_kwargs(self, value: Union[dict,None]) -> None:
         """Set ``encodefn`` output transformation function keyword arguments."""
-        check_is_dict(value, "encd_trans_kwargs")
-        self._encd_trans_kwargs = value
+        if value is None:
+            value = {}
+        check_is_dict(value, "encode_trans_kwargs")
+        self._encode_trans_kwargs = value
     @encode_trans_kwargs.deleter
     def encode_trans_kwargs(self) -> None:
         """Delete ``encodefn`` output transformation function keyword arguments."""
-        del self._encd_trans_kwargs
+        del self._encode_trans_kwargs
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     # leave encodefn abstract
-    # leave evalfn abstract
-    # leave _evaluate abstract
+
+    # provide generic implementation of this function; users may override if needed
+    def evalfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Tuple:
+        """
+        Evaluate a candidate solution for the given Problem.
+        
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(ndecn,)``.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : tuple
+            A tuple ``(obj, ineqcv, eqcv)``.
+            
+            Where:
+            
+            - ``obj`` is a numpy.ndarray of shape ``(nobj,)`` that contains 
+                objective function evaluations.
+            - ``ineqcv`` is a numpy.ndarray of shape ``(nineqcv,)`` that contains 
+                inequality constraint violation values.
+            - ``eqcv`` is a numpy.ndarray of shape ``(neqcv,)`` that contains 
+                equality constraint violation values.
+        """
+        # get encoded values
+        encodeval = self.encodefn(x, *args, **kwargs)
+        # transform encoded values into evaluated values and return
+        return self.encode_trans(encodeval, **self.encode_trans_kwargs)
+    
+    # provide generic implementation of this function; users may override if needed
+    def _evaluate(
+            self, 
+            x: numpy.ndarray, 
+            out: dict, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Evaluate a set of candidate solutions for the given Problem.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(nsoln,ndecn)``.
+            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
+            is the number of decision variables.
+        out : dict
+            Dictionary to which to output function evaluations.
+        args : tuple
+            Additional arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        if x.ndim == 1:
+            # get encoded values
+            encodeval = self.encodefn(x, *args, **kwargs)
+            # transform encoded values into evaluated values
+            vals = self.encode_trans(encodeval, **self.encode_trans_kwargs)
+            # create temporary dictionary
+            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
+            # update output dictionary
+            out.update(tmp)
+        else:
+            # create lists for accumulating variables
+            objs = []
+            ineqcvs = []
+            eqcvs = []
+            # for each row in x
+            for v in x:
+                # get encoded values
+                encodeval = self.encodefn(v, *args, **kwargs)
+                # transform encoded values into evaluated values
+                obj, ineqcv, eqcv = self.encode_trans(encodeval, **self.encode_trans_kwargs)
+                # append values to lists
+                objs.append(obj)
+                ineqcvs.append(ineqcv)
+                eqcvs.append(eqcv)
+            # stack outputs
+            objs = numpy.stack(objs)
+            ineqcvs = numpy.stack(ineqcvs)
+            eqcvs = numpy.stack(eqcvs)
+            # create temporary dictionary
+            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
+            # update output dictionary
+            out.update(tmp)
 
 
 

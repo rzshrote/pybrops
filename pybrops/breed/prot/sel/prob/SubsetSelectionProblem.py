@@ -4,8 +4,8 @@ Module defining selection problems that are by nature set selection problems.
 
 # list of public objects in this module
 __all__ = [
-    "SetSelectionProblem",
-    "check_is_SetSelectionProblem"
+    "SubsetSelectionProblem",
+    "check_is_SubsetSelectionProblem"
 ]
 
 # imports
@@ -13,9 +13,9 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inheritance order not super important here since both abstract
-class SetSelectionProblem(SubsetProblem,SelectionProblem):
+class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     """
-    docstring for SetSelectionProblem.
+    docstring for SubsetSelectionProblem.
     """
 
     ############################################################################
@@ -26,23 +26,23 @@ class SetSelectionProblem(SubsetProblem,SelectionProblem):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SetSelectionProblem.
+        Constructor for SubsetSelectionProblem.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(SetSelectionProblem, self).__init__(**kwargs)
+        super(SubsetSelectionProblem, self).__init__(**kwargs)
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_SetSelectionProblem(v: object, vname: str) -> None:
+def check_is_SubsetSelectionProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type SetSelectionProblem, otherwise raise TypeError.
+    Check if object is of type SubsetSelectionProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -51,5 +51,5 @@ def check_is_SetSelectionProblem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, SetSelectionProblem):
-        raise TypeError("'{0}' must be of type SetSelectionProblem.".format(vname))
+    if not isinstance(v, SubsetSelectionProblem):
+        raise TypeError("'{0}' must be of type SubsetSelectionProblem.".format(vname))

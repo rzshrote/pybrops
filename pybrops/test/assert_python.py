@@ -31,6 +31,13 @@ def not_raises2(ForbiddenException1, ForbiddenException2):
     except Exception:
         pass
 
+@contextmanager
+def not_raises_error():
+    try:
+        yield
+    except Exception:
+        raise AssertionError("{0} raised".format(Exception.__name__))
+
 def assert_operator(op, v, w):
     """
     Generic test an operator.
