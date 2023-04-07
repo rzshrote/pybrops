@@ -412,6 +412,14 @@ class Problem(pymoo.core.problem.Problem):
         ) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
         """
         Evaluate a candidate solution for the given Problem.
+
+        This calculates three vectors which are to be minimized:
+
+        .. math::
+
+            \\mathbf{v_{obj}} = \\mathbf{w_{obj} \\odot F_{obj}(x)} \\
+            \\mathbf{v_{ineqcv}} = \\mathbf{w_{ineqcv} \\odot G_{ineqcv}(x)} \\
+            \\mathbf{v_{eqcv}} = \\mathbf{w_{eqcv} \\odot H_{eqcv}(x)}
         
         Parameters
         ----------

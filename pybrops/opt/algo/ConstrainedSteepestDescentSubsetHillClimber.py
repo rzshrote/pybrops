@@ -7,15 +7,16 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_python import check_is_eq
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
 from pybrops.opt.soln.DenseSubsetSolution import DenseSubsetSolution
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
+class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorithm):
     """
-    docstring for ConstrainedSteepestAscentSetHillClimber.
+    docstring for ConstrainedSteepestDescentSubsetHillClimber.
     """
 
     ############################################################################
@@ -36,7 +37,7 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(ConstrainedSteepestAscentSetHillClimber, self).__init__(**kwargs)
+        super(ConstrainedSteepestDescentSubsetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
     ############################################################################
@@ -61,14 +62,14 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(
+    def minimize(
             self, 
             prob: SubsetProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
         ) -> SubsetSolution:
         """
-        Optimize an objective function.
+        Minimize an optimization problem.
 
         Parameters
         ----------
@@ -81,11 +82,11 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
 
         Returns
         -------
-        out : SetSolution
+        out : SubsetSolution
             An object containing the solution to the provided problem.
         """
         # check inputs
-        check_is_SetProblem(prob, "prob")
+        check_is_SubsetProblem(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
 
@@ -97,8 +98,8 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
 
         # get starting solution score and constraint violations
         gbest_obj, gbest_ineqcv, gbest_eqcv = prob.evalfn(gbest_soln)
-        gbest_score = prob.obj_wt.dot(gbest_obj)
-        gbest_cv = prob.ineqcv_wt.dot(gbest_ineqcv) + prob.eqcv_wt.dot(gbest_eqcv)
+        gbest_score = gbest_obj.sum()
+        gbest_cv = gbest_ineqcv.sum() + gbest_eqcv.sum()
 
         # hillclimber
         while True:
@@ -115,8 +116,8 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
                     gbest_soln[i], wrkss[j] = wrkss[j], gbest_soln[i]
                     # score proposed solution
                     prop_obj, prop_ineqcv, prop_eqcv = prob.evalfn(gbest_soln)
-                    prop_score = prob.obj_wt.dot(prop_obj)
-                    prop_cv = prob.ineqcv_wt.dot(prop_ineqcv) + prob.eqcv_wt.dot(prop_eqcv)
+                    prop_score = prop_obj.sum()
+                    prop_cv = prop_ineqcv.sum() + prop_eqcv.sum()
                     # determine if the proposed solution is better
                     # always prefer less constraint violation first
                     if prop_cv < best_cv:
@@ -125,8 +126,8 @@ class ConstrainedSteepestAscentSetHillClimber(ConstrainedOptimizationAlgorithm):
                         best_obj, best_ineqcv, best_eqcv = prop_obj, prop_ineqcv, prop_eqcv
                         best_score = prop_score
                         best_cv = prop_cv
-                    # if constraint violations are identical, prefer better score
-                    elif (prop_cv == best_cv) and (prop_score > best_score):
+                    # if constraint violations are identical, prefer better (min) score
+                    elif (prop_cv == best_cv) and (prop_score < best_score):
                         best_i = i
                         best_j = j
                         best_obj, best_ineqcv, best_eqcv = prop_obj, prop_ineqcv, prop_eqcv

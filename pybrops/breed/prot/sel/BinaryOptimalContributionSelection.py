@@ -10,7 +10,7 @@ from typing import Callable
 from pybrops.breed.prot.sel.prob.BinaryOptimalContributionSelectionProblem import BinaryOptimalContributionSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_value_numpy import check_ndarray_align
-from pybrops.opt.algo.ConstrainedSteepestAscentSetHillClimber import ConstrainedSteepestAscentSetHillClimber
+from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
@@ -368,7 +368,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
     def soalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
         """Set data for property soalgo."""
         if value is None:
-            value = ConstrainedSteepestAscentSetHillClimber(rng = self.rng)
+            value = ConstrainedSteepestDescentSubsetHillClimber(rng = self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
@@ -606,7 +606,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         misc = {}
 
         # use multi-objective optimization to approximate Pareto front.
-        soln = self.moalgo.optimize(prop = prob, miscout = misc)
+        soln = self.moalgo.minimize(prop = prob, miscout = misc)
 
         # handle miscellaneous output
         if miscout is not None:     # if miscout is provided
@@ -681,7 +681,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             misc = {}
 
             # use single-objective optimization to get a solution.
-            soln = self.soalgo.optimize(prop = prob, miscout = misc)
+            soln = self.soalgo.minimize(prop = prob, miscout = misc)
 
             # get first and only solution
             obj = soln.soln_obj[0]

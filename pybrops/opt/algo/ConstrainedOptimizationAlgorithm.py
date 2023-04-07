@@ -35,14 +35,14 @@ class ConstrainedOptimizationAlgorithm:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(
+    def minimize(
             self, 
             prob: Problem,
             miscout: Optional[dict],
             **kwargs: dict
         ) -> Solution:
         """
-        Optimize an objective function.
+        Minimize an optimization problem.
 
         Parameters
         ----------

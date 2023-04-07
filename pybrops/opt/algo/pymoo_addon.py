@@ -214,6 +214,7 @@ class ReducedExchangeMutation(Mutation):
             Additional keyword arguments used for cooperative inheritance.
         """
         super(ReducedExchangeMutation, self).__init__(**kwargs)
+        self.setspace = setspace
 
     ###################### Properties ######################
     @property

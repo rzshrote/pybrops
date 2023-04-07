@@ -63,6 +63,11 @@ def check_is_positive(v: Any, vname: str) -> None:
     if v < 0:
         raise ValueError("variable '{0}' must be positive".format(vname))
 
+def check_is_eq(v: object, vname: str, value: object) -> None:
+    """Raise error if ``obj`` is not equal to ``value``."""
+    if v != value:
+        raise ValueError("variable '{0}' is not equal to {1}".format(vname, value))
+
 def check_is_gt(v, vname, value):
     """Raise error if ``obj`` is not greater than ``value``."""
     if v <= value:

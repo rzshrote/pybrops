@@ -272,7 +272,7 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
         """
         Evaluate a candidate solution for the given Problem.
         
-        This calculates three vectors:
+        This calculates three vectors which are to be minimized:
 
         .. math::
 
