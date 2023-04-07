@@ -62,9 +62,9 @@ class BinaryOptimalContributionSelectionProblem(DenseSubsetSelectionProblem):
         decn_space : numpy.ndarray
             A 1d array containing the set of available elements
         encode_trans : Callable[[numpy.ndarray],Tuple]
-            Function which transforms outputs from ``encodefn`` to a tuple ``(obj,ineqcv,eqcv)``.
+            Function which transforms outputs from ``latentfn`` to a tuple ``(obj,ineqcv,eqcv)``.
         encode_trans_kwargs : dict
-            ``encodefn`` output transformation function keyword arguments.
+            ``latentfn`` output transformation function keyword arguments.
         nobj : Integral
             Number of objectives.
         obj_wt : numpy.ndarray
@@ -132,7 +132,7 @@ class BinaryOptimalContributionSelectionProblem(DenseSubsetSelectionProblem):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def encodefn(
+    def latentfn(
             self, 
             x: numpy.ndarray, 
             *args: tuple, 
@@ -224,7 +224,7 @@ class BinaryOptimalContributionSelectionProblem(DenseSubsetSelectionProblem):
         """
         # transform and return tuple 
         return self.encode_trans(
-            self.encodefn(x, *args, **kwargs), 
+            self.latentfn(x, *args, **kwargs), 
             **self.encode_trans_kwargs
         )
 

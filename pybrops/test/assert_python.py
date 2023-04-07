@@ -210,6 +210,26 @@ def assert_abstract_property(obj, prop):
     assert_abstract_method(p, "fset")   # assert fset is abstract
     assert_abstract_method(p, "fdel")   # assert fdel is abstract
 
+def assert_abstract_property_fget(obj, prop):
+    """
+    Assert an object has an abstract property. Must have several attributes:
+
+    1) have the property
+    2) have a docstring for the property
+    3) fget method must be abstract; fset, fdel are optional and not checked.
+
+    Parameters
+    ----------
+    obj : object
+        Any Python object.
+    met : str
+        Name of the method to test
+    """
+    assert_hasattr(obj, prop)           # assert the property exists
+    p = getattr(obj, prop)                      # get the property
+    assert_docstring(p)                 # assert the property has a docstring
+    assert_abstract_method(p, "fget")   # assert fget is abstract
+
 def assert_concrete_property(obj, prop):
     """
     Assert an object has an concrete property. Must have several attributes:

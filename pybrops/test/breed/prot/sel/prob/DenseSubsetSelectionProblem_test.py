@@ -38,12 +38,28 @@ def obj_wt():
     yield numpy.array([1,-1], dtype=float)
 
 @pytest.fixture
+def obj_trans():
+    yield None
+
+@pytest.fixture
+def obj_trans_kwargs():
+    yield None
+
+@pytest.fixture
 def nineqcv():
     yield 0
 
 @pytest.fixture
 def ineqcv_wt():
     yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def ineqcv_trans():
+    yield None
+
+@pytest.fixture
+def ineqcv_trans_kwargs():
+    yield None
 
 @pytest.fixture
 def neqcv():
@@ -54,17 +70,12 @@ def eqcv_wt():
     yield numpy.array([], dtype=float)
 
 @pytest.fixture
-def encode_trans():
-    def fn(latent: numpy.ndarray, **kwargs: dict):
-        obj = latent
-        ineqcv = numpy.array([], dtype=latent.dtype)
-        eqcv = numpy.array([], dtype=latent.dtype)
-        return (obj, ineqcv, eqcv)
-    yield fn
+def eqcv_trans():
+    yield None
 
 @pytest.fixture
-def encode_trans_kwargs():
-    yield {}
+def eqcv_trans_kwargs():
+    yield None
 
 @pytest.fixture
 def prob(
@@ -72,28 +83,36 @@ def prob(
     decn_space,
     decn_space_lower,
     decn_space_upper,
-    encode_trans,
-    encode_trans_kwargs,
     nobj,
     obj_wt,
+    obj_trans,
+    obj_trans_kwargs,
     nineqcv,
     ineqcv_wt,
+    ineqcv_trans,
+    ineqcv_trans_kwargs,
     neqcv,
-    eqcv_wt
+    eqcv_wt,
+    eqcv_trans,
+    eqcv_trans_kwargs
 ):
     yield DenseSubsetSelectionProblem(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
         decn_space_upper = decn_space_upper,
-        encode_trans = encode_trans,
-        encode_trans_kwargs = encode_trans_kwargs,
         nobj = nobj,
         obj_wt = obj_wt,
+        obj_trans = obj_trans,
+        obj_trans_kwargs = obj_trans_kwargs,
         nineqcv = nineqcv,
         ineqcv_wt = ineqcv_wt,
+        ineqcv_trans = ineqcv_trans,
+        ineqcv_trans_kwargs = ineqcv_trans_kwargs,
         neqcv = neqcv,
-        eqcv_wt = eqcv_wt
+        eqcv_wt = eqcv_wt,
+        eqcv_trans = eqcv_trans,
+        eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
 ################################################################################
@@ -119,8 +138,8 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_encodefn_is_abstract(prob):
-    assert_abstract_method(prob, "encodefn")
+def test_latentfn_is_abstract(prob):
+    assert_abstract_method(prob, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################

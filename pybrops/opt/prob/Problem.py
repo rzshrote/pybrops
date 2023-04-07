@@ -204,20 +204,20 @@ class Problem(pymoo.core.problem.Problem):
     
     @property
     def replace_nan_values_by(self) -> Union[Number,None]:
-        """replace_nan_values_by."""
+        """Value for which to replace NaN values."""
         return self._replace_nan_values_by
     @replace_nan_values_by.setter
     def replace_nan_values_by(self, value: Union[Number,None]) -> None:
-        """Set replace_nan_values_by."""
+        """Set value for which to replace NaN values."""
         self._replace_nan_values_by = value
     @replace_nan_values_by.deleter
     def replace_nan_values_by(self) -> None:
-        """Delete replace_nan_values_by."""
+        """Delete value for which to replace NaN values."""
         del self._replace_nan_values_by
     
     @property
     def exclude_from_serialization(self) -> Union[Iterable,None]:
-        """attributes which are excluded from being serialized."""
+        """Attributes which are excluded from being serialized."""
         return self._exclude_from_serialization
     @exclude_from_serialization.setter
     def exclude_from_serialization(self, value: Union[Iterable,None]) -> None:

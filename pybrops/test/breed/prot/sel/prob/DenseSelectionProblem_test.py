@@ -38,12 +38,28 @@ def obj_wt():
     yield numpy.array([1,-1], dtype=float)
 
 @pytest.fixture
+def obj_trans():
+    yield None
+
+@pytest.fixture
+def obj_trans_kwargs():
+    yield None
+
+@pytest.fixture
 def nineqcv():
     yield 0
 
 @pytest.fixture
 def ineqcv_wt():
     yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def ineqcv_trans():
+    yield None
+
+@pytest.fixture
+def ineqcv_trans_kwargs():
+    yield None
 
 @pytest.fixture
 def neqcv():
@@ -54,17 +70,12 @@ def eqcv_wt():
     yield numpy.array([], dtype=float)
 
 @pytest.fixture
-def encode_trans():
-    def fn(latent: numpy.ndarray, **kwargs: dict):
-        obj = latent
-        ineqcv = numpy.array([], dtype=latent.dtype)
-        eqcv = numpy.array([], dtype=latent.dtype)
-        return (obj, ineqcv, eqcv)
-    yield fn
+def eqcv_trans():
+    yield None
 
 @pytest.fixture
-def encode_trans_kwargs():
-    yield {}
+def eqcv_trans_kwargs():
+    yield None
 
 @pytest.fixture
 def prob(
@@ -72,28 +83,36 @@ def prob(
     decn_space,
     decn_space_lower,
     decn_space_upper,
-    encode_trans,
-    encode_trans_kwargs,
     nobj,
     obj_wt,
+    obj_trans,
+    obj_trans_kwargs,
     nineqcv,
     ineqcv_wt,
+    ineqcv_trans,
+    ineqcv_trans_kwargs,
     neqcv,
-    eqcv_wt
+    eqcv_wt,
+    eqcv_trans,
+    eqcv_trans_kwargs
 ):
     yield DenseSelectionProblem(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
         decn_space_upper = decn_space_upper,
-        encode_trans = encode_trans,
-        encode_trans_kwargs = encode_trans_kwargs,
         nobj = nobj,
         obj_wt = obj_wt,
+        obj_trans = obj_trans,
+        obj_trans_kwargs = obj_trans_kwargs,
         nineqcv = nineqcv,
         ineqcv_wt = ineqcv_wt,
+        ineqcv_trans = ineqcv_trans,
+        ineqcv_trans_kwargs = ineqcv_trans_kwargs,
         neqcv = neqcv,
-        eqcv_wt = eqcv_wt
+        eqcv_wt = eqcv_wt,
+        eqcv_trans = eqcv_trans,
+        eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
 ################################################################################
@@ -107,58 +126,166 @@ def test_DenseSelectionProblem_docstring():
 ################################################################################
 
 ####################
-### encode_trans ###
+### obj_trans ###
 ####################
-def test_encode_trans_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "encode_trans")
+def test_obj_trans_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "obj_trans")
 
-def test_encode_trans_fget(prob):
-    assert isinstance(prob.encode_trans, Callable)
+def test_obj_trans_fget(prob):
+    assert isinstance(prob.obj_trans, Callable)
 
-def test_encode_trans_fset(prob, encode_trans):
+def test_obj_trans_fset(prob, obj_trans):
     with not_raises(Exception):
-        prob.encode_trans = encode_trans
+        prob.obj_trans = obj_trans
 
-def test_encode_trans_fset_TypeError(prob):
+def test_obj_trans_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.encode_trans = "string"
+        prob.obj_trans = "string"
     with pytest.raises(TypeError):
-        prob.encode_trans = []
+        prob.obj_trans = []
     with pytest.raises(TypeError):
-        prob.encode_trans = {}
+        prob.obj_trans = {}
 
-def test_encode_trans_fdel(prob):
-    del prob.encode_trans
+def test_obj_trans_fdel(prob):
+    del prob.obj_trans
     with pytest.raises(AttributeError):
-        prob.encode_trans
+        prob.obj_trans
 
 ###########################
-### encode_trans_kwargs ###
+### obj_trans_kwargs ###
 ###########################
-def test_encode_trans_kwargs_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "encode_trans_kwargs")
+def test_obj_trans_kwargs_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "obj_trans_kwargs")
 
-def test_encode_trans_kwargs_fget(prob):
-    assert isinstance(prob.encode_trans_kwargs, dict)
+def test_obj_trans_kwargs_fget(prob):
+    assert isinstance(prob.obj_trans_kwargs, dict)
 
-def test_encode_trans_kwargs_fset(prob):
+def test_obj_trans_kwargs_fset(prob):
     with not_raises(Exception):
-        prob.encode_trans_kwargs = {"a":1}
+        prob.obj_trans_kwargs = {"a":1}
     with not_raises(Exception):
-        prob.encode_trans_kwargs = None
+        prob.obj_trans_kwargs = None
 
-def test_encode_trans_kwargs_fset_TypeError(prob):
+def test_obj_trans_kwargs_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.encode_trans_kwargs = "string"
+        prob.obj_trans_kwargs = "string"
     with pytest.raises(TypeError):
-        prob.encode_trans_kwargs = []
+        prob.obj_trans_kwargs = []
     with pytest.raises(TypeError):
-        prob.encode_trans_kwargs = ()
+        prob.obj_trans_kwargs = ()
 
-def test_encode_trans_kwargs_fdel(prob):
-    del prob.encode_trans_kwargs
+def test_obj_trans_kwargs_fdel(prob):
+    del prob.obj_trans_kwargs
     with pytest.raises(AttributeError):
-        prob.encode_trans_kwargs
+        prob.obj_trans_kwargs
+
+####################
+### ineqcv_trans ###
+####################
+def test_ineqcv_trans_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "ineqcv_trans")
+
+def test_ineqcv_trans_fget(prob):
+    assert isinstance(prob.ineqcv_trans, Callable)
+
+def test_ineqcv_trans_fset(prob, ineqcv_trans):
+    with not_raises(Exception):
+        prob.ineqcv_trans = ineqcv_trans
+
+def test_ineqcv_trans_fset_TypeError(prob):
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans = "string"
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans = []
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans = {}
+
+def test_ineqcv_trans_fdel(prob):
+    del prob.ineqcv_trans
+    with pytest.raises(AttributeError):
+        prob.ineqcv_trans
+
+###########################
+### ineqcv_trans_kwargs ###
+###########################
+def test_ineqcv_trans_kwargs_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "ineqcv_trans_kwargs")
+
+def test_ineqcv_trans_kwargs_fget(prob):
+    assert isinstance(prob.ineqcv_trans_kwargs, dict)
+
+def test_ineqcv_trans_kwargs_fset(prob):
+    with not_raises(Exception):
+        prob.ineqcv_trans_kwargs = {"a":1}
+    with not_raises(Exception):
+        prob.ineqcv_trans_kwargs = None
+
+def test_ineqcv_trans_kwargs_fset_TypeError(prob):
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans_kwargs = "string"
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans_kwargs = []
+    with pytest.raises(TypeError):
+        prob.ineqcv_trans_kwargs = ()
+
+def test_ineqcv_trans_kwargs_fdel(prob):
+    del prob.ineqcv_trans_kwargs
+    with pytest.raises(AttributeError):
+        prob.ineqcv_trans_kwargs
+
+####################
+### eqcv_trans ###
+####################
+def test_eqcv_trans_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "eqcv_trans")
+
+def test_eqcv_trans_fget(prob):
+    assert isinstance(prob.eqcv_trans, Callable)
+
+def test_eqcv_trans_fset(prob, eqcv_trans):
+    with not_raises(Exception):
+        prob.eqcv_trans = eqcv_trans
+
+def test_eqcv_trans_fset_TypeError(prob):
+    with pytest.raises(TypeError):
+        prob.eqcv_trans = "string"
+    with pytest.raises(TypeError):
+        prob.eqcv_trans = []
+    with pytest.raises(TypeError):
+        prob.eqcv_trans = {}
+
+def test_eqcv_trans_fdel(prob):
+    del prob.eqcv_trans
+    with pytest.raises(AttributeError):
+        prob.eqcv_trans
+
+###########################
+### eqcv_trans_kwargs ###
+###########################
+def test_eqcv_trans_kwargs_is_concrete():
+    assert_concrete_property(DenseSelectionProblem, "eqcv_trans_kwargs")
+
+def test_eqcv_trans_kwargs_fget(prob):
+    assert isinstance(prob.eqcv_trans_kwargs, dict)
+
+def test_eqcv_trans_kwargs_fset(prob):
+    with not_raises(Exception):
+        prob.eqcv_trans_kwargs = {"a":1}
+    with not_raises(Exception):
+        prob.eqcv_trans_kwargs = None
+
+def test_eqcv_trans_kwargs_fset_TypeError(prob):
+    with pytest.raises(TypeError):
+        prob.eqcv_trans_kwargs = "string"
+    with pytest.raises(TypeError):
+        prob.eqcv_trans_kwargs = []
+    with pytest.raises(TypeError):
+        prob.eqcv_trans_kwargs = ()
+
+def test_eqcv_trans_kwargs_fdel(prob):
+    del prob.eqcv_trans_kwargs
+    with pytest.raises(AttributeError):
+        prob.eqcv_trans_kwargs
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -179,8 +306,8 @@ def test__evaluate_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_encodefn_is_abstract(prob):
-    assert_abstract_method(prob, "encodefn")
+def test_latentfn_is_abstract(prob):
+    assert_abstract_method(prob, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################

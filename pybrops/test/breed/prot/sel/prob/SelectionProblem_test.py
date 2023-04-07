@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_abstract_property_fget, assert_concrete_function, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
@@ -34,17 +34,32 @@ def test_init_is_concrete():
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
-def test_encode_trans_is_abstract():
-    assert_abstract_property(SelectionProblem, "encode_trans")
+def test_nlatent_is_abstract():
+    assert_abstract_property_fget(SelectionProblem, "nlatent")
 
-def test_encode_trans_kwargs_is_abstract():
-    assert_abstract_property(SelectionProblem, "encode_trans_kwargs")
+def test_obj_trans_is_abstract():
+    assert_abstract_property(SelectionProblem, "obj_trans")
+
+def test_obj_trans_kwargs_is_abstract():
+    assert_abstract_property(SelectionProblem, "obj_trans_kwargs")
+
+def test_ineqcv_trans_is_abstract():
+    assert_abstract_property(SelectionProblem, "ineqcv_trans")
+
+def test_ineqcv_trans_kwargs_is_abstract():
+    assert_abstract_property(SelectionProblem, "ineqcv_trans_kwargs")
+
+def test_eqcv_trans_is_abstract():
+    assert_abstract_property(SelectionProblem, "eqcv_trans")
+
+def test_eqcv_trans_kwargs_is_abstract():
+    assert_abstract_property(SelectionProblem, "eqcv_trans_kwargs")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_encodefn_is_abstract(prob):
-    assert_abstract_method(prob, "encodefn")
+def test_latentfn_is_abstract(prob):
+    assert_abstract_method(prob, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################
