@@ -188,7 +188,7 @@ def assert_concrete_method(obj, met):
     fn = getattr(obj, met)                  # get the method
     assert_concrete_function(fn)    # assert the method is abstract
 
-def assert_abstract_property(obj, prop):
+def assert_abstract_property(obj: type, prop: str) -> None:
     """
     Assert an object has an abstract property. Must have several attributes:
 
@@ -210,7 +210,7 @@ def assert_abstract_property(obj, prop):
     assert_abstract_method(p, "fset")   # assert fset is abstract
     assert_abstract_method(p, "fdel")   # assert fdel is abstract
 
-def assert_abstract_property_fget(obj, prop):
+def assert_abstract_property_fget(obj: type, prop: str) -> None:
     """
     Assert an object has an abstract property. Must have several attributes:
 
@@ -230,7 +230,27 @@ def assert_abstract_property_fget(obj, prop):
     assert_docstring(p)                 # assert the property has a docstring
     assert_abstract_method(p, "fget")   # assert fget is abstract
 
-def assert_concrete_property(obj, prop):
+def assert_concrete_property_fget(obj: type, prop: str) -> None:
+    """
+    Assert an object has an concrete property. Must have several attributes:
+
+    1) have the property
+    2) have a docstring for the property
+    3) fget, fset, fdel methods must be concrete
+
+    Parameters
+    ----------
+    obj : object
+        Any Python object.
+    met : str
+        Name of the method to test
+    """
+    assert_hasattr(obj, prop)           # assert the property exists
+    p = getattr(obj, prop)                      # get the property
+    assert_docstring(p)                 # assert the property has a docstring
+    assert_concrete_method(p, "fget")   # assert fget is concrete
+
+def assert_concrete_property(obj: type, prop: str):
     """
     Assert an object has an concrete property. Must have several attributes:
 

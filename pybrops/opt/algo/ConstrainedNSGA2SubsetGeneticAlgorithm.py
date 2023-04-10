@@ -176,17 +176,19 @@ class ConstrainedNSGA2SubsetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
         soln = DenseSubsetSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
-            nobj=prob.nobj,
-            obj_wt=prob.obj_wt,
-            nineqcv=prob.nineqcv,
-            ineqcv_wt=prob.ineqcv_wt,
-            neqcv=prob.neqcv,
-            eqcv_wt=prob.eqcv_wt,
-            nsoln=nsoln,
-            soln_decn=soln_decn,
-            soln_obj=soln_obj,
-            soln_ineqcv=soln_ineqcv,
-            soln_eqcv=soln_eqcv
+            decn_space_lower = prob.decn_space_lower,
+            decn_space_upper = prob.decn_space_upper,
+            nobj = prob.nobj,
+            obj_wt = prob.obj_wt,
+            nineqcv = prob.nineqcv,
+            ineqcv_wt = prob.ineqcv_wt,
+            neqcv = prob.neqcv,
+            eqcv_wt = prob.eqcv_wt,
+            nsoln = nsoln,
+            soln_decn = soln_decn,
+            soln_obj = soln_obj,
+            soln_ineqcv = soln_ineqcv,
+            soln_eqcv = soln_eqcv
         )
 
         return soln

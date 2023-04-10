@@ -23,7 +23,6 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -307,7 +306,6 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
         """Delete multi-objective opimization algorithm."""
         del self._moalgo
 
-
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
@@ -352,7 +350,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             An optimization problem definition.
         """
         # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat)
+        gebv = gpmod.gebv(gmat).mat
 
         # get number of individuals
         ntaxa = gmat.ntaxa
@@ -377,6 +375,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             ineqcv_wt = self.ineqcv_wt,
             ineqcv_trans = self.ineqcv_trans,
             ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
             eqcv_wt = self.eqcv_wt,
             eqcv_trans = self.eqcv_trans,
             eqcv_trans_kwargs = self.eqcv_trans_kwargs
@@ -394,7 +393,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             gpmod: GenomicModel, 
             t_cur: Integral, 
             t_max: Integral, 
-            miscout: Optional[dict], 
+            miscout: Optional[dict] = None, 
             **kwargs: dict
         ) -> tuple:
         """
@@ -459,7 +458,8 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             miscout = miscout
         )
 
-        miscout["soln"] = soln
+        if miscout is not None:
+            miscout["soln"] = soln
 
         frontier = soln.soln_obj
         sel_config = soln.soln_decn
@@ -476,7 +476,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             gpmod: GenomicModel, 
             t_cur: Integral, 
             t_max: Integral, 
-            miscout: Optional[dict], 
+            miscout: Optional[dict] = None, 
             **kwargs: dict
         ) -> tuple:
         """
@@ -540,7 +540,8 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
                 miscout = miscout
             )
 
-            miscout["soln"] = soln
+            if miscout is not None:
+                miscout["soln"] = soln
 
             # extract decision variables
             sel = soln.soln_decn[0]
@@ -580,5 +581,3 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-

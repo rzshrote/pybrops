@@ -28,6 +28,8 @@ class DenseSubsetSolution(DenseSolution,SubsetSolution):
             self,
             ndecn: Integral,
             decn_space: numpy.ndarray,
+            decn_space_lower: numpy.ndarray,
+            decn_space_upper: numpy.ndarray,
             nobj: Integral,
             obj_wt: numpy.ndarray,
             nineqcv: Integral,
@@ -52,6 +54,8 @@ class DenseSubsetSolution(DenseSolution,SubsetSolution):
         super(DenseSubsetSolution, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
             nobj = nobj,
             obj_wt = obj_wt,
             nineqcv = nineqcv,

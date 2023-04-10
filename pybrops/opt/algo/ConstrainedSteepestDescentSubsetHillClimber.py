@@ -146,6 +146,8 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
         out = DenseSubsetSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
+            decn_space_lower = prob.decn_space_lower,
+            decn_space_upper = prob.decn_space_upper,
             nobj = prob.nobj,
             obj_wt = prob.obj_wt,
             nineqcv = prob.nineqcv,
