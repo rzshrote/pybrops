@@ -504,7 +504,7 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the favorable allele.
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
         """
         raise NotImplementedError("method is abstract")
     

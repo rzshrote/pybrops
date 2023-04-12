@@ -1,3 +1,4 @@
+from numbers import Real
 import numpy
 import pytest
 
@@ -5,7 +6,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.SubsetConventionalGenomicSelectionProblem import SubsetConventionalGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetWeightedGenomicSelectionProblem import SubsetWeightedGenomicSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -13,6 +14,10 @@ from pybrops.breed.prot.sel.prob.SubsetConventionalGenomicSelectionProblem impor
 @pytest.fixture
 def ntaxa():
     yield 100
+
+@pytest.fixture
+def nvrnt():
+    yield 5000
 
 @pytest.fixture
 def ntrait():
@@ -33,12 +38,26 @@ def trait_cov(ntrait):
     yield out
 
 @pytest.fixture
-def gebv(ntaxa, trait_mean, trait_cov):
-    yield numpy.random.multivariate_normal(
-        mean = trait_mean,
-        cov = trait_cov,
-        size = ntaxa
-    )
+def Z_a_mat(ntaxa, nvrnt):
+    yield numpy.random.binomial(2, 0.1, size = (ntaxa,nvrnt))
+
+@pytest.fixture
+def u_a_mat(nvrnt, ntrait):
+    yield numpy.random.normal(0, 1, size = (nvrnt,ntrait))
+
+@pytest.fixture
+def fafreq_mat(Z_a_mat, u_a_mat):
+    # (p,)
+    afreq = (0.5/Z_a_mat.shape[0]) * Z_a_mat.sum(0)
+    # (p,t)
+    fafreq = numpy.where(u_a_mat >= 0, afreq[:,None], 1.0-afreq[:,None])
+    # prevent division by zero
+    fafreq[fafreq <= 0] = 1
+    yield fafreq
+
+@pytest.fixture
+def wgebv(Z_a_mat, u_a_mat, fafreq_mat):
+    yield Z_a_mat.dot(u_a_mat * numpy.power(fafreq_mat, -0.5))
 
 @pytest.fixture
 def ndecn():
@@ -106,26 +125,30 @@ def eqcv_trans_kwargs():
 
 @pytest.fixture
 def prob(
-    gebv,
-    ndecn,
-    decn_space,
-    decn_space_lower,
-    decn_space_upper,
-    nobj,
-    obj_wt,
-    obj_trans,
-    obj_trans_kwargs,
-    nineqcv,
-    ineqcv_wt,
-    ineqcv_trans,
-    ineqcv_trans_kwargs,
-    neqcv,
-    eqcv_wt,
-    eqcv_trans,
-    eqcv_trans_kwargs
-):
-    yield SubsetConventionalGenomicSelectionProblem(
-        gebv = gebv,
+        Z_a_mat,
+        u_a_mat,
+        fafreq_mat,
+        ndecn,
+        decn_space,
+        decn_space_lower,
+        decn_space_upper,
+        nobj,
+        obj_wt,
+        obj_trans,
+        obj_trans_kwargs,
+        nineqcv,
+        ineqcv_wt,
+        ineqcv_trans,
+        ineqcv_trans_kwargs,
+        neqcv,
+        eqcv_wt,
+        eqcv_trans,
+        eqcv_trans_kwargs
+    ):
+    yield SubsetWeightedGenomicSelectionProblem(
+        Z_a = Z_a_mat,
+        u_a = u_a_mat,
+        fafreq = fafreq_mat,
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -147,58 +170,12 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_SubsetConventionalGenomicSelectionProblem_docstring():
-    assert_docstring(SubsetConventionalGenomicSelectionProblem)
+def test_SubsetWeightedGenomicSelectionProblem_docstring():
+    assert_docstring(SubsetWeightedGenomicSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
 ################################################################################
-
-###############
-### nlatent ###
-###############
-def test_nlatent_is_concrete():
-    assert_concrete_property_fget(SubsetConventionalGenomicSelectionProblem, "nlatent")
-
-def test_nlatent_fget(prob, ntrait):
-    assert prob.nlatent == ntrait
-
-############
-### gebv ###
-############
-def test_gebv_is_concrete():
-    assert_concrete_property(SubsetConventionalGenomicSelectionProblem, "gebv")
-
-def test_gebv_fget(prob, ntaxa, ntrait):
-    assert isinstance(prob.gebv, numpy.ndarray)
-    assert prob.gebv.shape == (ntaxa,ntrait)
-
-def test_gebv_fset(prob, ntaxa, ntrait):
-    with not_raises(Exception):
-        prob.gebv = numpy.random.random((ntaxa,ntrait))
-
-def test_gebv_fset_TypeError(prob):
-    with pytest.raises(TypeError):
-        prob.gebv = None
-    with pytest.raises(TypeError):
-        prob.gebv = "string"
-    with pytest.raises(TypeError):
-        prob.gebv = int(1)
-    with pytest.raises(TypeError):
-        prob.gebv = float(1.0)
-
-def test_gebv_fset_ValueError(prob, ntaxa, ntrait):
-    with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random(ntaxa)
-    with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random(ntrait)
-    with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random((ntaxa,ntaxa,ntrait,ntrait))
-
-def test_gebv_fdel(prob):
-    del prob.gebv
-    with pytest.raises(AttributeError):
-        prob.gebv
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -208,19 +185,13 @@ def test_gebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetConventionalGenomicSelectionProblem, "__init__")
+    assert_concrete_method(SubsetWeightedGenomicSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
-
-def test_latentfn(prob, ntaxa, gebv):
-    x = numpy.random.choice(ntaxa, ntaxa // 2)
-    a = prob.latentfn(x)
-    b = gebv[x,:].sum(0)
-    assert numpy.all(a == b)
 
 ################################################################################
 ########################### Test abstract properties ###########################

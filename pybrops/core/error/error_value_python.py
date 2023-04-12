@@ -111,7 +111,7 @@ def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> N
     if (v < vmin) or (v > vmax):
         raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
 
-def check_number_in_interval(v: numbers.Number, vname: str, vmin: numbers.Number, vmax: numbers.Number):
+def check_Number_in_interval(v: numbers.Number, vname: str, vmin: numbers.Number, vmax: numbers.Number):
     """
     Check if a number is in the provided range.
     
