@@ -2,11 +2,12 @@
 Module defining basal interfaces and error checking routines for genomic models.
 """
 
-from typing import Any, Union
+from typing import Optional, Union
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class GenomicModel(HDF5InputOutput):
     """
@@ -49,7 +50,10 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> "GenomicModel":
         """
         Make a deep copy of the GenomicModel.
 
@@ -95,11 +99,11 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("property is abstract")
 
     @property
-    def trait(self) -> Any:
+    def trait(self) -> numpy.ndarray:
         """Names of the traits predicted by the model."""
         raise NotImplementedError("property is abstract")
     @trait.setter
-    def trait(self, value: Any) -> None:
+    def trait(self, value: numpy.ndarray) -> None:
         """Set the names of the traits predicted by the model"""
         raise NotImplementedError("property is abstract")
     @trait.deleter
@@ -131,7 +135,7 @@ class GenomicModel(HDF5InputOutput):
             X: numpy.ndarray, 
             Z: numpy.ndarray, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Fit the model.
 
@@ -148,7 +152,13 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def fit(self, ptobj, cvobj, gtobj, **kwargs: dict):
+    def fit(
+            self, 
+            ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame,numpy.ndarray], 
+            cvobj: numpy.ndarray, 
+            gtobj: Union[GenotypeMatrix,numpy.ndarray], 
+            **kwargs: dict
+        ) -> None:
         """
         Fit the model.
 
@@ -167,7 +177,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def predict_numpy(self, X, Z, **kwargs: dict):
+    def predict_numpy(
+            self, 
+            X: numpy.ndarray, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Predict breeding values.
 
@@ -191,7 +206,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def predict(self, cvobj, gtobj, **kwargs: dict):
+    def predict(
+            self, 
+            cvobj: numpy.ndarray, 
+            gtobj: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Predict breeding values.
 
@@ -216,7 +236,13 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def score_numpy(self, Y, X, Z, **kwargs: dict):
+    def score_numpy(
+            self, 
+            Y: numpy.ndarray, 
+            X: numpy.ndarray, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -242,7 +268,13 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def score(self, ptobj, cvobj, gtobj, **kwargs: dict):
+    def score(
+            self, 
+            ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame], 
+            cvobj: object, 
+            gtobj: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Return the coefficient of determination R**2 of the prediction.
 
@@ -271,7 +303,11 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######## methods for estimated breeding values #########
-    def gebv_numpy(self, Z: numpy.ndarray, **kwargs: dict) -> numpy.ndarray:
+    def gebv_numpy(
+            self, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate genomic estimated breeding values.
 
@@ -293,7 +329,11 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def gebv(self, gtobj: GenotypeMatrix, **kwargs: dict) -> BreedingValueMatrix:
+    def gebv(
+            self, 
+            gtobj: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Calculate genomic estimated breeding values.
 
@@ -317,7 +357,11 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ###### methods for population variance prediction ######
-    def var_G_numpy(self, Z, **kwargs: dict):
+    def var_G_numpy(
+            self, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population genetic variance.
 
@@ -331,10 +375,15 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing genetic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def var_G(self, gtobj, **kwargs: dict):
+    def var_G(
+            self, 
+            gtobj: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population genetic variance.
 
@@ -349,10 +398,15 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing genetic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def var_A_numpy(self, Z, **kwargs: dict):
+    def var_A_numpy(
+            self, 
+            Z: numpy.ndarray, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population additive genetic variance
 
@@ -366,10 +420,15 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing additive genetic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def var_A(self, gtobj, **kwargs: dict):
+    def var_A(
+            self, 
+            gtobj: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population additive genetic variance
 
@@ -384,10 +443,16 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing additive genetic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def var_a_numpy(self, p, ploidy, **kwargs: dict):
+    def var_a_numpy(
+            self, 
+            p: numpy.ndarray, 
+            ploidy: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population additive genic variance
 
@@ -403,10 +468,16 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing additive genic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def var_a(self, gtobj, ploidy, **kwargs: dict):
+    def var_a(
+            self, 
+            gtobj: Union[GenotypeMatrix,numpy.ndarray], 
+            ploidy: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the population additive genic variance
 
@@ -423,10 +494,17 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing additive genic variances for each trait.
         """
         raise NotImplementedError("method is abstract")
 
-    def bulmer_numpy(self, Z, p, ploidy, **kwargs: dict):
+    def bulmer_numpy(
+            self, 
+            Z: numpy.ndarray, 
+            p: numpy.ndarray, 
+            ploidy: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the Bulmer effect.
 
@@ -444,10 +522,17 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            Array of shape ``(t,)`` contianing Bulmer effects for each trait.
+            In the event that additive genic variance is zero, NaN's are produced.
         """
         raise NotImplementedError("method is abstract")
 
-    def bulmer(self, gtobj, ploidy, **kwargs: dict):
+    def bulmer(
+            self, 
+            gtobj: GenotypeMatrix, 
+            ploidy: int, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the Bulmer effect.
 
@@ -456,19 +541,26 @@ class GenomicModel(HDF5InputOutput):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
+        ploidy : int
+            Ploidy of the species.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : numpy.ndarray
-            Array of Bulmer effects for each trait. In the event that additive
-            genic variance is zero, NaN's are produced.
+            Array of shape ``(t,)`` contianing Bulmer effects for each trait.
+            In the event that additive genic variance is zero, NaN's are produced.
         """
         raise NotImplementedError("method is abstract")
 
     ############ methods for allele attributes #############
-    def facount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def facount(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Favorable allele count across all taxa.
 
@@ -488,7 +580,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def fafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def fafreq(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Favorable allele frequency across all taxa.
         
@@ -508,7 +605,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
     
-    def fafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def fafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Determine whether a favorable allele is fixed across all taxa.
         
@@ -528,7 +630,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def dacount(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def dacount(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Deleterious allele count across all taxa.
 
@@ -548,7 +655,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def dafreq(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def dafreq(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Deleterious allele frequency across all taxa.
         
@@ -568,7 +680,12 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
     
-    def dafixed(self, gmat: GenotypeMatrix, dtype: Union[numpy.dtype,None], **kwargs: dict) -> numpy.ndarray:
+    def dafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is fixed across all taxa.
         
@@ -589,7 +706,13 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############# methods for selection limits #############
-    def usl_numpy(self, p, ploidy, descale, **kwargs: dict):
+    def usl_numpy(
+            self, 
+            p: numpy.ndarray, 
+            ploidy: int, 
+            descale: bool, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the upper selection limit for a population.
 
@@ -605,6 +728,7 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            An array of shape (t,) containing upper selection limits for each of ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -631,12 +755,17 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing upper selection limits for each of
-            ``t`` traits.
+            An array of shape (t,) containing upper selection limits for each of ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl_numpy(self, p, ploidy, descale, **kwargs: dict):
+    def lsl_numpy(
+            self, 
+            p: numpy.ndarray, 
+            ploidy: int, 
+            descale: bool, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the lower selection limit for a population.
 
@@ -652,6 +781,7 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            An array of shape (t,) containing lower selection limits for each of ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -678,8 +808,7 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
-            An array of shape (t,) containing lower selection limits for each of
-            ``t`` traits.
+            An array of shape (t,) containing lower selection limits for each of ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -688,13 +817,13 @@ class GenomicModel(HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenomicModel(v: Any) -> bool:
+def is_GenomicModel(v: object) -> bool:
     """
     Determine whether an object is a GenomicModel.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -704,13 +833,13 @@ def is_GenomicModel(v: Any) -> bool:
     """
     return isinstance(v, GenomicModel)
 
-def check_is_GenomicModel(v: Any, vname: str) -> None:
+def check_is_GenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type GenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.
