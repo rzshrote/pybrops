@@ -608,7 +608,13 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def usl(self, gtobj, ploidy, descale, **kwargs: dict):
+    def usl(
+            self, 
+            gtobj: GenotypeMatrix, 
+            ploidy: int, 
+            descale: bool, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the upper selection limit for a population.
 
@@ -625,6 +631,8 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            An array of shape (t,) containing upper selection limits for each of
+            ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -647,7 +655,13 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    def lsl(self, gtobj, ploidy, descale, **kwargs: dict):
+    def lsl(
+            self, 
+            gtobj: GenotypeMatrix, 
+            ploidy: int, 
+            descale: bool, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Calculate the lower selection limit for a population.
 
@@ -664,6 +678,8 @@ class GenomicModel(HDF5InputOutput):
         Returns
         -------
         out : numpy.ndarray
+            An array of shape (t,) containing lower selection limits for each of
+            ``t`` traits.
         """
         raise NotImplementedError("method is abstract")
 

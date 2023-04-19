@@ -2,15 +2,17 @@
 Module containing haplotype calculation utility functions.
 """
 
+from numbers import Integral
 import numpy
 
 __all__ = [
-    "calc_nhaploblk_chrom", 
-    "calc_haplobin", 
-    "calc_haplobin_bounds"
+    "nhaploblk_chrom", 
+    "haplobin", 
+    "haplobin_bounds",
+    "haplomat"
 ]
 
-def calc_nhaploblk_chrom(
+def nhaploblk_chrom(
         nhaploblk: int, 
         genpos: numpy.ndarray, 
         chrgrp_stix: numpy.ndarray, 
@@ -88,7 +90,7 @@ def calc_nhaploblk_chrom(
 
     return nhaploblk_chrom
 
-def calc_haplobin(
+def haplobin(
         nhaploblk_chrom: numpy.ndarray, 
         genpos: numpy.ndarray, 
         chrgrp_stix: numpy.ndarray, 
@@ -179,7 +181,7 @@ def calc_haplobin(
 
     return haplobin
 
-def calc_haplobin_bounds(
+def haplobin_bounds(
         haplobin: numpy.ndarray
     ) -> tuple:
     """
@@ -227,3 +229,117 @@ def calc_haplobin_bounds(
     hlen = hspix - hstix                # get lengths of each haplotype group
 
     return hstix, hspix, hlen
+
+def haplomat(
+        nhaploblk: int,
+        genomemat: numpy.ndarray,
+        genpos: numpy.ndarray,
+        chrgrp_stix: numpy.ndarray,
+        chrgrp_spix: numpy.ndarray,
+        chrgrp_len: numpy.ndarray,
+        u_a: numpy.ndarray,
+    ) -> numpy.ndarray:
+    """
+    Calculate a haplotype matrix from a genome matrix and model.
+
+    Parameters
+    ----------
+    nhaploblk : Integral
+        Number of haplotype blocks
+    genomemat : numpy.ndarray
+        A genome matrix of shape ``(m,n,p)``.
+
+        Where:
+
+        - ``m`` is the number of chromsome phases.
+        - ``n`` is the number of individuals.
+        - ``p`` is the number of markers.
+    genpos : numpy.ndarray
+        Array of shape ``(p,)`` containing genetic positions of markers across
+        the genome.
+
+        Where:
+
+        - ``p`` is the number of markers.
+
+        Input contraints:
+
+        - Must be sorted in ascending order.
+        - Must be grouped based on chromosome. The chromosome boundary start
+          and stop indices must be provided in ``chrgrp_stix`` and
+          ``chrgrp_spix``, respectively.
+    chrgrp_stix : numpy.ndarray
+        Chromosome boundary start indices array of shape ``(c,)``.
+
+        Where:
+
+        - ``c`` is the number of chromosomes.
+    chrgrp_spix : numpy.ndarray
+        Chromosome boundary stop indices array of shape ``(c,)``.
+
+        Where:
+
+        - ``c`` is the number of chromosomes.
+    chrgrp_len : numpy.ndarray
+        Chromosome length array of shape ``(c,)``.
+
+        Where:
+
+        - ``c`` is the number of chromosomes.
+    u_a : numpy.ndarray
+        Array of shape ``(p,t)`` containing additive marker effect estimates.
+
+        Where:
+
+        - ``p`` is the number of markers.
+        - ``t`` is the number of traits.
+
+    Returns
+    -------
+    hmat : numpy.ndarray
+        A haplotype effect matrix of shape ``(m,n,b,t)``.
+
+        Where:
+
+        - ``m`` is the number of chromsome phases.
+        - ``n`` is the number of individuals.
+        - ``b`` is the number of haplotype blocks.
+        - ``t`` is the number of traits.
+    """
+    if (chrgrp_stix is None) or (chrgrp_spix is None):
+        raise RuntimeError("markers are not sorted by chromosome position")
+
+    # get number of chromosomes
+    nchr = len(chrgrp_stix)
+
+    if nhaploblk < nchr:
+        raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
+
+    # calculate number of marker blocks to assign to each chromosome
+    nblk = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
+
+    # ensure there are enough markers per chromosome
+    if numpy.any(nblk > chrgrp_len):
+        raise RuntimeError(
+            "number of haplotype blocks assigned to a chromosome greater than number of available markers"
+        )
+
+    # calculate haplotype bins
+    hbin = haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+
+    # define shape
+    s = (genomemat.shape[0], genomemat.shape[1], nhaploblk, u_a.shape[1]) # (m,n,b,t)
+
+    # allocate haplotype matrix
+    hmat = numpy.empty(s, dtype = u_a.dtype)   # (m,n,b,t)
+
+    # get boundary indices
+    hstix, hspix, hlen = haplobin_bounds(hbin)
+
+    # OPTIMIZE: perhaps eliminate one loop using dot function
+    # fill haplotype matrix
+    for i in range(hmat.shape[3]):                          # for each trait
+        for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
+            hmat[:,:,j,i] = genomemat[:,:,st:sp].dot(u_a[st:sp,i])  # take dot product and fill
+
+    return hmat

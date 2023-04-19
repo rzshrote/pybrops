@@ -10,7 +10,7 @@ __all__ = [
 
 # imports
 from abc import abstractmethod
-from numbers import Integral, Number
+from numbers import Integral, Real
 from typing import Callable, Iterable, Sequence, Tuple, Union
 import numpy
 import pymoo.core.problem
@@ -116,7 +116,7 @@ class Problem(pymoo.core.problem.Problem):
         """Lower boundary of the decision space."""
         return self._xl
     @xl.setter
-    def xl(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def xl(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         self._xl = value
     @xl.deleter
@@ -129,7 +129,7 @@ class Problem(pymoo.core.problem.Problem):
         """Upper boundary of the decision space."""
         return self._xu
     @xu.setter
-    def xu(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def xu(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         self._xu = value
     @xu.deleter
@@ -203,11 +203,11 @@ class Problem(pymoo.core.problem.Problem):
         del self._elementwise_runner
     
     @property
-    def replace_nan_values_by(self) -> Union[Number,None]:
+    def replace_nan_values_by(self) -> Union[Real,None]:
         """Value for which to replace NaN values."""
         return self._replace_nan_values_by
     @replace_nan_values_by.setter
-    def replace_nan_values_by(self, value: Union[Number,None]) -> None:
+    def replace_nan_values_by(self, value: Union[Real,None]) -> None:
         """Set value for which to replace NaN values."""
         self._replace_nan_values_by = value
     @replace_nan_values_by.deleter
@@ -301,7 +301,7 @@ class Problem(pymoo.core.problem.Problem):
         """Lower boundary of the decision space."""
         raise NotImplementedError("property is abstract")
     @decn_space_lower.setter
-    def decn_space_lower(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         raise NotImplementedError("property is abstract")
     @decn_space_lower.deleter
@@ -314,7 +314,7 @@ class Problem(pymoo.core.problem.Problem):
         """Upper boundary of the decision space."""
         raise NotImplementedError("property is abstract")
     @decn_space_upper.setter
-    def decn_space_upper(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         raise NotImplementedError("property is abstract")
     @decn_space_upper.deleter

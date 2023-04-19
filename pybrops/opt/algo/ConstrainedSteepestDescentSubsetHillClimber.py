@@ -24,7 +24,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
     ############################################################################
     def __init__(
             self,
-            rng: Union[Generator,RandomState] = global_prng, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
         ) -> None:
         """

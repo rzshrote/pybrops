@@ -4,8 +4,8 @@ Module partially implementing the SetSelectionProblem interface.
 
 # list of public objects in this module
 __all__ = [
-    "DenseSubsetSelectionProblem",
-    "check_is_DenseSubsetSelectionProblem"
+    "DenseRealSelectionProblem",
+    "check_is_DenseRealSelectionProblem"
 ]
 
 # imports
@@ -15,13 +15,13 @@ from typing import Callable, Iterable, Optional, Sequence, Union
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.opt.prob.DenseSubsetProblem import DenseSubsetProblem
+from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+from pybrops.opt.prob.DenseRealProblem import DenseRealProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,SubsetSelectionProblem):
+class DenseRealSelectionProblem(DenseRealProblem,DenseSelectionProblem,RealSelectionProblem):
     """
-    docstring for DenseSubsetSelectionProblem.
+    docstring for DenseRealSelectionProblem.
     """
 
     ############################################################################
@@ -57,7 +57,7 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseSubsetSelectionProblem.
+        Constructor for DenseRealSelectionProblem.
         
         Parameters
         ----------
@@ -126,8 +126,8 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
         """
-        # call the DenseSubsetProblem constructor
-        super(DenseSubsetSelectionProblem, self).__init__(
+        # call the DenseRealProblem constructor
+        super(DenseRealSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -180,9 +180,9 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseSubsetSelectionProblem(v: object, vname: str) -> None:
+def check_is_DenseRealSelectionProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type DenseSubsetSelectionProblem, otherwise raise TypeError.
+    Check if object is of type DenseRealSelectionProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -191,5 +191,5 @@ def check_is_DenseSubsetSelectionProblem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, DenseSubsetSelectionProblem):
-        raise TypeError("'{0}' must be of type DenseSubsetSelectionProblem.".format(vname))
+    if not isinstance(v, DenseRealSelectionProblem):
+        raise TypeError("'{0}' must be of type DenseRealSelectionProblem.".format(vname))

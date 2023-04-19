@@ -1,27 +1,19 @@
 """
-Module partially implementing the SetSelectionProblem interface.
+Module implementing conventional genomic selection as a subset optimization problem.
 """
 
-# list of public objects in this module
-__all__ = [
-    "DenseSubsetSelectionProblem",
-    "check_is_DenseSubsetSelectionProblem"
-]
-
-# imports
-import numpy
 from numbers import Integral, Real
-from typing import Callable, Iterable, Optional, Sequence, Union
+from typing import Callable, Optional, Union
+
+import numpy
+from pybrops.breed.prot.sel.prob.DenseSubsetSelectionProblem import DenseSubsetSelectionProblem
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
-from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.opt.prob.DenseSubsetProblem import DenseSubsetProblem
-
-# inheritance ordering is important here to avoid circular dependency/method resolution issues
-class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,SubsetSelectionProblem):
+class SubsetOptimalPopulationValueSelectionProblem(DenseSubsetSelectionProblem):
     """
-    docstring for DenseSubsetSelectionProblem.
+    docstring for SubsetOptimalPopulationValueSelectionProblem.
     """
 
     ############################################################################
@@ -29,6 +21,7 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
     ############################################################################
     def __init__(
             self,
+            haplomat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -45,22 +38,22 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
-            vtype: Optional[type] = None,
-            vars: Optional[Sequence] = None,
-            elementwise: bool = True,
-            elementwise_func: type = ElementwiseEvaluationFunction,
-            elementwise_runner: Callable = LoopedElementwiseEvaluation(),
-            replace_nan_values_by: Optional[Real] = None,
-            exclude_from_serialization: Optional[Iterable] = None,
-            callback: Optional[Callable] = None,
-            strict: bool = True,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseSubsetSelectionProblem.
+        Constructor for SubsetOptimalPopulationValueSelectionProblem.
         
         Parameters
         ----------
+        haplomat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
+
+            Where:
+
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
+            - ``t`` is the number of traits.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -107,89 +100,91 @@ class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,Subse
         eqcv_trans_kwargs: dict, None
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
-        vtype: type, None
-            The variable type. So far, just used as a type hint. See PyMOO documentation.
-        vars: Sequence, None
-            Variables provided in their explicit form. See PyMOO documentation.
-        elementwise: bool
-            Whether the evaluation function should be run elementwise. See PyMOO documentation.
-        elementwise_func: type
-            A class that creates the function that evaluates a single individual. See PyMOO documentation.
-        elementwise_runner: Callable
-            A function that runs the function that evaluates a single individual. See PyMOO documentation.
-        replace_nan_values_by: Number, None
-            Value for which to replace NaN values. See PyMOO documentation.
-        exclude_from_serialization: Iterable, None
-            Attributes which are excluded from being serialized. See PyMOO documentation.
-        callback: Callable, None
-            A callback function to be called after every evaluation. See PyMOO documentation.
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
+            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
         """
-        # call the DenseSubsetProblem constructor
-        super(DenseSubsetSelectionProblem, self).__init__(
+        super(SubsetOptimalPopulationValueSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
             nobj = nobj,
             obj_wt = obj_wt,
-            obj_trans = obj_trans, # somehow required??? TODO: understand why
-            obj_trans_kwargs = obj_trans_kwargs, # somehow required??? TODO: understand why
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
             nineqcv = nineqcv,
             ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans, # somehow required??? TODO: understand why
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs, # somehow required??? TODO: understand why
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
             neqcv = neqcv,
             eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans, # somehow required??? TODO: understand why
-            eqcv_trans_kwargs = eqcv_trans_kwargs, # somehow required??? TODO: understand why
-            vtype = vtype,
-            vars = vars,
-            elementwise = elementwise,
-            elementwise_func = elementwise_func,
-            elementwise_runner = elementwise_runner,
-            replace_nan_values_by = replace_nan_values_by,
-            exclude_from_serialization = exclude_from_serialization,
-            callback = callback,
-            strict = strict,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            elementwise = True,
+            elementwise_func = ElementwiseEvaluationFunction,
+            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
-        # make assignments
-        self.obj_trans = obj_trans
-        self.obj_trans_kwargs = obj_trans_kwargs
-        self.ineqcv_trans = ineqcv_trans
-        self.ineqcv_trans_kwargs = ineqcv_trans_kwargs
-        self.eqcv_trans = eqcv_trans
-        self.eqcv_trans_kwargs = eqcv_trans_kwargs
+        # assignments
+        self.haplomat = haplomat
 
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    # leave nlatent property abstract
+    @property
+    def nlatent(self) -> Integral:
+        """Number of latent variables."""
+        # return number of traits in GEBV matrix
+        return self._haplomat.shape[3]
+
+    @property
+    def haplomat(self) -> numpy.ndarray:
+        """Haplotype effect matrix of shape ``(m,n,b,t)``."""
+        return self._haplomat
+    @haplomat.setter
+    def haplomat(self, value: numpy.ndarray) -> None:
+        """Set haplotype effect matrix values."""
+        check_is_ndarray(value, "gebv")
+        check_ndarray_ndim(value, "gebv", 4)
+        self._haplomat = value
+    @haplomat.deleter
+    def haplomat(self) -> None:
+        """Delete haplotype effect matrix values."""
+        del self._haplomat
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    # leave latentfn abstract
-    # evalfn defined by DenseSelectionProblem
-    # _evaluate defined by DenseSelectionProblem
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Score a population of individuals based on Optimal Population Value
+        Selection.
 
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(ndecn,)``.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An OPV matrix of shape ``(t,)``.
 
+            Where:
 
-################################################################################
-################################## Utilities ###################################
-################################################################################
-def check_is_DenseSubsetSelectionProblem(v: object, vname: str) -> None:
-    """
-    Check if object is of type DenseSubsetSelectionProblem, otherwise raise TypeError.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, DenseSubsetSelectionProblem):
-        raise TypeError("'{0}' must be of type DenseSubsetSelectionProblem.".format(vname))
+            - ``t`` is the number of traits.
+        """
+        # get max haplotype value
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+        # (h,t).sum(0) -> (t,)
+        return self._haplomat[:,x,:,:].max((0,1)).sum(0)

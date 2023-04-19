@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral, Number
+from numbers import Integral, Real
 from typing import Callable, Iterable, Optional, Sequence, Tuple, Union
 import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
@@ -31,26 +31,26 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
             self,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Number,None],
-            decn_space_upper: Union[numpy.ndarray,Number,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
             vtype: Optional[type] = None,
             vars: Optional[Sequence] = None,
             elementwise: bool = True,
             elementwise_func: type = ElementwiseEvaluationFunction,
             elementwise_runner: Callable = LoopedElementwiseEvaluation(),
-            replace_nan_values_by: Optional[Number] = None,
+            replace_nan_values_by: Optional[Real] = None,
             exclude_from_serialization: Optional[Iterable] = None,
             callback: Optional[Callable] = None,
             strict: bool = True,
@@ -66,13 +66,13 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
         decn_space: numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Number, None
+        decn_space_lower: numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Number, None
+        decn_space_upper: numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
         nobj: Integral
             Number of objectives.
@@ -117,7 +117,7 @@ class DenseSelectionProblem(DenseProblem,SelectionProblem):
             A class that creates the function that evaluates a single individual. See PyMOO documentation.
         elementwise_runner: Callable
             A function that runs the function that evaluates a single individual. See PyMOO documentation.
-        replace_nan_values_by: Number, None
+        replace_nan_values_by: Real, None
             Value for which to replace NaN values. See PyMOO documentation.
         exclude_from_serialization: Iterable, None
             Attributes which are excluded from being serialized. See PyMOO documentation.

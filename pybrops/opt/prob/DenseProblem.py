@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral, Number
+from numbers import Integral, Real
 from typing import Callable, Container, Iterable, Optional, Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -31,20 +31,20 @@ class DenseProblem(Problem):
             self,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Number,None],
-            decn_space_upper: Union[numpy.ndarray,Number,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
-            obj_wt: Union[numpy.ndarray,Number],
-            nineqcv: Integral,
-            ineqcv_wt: Union[numpy.ndarray,Number],
-            neqcv: Integral,
-            eqcv_wt: Union[numpy.ndarray,Number],
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             vtype: Optional[type] = None,
             vars: Optional[Container] = None,
             elementwise: bool = True,
             elementwise_func: type = ElementwiseEvaluationFunction,
             elementwise_runner: Callable = LoopedElementwiseEvaluation(),
-            replace_nan_values_by: Optional[Number] = None,
+            replace_nan_values_by: Optional[Real] = None,
             exclude_from_serialization: Optional[Iterable] = None,
             callback: Optional[Callable] = None,
             strict: bool = True,
@@ -118,8 +118,7 @@ class DenseProblem(Problem):
     @n_var.setter
     def n_var(self, value: Integral) -> None:
         """Set number of decision variables."""
-        if not isinstance(value, Integral):
-            raise TypeError("'n_var' must be an Integral type")
+        check_is_Integral(value, "n_var")
         self._n_var = value
         self._ndecn = value # set ndecn too; used for easy separation from PyMOO
     @n_var.deleter
@@ -148,8 +147,10 @@ class DenseProblem(Problem):
         """Number of inequality constraints."""
         return self._n_ieq_constr
     @n_ieq_constr.setter
-    def n_ieq_constr(self, value: Integral) -> None:
+    def n_ieq_constr(self, value: Union[Integral,None]) -> None:
         """Set number of inequality constraints."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "n_ieq_constr")
         check_is_gteq(value, "n_ieq_constr", 0)
         self._n_ieq_constr = value
@@ -164,8 +165,10 @@ class DenseProblem(Problem):
         """n_eq_constr."""
         return self._n_eq_constr
     @n_eq_constr.setter
-    def n_eq_constr(self, value: Integral) -> None:
+    def n_eq_constr(self, value: Union[Integral,None]) -> None:
         """Set n_eq_constr."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "n_eq_constr")
         check_is_gteq(value, "n_eq_constr", 0)
         self._n_eq_constr = value
@@ -180,16 +183,16 @@ class DenseProblem(Problem):
         """Lower boundary of the decision space."""
         return self._xl
     @xl.setter
-    def xl(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def xl(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.n_var)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.n_var)
         elif value is None:
             pass
         else:
-            raise TypeError("'xl' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'xl' must be of type numpy.ndarray, Real, or None")
         self._xl = value
         self._decn_space_lower = value
     @xl.deleter
@@ -198,20 +201,20 @@ class DenseProblem(Problem):
         del self._xl
     
     @property
-    def xu(self) -> Union[numpy.ndarray,Number,None]:
+    def xu(self) -> Union[numpy.ndarray,None]:
         """Upper boundary of the decision space."""
         return self._xu
     @xu.setter
-    def xu(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def xu(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.n_var)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.n_var)
         elif value is None:
             pass
         else:
-            raise TypeError("'xu' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'xu' must be of type numpy.ndarray, Real, or None")
         self._xu = value
         self._decn_space_upper = value
     @xu.deleter
@@ -296,14 +299,14 @@ class DenseProblem(Problem):
         del self._elementwise_runner
     
     @property
-    def replace_nan_values_by(self) -> Union[Number,None]:
+    def replace_nan_values_by(self) -> Union[Real,None]:
         """replace_nan_values_by."""
         return self._replace_nan_values_by
     @replace_nan_values_by.setter
-    def replace_nan_values_by(self, value: Union[Number,None]) -> None:
+    def replace_nan_values_by(self, value: Union[Real,None]) -> None:
         """Set replace_nan_values_by."""
-        if (not isinstance(value, Number)) and (value is not None):
-            raise TypeError("'replace_nan_values_by' must be a Number type")
+        if (not isinstance(value, Real)) and (value is not None):
+            raise TypeError("'replace_nan_values_by' must be a Real type")
         self._replace_nan_values_by = value
     @replace_nan_values_by.deleter
     def replace_nan_values_by(self) -> None:
@@ -413,16 +416,16 @@ class DenseProblem(Problem):
         """Lower boundary of the decision space."""
         return self._decn_space_lower
     @decn_space_lower.setter
-    def decn_space_lower(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.ndecn)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
             pass
         else:
-            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, Real, or None")
         self._decn_space_lower = value
         self._xl = value
     @decn_space_lower.deleter
@@ -435,16 +438,16 @@ class DenseProblem(Problem):
         """Upper boundary of the decision space."""
         return self._decn_space_upper
     @decn_space_upper.setter
-    def decn_space_upper(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.ndecn)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
             pass
         else:
-            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Real, or None")
         self._decn_space_upper = value
         self._xu = value
     @decn_space_upper.deleter
@@ -473,15 +476,17 @@ class DenseProblem(Problem):
         """Objective function weights."""
         return self._obj_wt
     @obj_wt.setter
-    def obj_wt(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def obj_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set objective function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_is_1d(value, "obj_wt")
             check_ndarray_len_eq(value, "obj_wt", self.nobj)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.nobj)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nobj)
         else:
-            raise TypeError("'obj_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'obj_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._obj_wt = value
     @obj_wt.deleter
     def obj_wt(self) -> None:
@@ -493,8 +498,10 @@ class DenseProblem(Problem):
         """Number of inequality constraint violation functions."""
         return self._nineqcv
     @nineqcv.setter
-    def nineqcv(self, value: Integral) -> None:
+    def nineqcv(self, value: Union[Integral,None]) -> None:
         """Set number of inequality constraint violation functions."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "nineqcv")
         check_is_gteq(value, "nineqcv", 0)  # possible to have 0 inequality constraints
         self._nineqcv = value
@@ -509,15 +516,17 @@ class DenseProblem(Problem):
         """Inequality constraint violation function weights."""
         return self._ineqcv_wt
     @ineqcv_wt.setter
-    def ineqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
+    def ineqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set inequality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_is_1d(value, "ineqcv_wt")
             check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.nineqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nineqcv)
         else:
-            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._ineqcv_wt = value
     @ineqcv_wt.deleter
     def ineqcv_wt(self) -> None:
@@ -529,8 +538,10 @@ class DenseProblem(Problem):
         """Number of equality constraint violations."""
         return self._neqcv
     @neqcv.setter
-    def neqcv(self, value: Integral) -> None:
+    def neqcv(self, value: Union[Integral,None]) -> None:
         """Set number of equality constraint violations."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "neqcv")
         check_is_gteq(value, "neqcv", 0)    # possible to have 0 equality constraints
         self._neqcv = value
@@ -545,15 +556,17 @@ class DenseProblem(Problem):
         """Equality constraint violation function weights."""
         return self._eqcv_wt
     @eqcv_wt.setter
-    def eqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
+    def eqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set equality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_is_1d(value, "eqcv_wt")
             check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.neqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.neqcv)
         else:
-            raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'eqcv_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._eqcv_wt = value
     @eqcv_wt.deleter
     def eqcv_wt(self) -> None:

@@ -1,34 +1,28 @@
-"""
-Module implementing generalized weighted genomic selection protocols.
-"""
-
-from numbers import Integral, Number, Real
+from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.DenseConstrainedSelectionProtocol import DenseConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetGeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
-from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
+from pybrops.breed.prot.sel.prob.SubsetOptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_eq
-from pybrops.core.error.error_value_python import check_Number_in_interval, check_is_gt, check_is_gteq
-from pybrops.core.random import global_prng
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.util.haplo import haplomat
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionProtocol):
+class ConstrainedOptimalPopulationValueSelection(DenseConstrainedSelectionProtocol):
     """
-    docstring for ConstrainedGeneralizedWeightedGenomicSelection.
+    docstring for ConstrainedOptimalPopulationValueSelection.
     """
 
     ############################################################################
@@ -38,38 +32,38 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             self,
             nparent: Integral, 
             ncross: Integral, 
-            nprogeny: Integral,
-            alpha: Real,
+            nprogeny: Integral, 
+            nhaploblk: Integral,
             method: str,
             nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            ndset_wt: Optional[Real] = None,
-            ndset_trans: Optional[Callable] = None, 
-            ndset_trans_kwargs: Optional[dict] = None, 
-            rng: Union[Generator,RandomState] = global_prng, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            obj_wt: Optional[numpy.ndarray],
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            obj_trans_kwargs: Optional[dict],
+            nineqcv: Optional[Integral],
+            ineqcv_wt: Optional[numpy.ndarray],
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            ineqcv_trans_kwargs: Optional[dict],
+            neqcv: Optional[Integral],
+            eqcv_wt: Optional[numpy.ndarray],
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            eqcv_trans_kwargs: Optional[dict],
+            ndset_wt: Optional[Real],
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]], 
+            ndset_trans_kwargs: Optional[dict], 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for ConstrainedGeneralizedWeightedGenomicSelection.
+        Constructor for ConstrainedOptimalPopulationValueSelection.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(ConstrainedGeneralizedWeightedGenomicSelection, self).__init__(
+        super(ConstrainedOptimalPopulationValueSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -88,12 +82,11 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             ndset_trans_kwargs = ndset_trans_kwargs, 
             **kwargs
         )
-
-        # make value assignments (order dependent)
+        # assignments
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.alpha = alpha
+        self.nhaploblk = nhaploblk
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
@@ -102,11 +95,11 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
     ############################ Object Properties #############################
     ############################################################################
     @property
-    def nparent(self) -> Integral:
+    def nparent(self) -> int:
         """Number of parents to select."""
         return self._nparent
     @nparent.setter
-    def nparent(self, value: Integral) -> None:
+    def nparent(self, value: int) -> None:
         """Set number of parents to select."""
         check_is_Integral(value, "nparent") # must be integer
         check_is_gt(value, "nparent", 0)    # integer must be >0
@@ -117,11 +110,11 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         del self._nparent
 
     @property
-    def ncross(self) -> Integral:
+    def ncross(self) -> int:
         """Number of crosses per configuration."""
         return self._ncross
     @ncross.setter
-    def ncross(self, value: Integral) -> None:
+    def ncross(self, value: int) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")  # must be integer
         check_is_gt(value, "ncross", 0)     # integer must be >0
@@ -132,11 +125,11 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         del self._ncross
 
     @property
-    def nprogeny(self) -> Integral:
+    def nprogeny(self) -> int:
         """Number of progeny to derive from each cross configuration."""
         return self._nprogeny
     @nprogeny.setter
-    def nprogeny(self, value: Integral) -> None:
+    def nprogeny(self, value: int) -> None:
         """Set number of progeny to derive from each cross configuration."""
         check_is_Integral(value, "nprogeny")    # must be integer
         check_is_gt(value, "nprogeny", 0)       # integer must be >0
@@ -147,26 +140,26 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         del self._nprogeny
 
     @property
-    def alpha(self) -> Real:
-        """Exponent to which to raise the favorable allele frequency. Must be in the range [0,1]."""
-        return self._alpha
-    @alpha.setter
-    def alpha(self, value: Real) -> None:
-        """Set exponent to which to raise the favorable allele frequency."""
-        check_is_Real(value, "alpha")
-        check_Number_in_interval(value, "alpha", 0, 1)
-        self._alpha = value
-    @alpha.deleter
-    def alpha(self) -> None:
-        """Delete exponent to which to raise the favorable allele frequency."""
-        del self._alpha
+    def nhaploblk(self) -> Integral:
+        """nhaploblk."""
+        return self._nhaploblk
+    @nhaploblk.setter
+    def nhaploblk(self, value: Integral) -> None:
+        """Set nhaploblk."""
+        check_is_Integral(value, "nhaploblk")
+        check_is_gt(value, "nhaploblk", 0)
+        self._nhaploblk = value
+    @nhaploblk.deleter
+    def nhaploblk(self) -> None:
+        """Delete nhaploblk."""
+        del self._nhaploblk
 
     @property
     def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[Generator,RandomState]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator source."""
         if value is None:
             value = global_prng
@@ -184,11 +177,9 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
     @soalgo.setter
     def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
+        # if None, construct default hillclimber
         if value is None:
-            # construct default hillclimber
-            value = ConstrainedSteepestDescentSubsetHillClimber(
-                self.rng
-            )
+            value = ConstrainedSteepestDescentSubsetHillClimber(rng = self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
@@ -203,8 +194,8 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
     @moalgo.setter
     def moalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
+        # If None, construct default multi-objective algorithm
         if value is None:
-            # construct default multi-objective algorithm
             value = ConstrainedNSGA2SubsetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100, # number of parents in population
@@ -216,7 +207,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
     def moalgo(self) -> None:
         """Delete multi-objective opimization algorithm."""
         del self._moalgo
-
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -262,19 +252,27 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             An optimization problem definition.
         """
         # get number of individuals
-        ntaxa = gmat.ntaxa
+        ntaxa = pgmat.ntaxa
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
         decn_space_lower = numpy.repeat(0, ntaxa)
         decn_space_upper = numpy.repeat(ntaxa-1, ntaxa)
 
+        # calculate haplotype block values
+        hmat = haplomat(
+            nhaploblk = self.nhaploblk,
+            genomemat = pgmat.mat,
+            genpos = pgmat.vrnt_genpos,
+            chrgrp_stix = pgmat.vrnt_chrgrp_stix,
+            chrgrp_spix = pgmat.vrnt_chrgrp_spix,
+            chrgrp_len = pgmat.vrnt_chrgrp_len,
+            u_a = gpmod.u_a
+        )
+
         # construct problem
-        prob = SubsetGeneralizedWeightedGenomicSelectionProblem(
-            Z_a = gmat.mat,
-            u_a = gpmod.u_a,
-            fafreq = gpmod.fafreq(gmat),
-            alpha = self.alpha,
+        prob = SubsetOptimalPopulationValueSelectionProblem(
+            haplomat = hmat,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

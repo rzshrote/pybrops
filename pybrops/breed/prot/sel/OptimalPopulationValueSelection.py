@@ -7,7 +7,6 @@ import numpy
 import types
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 
-import pybrops.core.random
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -18,9 +17,9 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
-from pybrops.core.util.haplo import calc_nhaploblk_chrom
-from pybrops.core.util.haplo import calc_haplobin
-from pybrops.core.util.haplo import calc_haplobin_bounds
+from pybrops.core.util.haplo import nhaploblk_chrom
+from pybrops.core.util.haplo import haplobin
+from pybrops.core.util.haplo import haplobin_bounds
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
@@ -353,7 +352,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
 
         # calculate number of marker blocks to assign to each chromosome
-        nblk = calc_nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
+        nblk = nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # ensure there are enough markers per chromosome
         if numpy.any(nblk > chrgrp_len):
@@ -362,7 +361,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
             )
 
         # calculate haplotype bins
-        hbin = calc_haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+        hbin = haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # define shape
         s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1]) # (m,n,b,t)
@@ -371,7 +370,7 @@ class OptimalPopulationValueSelection(SelectionProtocol):
         hmat = numpy.empty(s, dtype = u.dtype)   # (m,n,b,t)
 
         # get boundary indices
-        hstix, hspix, hlen = calc_haplobin_bounds(hbin)
+        hstix, hspix, hlen = haplobin_bounds(hbin)
 
         # OPTIMIZE: perhaps eliminate one loop using dot function
         # fill haplotype matrix

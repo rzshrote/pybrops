@@ -1,9 +1,9 @@
 import pytest
 import numpy
 
-from pybrops.core.util.haplo import calc_nhaploblk_chrom
-from pybrops.core.util.haplo import calc_haplobin
-from pybrops.core.util.haplo import calc_haplobin_bounds
+from pybrops.core.util.haplo import nhaploblk_chrom
+from pybrops.core.util.haplo import haplobin
+from pybrops.core.util.haplo import haplobin_bounds
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -93,21 +93,21 @@ def hlen_long():
 ############################ Test module functions #############################
 ################################################################################
 def test_calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix, nhaploblk_chrom):
-    out = calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
+    out = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
     assert numpy.all(out == nhaploblk_chrom)
 
 def test_calc_haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix, haplobin):
-    out = calc_haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix)
+    out = haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix)
     assert numpy.all(out == haplobin)
 
 def test_calc_haplobin_bounds(haplobin, hstix, hspix, hlen):
-    out = calc_haplobin_bounds(haplobin)
+    out = haplobin_bounds(haplobin)
     assert numpy.all(out[0] == hstix)
     assert numpy.all(out[1] == hspix)
     assert numpy.all(out[2] == hlen)
 
 def test_calc_haplobin_bounds_long(haplobin_long, hstix_long, hspix_long, hlen_long):
-    out = calc_haplobin_bounds(haplobin_long)
+    out = haplobin_bounds(haplobin_long)
     assert numpy.all(out[0] == hstix_long)
     assert numpy.all(out[1] == hspix_long)
     assert numpy.all(out[2] == hlen_long)

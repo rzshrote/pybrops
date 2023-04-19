@@ -1,0 +1,263 @@
+from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
+import numpy
+from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
+from pybrops.breed.prot.sel.prob.DenseRealSelectionProblem import DenseRealSelectionProblem
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+
+
+class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelectionProblem):
+    """
+    docstring for RealLookAheadGeneralizedWeightedGenomicSelectionProblem.
+    """
+
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    def __init__(
+            self,
+            fndr_pgmat: PhasedGenotypeMatrix,
+            fndr_algmod: AdditiveLinearGenomicModel,
+            mtprot: MatingProtocol,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nsimul: Integral,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for RealLookAheadGeneralizedWeightedGenomicSelectionProblem.
+        
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments used for cooperative inheritance.
+        """
+        super(RealLookAheadGeneralizedWeightedGenomicSelectionProblem, self).__init__(
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+        # assignments
+        self.fndr_pgmat = fndr_pgmat
+        self.fndr_algmod = fndr_algmod
+        self.mtprot = mtprot
+        self.nparent = nparent
+        self.ncross = ncross
+        self.nprogeny = nprogeny
+        self.nsimul = nsimul
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    @property
+    def nlatent(self) -> Integral:
+        """Number of latent variables."""
+        return 2
+
+    @property
+    def fndr_pgmat(self) -> PhasedGenotypeMatrix:
+        """Founder genotypes."""
+        return self._fndr_pgmat
+    @fndr_pgmat.setter
+    def fndr_pgmat(self, value: PhasedGenotypeMatrix) -> None:
+        """Set founder genotypes."""
+        check_is_PhasedGenotypeMatrix(value, "fndr_pgmat")
+        self._fndr_pgmat = value
+    @fndr_pgmat.deleter
+    def fndr_pgmat(self) -> None:
+        """Delete founder genotypes."""
+        del self._fndr_pgmat
+    
+    @property
+    def fndr_algmod(self) -> AdditiveLinearGenomicModel:
+        """Founder genomic prediction model."""
+        return self._fndr_algmod
+    @fndr_algmod.setter
+    def fndr_algmod(self, value: AdditiveLinearGenomicModel) -> None:
+        """Set founder genomic prediction model."""
+        check_is_AdditiveLinearGenomicModel(value, "fndr_algmod")
+        if value.ntrait > 1:
+            raise ValueError("Selection method does not support >1 traits")
+        self._fndr_algmod = value
+    @fndr_algmod.deleter
+    def fndr_algmod(self) -> None:
+        """Delete founder genomic prediction model."""
+        del self._fndr_algmod
+    
+    @property
+    def mtprot(self) -> MatingProtocol:
+        """mtprot."""
+        return self._mtprot
+    @mtprot.setter
+    def mtprot(self, value: MatingProtocol) -> None:
+        """Set mtprot."""
+        check_is_MatingProtocol(value, "mtprot")
+        self._mtprot = value
+    @mtprot.deleter
+    def mtprot(self) -> None:
+        """Delete mtprot."""
+        del self._mtprot
+    
+    @property
+    def nparent(self) -> Integral:
+        """nparent."""
+        return self._nparent
+    @nparent.setter
+    def nparent(self, value: Integral) -> None:
+        """Set nparent."""
+        check_is_Integral(value, "nparent")
+        self._nparent = value
+    @nparent.deleter
+    def nparent(self) -> None:
+        """Delete nparent."""
+        del self._nparent
+    
+    @property
+    def ncross(self) -> Integral:
+        """ncross."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: Integral) -> None:
+        """Set ncross."""
+        check_is_Integral(value, "ncross")
+        self._ncross = value
+    @ncross.deleter
+    def ncross(self) -> None:
+        """Delete ncross."""
+        del self._ncross
+    
+    @property
+    def nprogeny(self) -> Integral:
+        """nprogeny."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: Integral) -> None:
+        """Set nprogeny."""
+        check_is_Integral(value, "nprogeny")
+        self._nprogeny = value
+    @nprogeny.deleter
+    def nprogeny(self) -> None:
+        """Delete nprogeny."""
+        del self._nprogeny
+    
+    @property
+    def nsimul(self) -> Integral:
+        """Number of simulations to evaluate a candidate solution."""
+        return self._nsimul
+    @nsimul.setter
+    def nsimul(self, value: Integral) -> None:
+        """Set number of simulations to evaluate a candidate solution."""
+        self._nsimul = value
+    @nsimul.deleter
+    def nsimul(self) -> None:
+        """Delete number of simulations to evaluate a candidate solution."""
+        del self._nsimul
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
+        Genomic Estimated Breeding Values (GEBV) for a population.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(ndecn,)``.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A GEBV matrix of shape ``(t,)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+        """
+        # declare accumulators
+        gain = 0.0
+        usl = 0.0
+        # run simulations
+        for _ in range(self.nsimul):
+            # gather some constants for quick access
+            mtprot = self.mtprot
+            nparent = self.nparent
+            ncross = self.ncross
+            nprogeny = self.nprogeny
+            pgmat = self.fndr_pgmat
+            algmod = self.fndr_algmod
+            # for each alpha value
+            for alpha in x:
+                # gentotype matrix (n,p)
+                Z_a = pgmat.mat_asformat("{0,1,2}")
+                # favorable allele frequency (p,t)
+                fafreq = algmod.fafreq(pgmat)
+                # calculate wGEBVs (n,t)
+                wgebv = Z_a.dot(algmod.u_a * numpy.power(fafreq, -alpha))
+                # take sum across trait (n,)
+                wgebv = wgebv.sum(1)
+                # find best parents
+                sel = wgebv.argsort()[::-1][:nparent]
+                # randomly shuffle indices
+                numpy.random.shuffle(sel)
+                # mate individuals and create progenies
+                pgmat = mtprot.mate(pgmat, sel, ncross, nprogeny, None)
+            # calculate breeding values
+            gebvs = algmod.gebv(pgmat)
+            # descale breeding values (n,)
+            gebvs = gebvs.descale().sum(1)
+            # calculate gain (mean pop)
+            gain += gebvs.mean()
+            # calculate upper selection limit (t,) -> scalar
+            usl += algmod.usl(pgmat, descale = True).sum()
+        # take divide by number of simulations
+        gain /= self.nsimul
+        usl /= self.nsimul
+        # create output
+        out = numpy.array([gain, usl], dtype = float)
+        return out
