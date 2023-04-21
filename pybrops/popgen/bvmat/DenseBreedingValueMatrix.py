@@ -65,7 +65,11 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            A float64 matrix of breeding values of shape ``(n,t)``.
+            An array of breeding values of shape ``(n,t)``.
+            It is the responsibility of the user to ensure that the means and 
+            standard deviations of this array along the ``taxa`` axis are 0 and
+            1, respectively, if the breeding values are with respect to the
+            individuals in the breeding value matrix.
         location : numpy.ndarray
             A numpy.ndarray of shape ``(t,)`` containing breeding value locations.
         scale : numpy.ndarray
@@ -164,8 +168,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         """Set raw matrix"""
         check_is_ndarray(value, "mat")
         check_ndarray_ndim(value, "mat", 2)
-        check_ndarray_mean_is_approx(value, "mat", 0.0, self.taxa_axis)
-        check_ndarray_std_is_approx(value, "mat", 1.0, self.taxa_axis)
+        # check_ndarray_mean_is_approx(value, "mat", 0.0, self.taxa_axis)
+        # check_ndarray_std_is_approx(value, "mat", 1.0, self.taxa_axis)
         self._mat = value
 
     @property

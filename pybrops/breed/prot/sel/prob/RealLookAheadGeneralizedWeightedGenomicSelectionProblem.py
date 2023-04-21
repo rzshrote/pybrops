@@ -219,24 +219,26 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
 
             - ``t`` is the number of traits.
         """
+        # gather some constants for quick access
+        mtprot = self.mtprot
+        nparent = self.nparent
+        ncross = self.ncross
+        nprogeny = self.nprogeny
+        pgmat = self.fndr_pgmat
+        algmod = self.fndr_algmod
         # declare accumulators
         gain = 0.0
         usl = 0.0
         # run simulations
         for _ in range(self.nsimul):
-            # gather some constants for quick access
-            mtprot = self.mtprot
-            nparent = self.nparent
-            ncross = self.ncross
-            nprogeny = self.nprogeny
-            pgmat = self.fndr_pgmat
-            algmod = self.fndr_algmod
             # for each alpha value
             for alpha in x:
                 # gentotype matrix (n,p)
                 Z_a = pgmat.mat_asformat("{0,1,2}")
                 # favorable allele frequency (p,t)
                 fafreq = algmod.fafreq(pgmat)
+                # prevent division by zero for fixed alleles
+                fafreq[fafreq <= 0] = 1
                 # calculate wGEBVs (n,t)
                 wgebv = Z_a.dot(algmod.u_a * numpy.power(fafreq, -alpha))
                 # take sum across trait (n,)
@@ -247,17 +249,13 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
                 numpy.random.shuffle(sel)
                 # mate individuals and create progenies
                 pgmat = mtprot.mate(pgmat, sel, ncross, nprogeny, None)
-            # calculate breeding values
-            gebvs = algmod.gebv(pgmat)
-            # descale breeding values (n,)
-            gebvs = gebvs.descale().sum(1)
-            # calculate gain (mean pop)
-            gain += gebvs.mean()
+            # calculate genetic gain
+            gain += algmod.gebv(pgmat).descale().sum(1).mean()
             # calculate upper selection limit (t,) -> scalar
             usl += algmod.usl(pgmat, descale = True).sum()
         # take divide by number of simulations
         gain /= self.nsimul
         usl /= self.nsimul
-        # create output
-        out = numpy.array([gain, usl], dtype = float)
+        # create output as minimizing objectives
+        out = numpy.array([-gain, -usl], dtype = float)
         return out

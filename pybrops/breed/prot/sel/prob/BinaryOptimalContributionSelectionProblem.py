@@ -2,9 +2,8 @@
 Module defining optimization problems for binary optimal constribution selection.
 """
 
-from ast import Tuple
 from numbers import Integral
-from typing import Callable
+from typing import Callable, Tuple
 
 import numpy
 from pybrops.breed.prot.sel.prob.DenseSubsetSelectionProblem import DenseSubsetSelectionProblem
