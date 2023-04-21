@@ -226,6 +226,8 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
         nprogeny = self.nprogeny
         pgmat = self.fndr_pgmat
         algmod = self.fndr_algmod
+        u_a = algmod.u_a
+        ploidy = self.fndr_pgmat.ploidy
         # declare accumulators
         gain = 0.0
         usl = 0.0
@@ -240,7 +242,7 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
                 # prevent division by zero for fixed alleles
                 fafreq[fafreq <= 0] = 1
                 # calculate wGEBVs (n,t)
-                wgebv = Z_a.dot(algmod.u_a * numpy.power(fafreq, -alpha))
+                wgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
                 # take sum across trait (n,)
                 wgebv = wgebv.sum(1)
                 # find best parents
@@ -249,10 +251,16 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
                 numpy.random.shuffle(sel)
                 # mate individuals and create progenies
                 pgmat = mtprot.mate(pgmat, sel, ncross, nprogeny, None)
-            # calculate genetic gain
-            gain += algmod.gebv(pgmat).descale().sum(1).mean()
-            # calculate upper selection limit (t,) -> scalar
-            usl += algmod.usl(pgmat, descale = True).sum()
+            # gentotype matrix (n,p)
+            Z_a = pgmat.mat_asformat("{0,1,2}")
+            # calculate mean GEBV and accumulate
+            gain += (Z_a.dot(u_a)).sum(1).mean()
+            # calculate the allele frequency (p,1)
+            afreq = pgmat.afreq()[:,None]
+            # get maximum attainable genotype (p,t)
+            uslgeno = numpy.where(u_a > 0.0, afreq > 0.0, afreq >= 1.0)
+            # calculate upper selection limit and accumulate
+            usl += (float(ploidy) * u_a * uslgeno).sum()
         # take divide by number of simulations
         gain /= self.nsimul
         usl /= self.nsimul
