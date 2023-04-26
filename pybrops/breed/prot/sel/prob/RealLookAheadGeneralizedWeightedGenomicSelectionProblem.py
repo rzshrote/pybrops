@@ -234,7 +234,7 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelection
         # run simulations
         for _ in range(self.nsimul):
             # reset pgmat to founders
-            pgmat = self.fndr_pgmat
+            pgmat = self.fndr_pgmat.copy()
             # for each alpha value
             for alpha in x:
                 # gentotype matrix (n,p)
