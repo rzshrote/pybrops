@@ -7,13 +7,13 @@ import warnings
 import numpy
 from typing import Optional, Tuple, Union
 from typing import Callable
-from pybrops.breed.prot.sel.prob.BinaryOptimalContributionSelectionProblem import BinaryOptimalContributionSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import SubsetOptimalContributionSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.core.error.error_value_numpy import check_ndarray_align
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
+from pybrops.breed.prot.sel.ConstrainedSelectionProtocolType import ConstrainedSelectionProtocolType
 from pybrops.core.error.error_attr_python import check_is_callable
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Real, check_is_dict, check_is_int, check_is_str
@@ -27,7 +27,7 @@ from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
+class SubsetOptimalContributionSelection(ConstrainedSelectionProtocolType):
     """
     Class implementing selection protocols for optimal mean expected heterozygosity selection.
 
@@ -180,7 +180,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(BinaryOptimalContributionSelection, self).__init__(**kwargs)
+        super(SubsetOptimalContributionSelection, self).__init__(**kwargs)
         
         # variable assignment
         self.nparent = nparent
@@ -219,10 +219,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         check_is_int(value, "nparent")      # must be int
         check_is_gt(value, "nparent", 0)    # int must be >0
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents to select."""
-        del self._nparent
 
     @property
     def ncross(self) -> int:
@@ -234,10 +230,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         check_is_int(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete number of crosses per configuration."""
-        del self._ncross
 
     @property
     def nprogeny(self) -> int:
@@ -249,10 +241,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         check_is_int(value, "nprogeny")     # must be int
         check_is_gt(value, "nprogeny", 0)   # int must be >0
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete number of progeny to derive from each cross configuration."""
-        del self._nprogeny
 
     @property
     def cmatfcty(self) -> CoancestryMatrixFactory:
@@ -263,10 +251,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         """Set coancestry matrix factory."""
         check_is_CoancestryMatrixFactory(value, "cmatfcty")
         self._cmatfcty = value
-    @cmatfcty.deleter
-    def cmatfcty(self) -> None:
-        """Delete coancestry matrix factory."""
-        del self._cmatfcty
 
     @property
     def method(self) -> str:
@@ -282,10 +266,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         if value not in options:
             raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
         self._method = value
-    @method.deleter
-    def method(self) -> None:
-        """Delete selection method."""
-        del self._method
 
     @property
     def descale(self) -> bool:
@@ -295,10 +275,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
     def descale(self, value: bool) -> None:
         """Set descale."""
         self._descale = value
-    @descale.deleter
-    def descale(self) -> None:
-        """Delete descale."""
-        del self._descale
 
     @property
     def ndset_trans(self) -> Union[Callable,None]:
@@ -310,10 +286,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
         if value is not None:                       # if given object
             check_is_callable(value, "ndset_trans") # must be callable
         self._ndset_trans = value
-    @ndset_trans.deleter
-    def ndset_trans(self) -> None:
-        """Delete nondominated set transformation function."""
-        del self._ndset_trans
 
     @property
     def ndset_trans_kwargs(self) -> dict:
@@ -326,10 +298,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             value = {}                              # set default to empty dict
         check_is_dict(value, "ndset_trans_kwargs")  # check is dict
         self._ndset_trans_kwargs = value
-    @ndset_trans_kwargs.deleter
-    def ndset_trans_kwargs(self) -> None:
-        """Delete nondominated set transformation function keyword arguments."""
-        del self._ndset_trans_kwargs
 
     @property
     def ndset_wt(self) -> Union[float,numpy.ndarray]:
@@ -339,10 +307,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
     def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
         """Set nondominated set weights."""
         self._ndset_wt = value
-    @ndset_wt.deleter
-    def ndset_wt(self) -> None:
-        """Delete nondominated set weights."""
-        del self._ndset_wt
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
@@ -355,10 +319,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     @property
     def soalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -371,10 +331,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             value = ConstrainedSteepestDescentSubsetHillClimber(rng = self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
-    @soalgo.deleter
-    def soalgo(self) -> None:
-        """Delete data for property soalgo."""
-        del self._soalgo
 
     @property
     def moalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -395,10 +351,6 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete data for property moalgo."""
-        del self._moalgo
 
     ############################################################################
     ########################## Private Object Methods ##########################
@@ -531,7 +483,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             eqcv_wt = self.eqcv_wt
             
         # construct problem
-        prob = BinaryOptimalContributionSelectionProblem(
+        prob = SubsetOptimalContributionSelectionProblem(
             bv = bv,
             C = C,
             ndecn = ndecn,

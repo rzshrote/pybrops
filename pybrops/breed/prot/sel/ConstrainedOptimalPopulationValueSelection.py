@@ -3,7 +3,7 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.DenseConstrainedSelectionProtocol import DenseConstrainedSelectionProtocol
+from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.SubsetOptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
@@ -20,7 +20,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedOptimalPopulationValueSelection(DenseConstrainedSelectionProtocol):
+class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
     """
     docstring for ConstrainedOptimalPopulationValueSelection.
     """

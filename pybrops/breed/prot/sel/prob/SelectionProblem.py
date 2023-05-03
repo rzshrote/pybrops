@@ -172,10 +172,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = trans_identity
         check_is_Callable(value, "obj_trans")
         self._obj_trans = value
-    @obj_trans.deleter
-    def obj_trans(self) -> None:
-        """Delete latent space to objective space transformation function."""
-        del self._obj_trans
     
     @property
     def obj_trans_kwargs(self) -> dict:
@@ -188,10 +184,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = {}
         check_is_dict(value, "obj_trans_kwargs")
         self._obj_trans_kwargs = value
-    @obj_trans_kwargs.deleter
-    def obj_trans_kwargs(self) -> None:
-        """Delete keyword arguments for the latent space to objective space transformation function."""
-        del self._obj_trans_kwargs
     
     @property
     def ineqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
@@ -204,10 +196,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = trans_empty
         check_is_Callable(value, "ineqcv_trans")
         self._ineqcv_trans = value
-    @ineqcv_trans.deleter
-    def ineqcv_trans(self) -> None:
-        """Delete latent space to inequality constraint violation transformation function."""
-        del self._ineqcv_trans
     
     @property
     def ineqcv_trans_kwargs(self) -> dict:
@@ -220,10 +208,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = {}
         check_is_dict(value, "ineqcv_trans_kwargs")
         self._ineqcv_trans_kwargs = value
-    @ineqcv_trans_kwargs.deleter
-    def ineqcv_trans_kwargs(self) -> None:
-        """Delete keyword arguments for the latent space to inequality constraint violation transformation function."""
-        del self._ineqcv_trans_kwargs
     
     @property
     def eqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
@@ -236,10 +220,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = trans_empty
         check_is_Callable(value, "eqcv_trans")
         self._eqcv_trans = value 
-    @eqcv_trans.deleter
-    def eqcv_trans(self) -> None:
-        """Delete latent space to equality constraint violation transformation function."""
-        del self._eqcv_trans
     
     @property
     def eqcv_trans_kwargs(self) -> dict:
@@ -252,10 +232,6 @@ class SelectionProblem(Problem,SelectionProblemType):
             value = {}
         check_is_dict(value, "eqcv_trans_kwargs")
         self._eqcv_trans_kwargs = value
-    @eqcv_trans_kwargs.deleter
-    def eqcv_trans_kwargs(self) -> None:
-        """Delete keyword arguments for the latent space to equality constraint violation transformation function."""
-        del self._eqcv_trans_kwargs
 
     ############################################################################
     ############################## Object Methods ##############################

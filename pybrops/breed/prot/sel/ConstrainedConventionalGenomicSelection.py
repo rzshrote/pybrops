@@ -8,17 +8,18 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral
+from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
+from numpy.random import Generator, RandomState
+from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict, check_is_int, check_is_str
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random import global_prng
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.SubsetConventionalGenomicSelectionProblem import SubsetConventionalGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.ConventionalGenomicSelectionProblem import IntegerConventionalGenomicSelectionProblem, RealConventionalGenomicSelectionProblem, SubsetConventionalGenomicSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
@@ -28,68 +29,70 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
+class SemiabstractConventionalGenomicSelection(ConstrainedSelectionProtocol):
     """
-    Conventional Genomic Selection with constraints.
+    Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
-
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
             self, 
-            nparent: int, 
-            ncross: int, 
-            nprogeny: int,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral,
+            method: str,
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
-            ndset_wt = 1.0,
-            ndset_trans = None, 
-            ndset_trans_kwargs = None, 
-            method = "single",
-            rng = global_prng, 
-            soalgo = None,
-            moalgo = None, 
+            obj_wt: Optional[numpy.ndarray] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
+            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedConventionalGenomicSelection.
+        Constructor for ConventionalGenomicSelection.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(ConstrainedConventionalGenomicSelection, self).__init__(**kwargs)
+        super(SemiabstractConventionalGenomicSelection, self).__init__(
+            method = method,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs
+            **kwargs
+        )
+        # order dependent assignments
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nobj = nobj
-        self.obj_wt = obj_wt
-        self.obj_trans = obj_trans
-        self.obj_trans_kwargs = obj_trans_kwargs
-        self.nineqcv = nineqcv
-        self.ineqcv_wt = ineqcv_wt
-        self.ineqcv_trans = ineqcv_trans
-        self.ineqcv_trans_kwargs = ineqcv_trans_kwargs
-        self.neqcv = neqcv
-        self.eqcv_wt = eqcv_wt
-        self.eqcv_trans = eqcv_trans
-        self.eqcv_trans_kwargs = eqcv_trans_kwargs
-        self.ndset_wt = ndset_wt
-        self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs
-        self.method = method
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
@@ -104,13 +107,9 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
     @nparent.setter
     def nparent(self, value: int) -> None:
         """Set number of parents to select."""
-        check_is_int(value, "nparent")      # must be int
+        check_is_Integral(value, "nparent")      # must be int
         check_is_gt(value, "nparent", 0)    # int must be >0
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents to select."""
-        del self._nparent
 
     @property
     def ncross(self) -> int:
@@ -119,13 +118,9 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
     @ncross.setter
     def ncross(self, value: int) -> None:
         """Set number of crosses per configuration."""
-        check_is_int(value, "ncross")       # must be int
+        check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete number of crosses per configuration."""
-        del self._ncross
 
     @property
     def nprogeny(self) -> int:
@@ -134,156 +129,34 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
     @nprogeny.setter
     def nprogeny(self, value: int) -> None:
         """Set number of progeny to derive from each cross configuration."""
-        check_is_int(value, "nprogeny")     # must be int
+        check_is_Integral(value, "nprogeny")     # must be int
         check_is_gt(value, "nprogeny", 0)   # int must be >0
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete number of progeny to derive from each cross configuration."""
-        del self._nprogeny
 
     @property
-    def method(self) -> str:
-        """Selection method."""
-        return self._method
-    @method.setter
-    def method(self, value: str) -> None:
-        """Set selection method."""
-        check_is_str(value, "method")       # must be string
-        value = value.lower()               # convert to lowercase
-        options = ("single", "pareto")      # method options
-        # if not method supported raise ValueError
-        if value not in options:
-            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
-        self._method = value
-    @method.deleter
-    def method(self) -> None:
-        """Delete selection method."""
-        del self._method
-
-    @property
-    def objfn_trans(self) -> Union[Callable,None]:
-        """Objective function transformation function."""
-        return self._objfn_trans
-    @objfn_trans.setter
-    def objfn_trans(self, value: Union[Callable,None]) -> None:
-        """Set objective function transformation function."""
-        if value is not None:                       # if given object
-            check_is_Callable(value, "objfn_trans") # must be callable
-        self._objfn_trans = value
-    @objfn_trans.deleter
-    def objfn_trans(self) -> None:
-        """Delete objective function transformation function."""
-        del self._objfn_trans
-
-    @property
-    def objfn_trans_kwargs(self) -> dict:
-        """Objective function transformation function keyword arguments."""
-        return self._objfn_trans_kwargs
-    @objfn_trans_kwargs.setter
-    def objfn_trans_kwargs(self, value: Union[dict,None]) -> None:
-        """Set objective function transformation function keyword arguments."""
-        if value is None:                           # if given None
-            value = {}                              # set default to empty dict
-        check_is_dict(value, "objfn_trans_kwargs")  # check is dict
-        self._objfn_trans_kwargs = value
-    @objfn_trans_kwargs.deleter
-    def objfn_trans_kwargs(self) -> None:
-        """Delete objective function transformation function keyword arguments."""
-        del self._objfn_trans_kwargs
-
-    @property
-    def objfn_wt(self) -> Union[float,numpy.ndarray]:
-        """Objective function weights."""
-        return self._objfn_wt
-    @objfn_wt.setter
-    def objfn_wt(self, value: Union[float,numpy.ndarray]) -> None:
-        """Set objective function weights."""
-        self._objfn_wt = value
-    @objfn_wt.deleter
-    def objfn_wt(self) -> None:
-        """Delete objective function weights."""
-        del self._objfn_wt
-
-    @property
-    def ndset_trans(self) -> Union[Callable,None]:
-        """Nondominated set transformation function."""
-        return self._ndset_trans
-    @ndset_trans.setter
-    def ndset_trans(self, value: Union[Callable,None]) -> None:
-        """Set nondominated set transformation function."""
-        if value is not None:                       # if given object
-            check_is_Callable(value, "ndset_trans") # must be callable
-        self._ndset_trans = value
-    @ndset_trans.deleter
-    def ndset_trans(self) -> None:
-        """Delete nondominated set transformation function."""
-        del self._ndset_trans
-
-    @property
-    def ndset_trans_kwargs(self) -> dict:
-        """Nondominated set transformation function keyword arguments."""
-        return self._ndset_trans_kwargs
-    @ndset_trans_kwargs.setter
-    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
-        """Set nondominated set transformation function keyword arguments."""
-        if value is None:                           # if given None
-            value = {}                              # set default to empty dict
-        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
-        self._ndset_trans_kwargs = value
-    @ndset_trans_kwargs.deleter
-    def ndset_trans_kwargs(self) -> None:
-        """Delete nondominated set transformation function keyword arguments."""
-        del self._ndset_trans_kwargs
-
-    @property
-    def ndset_wt(self) -> Union[float,numpy.ndarray]:
-        """Nondominated set weights."""
-        return self._ndset_wt
-    @ndset_wt.setter
-    def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
-        """Set nondominated set weights."""
-        self._ndset_wt = value
-    @ndset_wt.deleter
-    def ndset_wt(self) -> None:
-        """Delete nondominated set weights."""
-        del self._ndset_wt
-
-    @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+    def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator source."""
         if value is None:
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     @property
     def soalgo(self) -> ConstrainedOptimizationAlgorithm:
         """Single-objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
+    def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
         if value is None:
             # construct default hillclimber
-            value = ConstrainedSteepestDescentSubsetHillClimber(
-                self.rng
-            )
+            value = ConstrainedSteepestDescentSubsetHillClimber(self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
-    @soalgo.deleter
-    def soalgo(self) -> None:
-        """Delete single-objective optimization algorithm."""
-        del self._soalgo
-    
 
     @property
     def moalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -301,89 +174,16 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective opimization algorithm."""
-        del self._moalgo
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
     ########## Optimization Problem Construction ###########
-    def problem(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            **kwargs: dict
-        ) -> SelectionProblemType:
-        """
-        Create an optimization problem definition using provided inputs.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : SelectionProblem
-            An optimization problem definition.
-        """
-        # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
-
-        # get number of individuals
-        ntaxa = gmat.ntaxa
-
-        # get decision space parameters
-        decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, ntaxa)
-        decn_space_upper = numpy.repeat(ntaxa-1, ntaxa)
-
-        # construct problem
-        prob = SubsetConventionalGenomicSelectionProblem(
-            gebv = gebv,
-            ndecn = ntaxa,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = self.nobj,
-            obj_wt = self.obj_wt,
-            obj_trans = self.obj_trans,
-            obj_trans_kwargs = self.obj_trans_kwargs,
-            nineqcv = self.nineqcv,
-            ineqcv_wt = self.ineqcv_wt,
-            ineqcv_trans = self.ineqcv_trans,
-            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
-            neqcv = self.neqcv,
-            eqcv_wt = self.eqcv_wt,
-            eqcv_trans = self.eqcv_trans,
-            eqcv_trans_kwargs = self.eqcv_trans_kwargs
-        )
-
-        return prob
+    # leave abstract since it depends on the problem type
 
     ############## Pareto Frontier Functions ###############
+    # implement since this is problem type agnostic
     def pareto(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -467,6 +267,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
         return frontier, sel_config
 
     ################# Selection Functions ##################
+    # implement since this is problem type agnostic
     def select(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -581,3 +382,279 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
+
+class SubsetConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+    """
+    Conventional Genomic Selection in a subset search space.
+    """
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    # use old init
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblemType:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # calculate GEBVs for all individuals
+        gebv = gpmod.gebv(gmat).mat
+
+        # get number of individuals
+        ntaxa = gmat.ntaxa
+
+        # get decision space parameters
+        decn_space = numpy.arange(ntaxa)
+        decn_space_lower = numpy.repeat(0, self.nparent)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+
+        # construct problem
+        prob = SubsetConventionalGenomicSelectionProblem(
+            gebv = gebv,
+            ndecn = self.nparent,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # use super pareto() function
+
+    ################# Selection Functions ##################
+    # use super select() function
+
+class RealConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+    """
+    Conventional Genomic Selection in a real search space.
+    """
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    # use old init
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblemType:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # calculate GEBVs for all individuals
+        gebv = gpmod.gebv(gmat).mat
+
+        # get number of individuals
+        ntaxa = gmat.ntaxa
+
+        # get decision space parameters
+        decn_space_lower = numpy.repeat(0.0, ntaxa)
+        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = RealConventionalGenomicSelectionProblem(
+            gebv = gebv,
+            ndecn = ntaxa,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # use super pareto() function
+
+    ################# Selection Functions ##################
+    # use super select() function
+
+class IntegerConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+    """
+    Conventional Genomic Selection in an integer search space.
+    """
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    # use old init
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblemType:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # calculate GEBVs for all individuals
+        gebv = gpmod.gebv(gmat).mat
+
+        # get number of individuals
+        ntaxa = gmat.ntaxa
+
+        # get decision space parameters
+        decn_space_lower = numpy.repeat(0, ntaxa)
+        decn_space_upper = numpy.repeat(ntaxa, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = IntegerConventionalGenomicSelectionProblem(
+            gebv = gebv,
+            ndecn = ntaxa,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # use super pareto() function
+
+    ################# Selection Functions ##################
+    # use super select() function

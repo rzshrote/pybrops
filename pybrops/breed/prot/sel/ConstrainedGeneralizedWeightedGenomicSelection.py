@@ -7,8 +7,8 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
+from pybrops.breed.prot.sel.ConstrainedSelectionProtocolType import ConstrainedSelectionProtocolType
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
-from pybrops.breed.prot.sel.DenseConstrainedSelectionProtocol import DenseConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.SubsetGeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
@@ -26,7 +26,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionProtocol):
+class ConstrainedGeneralizedWeightedGenomicSelection(ConstrainedSelectionProtocol):
     """
     docstring for ConstrainedGeneralizedWeightedGenomicSelection.
     """
@@ -56,7 +56,7 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             ndset_wt: Optional[Real] = None,
             ndset_trans: Optional[Callable] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
-            rng: Union[Generator,RandomState] = global_prng, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
             moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
             **kwargs: dict
@@ -111,10 +111,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         check_is_Integral(value, "nparent") # must be integer
         check_is_gt(value, "nparent", 0)    # integer must be >0
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents to select."""
-        del self._nparent
 
     @property
     def ncross(self) -> Integral:
@@ -126,10 +122,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         check_is_Integral(value, "ncross")  # must be integer
         check_is_gt(value, "ncross", 0)     # integer must be >0
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete number of crosses per configuration."""
-        del self._ncross
 
     @property
     def nprogeny(self) -> Integral:
@@ -141,10 +133,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         check_is_Integral(value, "nprogeny")    # must be integer
         check_is_gt(value, "nprogeny", 0)       # integer must be >0
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete number of progeny to derive from each cross configuration."""
-        del self._nprogeny
 
     @property
     def alpha(self) -> Real:
@@ -156,26 +144,18 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
         check_is_Real(value, "alpha")
         check_Number_in_interval(value, "alpha", 0, 1)
         self._alpha = value
-    @alpha.deleter
-    def alpha(self) -> None:
-        """Delete exponent to which to raise the favorable allele frequency."""
-        del self._alpha
 
     @property
     def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[Generator,RandomState]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator source."""
         if value is None:
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     @property
     def soalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -191,10 +171,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
-    @soalgo.deleter
-    def soalgo(self) -> None:
-        """Delete single-objective optimization algorithm."""
-        del self._soalgo
 
     @property
     def moalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -212,10 +188,6 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective opimization algorithm."""
-        del self._moalgo
 
 
     ############################################################################

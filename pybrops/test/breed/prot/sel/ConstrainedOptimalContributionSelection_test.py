@@ -19,7 +19,7 @@ from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_max_inbreeding_constraint, trans_ndpt_to_vec_dist, trans_sum_inbmax_penalty
-from pybrops.breed.prot.sel.BinaryOptimalContributionSelection import BinaryOptimalContributionSelection
+from pybrops.breed.prot.sel.ConstrainedOptimalContributionSelection import SubsetOptimalContributionSelection
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################
@@ -169,7 +169,7 @@ def cmatfcty():
 
 @pytest.fixture
 def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, mat_ntrait, rng):
-    yield BinaryOptimalContributionSelection(
+    yield SubsetOptimalContributionSelection(
         nparent = nparent, 
         ncross = ncross, 
         nprogeny = nprogeny,
@@ -197,31 +197,31 @@ def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, mat_ntrait, rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(BinaryOptimalContributionSelection)
+    assert_docstring(SubsetOptimalContributionSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "__init__")
+    assert_concrete_method(SubsetOptimalContributionSelection, "__init__")
 
 def test_select_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "select")
+    assert_concrete_method(SubsetOptimalContributionSelection, "select")
 
 def test_objfn_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "objfn")
+    assert_concrete_method(SubsetOptimalContributionSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec")
+    assert_concrete_method(SubsetOptimalContributionSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "pareto")
+    assert_concrete_method(SubsetOptimalContributionSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_static")
+    assert_concrete_method(SubsetOptimalContributionSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    assert_concrete_method(BinaryOptimalContributionSelection, "objfn_vec_static")
+    assert_concrete_method(SubsetOptimalContributionSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -294,7 +294,7 @@ def test_select_pareto_TypeError(bocs, dpgmat, dgmat, bvmat):
         )
 
 def test_select_pareto(nparent, ncross, nprogeny, inbfn, cmatfcty, rng, dpgmat, dgmat, bvmat):
-    bocs = BinaryOptimalContributionSelection(
+    bocs = SubsetOptimalContributionSelection(
         nparent = nparent, 
         ncross = ncross, 
         nprogeny = nprogeny,
@@ -326,7 +326,7 @@ def test_select_pareto(nparent, ncross, nprogeny, inbfn, cmatfcty, rng, dpgmat, 
     assert sel_nprogeny == nprogeny
 
 def test_pareto(nconfig, nparent, ncross, nprogeny, rng, dpgmat, dgmat, bvmat, inbfn, cmatfcty):
-    bocs = BinaryOptimalContributionSelection(
+    bocs = SubsetOptimalContributionSelection(
         nparent = nparent, 
         ncross = ncross, 
         nprogeny = nprogeny,

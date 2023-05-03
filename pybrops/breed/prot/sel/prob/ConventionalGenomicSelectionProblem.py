@@ -1,28 +1,23 @@
 """
-Module defining optimization problems for binary optimal constribution selection.
+Module implementing conventional genomic selection as a subset optimization problem.
 """
 
-__all__ = [
-    "SubsetOptimalContributionSelectionProblem",
-    "RealOptimalContributionSelectionProblem",
-    "IntegerOptimalContributionSelectionProblem"
-]
-
-from numbers import Integral, Real
+from numbers import Integral, Number
 from typing import Callable, Optional, Union
 
 import numpy
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_is_square
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_is_2d
 
-class OptimalContributionSelectionProblemProperties:
+
+class ConventionalGenomicSelectionProblemProperties:
     """
-    Semi-abstract class containing common properties for Optimal Contribution Selection Problems
+    Semi-abstract class containing common properties for Conventional Genomic Selection Problems
     """
     ############################################################################
     ############################ Object Properties #############################
@@ -30,36 +25,23 @@ class OptimalContributionSelectionProblemProperties:
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
-        # return number of traits in BV matrix plus 1
-        return 1 + self._bv.shape[1]
+        # return number of traits in GEBV matrix
+        return self._gebv.shape[1]
 
     @property
-    def bv(self) -> numpy.ndarray:
-        """Breeding value matrix."""
-        return self._bv
-    @bv.setter
-    def bv(self, value: numpy.ndarray) -> None:
-        """Set breeding value matrix."""
-        check_is_ndarray(value, "bv")
-        check_ndarray_is_2d(value, "bv")
-        self._bv = value
+    def gebv(self) -> numpy.ndarray:
+        """Genomic estimated breeding values."""
+        return self._gebv
+    @gebv.setter
+    def gebv(self, value: numpy.ndarray) -> None:
+        """Set genomic estimated breeding values."""
+        check_is_ndarray(value, "gebv")
+        check_ndarray_is_2d(value, "gebv")
+        self._gebv = value
 
-    @property
-    def C(self) -> numpy.ndarray:
-        """Cholesky decomposition of the kinship matrix."""
-        return self._C
-    @C.setter
-    def C(self, value: numpy.ndarray) -> None:
-        """Set Cholesky decomposition of the kinship matrix."""
-        check_is_ndarray(value, "C")
-        check_ndarray_is_2d(value, "C")
-        check_ndarray_is_square(value, "C")
-        self._C = value
-
-class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalContributionSelectionProblemProperties):
+class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,ConventionalGenomicSelectionProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for subset
-    search spaces.
+    docstring for SubsetConventionalGenomicSelectionProblem.
     """
 
     ############################################################################
@@ -67,12 +49,11 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            gebv: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_lower: Union[numpy.ndarray,Number,None],
+            decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
             obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
@@ -88,39 +69,24 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetOptimalContributionSelectionProblem.
+        Constructor for SubsetConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
+        gebv : numpy.ndarray
+            An array of shape (n,t) containing genomic estimated breeding values.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
+        decn_space_lower: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
+        decn_space_upper: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a upper limit for the decision variables.
         nobj: Integral
             Number of objectives.
@@ -158,10 +124,7 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
         kwargs : dict
             Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(SubsetOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(SubsetConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -178,11 +141,13 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
+            elementwise = True,
+            elementwise_func = ElementwiseEvaluationFunction,
+            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.gebv = gebv
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -194,9 +159,10 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the mean of
+        Genomic Estimated Breeding Values (GEBV) for a selected subset.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -209,46 +175,22 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OptimalCo
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A GEBV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
-        # (n,n)[:,(k,)] -> (n,k)
-        # scalar * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / len(x)) * self.C[:,x].sum(1)
+        # select individuals and take the sum of their GEBVs
+        # CGS calculation explanation
+        # Step 1: (n,t)[(ndecn,),:] -> (ndecn,t)    # select individuals
+        # Step 2: (ndecn,t).sum(0)  -> (t,)         # sum across all individuals
+        # Step 3: scalar * (t,) -> (t,)             # take mean across selection
+        return (1.0 / len(x)) * (self._gebv[x,:].sum(0))
 
-        # calculate mean genomic relationship
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgr = numpy.linalg.norm(Cx, ord = 2, keepdims = True)
-
-        # calculate breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = self.bv[x,:].sum(0)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgr,gain])
-
-        # return (1+t,)
-        return out
-
-class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContributionSelectionProblemProperties):
+class RealConventionalGenomicSelectionProblem(RealSelectionProblem,ConventionalGenomicSelectionProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for real
-    search spaces.
+    docstring for SubsetConventionalGenomicSelectionProblem.
     """
 
     ############################################################################
@@ -256,12 +198,11 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            gebv: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_lower: Union[numpy.ndarray,Number,None],
+            decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
             obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
@@ -277,39 +218,24 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
             **kwargs: dict
         ) -> None:
         """
-        Constructor for RealOptimalContributionSelectionProblem.
+        Constructor for RealConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
+        gebv : numpy.ndarray
+            An array of shape (n,t) containing genomic estimated breeding values.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
+        decn_space_lower: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
+        decn_space_upper: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a upper limit for the decision variables.
         nobj: Integral
             Number of objectives.
@@ -347,10 +273,7 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
         kwargs : dict
             Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(RealOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(RealConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -367,11 +290,13 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
+            elementwise = True,
+            elementwise_func = ElementwiseEvaluationFunction,
+            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.gebv = gebv
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -383,9 +308,11 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the mean of
+        Genomic Estimated Breeding Values (GEBV) for a set of selection 
+        contributions.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -400,45 +327,24 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OptimalContri
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A GEBV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
         # scale x to have a sum of 1 (contribution)
+        # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # select individuals and take the sum of their GEBVs
+        # CGS calculation explanation
+        # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
+        return contrib.dot(self._gebv)
 
-        # calculate breeding value of the selection
-        # (n,) . (n,t) -> (t,)
-        gain = contrib.dot(self._bv)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,gain])
-
-        # return (1+t,)
-        return out
-
-class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OptimalContributionSelectionProblemProperties):
+class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,ConventionalGenomicSelectionProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for integer
-    search spaces.
+    docstring for SubsetConventionalGenomicSelectionProblem.
     """
 
     ############################################################################
@@ -446,12 +352,11 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            gebv: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_lower: Union[numpy.ndarray,Number,None],
+            decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
             obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
@@ -467,39 +372,24 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs: dict
         ) -> None:
         """
-        Constructor for IntegerOptimalContributionSelectionProblem.
+        Constructor for IntegerConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
+        gebv : numpy.ndarray
+            An array of shape (n,t) containing genomic estimated breeding values.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
+        decn_space_lower: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
+        decn_space_upper: numpy.ndarray, Number, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
             If None, do not set a upper limit for the decision variables.
         nobj: Integral
             Number of objectives.
@@ -537,10 +427,7 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
         kwargs : dict
             Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(IntegerOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(IntegerConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -557,11 +444,13 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
+            elementwise = True,
+            elementwise_func = ElementwiseEvaluationFunction,
+            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.gebv = gebv
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -573,9 +462,11 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the mean of
+        Genomic Estimated Breeding Values (GEBV) for a set of selection 
+        contributions.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -590,38 +481,18 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,Optimal
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A GEBV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
         # scale x to have a sum of 1 (contribution)
+        # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # select individuals and take the sum of their GEBVs
+        # CGS calculation explanation
+        # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
+        return contrib.dot(self._gebv)
 
-        # calculate breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = self.bv.T.dot(contrib)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,gain])
-
-        # return (1+t,)
-        return out
