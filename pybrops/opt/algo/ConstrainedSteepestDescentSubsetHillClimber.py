@@ -10,9 +10,9 @@ from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_value_python import check_is_eq
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
-from pybrops.opt.soln.DenseSubsetSolution import DenseSubsetSolution
+from pybrops.opt.prob.SubsetProblemType import SubsetProblemType, check_is_SubsetProblemType
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
 
 class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorithm):
     """
@@ -64,10 +64,10 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblem,
+            prob: SubsetProblemType,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> SubsetSolutionType:
         """
         Minimize an optimization problem.
 
@@ -86,7 +86,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
             An object containing the solution to the provided problem.
         """
         # check inputs
-        check_is_SubsetProblem(prob, "prob")
+        check_is_SubsetProblemType(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
 
@@ -143,7 +143,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
             gbest_cv = best_cv
 
         # create output
-        out = DenseSubsetSolution(
+        out = SubsetSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
             decn_space_lower = prob.decn_space_lower,

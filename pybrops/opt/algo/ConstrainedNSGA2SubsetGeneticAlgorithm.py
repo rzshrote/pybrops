@@ -20,9 +20,9 @@ from pybrops.core.random import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblem import SubsetProblem
-from pybrops.opt.soln.DenseSubsetSolution import DenseSubsetSolution
+from pybrops.opt.prob.SubsetProblemType import SubsetProblemType
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
@@ -120,10 +120,10 @@ class ConstrainedNSGA2SubsetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblem,
+            prob: SubsetProblemType,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> SubsetSolutionType:
         """
         Optimize an objective function.
 
@@ -173,7 +173,7 @@ class ConstrainedNSGA2SubsetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
             soln_eqcv = res.H
 
         # construct a solution
-        soln = DenseSubsetSolution(
+        soln = SubsetSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
             decn_space_lower = prob.decn_space_lower,

@@ -182,6 +182,10 @@ def check_ndarray_dtype_is_object(v: numpy.ndarray, vname: str):
     if not numpy.issubdtype(v.dtype, numpy.dtype("object_")):
         raise TypeError("numpy.ndarray '{0}' must be of dtype 'object_'".format(vname))
 
+def check_ndarray_dtype_is_real(v: numpy.ndarray, vname: str):
+    if (not numpy.issubdtype(v.dtype, numpy.floating)) and (not numpy.issubdtype(v.dtype, numpy.integer)):
+        raise TypeError("numpy.ndarray '{0}' must be a real (floating or integer) dtype".format(vname))
+
 def check_ndarray_dtype_is_string(v: numpy.ndarray, vname: str):
     if not numpy.issubdtype(v.dtype, numpy.dtype("string_")):
         raise TypeError("numpy.ndarray '{0}' must be of dtype 'string_'".format(vname))

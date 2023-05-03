@@ -15,11 +15,11 @@ import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict
-from pybrops.opt.prob.DenseProblem import DenseProblem
+from pybrops.opt.prob.Problem import Problem
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 # inheritance order is important for method resolution order
-class DenseSelectionProblem(DenseProblem,SelectionProblem):
+class DenseSelectionProblem(Problem,SelectionProblem):
     """
     docstring for DenseSelectionProblem.
     """

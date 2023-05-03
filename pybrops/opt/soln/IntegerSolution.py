@@ -4,22 +4,22 @@ Partial implementation of the SetSolution interface.
 
 # list of all public imports in the module
 __all__ = [
-    "RealSolution",
-    "check_is_RealSolution"
+    "IntegerSolution",
+    "check_is_IntegerSolution"
 ]
 
 # imports
 from numbers import Integral
 from typing import Union
 import numpy
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_real
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.opt.soln.Solution import Solution
-from pybrops.opt.soln.RealSolutionType import RealSolutionType
+from pybrops.opt.soln.IntegerSolutionType import IntegerSolutionType
 
-class RealSolution(Solution,RealSolutionType):
+class IntegerSolution(Solution,IntegerSolutionType):
     """
-    Partially implemented class for optimization problems with nominal decision variables.
+    Partially implemented class for optimization problems with integer decision variables.
     """
 
     ############################################################################
@@ -45,14 +45,14 @@ class RealSolution(Solution,RealSolutionType):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for RealSolution.
+        Constructor for IntegerSolution.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(RealSolution, self).__init__(
+        super(IntegerSolution, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -80,7 +80,7 @@ class RealSolution(Solution,RealSolutionType):
         """Set decision space boundaries."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
-            check_ndarray_dtype_is_real(value, "decn_space")
+            check_ndarray_dtype_is_integer(value, "decn_space")
         elif value is None:
             pass
         else:
@@ -93,9 +93,9 @@ class RealSolution(Solution,RealSolutionType):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_RealSolution(v: object, vname: str) -> None:
+def check_is_IntegerSolution(v: object, vname: str) -> None:
     """
-    Check if object is of type RealSolution, otherwise raise TypeError.
+    Check if object is of type IntegerSolution, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -104,5 +104,5 @@ def check_is_RealSolution(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, RealSolution):
-        raise TypeError("'{0}' must be of type RealSolution.".format(vname))
+    if not isinstance(v, IntegerSolution):
+        raise TypeError("'{0}' must be of type IntegerSolution.".format(vname))

@@ -16,10 +16,10 @@ from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseE
 
 from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.opt.prob.DenseSubsetProblem import DenseSubsetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class DenseSubsetSelectionProblem(DenseSubsetProblem,DenseSelectionProblem,SubsetSelectionProblem):
+class DenseSubsetSelectionProblem(SubsetProblem,DenseSelectionProblem,SubsetSelectionProblem):
     """
     docstring for DenseSubsetSelectionProblem.
     """

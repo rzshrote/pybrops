@@ -1,11 +1,11 @@
 """
-Partial implementation of the RealProblem interface.
+Partial implementation of the IntegerProblem interface.
 """
 
 # list of public objects in this module
 __all__ = [
-    "DenseRealProblem",
-    "check_is_DenseRealProblem"
+    "IntegerProblem",
+    "check_is_IntegerProblem"
 ]
 
 # imports
@@ -13,13 +13,13 @@ from numbers import Integral, Real
 from typing import Callable, Iterable, Optional, Sequence, Union
 import numpy
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_eq, check_ndarray_len_gteq, check_ndarray_shape_eq
-from pybrops.opt.prob.DenseProblem import DenseProblem
-from pybrops.opt.prob.RealProblem import RealProblem
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_shape_eq
+from pybrops.opt.prob.Problem import Problem
+from pybrops.opt.prob.IntegerProblemType import IntegerProblemType
 
 # inheritance ordering is important for method resolution order
-class DenseRealProblem(DenseProblem,RealProblem):
+class IntegerProblem(Problem,IntegerProblemType):
     """
     Partially implemented class for optimization problems with nominal decision 
     variables where the goal is to select an optimal subset.
@@ -52,7 +52,7 @@ class DenseRealProblem(DenseProblem,RealProblem):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseRealProblem.
+        Constructor for IntegerProblem.
         
         Parameters
         ----------
@@ -63,7 +63,7 @@ class DenseRealProblem(DenseProblem,RealProblem):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseRealProblem, self).__init__(
+        super(IntegerProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -90,12 +90,12 @@ class DenseRealProblem(DenseProblem,RealProblem):
     ############################ Object Properties #############################
     ############################################################################
     # override decn_space setter properties
-    @DenseProblem.decn_space.setter
+    @Problem.decn_space.setter
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
-            check_ndarray_dtype_is_floating(value, "decn_space") # make sure Real valued, not Integral
+            check_ndarray_dtype_is_integer(value, "decn_space") # make sure Integral valued, not Real
         elif value is None:
             pass
         else:
@@ -103,12 +103,12 @@ class DenseRealProblem(DenseProblem,RealProblem):
         self._decn_space = value
 
     # override decn_space setter properties
-    @DenseProblem.decn_space_lower.setter
+    @Problem.decn_space_lower.setter
     def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "decn_space_lower", self.ndecn)
-            check_ndarray_dtype_is_floating(value, "decn_space_lower") # make sure Real valued, not Integral
+            check_ndarray_dtype_is_integer(value, "decn_space_lower") # make sure Integral valued, not Real
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
@@ -119,12 +119,12 @@ class DenseRealProblem(DenseProblem,RealProblem):
         self._xl = value
 
     # override decn_space setter properties
-    @DenseProblem.decn_space_upper.setter
+    @Problem.decn_space_upper.setter
     def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "decn_space_upper", self.ndecn)
-            check_ndarray_dtype_is_floating(value, "decn_space_upper") # make sure Real valued, not Integral
+            check_ndarray_dtype_is_integer(value, "decn_space_upper") # make sure Integral valued, not Real
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
@@ -140,9 +140,9 @@ class DenseRealProblem(DenseProblem,RealProblem):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseRealProblem(v: object, vname: str) -> None:
+def check_is_IntegerProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type DenseRealProblem, otherwise raise TypeError.
+    Check if object is of type IntegerProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -151,5 +151,5 @@ def check_is_DenseRealProblem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, DenseRealProblem):
-        raise TypeError("'{0}' must be of type DenseRealProblem.".format(vname))
+    if not isinstance(v, IntegerProblem):
+        raise TypeError("'{0}' must be of type IntegerProblem.".format(vname))

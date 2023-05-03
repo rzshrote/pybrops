@@ -13,9 +13,9 @@ from abc import abstractmethod
 from numbers import Integral
 from typing import Callable, Tuple
 import numpy
-from pybrops.opt.prob.Problem import Problem
+from pybrops.opt.prob.ProblemType import ProblemType
 
-class SelectionProblem(Problem):
+class SelectionProblem(ProblemType):
     """
     Basal interface for all genotype selection problem specifications.
 

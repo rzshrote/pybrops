@@ -6,26 +6,21 @@ from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.opt.soln.RealSolution import RealSolution, check_is_RealSolution
+from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType, check_is_SubsetSolutionType
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
-@pytest.fixture
-def prob():
-    yield RealSolution()
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_Problem_docstring():
-    assert_docstring(RealSolution)
+    assert_docstring(SubsetSolutionType)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_concrete_method(RealSolution, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -38,11 +33,9 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_RealSolution_is_concrete():
-    assert_concrete_function(check_is_RealSolution)
+def test_check_is_SubsetSolution_is_concrete():
+    assert_concrete_function(check_is_SubsetSolutionType)
 
-def test_check_is_RealSolution(prob):
-    with not_raises(TypeError):
-        check_is_RealSolution(prob, "prob")
+def test_check_is_SubsetSolution():
     with pytest.raises(TypeError):
-        check_is_RealSolution(None, "prob")
+        check_is_SubsetSolutionType(None, "prob")

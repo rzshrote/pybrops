@@ -2,25 +2,25 @@
 
 __all__ = [
     "FunctionWeight",
+    "ProblemType",
+    "SubsetProblemType",
+    "RealProblemType",
     "Problem",
-    "SubsetProblem",
-    "RealProblem",
-    "DenseProblem",
-    "DenseSubsetProblem"
+    "SubsetProblem"
 ]
 
 # utilities
 from pybrops.opt.prob import FunctionWeight
 
 # base interface
-from pybrops.opt.prob import Problem
+from pybrops.opt.prob import ProblemType
 
 # interfaces derived from Problem
-from pybrops.opt.prob import SubsetProblem
-from pybrops.opt.prob import RealProblem
+from pybrops.opt.prob import SubsetProblemType
+from pybrops.opt.prob import RealProblemType
 
 # Implementations derived from Problem
-from pybrops.opt.prob import DenseProblem
+from pybrops.opt.prob import Problem
 
 # Implementations derived from SetProblem
-from pybrops.opt.prob import DenseSubsetProblem
+from pybrops.opt.prob import SubsetProblem

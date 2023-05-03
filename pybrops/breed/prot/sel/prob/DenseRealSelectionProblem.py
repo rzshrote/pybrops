@@ -16,10 +16,10 @@ from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseE
 
 from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.opt.prob.DenseRealProblem import DenseRealProblem
+from pybrops.opt.prob.RealProblem import RealProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class DenseRealSelectionProblem(DenseRealProblem,DenseSelectionProblem,RealSelectionProblem):
+class DenseRealSelectionProblem(RealProblem,DenseSelectionProblem,RealSelectionProblem):
     """
     docstring for DenseRealSelectionProblem.
     """

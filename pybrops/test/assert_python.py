@@ -194,7 +194,7 @@ def assert_abstract_property(obj: type, prop: str) -> None:
 
     1) have the property
     2) have a docstring for the property
-    3) fget, fset, fdel methods must be abstract
+    3) fget, fset, fdel methods must be abstract if they are defined.
 
     Parameters
     ----------
@@ -203,32 +203,15 @@ def assert_abstract_property(obj: type, prop: str) -> None:
     met : str
         Name of the method to test
     """
-    assert_hasattr(obj, prop)           # assert the property exists
-    p = getattr(obj, prop)                      # get the property
-    assert_docstring(p)                 # assert the property has a docstring
-    assert_abstract_method(p, "fget")   # assert fget is abstract
-    assert_abstract_method(p, "fset")   # assert fset is abstract
-    assert_abstract_method(p, "fdel")   # assert fdel is abstract
-
-def assert_abstract_property_fget(obj: type, prop: str) -> None:
-    """
-    Assert an object has an abstract property. Must have several attributes:
-
-    1) have the property
-    2) have a docstring for the property
-    3) fget method must be abstract; fset, fdel are optional and not checked.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object.
-    met : str
-        Name of the method to test
-    """
-    assert_hasattr(obj, prop)           # assert the property exists
-    p = getattr(obj, prop)                      # get the property
-    assert_docstring(p)                 # assert the property has a docstring
-    assert_abstract_method(p, "fget")   # assert fget is abstract
+    assert_hasattr(obj, prop)               # assert the property exists
+    p = getattr(obj, prop)                  # get the property
+    assert_docstring(p)                     # assert the property has a docstring
+    if hasattr(p, "fget") and (getattr(p, "fget") is not None):
+        assert_abstract_method(p, "fget")   # assert fget is abstract
+    if hasattr(p, "fset") and (getattr(p, "fset") is not None):
+        assert_abstract_method(p, "fset")   # assert fset is abstract
+    if hasattr(p, "fdel") and (getattr(p, "fdel") is not None):
+        assert_abstract_method(p, "fdel")   # assert fdel is abstract
 
 def assert_concrete_property_fget(obj: type, prop: str) -> None:
     """
@@ -256,7 +239,7 @@ def assert_concrete_property(obj: type, prop: str):
 
     1) have the property
     2) have a docstring for the property
-    3) fget, fset, fdel methods must be concrete
+    3) fget, fset, fdel methods must be concrete if they are defined.
 
     Parameters
     ----------
@@ -265,12 +248,15 @@ def assert_concrete_property(obj: type, prop: str):
     met : str
         Name of the method to test
     """
-    assert_hasattr(obj, prop)           # assert the property exists
-    p = getattr(obj, prop)                      # get the property
-    assert_docstring(p)                 # assert the property has a docstring
-    assert_concrete_method(p, "fget")   # assert fget is concrete
-    assert_concrete_method(p, "fset")   # assert fset is concrete
-    assert_concrete_method(p, "fdel")   # assert fdel is concrete
+    assert_hasattr(obj, prop)               # assert the property exists
+    p = getattr(obj, prop)                  # get the property
+    assert_docstring(p)                     # assert the property has a docstring
+    if hasattr(p, "fget") and (getattr(p, "fget") is not None):
+        assert_concrete_method(p, "fget")   # assert fget is concrete
+    if hasattr(p, "fset") and (getattr(p, "fset") is not None):
+        assert_concrete_method(p, "fset")   # assert fset is concrete
+    if hasattr(p, "fdel") and (getattr(p, "fdel") is not None):
+        assert_concrete_method(p, "fdel")   # assert fdel is concrete
 
 def assert_abstract_methods(obj, mets):
     """

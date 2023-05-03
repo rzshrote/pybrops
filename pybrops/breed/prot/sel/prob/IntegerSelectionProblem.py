@@ -4,18 +4,18 @@ Module defining selection problems that are by nature set selection problems.
 
 # list of public objects in this module
 __all__ = [
-    "SubsetSelectionProblem",
-    "check_is_SubsetSelectionProblem"
+    "IntegerSelectionProblem",
+    "check_is_IntegerSelectionProblem"
 ]
 
 # imports
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.opt.prob.SubsetProblemType import SubsetProblemType
+from pybrops.opt.prob.IntegerProblemType import IntegerProblemType
 
 # inheritance order not super important here since both abstract
-class SubsetSelectionProblem(SubsetProblemType,SelectionProblem):
+class IntegerSelectionProblem(IntegerProblemType,SelectionProblem):
     """
-    docstring for SubsetSelectionProblem.
+    docstring for IntegerSelectionProblem.
     """
 
     ############################################################################
@@ -26,23 +26,23 @@ class SubsetSelectionProblem(SubsetProblemType,SelectionProblem):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetSelectionProblem.
+        Constructor for IntegerSelectionProblem.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(SubsetSelectionProblem, self).__init__(**kwargs)
+        super(IntegerSelectionProblem, self).__init__(**kwargs)
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_SubsetSelectionProblem(v: object, vname: str) -> None:
+def check_is_IntegerSelectionProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type SubsetSelectionProblem, otherwise raise TypeError.
+    Check if object is of type IntegerSelectionProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -51,5 +51,5 @@ def check_is_SubsetSelectionProblem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, SubsetSelectionProblem):
-        raise TypeError("'{0}' must be of type SubsetSelectionProblem.".format(vname))
+    if not isinstance(v, IntegerSelectionProblem):
+        raise TypeError("'{0}' must be of type IntegerSelectionProblem.".format(vname))

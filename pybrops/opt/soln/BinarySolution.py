@@ -4,21 +4,22 @@ Partial implementation of the SetSolution interface.
 
 # list of all public imports in the module
 __all__ = [
-    "DenseSubsetSolution",
-    "check_is_DenseSubsetSolution"
+    "BinarySolution",
+    "check_is_BinarySolution"
 ]
 
 # imports
 from numbers import Integral
+from typing import Union
 import numpy
-from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_gteq
-from pybrops.opt.soln.DenseSolution import DenseSolution
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
+from pybrops.opt.soln.Solution import Solution
+from pybrops.opt.soln.BinarySolutionType import BinarySolutionType
 
-class DenseSubsetSolution(DenseSolution,SubsetSolution):
+class BinarySolution(Solution,BinarySolutionType):
     """
-    Partially implemented class for optimization problems with nominal decision variables.
+    Partially implemented class for optimization problems with integer decision variables.
     """
 
     ############################################################################
@@ -44,14 +45,14 @@ class DenseSubsetSolution(DenseSolution,SubsetSolution):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseSubsetSolution.
+        Constructor for BinarySolution.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseSubsetSolution, self).__init__(
+        super(BinarySolution, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -74,22 +75,27 @@ class DenseSubsetSolution(DenseSolution,SubsetSolution):
     ############################ Object Properties #############################
     ############################################################################
     # override decn_space setter properties
-    @DenseSolution.decn_space.setter
-    def decn_space(self, value: numpy.ndarray) -> None:
+    @Solution.decn_space.setter
+    def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
-        check_is_ndarray(value, "decn_space")
-        check_ndarray_is_1d(value, "decn_space")
-        check_ndarray_len_gteq(value, "decn_space", self.ndecn)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
+            check_ndarray_dtype_is_integer(value, "decn_space")
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space' must be of type numpy.ndarrray or None")
         self._decn_space = value
+
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseSubsetSolution(v: object, vname: str) -> None:
+def check_is_BinarySolution(v: object, vname: str) -> None:
     """
-    Check if object is of type DenseSubsetSolution, otherwise raise TypeError.
+    Check if object is of type BinarySolution, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -98,5 +104,5 @@ def check_is_DenseSubsetSolution(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, DenseSubsetSolution):
-        raise TypeError("'{0}' must be of type DenseSubsetSolution.".format(vname))
+    if not isinstance(v, BinarySolution):
+        raise TypeError("'{0}' must be of type BinarySolution.".format(vname))
