@@ -67,10 +67,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def n_var(self, value: Integral) -> None:
         """Set number of decision variables."""
         self._n_var = value
-    @n_var.deleter
-    def n_var(self) -> None:
-        """Delete number of decision variables."""
-        del self._n_var
 
     @property
     def n_obj(self) -> Integral:
@@ -80,10 +76,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def n_obj(self, value: Integral) -> None:
         """Set number of objectives."""
         self._n_obj = value
-    @n_obj.deleter
-    def n_obj(self) -> None:
-        """Delete number of objectives."""
-        del self._n_obj
     
     @property
     def n_ieq_constr(self) -> Integral:
@@ -93,10 +85,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def n_ieq_constr(self, value: Integral) -> None:
         """Set number of inequality constraints."""
         self._n_ieq_constr = value
-    @n_ieq_constr.deleter
-    def n_ieq_constr(self) -> None:
-        """Delete number of inequality constraints."""
-        del self._n_ieq_constr
     
     @property
     def n_eq_constr(self) -> Integral:
@@ -106,10 +94,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def n_eq_constr(self, value: Integral) -> None:
         """Set number of equality constraints."""
         self._n_eq_constr = value
-    @n_eq_constr.deleter
-    def n_eq_constr(self) -> None:
-        """Delete number of equality constraints."""
-        del self._n_eq_constr
     
     @property
     def xl(self) -> Union[numpy.ndarray,None]:
@@ -119,10 +103,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def xl(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         self._xl = value
-    @xl.deleter
-    def xl(self) -> None:
-        """Delete lower boundary of the decision space."""
-        del self._xl
     
     @property
     def xu(self) -> Union[numpy.ndarray,None]:
@@ -132,10 +112,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def xu(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         self._xu = value
-    @xu.deleter
-    def xu(self) -> None:
-        """Delete upper boundary of the decision space."""
-        del self._xu
 
     @property
     def vtype(self) -> Union[type,None]:
@@ -145,10 +121,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def vtype(self, value: Union[type,None]) -> None:
         """Set the variable type."""
         self._vtype = value
-    @vtype.deleter
-    def vtype(self) -> None:
-        """Delete the variable type."""
-        del self._vtype
     
     @property
     def vars(self) -> Union[Sequence,None]:
@@ -158,10 +130,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def vars(self, value: Union[Sequence,None]) -> None:
         """Set variables provided in their explicit form."""
         self._vars = value
-    @vars.deleter
-    def vars(self) -> None:
-        """Delete variables provided in their explicit form."""
-        del self._vars
     
     @property
     def elementwise(self) -> bool:
@@ -171,10 +139,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def elementwise(self, value: bool) -> None:
         """Set whether the evaluation function should be run elementwise."""
         self._elementwise = value
-    @elementwise.deleter
-    def elementwise(self) -> None:
-        """Delete whether the evaluation function should be run elementwise."""
-        del self._elementwise
     
     @property
     def elementwise_func(self) -> type:
@@ -184,10 +148,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def elementwise_func(self, value: type) -> None:
         """Set the class that creates the function that evaluates a single individual."""
         self._elementwise_func = value
-    @elementwise_func.deleter
-    def elementwise_func(self) -> None:
-        """Delete the class that creates the function that evaluates a single individual."""
-        del self._elementwise_func
     
     @property
     def elementwise_runner(self) -> Callable:
@@ -197,10 +157,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def elementwise_runner(self, value: Callable) -> None:
         """Set the function that runs the function that evaluates a single individual."""
         self._elementwise_runner = value
-    @elementwise_runner.deleter
-    def elementwise_runner(self) -> None:
-        """Delete the function that runs the function that evaluates a single individual."""
-        del self._elementwise_runner
     
     @property
     def replace_nan_values_by(self) -> Union[Real,None]:
@@ -210,10 +166,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def replace_nan_values_by(self, value: Union[Real,None]) -> None:
         """Set value for which to replace NaN values."""
         self._replace_nan_values_by = value
-    @replace_nan_values_by.deleter
-    def replace_nan_values_by(self) -> None:
-        """Delete value for which to replace NaN values."""
-        del self._replace_nan_values_by
     
     @property
     def exclude_from_serialization(self) -> Union[Iterable,None]:
@@ -223,10 +175,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def exclude_from_serialization(self, value: Union[Iterable,None]) -> None:
         """Set attributes which are excluded from being serialized."""
         self._exclude_from_serialization = value
-    @exclude_from_serialization.deleter
-    def exclude_from_serialization(self) -> None:
-        """Delete attributes which are excluded from being serialized."""
-        del self._exclude_from_serialization
     
     @property
     def callback(self) -> Union[Callable,None]:
@@ -236,10 +184,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def callback(self, value: Union[Callable,None]) -> None:
         """Set a callback function to be called after every evaluation."""
         self._callback = value
-    @callback.deleter
-    def callback(self) -> None:
-        """Delete a callback function to be called after every evaluation."""
-        del self._callback
     
     @property
     def strict(self) -> bool:
@@ -249,10 +193,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def strict(self, value: bool) -> None:
         """Set whether the shapes are checked strictly."""
         self._strict = value
-    @strict.deleter
-    def strict(self) -> None:
-        """Delete whether the shapes are checked strictly."""
-        del self._strict
     
     @property
     def data(self) -> dict:
@@ -262,10 +202,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def data(self, value: dict) -> None:
         """Set type of the variable to be evaluated."""
         self._data = value
-    @data.deleter
-    def data(self) -> None:
-        """Delete type of the variable to be evaluated."""
-        del self._data
 
     ########################################################
     ##### Properties unique to this ProblemType class ######
@@ -278,10 +214,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def ndecn(self, value: Integral) -> None:
         """Set number of decision variables."""
         raise NotImplementedError("property is abstract")
-    @ndecn.deleter
-    def ndecn(self) -> None:
-        """Delete number of decision variables."""
-        raise NotImplementedError("property is abstract")
     
     @property
     def decn_space(self) -> numpy.ndarray:
@@ -290,10 +222,6 @@ class ProblemType(pymoo.core.problem.Problem):
     @decn_space.setter
     def decn_space(self, value: numpy.ndarray) -> None:
         """Set decision space boundaries."""
-        raise NotImplementedError("property is abstract")
-    @decn_space.deleter
-    def decn_space(self) -> None:
-        """Delete decision space boundaries."""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -304,10 +232,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         raise NotImplementedError("property is abstract")
-    @decn_space_lower.deleter
-    def decn_space_lower(self) -> None:
-        """Delete lower boundary of the decision space."""
-        raise NotImplementedError("property is abstract")
     
     @property
     def decn_space_upper(self) -> Union[numpy.ndarray,None]:
@@ -316,10 +240,6 @@ class ProblemType(pymoo.core.problem.Problem):
     @decn_space_upper.setter
     def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
-        raise NotImplementedError("property is abstract")
-    @decn_space_upper.deleter
-    def decn_space_upper(self) -> None:
-        """Delete upper boundary of the decision space."""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -330,10 +250,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def nobj(self, value: Integral) -> None:
         """Set number of objectives."""
         raise NotImplementedError("property is abstract")
-    @nobj.deleter
-    def nobj(self) -> None:
-        """Delete number of objectives."""
-        raise NotImplementedError("property is abstract")
     
     @property
     def obj_wt(self) -> numpy.ndarray:
@@ -342,10 +258,6 @@ class ProblemType(pymoo.core.problem.Problem):
     @obj_wt.setter
     def obj_wt(self, value: numpy.ndarray) -> None:
         """Set objective function weights."""
-        raise NotImplementedError("property is abstract")
-    @obj_wt.deleter
-    def obj_wt(self) -> None:
-        """Delete objective function weights."""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -356,10 +268,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def nineqcv(self, value: Integral) -> None:
         """Set number of inequality constraint violations."""
         raise NotImplementedError("property is abstract")
-    @nineqcv.deleter
-    def nineqcv(self) -> None:
-        """Delete number of inequality constraint violations."""
-        raise NotImplementedError("property is abstract")
 
     @property
     def ineqcv_wt(self) -> numpy.ndarray:
@@ -368,10 +276,6 @@ class ProblemType(pymoo.core.problem.Problem):
     @ineqcv_wt.setter
     def ineqcv_wt(self, value: numpy.ndarray) -> None:
         """Set inequality constraint violation function weights."""
-        raise NotImplementedError("property is abstract")
-    @ineqcv_wt.deleter
-    def ineqcv_wt(self) -> None:
-        """Delete inequality constraint violation function weights."""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -382,10 +286,6 @@ class ProblemType(pymoo.core.problem.Problem):
     def neqcv(self, value: Integral) -> None:
         """Set number of equality constraint violations."""
         raise NotImplementedError("property is abstract")
-    @neqcv.deleter
-    def neqcv(self) -> None:
-        """Delete number of equality constraint violations."""
-        raise NotImplementedError("property is abstract")
     
     @property
     def eqcv_wt(self) -> numpy.ndarray:
@@ -394,10 +294,6 @@ class ProblemType(pymoo.core.problem.Problem):
     @eqcv_wt.setter
     def eqcv_wt(self, value: numpy.ndarray) -> None:
         """Set equality constraint violation function weights."""
-        raise NotImplementedError("property is abstract")
-    @eqcv_wt.deleter
-    def eqcv_wt(self) -> None:
-        """Delete equality constraint violation function weights."""
         raise NotImplementedError("property is abstract")
 
     ############################################################################
