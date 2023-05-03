@@ -8,7 +8,7 @@ from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.DenseSelectionProblem import DenseSelectionProblem, check_is_DenseSelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem, check_is_SelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -96,7 +96,7 @@ def prob(
     eqcv_trans,
     eqcv_trans_kwargs
 ):
-    yield DenseSelectionProblem(
+    yield SelectionProblem(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -119,7 +119,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_DenseSelectionProblem_docstring():
-    assert_docstring(DenseSelectionProblem)
+    assert_docstring(SelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -129,7 +129,7 @@ def test_DenseSelectionProblem_docstring():
 ### obj_trans ###
 ####################
 def test_obj_trans_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "obj_trans")
+    assert_concrete_property(SelectionProblem, "obj_trans")
 
 def test_obj_trans_fget(prob):
     assert isinstance(prob.obj_trans, Callable)
@@ -155,7 +155,7 @@ def test_obj_trans_fdel(prob):
 ### obj_trans_kwargs ###
 ###########################
 def test_obj_trans_kwargs_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "obj_trans_kwargs")
+    assert_concrete_property(SelectionProblem, "obj_trans_kwargs")
 
 def test_obj_trans_kwargs_fget(prob):
     assert isinstance(prob.obj_trans_kwargs, dict)
@@ -183,7 +183,7 @@ def test_obj_trans_kwargs_fdel(prob):
 ### ineqcv_trans ###
 ####################
 def test_ineqcv_trans_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "ineqcv_trans")
+    assert_concrete_property(SelectionProblem, "ineqcv_trans")
 
 def test_ineqcv_trans_fget(prob):
     assert isinstance(prob.ineqcv_trans, Callable)
@@ -209,7 +209,7 @@ def test_ineqcv_trans_fdel(prob):
 ### ineqcv_trans_kwargs ###
 ###########################
 def test_ineqcv_trans_kwargs_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "ineqcv_trans_kwargs")
+    assert_concrete_property(SelectionProblem, "ineqcv_trans_kwargs")
 
 def test_ineqcv_trans_kwargs_fget(prob):
     assert isinstance(prob.ineqcv_trans_kwargs, dict)
@@ -237,7 +237,7 @@ def test_ineqcv_trans_kwargs_fdel(prob):
 ### eqcv_trans ###
 ####################
 def test_eqcv_trans_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "eqcv_trans")
+    assert_concrete_property(SelectionProblem, "eqcv_trans")
 
 def test_eqcv_trans_fget(prob):
     assert isinstance(prob.eqcv_trans, Callable)
@@ -263,7 +263,7 @@ def test_eqcv_trans_fdel(prob):
 ### eqcv_trans_kwargs ###
 ###########################
 def test_eqcv_trans_kwargs_is_concrete():
-    assert_concrete_property(DenseSelectionProblem, "eqcv_trans_kwargs")
+    assert_concrete_property(SelectionProblem, "eqcv_trans_kwargs")
 
 def test_eqcv_trans_kwargs_fget(prob):
     assert isinstance(prob.eqcv_trans_kwargs, dict)
@@ -291,13 +291,13 @@ def test_eqcv_trans_kwargs_fdel(prob):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseSelectionProblem, "__init__")
+    assert_concrete_method(SelectionProblem, "__init__")
 
 def test_evalfn_is_concrete():
-    assert_concrete_method(DenseSelectionProblem, "evalfn")
+    assert_concrete_method(SelectionProblem, "evalfn")
 
 def test__evaluate_is_concrete():
-    assert_concrete_method(DenseSelectionProblem, "_evaluate")
+    assert_concrete_method(SelectionProblem, "_evaluate")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -313,10 +313,10 @@ def test_latentfn_is_abstract(prob):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseSelectionProblem_is_concrete():
-    assert_concrete_function(check_is_DenseSelectionProblem)
+    assert_concrete_function(check_is_SelectionProblem)
 
 def test_check_is_DenseSelectionProblem(prob):
     with not_raises(TypeError):
-        check_is_DenseSelectionProblem(prob, "prob")
+        check_is_SelectionProblem(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_DenseSelectionProblem(None, "prob")
+        check_is_SelectionProblem(None, "prob")

@@ -6,11 +6,11 @@ from numbers import Integral
 from typing import Callable, Tuple
 
 import numpy
-from pybrops.breed.prot.sel.prob.DenseSubsetSelectionProblem import DenseSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_is_square
 
-class BinaryOptimalContributionSelectionProblem(DenseSubsetSelectionProblem):
+class BinaryOptimalContributionSelectionProblem(SubsetSelectionProblem):
     """
     docstring for BinaryOptimalContributionSelectionProblem.
     """

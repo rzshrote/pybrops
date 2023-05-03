@@ -6,20 +6,20 @@ from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem, check_is_SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblemType import SubsetSelectionProblemType, check_is_SubsetSelectionProblemType
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def prob():
-    yield SubsetSelectionProblem()
+    yield SubsetSelectionProblemType()
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetSelectionProblem_docstring():
-    assert_docstring(SubsetSelectionProblem)
+    assert_docstring(SubsetSelectionProblemType)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -29,7 +29,7 @@ def test_SubsetSelectionProblem_docstring():
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetSelectionProblem, "__init__")
+    assert_concrete_method(SubsetSelectionProblemType, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -43,10 +43,10 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_SubsetSelectionProblem_is_concrete():
-    assert_concrete_function(check_is_SubsetSelectionProblem)
+    assert_concrete_function(check_is_SubsetSelectionProblemType)
 
 def test_check_is_SubsetSelectionProblem(prob):
     with not_raises(TypeError):
-        check_is_SubsetSelectionProblem(prob, "prob")
+        check_is_SubsetSelectionProblemType(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_SubsetSelectionProblem(None, "prob")
+        check_is_SubsetSelectionProblemType(None, "prob")

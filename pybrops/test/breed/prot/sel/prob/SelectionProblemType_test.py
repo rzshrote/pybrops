@@ -6,20 +6,20 @@ from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem, check_is_SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType, check_is_SelectionProblemType
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def prob():
-    yield SelectionProblem()
+    yield SelectionProblemType()
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_SelectionProblem_docstring():
-    assert_docstring(SelectionProblem)
+    assert_docstring(SelectionProblemType)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -29,31 +29,31 @@ def test_SelectionProblem_docstring():
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(SelectionProblem, "__init__")
+    assert_concrete_method(SelectionProblemType, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_nlatent_is_abstract():
-    assert_abstract_property(SelectionProblem, "nlatent")
+    assert_abstract_property(SelectionProblemType, "nlatent")
 
 def test_obj_trans_is_abstract():
-    assert_abstract_property(SelectionProblem, "obj_trans")
+    assert_abstract_property(SelectionProblemType, "obj_trans")
 
 def test_obj_trans_kwargs_is_abstract():
-    assert_abstract_property(SelectionProblem, "obj_trans_kwargs")
+    assert_abstract_property(SelectionProblemType, "obj_trans_kwargs")
 
 def test_ineqcv_trans_is_abstract():
-    assert_abstract_property(SelectionProblem, "ineqcv_trans")
+    assert_abstract_property(SelectionProblemType, "ineqcv_trans")
 
 def test_ineqcv_trans_kwargs_is_abstract():
-    assert_abstract_property(SelectionProblem, "ineqcv_trans_kwargs")
+    assert_abstract_property(SelectionProblemType, "ineqcv_trans_kwargs")
 
 def test_eqcv_trans_is_abstract():
-    assert_abstract_property(SelectionProblem, "eqcv_trans")
+    assert_abstract_property(SelectionProblemType, "eqcv_trans")
 
 def test_eqcv_trans_kwargs_is_abstract():
-    assert_abstract_property(SelectionProblem, "eqcv_trans_kwargs")
+    assert_abstract_property(SelectionProblemType, "eqcv_trans_kwargs")
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -65,10 +65,10 @@ def test_latentfn_is_abstract(prob):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_SelectionProblem_is_concrete():
-    assert_concrete_function(check_is_SelectionProblem)
+    assert_concrete_function(check_is_SelectionProblemType)
 
 def test_check_is_SelectionProblem(prob):
     with not_raises(TypeError):
-        check_is_SelectionProblem(prob, "prob")
+        check_is_SelectionProblemType(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_SelectionProblem(None, "prob")
+        check_is_SelectionProblemType(None, "prob")

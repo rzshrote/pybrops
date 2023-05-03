@@ -3,7 +3,7 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 
 from pybrops.test import not_raises
 from pybrops.test import assert_docstring
@@ -313,7 +313,7 @@ def test_problem(cgs, dgmat, dalgmod):
         t_max = None
     )
 
-    assert isinstance(prob, SelectionProblem)
+    assert isinstance(prob, SelectionProblemType)
 
 def test_pareto(cgs, dgmat, dalgmod):
     frontier, sel_config = cgs.pareto(

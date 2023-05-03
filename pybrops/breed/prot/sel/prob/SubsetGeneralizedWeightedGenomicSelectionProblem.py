@@ -5,7 +5,7 @@ Module implementing generalized weighted genomic selection as a subset optimizat
 from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 import numpy
-from pybrops.breed.prot.sel.prob.DenseSubsetSelectionProblem import DenseSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -14,7 +14,7 @@ from pybrops.core.error.error_value_numpy import check_ndarray_is_2d
 from pybrops.core.error.error_value_python import check_Number_in_interval
 
 
-class SubsetGeneralizedWeightedGenomicSelectionProblem(DenseSubsetSelectionProblem):
+class SubsetGeneralizedWeightedGenomicSelectionProblem(SubsetSelectionProblem):
     """
     docstring for SubsetGeneralizedWeightedGenomicSelectionProblem.
     """

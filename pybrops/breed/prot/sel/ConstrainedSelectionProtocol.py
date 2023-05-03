@@ -11,7 +11,7 @@ __all__ = [
 # imports
 from numbers import Integral
 from typing import Optional
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
@@ -61,7 +61,7 @@ class ConstrainedSelectionProtocol:
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SelectionProblemType:
         """
         Create an optimization problem definition using provided inputs.
 

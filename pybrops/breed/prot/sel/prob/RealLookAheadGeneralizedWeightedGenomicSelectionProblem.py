@@ -3,13 +3,13 @@ from typing import Callable, Optional, Union
 
 import numpy
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
-from pybrops.breed.prot.sel.prob.DenseRealSelectionProblem import DenseRealSelectionProblem
+from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(DenseRealSelectionProblem):
+class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProblem):
     """
     docstring for RealLookAheadGeneralizedWeightedGenomicSelectionProblem.
     """

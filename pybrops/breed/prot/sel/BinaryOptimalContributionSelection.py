@@ -8,7 +8,7 @@ import numpy
 from typing import Optional, Tuple, Union
 from typing import Callable
 from pybrops.breed.prot.sel.prob.BinaryOptimalContributionSelectionProblem import BinaryOptimalContributionSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.core.error.error_value_numpy import check_ndarray_align
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
@@ -441,7 +441,7 @@ class BinaryOptimalContributionSelection(ConstrainedSelectionProtocol):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SelectionProblemType:
         """
         Create an optimization problem definition using provided inputs.
 

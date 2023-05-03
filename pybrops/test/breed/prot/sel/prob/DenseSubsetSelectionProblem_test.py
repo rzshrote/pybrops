@@ -8,7 +8,7 @@ from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.DenseSubsetSelectionProblem import DenseSubsetSelectionProblem, check_is_DenseSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem, check_is_SubsetSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -96,7 +96,7 @@ def prob(
     eqcv_trans,
     eqcv_trans_kwargs
 ):
-    yield DenseSubsetSelectionProblem(
+    yield SubsetSelectionProblem(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -119,7 +119,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_DenseSubsetSelectionProblem_docstring():
-    assert_docstring(DenseSubsetSelectionProblem)
+    assert_docstring(SubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -129,7 +129,7 @@ def test_DenseSubsetSelectionProblem_docstring():
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseSubsetSelectionProblem, "__init__")
+    assert_concrete_method(SubsetSelectionProblem, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -145,10 +145,10 @@ def test_latentfn_is_abstract(prob):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseSubsetSelectionProblem_is_concrete():
-    assert_concrete_function(check_is_DenseSubsetSelectionProblem)
+    assert_concrete_function(check_is_SubsetSelectionProblem)
 
 def test_check_is_DenseSubsetSelectionProblem(prob):
     with not_raises(TypeError):
-        check_is_DenseSubsetSelectionProblem(prob, "prob")
+        check_is_SubsetSelectionProblem(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_DenseSubsetSelectionProblem(None, "prob")
+        check_is_SubsetSelectionProblem(None, "prob")

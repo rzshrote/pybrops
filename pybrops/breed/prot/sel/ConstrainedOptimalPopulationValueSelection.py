@@ -4,7 +4,7 @@ from typing import Callable, Optional, Union
 import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.DenseConstrainedSelectionProtocol import DenseConstrainedSelectionProtocol
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.SubsetOptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -223,7 +223,7 @@ class ConstrainedOptimalPopulationValueSelection(DenseConstrainedSelectionProtoc
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SelectionProblemType:
         """
         Create an optimization problem definition using provided inputs.
 

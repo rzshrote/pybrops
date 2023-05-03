@@ -17,7 +17,7 @@ from pybrops.core.error.error_type_python import check_is_Callable, check_is_dic
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.SubsetConventionalGenomicSelectionProblem import SubsetConventionalGenomicSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
@@ -321,7 +321,7 @@ class ConstrainedConventionalGenomicSelection(ConstrainedSelectionProtocol):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SelectionProblemType:
         """
         Create an optimization problem definition using provided inputs.
 

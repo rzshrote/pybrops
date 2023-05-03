@@ -4,10 +4,10 @@ Module containing problem formulations for selection protocols.
 
 __all__ = [
     "trans",
+    "SelectionProblemType",
+    "SubsetSelectionProblemType",
     "SelectionProblem",
     "SubsetSelectionProblem",
-    "DenseSelectionProblem",
-    "DenseSubsetSelectionProblem",
     "SubsetConventionalGenomicSelectionProblem"
 ]
 
@@ -17,12 +17,12 @@ __all__ = [
 from pybrops.breed.prot.sel.prob import trans
 
 # abstract classes
-from pybrops.breed.prot.sel.prob import SelectionProblem
-from pybrops.breed.prot.sel.prob import SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob import SelectionProblemType
+from pybrops.breed.prot.sel.prob import SubsetSelectionProblemType
 
 # semi-concrete classes
-from pybrops.breed.prot.sel.prob import DenseSelectionProblem
-from pybrops.breed.prot.sel.prob import DenseSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob import SelectionProblem
+from pybrops.breed.prot.sel.prob import SubsetSelectionProblem
 
 # concrete classes
 from pybrops.breed.prot.sel.prob import SubsetConventionalGenomicSelectionProblem

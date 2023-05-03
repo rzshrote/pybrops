@@ -9,7 +9,7 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.DenseConstrainedSelectionProtocol import DenseConstrainedSelectionProtocol
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.SubsetGeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
@@ -233,7 +233,7 @@ class ConstrainedGeneralizedWeightedGenomicSelection(DenseConstrainedSelectionPr
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SelectionProblemType:
         """
         Create an optimization problem definition using provided inputs.
 
