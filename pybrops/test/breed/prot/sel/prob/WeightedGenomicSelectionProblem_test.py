@@ -6,7 +6,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.SubsetWeightedGenomicSelectionProblem import SubsetWeightedGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem import SubsetWeightedGenomicSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################

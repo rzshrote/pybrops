@@ -4,7 +4,10 @@ Module defining conventional genomic selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "ConstrainedConventionalGenomicSelection"
+    "BaseConventionalGenomicSelection",
+    "SubsetConventionalGenomicSelection",
+    "RealConventionalGenomicSelection",
+    "IntegerConventionalGenomicSelection"
 ]
 
 # imports
@@ -29,7 +32,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class SemiabstractConventionalGenomicSelection(ConstrainedSelectionProtocol):
+class BaseConventionalGenomicSelection(ConstrainedSelectionProtocol):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
@@ -70,7 +73,7 @@ class SemiabstractConventionalGenomicSelection(ConstrainedSelectionProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SemiabstractConventionalGenomicSelection, self).__init__(
+        super(BaseConventionalGenomicSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -383,7 +386,7 @@ class SemiabstractConventionalGenomicSelection(ConstrainedSelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-class SubsetConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+class SubsetConventionalGenomicSelection(BaseConventionalGenomicSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -475,7 +478,7 @@ class SubsetConventionalGenomicSelection(SemiabstractConventionalGenomicSelectio
     ################# Selection Functions ##################
     # use super select() function
 
-class RealConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+class RealConventionalGenomicSelection(BaseConventionalGenomicSelection):
     """
     Conventional Genomic Selection in a real search space.
     """
@@ -567,7 +570,7 @@ class RealConventionalGenomicSelection(SemiabstractConventionalGenomicSelection)
     ################# Selection Functions ##################
     # use super select() function
 
-class IntegerConventionalGenomicSelection(SemiabstractConventionalGenomicSelection):
+class IntegerConventionalGenomicSelection(BaseConventionalGenomicSelection):
     """
     Conventional Genomic Selection in an integer search space.
     """

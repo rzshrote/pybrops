@@ -2,22 +2,26 @@
 Module implementing conventional genomic selection as a subset optimization problem.
 """
 
-from numbers import Integral, Number
+__all__ = [
+    "SubsetConventionalGenomicSelectionProblem",
+    "RealConventionalGenomicSelectionProblem",
+    "IntegerConventionalGenomicSelectionProblem"
+]
+
+from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 
 import numpy
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
-
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_2d
 
 
-class ConventionalGenomicSelectionProblemProperties:
+class CGSProblemProperties:
     """
-    Semi-abstract class containing common properties for Conventional Genomic Selection Problems
+    Helper class containing common properties for CGS Problems.
     """
     ############################################################################
     ############################ Object Properties #############################
@@ -39,7 +43,7 @@ class ConventionalGenomicSelectionProblemProperties:
         check_ndarray_is_2d(value, "gebv")
         self._gebv = value
 
-class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,ConventionalGenomicSelectionProblemProperties):
+class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProblemProperties):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -55,17 +59,17 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,Conventio
             decn_space_lower: Union[numpy.ndarray,Number,None],
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -141,9 +145,6 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,Conventio
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
-            elementwise = True,
-            elementwise_func = ElementwiseEvaluationFunction,
-            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
         # assignments
@@ -186,9 +187,11 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,Conventio
         # Step 1: (n,t)[(ndecn,),:] -> (ndecn,t)    # select individuals
         # Step 2: (ndecn,t).sum(0)  -> (t,)         # sum across all individuals
         # Step 3: scalar * (t,) -> (t,)             # take mean across selection
-        return (1.0 / len(x)) * (self._gebv[x,:].sum(0))
+        out = -(1.0 / len(x)) * (self._gebv[x,:].sum(0))
 
-class RealConventionalGenomicSelectionProblem(RealSelectionProblem,ConventionalGenomicSelectionProblemProperties):
+        return out
+
+class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemProperties):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -204,17 +207,17 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,ConventionalG
             decn_space_lower: Union[numpy.ndarray,Number,None],
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -290,9 +293,6 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,ConventionalG
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
-            elementwise = True,
-            elementwise_func = ElementwiseEvaluationFunction,
-            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
         # assignments
@@ -340,9 +340,11 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,ConventionalG
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation
         # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
-        return contrib.dot(self._gebv)
+        out = -contrib.dot(self._gebv)
 
-class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,ConventionalGenomicSelectionProblemProperties):
+        return out
+
+class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,CGSProblemProperties):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -358,17 +360,17 @@ class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,Convent
             decn_space_lower: Union[numpy.ndarray,Number,None],
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -444,9 +446,6 @@ class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,Convent
             eqcv_wt = eqcv_wt,
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
-            elementwise = True,
-            elementwise_func = ElementwiseEvaluationFunction,
-            elementwise_runner = LoopedElementwiseEvaluation(),
             **kwargs
         )
         # assignments
@@ -494,5 +493,7 @@ class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,Convent
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation
         # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
-        return contrib.dot(self._gebv)
+        out = -contrib.dot(self._gebv)
+
+        return out
 

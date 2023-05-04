@@ -1,12 +1,6 @@
 """
-Module defining optimization problems for binary optimal constribution selection.
+Module implementing Optimal Population Value (OPV) Selection optimization problems.
 """
-
-__all__ = [
-    "SubsetOptimalContributionSelectionProblem",
-    "RealOptimalContributionSelectionProblem",
-    "IntegerOptimalContributionSelectionProblem"
-]
 
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
@@ -16,49 +10,33 @@ from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelection
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_is_square
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 
-class OCSProblemProperties:
-    """
-    Semi-abstract class containing common properties for Optimal Contribution Selection Problems
-    """
+class OPVSProblemProperties:
+    """Helper class to implement properties common to OPV."""
     ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
-        # return number of traits in BV matrix plus 1
-        return 1 + self._bv.shape[1]
+        # return number of traits in haplotype matrix
+        return self._haplomat.shape[3]
 
     @property
-    def bv(self) -> numpy.ndarray:
-        """Breeding value matrix."""
-        return self._bv
-    @bv.setter
-    def bv(self, value: numpy.ndarray) -> None:
-        """Set breeding value matrix."""
-        check_is_ndarray(value, "bv")
-        check_ndarray_is_2d(value, "bv")
-        self._bv = value
+    def haplomat(self) -> numpy.ndarray:
+        """Haplotype effect matrix of shape ``(m,n,b,t)``."""
+        return self._haplomat
+    @haplomat.setter
+    def haplomat(self, value: numpy.ndarray) -> None:
+        """Set haplotype effect matrix."""
+        check_is_ndarray(value, "gebv")
+        check_ndarray_ndim(value, "gebv", 4)
+        self._haplomat = value
 
-    @property
-    def C(self) -> numpy.ndarray:
-        """Cholesky decomposition of the kinship matrix."""
-        return self._C
-    @C.setter
-    def C(self, value: numpy.ndarray) -> None:
-        """Set Cholesky decomposition of the kinship matrix."""
-        check_is_ndarray(value, "C")
-        check_ndarray_is_2d(value, "C")
-        check_ndarray_is_square(value, "C")
-        self._C = value
-
-class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProblemProperties):
+class SubsetOptimalPopulationValueSelectionProblem(SubsetSelectionProblem,OPVSProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for subset
-    search spaces.
+    docstring for SubsetOptimalPopulationValueSelectionProblem.
     """
 
     ############################################################################
@@ -66,8 +44,7 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            haplomat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -87,27 +64,19 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetOptimalContributionSelectionProblem.
+        Constructor for SubsetOptimalPopulationValueSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
+        haplomat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
 
             Where:
 
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -157,10 +126,7 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
         kwargs : dict
             Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(SubsetOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(SubsetOptimalPopulationValueSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -179,9 +145,8 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.haplomat = haplomat
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -193,9 +158,9 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Optimal Population Value
+        Selection.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -208,55 +173,30 @@ class SubsetOptimalContributionSelectionProblem(SubsetSelectionProblem,OCSProble
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            An OPV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
-        # (n,n)[:,(k,)] -> (n,k)
-        # scalar * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / len(x)) * self.C[:,x].sum(1)
+        # get max haplotype value
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+        # (h,t).sum(0) -> (t,)
+        out = -self._haplomat[:,x,:,:].max((0,1)).sum(0)
 
-        # calculate mean genomic relationship
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgr = numpy.linalg.norm(Cx, ord = 2, keepdims = True)
-
-        # calculate breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = self.bv[x,:].sum(0)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgr,-gain])
-
-        # return (1+t,)
         return out
 
-class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemProperties):
+class RealOptimalPopulationValueSelectionProblem(RealSelectionProblem,OPVSProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for real
-    search spaces.
+    docstring for RealOptimalPopulationValueSelectionProblem.
     """
-
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            haplomat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -276,27 +216,19 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemPro
             **kwargs: dict
         ) -> None:
         """
-        Constructor for RealOptimalContributionSelectionProblem.
+        Constructor for RealOptimalPopulationValueSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
+        haplomat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
 
             Where:
 
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -344,12 +276,9 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemPro
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (DenseRealSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(RealOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(RealOptimalPopulationValueSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -368,9 +297,8 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemPro
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.haplomat = haplomat
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -382,9 +310,9 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemPro
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Optimal Population Value
+        Selection.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -399,54 +327,38 @@ class RealOptimalContributionSelectionProblem(RealSelectionProblem,OCSProblemPro
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            An OPV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
         # scale x to have a sum of 1 (contribution)
+        # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # get mask of individuals with contributions > 0
+        # (n,)
+        mask = (contrib > 0.0)
 
-        # calculate breeding value of the selection
-        # (n,) . (n,t) -> (t,)
-        gain = contrib.dot(self._bv)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,-gain])
+        # get max haplotype value
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+        # (h,t).sum(0) -> (t,)
+        out = -self._haplomat[:,mask,:,:].max((0,1)).sum(0)
 
-        # return (1+t,)
         return out
 
-class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProblemProperties):
+class IntegerOptimalPopulationValueSelectionProblem(IntegerSelectionProblem,OPVSProblemProperties):
     """
-    Class representing an Optimal Contribution Selection Problem for integer
-    search spaces.
+    docstring for IntegerOptimalPopulationValueSelectionProblem.
     """
-
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
             self,
-            bv: numpy.ndarray,
-            C: numpy.ndarray,
+            haplomat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -466,27 +378,19 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProb
             **kwargs: dict
         ) -> None:
         """
-        Constructor for IntegerOptimalContributionSelectionProblem.
+        Constructor for IntegerOptimalPopulationValueSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
+        haplomat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
 
             Where:
 
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -534,12 +438,9 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProb
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (DenseIntegerSelectionProblem) constructor.
         """
-        # call DenseSubsetSelectionProblem constructor
-        super(IntegerOptimalContributionSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(IntegerOptimalPopulationValueSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -558,9 +459,8 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProb
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
-        self.C = C
+        # assignments
+        self.haplomat = haplomat
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -572,9 +472,9 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProb
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on Optimal Population Value
+        Selection.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -589,38 +489,24 @@ class IntegerOptimalContributionSelectionProblem(IntegerSelectionProblem,OCSProb
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            An OPV matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
         # scale x to have a sum of 1 (contribution)
+        # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # get mask of individuals with contributions > 0
+        # (n,)
+        mask = (contrib > 0.0)
 
-        # calculate breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = self.bv.T.dot(contrib)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,-gain])
+        # get max haplotype value
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
+        # (h,t).sum(0) -> (t,)
+        out = -self._haplomat[:,mask,:,:].max((0,1)).sum(0)
 
-        # return (1+t,)
         return out

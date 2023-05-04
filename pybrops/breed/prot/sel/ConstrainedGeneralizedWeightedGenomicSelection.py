@@ -10,7 +10,7 @@ from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocolType import ConstrainedSelectionProtocolType
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.SubsetGeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str

@@ -5,7 +5,7 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.SubsetOptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
