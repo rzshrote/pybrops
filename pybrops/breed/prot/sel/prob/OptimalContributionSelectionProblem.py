@@ -17,7 +17,7 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_is_square
+from pybrops.core.error.error_value_numpy import check_ndarray_is_square, check_ndarray_is_triu, check_ndarray_ndim
 
 
 class OptimalContributionSelectionProblem(SelectionProblem):
@@ -38,7 +38,7 @@ class OptimalContributionSelectionProblem(SelectionProblem):
     def bv(self, value: numpy.ndarray) -> None:
         """Set breeding value matrix."""
         check_is_ndarray(value, "bv")
-        check_ndarray_is_2d(value, "bv")
+        check_ndarray_ndim(value, "bv", 2)
         self._bv = value
 
     @property
@@ -49,8 +49,9 @@ class OptimalContributionSelectionProblem(SelectionProblem):
     def C(self, value: numpy.ndarray) -> None:
         """Set Cholesky decomposition of the kinship matrix."""
         check_is_ndarray(value, "C")
-        check_ndarray_is_2d(value, "C")
+        check_ndarray_ndim(value, "C", 2)
         check_ndarray_is_square(value, "C")
+        check_ndarray_is_triu(value, "C")
         self._C = value
 
 class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalContributionSelectionProblem):

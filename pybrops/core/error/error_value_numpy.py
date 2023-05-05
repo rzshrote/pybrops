@@ -37,27 +37,9 @@ def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:
     if v.ndim != vndim:
         raise ValueError("variable '{0}' must have dimension equal to {1}".format(vname, vndim))
 
-def check_ndarray_is_1d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim(v, vname, 1)
-
-def check_ndarray_is_2d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim(v, vname, 2)
-
-def check_ndarray_is_3d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim(v, vname, 3)
-
 def check_ndarray_ndim_gteq(v: numpy.ndarray, vname: str, vndim: int) -> None:
     if v.ndim < vndim:
         raise ValueError("variable '{0}' must have dimension greater than or equal to {1}".format(vname, vndim))
-
-def check_ndarray_at_least_1d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim_gteq(v, vname, 1)
-
-def check_ndarray_at_least_2d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim_gteq(v, vname, 2)
-
-def check_ndarray_at_least_3d(v: numpy.ndarray, vname: str) -> None:
-    check_ndarray_ndim_gteq(v, vname, 3)
 
 ################ check_ndarray_size ################
 def check_ndarray_size(v: numpy.ndarray, vname: str, vsize: int):
@@ -128,12 +110,3 @@ def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
 def check_ndarray_len_is_multiple_of(v, vname, m):
     if (len(v) % m) != 0:
         raise ValueError("len({0}) is not a multiple of {1}".format(vname, m))
-
-def check_ndarray_len_is_multiple_of_2(v: Any, vname: str) -> None:
-    check_ndarray_len_is_multiple_of(v, vname, 2)
-
-def check_ndarray_len_is_multiple_of_3(v: Any, vname: str) -> None:
-    check_ndarray_len_is_multiple_of(v, vname, 3)
-
-def check_ndarray_len_is_multiple_of_4(v: Any, vname: str) -> None:
-    check_ndarray_len_is_multiple_of(v, vname, 4)

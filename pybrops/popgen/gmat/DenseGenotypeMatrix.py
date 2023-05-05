@@ -16,11 +16,9 @@ from pybrops.core.error import check_group_in_hdf5
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_2d
 from pybrops.core.error import error_readonly
-from pybrops.core.error import check_ndarray_in_interval
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
@@ -221,7 +219,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def mat(self, value: numpy.ndarray) -> None:
         check_is_ndarray(value, "mat")
         check_ndarray_dtype_is_int8(value, "mat")
-        check_ndarray_is_2d(value, "mat")
+        check_ndarray_ndim(value, "mat", 2)
         # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
         self._mat = value
 

@@ -9,10 +9,10 @@ import numpy
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import check_ndarray_len_is_multiple_of_4
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_value_numpy import check_ndarray_len_is_multiple_of
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -187,7 +187,7 @@ class FourWayDHCross(MatingProtocol):
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
-        check_ndarray_len_is_multiple_of_4(sel, "sel")
+        check_ndarray_len_is_multiple_of(sel, "sel", 4)
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
         f2sel = numpy.repeat(sel[0::4], ncross)

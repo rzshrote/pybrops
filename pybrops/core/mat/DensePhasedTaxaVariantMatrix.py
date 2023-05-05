@@ -9,8 +9,7 @@ from typing import Optional
 from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_3d
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
@@ -92,7 +91,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
     @DenseTaxaVariantMatrix.mat.setter
     def mat(self, value: numpy.ndarray) -> None:
         check_is_ndarray(value, "mat")
-        check_ndarray_at_least_3d(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 3)
         self._mat = value
 
     ############## Phase Metadata Properites ###############

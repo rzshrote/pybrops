@@ -19,7 +19,7 @@ from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionPr
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Real
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_Number_in_interval
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(SelectionProblem):
@@ -43,7 +43,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
     def Z_a(self, value: numpy.ndarray) -> None:
         """Set genotype matrix."""
         check_is_ndarray(value, "Z")
-        check_ndarray_is_2d(value, "Z")
+        check_ndarray_ndim(value, "Z", 2)
         self._Z_a = value
     
     @property
@@ -54,7 +54,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
     def u_a(self, value: numpy.ndarray) -> None:
         """Set additive marker effects matrix."""
         check_is_ndarray(value, "u_a")
-        check_ndarray_is_2d(value, "u_a")
+        check_ndarray_ndim(value, "u_a", 2)
         self._u_a = value
     
     @property
@@ -65,7 +65,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
     def fafreq(self, value: numpy.ndarray) -> None:
         """Set favorable allele frequency matrix."""
         check_is_ndarray(value, "fafreq")
-        check_ndarray_is_2d(value, "fafreq")
+        check_ndarray_ndim(value, "fafreq", 2)
         # where there is a favorable allele frequency of 0,
         # convert to 1 to avoid division by zero
         value[value <= 0] = 1
@@ -90,7 +90,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
     def gwgebv(self, value: numpy.ndarray) -> None:
         """Set generalized weighted genomic estimated breeding values matrix."""
         check_is_ndarray(value, "wgebv")
-        check_ndarray_is_2d(value, "wgebv")
+        check_ndarray_ndim(value, "wgebv", 2)
         self._gwgebv = value
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):

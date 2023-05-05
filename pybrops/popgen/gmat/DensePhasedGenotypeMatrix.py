@@ -12,9 +12,8 @@ from numpy.typing import DTypeLike
 
 from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_3d
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -213,7 +212,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     def mat(self, value: numpy.ndarray) -> None:
         check_is_ndarray(value, "mat")
         check_ndarray_dtype_is_int8(value, "mat")
-        check_ndarray_is_3d(value, "mat")
+        check_ndarray_ndim(value, "mat", 3)
         self._mat = value
 
     ############## General matrix properties ###############

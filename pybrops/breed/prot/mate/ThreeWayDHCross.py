@@ -9,10 +9,10 @@ import numpy
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import check_ndarray_len_is_multiple_of_3
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_value_numpy import check_ndarray_len_is_multiple_of
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -185,7 +185,7 @@ class ThreeWayDHCross(MatingProtocol):
         """
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
-        check_ndarray_len_is_multiple_of_3(sel, "sel")
+        check_ndarray_len_is_multiple_of(sel, "sel", 3)
 
         # get recurrent, female, and male selections; repeat by ncross
         rsel = numpy.repeat(sel[0::3], ncross)  # recurrent parent

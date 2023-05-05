@@ -13,7 +13,7 @@ from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.opt.soln.SolutionType import SolutionType
 
@@ -235,7 +235,7 @@ class Solution(SolutionType):
     def soln_decn(self, value: numpy.ndarray) -> None:
         """Set matrix of solution vectors in the decision space."""
         check_is_ndarray(value, "soln")
-        check_ndarray_is_2d(value, "soln")
+        check_ndarray_ndim(value, "soln", 2)
         check_ndarray_shape_eq(value, "soln", (self.nsoln,self.ndecn))
         self._soln = value
     
@@ -247,7 +247,7 @@ class Solution(SolutionType):
     def soln_obj(self, value: numpy.ndarray) -> None:
         """Set solution objective function values."""
         check_is_ndarray(value, "soln_obj")
-        check_ndarray_is_2d(value, "soln_obj")
+        check_ndarray_ndim(value, "soln_obj", 2)
         check_ndarray_shape_eq(value, "soln", (self.nsoln,self.nobj))
         self._soln_obj = value
     
@@ -259,7 +259,7 @@ class Solution(SolutionType):
     def soln_ineqcv(self, value: numpy.ndarray) -> None:
         """Set solution inequality constraint violation function values."""
         check_is_ndarray(value, "soln_ineqcv")
-        check_ndarray_is_2d(value, "soln_ineqcv")
+        check_ndarray_ndim(value, "soln_ineqcv", 2)
         check_ndarray_shape_eq(value, "soln_ineqcv", (self.nsoln,self.nineqcv))
         self._soln_ineqcv = value
     
@@ -271,7 +271,7 @@ class Solution(SolutionType):
     def soln_eqcv(self, value: numpy.ndarray) -> None:
         """Set solution equality constraint violation function values."""
         check_is_ndarray(value, "soln_eqcv")
-        check_ndarray_is_2d(value, "soln_eqcv")
+        check_ndarray_ndim(value, "soln_eqcv", 2)
         check_ndarray_shape_eq(value, "soln_eqcv", (self.nsoln,self.neqcv))
         self._soln_eqcv = value
 

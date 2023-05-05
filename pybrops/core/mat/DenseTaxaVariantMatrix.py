@@ -5,8 +5,7 @@ from typing import Optional
 from numpy.typing import ArrayLike
 
 from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_2d
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
@@ -220,7 +219,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     def mat(self, value: numpy.ndarray) -> None:
         """Set raw underlying numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_at_least_2d(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 2)
         self._mat = value
 
     ############### Taxa Metadata Properites ###############
