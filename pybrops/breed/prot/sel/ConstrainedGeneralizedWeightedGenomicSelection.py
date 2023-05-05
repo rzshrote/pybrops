@@ -7,15 +7,12 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocolType import ConstrainedSelectionProtocolType
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
-from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_eq
-from pybrops.core.error.error_value_python import check_Number_in_interval, check_is_gt, check_is_gteq
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
+from pybrops.core.error.error_value_python import check_Number_in_interval, check_is_gt
 from pybrops.core.random import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
@@ -43,15 +40,15 @@ class ConstrainedGeneralizedWeightedGenomicSelection(ConstrainedSelectionProtoco
             method: str,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
             ndset_trans: Optional[Callable] = None, 
@@ -242,7 +239,7 @@ class ConstrainedGeneralizedWeightedGenomicSelection(ConstrainedSelectionProtoco
         decn_space_upper = numpy.repeat(ntaxa-1, ntaxa)
 
         # construct problem
-        prob = SubsetGeneralizedWeightedGenomicSelectionProblem(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(
             Z_a = gmat.mat,
             u_a = gpmod.u_a,
             fafreq = gpmod.fafreq(gmat),

@@ -13,7 +13,7 @@ from numbers import Integral, Real
 from typing import Callable, Container, Iterable, Optional, Union
 import numpy
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_type
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_eq, check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.opt.prob.ProblemType import ProblemType
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
@@ -394,7 +394,7 @@ class Problem(ProblemType):
     def obj_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set objective function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "obj_wt")
+            check_ndarray_ndim(value, "obj_wt", 1)
             check_ndarray_len_eq(value, "obj_wt", self.nobj)
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.nobj)
@@ -426,7 +426,7 @@ class Problem(ProblemType):
     def ineqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set inequality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "ineqcv_wt")
+            check_ndarray_ndim(value, "ineqcv_wt", 1)
             check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.nineqcv)
@@ -458,7 +458,7 @@ class Problem(ProblemType):
     def eqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set equality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "eqcv_wt")
+            check_ndarray_ndim(value, "eqcv_wt", 1)
             check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.neqcv)

@@ -1,11 +1,11 @@
 """
-Module implementing Optimal Population Value (OPV) Selection optimization problems.
+Module implementing Genotype Builder (GB) Selection optimization problems.
 """
 
 __all__ = [
-    "OptimalPopulationValueSubsetSelectionProblem",
-    # "RealOptimalPopulationValueSelectionProblem",
-    # "IntegerOptimalPopulationValueSelectionProblem"
+    "GenotypeBuilderSubsetSelectionProblem",
+    # "RealGenotypeBuilderSelectionProblem",
+    # "IntegerGenotypeBuilderSelectionProblem"
 ]
 
 from numbers import Integral, Real
@@ -17,13 +17,17 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_gt, check_is_lt
 
 
-class OptimalPopulationValueSelectionProblem(SelectionProblem):
-    """Helper class to implement properties common to OPV."""
-    ############################################################################
+class GenotypeBuilderSelectionProblem(SelectionProblem):
+    """Helper class to implement properties common to GB."""
+
     ############################ Object Properties #############################
+
+    ############## Number of latent variables ##############
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
@@ -33,32 +37,44 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem):
     ################### Haplotype matrix ###################
     @property
     def haplomat(self) -> numpy.ndarray:
-        """Haplotype effect matrix of shape ``(m,n,h,t)``."""
+        """Haplotype effect matrix of shape ``(m,n,b,t)``."""
         return self._haplomat
     @haplomat.setter
     def haplomat(self, value: numpy.ndarray) -> None:
         """Set haplotype effect matrix."""
-        check_is_ndarray(value, "haplomat")
-        check_ndarray_ndim(value, "haplomat", 4)
+        check_is_ndarray(value, "gebv")
+        check_ndarray_ndim(value, "gebv", 4)
         self._haplomat = value
-    
+
     ##################### Ploidy level #####################
     @property
     def ploidy(self) -> Integral:
         """ploidy."""
         return self._haplomat.shape[0]
 
-class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalPopulationValueSelectionProblem):
+    ########## Number of Best Founders to Select ###########
+    @property
+    def nbestfndr(self) -> Integral:
+        """nbestfndr."""
+        return self._nbestfndr
+    @nbestfndr.setter
+    def nbestfndr(self, value: Integral) -> None:
+        """Set nbestfndr."""
+        check_is_Integral(value, "nbestfndr")   # must be int
+        check_is_gt(value, "nbestfndr", 0)      # int must be >0
+        check_is_lt(value, "nbestfndr", self._haplomat.shape[1]) # int must be < number of candidates
+        self._nbestfndr = value
+
+class GenotypeBuilderSubsetSelectionProblem(SubsetSelectionProblem,GenotypeBuilderSelectionProblem):
     """
-    docstring for SubsetOptimalPopulationValueSelectionProblem.
+    Class representing Genotype Builder (GB) Selection problems in subset search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             haplomat: numpy.ndarray,
+            nbestfndr: Integral,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -78,12 +94,12 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetOptimalPopulationValueSelectionProblem.
+        Constructor for SubsetGenotypeBuilderSelectionProblem.
         
         Parameters
         ----------
         haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
 
             Where:
 
@@ -140,7 +156,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        super(OptimalPopulationValueSubsetSelectionProblem, self).__init__(
+        super(GenotypeBuilderSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -161,10 +177,9 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
         )
         # assignments
         self.haplomat = haplomat
+        self.nbestfndr = nbestfndr
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -172,7 +187,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Score a population of individuals based on Optimal Population Value
+        Score a population of individuals based on Genotype Builder
         Selection.
 
         Parameters
@@ -187,29 +202,42 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
         Returns
         -------
         out : numpy.ndarray
-            An OPV matrix of shape ``(t,)``.
+            An GB matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # get max haplotype value
+        # get best haplotype within each individual
         # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
-        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
-        # (h,t).sum(0) -> (t,)
+        # (m,k,h,t).max(0) -> (k,h,t)
+        bestphase = self._haplomat[:,x,:,:].max(0)
+
+        # sort the bestphase tensor along the individual axis to get best individuals
+        # (k,h,t) 
+        bestphase.sort(0)
+
+        # get top haplotype index boundaries
+        k = len(x)
+        st = k - self.nbestfndr
+        sp = k
+
+        # get top haplotypes and sum across the individual and haplotype axes
+        # scale by nphase / nbestfndr
+        # (k,h,t)[(nbestfndr,),:,:] -> (nbestfndr,h,t)
+        # (nbestfndr,h,t).sum((0,1)) -> (t,)
         # scalar * (t,) -> (t,)
-        out = -self.ploidy * self._haplomat[:,x,:,:].max((0,1)).sum(0)
+        out = -(self.ploidy / self.nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
 
         return out
 
-# need better interpretation of the Real scenario
-# class RealOptimalPopulationValueSelectionProblem(RealSelectionProblem,OPVSProblemProperties):
+# need better interpretation for the Real scenario
+# class RealGenotypeBuilderSelectionProblem(RealSelectionProblem,GBSProblemProperties):
 #     """
-#     docstring for RealOptimalPopulationValueSelectionProblem.
+#     Class representing Genotype Builder (GB) Selectionproblems in real search spaces.
 #     """
-#     ############################################################################
+
 #     ########################## Special Object Methods ##########################
-#     ############################################################################
 #     def __init__(
 #             self,
 #             haplomat: numpy.ndarray,
@@ -232,12 +260,12 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #             **kwargs: dict
 #         ) -> None:
 #         """
-#         Constructor for RealOptimalPopulationValueSelectionProblem.
+#         Constructor for RealGenotypeBuilderSelectionProblem.
         
 #         Parameters
 #         ----------
 #         haplomat : numpy.ndarray
-#             A haplotype effect matrix of shape ``(m,n,h,t)``.
+#             A haplotype effect matrix of shape ``(m,n,b,t)``.
 
 #             Where:
 
@@ -294,7 +322,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         kwargs : dict
 #             Additional keyword arguments passed to the parent class (DenseRealSelectionProblem) constructor.
 #         """
-#         super(RealOptimalPopulationValueSelectionProblem, self).__init__(
+#         super(RealGenotypeBuilderSelectionProblem, self).__init__(
 #             ndecn = ndecn,
 #             decn_space = decn_space,
 #             decn_space_lower = decn_space_lower,
@@ -316,9 +344,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         # assignments
 #         self.haplomat = haplomat
 
-#     ############################################################################
 #     ############################## Object Methods ##############################
-#     ############################################################################
 #     def latentfn(
 #             self, 
 #             x: numpy.ndarray, 
@@ -326,8 +352,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #             **kwargs: dict
 #         ) -> numpy.ndarray:
 #         """
-#         Score a population of individuals based on Optimal Population Value
-#         Selection.
+#         Score a population of individuals based on Genotype Builder Selection.
 
 #         Parameters
 #         ----------
@@ -343,7 +368,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         Returns
 #         -------
 #         out : numpy.ndarray
-#             An OPV matrix of shape ``(t,)``.
+#             An GB matrix of shape ``(t,)``.
 
 #             Where:
 
@@ -357,23 +382,36 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         # (n,)
 #         mask = (contrib > 0.0)
 
-#         # get max haplotype value
+#         # get best haplotype within each individual
 #         # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
-#         # (m,k/2,2,h,t).max((0,1)) -> (h,t)
-#         # (h,t).sum(0) -> (t,)
+#         # (m,k,h,t).max(0) -> (k,h,t)
+#         bestphase = self._haplomat[:,x,:,:].max(0)
+
+#         # sort the bestphase tensor along the individual axis to get best individuals
+#         # (k,h,t) 
+#         bestphase.sort(0)
+
+#         # get top haplotype index boundaries
+#         k = len(x)
+#         st = k - self.nbestfndr
+#         sp = k
+
+#         # get top haplotypes and sum across the individual and haplotype axes
+#         # scale by nphase / nbestfndr
+#         # (k,h,t)[(nbestfndr,),:,:] -> (nbestfndr,h,t)
+#         # (nbestfndr,h,t).sum((0,1)) -> (t,)
 #         # scalar * (t,) -> (t,)
-#         out = -self.ploidy * self._haplomat[:,mask,:,:].max((0,1)).sum(0)
+#         out = -(self.ploidy / self.nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
 
 #         return out
 
-# need better interpretation of the Integer scenario
-# class IntegerOptimalPopulationValueSelectionProblem(IntegerSelectionProblem,OPVSProblemProperties):
+# need better interpretation for the Integer scenario
+# class IntegerGenotypeBuilderSelectionProblem(IntegerSelectionProblem,GBSProblemProperties):
 #     """
-#     docstring for IntegerOptimalPopulationValueSelectionProblem.
+#     Class representing Genotype Builder (GB) Selectionproblems in integer search spaces.
 #     """
-#     ############################################################################
+
 #     ########################## Special Object Methods ##########################
-#     ############################################################################
 #     def __init__(
 #             self,
 #             haplomat: numpy.ndarray,
@@ -396,12 +434,12 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #             **kwargs: dict
 #         ) -> None:
 #         """
-#         Constructor for IntegerOptimalPopulationValueSelectionProblem.
+#         Constructor for IntegerGenotypeBuilderSelectionProblem.
         
 #         Parameters
 #         ----------
 #         haplomat : numpy.ndarray
-#             A haplotype effect matrix of shape ``(m,n,h,t)``.
+#             A haplotype effect matrix of shape ``(m,n,b,t)``.
 
 #             Where:
 
@@ -458,7 +496,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         kwargs : dict
 #             Additional keyword arguments passed to the parent class (DenseIntegerSelectionProblem) constructor.
 #         """
-#         super(IntegerOptimalPopulationValueSelectionProblem, self).__init__(
+#         super(IntegerGenotypeBuilderSelectionProblem, self).__init__(
 #             ndecn = ndecn,
 #             decn_space = decn_space,
 #             decn_space_lower = decn_space_lower,
@@ -480,9 +518,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         # assignments
 #         self.haplomat = haplomat
 
-#     ############################################################################
 #     ############################## Object Methods ##############################
-#     ############################################################################
 #     def latentfn(
 #             self, 
 #             x: numpy.ndarray, 
@@ -490,8 +526,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #             **kwargs: dict
 #         ) -> numpy.ndarray:
 #         """
-#         Score a population of individuals based on Optimal Population Value
-#         Selection.
+#         Score a population of individuals based on Genotype Builder Selection.
 
 #         Parameters
 #         ----------
@@ -507,7 +542,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         Returns
 #         -------
 #         out : numpy.ndarray
-#             An OPV matrix of shape ``(t,)``.
+#             An GB matrix of shape ``(t,)``.
 
 #             Where:
 
@@ -521,11 +556,25 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
 #         # (n,)
 #         mask = (contrib > 0.0)
 
-#         # get max haplotype value
+#         # get best haplotype within each individual
 #         # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
-#         # (m,k/2,2,h,t).max((0,1)) -> (h,t)
-#         # (h,t).sum(0) -> (t,)
+#         # (m,k,h,t).max(0) -> (k,h,t)
+#         bestphase = self._haplomat[:,x,:,:].max(0)
+
+#         # sort the bestphase tensor along the individual axis to get best individuals
+#         # (k,h,t) 
+#         bestphase.sort(0)
+
+#         # get top haplotype index boundaries
+#         k = len(x)
+#         st = k - self.nbestfndr
+#         sp = k
+
+#         # get top haplotypes and sum across the individual and haplotype axes
+#         # scale by nphase / nbestfndr
+#         # (k,h,t)[(nbestfndr,),:,:] -> (nbestfndr,h,t)
+#         # (nbestfndr,h,t).sum((0,1)) -> (t,)
 #         # scalar * (t,) -> (t,)
-#         out = -self.ploidy * self._haplomat[:,mask,:,:].max((0,1)).sum(0)
+#         out = -(self.ploidy / self.nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
 
 #         return out

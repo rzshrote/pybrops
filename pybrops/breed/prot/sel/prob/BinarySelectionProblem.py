@@ -4,8 +4,8 @@ Module partially implementing the SetSelectionProblem interface.
 
 # list of public objects in this module
 __all__ = [
-    "IntegerSelectionProblem",
-    "check_is_IntegerSelectionProblem"
+    "BinarySelectionProblem",
+    "check_is_BinarySelectionProblem"
 ]
 
 # imports
@@ -15,13 +15,13 @@ from typing import Callable, Iterable, Optional, Sequence, Union
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblemType import IntegerSelectionProblemType
-from pybrops.opt.prob.IntegerProblem import IntegerProblem
+from pybrops.breed.prot.sel.prob.BinarySelectionProblemType import BinarySelectionProblemType
+from pybrops.opt.prob.BinaryProblem import BinaryProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class IntegerSelectionProblem(IntegerProblem,SelectionProblem,IntegerSelectionProblemType):
+class BinarySelectionProblem(BinaryProblem,SelectionProblem,BinarySelectionProblemType):
     """
-    docstring for IntegerSelectionProblem.
+    docstring for BinarySelectionProblem.
     """
 
     ############################################################################
@@ -57,7 +57,7 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem,IntegerSelectionPr
             **kwargs: dict
         ) -> None:
         """
-        Constructor for IntegerSelectionProblem.
+        Constructor for BinarySelectionProblem.
         
         Parameters
         ----------
@@ -126,8 +126,8 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem,IntegerSelectionPr
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
         """
-        # call the DenseIntegerProblem constructor
-        super(IntegerSelectionProblem, self).__init__(
+        # call the DenseBinaryProblem constructor
+        super(BinarySelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -180,9 +180,9 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem,IntegerSelectionPr
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_IntegerSelectionProblem(v: object, vname: str) -> None:
+def check_is_BinarySelectionProblem(v: object, vname: str) -> None:
     """
-    Check if object is of type IntegerSelectionProblem, otherwise raise TypeError.
+    Check if object is of type BinarySelectionProblem, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -191,5 +191,5 @@ def check_is_IntegerSelectionProblem(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, IntegerSelectionProblem):
-        raise TypeError("'{0}' must be of type IntegerSelectionProblem.".format(vname))
+    if not isinstance(v, BinarySelectionProblem):
+        raise TypeError("'{0}' must be of type BinarySelectionProblem.".format(vname))

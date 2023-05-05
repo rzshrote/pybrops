@@ -5,10 +5,10 @@ Module implementing weighted genomic selection as a subset optimization problem.
 from numbers import Integral, Number
 from typing import Callable, Optional, Union
 import numpy
-from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicSelectionProblem import IntegerGeneralizedWeightedGenomicSelectionProblem, RealGeneralizedWeightedGenomicSelectionProblem, SubsetGeneralizedWeightedGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 
 
-class SubsetWeightedGenomicSelectionProblem(SubsetGeneralizedWeightedGenomicSelectionProblem):
+class SubsetWeightedGenomicSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem):
     """
     docstring for SubsetWeightedGenomicSelectionProblem.
     """
@@ -26,15 +26,15 @@ class SubsetWeightedGenomicSelectionProblem(SubsetGeneralizedWeightedGenomicSele
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             obj_trans_kwargs: Optional[dict],
             nineqcv: Integral,
             ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             ineqcv_trans_kwargs: Optional[dict],
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             eqcv_trans_kwargs: Optional[dict],
             **kwargs: dict
         ) -> None:
@@ -71,7 +71,7 @@ class SubsetWeightedGenomicSelectionProblem(SubsetGeneralizedWeightedGenomicSele
             **kwargs
         )
 
-class RealWeightedGenomicSelectionProblem(RealGeneralizedWeightedGenomicSelectionProblem):
+class RealWeightedGenomicSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem):
     """
     docstring for RealWeightedGenomicSelectionProblem.
     """
@@ -89,15 +89,15 @@ class RealWeightedGenomicSelectionProblem(RealGeneralizedWeightedGenomicSelectio
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             obj_trans_kwargs: Optional[dict],
             nineqcv: Integral,
             ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             ineqcv_trans_kwargs: Optional[dict],
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             eqcv_trans_kwargs: Optional[dict],
             **kwargs: dict
         ) -> None:
@@ -134,7 +134,7 @@ class RealWeightedGenomicSelectionProblem(RealGeneralizedWeightedGenomicSelectio
             **kwargs
         )
 
-class IntegerWeightedGenomicSelectionProblem(IntegerGeneralizedWeightedGenomicSelectionProblem):
+class IntegerWeightedGenomicSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem):
     """
     docstring for IntegerWeightedGenomicSelectionProblem.
     """
@@ -152,15 +152,15 @@ class IntegerWeightedGenomicSelectionProblem(IntegerGeneralizedWeightedGenomicSe
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: numpy.ndarray,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             obj_trans_kwargs: Optional[dict],
             nineqcv: Integral,
             ineqcv_wt: numpy.ndarray,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             ineqcv_trans_kwargs: Optional[dict],
             neqcv: Integral,
             eqcv_wt: numpy.ndarray,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             eqcv_trans_kwargs: Optional[dict],
             **kwargs: dict
         ) -> None:

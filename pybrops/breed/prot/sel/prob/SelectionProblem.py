@@ -35,15 +35,15 @@ class SelectionProblem(Problem,SelectionProblemType):
             decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             vtype: Optional[type] = None,
             vars: Optional[Sequence] = None,
@@ -162,11 +162,11 @@ class SelectionProblem(Problem,SelectionProblemType):
     # leave nlatent property abstract
 
     @property
-    def obj_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def obj_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to objective function values."""
         return self._obj_trans
     @obj_trans.setter
-    def obj_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def obj_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to objective space transformation function."""
         if value is None:
             value = trans_identity
@@ -186,11 +186,11 @@ class SelectionProblem(Problem,SelectionProblemType):
         self._obj_trans_kwargs = value
     
     @property
-    def ineqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def ineqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to inequality constraint violation values."""
         return self._ineqcv_trans
     @ineqcv_trans.setter
-    def ineqcv_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def ineqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to inequality constraint violation transformation function."""
         if value is None:
             value = trans_empty
@@ -210,11 +210,11 @@ class SelectionProblem(Problem,SelectionProblemType):
         self._ineqcv_trans_kwargs = value
     
     @property
-    def eqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def eqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to equality constraint violation values."""
         return self._eqcv_trans
     @eqcv_trans.setter
-    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to equality constraint violation transformation function."""
         if value is None:
             value = trans_empty
@@ -285,9 +285,9 @@ class SelectionProblem(Problem,SelectionProblemType):
         # get latent space evaluation
         latent = self.latentfn(x, *args, **kwargs)
         # transform latent values into evaluated values
-        obj = self.obj_wt * self.obj_trans(latent, **self.obj_trans_kwargs)
-        ineqcv = self.ineqcv_wt * self.ineqcv_trans(latent, **self.ineqcv_trans_kwargs)
-        eqcv = self.eqcv_wt * self.eqcv_trans(latent, **self.eqcv_trans_kwargs)
+        obj = self.obj_wt * self.obj_trans(x, latent, **self.obj_trans_kwargs)
+        ineqcv = self.ineqcv_wt * self.ineqcv_trans(x, latent, **self.ineqcv_trans_kwargs)
+        eqcv = self.eqcv_wt * self.eqcv_trans(x, latent, **self.eqcv_trans_kwargs)
         # return results
         return obj, ineqcv, eqcv
 

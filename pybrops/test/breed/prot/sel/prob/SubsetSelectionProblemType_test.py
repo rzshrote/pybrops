@@ -18,7 +18,7 @@ def prob():
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_SubsetSelectionProblem_docstring():
+def test_SubsetSelectionProblemType_docstring():
     assert_docstring(SubsetSelectionProblemType)
 
 ################################################################################
@@ -42,10 +42,10 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_SubsetSelectionProblem_is_concrete():
+def test_check_is_SubsetSelectionProblemType_is_concrete():
     assert_concrete_function(check_is_SubsetSelectionProblemType)
 
-def test_check_is_SubsetSelectionProblem(prob):
+def test_check_is_SubsetSelectionProblemType(prob):
     with not_raises(TypeError):
         check_is_SubsetSelectionProblemType(prob, "prob")
     with pytest.raises(TypeError):

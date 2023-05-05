@@ -7,7 +7,7 @@ import warnings
 import numpy
 from typing import Optional, Tuple, Union
 from typing import Callable
-from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import SubsetOptimalContributionSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.core.error.error_value_numpy import check_ndarray_align
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
@@ -63,7 +63,7 @@ class SubsetOptimalContributionSelection(ConstrainedSelectionProtocolType):
             ineqcv_wt: Optional[numpy.ndarray] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[numpy.ndarray] = None,
-            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             ndset_wt: Optional[Real] = None,
             rng = global_prng, 
@@ -483,7 +483,7 @@ class SubsetOptimalContributionSelection(ConstrainedSelectionProtocolType):
             eqcv_wt = self.eqcv_wt
             
         # construct problem
-        prob = SubsetOptimalContributionSelectionProblem(
+        prob = OptimalContributionSubsetSelectionProblem(
             bv = bv,
             C = C,
             ndecn = ndecn,

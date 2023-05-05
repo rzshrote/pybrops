@@ -12,7 +12,8 @@ import numpy
 
 
 def trans_identity(
-        vec: numpy.ndarray, 
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
         **kwargs: dict
     ) -> numpy.ndarray:
     """
@@ -20,7 +21,10 @@ def trans_identity(
 
     Parameters
     ----------
-    vec : numpy.ndarray
+    decnvec : numpy.ndarray
+        An array of shape ``(ndecn,)`` containing decision variables 
+        corresponding the ``latentvec`` values.
+    latentvec : numpy.ndarray
         An array of shape ``(l,)`` to be transformed.
     kwargs : dict
         Additional keyword arguments. Not used by this function.
@@ -30,10 +34,11 @@ def trans_identity(
     out : numpy.ndarray
         An array identical to the input.
     """
-    return vec
+    return latentvec
 
 def trans_empty(
-        vec: numpy.ndarray, 
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
         **kwargs: dict
     ) -> numpy.ndarray:
     """
@@ -41,7 +46,10 @@ def trans_empty(
 
     Parameters
     ----------
-    vec : numpy.ndarray
+    decnvec : numpy.ndarray
+        An array of shape ``(ndecn,)`` containing decision variables 
+        corresponding the ``latentvec`` values.
+    latentvec : numpy.ndarray
         An array of shape ``(l,)`` to be transformed.
     kwargs : dict
         Additional keyword arguments. Not used by this function.
@@ -51,7 +59,7 @@ def trans_empty(
     out : numpy.ndarray
         An array of shape (0,) with the same dtype as the input.
     """
-    return numpy.empty((0,), dtype = vec.dtype)
+    return numpy.empty((0,), dtype = latentvec.dtype)
 
 def trans_ndpt_to_vec_dist(
         mat: numpy.ndarray, 

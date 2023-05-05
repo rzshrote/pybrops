@@ -94,11 +94,35 @@ def check_ndarray_shape_eq(v: numpy.ndarray, vname: str, vshape: tuple):
 def check_ndarray_axis_len(v, vname, vaxis, vlen):
     generic_check_ndarray_shape(v, vname, vlen, vaxis)
 
+def check_ndarray_axis_len_eq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int):
+    if v.shape[vaxis] != vaxislen:
+        raise ValueError("variable '{0}' must have axis {1} equal to {2}".format(vname,vaxis,vaxislen))
+
+def check_ndarray_axis_len_lt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int):
+    if v.shape[vaxis] >= vaxislen:
+        raise ValueError("variable '{0}' must have axis {1} less than {2}".format(vname,vaxis,vaxislen))
+
+def check_ndarray_axis_len_lteq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int):
+    if v.shape[vaxis] > vaxislen:
+        raise ValueError("variable '{0}' must have axis {1} less than or equal to {2}".format(vname,vaxis,vaxislen))
+
+def check_ndarray_axis_len_gt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int):
+    if v.shape[vaxis] <= vaxislen:
+        raise ValueError("variable '{0}' must have axis {1} greater than {2}".format(vname,vaxis,vaxislen))
+
+def check_ndarray_axis_len_gteq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int):
+    if v.shape[vaxis] < vaxislen:
+        raise ValueError("variable '{0}' must have axis {1} greater than or equal to {2}".format(vname,vaxis,vaxislen))
+
 ############# generic_check_ndarray_is_square ##############
-def check_ndarray_is_square(v: Any, vname: str) -> None:
+def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
     s = v.shape # get shape
     if any(s[0] != e for e in s):
         raise ValueError("variable '{0}' must have equal lengths along all axes".format(vname))
+
+def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
+    if numpy.any(v != numpy.triu(v)):
+        raise ValueError("variable '{0}' must be an upper triangle matrix".format(vname))
 
 ############# check_ndarray_len_is_multiple_of #############
 def check_ndarray_len_is_multiple_of(v, vname, m):

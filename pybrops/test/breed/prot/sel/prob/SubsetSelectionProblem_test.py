@@ -118,7 +118,7 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_DenseSubsetSelectionProblem_docstring():
+def test_SubsetSelectionProblem_docstring():
     assert_docstring(SubsetSelectionProblem)
 
 ################################################################################
@@ -144,10 +144,10 @@ def test_latentfn_is_abstract(prob):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseSubsetSelectionProblem_is_concrete():
+def test_check_is_SubsetSelectionProblem_is_concrete():
     assert_concrete_function(check_is_SubsetSelectionProblem)
 
-def test_check_is_DenseSubsetSelectionProblem(prob):
+def test_check_is_SubsetSelectionProblem(prob):
     with not_raises(TypeError):
         check_is_SubsetSelectionProblem(prob, "prob")
     with pytest.raises(TypeError):

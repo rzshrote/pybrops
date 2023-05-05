@@ -13,7 +13,7 @@ from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_is_2d, check_ndarray_len_eq, check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_is_2d, check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.opt.soln.SolutionType import SolutionType
 
@@ -154,7 +154,7 @@ class Solution(SolutionType):
     def obj_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set objective function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "obj_wt")
+            check_ndarray_ndim(value, "obj_wt", 1)
             check_ndarray_len_eq(value, "obj_wt", self.nobj)
         elif isinstance(value, Number):
             value = numpy.repeat(value, self.nobj)
@@ -181,7 +181,7 @@ class Solution(SolutionType):
     def ineqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set inequality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "ineqcv_wt")
+            check_ndarray_ndim(value, "ineqcv_wt", 1)
             check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
         elif isinstance(value, Number):
             value = numpy.repeat(value, self.nineqcv)
@@ -208,7 +208,7 @@ class Solution(SolutionType):
     def eqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
         """Set equality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "eqcv_wt")
+            check_ndarray_ndim(value, "eqcv_wt", 1)
             check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
         elif isinstance(value, Number):
             value = numpy.repeat(value, self.neqcv)

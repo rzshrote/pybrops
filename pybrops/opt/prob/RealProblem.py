@@ -13,8 +13,8 @@ from numbers import Integral, Real
 from typing import Callable, Iterable, Optional, Sequence, Union
 import numpy
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_eq, check_ndarray_len_gteq, check_ndarray_shape_eq
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_floating
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_shape_eq
 from pybrops.opt.prob.Problem import Problem
 from pybrops.opt.prob.RealProblemType import RealProblemType
 

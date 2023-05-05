@@ -12,7 +12,7 @@ __all__ = [
 from numbers import Integral
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_1d, check_ndarray_len_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_gteq, check_ndarray_ndim
 from pybrops.opt.soln.Solution import Solution
 from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
 
@@ -78,7 +78,7 @@ class SubsetSolution(Solution,SubsetSolutionType):
     def decn_space(self, value: numpy.ndarray) -> None:
         """Set decision space boundaries."""
         check_is_ndarray(value, "decn_space")
-        check_ndarray_is_1d(value, "decn_space")
+        check_ndarray_ndim(value, "decn_space", 1)
         check_ndarray_len_gteq(value, "decn_space", self.ndecn)
         self._decn_space = value
 

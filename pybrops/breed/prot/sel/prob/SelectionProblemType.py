@@ -80,12 +80,12 @@ class SelectionProblemType(ProblemType):
 
     @property
     @abstractmethod
-    def obj_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def obj_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to objective function values."""
         raise NotImplementedError("property is abstract")
     @obj_trans.setter
     @abstractmethod
-    def obj_trans(self, value: Callable[[numpy.ndarray,dict],numpy.ndarray]) -> None:
+    def obj_trans(self, value: Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]) -> None:
         """Set latent space to objective space transformation function."""
         raise NotImplementedError("property is abstract")
     
@@ -102,12 +102,12 @@ class SelectionProblemType(ProblemType):
     
     @property
     @abstractmethod
-    def ineqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def ineqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to inequality constraint violation values."""
         raise NotImplementedError("property is abstract")
     @ineqcv_trans.setter
     @abstractmethod
-    def ineqcv_trans(self, value: Callable[[numpy.ndarray,dict],numpy.ndarray]) -> None:
+    def ineqcv_trans(self, value: Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]) -> None:
         """Set latent space to inequality constraint violation transformation function."""
         raise NotImplementedError("property is abstract")
     
@@ -124,12 +124,12 @@ class SelectionProblemType(ProblemType):
     
     @property
     @abstractmethod
-    def eqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def eqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to equality constraint violation values."""
         raise NotImplementedError("property is abstract")
     @eqcv_trans.setter
     @abstractmethod
-    def eqcv_trans(self, value: Callable[[numpy.ndarray,dict],numpy.ndarray]) -> None:
+    def eqcv_trans(self, value: Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]) -> None:
         """Set latent space to equality constraint violation transformation function."""
         raise NotImplementedError("property is abstract")
     

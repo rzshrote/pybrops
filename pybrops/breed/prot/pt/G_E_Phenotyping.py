@@ -6,12 +6,12 @@ interaction.
 from typing import Union
 import numpy
 import numbers
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 import pybrops.core.random
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.core.error import check_is_positive
 from pybrops.core.error import check_is_Integral
-from pybrops.core.error import check_ndarray_is_1d
 from pybrops.core.error import check_ndarray_is_positive
 from pybrops.core.error import check_ndarray_dtype_is_integer
 from pybrops.core.error import check_ndarray_size
@@ -123,7 +123,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"               # must be float64
             )
         elif isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "var_env")   # make sure is 1d array
+            check_ndarray_ndim(value, "var_env", 1)   # make sure is 1d array
             check_ndarray_size(                     # make sure size aligns with number of traits
                 value,
                 "var_env",
@@ -156,7 +156,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"               # must be float64
             )
         elif isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "var_rep")   # make sure is 1d array
+            check_ndarray_ndim(value, "var_rep", 1)   # make sure is 1d array
             check_ndarray_size(                     # make sure size aligns with number of traits
                 value,
                 "var_rep",
@@ -189,7 +189,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"               # must be float64
             )
         elif isinstance(value, numpy.ndarray):
-            check_ndarray_is_1d(value, "var_err")   # make sure is 1d array
+            check_ndarray_ndim(value, "var_err", 1)   # make sure is 1d array
             check_ndarray_size(                     # make sure size aligns with number of traits
                 value,
                 "var_err",
@@ -234,7 +234,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             self._nrep = numpy.repeat(value, self.nenv)
         elif isinstance(value, numpy.ndarray):
             check_ndarray_dtype_is_integer(value, "nrep")
-            check_ndarray_is_1d(value, "nrep")
+            check_ndarray_ndim(value, "nrep", 1)
             check_ndarray_is_positive(value, "nrep")
             check_ndarray_size(value, "nrep", self.nenv)
             self._nrep = value
@@ -313,7 +313,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             nrep = numpy.repeat(nrep, nenv)
         elif isinstance(nrep, numpy.ndarray):
             check_ndarray_dtype_is_integer(nrep, "nrep")
-            check_ndarray_is_1d(nrep, "nrep")
+            check_ndarray_ndim(nrep, "nrep", 1)
             check_ndarray_is_positive(nrep, "nrep")
             check_ndarray_size(nrep, "nrep", nenv)
         else:
@@ -330,7 +330,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"                   # must be float64
             )
         elif isinstance(var_env, numpy.ndarray):                # if var_env is a numpy.ndarray
-            check_ndarray_is_1d(var_env, "var_env")             # make sure is 1d array
+            check_ndarray_ndim(var_env, "var_env", 1)             # make sure is 1d array
             check_ndarray_size(var_env, "var_env", gpmod.ntrait)# make sure size aligns with number of traits
             check_ndarray_is_positive(var_env, "var_env")       # make sure we don't have negative variance
             if var_env.dtype != "float64":                      # if dtype != float64
@@ -349,7 +349,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"                   # must be float64
             )
         elif isinstance(var_rep, numpy.ndarray):                # if var_rep is a numpy.ndarray
-            check_ndarray_is_1d(var_rep, "var_rep")             # make sure is 1d array
+            check_ndarray_ndim(var_rep, "var_rep", 1)             # make sure is 1d array
             check_ndarray_size(var_rep, "var_rep", gpmod.ntrait)# make sure size aligns with number of traits
             check_ndarray_is_positive(var_rep, "var_rep")       # make sure we don't have negative variance
             if var_rep.dtype != "float64":                      # if dtype != float64
@@ -368,7 +368,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
                 dtype = "float64"                   # must be float64
             )
         elif isinstance(var_err, numpy.ndarray):                # if var_err is a numpy.ndarray
-            check_ndarray_is_1d(var_err, "var_err")             # make sure is 1d array
+            check_ndarray_ndim(var_err, "var_err", 1)             # make sure is 1d array
             check_ndarray_size(var_err, "var_err", gpmod.ntrait)# make sure size aligns with number of traits
             check_ndarray_is_positive(var_err, "var_err")       # make sure we don't have negative variance
             if var_err.dtype != "float64":                      # if dtype != float64

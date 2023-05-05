@@ -5,7 +5,7 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import SubsetOptimalPopulationValueSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
@@ -37,15 +37,15 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             method: str,
             nobj: Integral,
             obj_wt: Optional[numpy.ndarray],
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             obj_trans_kwargs: Optional[dict],
             nineqcv: Optional[Integral],
             ineqcv_wt: Optional[numpy.ndarray],
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             ineqcv_trans_kwargs: Optional[dict],
             neqcv: Optional[Integral],
             eqcv_wt: Optional[numpy.ndarray],
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]],
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
             eqcv_trans_kwargs: Optional[dict],
             ndset_wt: Optional[Real],
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]], 
@@ -271,7 +271,7 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
         )
 
         # construct problem
-        prob = SubsetOptimalPopulationValueSelectionProblem(
+        prob = OptimalPopulationValueSubsetSelectionProblem(
             haplomat = hmat,
             ndecn = ntaxa,
             decn_space = decn_space,

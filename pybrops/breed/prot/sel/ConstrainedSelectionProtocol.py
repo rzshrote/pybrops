@@ -32,15 +32,15 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
             method: str,
             nobj: Integral,
             obj_wt: Optional[numpy.ndarray] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[numpy.ndarray] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[numpy.ndarray] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
@@ -122,11 +122,11 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
         self._obj_wt = value
 
     @property
-    def obj_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def obj_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to objective function values."""
         return self._obj_trans
     @obj_trans.setter
-    def obj_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def obj_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to objective space transformation function. If None, set to identity function."""
         if value is None:
             value = trans_identity
@@ -177,11 +177,11 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
         self._ineqcv_wt = value
 
     @property
-    def ineqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def ineqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to inequality constraint violation values."""
         return self._ineqcv_trans
     @ineqcv_trans.setter
-    def ineqcv_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def ineqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to inequality constraint violation transformation function. If None, set to the empty function."""
         if value is None:
             value = trans_empty
@@ -232,11 +232,11 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
         self._eqcv_wt = value
 
     @property
-    def eqcv_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+    def eqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
         """Function which transforms outputs from ``latentfn`` to equality constraint violation values."""
         return self._eqcv_trans
     @eqcv_trans.setter
-    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to equality constraint violation transformation function. If None, set to the empty function."""
         if value is None:
             value = trans_empty

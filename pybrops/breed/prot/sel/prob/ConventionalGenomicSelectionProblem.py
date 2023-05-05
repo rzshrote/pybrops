@@ -14,24 +14,25 @@ from typing import Callable, Optional, Union
 import numpy
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_is_2d
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
 
 
-class CGSProblemProperties:
-    """
-    Helper class containing common properties for CGS Problems.
-    """
-    ############################################################################
+class CGSSelectionProblem(SelectionProblem):
+    """Helper class containing common properties for CGS Problems."""
+
     ############################ Object Properties #############################
-    ############################################################################
+    
+    ############## Number of latent variables ##############
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
         # return number of traits in GEBV matrix
         return self._gebv.shape[1]
 
+    ##################### GEBV matrix ######################
     @property
     def gebv(self) -> numpy.ndarray:
         """Genomic estimated breeding values."""
@@ -40,10 +41,12 @@ class CGSProblemProperties:
     def gebv(self, value: numpy.ndarray) -> None:
         """Set genomic estimated breeding values."""
         check_is_ndarray(value, "gebv")
-        check_ndarray_is_2d(value, "gebv")
+        check_ndarray_ndim(value, "gebv", 2)
+        # most (binary, real, integer) problems require decisons for each cross
+        check_ndarray_axis_len_eq(value, "embvmat", 0, self.ndecn)
         self._gebv = value
 
-class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProblemProperties):
+class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSSelectionProblem):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -60,15 +63,15 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProble
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
@@ -126,7 +129,7 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProble
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(SubsetConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
@@ -150,9 +153,19 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProble
         # assignments
         self.gebv = gebv
 
-    ############################################################################
+    ############################ Object Properties #############################
+    
+    ##################### GEBV matrix ######################
+    @CGSSelectionProblem.gebv.setter
+    def gebv(self, value: numpy.ndarray) -> None:
+        """Set genomic estimated breeding values."""
+        check_is_ndarray(value, "gebv")
+        check_ndarray_ndim(value, "gebv", 2)
+        # for subset problems, must have more crosses than decision variables
+        check_ndarray_axis_len_gteq(value, "embvmat", 0, self.ndecn)
+        self._gebv = value
+
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -191,7 +204,7 @@ class SubsetConventionalGenomicSelectionProblem(SubsetSelectionProblem,CGSProble
 
         return out
 
-class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemProperties):
+class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSSelectionProblem):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -208,15 +221,15 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemPro
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
@@ -274,7 +287,7 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemPro
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RealConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
@@ -316,9 +329,9 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemPro
         Parameters
         ----------
         x : numpy.ndarray
-            A candidate solution vector of shape ``(ndecn,) == (ntaxa,)``.
+            A candidate solution vector of shape ``(k,) == (ndecn,) == (ntaxa,)``.
             On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(kx)`` where ``k`` is any number.
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
         args : tuple
             Additional non-keyword arguments.
         kwargs : dict
@@ -344,7 +357,7 @@ class RealConventionalGenomicSelectionProblem(RealSelectionProblem,CGSProblemPro
 
         return out
 
-class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,CGSProblemProperties):
+class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,CGSSelectionProblem):
     """
     docstring for SubsetConventionalGenomicSelectionProblem.
     """
@@ -361,15 +374,15 @@ class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,CGSProb
             decn_space_upper: Union[numpy.ndarray,Number,None],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
             ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> None:
@@ -427,7 +440,7 @@ class IntegerConventionalGenomicSelectionProblem(IntegerSelectionProblem,CGSProb
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (DenseSubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(IntegerConventionalGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,

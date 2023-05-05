@@ -6,7 +6,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicSelectionProblem import SubsetGeneralizedWeightedGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -60,7 +60,7 @@ def alpha():
     yield 0.612
 
 @pytest.fixture
-def wgebv(Z_a_mat, u_a_mat, fafreq_mat, alpha):
+def gwgebv(Z_a_mat, u_a_mat, fafreq_mat, alpha):
     yield Z_a_mat.dot(u_a_mat * numpy.power(fafreq_mat, -alpha))
 
 @pytest.fixture
@@ -150,7 +150,7 @@ def prob(
         eqcv_trans,
         eqcv_trans_kwargs
     ):
-    yield SubsetGeneralizedWeightedGenomicSelectionProblem(
+    yield GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(
         Z_a = Z_a_mat,
         u_a = u_a_mat,
         fafreq = fafreq_mat,
@@ -177,7 +177,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetGeneralizedWeightedGenomicSelectionProblem_docstring():
-    assert_docstring(SubsetGeneralizedWeightedGenomicSelectionProblem)
+    assert_docstring(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -187,7 +187,7 @@ def test_SubsetGeneralizedWeightedGenomicSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(SubsetGeneralizedWeightedGenomicSelectionProblem, "nlatent")
+    assert_concrete_property_fget(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -196,7 +196,7 @@ def test_nlatent_fget(prob, ntrait):
 ### Z_a ###
 ###########
 def test_Z_a_is_concrete():
-    assert_concrete_property(SubsetGeneralizedWeightedGenomicSelectionProblem, "Z_a")
+    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "Z_a")
 
 def test_Z_a_fget(prob, ntaxa, nvrnt):
     assert isinstance(prob.Z_a, numpy.ndarray)
@@ -233,7 +233,7 @@ def test_Z_a_fdel(prob):
 ### u_a ###
 ###########
 def test_u_a_is_concrete():
-    assert_concrete_property(SubsetGeneralizedWeightedGenomicSelectionProblem, "u_a")
+    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "u_a")
 
 def test_u_a_fget(prob, nvrnt, ntrait):
     assert isinstance(prob.u_a, numpy.ndarray)
@@ -270,7 +270,7 @@ def test_u_a_fdel(prob):
 ### fafreq ###
 ##############
 def test_fafreq_is_concrete():
-    assert_concrete_property(SubsetGeneralizedWeightedGenomicSelectionProblem, "fafreq")
+    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "fafreq")
 
 def test_fafreq_fget(prob, nvrnt, ntrait):
     assert isinstance(prob.fafreq, numpy.ndarray)
@@ -307,7 +307,7 @@ def test_fafreq_fdel(prob):
 ### alpha ###
 #############
 def test_alpha_is_concrete():
-    assert_concrete_property(SubsetGeneralizedWeightedGenomicSelectionProblem, "alpha")
+    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "alpha")
 
 def test_alpha_fget(prob):
     assert isinstance(prob.alpha, Real)
@@ -343,7 +343,7 @@ def test_alpha_fdel(prob):
 ### wgebv ###
 #############
 def test_wgebv_is_concrete():
-    assert_concrete_property(SubsetGeneralizedWeightedGenomicSelectionProblem, "wgebv")
+    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "wgebv")
 
 def test_wgebv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.wgebv, numpy.ndarray)
@@ -385,7 +385,7 @@ def test_wgebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetGeneralizedWeightedGenomicSelectionProblem, "__init__")
+    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
