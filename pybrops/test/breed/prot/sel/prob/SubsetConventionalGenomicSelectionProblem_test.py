@@ -5,7 +5,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.ConventionalGenomicSelectionProblem import SubsetConventionalGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueSubsetSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -124,7 +124,7 @@ def prob(
     eqcv_trans,
     eqcv_trans_kwargs
 ):
-    yield SubsetConventionalGenomicSelectionProblem(
+    yield GenomicEstimatedBreedingValueSubsetSelectionProblem(
         gebv = gebv,
         ndecn = ndecn,
         decn_space = decn_space,
@@ -148,7 +148,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalGenomicSelectionProblem_docstring():
-    assert_docstring(SubsetConventionalGenomicSelectionProblem)
+    assert_docstring(GenomicEstimatedBreedingValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -158,7 +158,7 @@ def test_SubsetConventionalGenomicSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(SubsetConventionalGenomicSelectionProblem, "nlatent")
+    assert_concrete_property_fget(GenomicEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -167,7 +167,7 @@ def test_nlatent_fget(prob, ntrait):
 ### gebv ###
 ############
 def test_gebv_is_concrete():
-    assert_concrete_property(SubsetConventionalGenomicSelectionProblem, "gebv")
+    assert_concrete_property(GenomicEstimatedBreedingValueSubsetSelectionProblem, "gebv")
 
 def test_gebv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.gebv, numpy.ndarray)
@@ -208,7 +208,7 @@ def test_gebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetConventionalGenomicSelectionProblem, "__init__")
+    assert_concrete_method(GenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###

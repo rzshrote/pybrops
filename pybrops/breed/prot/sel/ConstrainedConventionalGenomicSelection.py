@@ -22,7 +22,7 @@ from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.ConventionalGenomicSelectionProblem import IntegerConventionalGenomicSelectionProblem, RealConventionalGenomicSelectionProblem, SubsetConventionalGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
@@ -450,7 +450,7 @@ class SubsetConventionalGenomicSelection(BaseConventionalGenomicSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = SubsetConventionalGenomicSelectionProblem(
+        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem(
             gebv = gebv,
             ndecn = self.nparent,
             decn_space = decn_space,
@@ -542,7 +542,7 @@ class RealConventionalGenomicSelection(BaseConventionalGenomicSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = RealConventionalGenomicSelectionProblem(
+        prob = GenomicEstimatedBreedingValueRealSelectionProblem(
             gebv = gebv,
             ndecn = ntaxa,
             decn_space = decn_space,
@@ -634,7 +634,7 @@ class IntegerConventionalGenomicSelection(BaseConventionalGenomicSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = IntegerConventionalGenomicSelectionProblem(
+        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem(
             gebv = gebv,
             ndecn = ntaxa,
             decn_space = decn_space,

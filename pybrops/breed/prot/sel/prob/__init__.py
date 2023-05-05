@@ -8,7 +8,7 @@ __all__ = [
     "SubsetSelectionProblemType",
     "SelectionProblem",
     "SubsetSelectionProblem",
-    "ConventionalGenomicSelectionProblem"
+    "GenomicEstimatedBreedingValueSelectionProblem"
 ]
 
 # order dependent imports
@@ -25,4 +25,4 @@ from pybrops.breed.prot.sel.prob import SelectionProblem
 from pybrops.breed.prot.sel.prob import SubsetSelectionProblem
 
 # concrete classes
-from pybrops.breed.prot.sel.prob import ConventionalGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob import GenomicEstimatedBreedingValueSelectionProblem
