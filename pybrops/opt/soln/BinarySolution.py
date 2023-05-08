@@ -82,7 +82,7 @@ class BinarySolution(Solution):
         elif value is None:
             pass
         else:
-            raise TypeError("'decn_space' must be of type numpy.ndarrray or None")
+            raise TypeError("'decn_space' must be of type numpy.ndarray or None")
         self._decn_space = value
 
 

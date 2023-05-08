@@ -1,48 +1,39 @@
 """
-Module defining optimization problems for binary optimal constribution selection.
+Module implementing L2-norm Genomic Selection (L2GS) problems for multiple search space types.
 """
 
 __all__ = [
-    "OptimalContributionSubsetSelectionProblem",
-    "OptimalContributionRealSelectionProblem",
-    "OptimalContributionIntegerSelectionProblem",
-    "OptimalContributionBinarySelectionProblem"
+    "L2NormGenomicBinarySelectionProblem",
+    "L2NormGenomicIntegerSelectionProblem",
+    "L2NormGenomicRealSelectionProblem",
+    "L2NormGenomicSubsetSelectionProblem"
 ]
 
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
-
 import numpy
+from pybrops.breed.prot.sel.prob import SubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_square, check_ndarray_is_triu, check_ndarray_ndim
 
 
-class OptimalContributionSelectionProblem(SelectionProblem):
-    """Helper class containing common properties for Optimal Contribution Selection Problems."""
+class L2NormGenomicSelectionProblem(SelectionProblem):
+    """Helper class containing common properties for L2GS problems."""
 
     ############################ Object Properties #############################
+
+    ############## Number of latent variables ##############
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
         # return number of traits in BV matrix plus 1
-        return 1 + self._bv.shape[1]
+        return self._C.shape[0]
 
-    @property
-    def bv(self) -> numpy.ndarray:
-        """Breeding value matrix."""
-        return self._bv
-    @bv.setter
-    def bv(self, value: numpy.ndarray) -> None:
-        """Set breeding value matrix."""
-        check_is_ndarray(value, "bv")
-        check_ndarray_ndim(value, "bv", 2)
-        self._bv = value
-
+    ########## Cholesky decomposition of kinship ###########
     @property
     def C(self) -> numpy.ndarray:
         """Cholesky decomposition of the kinship matrix."""
@@ -51,21 +42,19 @@ class OptimalContributionSelectionProblem(SelectionProblem):
     def C(self, value: numpy.ndarray) -> None:
         """Set Cholesky decomposition of the kinship matrix."""
         check_is_ndarray(value, "C")
-        check_ndarray_ndim(value, "C", 2)
+        check_ndarray_ndim(value, "C", 3)
         check_ndarray_is_square(value, "C")
         check_ndarray_is_triu(value, "C")
         self._C = value
 
-class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalContributionSelectionProblem):
+class L2NormGenomicSubsetSelectionProblem(SubsetSelectionProblem,L2NormGenomicSelectionProblem):
     """
-    Class representing an Optimal Contribution Selection Problem for subset
-    search spaces.
+    Class representing L2-norm Genomic Selection (L2GS) in subset search spaces.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -86,26 +75,17 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetOptimalContributionSelectionProblem.
+        Constructor for SubsetConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
         C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            An upper triangle matrix of shape ``(t,n,n)`` resulting from a Cholesky 
+            decomposition of a distance relationship matrix: K = C'C.
 
             Where:
 
+            - ``t`` is the number of traits.
             - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
@@ -156,10 +136,7 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        # call SubsetSelectionProblem constructor
-        super(OptimalContributionSubsetSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(L2NormGenomicSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -178,8 +155,7 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
+        # assignments
         self.C = C
 
     ############################## Object Methods ##############################
@@ -190,9 +166,12 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on the L2-norm from a utopian 
+        allele frequency, specified by a relationship matrix.
+
+        This is a minimizing objective. A lower score means a smaller distance 
+        to the utopian point.
+
         Parameters
         ----------
         x : numpy.ndarray
@@ -205,52 +184,31 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A distance metric matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
-        # (n,n)[:,(k,)] -> (n,k)
-        # scalar * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / len(x)) * self.C[:,x].sum(1)
+        # calculate vector
+        # (t,n,n)[:,:,(k,)] -> (t,n,k)
+        # (1/k) * (t,n,k).sum(2) -> (t,n)
+        Cx = (1.0 / len(x)) * self._C[:,:,x].sum(2)
 
-        # calculate mean genomic relationship
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgr = numpy.linalg.norm(Cx, ord = 2, keepdims = True)
+        # calculate distance to utopian point for each trait
+        # norm2( (t,n) ) -> (t,)
+        out = numpy.linalg.norm(Cx, ord = 2, axis = 1)
 
-        # calculate negative mean breeding value of the selection
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        gain = -(self.bv[x,:].sum(0))
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgr,gain])
-
-        # return (1+t,)
         return out
 
-class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContributionSelectionProblem):
+class L2NormGenomicRealSelectionProblem(RealSelectionProblem,L2NormGenomicSelectionProblem):
     """
-    Class representing an Optimal Contribution Selection Problem for real
-    search spaces.
+    Class representing L2-norm Genomic Selection (L2GS) in real search spaces.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -271,26 +229,17 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
             **kwargs: dict
         ) -> None:
         """
-        Constructor for RealOptimalContributionSelectionProblem.
+        Constructor for RealConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
         C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            An upper triangle matrix of shape ``(t,n,n)`` resulting from a Cholesky 
+            decomposition of a distance relationship matrix: K = C'C.
 
             Where:
 
+            - ``t`` is the number of traits.
             - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
@@ -339,12 +288,9 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
-        # call SubsetSelectionProblem constructor
-        super(OptimalContributionRealSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(L2NormGenomicRealSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -363,8 +309,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
+        # assignments
         self.C = C
 
     ############################## Object Methods ##############################
@@ -375,15 +320,18 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on the L2-norm from a utopian 
+        allele frequency, specified by a relationship matrix.
+
+        This is a minimizing objective. A lower score means a smaller distance 
+        to the utopian point.
+
         Parameters
         ----------
         x : numpy.ndarray
-            A candidate solution vector of shape ``(ndecn,) == (ntaxa,)``.
+            A candidate solution vector of shape ``(k,) == (ndecn,) == (ntaxa,)``.
             On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(kx)`` where ``k`` is any number.
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
         args : tuple
             Additional non-keyword arguments.
         kwargs : dict
@@ -392,16 +340,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A distance metric matrix of shape ``(t,)``.
 
             Where:
 
@@ -410,33 +349,21 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         # scale x to have a sum of 1 (contribution)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # calculate distance
+        # (t,n,n) . (n,) -> (t,n)
+        # norm2( (t,n), axis=1 ) -> (t,)
+        out = numpy.linalg.norm(self.C.dot(contrib), ord = 2, axis = 1)
 
-        # calculate negative mean breeding value of the selection
-        # (n,) . (n,t) -> (t,)
-        gain = -contrib.dot(self._bv)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,gain])
-
-        # return (1+t,)
         return out
 
-class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,OptimalContributionSelectionProblem):
+class L2NormGenomicIntegerSelectionProblem(IntegerSelectionProblem,L2NormGenomicSelectionProblem):
     """
-    Class representing an Optimal Contribution Selection Problem for integer
-    search spaces.
+    Class representing L2-norm Genomic Selection (L2GS) in integer search spaces.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -457,26 +384,17 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs: dict
         ) -> None:
         """
-        Constructor for IntegerOptimalContributionSelectionProblem.
+        Constructor for IntegerConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
         C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            An upper triangle matrix of shape ``(t,n,n)`` resulting from a Cholesky 
+            decomposition of a distance relationship matrix: K = C'C.
 
             Where:
 
+            - ``t`` is the number of traits.
             - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
@@ -525,12 +443,9 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
-        # call SubsetSelectionProblem constructor
-        super(OptimalContributionIntegerSelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(L2NormGenomicIntegerSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -549,8 +464,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
+        # assignments
         self.C = C
 
     ############################## Object Methods ##############################
@@ -561,15 +475,18 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on the L2-norm from a utopian 
+        allele frequency, specified by a relationship matrix.
+
+        This is a minimizing objective. A lower score means a smaller distance 
+        to the utopian point.
+
         Parameters
         ----------
         x : numpy.ndarray
-            A candidate solution vector of shape ``(ndecn,) == (ntaxa,)``.
+            A candidate solution vector of shape ``(k,) == (ndecn,) == (ntaxa,)``.
             On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(kx)`` where ``k`` is any number.
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
         args : tuple
             Additional non-keyword arguments.
         kwargs : dict
@@ -578,16 +495,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A distance metric matrix of shape ``(t,)``.
 
             Where:
 
@@ -596,33 +504,21 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         # scale x to have a sum of 1 (contribution)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # calculate distance
+        # (t,n,n) . (n,) -> (t,n)
+        # norm2( (t,n), axis=1 ) -> (t,)
+        out = numpy.linalg.norm(self.C.dot(contrib), ord = 2, axis = 1)
 
-        # calculate negative mean breeding value of the selection
-        # (n,) . (n,t) -> (t,)
-        gain = -contrib.dot(self._bv)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,gain])
-
-        # return (1+t,)
         return out
 
-class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalContributionSelectionProblem):
+class L2NormGenomicBinarySelectionProblem(BinarySelectionProblem,L2NormGenomicSelectionProblem):
     """
-    Class representing an Optimal Contribution Selection Problem for integer
-    search spaces.
+    Class representing L2-norm Genomic Selection (L2GS) in binary search spaces.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -643,26 +539,17 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
             **kwargs: dict
         ) -> None:
         """
-        Constructor for BinaryOptimalContributionSelectionProblem.
+        Constructor for BinaryConventionalGenomicSelectionProblem.
         
         Parameters
         ----------
-        bv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
         C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            An upper triangle matrix of shape ``(t,n,n)`` resulting from a Cholesky 
+            decomposition of a distance relationship matrix: K = C'C.
 
             Where:
 
+            - ``t`` is the number of traits.
             - ``n`` is the number of individuals.
         ndecn : Integral
             Number of decision variables.
@@ -711,12 +598,9 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
-        # call SubsetSelectionProblem constructor
-        super(OptimalContributionBinarySelectionProblem, self).__init__(
-            bv = bv,
-            C = C,
+        super(L2NormGenomicBinarySelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -735,8 +619,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             **kwargs
         )
-        # order dependent assignments
-        self.bv = bv
+        # assignments
         self.C = C
 
     ############################## Object Methods ##############################
@@ -747,15 +630,18 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Encode a candidate solution for the given Problem into an ``l`` 
-        dimensional latent evaluation space.
-        
+        Score a population of individuals based on the L2-norm from a utopian 
+        allele frequency, specified by a relationship matrix.
+
+        This is a minimizing objective. A lower score means a smaller distance 
+        to the utopian point.
+
         Parameters
         ----------
         x : numpy.ndarray
-            A candidate solution vector of shape ``(ndecn,) == (ntaxa,)``.
+            A candidate solution vector of shape ``(k,) == (ndecn,) == (ntaxa,)``.
             On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(kx)`` where ``k`` is any number.
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
         args : tuple
             Additional non-keyword arguments.
         kwargs : dict
@@ -764,16 +650,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         Returns
         -------
         out : numpy.ndarray
-            A matrix of shape (1+t,).
-
-            The first index in the array is the mean genomic relationship 
-            (a minimizing objective):
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            The next `t` indices in the array are the sum of breeding values for 
-            each of ``t`` traits for the selection (all maximizing objectives).
+            A distance metric matrix of shape ``(t,)``.
 
             Where:
 
@@ -782,19 +659,9 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         # scale x to have a sum of 1 (contribution)
         contrib = (1.0 / x.sum()) * x
 
-        # calculate mean genomic contribution
-        # (n,n) . (n,) -> (n,)
-        # scalar * (n,) -> (n,)
-        # norm2( (n,), keepdims=True ) -> (1,)
-        mgc = numpy.linalg.norm(self.C.dot(contrib), ord = 2, keepdims = True)
+        # calculate distance
+        # (t,n,n) . (n,) -> (t,n)
+        # norm2( (t,n), axis=1 ) -> (t,)
+        out = numpy.linalg.norm(self.C.dot(contrib), ord = 2, axis = 1)
 
-        # calculate negative mean breeding value of the selection
-        # (n,) . (n,t) -> (t,)
-        gain = -contrib.dot(self._bv)
-        
-        # concatenate everything
-        # (1,) concat (t,) -> (1+t,)
-        out = numpy.concatenate([mgc,gain])
-
-        # return (1+t,)
         return out

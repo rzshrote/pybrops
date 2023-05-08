@@ -1,5 +1,5 @@
 """
-Module implementing conventional genomic selection as a subset optimization problem.
+Module implementing Conventional Genomic Selection problems for multiple search space types.
 """
 
 __all__ = [
@@ -50,7 +50,7 @@ class GenomicEstimatedBreedingValueSelectionProblem(SelectionProblem):
 
 class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,GenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for SubsetConventionalGenomicSelectionProblem.
+    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
 
     ############################################################################
@@ -61,8 +61,8 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
             gebv: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Number,None],
-            decn_space_upper: Union[numpy.ndarray,Number,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -89,13 +89,13 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
         decn_space: numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Number, None
+        decn_space_lower: numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Number, None
+        decn_space_upper: numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Number is provided, construct an array of shape ``(ndecn,)`` containing the Number.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
         nobj: Integral
             Number of objectives.
@@ -164,7 +164,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
         check_is_ndarray(value, "gebv")
         check_ndarray_ndim(value, "gebv", 2)
         # for subset problems, must have more crosses than decision variables
-        check_ndarray_axis_len_gteq(value, "embvmat", 0, self.ndecn)
+        check_ndarray_axis_len_gteq(value, "gebv", 0, self.ndecn)
         self._gebv = value
 
     ############################## Object Methods ##############################
@@ -208,7 +208,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
 
 class GenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,GenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for SubsetConventionalGenomicSelectionProblem.
+    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
 
     ############################################################################

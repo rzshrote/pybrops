@@ -4,11 +4,11 @@ Module defining conventional genomic selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "BaseGenomicEstimatedBreedingValueSelection",
-    "SubsetGenomicEstimatedBreedingValueSelection",
-    "RealGenomicEstimatedBreedingValueSelection",
-    "IntegerGenomicEstimatedBreedingValueSelection",
-    "BinaryGenomicEstimatedBreedingValueSelection"
+    "GenomicEstimatedBreedingValueBaseSelection",
+    "GenomicEstimatedBreedingValueSubsetSelection",
+    "GenomicEstimatedBreedingValueRealSelection",
+    "GenomicEstimatedBreedingValueIntegerSelection",
+    "GenomicEstimatedBreedingValueBinarySelection"
 ]
 
 # imports
@@ -33,7 +33,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class BaseGenomicEstimatedBreedingValueSelection(ConstrainedSelectionProtocol):
+class GenomicEstimatedBreedingValueBaseSelection(ConstrainedSelectionProtocol):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
@@ -74,7 +74,7 @@ class BaseGenomicEstimatedBreedingValueSelection(ConstrainedSelectionProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(BaseGenomicEstimatedBreedingValueSelection, self).__init__(
+        super(GenomicEstimatedBreedingValueBaseSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -387,7 +387,7 @@ class BaseGenomicEstimatedBreedingValueSelection(ConstrainedSelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-class SubsetGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
+class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -479,7 +479,7 @@ class SubsetGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingV
     ################# Selection Functions ##################
     # use super select() function
 
-class RealGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
+class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a real search space.
     """
@@ -571,7 +571,7 @@ class RealGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingVal
     ################# Selection Functions ##################
     # use super select() function
 
-class IntegerGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
+class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in an integer search space.
     """
@@ -663,7 +663,7 @@ class IntegerGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreeding
     ################# Selection Functions ##################
     # use super select() function
 
-class BinaryGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
+class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -722,9 +722,9 @@ class BinaryGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingV
         ntaxa = gmat.ntaxa
 
         # get decision space parameters
-        decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, ntaxa)
+        decn_space_upper = numpy.repeat(1, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
         prob = GenomicEstimatedBreedingValueBinarySelectionProblem(

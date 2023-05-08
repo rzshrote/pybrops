@@ -97,10 +97,17 @@ def check_ndarray_axis_len_gteq(v: numpy.ndarray, vname: str, vaxis: int, vaxisl
         raise ValueError("variable '{0}' must have axis {1} greater than or equal to {2}".format(vname,vaxis,vaxislen))
 
 ############# generic_check_ndarray_is_square ##############
-def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
+def check_ndarray_is_hypercube(v: numpy.ndarray, vname: str) -> None:
     s = v.shape # get shape
     if any(s[0] != e for e in s):
         raise ValueError("variable '{0}' must have equal lengths along all axes".format(vname))
+
+def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
+    """Check whether an array is square along its last two axes"""
+    if v.ndim < 2:
+        raise ValueError("variable '{0}' must have at least two dimensions".format(vname))
+    if v.shape[-2] != v.shape[-1]:
+        raise ValueError("variable '{0}' must have equal lengths along axes {1} and {2}".format(vname,-2 % v.ndim,-1 % v.ndim))
 
 def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
     if numpy.any(v != numpy.triu(v)):
