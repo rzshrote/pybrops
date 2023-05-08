@@ -15,16 +15,15 @@ import numpy
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_real
 from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.opt.soln.Solution import Solution
-from pybrops.opt.soln.RealSolutionType import RealSolutionType
 
-class RealSolution(Solution,RealSolutionType):
+class RealSolution(Solution):
     """
-    Partially implemented class for optimization problems with nominal decision variables.
+    Class for optimization problem solutions with real decision variables.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+
+    # implementation of abstract method
     def __init__(
             self,
             ndecn: Integral,
@@ -71,9 +70,8 @@ class RealSolution(Solution,RealSolutionType):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+    
     # override decn_space setter properties
     @Solution.decn_space.setter
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:

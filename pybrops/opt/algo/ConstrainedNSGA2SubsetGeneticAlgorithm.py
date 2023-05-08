@@ -22,7 +22,7 @@ from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
 from pybrops.opt.prob.SubsetProblemType import SubsetProblemType
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
+from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
@@ -123,7 +123,7 @@ class ConstrainedNSGA2SubsetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
             prob: SubsetProblemType,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolutionType:
+        ) -> SubsetSolution:
         """
         Optimize an objective function.
 

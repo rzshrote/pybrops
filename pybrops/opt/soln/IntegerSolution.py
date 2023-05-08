@@ -15,16 +15,15 @@ import numpy
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.opt.soln.Solution import Solution
-from pybrops.opt.soln.IntegerSolutionType import IntegerSolutionType
 
-class IntegerSolution(Solution,IntegerSolutionType):
+class IntegerSolution(Solution):
     """
-    Partially implemented class for optimization problems with integer decision variables.
+    Class for optimization problem solutions with integer decision variables.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    
+    # implementation of abstract method
     def __init__(
             self,
             ndecn: Integral,
@@ -71,9 +70,8 @@ class IntegerSolution(Solution,IntegerSolutionType):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+    
     # override decn_space setter properties
     @Solution.decn_space.setter
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:

@@ -8,6 +8,7 @@ __all__ = [
     "check_is_Solution"
 ]
 
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Number
 from typing import Union
 import numpy
@@ -15,17 +16,23 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
-from pybrops.opt.soln.SolutionType import SolutionType
 
 
-class Solution(SolutionType):
+class Solution(metaclass=ABCMeta):
     """
-    docstring for Solution.
+    A semi-abstract class defining a Solution interface and implementing several
+    essential properties for all Solution classes.
+
+    A user must implement the following abstract methods in derivatives:
+        1) ``__init__``
+
+    Notes:
+        1) It is possible to call the constructor of this semi-abstract from a
+           derived class.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    @abstractmethod
     def __init__(
             self,
             ndecn: Integral,
@@ -70,9 +77,9 @@ class Solution(SolutionType):
         self.soln_ineqcv = soln_ineqcv
         self.soln_eqcv = soln_eqcv
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+
+    ############## Decision space properties ###############
     @property
     def ndecn(self) -> Integral:
         """Number of decision variables."""
@@ -135,6 +142,7 @@ class Solution(SolutionType):
         self._decn_space_upper = value
         self._xu = value
 
+    ############## Objective space properties ##############
     @property
     def nobj(self) -> Integral:
         """Number of objectives."""
@@ -162,6 +170,7 @@ class Solution(SolutionType):
             raise TypeError("'obj_wt' must be of type numpy.ndarray or a numeric type")
         self._obj_wt = value
 
+    ######## Inequality constraint space properties ########
     @property
     def nineqcv(self) -> Integral:
         """Number of inequality constraint violation functions."""
@@ -189,6 +198,7 @@ class Solution(SolutionType):
             raise TypeError("'ineqcv_wt' must be of type numpy.ndarray or a numeric type")
         self._ineqcv_wt = value
 
+    ######### Equality constraint space properties #########
     @property
     def neqcv(self) -> Integral:
         """Number of equality constraint violations."""
@@ -216,6 +226,7 @@ class Solution(SolutionType):
             raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a numeric type")
         self._eqcv_wt = value
 
+    ################# Solution properties ##################
     @property
     def nsoln(self) -> Integral:
         """Number of solutions to the problem."""
@@ -274,18 +285,6 @@ class Solution(SolutionType):
         check_ndarray_ndim(value, "soln_eqcv", 2)
         check_ndarray_shape_eq(value, "soln_eqcv", (self.nsoln,self.neqcv))
         self._soln_eqcv = value
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Class Methods ###############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
 
 
 

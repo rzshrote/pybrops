@@ -7,12 +7,10 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
-from pybrops.core.error.error_value_python import check_is_eq
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblemType import SubsetProblemType, check_is_SubsetProblemType
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
 
 class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorithm):
     """
@@ -67,7 +65,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
             prob: SubsetProblemType,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolutionType:
+        ) -> SubsetSolution:
         """
         Minimize an optimization problem.
 

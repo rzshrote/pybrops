@@ -14,16 +14,15 @@ import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_len_gteq, check_ndarray_ndim
 from pybrops.opt.soln.Solution import Solution
-from pybrops.opt.soln.SubsetSolutionType import SubsetSolutionType
 
-class SubsetSolution(Solution,SubsetSolutionType):
+class SubsetSolution(Solution):
     """
-    Partially implemented class for optimization problems with nominal decision variables.
+    Class for optimization problem solutions with nominal decision variables.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    
+    # implementation of abstract method
     def __init__(
             self,
             ndecn: Integral,
@@ -70,9 +69,8 @@ class SubsetSolution(Solution,SubsetSolutionType):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+    
     # override decn_space setter properties
     @Solution.decn_space.setter
     def decn_space(self, value: numpy.ndarray) -> None:
