@@ -4,29 +4,35 @@ Module defining a general class for selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "ConstrainedSelectionProtocol"
+    "ConstrainedSelectionProtocol",
+    "check_is_ConstrainedSelectionProtocol"
 ]
 
 # imports
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 
 import numpy
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocolType import ConstrainedSelectionProtocolType
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
+class ConstrainedSelectionProtocol(metaclass=ABCMeta):
     """
     A semi-abstract class implementing several key properties common to most, 
     if not all, constrained selection protocols.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    @abstractmethod
     def __init__(
             self, 
             method: str,
@@ -74,9 +80,7 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
         self.ndset_trans = ndset_trans
         self.ndset_trans_kwargs = ndset_trans_kwargs
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def method(self) -> str:
         """Selection method."""
@@ -294,207 +298,181 @@ class ConstrainedSelectionProtocol(ConstrainedSelectionProtocolType):
         check_is_dict(value, "ndset_trans_kwargs")  # check is dict
         self._ndset_trans_kwargs = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
-    # leave `problem` abstract
+    @abstractmethod
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        raise NotImplementedError("method is abstract")
 
     ############## Pareto Frontier Functions ###############
-    # leave `pareto` abstract
-    # def pareto(
-    #         self, 
-    #         pgmat: PhasedGenotypeMatrix, 
-    #         gmat: GenotypeMatrix, 
-    #         ptdf: PhenotypeDataFrame, 
-    #         bvmat: BreedingValueMatrix, 
-    #         gpmod: GenomicModel, 
-    #         t_cur: Integral, 
-    #         t_max: Integral, 
-    #         miscout: Optional[dict] = None, 
-    #         **kwargs: dict
-    #     ) -> tuple:
-    #     """
-    #     Calculate a Pareto frontier for objectives.
+    @abstractmethod
+    def pareto(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> tuple:
+        """
+        Calculate a Pareto frontier for objectives.
 
-    #     Parameters
-    #     ----------
-    #     pgmat : PhasedGenotypeMatrix
-    #         Genomes
-    #     gmat : GenotypeMatrix
-    #         Genotypes
-    #     ptdf : PhenotypeDataFrame
-    #         Phenotype dataframe
-    #     bvmat : BreedingValueMatrix
-    #         Breeding value matrix
-    #     gpmod : GenomicModel
-    #         Genomic prediction model
-    #     t_cur : int
-    #         Current generation number.
-    #     t_max : int
-    #         Maximum (deadline) generation number.
-    #     miscout : dict, None
-    #         Pointer to a dictionary for miscellaneous user defined output.
-    #         If ``dict``, write to dict (may overwrite previously defined fields).
-    #         If ``None``, user defined output is not calculated or stored.
-    #     kwargs : dict
-    #         Additional keyword arguments.
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
 
-    #     Returns
-    #     -------
-    #     out : tuple
-    #         A tuple containing two objects ``(frontier, sel_config)``.
+        Returns
+        -------
+        out : tuple
+            A tuple containing two objects ``(frontier, sel_config)``.
 
-    #         Where:
+            Where:
 
-    #         - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-    #           Pareto frontier points.
-    #         - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-    #           parent selection decisions for each corresponding point in the
-    #           Pareto frontier.
+            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
 
-    #         Where:
+            Where:
 
-    #         - ``q`` is the number of points in the frontier.
-    #         - ``v`` is the number of objectives for the frontier.
-    #         - ``k`` is the number of search space decision variables.
-    #     """
-    #     # construct the problem
-    #     prob = self.problem(
-    #         pgmat = pgmat,
-    #         gmat = gmat,
-    #         ptdf = ptdf,
-    #         bvmat = bvmat,
-    #         gpmod = gpmod,
-    #         t_cur = t_cur,
-    #         t_max = t_max
-    #     )
-
-    #     # optimize the problem
-    #     soln = self.moalgo.minimize(
-    #         prob = prob,
-    #         miscout = miscout
-    #     )
-
-    #     if miscout is not None:
-    #         miscout["soln"] = soln
-
-    #     frontier = soln.soln_obj
-    #     sel_config = soln.soln_decn
-
-    #     return frontier, sel_config
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
+        """
+        raise NotImplementedError("method is abstract")
 
     ################# Selection Functions ##################
-    # leave `select` abstract
-    # def select(
-    #         self, 
-    #         pgmat: PhasedGenotypeMatrix, 
-    #         gmat: GenotypeMatrix, 
-    #         ptdf: PhenotypeDataFrame, 
-    #         bvmat: BreedingValueMatrix, 
-    #         gpmod: GenomicModel, 
-    #         t_cur: Integral, 
-    #         t_max: Integral, 
-    #         miscout: Optional[dict] = None, 
-    #         **kwargs: dict
-    #     ) -> tuple:
-    #     """
-    #     Select individuals for breeding.
+    @abstractmethod
+    def select(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> tuple:
+        """
+        Select individuals for breeding.
 
-    #     Parameters
-    #     ----------
-    #     pgmat : PhasedGenotypeMatrix
-    #         Genomes
-    #     gmat : GenotypeMatrix
-    #         Genotypes
-    #     ptdf : PhenotypeDataFrame
-    #         Phenotype dataframe
-    #     bvmat : BreedingValueMatrix
-    #         Breeding value matrix
-    #     gpmod : GenomicModel
-    #         Genomic prediction model
-    #     t_cur : int
-    #         Current generation number.
-    #     t_max : int
-    #         Maximum (deadline) generation number.
-    #     miscout : dict, None
-    #         Pointer to a dictionary for miscellaneous user defined output.
-    #         If ``dict``, write to dict (may overwrite previously defined fields).
-    #         If ``None``, user defined output is not calculated or stored.
-    #     kwargs : dict
-    #         Additional keyword arguments.
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
 
-    #     Returns
-    #     -------
-    #     out : tuple
-    #         A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+        Returns
+        -------
+        out : tuple
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
 
-    #         Where:
+            Where:
 
-    #         - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-    #         - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-    #           pattern. Each index corresponds to an individual in ``pgmat``.
-    #         - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-    #           crosses to perform per cross pattern.
-    #         - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-    #           progeny to generate per cross.
-    #     """
-    #     # single-objective method: objfn_trans returns a single value for each
-    #     # selection configuration
-    #     if self.method == "single":
-    #         # construct the problem
-    #         prob = self.problem(
-    #             pgmat = pgmat,
-    #             gmat = gmat,
-    #             ptdf = ptdf,
-    #             bvmat = bvmat,
-    #             gpmod = gpmod,
-    #             t_cur = t_cur,
-    #             t_max = t_max
-    #         )
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
+        """
+        raise NotImplementedError("method is abstract")
 
-    #         # optimize the problem
-    #         soln = self.soalgo.minimize(
-    #             prob = prob,
-    #             miscout = miscout
-    #         )
 
-    #         if miscout is not None:
-    #             miscout["soln"] = soln
 
-    #         # extract decision variables
-    #         sel = soln.soln_decn[0]
+################################## Utilities ###################################
+def check_is_ConstrainedSelectionProtocol(v: object, vname: str) -> None:
+    """
+    Check if object is of type ConstrainedSelectionProtocol, otherwise raise TypeError.
 
-    #         return pgmat, sel, self.ncross, self.nprogeny
-
-    #     # multi-objective method: objfn_trans returns a multiple values for each
-    #     # selection configuration
-    #     elif self.method == "pareto":
-    #         # get the pareto frontier
-    #         frontier, sel_config = self.pareto(
-    #             pgmat = pgmat,
-    #             gmat = gmat,
-    #             ptdf = ptdf,
-    #             bvmat = bvmat,
-    #             gpmod = gpmod,
-    #             t_cur = t_cur,
-    #             t_max = t_max,
-    #             miscout = miscout,
-    #             **kwargs
-    #         )
-
-    #         # get scores for each of the points along the pareto frontier
-    #         score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-    #         # get index of maximum score
-    #         ix = score.argmax()
-
-    #         # add fields to miscout
-    #         if miscout is not None:
-    #             miscout["frontier"] = frontier
-    #             miscout["sel_config"] = sel_config
-
-    #         return pgmat, sel_config[ix], self.ncross, self.nprogeny
-    #     else:
-    #         raise ValueError("argument 'method' must be either 'single' or 'pareto'")
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, ConstrainedSelectionProtocol):
+        raise TypeError("'{0}' must be of type ConstrainedSelectionProtocol.".format(vname))

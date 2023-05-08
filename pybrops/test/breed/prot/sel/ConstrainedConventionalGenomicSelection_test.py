@@ -3,7 +3,7 @@ import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 
 from pybrops.test import not_raises
 from pybrops.test import assert_docstring
@@ -13,7 +13,7 @@ from pybrops.test import assert_abstract_property
 from pybrops.test import assert_concrete_method
 from pybrops.test import assert_concrete_function
 
-from pybrops.breed.prot.sel.ConstrainedConventionalGenomicSelection import ConstrainedConventionalGenomicSelection
+from pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection import ConstrainedConventionalGenomicSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
@@ -313,7 +313,7 @@ def test_problem(cgs, dgmat, dalgmod):
         t_max = None
     )
 
-    assert isinstance(prob, SelectionProblemType)
+    assert isinstance(prob, SelectionProblem)
 
 def test_pareto(cgs, dgmat, dalgmod):
     frontier, sel_config = cgs.pareto(

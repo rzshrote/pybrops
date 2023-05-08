@@ -4,10 +4,11 @@ Module defining conventional genomic selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "BaseConventionalGenomicSelection",
-    "SubsetConventionalGenomicSelection",
-    "RealConventionalGenomicSelection",
-    "IntegerConventionalGenomicSelection"
+    "BaseGenomicEstimatedBreedingValueSelection",
+    "SubsetGenomicEstimatedBreedingValueSelection",
+    "RealGenomicEstimatedBreedingValueSelection",
+    "IntegerGenomicEstimatedBreedingValueSelection",
+    "BinaryGenomicEstimatedBreedingValueSelection"
 ]
 
 # imports
@@ -22,7 +23,7 @@ from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem, GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
@@ -32,7 +33,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class BaseConventionalGenomicSelection(ConstrainedSelectionProtocol):
+class BaseGenomicEstimatedBreedingValueSelection(ConstrainedSelectionProtocol):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
@@ -73,7 +74,7 @@ class BaseConventionalGenomicSelection(ConstrainedSelectionProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(BaseConventionalGenomicSelection, self).__init__(
+        super(BaseGenomicEstimatedBreedingValueSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -386,7 +387,7 @@ class BaseConventionalGenomicSelection(ConstrainedSelectionProtocol):
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-class SubsetConventionalGenomicSelection(BaseConventionalGenomicSelection):
+class SubsetGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -478,7 +479,7 @@ class SubsetConventionalGenomicSelection(BaseConventionalGenomicSelection):
     ################# Selection Functions ##################
     # use super select() function
 
-class RealConventionalGenomicSelection(BaseConventionalGenomicSelection):
+class RealGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
     """
     Conventional Genomic Selection in a real search space.
     """
@@ -570,7 +571,7 @@ class RealConventionalGenomicSelection(BaseConventionalGenomicSelection):
     ################# Selection Functions ##################
     # use super select() function
 
-class IntegerConventionalGenomicSelection(BaseConventionalGenomicSelection):
+class IntegerGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
     """
     Conventional Genomic Selection in an integer search space.
     """
@@ -661,3 +662,95 @@ class IntegerConventionalGenomicSelection(BaseConventionalGenomicSelection):
 
     ################# Selection Functions ##################
     # use super select() function
+
+class BinaryGenomicEstimatedBreedingValueSelection(BaseGenomicEstimatedBreedingValueSelection):
+    """
+    Conventional Genomic Selection in a subset search space.
+    """
+    ############################################################################
+    ########################## Special Object Methods ##########################
+    ############################################################################
+    # use BaseConventionalGenomicSelection __init__()
+
+    ############################################################################
+    ############################## Object Methods ##############################
+    ############################################################################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # calculate GEBVs for all individuals
+        gebv = gpmod.gebv(gmat).mat
+
+        # get number of individuals
+        ntaxa = gmat.ntaxa
+
+        # get decision space parameters
+        decn_space = numpy.arange(ntaxa)
+        decn_space_lower = numpy.repeat(0, self.nparent)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+
+        # construct problem
+        prob = GenomicEstimatedBreedingValueBinarySelectionProblem(
+            gebv = gebv,
+            ndecn = self.nparent,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # use BaseConventionalGenomicSelection pareto() function
+
+    ################# Selection Functions ##################
+    # use BaseConventionalGenomicSelection select() function
