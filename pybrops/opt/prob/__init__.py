@@ -2,10 +2,10 @@
 
 __all__ = [
     "FunctionWeight",
-    "ProblemType",
-    "SubsetProblemType",
-    "RealProblemType",
     "Problem",
+    "BinaryProblem",
+    "IntegerProblem",
+    "RealProblem",
     "SubsetProblem"
 ]
 
@@ -13,14 +13,10 @@ __all__ = [
 from pybrops.opt.prob import FunctionWeight
 
 # base interface
-from pybrops.opt.prob import ProblemType
-
-# interfaces derived from Problem
-from pybrops.opt.prob import SubsetProblemType
-from pybrops.opt.prob import RealProblemType
-
-# Implementations derived from Problem
 from pybrops.opt.prob import Problem
 
-# Implementations derived from SetProblem
+# Implementations derived from Problem
+from pybrops.opt.prob import BinaryProblem
+from pybrops.opt.prob import IntegerProblem
+from pybrops.opt.prob import RealProblem
 from pybrops.opt.prob import SubsetProblem

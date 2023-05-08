@@ -9,23 +9,47 @@ __all__ = [
 ]
 
 # imports
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
-from typing import Callable, Container, Iterable, Optional, Union
+from typing import Callable, Container, Iterable, Optional, Tuple, Union
 import numpy
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_type
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
-from pybrops.opt.prob.ProblemType import ProblemType
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
+import pymoo.core.problem
 
-class Problem(ProblemType):
+class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
     """
-    docstring for Problem.
+    A semi-abstract base class for representing all optimization problems.
+    This basal semi-abstract class extends the PyMOO Problem class.
+
+    The general formulation for an optimization problem should be:
+
+    .. math::
+
+        \\min_{\\mathbf{x}} \\mathbf{w_F \\odot F(x)}
+
+    Such that:
+
+    .. math::
+
+        \\mathbf{w_G \\odot G(x) \\leq 0}
+
+        \\mathbf{w_H \\odot H(x) = 0}
+
+    A user must implement the following abstract methods in derivatives:
+        1) ``__init__``
+        2) ``evalfn``
+        3) ``_evaluate``
+
+    Notes:
+        1) It is possible to call the constructor of this semi-abstract from a
+           derived class.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    @abstractmethod
     def __init__(
             self,
             ndecn: Integral,
@@ -103,13 +127,9 @@ class Problem(ProblemType):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ########################################################
     # Variables inherited from pymoo.core.problem.Problem ##
-    ########################################################
     @property
     def n_var(self) -> Integral:
         """Number of decision variables."""
@@ -308,9 +328,9 @@ class Problem(ProblemType):
             raise TypeError("'data' must be of type dict")
         self._data = value
 
-    ########################################################
     ####### Properties unique to this Problem class ########
-    ########################################################
+
+    ############## Decision space properties ###############
     @property
     def ndecn(self) -> Integral:
         """Number of decision variables."""
@@ -374,6 +394,7 @@ class Problem(ProblemType):
         self._decn_space_upper = value
         self._xu = value
 
+    ############## Objective space properties ##############
     @property
     def nobj(self) -> Integral:
         """Number of objectives."""
@@ -404,6 +425,7 @@ class Problem(ProblemType):
             raise TypeError("'obj_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._obj_wt = value
 
+    ######## Inequality constraint space properties ########
     @property
     def nineqcv(self) -> Integral:
         """Number of inequality constraint violation functions."""
@@ -436,6 +458,7 @@ class Problem(ProblemType):
             raise TypeError("'ineqcv_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._ineqcv_wt = value
 
+    ######### Equality constraint space properties #########
     @property
     def neqcv(self) -> Integral:
         """Number of equality constraint violations."""
@@ -468,23 +491,82 @@ class Problem(ProblemType):
             raise TypeError("'eqcv_wt' must be of type numpy.ndarray, a numeric type, or None")
         self._eqcv_wt = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
-    ############################################################################
-    ############################## Class Methods ###############################
-    ############################################################################
+    ### method required by PyBrOpS interface ###
+    @abstractmethod
+    def evalfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Tuple[numpy.ndarray,numpy.ndarray,numpy.ndarray]:
+        """
+        Evaluate a candidate solution for the given Problem.
 
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
+        This calculates three vectors which are to be minimized:
+
+        .. math::
+
+            \\mathbf{v_{obj}} = \\mathbf{w_{obj} \\odot F_{obj}(x)} \\
+            \\mathbf{v_{ineqcv}} = \\mathbf{w_{ineqcv} \\odot G_{ineqcv}(x)} \\
+            \\mathbf{v_{eqcv}} = \\mathbf{w_{eqcv} \\odot H_{eqcv}(x)}
+        
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(ndecn,)``.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : tuple
+            A tuple ``(obj, ineqcv, eqcv)``.
+            
+            Where:
+            
+            - ``obj`` is a numpy.ndarray of shape ``(nobj,)`` that contains 
+                objective function evaluations.
+            - ``ineqcv`` is a numpy.ndarray of shape ``(nineqcv,)`` that contains 
+                inequality constraint violation values.
+            - ``eqcv`` is a numpy.ndarray of shape ``(neqcv,)`` that contains 
+                equality constraint violation values.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ### method required by PyMOO interface ###
+    @abstractmethod
+    def _evaluate(
+            self, 
+            x: numpy.ndarray, 
+            out: dict, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Evaluate a set of candidate solutions for the given Problem.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(nsoln,ndecn)``.
+            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
+            is the number of decision variables.
+        out : dict
+            Dictionary to which to output function evaluations.
+        args : tuple
+            Additional arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_Problem(v: object, vname: str) -> None:
     """
     Check if object is of type Problem, otherwise raise TypeError.

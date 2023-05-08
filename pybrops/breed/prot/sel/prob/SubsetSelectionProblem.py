@@ -15,11 +15,10 @@ from typing import Callable, Iterable, Optional, Sequence, Union
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblemType import SubsetSelectionProblemType
 from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class SubsetSelectionProblem(SubsetProblem,SelectionProblem,SubsetSelectionProblemType):
+class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     """
     docstring for SubsetSelectionProblem.
     """

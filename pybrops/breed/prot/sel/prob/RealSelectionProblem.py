@@ -15,11 +15,10 @@ from typing import Callable, Iterable, Optional, Sequence, Union
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.RealSelectionProblemType import RealSelectionProblemType
 from pybrops.opt.prob.RealProblem import RealProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class RealSelectionProblem(RealProblem,SelectionProblem,RealSelectionProblemType):
+class RealSelectionProblem(RealProblem,SelectionProblem):
     """
     docstring for RealSelectionProblem.
     """

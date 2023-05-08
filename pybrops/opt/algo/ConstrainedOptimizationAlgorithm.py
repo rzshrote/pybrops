@@ -4,7 +4,7 @@ constrained optimization algorithms.
 """
 
 from typing import Optional
-from pybrops.opt.prob.ProblemType import ProblemType
+from pybrops.opt.prob.Problem import Problem
 from pybrops.opt.soln.Solution import Solution
 
 class ConstrainedOptimizationAlgorithm:
@@ -37,7 +37,7 @@ class ConstrainedOptimizationAlgorithm:
     ############################################################################
     def minimize(
             self, 
-            prob: ProblemType,
+            prob: Problem,
             miscout: Optional[dict],
             **kwargs: dict
         ) -> Solution:

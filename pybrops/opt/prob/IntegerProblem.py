@@ -16,10 +16,9 @@ from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseE
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_shape_eq
 from pybrops.opt.prob.Problem import Problem
-from pybrops.opt.prob.IntegerProblemType import IntegerProblemType
 
 # inheritance ordering is important for method resolution order
-class IntegerProblem(Problem,IntegerProblemType):
+class IntegerProblem(Problem):
     """
     Partially implemented class for optimization problems with nominal decision 
     variables where the goal is to select an optimal subset.

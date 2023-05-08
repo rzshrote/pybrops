@@ -21,7 +21,7 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random import global_prng
-from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
@@ -410,7 +410,7 @@ class SubsetConventionalGenomicSelection(BaseConventionalGenomicSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblemType:
+        ) -> SelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -502,7 +502,7 @@ class RealConventionalGenomicSelection(BaseConventionalGenomicSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblemType:
+        ) -> SelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -594,7 +594,7 @@ class IntegerConventionalGenomicSelection(BaseConventionalGenomicSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblemType:
+        ) -> SelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 

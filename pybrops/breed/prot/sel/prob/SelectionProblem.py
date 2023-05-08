@@ -9,24 +9,57 @@ __all__ = [
 ]
 
 # imports
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Iterable, Optional, Sequence, Tuple, Union
 import numpy
-from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict
 from pybrops.opt.prob.Problem import Problem
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 # inheritance order is important for method resolution order
-class SelectionProblem(Problem,SelectionProblemType):
+class SelectionProblem(Problem,metaclass=ABCMeta):
     """
-    docstring for SelectionProblem.
+    Basal interface for all genotype selection problem specifications.
+
+    All selection optimization problems have the form:
+
+    .. math::
+
+        \\min_{\\mathbf{x}} \\mathbf{w_{obj} \\odot T_{obj}(L(x))}
+
+    Such that:
+
+    .. math::
+
+        \\mathbf{w_{ineqcv} \\odot T_{ineqcv}(L(x)) \\leq 0}
+
+        \\mathbf{w_{eqcv} \\odot T_{eqcv}(L(x)) = 0}
+    
+    Where:
+
+        - :math:`\\mathbf{x}` is a selection decision vector.
+        - :math:`L(\\cdot)` is a latent vector encoding function transforming 
+            the decision vector into a latent space. The ``latentfn`` function 
+            defines this function in this interface.
+        - :math:`w_{obj}` is an objective function weight vector.
+        - :math:`T_{obj}(\\cdot)` is a function transforming a latent space 
+            vector to an objective space vector.
+        - :math:`w_{ineqcv}` is an inequality constraint violation function 
+            weight vector.
+        - :math:`T_{ineqcv}(\\cdot)` is a function transforming a latent space 
+            vector to an inequality constraint violation vector.
+        - :math:`w_{eqcv}` is an equality constraint violation function 
+            weight vector.
+        - :math:`T_{eqcv}(\\cdot)` is a function transforming a latent space 
+            vector to an equality constraint violation vector.
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
+    @abstractmethod
     def __init__(
             self,
             ndecn: Integral,
@@ -160,6 +193,11 @@ class SelectionProblem(Problem,SelectionProblemType):
     ############################ Object Properties #############################
     ############################################################################
     # leave nlatent property abstract
+    @property
+    @abstractmethod
+    def nlatent(self) -> Integral:
+        """Size of the latent vector for the optimization problem."""
+        raise NotImplementedError("property is abstract")
 
     @property
     def obj_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
@@ -237,6 +275,32 @@ class SelectionProblem(Problem,SelectionProblemType):
     ############################## Object Methods ##############################
     ############################################################################
     # leave latentfn abstract
+    @abstractmethod
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Encode a candidate solution for the given Problem into an ``l`` 
+        dimensional latent evaluation space.
+        
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(ndecn,)``.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(l,)`` containing latent evaluation values.
+        """
+        raise NotImplementedError("method is abstract")
 
     # provide generic implementation of this function; users may override if needed
     def evalfn(

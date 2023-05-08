@@ -15,11 +15,10 @@ from typing import Callable, Iterable, Optional, Sequence, Union
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblemType import IntegerSelectionProblemType
 from pybrops.opt.prob.IntegerProblem import IntegerProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class IntegerSelectionProblem(IntegerProblem,SelectionProblem,IntegerSelectionProblemType):
+class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
     """
     docstring for IntegerSelectionProblem.
     """
