@@ -13,7 +13,7 @@ from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_sum
-from pybrops.breed.prot.sel.ContinuousMinimumMeanGenomicRelationshipSelection import ContinuousMinimumMeanGenomicRelationshipSelection
+from pybrops.breed.prot.sel.UnconstrainedContinuousMinimumMeanGenomicRelationshipSelection import ContinuousMinimumMeanGenomicRelationshipSelection
 from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 

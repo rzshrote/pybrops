@@ -17,7 +17,7 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
@@ -33,13 +33,12 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class GenomicEstimatedBreedingValueBaseSelection(ConstrainedSelectionProtocol):
+class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol):
     """
-    Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
+    Semi-abstract class for Conventional Genomic Selection (CGS) with constraints.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             nparent: Integral, 
@@ -101,9 +100,7 @@ class GenomicEstimatedBreedingValueBaseSelection(ConstrainedSelectionProtocol):
         self.soalgo = soalgo
         self.moalgo = moalgo
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> int:
         """Number of parents to select."""
@@ -179,9 +176,7 @@ class GenomicEstimatedBreedingValueBaseSelection(ConstrainedSelectionProtocol):
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     # leave abstract since it depends on the problem type
@@ -439,9 +434,6 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         out : SelectionProblem
             An optimization problem definition.
         """
-        # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
-
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -451,8 +443,9 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem(
-            gebv = gebv,
+        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_object(
+            gmat = gmat,
+            gpmod = gpmod,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -531,9 +524,6 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
         out : SelectionProblem
             An optimization problem definition.
         """
-        # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
-
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -543,9 +533,10 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueRealSelectionProblem(
-            gebv = gebv,
-            ndecn = ntaxa,
+        prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_object(
+            gmat = gmat,
+            gpmod = gpmod,
+            ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -623,9 +614,6 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         out : SelectionProblem
             An optimization problem definition.
         """
-        # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
-
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -635,9 +623,10 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem(
-            gebv = gebv,
-            ndecn = ntaxa,
+        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_object(
+            gmat = gmat,
+            gpmod = gpmod,
+            ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -715,9 +704,6 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         out : SelectionProblem
             An optimization problem definition.
         """
-        # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
-
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -727,8 +713,9 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueBinarySelectionProblem(
-            gebv = gebv,
+        prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_object(
+            gmat = gmat,
+            gpmod = gpmod,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

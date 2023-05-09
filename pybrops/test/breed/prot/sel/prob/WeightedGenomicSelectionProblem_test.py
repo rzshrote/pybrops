@@ -6,7 +6,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem import SubsetWeightedGenomicSelectionProblem
+from pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem import WeightedGenomicSubsetSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -145,7 +145,7 @@ def prob(
         eqcv_trans,
         eqcv_trans_kwargs
     ):
-    yield SubsetWeightedGenomicSelectionProblem(
+    yield WeightedGenomicSubsetSelectionProblem(
         Z_a = Z_a_mat,
         u_a = u_a_mat,
         fafreq = fafreq_mat,
@@ -171,7 +171,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetWeightedGenomicSelectionProblem_docstring():
-    assert_docstring(SubsetWeightedGenomicSelectionProblem)
+    assert_docstring(WeightedGenomicSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -185,7 +185,7 @@ def test_SubsetWeightedGenomicSelectionProblem_docstring():
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetWeightedGenomicSelectionProblem, "__init__")
+    assert_concrete_method(WeightedGenomicSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###

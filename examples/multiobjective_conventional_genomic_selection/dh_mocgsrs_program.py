@@ -13,8 +13,8 @@ from pybrops.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBree
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
-from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
-from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.UnconstrainedFamilyPhenotypicSelection import FamilyPhenotypicSelection
+from pybrops.breed.prot.sel.UnconstrainedConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybrops.breed.prot.sel.ConventionalGenomicSelection import ConventionalGenomicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist

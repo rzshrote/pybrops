@@ -9,7 +9,7 @@ import types
 from typing import Any, Optional, Union
 from typing import Callable
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
@@ -26,7 +26,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
 from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
 
-class ContinuousMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
+class ContinuousMinimumMeanGenomicRelationshipSelection(UnconstrainedSelectionProtocol):
     """
     Class implementing selection protocols for minimum mean genomic relationship selection.
 

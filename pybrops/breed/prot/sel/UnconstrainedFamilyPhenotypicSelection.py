@@ -1,24 +1,25 @@
 """
-Module implementing selection protocols for conventional phenotypic selection.
+Module implementing selection protocols for family-based phenotypic selection.
 """
 
-from typing import Callable, Optional, Union
+from typing import Callable, Union
 import numpy
 import types
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+
+from pybrops.core.random import global_prng
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_int
+from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.random import global_prng
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 
-class ConventionalPhenotypicSelection(SelectionProtocol):
+class FamilyPhenotypicSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for conventional phenotypic selection.
+    Class implementing selection protocols for family-based phenotypic selection.
 
     # TODO: add formulae for methodology.
     """
@@ -26,39 +27,34 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(
-            self, 
-            nparent: int, 
-            ncross: int, 
-            nprogeny: int,
-            method: str = "single",
-            objfn_trans = None, 
-            objfn_trans_kwargs = None, 
-            objfn_wt = 1.0,
-            ndset_trans = None, 
-            ndset_trans_kwargs = None, 
-            ndset_wt = 1.0,
-            rng = global_prng, 
-            moalgo: Optional[OptimizationAlgorithm] = None, 
-            **kwargs: dict
-        ) -> None:
+    def __init__(self, nparent, ncross, nprogeny,
+    method = "single",
+    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
+    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
+    rng = global_prng, moalgo = None, **kwargs: dict):
         """
-        Constructor for Conventional Phenotypic Selection (CPS)
+        Constructor for within-family phenotypic selection (FPS).
 
         Parameters
         ----------
         nparent : int
+            Number of parents to select per family.
         ncross : int
+            Number of crosses per configuration.
         nprogeny : int
+            Number of progeny to derive from each cross.
         objfn_trans : function, callable, None
         objfn_trans_kwargs : dict, None
         objfn_wt : float, numpy.ndarray
         ndset_trans : function, callable, None
         ndset_trans_kwargs : dict, None
         ndset_wt : float
+            Weight given to the transformed non-dominated set objective function.
+            Setting to ``1.0`` yields a maximization problem.
+            Setting to ``-1.0`` yields a minimization problem.
         rng : numpy.random.Generator, numpy.random.RandomState
         """
-        super(ConventionalPhenotypicSelection, self).__init__(**kwargs)
+        super(FamilyPhenotypicSelection, self).__init__(**kwargs)
 
         # variable assignment
         self.nparent = nparent
@@ -305,7 +301,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
 
             Where:
 
@@ -317,7 +313,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # single objective method: objfn_trans returns a single value for each
+        # single-objective method: objfn_trans returns a single value for each
         # selection configuration
         if self.method == "single":
             # get vectorized objective function
@@ -332,19 +328,32 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 **kwargs
             )
 
+            # get taxa groups
+            taxa_grp = bvmat.taxa_grp
+
             # get all EBVs for each individual
             # (n,)
-            ebv = [objfn([i]) for i in range(bvmat.ntaxa)]
+            ebv = [objfn([i]) for i in range(gmat.ntaxa)]
 
             # convert to numpy.ndarray
             ebv = numpy.array(ebv)
+
+            # make sure we have a (n,) array
+            if ebv.ndim != 1:
+                raise RuntimeError("objfn_trans does not reduce objectives to single objective")
 
             # multiply the objectives by objfn_wt to transform to maximizing function
             # (n,) * scalar -> (n,)
             ebv = ebv * self.objfn_wt
 
-            # get indices of top nparent EBVs
-            sel = ebv.argsort()[::-1][:self.nparent]
+            # perform within family selection
+            sel = []                                # construct empty list
+            ord = ebv.argsort()[::-1]               # get order of EBVs
+            for taxa in numpy.unique(taxa_grp):     # for each family
+                mask = (taxa_grp[ord] == taxa)      # mask for each family
+                s = min(mask.sum(), self.nparent)   # min(# in family, nparent)
+                sel.append(ord[mask][:s])           # add indices to list
+            sel = numpy.concatenate(sel)            # concatenate to numpy.ndarray
 
             # shuffle indices for random mating
             self.rng.shuffle(sel)
@@ -367,7 +376,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 gpmod = gpmod,
                 t_cur = t_cur,
                 t_max = t_max,
-                **kwargs
+                miscout = miscout,
+                *kwargs
             )
 
             # get scores for each of the points along the pareto frontier
@@ -382,8 +392,6 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
                 miscout["sel_config"] = sel_config
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
-
-        # raise error since method is not supported
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
@@ -413,8 +421,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to raw numpy.ndarray matrices
-        mat = bvmat.mat     # (n,t) get breeding value matrix
+        # get pointers to breeding value numpy.ndarray
+        mat = bvmat.mat
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -454,8 +462,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to raw numpy.ndarray matrices
-        mat = bvmat.mat     # (n,t) get breeding value matrix
+        # get pointers to breeding value numpy.ndarray
+        mat = bvmat.mat
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -491,8 +499,8 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
 
@@ -515,33 +523,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get number of taxa
-        ntaxa = bvmat.ntaxa
-
-        # create objective function
-        objfn = self.objfn(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max,
-            **kwargs
-        )
-
-        frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = self.nparent,               # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = self.objfn_wt        # weights to apply to each objective
-        )
-
-        # handle miscellaneous output
-        if miscout is not None:     # if miscout is provided
-            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
-
-        return frontier, sel_config
+        raise NotImplementedError("feature not implemented yet")
 
     ############################################################################
     ############################## Static Methods ##############################
@@ -549,10 +531,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel, mat, trans, kwargs):
         """
-        Score a selection configuration based on its breeding values
-        (Conventional Phenotype Selection; CPS).
-
-        CPS selects the ``q`` individuals with the largest EBVs.
+        Score a family of individuals based on phenotypic breeding values.
 
         Parameters
         ----------
@@ -565,7 +544,7 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is ``None``, use all individuals.
+            If ``sel`` is None, use all individuals.
         mat : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``.
 
@@ -584,9 +563,9 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
         Returns
         -------
-        cps : numpy.ndarray
-            A EBV matrix of shape ``(t,)`` if ``trans`` is ``None``.
-            Otherwise, of shape specified by ``trans``.
+        fps : numpy.ndarray
+            A phenotypic selection matrix of shape ``(t,)`` if ``trans`` is
+            ``None``. Otherwise, of shape specified by ``trans``.
 
             Where:
 
@@ -596,25 +575,22 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
         if sel is None:
             sel = slice(None)
 
-        # CPS calculation explanation
-        # Step 1: (n,t) -> (k,t)        # select individuals
-        # Step 2: (k,t).sum(0) -> (t,)  # sum across all individuals
-        cps = mat[sel,:].sum(0)
+        # select breeding values
+        # (n,t)[(k,),:] -> (k,t)
+        # (k,t).sum(0) -> (t,)
+        fps = mat[sel,:].sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
         if trans:
-            cps = trans(cps, **kwargs)
+            fps = trans(fps, **kwargs)
 
-        return cps
+        return fps
 
     @staticmethod
     def objfn_vec_static(sel, mat, trans, kwargs):
         """
-        Score a selection configuration based on its breeding values
-        (Conventional Phenotype Selection; CPS).
-
-        CPS selects the ``q`` individuals with the largest EBVs.
+        Score a family of individuals based on phenotypic breeding values.
 
         Parameters
         ----------
@@ -647,9 +623,9 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
 
         Returns
         -------
-        cps : numpy.ndarray
-            A GEBV matrix of shape ``(j,t)`` if ``trans`` is None.
-            Otherwise, of shape specified by ``trans``.
+        fps : numpy.ndarray
+            A phenotypic selection matrix of shape ``(j,t)`` if ``trans`` is
+            ``None``. Otherwise, of shape specified by ``trans``.
 
             Where:
 
@@ -661,14 +637,14 @@ class ConventionalPhenotypicSelection(SelectionProtocol):
             n = mat.shape[0]
             sel = numpy.arange(n).reshape(n,1)
 
-        # CPS calculation explanation
-        # Step 1: (n,t)[(j,k),:] -> (j,k,t) # select individuals
-        # Step 2: (j,k,t).sum(1) -> (j,t)   # sum across all individuals
-        cps = mat[sel,:].sum(1)
+        # select breeding values
+        # (n,t)[(j,k,),:] -> (j,k,t)
+        # (j,k,t).sum(1) -> (t,)
+        fps = mat[sel,:].sum(1)
 
         # apply transformations
-        # (j,t) ---trans---> (?,?)
+        # (j,t) ---trans---> (j,?)
         if trans:
-            cps = trans(cps, **kwargs)
+            fps = trans(fps, **kwargs)
 
-        return cps
+        return fps

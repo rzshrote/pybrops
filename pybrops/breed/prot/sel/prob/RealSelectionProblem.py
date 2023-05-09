@@ -20,7 +20,7 @@ from pybrops.opt.prob.RealProblem import RealProblem
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
 class RealSelectionProblem(RealProblem,SelectionProblem):
     """
-    docstring for RealSelectionProblem.
+    Semi-abstract class representing selection problems in real search spaces.
     """
 
     ############################################################################

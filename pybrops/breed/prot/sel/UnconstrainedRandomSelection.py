@@ -1,25 +1,22 @@
 """
-Module implementing selection protocols for family-based phenotypic selection.
+Module implementing selection protocols for random selection.
 """
 
 from typing import Callable, Union
 import numpy
 import types
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-
-from pybrops.core.random import global_prng
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
+from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_callable
+from pybrops.core.random.prng import global_prng
 
-class FamilyPhenotypicSelection(SelectionProtocol):
+class RandomSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for family-based phenotypic selection.
+    Class implementing selection protocols for random selection.
 
     # TODO: add formulae for methodology.
     """
@@ -27,40 +24,46 @@ class FamilyPhenotypicSelection(SelectionProtocol):
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, nparent, ncross, nprogeny,
-    method = "single",
-    objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0,
-    ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0,
-    rng = global_prng, moalgo = None, **kwargs: dict):
+    def __init__(
+            self, 
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            replace: bool = False, 
+            objfn_trans = None, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0, 
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = 1.0, 
+            rng = None, 
+            **kwargs: dict
+        ):
         """
-        Constructor for within-family phenotypic selection (FPS).
+        Construct a RandomSelection operator.
 
         Parameters
         ----------
         nparent : int
-            Number of parents to select per family.
+            Number of parents to select.
         ncross : int
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        objfn_trans : function, callable, None
-        objfn_trans_kwargs : dict, None
-        objfn_wt : float, numpy.ndarray
-        ndset_trans : function, callable, None
-        ndset_trans_kwargs : dict, None
-        ndset_wt : float
-            Weight given to the transformed non-dominated set objective function.
-            Setting to ``1.0`` yields a maximization problem.
-            Setting to ``-1.0`` yields a minimization problem.
-        rng : numpy.random.Generator, numpy.random.RandomState
+        replace : bool
+            Whether to sample parents with replacement.
+        rng : numpy.random.Generator or None
+            A random number generator source. Used for optimization algorithms.
+            If ``rng`` is ``None``, use ``pybrops.core.random`` module
+            (NOT THREAD SAFE!).
         """
-        super(FamilyPhenotypicSelection, self).__init__(**kwargs)
+        super(RandomSelection, self).__init__(**kwargs)
 
-        # variable assignment
+        # assign variables
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.method = method
+        self.replace = replace
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
@@ -68,7 +71,6 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         self.ndset_trans_kwargs = ndset_trans_kwargs
         self.ndset_wt = ndset_wt
         self.rng = rng
-        self.moalgo = moalgo
 
     ############################################################################
     ############################ Object Properties #############################
@@ -119,23 +121,18 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def method(self) -> str:
-        """Selection method."""
-        return self._method
-    @method.setter
-    def method(self, value: str) -> None:
-        """Set selection method."""
-        check_is_str(value, "method")       # must be string
-        value = value.lower()               # convert to lowercase
-        options = ("single", "pareto")      # method options
-        # if not method supported raise ValueError
-        if value not in options:
-            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
-        self._method = value
-    @method.deleter
-    def method(self) -> None:
-        """Delete selection method."""
-        del self._method
+    def replace(self) -> bool:
+        """Whether to replace individuals when sampling."""
+        return self._replace
+    @replace.setter
+    def replace(self, value: bool) -> None:
+        """Set whether to replace individuals when sampling."""
+        check_is_bool(value, "replace")
+        self._replace = value
+    @replace.deleter
+    def replace(self) -> None:
+        """Delete whether to replace individuals when sampling."""
+        del self._replace
 
     @property
     def objfn_trans(self) -> Union[Callable,None]:
@@ -168,6 +165,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         """Delete objective function transformation function keyword arguments."""
         del self._objfn_trans_kwargs
 
+    # TODO: finish error checks
     @property
     def objfn_wt(self) -> Union[float,numpy.ndarray]:
         """Objective function weights."""
@@ -212,6 +210,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         """Delete nondominated set transformation function keyword arguments."""
         del self._ndset_trans_kwargs
 
+    # TODO: finish error checks
     @property
     def ndset_wt(self) -> Union[float,numpy.ndarray]:
         """Nondominated set weights."""
@@ -241,41 +240,19 @@ class FamilyPhenotypicSelection(SelectionProtocol):
         """Delete random number generator source."""
         del self._rng
 
-    @property
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective opimization algorithm."""
-        return self._moalgo
-    @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set multi-objective opimization algorithm."""
-        if value is None:
-            value = NSGA2SetGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                mu = 100,       # number of parents in population
-                lamb = 100,     # number of progeny to produce
-                M = 1.5,        # algorithm crossover genetic map length
-                rng = self.rng  # PRNG source
-            )
-        check_is_OptimizationAlgorithm(value, "moalgo")
-        self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective opimization algorithm."""
-        del self._moalgo
-
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs: dict):
         """
-        Select parents individuals for breeding.
+        Select parents for breeding.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
-            Genomes
+            Phased genotype matrix containing full genome information.
         gmat : GenotypeMatrix
-            Genotypes (unphased most likely)
+            Genotype matrix containing genotype data (phased or unphased)
         ptdf : PhenotypeDataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
@@ -292,16 +269,22 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             If ``None``, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
-        nparent : int
-        ncross : int
+        nparent : int, None
+            Number of parents. If ``None``, use default.
+        ncross : int, None
+            Number of crosses per configuration. If ``None``, use default.
         nprogeny : int
+            Number of progeny per cross. If ``None``, use default.
+        replace : bool, None
+            Whether to sample parents with or without replacement. If ``None``,
+            use default.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
 
             Where:
 
@@ -313,102 +296,39 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # single-objective method: objfn_trans returns a single value for each
-        # selection configuration
-        if self.method == "single":
-            # get vectorized objective function
-            objfn = self.objfn(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                **kwargs
-            )
+        # get default parameters if any are None
+        if nparent is None:
+            nparent = self.nparent
+        if ncross is None:
+            ncross = self.ncross
+        if nprogeny is None:
+            nprogeny = self.nprogeny
+        if replace is None:
+            replace = self.replace
 
-            # get taxa groups
-            taxa_grp = bvmat.taxa_grp
+        # make random selection decision
+        sel = self.rng.choice(
+            pgmat.ntaxa,            # number of taxa to select from
+            size = nparent,
+            replace = replace
+        )
 
-            # get all EBVs for each individual
-            # (n,)
-            ebv = [objfn([i]) for i in range(gmat.ntaxa)]
+        return pgmat, sel, ncross, nprogeny
 
-            # convert to numpy.ndarray
-            ebv = numpy.array(ebv)
-
-            # make sure we have a (n,) array
-            if ebv.ndim != 1:
-                raise RuntimeError("objfn_trans does not reduce objectives to single objective")
-
-            # multiply the objectives by objfn_wt to transform to maximizing function
-            # (n,) * scalar -> (n,)
-            ebv = ebv * self.objfn_wt
-
-            # perform within family selection
-            sel = []                                # construct empty list
-            ord = ebv.argsort()[::-1]               # get order of EBVs
-            for taxa in numpy.unique(taxa_grp):     # for each family
-                mask = (taxa_grp[ord] == taxa)      # mask for each family
-                s = min(mask.sum(), self.nparent)   # min(# in family, nparent)
-                sel.append(ord[mask][:s])           # add indices to list
-            sel = numpy.concatenate(sel)            # concatenate to numpy.ndarray
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            # get GEBVs for reference
-            if miscout is not None:
-                miscout["ebv"] = ebv
-
-            return pgmat, sel, self.ncross, self.nprogeny
-
-        # multi-objective method: objfn_trans returns a multiple values for each
-        # selection configuration
-        elif self.method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config = self.pareto(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                miscout = miscout,
-                *kwargs
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
-        else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
         """
-        Return an objective function for the provided datasets.
+        Return a selection objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Not used by this function.
+            Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
-            Used by this function. Input breeding value matrix.
+            Not used by this function.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
 
@@ -418,38 +338,42 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             A selection objective function for the specified problem.
         """
         # get default parameters if any are None
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to breeding value numpy.ndarray
-        mat = bvmat.mat
+        # get parameters/pointers
+        n = gmat.ntaxa      # get number of taxa
+        t = gpmod.ntrait    # get number of traits
+        rng = self.rng      # get random number generator
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_static.__code__,     # byte code pointer
-            self.objfn_static.__globals__,  # global variables
-            None,                           # new name for the function
-            (mat, trans, trans_kwargs),     # default values for arguments
-            self.objfn_static.__closure__   # closure byte code pointer
+            self.objfn_static.__code__,         # byte code pointer
+            self.objfn_static.__globals__,      # global variables
+            None,                               # new name for the function
+            (n, t, rng, trans, trans_kwargs),   # default values for arguments
+            self.objfn_static.__closure__       # closure byte code pointer
         )
 
         return outfn
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
         """
-        Return a vectorized objective function for the provided datasets.
+        Return a vectorized selection objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Not used by this function.
+            Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
-            Used by this function. Input breeding value matrix.
+            Not used by this function.
         gpmod : LinearGenomicModel
             Linear genomic prediction model.
 
@@ -459,11 +383,15 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             A vectorized selection objective function for the specified problem.
         """
         # get default parameters if any are None
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
+        if trans is None:
+            trans = self.objfn_trans
+        if trans_kwargs is None:
+            trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to breeding value numpy.ndarray
-        mat = bvmat.mat
+        # get parameters/pointers
+        n = gmat.mat.shape[0]   # get number of taxa
+        t = gpmod.beta.shape[1] # get number of traits
+        rng = self.rng          # get random number generator
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -471,7 +399,7 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (mat, trans, trans_kwargs),         # default values for arguments
+            (n, t, rng, trans, trans_kwargs),   # default values for arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -479,7 +407,8 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
     def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
-        Calculate a Pareto frontier for objectives.
+        Random selection has no Pareto frontier since it has no objective function.
+        Raises RuntimeError.
 
         Parameters
         ----------
@@ -499,39 +428,20 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - frontier is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - sel_config is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
         """
-        raise NotImplementedError("feature not implemented yet")
+        raise RuntimeError("Random selection has no Pareto frontier since it has no objective function.")
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, trans, kwargs):
+    def objfn_static(sel, n, t, rng, trans, kwargs):
         """
-        Score a family of individuals based on phenotypic breeding values.
+        Randomly assign a score in the range :math:`[-1,1)` individuals for each trait.
 
         Parameters
         ----------
@@ -545,13 +455,12 @@ class FamilyPhenotypicSelection(SelectionProtocol):
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
             If ``sel`` is None, use all individuals.
-        mat : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
+        n : int
+            The number of individuals available for selection.
+        t : int
+            The number of traits.
+        rng : numpy.random.Generator, numpy.random.RandomState
+            Random number generator.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -563,34 +472,35 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
         Returns
         -------
-        fps : numpy.ndarray
-            A phenotypic selection matrix of shape ``(t,)`` if ``trans`` is
-            ``None``. Otherwise, of shape specified by ``trans``.
+        cgs : numpy.ndarray
+            A GEBV matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # if sel is None, slice all individuals
-        if sel is None:
-            sel = slice(None)
+        # get random number vector lengths
+        nsel = n if sel is None else len(sel)   # get number of individuals
+        ntrait = t                              # get number of traits
 
-        # select breeding values
-        # (n,t)[(k,),:] -> (k,t)
-        # (k,t).sum(0) -> (t,)
-        fps = mat[sel,:].sum(0)
+        # randomly sample from uniform distribution
+        # Step 1: (k,t)                 # randomly score individuals
+        # Step 2: (k,t).sum(0) -> (t,)  # sum across individuals
+        rs = rng.uniform(-1.0, 1.0, (nsel,ntrait)).sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
         if trans:
-            fps = trans(fps, **kwargs)
+            rs = trans(rs, **kwargs)
 
-        return fps
+        return rs
 
     @staticmethod
-    def objfn_vec_static(sel, mat, trans, kwargs):
+    def objfn_vec_static(sel, n, t, rng, trans, kwargs):
         """
-        Score a family of individuals based on phenotypic breeding values.
+        Randomly assign a score in the range :math:`[-1,1)` individuals for
+        each trait.
 
         Parameters
         ----------
@@ -604,47 +514,43 @@ class FamilyPhenotypicSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is ``None``, score each individual separately: ``(n,1)``
-        mat : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
+            If ``sel`` is None, score each individual separately: (n,1)
+        n : int
+            The number of individuals available for selection.
+        t : int
+            The number of traits.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
 
-            - Must accept a single ``numpy.ndarray`` argument.
+            - Must accept a single numpy.ndarray argument.
             - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
             Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
-        fps : numpy.ndarray
-            A phenotypic selection matrix of shape ``(j,t)`` if ``trans`` is
-            ``None``. Otherwise, of shape specified by ``trans``.
+        cgs : numpy.ndarray
+            A GEBV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
 
             Where:
 
             - ``j`` is the number of selection configurations.
             - ``t`` is the number of traits.
         """
-        # if sel is None, slice all individuals
-        if sel is None:
-            n = mat.shape[0]
-            sel = numpy.arange(n).reshape(n,1)
+        # get random number vector lengths
+        nsel = (n,1) if sel is None else sel.shape  # get number of individuals (j,k)
+        ntrait = (t,)                               # get number of traits (t,)
 
-        # select breeding values
-        # (n,t)[(j,k,),:] -> (j,k,t)
-        # (j,k,t).sum(1) -> (t,)
-        fps = mat[sel,:].sum(1)
+        # randomly sample from uniform distribution
+        # Step 1: (j,k,t)                   # randomly score individuals
+        # Step 2: (j,k,t).sum(1) -> (j,t)   # sum across individuals
+        rs = rng.uniform(-1.0, 1.0, nsel+ntrait).sum(1)
 
         # apply transformations
-        # (j,t) ---trans---> (j,?)
+        # (j,t) ---trans---> (?,?)
         if trans:
-            fps = trans(fps, **kwargs)
+            rs = trans(rs, **kwargs)
 
-        return fps
+        return rs

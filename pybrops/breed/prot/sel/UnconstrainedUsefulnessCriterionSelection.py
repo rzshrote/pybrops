@@ -11,7 +11,7 @@ import scipy.stats
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_bool
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
@@ -30,7 +30,7 @@ from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVariance
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class UsefulnessCriterionSelection(SelectionProtocol):
+class UsefulnessCriterionSelection(UnconstrainedSelectionProtocol):
     """
     Class implementing selection protocols for usefulness criterion selection.
 

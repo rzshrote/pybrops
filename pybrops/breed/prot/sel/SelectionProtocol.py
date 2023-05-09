@@ -1,167 +1,361 @@
 """
-Module defining interfaces and error checking routines for selection protocols.
+Module defining a general class for selection protocols.
 """
 
-from typing import Any, Optional
+# list of all public objects in this module
+__all__ = [
+    "SelectionProtocol",
+    "check_is_SelectionProtocol"
+]
+
+# imports
+from abc import ABCMeta, abstractmethod
+from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
+import numpy
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
+from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-
-class SelectionProtocol:
+class SelectionProtocol(metaclass=ABCMeta):
     """
-    Abstract class defining interfaces for selection protocols.
-
-    The purpose of this abstract class is to define functionality for:
-        1) Selection (both single- and multi-objective) of genotypes.
-        2) Construction of fast objective functions.
-        3) Mapping of the Pareto frontier for the selection protocol.
-        4) Access to static objective functions for the selection protocol.
+    A semi-abstract class implementing several key properties common to most, 
+    if not all, constrained selection protocols.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
+    @abstractmethod
     def __init__(
             self, 
+            method: str,
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class SelectionProtocol.
+        Constructor for the abstract class ConstrainedSelectionProtocol.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SelectionProtocol, self).__init__()
+        super(SelectionProtocol, self).__init__(**kwargs)
+        # order dependent assignments
+        self.method = method
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.obj_trans = obj_trans
+        self.obj_trans_kwargs = obj_trans_kwargs
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.ineqcv_trans = ineqcv_trans
+        self.ineqcv_trans_kwargs = ineqcv_trans_kwargs
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+        self.eqcv_trans = eqcv_trans
+        self.eqcv_trans_kwargs = eqcv_trans_kwargs
+        self.ndset_wt = ndset_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = ndset_trans_kwargs
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+    @property
+    def method(self) -> str:
+        """Selection method."""
+        return self._method
+    @method.setter
+    def method(self, value: str) -> None:
+        """Set selection method."""
+        check_is_str(value, "method")       # must be string
+        value = value.lower()               # convert to lowercase
+        options = ("single", "pareto")      # method options
+        # if not method supported raise ValueError
+        if value not in options:
+            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
+        self._method = value
 
-    ############################################################################
+    @property
+    def nobj(self) -> Integral:
+        """Number of objectives."""
+        return self._nobj
+    @nobj.setter
+    def nobj(self, value: Integral) -> None:
+        """Set number of objectives."""
+        check_is_Integral(value, "nobj")
+        check_is_gt(value, "nobj", 0)     # cannot have 0 objectives
+        self._nobj = value
+    
+    @property
+    def obj_wt(self) -> numpy.ndarray:
+        """Objective function weights."""
+        return self._obj_wt
+    @obj_wt.setter
+    def obj_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
+        """Set objective function weights. If None, set to 1.0."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "obj_wt", 1)
+            check_ndarray_len_eq(value, "obj_wt", self.nobj)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.nobj)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nobj)
+        else:
+            raise TypeError("'obj_wt' must be of type numpy.ndarray, a real type, or None")
+        self._obj_wt = value
+
+    @property
+    def obj_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
+        """Function which transforms outputs from ``latentfn`` to objective function values."""
+        return self._obj_trans
+    @obj_trans.setter
+    def obj_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+        """Set latent space to objective space transformation function. If None, set to identity function."""
+        if value is None:
+            value = trans_identity
+        check_is_Callable(value, "obj_trans")
+        self._obj_trans = value
+    
+    @property
+    def obj_trans_kwargs(self) -> dict:
+        """Keyword arguments for the latent space to objective space transformation function."""
+        return self._obj_trans_kwargs
+    @obj_trans_kwargs.setter
+    def obj_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set keyword arguments for the latent space to objective space transformation function. If None, set to empty dict."""
+        if value is None:
+            value = {}
+        check_is_dict(value, "obj_trans_kwargs")
+        self._obj_trans_kwargs = value
+    
+    @property
+    def nineqcv(self) -> Integral:
+        """Number of inequality constraint violation functions."""
+        return self._nineqcv
+    @nineqcv.setter
+    def nineqcv(self, value: Union[Integral,None]) -> None:
+        """Set number of inequality constraint violation functions. If None, set to 0."""
+        if value is None:
+            value = 0
+        check_is_Integral(value, "nineqcv")
+        check_is_gteq(value, "nineqcv", 0)  # possible to have 0 inequality constraints
+        self._nineqcv = value
+
+    @property
+    def ineqcv_wt(self) -> numpy.ndarray:
+        """Inequality constraint violation function weights."""
+        return self._ineqcv_wt
+    @ineqcv_wt.setter
+    def ineqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
+        """Set inequality constraint violation function weights. If None, set to 1.0."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "ineqcv_wt", 1)
+            check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.nineqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nineqcv)
+        else:
+            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray, a real type, or None")
+        self._ineqcv_wt = value
+
+    @property
+    def ineqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
+        """Function which transforms outputs from ``latentfn`` to inequality constraint violation values."""
+        return self._ineqcv_trans
+    @ineqcv_trans.setter
+    def ineqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+        """Set latent space to inequality constraint violation transformation function. If None, set to the empty function."""
+        if value is None:
+            value = trans_empty
+        check_is_Callable(value, "ineqcv_trans")
+        self._ineqcv_trans = value
+    
+    @property
+    def ineqcv_trans_kwargs(self) -> dict:
+        """Keyword arguments for the latent space to inequality constraint violation transformation function."""
+        return self._ineqcv_trans_kwargs
+    @ineqcv_trans_kwargs.setter
+    def ineqcv_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set keyword arguments for the latent space to inequality constraint violation transformation function. If None, set to empty dict."""
+        if value is None:
+            value = {}
+        check_is_dict(value, "ineqcv_trans_kwargs")
+        self._ineqcv_trans_kwargs = value
+    
+    @property
+    def neqcv(self) -> Integral:
+        """Number of equality constraint violations."""
+        return self._neqcv
+    @neqcv.setter
+    def neqcv(self, value: Union[Integral,None]) -> None:
+        """Set number of equality constraint violations. If None, set to 0."""
+        if value is None:
+            value = 0
+        check_is_Integral(value, "neqcv")
+        check_is_gteq(value, "neqcv", 0)    # possible to have 0 equality constraints
+        self._neqcv = value
+    
+    @property
+    def eqcv_wt(self) -> numpy.ndarray:
+        """Equality constraint violation function weights."""
+        return self._eqcv_wt
+    @eqcv_wt.setter
+    def eqcv_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
+        """Set equality constraint violation function weights. If None, set to 1.0."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "eqcv_wt", 1)
+            check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.neqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.neqcv)
+        else:
+            raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a real type")
+        self._eqcv_wt = value
+
+    @property
+    def eqcv_trans(self) -> Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]:
+        """Function which transforms outputs from ``latentfn`` to equality constraint violation values."""
+        return self._eqcv_trans
+    @eqcv_trans.setter
+    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+        """Set latent space to equality constraint violation transformation function. If None, set to the empty function."""
+        if value is None:
+            value = trans_empty
+        check_is_Callable(value, "eqcv_trans")
+        self._eqcv_trans = value 
+    
+    @property
+    def eqcv_trans_kwargs(self) -> dict:
+        """Keyword arguments for the latent space to equality constraint violation transformation function."""
+        return self._eqcv_trans_kwargs
+    @eqcv_trans_kwargs.setter
+    def eqcv_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set keyword arguments for the latent space to equality constraint violation transformation function. If None, set to empty dict."""
+        if value is None:
+            value = {}
+        check_is_dict(value, "eqcv_trans_kwargs")
+        self._eqcv_trans_kwargs = value
+
+    @property
+    def ndset_wt(self) -> Real:
+        """Nondominated set weights."""
+        return self._ndset_wt
+    @ndset_wt.setter
+    def ndset_wt(self, value: Union[Real,None]) -> None:
+        """Set nondominated set weights. If None, set to 1.0."""
+        if value is None:
+            value = 1.0
+        check_is_Real(value, "ndset_wt")
+        self._ndset_wt = value
+
+    @property
+    def ndset_trans(self) -> Callable[[numpy.ndarray,dict],numpy.ndarray]:
+        """Nondominated set transformation function."""
+        return self._ndset_trans
+    @ndset_trans.setter
+    def ndset_trans(self, value: Union[Callable[[numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+        """Set nondominated set transformation function. If None, set to closest point to vector function."""
+        if value is None:
+            value = trans_ndpt_to_vec_dist
+        check_is_Callable(value, "ndset_trans")
+        self._ndset_trans = value
+
+    @property
+    def ndset_trans_kwargs(self) -> dict:
+        """Nondominated set transformation function keyword arguments."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.setter
+    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set nondominated set transformation function keyword arguments. If None, set to dict with one vectors."""
+        if value is None:                           # if given None
+            value = {                               # set default to empty dict
+                "obj_wt": numpy.repeat(1.0, self.nobj),
+                "vec_wt": numpy.repeat(1.0, self.nobj)
+            }
+        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+        self._ndset_trans_kwargs = value
+
     ############################## Object Methods ##############################
-    ############################################################################
-    def select(
+
+    ########## Optimization Problem Construction ###########
+    @abstractmethod
+    def problem(
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf, 
+            ptdf: PhenotypeDataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
-            t_cur: int, 
-            t_max: int, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ############## Pareto Frontier Functions ###############
+    @abstractmethod
+    def pareto(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
         ) -> tuple:
-        """
-        Select individuals for breeding.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
-        """
-        Return an objective function constructed from inputs for fast calling.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : function
-            A selection objective function for the specified problem.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
-        """
-        Return a vectorized objective function constructed from inputs for fast
-        calling.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : function
-            A vectorized selection objective function for the specified problem.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -209,74 +403,76 @@ class SelectionProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
-    @staticmethod
-    def objfn_static(sel, *args):
+    ################# Selection Functions ##################
+    @abstractmethod
+    def select(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> tuple:
         """
-        Objective function for the selection protocol.
+        Select individuals for breeding.
 
         Parameters
         ----------
-        sel : numpy.ndarray, None
-            A selection vector of shape ``(k,)``.
-
-            Where:
-
-            - ``k`` is the number of individuals.
-        args : tuple
-            Additional arguments.
-
-        Returns
-        -------
-        out : numpy.ndarray, scalar
-            An array of objective function values of shape ``(o,)`` or a scalar.
-
-            Where:
-
-            - ``o`` is the number of objectives.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @staticmethod
-    def objfn_vec_static(sel, *args):
-        """
-        Vectorized objective function for the selection protocol.
-
-        Parameters
-        ----------
-        sel : numpy.ndarray, None
-            A selection vector of shape ``(j,k)``.
-
-            Where:
-
-            - ``j`` is the number of selection configurations.
-            - ``k`` is the number of individuals.
-        args : tuple
-            Additional arguments.
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
-        out : numpy.ndarray
-            An array of objective function values of shape ``(j,o)`` or
-            ``(j,)``.
+        out : tuple
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
 
             Where:
 
-            - ``j`` is the number of selection configurations.
-            - ``o`` is the number of objectives.
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
         """
         raise NotImplementedError("method is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_SelectionProtocol(v: Any) -> bool:
-    return isinstance(v, SelectionProtocol)
+def check_is_SelectionProtocol(v: object, vname: str) -> None:
+    """
+    Check if object is of type ConstrainedSelectionProtocol, otherwise raise TypeError.
 
-def check_is_SelectionProtocol(v: Any, vname: str) -> None:
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, SelectionProtocol):
-        raise TypeError("variable '{0}' must be a SelectionProtocol".format(vname))
+        raise TypeError("'{0}' must be of type ConstrainedSelectionProtocol.".format(vname))

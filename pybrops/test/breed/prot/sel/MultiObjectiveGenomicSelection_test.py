@@ -13,7 +13,7 @@ from pybrops.test import assert_abstract_property
 from pybrops.test import assert_concrete_method
 from pybrops.test import assert_concrete_function
 
-from pybrops.breed.prot.sel.MultiObjectiveGenomicSelection import MultiObjectiveGenomicSelection
+from pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicSelection import MultiObjectiveGenomicSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix

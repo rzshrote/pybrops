@@ -20,7 +20,7 @@ from pybrops.opt.prob.BinaryProblem import BinaryProblem
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
 class BinarySelectionProblem(BinaryProblem,SelectionProblem):
     """
-    docstring for BinarySelectionProblem.
+    Semi-abstract class representing selection problems in binary search spaces.
     """
 
     ############################################################################

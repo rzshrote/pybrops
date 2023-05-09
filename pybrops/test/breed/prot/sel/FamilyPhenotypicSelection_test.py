@@ -12,7 +12,7 @@ from pybrops.test import assert_abstract_property
 from pybrops.test import assert_concrete_method
 from pybrops.test import assert_concrete_function
 
-from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
+from pybrops.breed.prot.sel.UnconstrainedFamilyPhenotypicSelection import FamilyPhenotypicSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist

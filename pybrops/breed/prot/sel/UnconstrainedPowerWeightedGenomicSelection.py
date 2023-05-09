@@ -2,22 +2,22 @@
 Module implementing selection protocols for weighted genomic selection.
 """
 
-from numbers import Integral
+import math
+from numbers import Integral, Real
 from typing import Callable, Union
 import numpy
 import types
-from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
+from pybrops.core.error.error_value_python import check_is_gt, check_is_lteq
 
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_ndarray
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
 
-class WeightedGenomicSelection(SelectionProtocol):
+class PowerWeightedGenomicSelection(UnconstrainedSelectionProtocol):
     """
     Class implementing selection protocols for weighted genomic selection.
 
@@ -32,6 +32,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             nparent: Integral, 
             ncross: Integral, 
             nprogeny: Integral, 
+            power: Real = (1+math.sqrt(5))/2,
             objfn_trans = None, 
             objfn_trans_kwargs = None, 
             objfn_wt = 1.0, 
@@ -42,7 +43,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for WeightedGenomicSelection class.
+        Constructor for PowerWeightedGenomicSelection class.
 
         Parameters
         ----------
@@ -50,12 +51,13 @@ class WeightedGenomicSelection(SelectionProtocol):
         ncross : int
         nprogeny : int
         """
-        super(WeightedGenomicSelection, self).__init__(**kwargs)
+        super(PowerWeightedGenomicSelection, self).__init__(**kwargs)
 
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.power = power
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
@@ -68,13 +70,13 @@ class WeightedGenomicSelection(SelectionProtocol):
     ############################ Object Properties #############################
     ############################################################################
     @property
-    def nparent(self) -> int:
+    def nparent(self) -> Integral:
         """Number of parents to select."""
         return self._nparent
     @nparent.setter
-    def nparent(self, value: int) -> None:
+    def nparent(self, value: Integral) -> None:
         """Set number of parents to select."""
-        check_is_int(value, "nparent")      # must be int
+        check_is_Integral(value, "nparent")      # must be int
         check_is_gt(value, "nparent", 0)    # int must be >0
         self._nparent = value
     @nparent.deleter
@@ -83,13 +85,13 @@ class WeightedGenomicSelection(SelectionProtocol):
         del self._nparent
 
     @property
-    def ncross(self) -> int:
+    def ncross(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
     @ncross.setter
-    def ncross(self, value: int) -> None:
+    def ncross(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
-        check_is_int(value, "ncross")       # must be int
+        check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
         self._ncross = value
     @ncross.deleter
@@ -98,19 +100,34 @@ class WeightedGenomicSelection(SelectionProtocol):
         del self._ncross
 
     @property
-    def nprogeny(self) -> int:
+    def nprogeny(self) -> Integral:
         """Number of progeny to derive from each cross configuration."""
         return self._nprogeny
     @nprogeny.setter
-    def nprogeny(self, value: int) -> None:
+    def nprogeny(self, value: Integral) -> None:
         """Set number of progeny to derive from each cross configuration."""
-        check_is_int(value, "nprogeny")     # must be int
+        check_is_Integral(value, "nprogeny")     # must be int
         check_is_gt(value, "nprogeny", 0)   # int must be >0
         self._nprogeny = value
     @nprogeny.deleter
     def nprogeny(self) -> None:
         """Delete number of progeny to derive from each cross configuration."""
         del self._nprogeny
+
+    @property
+    def power(self) -> Real:
+        """Description for property power."""
+        return self._power
+    @power.setter
+    def power(self, value: Real) -> None:
+        """Set data for property power."""
+        check_is_Real(value, "power") # must be a number
+        check_is_lteq(value, "power", 0) # power must be negative or zero
+        self._power = value
+    @power.deleter
+    def power(self) -> None:
+        """Delete data for property power."""
+        del self._power
 
     @property
     def objfn_trans(self) -> Union[Callable,None]:
@@ -407,7 +424,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             1.0 - afreq                     # else get recessive allele frequency
         )
         fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
+        uwt = numpy.power(fafreq, self.power)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -461,7 +478,7 @@ class WeightedGenomicSelection(SelectionProtocol):
             1.0 - afreq                     # else get recessive allele frequency
         )
         fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
+        uwt = numpy.power(fafreq, self.power)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.

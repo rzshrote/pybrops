@@ -9,7 +9,7 @@ from typing import Callable, Union
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
@@ -20,7 +20,7 @@ from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
-class PopulationAlleleFrequencyDistanceSelection(SelectionProtocol):
+class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol):
     """
     Class implementing selection protocols for multi-objective genomic selection.
 

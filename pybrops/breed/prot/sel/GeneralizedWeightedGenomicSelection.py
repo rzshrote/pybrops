@@ -1,28 +1,31 @@
-from numbers import Integral, Real
+"""
+Module implementing generalized weighted genomic selection protocols.
+"""
+
+from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.ConstrainedSelectionProtocol import ConstrainedSelectionProtocol
-from pybrops.breed.prot.sel.prob.SelectionProblemType import SelectionProblemType
-from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.core.util.haplo import haplomat
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
+from pybrops.core.error.error_value_python import check_Number_in_interval, check_is_gt
+from pybrops.core.random import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
-from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
+class ConstrainedGeneralizedWeightedGenomicSelection(SelectionProtocol):
     """
-    docstring for ConstrainedOptimalPopulationValueSelection.
+    docstring for ConstrainedGeneralizedWeightedGenomicSelection.
     """
 
     ############################################################################
@@ -32,38 +35,38 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             self,
             nparent: Integral, 
             ncross: Integral, 
-            nprogeny: Integral, 
-            nhaploblk: Integral,
+            nprogeny: Integral,
+            alpha: Real,
             method: str,
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray],
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
-            obj_trans_kwargs: Optional[dict],
-            nineqcv: Optional[Integral],
-            ineqcv_wt: Optional[numpy.ndarray],
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
-            ineqcv_trans_kwargs: Optional[dict],
-            neqcv: Optional[Integral],
-            eqcv_wt: Optional[numpy.ndarray],
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]],
-            eqcv_trans_kwargs: Optional[dict],
-            ndset_wt: Optional[Real],
-            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]], 
-            ndset_trans_kwargs: Optional[dict], 
+            obj_wt: Optional[Union[numpy.ndarray,Number]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Number]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
+            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
+            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
-        Constructor for ConstrainedOptimalPopulationValueSelection.
+        Constructor for ConstrainedGeneralizedWeightedGenomicSelection.
         
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(ConstrainedOptimalPopulationValueSelection, self).__init__(
+        super(ConstrainedGeneralizedWeightedGenomicSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -82,11 +85,12 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             ndset_trans_kwargs = ndset_trans_kwargs, 
             **kwargs
         )
-        # assignments
+
+        # make value assignments (order dependent)
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nhaploblk = nhaploblk
+        self.alpha = alpha
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
@@ -95,64 +99,48 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
     ############################ Object Properties #############################
     ############################################################################
     @property
-    def nparent(self) -> int:
+    def nparent(self) -> Integral:
         """Number of parents to select."""
         return self._nparent
     @nparent.setter
-    def nparent(self, value: int) -> None:
+    def nparent(self, value: Integral) -> None:
         """Set number of parents to select."""
         check_is_Integral(value, "nparent") # must be integer
         check_is_gt(value, "nparent", 0)    # integer must be >0
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents to select."""
-        del self._nparent
 
     @property
-    def ncross(self) -> int:
+    def ncross(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
     @ncross.setter
-    def ncross(self, value: int) -> None:
+    def ncross(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")  # must be integer
         check_is_gt(value, "ncross", 0)     # integer must be >0
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete number of crosses per configuration."""
-        del self._ncross
 
     @property
-    def nprogeny(self) -> int:
+    def nprogeny(self) -> Integral:
         """Number of progeny to derive from each cross configuration."""
         return self._nprogeny
     @nprogeny.setter
-    def nprogeny(self, value: int) -> None:
+    def nprogeny(self, value: Integral) -> None:
         """Set number of progeny to derive from each cross configuration."""
         check_is_Integral(value, "nprogeny")    # must be integer
         check_is_gt(value, "nprogeny", 0)       # integer must be >0
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete number of progeny to derive from each cross configuration."""
-        del self._nprogeny
 
     @property
-    def nhaploblk(self) -> Integral:
-        """nhaploblk."""
-        return self._nhaploblk
-    @nhaploblk.setter
-    def nhaploblk(self, value: Integral) -> None:
-        """Set nhaploblk."""
-        check_is_Integral(value, "nhaploblk")
-        check_is_gt(value, "nhaploblk", 0)
-        self._nhaploblk = value
-    @nhaploblk.deleter
-    def nhaploblk(self) -> None:
-        """Delete nhaploblk."""
-        del self._nhaploblk
+    def alpha(self) -> Real:
+        """Exponent to which to raise the favorable allele frequency. Must be in the range [0,1]."""
+        return self._alpha
+    @alpha.setter
+    def alpha(self, value: Real) -> None:
+        """Set exponent to which to raise the favorable allele frequency."""
+        check_is_Real(value, "alpha")
+        check_Number_in_interval(value, "alpha", 0, 1)
+        self._alpha = value
 
     @property
     def rng(self) -> Union[Generator,RandomState]:
@@ -165,10 +153,6 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     @property
     def soalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -177,15 +161,13 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
     @soalgo.setter
     def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
-        # if None, construct default hillclimber
         if value is None:
-            value = ConstrainedSteepestDescentSubsetHillClimber(rng = self.rng)
+            # construct default hillclimber
+            value = ConstrainedSteepestDescentSubsetHillClimber(
+                self.rng
+            )
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
-    @soalgo.deleter
-    def soalgo(self) -> None:
-        """Delete single-objective optimization algorithm."""
-        del self._soalgo
 
     @property
     def moalgo(self) -> ConstrainedOptimizationAlgorithm:
@@ -194,8 +176,8 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
     @moalgo.setter
     def moalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
-        # If None, construct default multi-objective algorithm
         if value is None:
+            # construct default multi-objective algorithm
             value = ConstrainedNSGA2SubsetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100, # number of parents in population
@@ -203,10 +185,7 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective opimization algorithm."""
-        del self._moalgo
+
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -223,7 +202,7 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblemType:
+        ) -> SelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -252,27 +231,19 @@ class ConstrainedOptimalPopulationValueSelection(ConstrainedSelectionProtocol):
             An optimization problem definition.
         """
         # get number of individuals
-        ntaxa = pgmat.ntaxa
+        ntaxa = gmat.ntaxa
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
         decn_space_lower = numpy.repeat(0, ntaxa)
         decn_space_upper = numpy.repeat(ntaxa-1, ntaxa)
 
-        # calculate haplotype block values
-        hmat = haplomat(
-            nhaploblk = self.nhaploblk,
-            genomemat = pgmat.mat,
-            genpos = pgmat.vrnt_genpos,
-            chrgrp_stix = pgmat.vrnt_chrgrp_stix,
-            chrgrp_spix = pgmat.vrnt_chrgrp_spix,
-            chrgrp_len = pgmat.vrnt_chrgrp_len,
-            u_a = gpmod.u_a
-        )
-
         # construct problem
-        prob = OptimalPopulationValueSubsetSelectionProblem(
-            haplomat = hmat,
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(
+            Z_a = gmat.mat,
+            u_a = gpmod.u_a,
+            fafreq = gpmod.fafreq(gmat),
+            alpha = self.alpha,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

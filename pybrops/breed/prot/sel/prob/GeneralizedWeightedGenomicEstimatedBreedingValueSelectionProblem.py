@@ -5,7 +5,8 @@ Module implementing generalized weighted genomic selection as a subset optimizat
 __all__ = [
     "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem",
     "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem"
+    "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem"
 ]
 
 from numbers import Integral, Number, Real
@@ -23,12 +24,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_Number_in_interval
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(SelectionProblem):
-    """
-    Helper class containing common properties for GWGS Problems.
-    """
-    ############################################################################
+    """Helper class containing common properties for GWGS Problems."""
+
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
@@ -95,11 +93,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for SubsetGeneralizedWeightedGenomicSelectionProblem.
+    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in subset search spaces.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             Z_a: numpy.ndarray,
@@ -162,9 +159,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Sub
         # (n,p) @ (p,t) -> (n,t)
         self.gwgebv = self.Z_a.dot(self.u_a * numpy.power(self.fafreq, -self.alpha))
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -207,11 +202,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Sub
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for RealGeneralizedWeightedGenomicSelectionProblem.
+    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in real search spaces.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             Z_a: numpy.ndarray,
@@ -274,9 +268,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealS
         # (n,p) @ (p,t) -> (n,t)
         self.gwgebv = self.Z_a.dot(self.u_a * numpy.power(self.fafreq, -self.alpha))
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -323,11 +315,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealS
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for IntegerGeneralizedWeightedGenomicSelectionProblem.
+    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in integer search spaces.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             Z_a: numpy.ndarray,
@@ -390,9 +381,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(In
         # (n,p) @ (p,t) -> (n,t)
         self.gwgebv = self.Z_a.dot(self.u_a * numpy.power(self.fafreq, -self.alpha))
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -439,11 +428,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(In
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
     """
-    docstring for BinaryGeneralizedWeightedGenomicSelectionProblem.
+    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in binary search spaces.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             Z_a: numpy.ndarray,
@@ -506,9 +494,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(Bin
         # (n,p) @ (p,t) -> (n,t)
         self.gwgebv = self.Z_a.dot(self.u_a * numpy.power(self.fafreq, -self.alpha))
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

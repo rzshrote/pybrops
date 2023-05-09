@@ -20,7 +20,7 @@ from pybrops.opt.prob.SubsetProblem import SubsetProblem
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
 class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     """
-    docstring for SubsetSelectionProblem.
+    Semi-abstract class representing selection problems in subset search spaces.
     """
 
     ############################################################################

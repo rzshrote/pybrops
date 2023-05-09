@@ -1,37 +1,43 @@
 """
-Module implementing selection protocols for maximum mean expected heterozygosity selection.
+Module implementing selection protocols for minimum mean genomic relationship selection.
 """
 
+import cvxpy
 import numpy
+import warnings
 import types
-from typing import Optional, Union
+from typing import Any, Optional, Union
 from typing import Callable
+from typing import Type
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error import check_inherits
+from pybrops.core.error import check_is_class
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
-from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
+from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.breed.prot.sel.transfn import trans_sum
+from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
+from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
 from pybrops.opt.algo.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
-class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
+class BinaryMinimumMeanGenomicRelationshipSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for optimal mean expected heterozygosity selection.
+    Class implementing selection protocols for minimum mean genomic relationship selection.
 
-    Maximum Mean Expected Heterozygosity Selection (MMEHS) is defined as:
+    Minimum mean genomic relationship selection (MMGRS) is defined as:
 
     .. math::
-        \\max_{\\mathbf{x}} f_{MMEHS}(\\mathbf{x}) = 1 - \\mathbf{x'Kx}
+        \\min_{\\mathbf{x}} f_{MMGRS}(\\mathbf{x}) = \\frac{1}{2}\\mathbf{x'Gx}
 
     With constraints:
 
@@ -49,14 +55,15 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             nparent: int, 
             ncross: int, 
             nprogeny: int,
-            ktype: str = "gmat", 
+            gtype: str = "gmat", 
+            gcls: Type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
             method: str = "single",
-            objfn_trans = trans_sum, 
-            objfn_trans_kwargs = None, 
-            objfn_wt = 1.0,
+            objfn_trans: Callable = None, 
+            objfn_trans_kwargs: dict = None, 
+            objfn_wt = -1.0,
             rng = global_prng, 
-            soalgo = None,
-            **kwargs
+            soalgo = None, 
+            **kwargs: dict
         ):
         """
         Constructor for Optimal Contribution Selection (OCS).
@@ -69,18 +76,8 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        bvtype : str
-            Whether to use GEBVs or phenotypic EBVs.
-
-            +------------+-------------+
-            | Option     | Description |
-            +============+=============+
-            | ``"gebv"`` | Use GEBVs   |
-            +------------+-------------+
-            | ``"ebv"``  | Use EBVs    |
-            +------------+-------------+
-        ktype : str
-            Whether to use genotypes or genomes to calculate kinship.
+        gtype : str
+            Whether to use genotypes or genomes to calculate genomic relationship.
 
             +-------------+---------------+
             | Option      | Description   |
@@ -89,6 +86,8 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             +-------------+---------------+
             | ``"pgmat"`` | Use genomes   |
             +-------------+---------------+
+        gcls : Any
+            Which genomic relationship class to use to construct the genomic relationship matrix.
         method : str
             Optimization strategy.
 
@@ -182,13 +181,14 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(BinaryMaximumMeanExpectedHeterozygositySelection, self).__init__(**kwargs)
+        super(BinaryMinimumMeanGenomicRelationshipSelection, self).__init__(**kwargs)
         
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.ktype = ktype
+        self.gtype = gtype
+        self.gcls = gcls
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
@@ -245,21 +245,36 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def ktype(self) -> str:
-        """Kinship matrix type."""
-        return self._ktype
-    @ktype.setter
-    def ktype(self, value: str) -> None:
-        """Set kinship matrix type."""
-        check_is_str(value, "ktype")
+    def gtype(self) -> str:
+        """Genomic relationship matrix type."""
+        return self._gtype
+    @gtype.setter
+    def gtype(self, value: str) -> None:
+        """Set genomic relationship matrix type."""
+        check_is_str(value, "gtype")
         value = value.lower()
         if value not in ["gmat","pgmat"]:
-            raise ValueError("'ktype' must be 'gmat' or 'pgmat'")
-        self._ktype = value
-    @ktype.deleter
-    def ktype(self) -> None:
-        """Delete kinship matrix type."""
-        del self._ktype
+            raise ValueError("'gtype' must be 'gmat' or 'pgmat'")
+        self._gtype = value
+    @gtype.deleter
+    def gtype(self) -> None:
+        """Delete genomic relationship matrix type."""
+        del self._gtype
+
+    @property
+    def gcls(self) -> Any:
+        """Genomic relationship matrix class."""
+        return self._gcls
+    @gcls.setter
+    def gcls(self, value: Any) -> None:
+        """Set genomic relationship matrix class."""
+        check_is_class(value, "gcls")
+        check_inherits(value, "gcls", CoancestryMatrix)
+        self._gcls = value
+    @gcls.deleter
+    def gcls(self) -> None:
+        """Delete genomic relationship matrix class."""
+        del self._gcls
 
     @property
     def method(self) -> str:
@@ -383,11 +398,11 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             - ``n`` is the number of individuals.
         """
         # use genotypes to determine kinship
-        if self.ktype == "gmat":
-            return DenseMolecularCoancestryMatrix.from_gmat(gmat)
+        if self.gtype == "gmat":
+            return self.gcls.from_gmat(gmat)
         # use genomes to determine kinshipe
-        elif self.ktype == "pgmat":
-            return DenseMolecularCoancestryMatrix.from_gmat(pgmat)
+        elif self.gtype == "pgmat":
+            return self.gcls.from_gmat(pgmat)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -434,7 +449,7 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # Solve problem using a single objective method
+        # Solve problem using quadratic programming
         if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
@@ -608,7 +623,7 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        raise RuntimeError("BinaryMaximumMeanExpectedHeterozygositySelection is single objective")
+        raise RuntimeError("BinaryMinimumMeanGenomicRelationshipSelection is single objective")
 
     ############################################################################
     ############################## Static Methods ##############################
@@ -616,20 +631,16 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean expected heterozygosity.
+        Score a parent contribution vector according to its mean genomic relationship.
 
         Parameters
         ----------
         sel : numpy.ndarray
-            A selection indices matrix of shape ``(k,)``.
+            A parent contribution vector of shape ``(n,)`` and floating dtype.
 
             Where:
 
-            - ``k`` is the number of individuals to select.
-
-            Each index indicates which individuals to select.
-            Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is ``None``, use all individuals.
+            - ``n`` is the number of individuals.
         C : numpy.ndarray
             An upper triangle matrix of shape (n,n) resulting from a Cholesky 
             decomposition of a kinship matrix: K = C'C.
@@ -648,13 +659,13 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         Returns
         -------
-        meh : numpy.ndarray
+        mgr : numpy.ndarray
             A matrix of shape (1,) if ``trans`` is ``None``.
 
-            The first index in the array is the mean expected heterozygosity:
+            The first index in the array is the mean genomic relationship:
 
             .. math::
-                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
+                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
@@ -663,28 +674,27 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
 
             - ``t`` is the number of traits.
         """
-        # calculate MEH
+        # calculate MGR
         # (n,n)[:,(k,)] -> (n,k)
         # (1/k) * (n,k).sum(1) -> (n,)
         Cx = (1.0 / sel.shape[0]) * C[:,sel].sum(1)
 
         # norm2( (n,) ) -> scalar
-        dist = numpy.linalg.norm(Cx, ord = 2)
+        mgr = numpy.linalg.norm(Cx, ord = 2)
 
-        # scalar - scalar -> scalar
         # [scalar] -> (1,)
-        meh = numpy.array([1.0 - dist])
+        mgr = numpy.array([mgr])
         
         # apply transformations if needed
         if trans:
-            meh = trans(meh, **kwargs)
+            mgr = trans(mgr, **kwargs)
         
-        return meh
+        return mgr
 
     @staticmethod
     def objfn_vec_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean expected heterozygosity.
+        Score a parent contribution vector according to its mean genomic relationship.
 
         Parameters
         ----------
@@ -701,7 +711,7 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
             ``sel`` cannot be ``None``.
         C : numpy.ndarray
             An upper triangle matrix of shape (n,n) resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
+            decomposition of half a genomic relationship matrix: (1/2)G = C'C.
 
             Where:
 
@@ -717,13 +727,13 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         Returns
         -------
-        meh : numpy.ndarray
+        mgr : numpy.ndarray
             A matrix of shape (j,1) if ``trans`` is ``None``.
 
-            The first index in the array is the mean expected heterozygosity:
+            The first index in the array is the mean genomic relationship:
 
             .. math::
-                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
+                MGR = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
@@ -739,13 +749,10 @@ class BinaryMaximumMeanExpectedHeterozygositySelection(SelectionProtocol):
         
         # norm2( (n,j), axis=0 ) -> (j,)
         # (j,)[:,None] -> (j,1)
-        dist = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
-
-        # scalar - (j,1) -> (j,1)
-        meh = 1.0 - dist
+        mgr = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
 
         # apply transformations if needed
         if trans:
-            meh = trans(meh, **kwargs)
+            mgr = trans(mgr, **kwargs)
         
-        return meh
+        return mgr

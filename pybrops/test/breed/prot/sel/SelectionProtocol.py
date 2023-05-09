@@ -3,13 +3,13 @@ import pytest
 
 from pybrops.test import assert_abstract_methods
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.breed.prot.sel.SelectionProtocol import is_SelectionProtocol
-from pybrops.breed.prot.sel.SelectionProtocol import check_is_SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import is_SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import check_is_SelectionProtocol
 
 @pytest.fixture
 def bedge():
-    yield SelectionProtocol()
+    yield UnconstrainedSelectionProtocol()
 
 @pytest.fixture
 def vmethods(bedge):

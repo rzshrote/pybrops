@@ -1,82 +1,97 @@
 """
-Module implementing selection protocols for general 1-norm genomic selection
+Module implementing selection protocols for Genotype Building selection.
 """
 
-import types
+from typing import Callable, Union
 import numpy
-from typing import Union
-from typing import Callable
+import types
 
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.breed.prot.sel.targetfn import target_positive
-from pybrops.breed.prot.sel.weightfn import weight_absolute
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_callable
-from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_gt
+from pybrops.core.error import check_is_str
+from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_value_python import check_is_lt
 from pybrops.core.random.prng import global_prng
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.core.util.haplo import nhaploblk_chrom
+from pybrops.core.util.haplo import haplobin
+from pybrops.core.util.haplo import haplobin_bounds
 
-class Generalized1NormGenomicSelection(SelectionProtocol):
+class GenotypeBuildingSelection(UnconstrainedSelectionProtocol):
     """
-    docstring for Generalized1NormGenomicSelection.
+    Class implementing selection protocols for Genotype Building selection.
+
+    # TODO: add formulae for methodology.
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
     def __init__(
-            self, 
-            nparent: int,
-            ncross: int,
-            nprogeny: int,
-            weight: Union[numpy.ndarray,Callable] = weight_absolute,
-            target: Union[numpy.ndarray,Callable] = target_positive,
-            method: str = "single",
-            objfn_trans = None,
+            self,
+            nparent: int, 
+            ncross: int, 
+            nprogeny: int, 
+            nhaploblk: int,
+            nbestfndr: int,
+            method = "single",
+            objfn_trans = None, 
             objfn_trans_kwargs = None, 
-            objfn_wt = -1.0,
+            objfn_wt = 1.0,
             ndset_trans = None, 
             ndset_trans_kwargs = None, 
-            ndset_wt = -1.0,
-            rng = global_prng, 
+            ndset_wt = 1.0,
             soalgo = None, 
             moalgo = None,
-            **kwargs
+            rng = None, 
+            **kwargs: dict
         ):
         """
-        Constructor for Generalized1NormGenomicSelection.
-        
+        Constructor for Genotype Building selection (OPV).
+
         Parameters
         ----------
         nparent : int
             Number of parents to select.
+        ncross : int
+            Number of crosses per configuration.
+        nprogeny : int
+            Number of progeny to derive from each cross.
+        nhaploblk : int
+            Number of haplotype blocks to divide the genome into.
+        objfn_trans : function, callable, None
+        objfn_trans_kwargs : dict, None
+        objfn_wt : float, numpy.ndarray
+        ndset_trans : function, callable, None
+        ndset_trans_kwargs : dict, None
+        ndset_wt : float
+        rng : numpy.random.Generator, numpy.random.RandomState
         """
-        super(Generalized1NormGenomicSelection, self).__init__(**kwargs)
+        super(GenotypeBuildingSelection, self).__init__(**kwargs)
 
+        # error checks and assignments (ORDER DEPENDENT!!!)
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.weight = weight
-        self.target = target
+        self.nhaploblk = nhaploblk
+        self.nbestfndr = nbestfndr # must be less than or equal to nparent
         self.method = method
         self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = objfn_trans_kwargs
+        self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
         self.objfn_wt = objfn_wt
         self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
         self.ndset_wt = ndset_wt
-        self.rng = rng
+        self.rng = rng  # property replaces None with pybrops.core.random
+        # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
         self.soalgo = soalgo
         self.moalgo = moalgo
-    
+
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
@@ -126,32 +141,35 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def weight(self) -> Union[numpy.ndarray,Callable]:
-        """Marker weights or marker weight function."""
-        return self._weight
-    @weight.setter
-    def weight(self, value: Union[numpy.ndarray,Callable]) -> None:
-        """Set marker weights or marker weight function."""
-        check_isinstance(value, "weight", (numpy.ndarray, Callable))
-        self._weight = value
-    @weight.deleter
-    def weight(self) -> None:
-        """Delete marker weights or marker weight function."""
-        del self._weight
+    def nhaploblk(self) -> int:
+        """Number of haplotype blocks to consider."""
+        return self._nhaploblk
+    @nhaploblk.setter
+    def nhaploblk(self, value: int) -> None:
+        """Set number of haplotype blocks to consider."""
+        check_is_int(value, "nhaploblk")    # must be int
+        check_is_gt(value, "nhaploblk", 0)  # int must be >0
+        self._nhaploblk = value
+    @nhaploblk.deleter
+    def nhaploblk(self) -> None:
+        """Delete number of haplotype blocks to consider."""
+        del self._nhaploblk
 
     @property
-    def target(self) -> Union[numpy.ndarray,Callable]:
-        """Allele frequency targets or allele frequency target function."""
-        return self._target
-    @target.setter
-    def target(self, value: Union[numpy.ndarray,Callable]) -> None:
-        """Set allele frequency targets or allele frequency target function."""
-        check_isinstance(value, "target", (numpy.ndarray, Callable))
-        self._target = value
-    @target.deleter
-    def target(self) -> None:
-        """Delete allele frequency targets or allele frequency target function."""
-        del self._target
+    def nbestfndr(self) -> int:
+        """Number of best founders to consider."""
+        return self._nbestfndr
+    @nbestfndr.setter
+    def nbestfndr(self, value: int) -> None:
+        """Set number of best founders to consider."""
+        check_is_int(value, "nbestfndr")                # must be int
+        check_is_gt(value, "nbestfndr", 0)              # int must be >0
+        check_is_lt(value, "nbestfndr", self.nparent)   # cannot have more founders than number of parents selected
+        self._nbestfndr = value
+    @nbestfndr.deleter
+    def nbestfndr(self) -> None:
+        """Delete number of best founders to consider."""
+        del self._nbestfndr
 
     @property
     def method(self) -> str:
@@ -261,22 +279,6 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         del self._ndset_wt
 
     @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
-        """Random number generator source."""
-        return self._rng
-    @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
-        """Set random number generator source."""
-        if value is None:
-            value = global_prng
-        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
-        self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
-
-    @property
     def soalgo(self) -> OptimizationAlgorithm:
         """Single objective optimization algorithm."""
         return self._soalgo
@@ -314,64 +316,299 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         """Delete multi-objective opimization algorithm."""
         del self._moalgo
 
+    @property
+    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
+        self._rng = value
+    @rng.deleter
+    def rng(self) -> None:
+        """Delete random number generator source."""
+        del self._rng
+
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel):
-        if callable(self.weight):
-            return self.weight(gpmod.u_a)
-        elif isinstance(self.weight, numpy.ndarray):
-            return self.weight
-        else:
-            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
-    
-    def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel):
-        if callable(self.target):
-            return self.target(gpmod.u_a)
-        elif isinstance(self.target, numpy.ndarray):
-            return self.target
-        else:
-            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
+    def _calc_hmat(self, gmat, mod):
+        """
+        Calculate a haplotype matrix from a genome matrix and model.
 
-    def _calc_V(self, gmat: GenotypeMatrix, gpmod: AdditiveLinearGenomicModel):
-        # get marker weights and target frequencies
-        mkrwt = self._calc_mkrwt(gpmod) # (p,t)
-        tfreq = self._calc_tfreq(gpmod) # (p,t)
+        Parameters
+        ----------
+        gmat : PhasedGenotypeMatrix
+            A genome matrix.
+        mod : DenseAdditiveLinearGenomicModel
+            A genomic prediction model.
 
-        # make sure mkrwt and tfreq have the same dimensions
-        if mkrwt.shape != tfreq.shape:
-            raise ValueError("marker weights and target allele frequencies do not have the same shape")
+        Returns
+        -------
+        hmat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
+        """
+        mat         = gmat.mat              # get genotypes
+        genpos      = gmat.vrnt_genpos      # get genetic positions
+        chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
+        chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
+        chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
+        u           = mod.u_a               # get regression coefficients
 
-        # get number of traits and taxa
-        nvrnt = mkrwt.shape[0]
-        ntrait = mkrwt.shape[1]
-        ntaxa = gmat.ntaxa
-        ploidy = float(gmat.ploidy)
+        if (chrgrp_stix is None) or (chrgrp_spix is None):
+            raise RuntimeError("markers are not sorted by chromosome position")
 
-        # allocate a tensor for storing distance matrices
-        # (n,p,t)
-        V = numpy.empty((ntaxa,nvrnt,ntrait), dtype = "float64")
+        # get number of chromosomes
+        nchr = len(chrgrp_stix)
 
-        # get the genotype matrix as {0,1,2,...}
-        # divide the genotypes by the number of phases
-        # (n,p)
-        Z = (1.0 / ploidy) * gmat.tacount()
+        if self.nhaploblk < nchr:
+            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
 
-        # calculate a distance matrix for each trait
-        for trait in range(ntrait):
-            # (n,p) = (1,p) * ( (n,p) - (1,p) )
-            V[:,:,trait] = mkrwt[None,:,trait] * (Z - tfreq[None,:,trait])
+        # calculate number of marker blocks to assign to each chromosome
+        nblk = nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
 
-        # return distance value tensor
-        # (n,p,t)
-        return V
+        # ensure there are enough markers per chromosome
+        if numpy.any(nblk > chrgrp_len):
+            raise RuntimeError(
+                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
+            )
+
+        # calculate haplotype bins
+        hbin = haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+
+        # define shape
+        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1]) # (m,n,b,t)
+
+        # allocate haplotype matrix
+        hmat = numpy.empty(s, dtype = u.dtype)   # (m,n,b,t)
+
+        # get boundary indices
+        hstix, hspix, hlen = haplobin_bounds(hbin)
+
+        # OPTIMIZE: perhaps eliminate one loop using dot function
+        # fill haplotype matrix
+        for i in range(hmat.shape[3]):                          # for each trait
+            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
+                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
+
+        return hmat
 
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
-        Select parents individuals for breeding.
+        Select individuals for breeding.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes (unphased most likely)
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None, default = None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        method : str
+            Options: "single", "pareto"
+        nparent : int
+        ncross : int
+        nprogeny : int
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+
+            Where:
+
+            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
+            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
+              pattern. Each index corresponds to an individual in ``pgmat``.
+            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
+              crosses to perform per cross pattern.
+            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
+              progeny to generate per cross.
+        """
+        # get selection parameters
+        nparent = self.nparent
+        ncross = self.ncross
+        nprogeny = self.nprogeny
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
+        objfn_wt = self.objfn_wt
+        ndset_trans = self.ndset_trans
+        ndset_trans_kwargs = self.ndset_trans_kwargs
+        ndset_wt = self.ndset_wt
+        method = self.method
+
+        # single-objective method: objfn_trans returns a single value for each
+        # selection configuration
+        if method == "single":
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
+                **kwargs
+            )
+
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
+
+            # add optimization details to miscellaneous output
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
+
+            return pgmat, sel, ncross, nprogeny
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
+        elif method == "pareto":
+            # get the pareto frontier
+            frontier, sel_config = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                miscout = miscout,
+                nparent = nparent,
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
+            )
+
+            # get scores for each of the points along the pareto frontier
+            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], ncross, nprogeny
+
+    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
+        """
+        Return a selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Input genome matrix.
+        gmat : GenotypeMatrix
+            Not used by this function.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A selection objective function for the specified problem.
+        """
+        # get selection parameters
+        mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
+        nbestfndr = self.nbestfndr              # get number of best founders
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_static.__code__,         # byte code pointer
+            self.objfn_static.__globals__,      # global variables
+            None,                               # new name for the function
+            (mat, nbestfndr, trans, trans_kwargs), # default values for arguments
+            self.objfn_static.__closure__       # closure byte code pointer
+        )
+
+        return outfn
+
+    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
+        """
+        Return a vectorized selection objective function for the provided datasets.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Input genome matrix.
+        gmat : GenotypeMatrix
+            Not used by this function.
+        ptdf : PhenotypeDataFrame
+            Not used by this function.
+        bvmat : BreedingValueMatrix
+            Not used by this function.
+        gpmod : LinearGenomicModel
+            Linear genomic prediction model.
+
+        Returns
+        -------
+        outfn : function
+            A vectorized selection objective function for the specified problem.
+        """
+        # get selection parameters
+        mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
+        nbestfndr = self.nbestfndr              # get number of best founders
+        trans = self.objfn_trans
+        trans_kwargs = self.objfn_trans_kwargs
+
+        # copy objective function and modify default values
+        # this avoids using functools.partial and reduces function execution time.
+        outfn = types.FunctionType(
+            self.objfn_vec_static.__code__,     # byte code pointer
+            self.objfn_vec_static.__globals__,  # global variables
+            None,                               # new name for the function
+            (mat, nbestfndr, trans, trans_kwargs), # default values for arguments
+            self.objfn_vec_static.__closure__   # closure byte code pointer
+        )
+
+        return outfn
+
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
+        """
+        Calculate a Pareto frontier for objectives.
 
         Parameters
         ----------
@@ -399,167 +636,6 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         Returns
         -------
         out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
-        """
-        # Solve problem using a single objective method
-        if self.method == "single":
-            # get vectorized objective function
-            objfn = self.objfn(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max
-            )
-
-            # optimize using single objective algorithm
-            sel_score, sel, misc = self.soalgo.optimize(
-                objfn,                              # objective function
-                k = self.nparent,                   # number of parents to select
-                sspace = numpy.arange(pgmat.ntaxa), # parental indices
-                objfn_wt = self.objfn_wt,           # maximizing function
-                **kwargs
-            )
-
-            # shuffle selection to ensure random mating
-            numpy.random.shuffle(sel)
-
-            # add optimization details to miscellaneous output
-            if miscout is not None:
-                miscout["sel_score"] = sel_score
-                miscout["sel"] = sel
-                miscout.update(misc) # add dict to dict
-
-            return pgmat, sel, self.ncross, self.nprogeny
-
-        # estimate Pareto frontier, then choose from non-dominated points.
-        elif self.method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config = self.pareto(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                miscout = miscout,
-                **kwargs
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
-        """
-        Return an objective function for the provided datasets.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Input phased genotype matrix containing genomes.
-        gmat : GenotypeMatrix
-            Input genotype matrix.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Input breeding value matrix.
-        gpmod : LinearGenomicModel
-            Linear genomic prediction model.
-
-        Returns
-        -------
-        outfn : function
-            A selection objective function for the specified problem.
-        """
-        # get default parameters
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
-
-        V = self._calc_V(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_static.__code__,     # byte code pointer
-            self.objfn_static.__globals__,  # global variables
-            None,                           # new name for the function
-            (V, trans, trans_kwargs),       # default values for last 3 arguments
-            self.objfn_static.__closure__   # closure byte code pointer
-        )
-
-        return outfn
-
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
-        """
-        Return a vectorized objective function.
-        """
-        # get default parameters
-        trans = self.objfn_trans
-        trans_kwargs = self.objfn_trans_kwargs
-
-        V = self._calc_V(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,     # byte code pointer
-            self.objfn_vec_static.__globals__,  # global variables
-            None,                               # new name for the function
-            (V, trans, trans_kwargs),           # default values for last 3 arguments
-            self.objfn_vec_static.__closure__   # closure byte code pointer
-        )
-
-        return outfn
-
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
             A tuple containing two objects ``(frontier, sel_config)``.
 
             Where:
@@ -578,10 +654,12 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
         """
         # get selection parameters
         nparent = self.nparent
+        objfn_trans = self.objfn_trans
+        objfn_trans_kwargs = self.objfn_trans_kwargs
         objfn_wt = self.objfn_wt
 
         # get number of taxa
-        ntaxa = gmat.ntaxa
+        ntaxa = pgmat.ntaxa
 
         # create objective function
         objfn = self.objfn(
@@ -591,7 +669,9 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             bvmat = bvmat,
             gpmod = gpmod,
             t_cur = t_cur,
-            t_max = t_max
+            t_max = t_max,
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
         )
 
         # use multi-objective optimization to approximate Pareto front.
@@ -599,8 +679,7 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
             objfn = objfn,                  # objective function
             k = nparent,                    # vector length to optimize (sspace^k)
             sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt,            # weights to apply to each objective
-            **kwargs
+            objfn_wt = objfn_wt             # weights to apply to each objective
         )
 
         # handle miscellaneous output
@@ -613,14 +692,14 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel: numpy.ndarray, V: numpy.ndarray, trans: Callable, kwargs: dict):
+    def objfn_static(sel, mat, nbestfndr, trans, kwargs):
         """
-        Score a parent selection vector according to its distance from a utopian point.
-        The goal is to minimize this function.
+        Score a population of individuals based on Genotype Building
+        Selection.
 
         Parameters
         ----------
-        sel : numpy.ndarray
+        sel : numpy.ndarray, None
             A selection indices matrix of shape ``(k,)``.
 
             Where:
@@ -629,15 +708,18 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-        V : numpy.ndarray
-            A matrix of shape ``(n,p,t)`` containing distance values of individuals' 
-            alleles for each trait.
+            If ``sel`` is None, use all individuals.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
 
             Where:
 
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``p`` is the number of markers.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
+        nbestfndr : int
+            Number of best founders to select. Must be less than or equal to ``n``.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -649,34 +731,50 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
 
         Returns
         -------
-        dist : numpy.ndarray
-            A matrix of shape ``(t,)`` if ``trans`` is ``None``.
-
-            Distances for each target.
+        gb : numpy.ndarray
+            An GB matrix of shape ``(t,)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # calculate vector
-        # (n,p,t)[(k,),:] -> (k,p,t)
-        # (k,p,t).sum(0) -> (p,t)
-        # scalar * (p,t) -> (p,t)
-        # | (p,t) | -> (p,t)
-        # (p,t).sum(0) -> (t,)
-        dist = numpy.absolute((1.0 / len(sel)) * V[sel,:,:].sum(0)).sum(0)
+        # get number of phases
+        nphase = mat.shape[0]
 
-        # apply transformations if needed
-        if trans:
-            dist = trans(dist, **kwargs)
-        
-        return dist
+        # get best haplotype within each individual
+        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
+        # (m,k,h,t).max(0) -> (k,h,t)
+        bestphase = mat[:,sel,:,:].max(0)
+
+        # sort the bestphase tensor along the individual axis to get best individuals
+        # (k,h,t) 
+        bestphase.sort(0)
+
+        # get top haplotype index boundaries
+        k = len(sel)
+        st = k - nbestfndr
+        sp = k
+
+        # get top haplotypes and sum across the individual and haplotype axes
+        # scale by nphase / nbestfndr
+        # (k,h,t)[(nbestfndr,),:,:] -> (nbestfndr,h,t)
+        # (nbestfndr,h,t).sum((0,1)) -> (t,)
+        # scalar * (t,) -> (t,)
+        gb = (nphase / nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
+
+        # apply transformations
+        # (t,) ---trans---> (?,)
+        if trans is not None:
+            gb = trans(gb, **kwargs)
+
+        return gb
 
     @staticmethod
-    def objfn_vec_static(sel: numpy.ndarray, V: numpy.ndarray, trans: Callable, kwargs: dict):
+    def objfn_vec_static(sel, mat, nbestfndr, trans, kwargs):
         """
-        Score a parent selection vector according to its distance from a utopian point.
-        The goal is to minimize this function.
+        Score a population of individuals based on Genotype Building
+        Selection.
 
         Parameters
         ----------
@@ -690,16 +788,17 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-            ``sel`` cannot be ``None``.
-        V : numpy.ndarray
-            A matrix of shape ``(n,p,t)`` containing distance values of individuals' 
-            alleles for each trait.
+        mat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,h,t)``.
 
             Where:
 
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``p`` is the number of markers.
+            - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
+        nbestfndr : int
+            Number of best founders to select. Must be less than or equal to ``n``.
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -711,25 +810,42 @@ class Generalized1NormGenomicSelection(SelectionProtocol):
 
         Returns
         -------
-        dist : numpy.ndarray
-            A matrix of shape ``(j,t)`` if ``trans`` is ``None``.
-
-            Distances for each target.
+        opv : numpy.ndarray
+            An OPV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
+            Otherwise, of shape specified by ``trans``.
 
             Where:
 
+            - ``j`` is the number of selection configurations.
             - ``t`` is the number of traits.
         """
-        # calculate vector
-        # (n,p,t)[(j,k,),:] -> (j,k,p,t)
-        # (j,k,p,t).sum(1) -> (j,p,t)
-        # scalar * (j,p,t) -> (j,p,t)
-        # | (j,p,t) | -> (j,p,t)
-        # (j,p,t).sum(1) -> (j,t)
-        dist = numpy.absolute((1.0 / len(sel)) * V[sel,:,:].sum(1)).sum(1)
+        # get number of phases
+        nphase = mat.shape[0]
 
-        # apply transformations if needed
-        if trans:
-            dist = trans(dist, **kwargs)
-        
-        return dist
+        # get best haplotype within each individual
+        # (m,n,h,t)[:,(j,k),:,:] -> (m,j,k,h,t)
+        # (m,j,k,h,t).max(0) -> (j,k,h,t)
+        bestphase = mat[:,sel,:,:].max(0)
+
+        # sort the bestphase tensor along the individual axis to get best individuals
+        # (j,k,h,t) 
+        bestphase.sort(1)
+
+        # get top haplotype index boundaries
+        k = len(sel)
+        st = k - nbestfndr
+        sp = k
+
+        # get top haplotypes and sum across the individual and haplotype axes
+        # scale by nphase / nbestfndr
+        # (j,k,h,t)[:,(nbestfndr,),:,:] -> (j,nbestfndr,h,t)
+        # (j,nbestfndr,h,t).sum((1,2)) -> (j,t)
+        # scalar * (j,t) -> (j,t)
+        gb = (nphase / nbestfndr) * bestphase[:,st:sp,:,:].sum((1,2))
+
+        # apply transformations
+        # (j,t) ---trans---> (j,?)
+        if trans is not None:
+            gb = trans(gb, **kwargs)
+
+        return gb

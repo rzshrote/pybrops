@@ -13,7 +13,7 @@ from pybrops.test import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_sum
-from pybrops.breed.prot.sel.ContinuousMaximumMeanExpectedHeterozygositySelection import ContinuousMaximumMeanExpectedHeterozygositySelection
+from pybrops.breed.prot.sel.UnconstrainedContinuousMaximumMeanExpectedHeterozygositySelection import ContinuousMaximumMeanExpectedHeterozygositySelection
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################

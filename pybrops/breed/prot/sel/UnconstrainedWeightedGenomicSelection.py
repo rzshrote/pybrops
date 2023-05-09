@@ -1,22 +1,25 @@
 """
-Module implementing selection protocols for random selection.
+Module implementing selection protocols for weighted genomic selection.
 """
 
+from numbers import Integral
 from typing import Callable, Union
 import numpy
 import types
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_is_bool
+
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_dict
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
 
-class RandomSelection(SelectionProtocol):
+class WeightedGenomicSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for random selection.
+    Class implementing selection protocols for weighted genomic selection.
 
     # TODO: add formulae for methodology.
     """
@@ -26,10 +29,9 @@ class RandomSelection(SelectionProtocol):
     ############################################################################
     def __init__(
             self, 
-            nparent: int, 
-            ncross: int, 
-            nprogeny: int, 
-            replace: bool = False, 
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
             objfn_trans = None, 
             objfn_trans_kwargs = None, 
             objfn_wt = 1.0, 
@@ -38,32 +40,22 @@ class RandomSelection(SelectionProtocol):
             ndset_wt = 1.0, 
             rng = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
-        Construct a RandomSelection operator.
+        Constructor for WeightedGenomicSelection class.
 
         Parameters
         ----------
         nparent : int
-            Number of parents to select.
         ncross : int
-            Number of crosses per configuration.
         nprogeny : int
-            Number of progeny to derive from each cross.
-        replace : bool
-            Whether to sample parents with replacement.
-        rng : numpy.random.Generator or None
-            A random number generator source. Used for optimization algorithms.
-            If ``rng`` is ``None``, use ``pybrops.core.random`` module
-            (NOT THREAD SAFE!).
         """
-        super(RandomSelection, self).__init__(**kwargs)
+        super(WeightedGenomicSelection, self).__init__(**kwargs)
 
-        # assign variables
+        # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.replace = replace
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
@@ -119,20 +111,6 @@ class RandomSelection(SelectionProtocol):
     def nprogeny(self) -> None:
         """Delete number of progeny to derive from each cross configuration."""
         del self._nprogeny
-
-    @property
-    def replace(self) -> bool:
-        """Whether to replace individuals when sampling."""
-        return self._replace
-    @replace.setter
-    def replace(self, value: bool) -> None:
-        """Set whether to replace individuals when sampling."""
-        check_is_bool(value, "replace")
-        self._replace = value
-    @replace.deleter
-    def replace(self) -> None:
-        """Delete whether to replace individuals when sampling."""
-        del self._replace
 
     @property
     def objfn_trans(self) -> Union[Callable,None]:
@@ -243,9 +221,9 @@ class RandomSelection(SelectionProtocol):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, ncross = None, nprogeny = None, replace = None, **kwargs: dict):
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs: dict):
         """
-        Select parents for breeding.
+        Select parents individuals for breeding.
 
         Parameters
         ----------
@@ -265,26 +243,23 @@ class RandomSelection(SelectionProtocol):
             Maximum (deadline) generation number.
         miscout : dict, None, default = None
             Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
+            If dict, write to dict (may overwrite previously defined fields).
+            If None, user defined output is not calculated or stored.
         method : str
             Options: "single", "pareto"
         nparent : int, None
-            Number of parents. If ``None``, use default.
+            Number of parents. If None, use default.
         ncross : int, None
-            Number of crosses per configuration. If ``None``, use default.
+            Number of crosses per configuration. If None, use default.
         nprogeny : int
-            Number of progeny per cross. If ``None``, use default.
-        replace : bool, None
-            Whether to sample parents with or without replacement. If ``None``,
-            use default.
+            Number of progeny per cross. If None, use default.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
+            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
 
             Where:
 
@@ -303,33 +278,110 @@ class RandomSelection(SelectionProtocol):
             ncross = self.ncross
         if nprogeny is None:
             nprogeny = self.nprogeny
-        if replace is None:
-            replace = self.replace
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+        if ndset_trans is None:
+            ndset_trans = self.ndset_trans
+        if ndset_trans_kwargs is None:
+            ndset_trans_kwargs = self.ndset_trans_kwargs
+        if ndset_wt is None:
+            ndset_wt = self.ndset_wt
 
-        # make random selection decision
-        sel = self.rng.choice(
-            pgmat.ntaxa,            # number of taxa to select from
-            size = nparent,
-            replace = replace
-        )
+        # convert method string to lower
+        method = method.lower()
 
-        return pgmat, sel, ncross, nprogeny
+        # single objective method: objfn_trans returns a single value for each
+        # selection configuration
+        if method == "single":
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                trans = objfn_trans,
+                trans_kwargs = objfn_trans_kwargs
+            )
+
+            # get all wGEBVs for each individual
+            # (n,)
+            wgebv = [objfn(i) for i in range(gmat.ntaxa)]
+
+            # convert to numpy.ndarray
+            wgebv = numpy.array(wgebv)
+
+            # multiply the objectives by objfn_wt to transform to maximizing function
+            # (n,) * scalar -> (n,)
+            wgebv = wgebv * objfn_wt
+
+            # get indices of top nparent GEBVs
+            sel = wgebv.argsort()[::-1][:nparent]
+
+            # shuffle indices for random mating
+            self.rng.shuffle(sel)
+
+            # get GEBVs for reference
+            if miscout is not None:
+                miscout["wgebv"] = wgebv
+
+            return pgmat, sel, ncross, nprogeny
+
+        # multi-objective method: objfn_trans returns a multiple values for each
+        # selection configuration
+        elif method == "pareto":
+            # get the pareto frontier
+            frontier, sel_config = self.pareto(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max,
+                miscout = miscout,
+                nparent = nparent,
+                objfn_trans = objfn_trans,
+                objfn_trans_kwargs = objfn_trans_kwargs,
+                objfn_wt = objfn_wt
+            )
+
+            # get scores for each of the points along the pareto frontier
+            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], ncross, nprogeny
+        else:
+            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
         """
-        Return a selection objective function for the provided datasets.
+        Return an objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Input genotype matrix.
+            Used by this function. Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -343,38 +395,47 @@ class RandomSelection(SelectionProtocol):
         if trans_kwargs is None:
             trans_kwargs = self.objfn_trans_kwargs
 
-        # get parameters/pointers
-        n = gmat.ntaxa      # get number of taxa
-        t = gpmod.ntrait    # get number of traits
-        rng = self.rng      # get random number generator
+        # get pointers to raw numpy.ndarray matrices
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u_a   # (p,t) get regression coefficients
+
+        # calculate weight adjustments for WGS
+        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
+        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
+            u > 0.0,                        # if dominant (1) allele is beneficial
+            afreq,                          # get dominant allele frequency
+            1.0 - afreq                     # else get recessive allele frequency
+        )
+        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
+        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_static.__code__,         # byte code pointer
-            self.objfn_static.__globals__,      # global variables
-            None,                               # new name for the function
-            (n, t, rng, trans, trans_kwargs),   # default values for arguments
-            self.objfn_static.__closure__       # closure byte code pointer
+            self.objfn_static.__code__,                 # byte code pointer
+            self.objfn_static.__globals__,              # global variables
+            None,                                       # new name for the function
+            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_static.__closure__               # closure byte code pointer
         )
 
         return outfn
 
     def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
         """
-        Return a vectorized selection objective function for the provided datasets.
+        Return a vectorized objective function for the provided datasets.
 
         Parameters
         ----------
         pgmat : PhasedGenotypeMatrix
             Not used by this function.
         gmat : GenotypeMatrix
-            Input genotype matrix.
+            Used by this function. Input genotype matrix.
         ptdf : PhenotypeDataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
-        gpmod : LinearGenomicModel
+        gpmod : AdditiveLinearGenomicModel
             Linear genomic prediction model.
 
         Returns
@@ -388,27 +449,35 @@ class RandomSelection(SelectionProtocol):
         if trans_kwargs is None:
             trans_kwargs = self.objfn_trans_kwargs
 
-        # get parameters/pointers
-        n = gmat.mat.shape[0]   # get number of taxa
-        t = gpmod.beta.shape[1] # get number of traits
-        rng = self.rng          # get random number generator
+        # get pointers to raw numpy.ndarray matrices
+        mat = gmat.mat  # (n,p) get genotype matrix
+        u = gpmod.u_a   # (p,t) get regression coefficients
+
+        # calculate weight adjustments for WGS
+        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
+        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
+            u > 0.0,                        # if dominant (1) allele is beneficial
+            afreq,                          # get dominant allele frequency
+            1.0 - afreq                     # else get recessive allele frequency
+        )
+        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
+        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
         outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,     # byte code pointer
-            self.objfn_vec_static.__globals__,  # global variables
-            None,                               # new name for the function
-            (n, t, rng, trans, trans_kwargs),   # default values for arguments
-            self.objfn_vec_static.__closure__   # closure byte code pointer
+            self.objfn_vec_static.__code__,             # byte code pointer
+            self.objfn_vec_static.__globals__,          # global variables
+            None,                                       # new name for the function
+            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
+            self.objfn_vec_static.__closure__           # closure byte code pointer
         )
 
         return outfn
 
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs: dict):
         """
-        Random selection has no Pareto frontier since it has no objective function.
-        Raises RuntimeError.
+        Calculate a Pareto frontier for objectives.
 
         Parameters
         ----------
@@ -432,21 +501,87 @@ class RandomSelection(SelectionProtocol):
             If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : tuple
+            A tuple containing two objects ``(frontier, sel_config)``.
+
+            Where:
+
+            - frontier is a ``numpy.ndarray`` of shape ``(q,v)`` containing
+              Pareto frontier points.
+            - sel_config is a ``numpy.ndarray`` of shape ``(q,k)`` containing
+              parent selection decisions for each corresponding point in the
+              Pareto frontier.
+
+            Where:
+
+            - ``q`` is the number of points in the frontier.
+            - ``v`` is the number of objectives for the frontier.
+            - ``k`` is the number of search space decision variables.
         """
-        raise RuntimeError("Random selection has no Pareto frontier since it has no objective function.")
+        if nparent is None:
+            nparent = self.nparent
+        if objfn_trans is None:
+            objfn_trans = self.objfn_trans
+        if objfn_trans_kwargs is None:
+            objfn_trans_kwargs = self.objfn_trans_kwargs
+        if objfn_wt is None:
+            objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max,
+            trans = objfn_trans,
+            trans_kwargs = objfn_trans_kwargs
+        )
+
+        # create optimization algorithm
+        moalgo = NSGA2SetGeneticAlgorithm(
+            rng = self.rng,
+            **kwargs
+        )
+
+        # TODO: fixme with miscout dictionary
+        frontier, sel_config, misc = moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt             # weights to apply to each objective
+        )
+
+        if miscout is not None:
+            for k,i in misc.pairs():
+                miscout[k] = i
+
+        return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, n, t, rng, trans, kwargs):
+    def objfn_static(sel, mat, u, uwt, trans, kwargs):
         """
-        Randomly assign a score in the range :math:`[-1,1)` individuals for each trait.
+        Score a population of individuals based on Weighted Genomic Selection
+        (WGS). Scoring for WGS is defined as the sum of weighted Genomic
+        Estimated Breeding Values (wGEBV) for a population.
+
+        WGS selects the ``q`` individuals with the largest GEBVs.
 
         Parameters
         ----------
         sel : numpy.ndarray, None
-            A selection indices matrix of shape ``(k,)``.
+            A selection indices matrix of shape ``(k,)``
 
             Where:
 
@@ -455,12 +590,37 @@ class RandomSelection(SelectionProtocol):
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
             If ``sel`` is None, use all individuals.
-        n : int
-            The number of individuals available for selection.
-        t : int
-            The number of traits.
-        rng : numpy.random.Generator, numpy.random.RandomState
-            Random number generator.
+        mat : numpy.ndarray
+            A int8 binary genotype matrix of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
+        u : numpy.ndarray
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        uwt : numpy.ndarray
+            Multiplicative marker weights matrix to apply to the trait
+            prediction coefficients provided of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+
+            .. math::
+                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+
+            Where:
+
+            - :math:`\\bigdot` is the Hadamard product
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
@@ -472,35 +632,38 @@ class RandomSelection(SelectionProtocol):
 
         Returns
         -------
-        cgs : numpy.ndarray
-            A GEBV matrix of shape ``(t,)`` if ``trans`` is ``None``.
-            Otherwise, of shape specified by ``trans``.
+        wgs : numpy.ndarray
+            A GEBV matrix of shape ``(k,t)`` if ``objwt`` is ``None``.
+            A GEBV matrix of shape ``(k,)`` if ``objwt`` shape is ``(t,)``
 
             Where:
 
+            - ``k`` is the number of individuals selected.
             - ``t`` is the number of traits.
         """
-        # get random number vector lengths
-        nsel = n if sel is None else len(sel)   # get number of individuals
-        ntrait = t                              # get number of traits
+        # if sel is None, slice all individuals
+        if sel is None:
+            sel = slice(None)
 
-        # randomly sample from uniform distribution
-        # Step 1: (k,t)                 # randomly score individuals
-        # Step 2: (k,t).sum(0) -> (t,)  # sum across individuals
-        rs = rng.uniform(-1.0, 1.0, (nsel,ntrait)).sum(0)
+        # CGS calculation explanation
+        # Step 1: (n,p) -> (k,p)            # select individuals
+        # Step 2: (k,p) . (p,t) -> (k,t)    # calculate wGEBVs
+        # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
+        wgs = mat[sel,:].dot(u*uwt).sum(0)
 
         # apply transformations
         # (t,) ---trans---> (?,)
         if trans:
-            rs = trans(rs, **kwargs)
+            wgs = trans(wgs, **kwargs)
 
-        return rs
+        return wgs
 
     @staticmethod
-    def objfn_vec_static(sel, n, t, rng, trans, kwargs):
+    def objfn_vec_static(sel, mat, u, uwt, trans, kwargs):
         """
-        Randomly assign a score in the range :math:`[-1,1)` individuals for
-        each trait.
+        Score a population of individuals based on Conventional Genomic Selection
+        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
+        Genomic Estimated Breeding Values (GEBV) for a population.
 
         Parameters
         ----------
@@ -514,16 +677,43 @@ class RandomSelection(SelectionProtocol):
 
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is None, score each individual separately: (n,1)
-        n : int
-            The number of individuals available for selection.
-        t : int
-            The number of traits.
+            If ``sel`` is None, score each individual separately: ``(n,1)``
+        mat : numpy.ndarray
+            A genotype matrix of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
+        u : numpy.ndarray
+            A trait prediction coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        uwt : numpy.ndarray
+            Multiplicative marker weights matrix to apply to the trait
+            prediction coefficients provided of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+
+            .. math::
+                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+
+            Where:
+
+            - :math:`\\bigdot` is the Hadamard product
         trans : function or callable
             A transformation operator to alter the output.
             Function must adhere to the following standard:
 
-            - Must accept a single numpy.ndarray argument.
+            - Must accept a single ``numpy.ndarray`` argument.
             - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
             Dictionary of keyword arguments to pass to ``trans`` function.
@@ -539,18 +729,20 @@ class RandomSelection(SelectionProtocol):
             - ``j`` is the number of selection configurations.
             - ``t`` is the number of traits.
         """
-        # get random number vector lengths
-        nsel = (n,1) if sel is None else sel.shape  # get number of individuals (j,k)
-        ntrait = (t,)                               # get number of traits (t,)
+        # if sel is None, slice all individuals
+        if sel is None:
+            n = mat.shape[0]
+            sel = numpy.arange(n).reshape(n,1)
 
-        # randomly sample from uniform distribution
-        # Step 1: (j,k,t)                   # randomly score individuals
-        # Step 2: (j,k,t).sum(1) -> (j,t)   # sum across individuals
-        rs = rng.uniform(-1.0, 1.0, nsel+ntrait).sum(1)
+        # CGS calculation explanation
+        # (n,p)[(j,k),:] -> (j,k,p)     # select configurations
+        # (j,k,p) . (p,t) -> (j,k,t)    # calculate wGEBVs
+        # (j,k,t).sum(1) -> (j,t)       # sum across all individuals in config
+        cgs = mat[sel,:].dot(u*uwt).sum(1)
 
         # apply transformations
         # (j,t) ---trans---> (?,?)
         if trans:
-            rs = trans(rs, **kwargs)
+            cgs = trans(cgs, **kwargs)
 
-        return rs
+        return cgs

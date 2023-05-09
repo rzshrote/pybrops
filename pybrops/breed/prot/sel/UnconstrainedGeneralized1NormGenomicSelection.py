@@ -2,8 +2,6 @@
 Module implementing selection protocols for general 1-norm genomic selection
 """
 
-import math
-import numbers
 import types
 import numpy
 from typing import Union
@@ -12,8 +10,9 @@ from typing import Callable
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.breed.prot.sel.targetfn import target_positive
+from pybrops.breed.prot.sel.weightfn import weight_absolute
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_is_dict
@@ -21,15 +20,13 @@ from pybrops.core.error import check_is_int
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_gt
-from pybrops.core.error.error_type_python import check_is_Number
-from pybrops.core.error.error_value_python import check_is_lteq
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
+class Generalized1NormGenomicSelection(UnconstrainedSelectionProtocol):
     """
-    docstring for GoldenGeneralized1NormGenomicSelection.
+    docstring for Generalized1NormGenomicSelection.
     """
 
     ############################################################################
@@ -40,12 +37,12 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             nparent: int,
             ncross: int,
             nprogeny: int,
-            power: numbers.Number = (1+math.sqrt(5))/2,
+            weight: Union[numpy.ndarray,Callable] = weight_absolute,
             target: Union[numpy.ndarray,Callable] = target_positive,
             method: str = "single",
             objfn_trans = None,
             objfn_trans_kwargs = None, 
-            objfn_wt = -1.0, # minimizing objective
+            objfn_wt = -1.0,
             ndset_trans = None, 
             ndset_trans_kwargs = None, 
             ndset_wt = -1.0,
@@ -55,19 +52,19 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             **kwargs
         ):
         """
-        Constructor for GoldenGeneralized1NormGenomicSelection.
+        Constructor for Generalized1NormGenomicSelection.
         
         Parameters
         ----------
         nparent : int
             Number of parents to select.
         """
-        super(GoldenGeneralized1NormGenomicSelection, self).__init__(**kwargs)
+        super(Generalized1NormGenomicSelection, self).__init__(**kwargs)
 
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.power = power
+        self.weight = weight
         self.target = target
         self.method = method
         self.objfn_trans = objfn_trans
@@ -129,19 +126,18 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def power(self) -> numbers.Number:
-        """Description for property power."""
-        return self._power
-    @power.setter
-    def power(self, value: numbers.Number) -> None:
-        """Set data for property power."""
-        check_is_Number(value, "power") # must be a number
-        check_is_lteq(value, "power", 0) # power must be negative or zero
-        self._power = value
-    @power.deleter
-    def power(self) -> None:
-        """Delete data for property power."""
-        del self._power
+    def weight(self) -> Union[numpy.ndarray,Callable]:
+        """Marker weights or marker weight function."""
+        return self._weight
+    @weight.setter
+    def weight(self, value: Union[numpy.ndarray,Callable]) -> None:
+        """Set marker weights or marker weight function."""
+        check_isinstance(value, "weight", (numpy.ndarray, Callable))
+        self._weight = value
+    @weight.deleter
+    def weight(self) -> None:
+        """Delete marker weights or marker weight function."""
+        del self._weight
 
     @property
     def target(self) -> Union[numpy.ndarray,Callable]:
@@ -321,21 +317,26 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
+    def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel):
+        if callable(self.weight):
+            return self.weight(gpmod.u_a)
+        elif isinstance(self.weight, numpy.ndarray):
+            return self.weight
+        else:
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+    
+    def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel):
+        if callable(self.target):
+            return self.target(gpmod.u_a)
+        elif isinstance(self.target, numpy.ndarray):
+            return self.target
+        else:
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
+
     def _calc_V(self, gmat: GenotypeMatrix, gpmod: AdditiveLinearGenomicModel):
-        # declare target allele frequency and marker weight variables
-        u_a = gpmod.u_a # (p,t)
-        afreq = gmat.afreq()[:,None] # (p,1)
-        tfreq = self.target(u_a) if callable(self.target) else self.target # (p,t)
-
-        # calculate marker weights based on:
-        # w = |u_a| / ( (p^t) * (1-p)^(1-t) )^(-1/phi)
-        # u_a = marker effects; p = allele frequencies; t = target allele frequencies
-        denom = numpy.power(afreq, tfreq) * numpy.power(1.0 - afreq, 1.0 - tfreq)
-        denom[denom == 0.0] = 1.0               # prevents division by zero
-        denom = numpy.power(denom, self.power)  # take specified power
-
-        # calculate marker weights
-        mkrwt = numpy.absolute(u_a) * denom
+        # get marker weights and target frequencies
+        mkrwt = self._calc_mkrwt(gpmod) # (p,t)
+        tfreq = self._calc_tfreq(gpmod) # (p,t)
 
         # make sure mkrwt and tfreq have the same dimensions
         if mkrwt.shape != tfreq.shape:
@@ -420,31 +421,26 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
                 bvmat = bvmat,
                 gpmod = gpmod,
                 t_cur = t_cur,
-                t_max = t_max,
-                trans = self.objfn_trans,
-                trans_kwargs = self.objfn_trans_kwargs
+                t_max = t_max
             )
 
-            # get all wGEBVs for each individual
-            # (n,)
-            wgebv = [objfn(numpy.array([i], dtype = int)) for i in range(gmat.ntaxa)]
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
+                **kwargs
+            )
 
-            # convert to numpy.ndarray
-            wgebv = numpy.array(wgebv)
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
-            # multiply the objectives by objfn_wt to transform to maximizing function
-            # (n,) * scalar -> (n,)
-            wgebv = wgebv * self.objfn_wt
-
-            # get indices of top nparent GEBVs
-            sel = wgebv.argsort()[::-1][:self.nparent]
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            # get GEBVs for reference
+            # add optimization details to miscellaneous output
             if miscout is not None:
-                miscout["wgebv"] = wgebv
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, self.ncross, self.nprogeny
 
@@ -695,13 +691,14 @@ class GoldenGeneralized1NormGenomicSelection(SelectionProtocol):
             Each index indicates which individuals to select.
             Each index in ``sel`` represents a single individual's row.
             ``sel`` cannot be ``None``.
-        v : numpy.ndarray
-            A matrix of shape ``(n,t)`` containing values of individuals.
-            Invidividual values represent their distances from a utopian point.
+        V : numpy.ndarray
+            A matrix of shape ``(n,p,t)`` containing distance values of individuals' 
+            alleles for each trait.
 
             Where:
 
             - ``n`` is the number of individuals.
+            - ``p`` is the number of markers.
             - ``t`` is the number of traits.
         trans : function or callable
             A transformation operator to alter the output.

@@ -1,5 +1,5 @@
 """
-Module partially implementing the SelectionProblem class
+Module partially implementing the SelectionProblem class.
 """
 
 # list of public objects in this module

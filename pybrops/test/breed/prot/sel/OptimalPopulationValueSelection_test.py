@@ -14,7 +14,7 @@ from pybrops.test import assert_abstract_property
 from pybrops.test import assert_concrete_method
 from pybrops.test import assert_concrete_function
 
-from pybrops.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopulationValueSelection
+from pybrops.breed.prot.sel.UnconstrainedOptimalPopulationValueSelection import OptimalPopulationValueSelection
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix

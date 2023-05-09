@@ -1,20 +1,15 @@
 """
-Module implementing selection protocols for optimal contribution selection.
+Module implementing selection protocols for maximum mean expected heterozygosity selection.
 """
 
-import cvxpy
-import math
 import numpy
-import warnings
 import types
-from typing import Any, Callable
-from typing import Union
-from typing import Optional
-
-from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from typing import Optional, Union
+from typing import Callable
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_inherits
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
@@ -23,43 +18,46 @@ from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
-from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
+from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
-from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
+from pybrops.breed.prot.sel.transfn import trans_sum
+from pybrops.opt.algo.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
-class ContinuousOptimalContributionSelection(SelectionProtocol):
+class BinaryMaximumMeanExpectedHeterozygositySelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for genomic optimal contribution selection.
+    Class implementing selection protocols for optimal mean expected heterozygosity selection.
 
-    # TODO: add formulae for methodology.
+    Maximum Mean Expected Heterozygosity Selection (MMEHS) is defined as:
+
+    .. math::
+        \\max_{\\mathbf{x}} f_{MMEHS}(\\mathbf{x}) = 1 - \\mathbf{x'Kx}
+
+    With constraints:
+
+    .. math::
+        \\mathbf{1_{n}'x} = 1
+
+        \\mathbf{x} \\in \\mathbb{R}^n
+
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(
-            self, 
+    def __init__(self, 
             nparent: int, 
             ncross: int, 
-            nprogeny: int, 
-            inbfn: Callable,
-            cmatcls: type = DenseVanRadenCoancestryMatrix, 
-            bvtype = "gebv", 
-            method = "single",
-            objfn_trans: Callable = None, 
-            objfn_trans_kwargs: dict = None, 
-            objfn_wt: Union[float,numpy.ndarray] = 1.0,
-            ndset_trans: Callable = None, 
-            ndset_trans_kwargs: dict = None, 
-            ndset_wt: float = -1.0,
-            moalgo = None, 
+            nprogeny: int,
+            ktype: str = "gmat", 
+            method: str = "single",
+            objfn_trans = trans_sum, 
+            objfn_trans_kwargs = None, 
+            objfn_wt = 1.0,
             rng = global_prng, 
-            **kwargs: dict
-        ) -> None:
+            soalgo = None,
+            **kwargs
+        ):
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -71,27 +69,6 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        inbfn : function
-            Inbreeding control function: ``inbfn(t_cur, t_max)``.
-
-            Returns constraint for mean population inbreeding defined as:
-
-            .. math::
-
-                \\frac{1}{2} \\textbf{x}' \\textbf{A} \\textbf{x} =
-                \\textbf{x}' \\textbf{K} \\textbf{x} =
-                f^{\\textup{Inb}}(t_{cur}, t_{max})
-
-            Where:
-
-            - :math:`x` is the parental contribution vector.
-            - :math:`A` is the additive relationship matrix.
-            - :math:`K` is the kinship relationship matrix.
-            - :math:`f^{\\textup{Inb}}` is ``inbfn``.
-            - :math:`t_{cur}` is the current time.
-            - :math:`t_{max}` is the deadline time.
-        cmatcls : class
-            The class name of a CoancestryMatrix to generate.
         bvtype : str
             Whether to use GEBVs or phenotypic EBVs.
 
@@ -102,6 +79,16 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             +------------+-------------+
             | ``"ebv"``  | Use EBVs    |
             +------------+-------------+
+        ktype : str
+            Whether to use genotypes or genomes to calculate kinship.
+
+            +-------------+---------------+
+            | Option      | Description   |
+            +=============+===============+
+            | ``"gmat"``  | Use genotypes |
+            +-------------+---------------+
+            | ``"pgmat"`` | Use genomes   |
+            +-------------+---------------+
         method : str
             Optimization strategy.
 
@@ -195,24 +182,19 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(ContinuousOptimalContributionSelection, self).__init__(**kwargs)
-
+        super(BinaryMaximumMeanExpectedHeterozygositySelection, self).__init__(**kwargs)
+        
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.inbfn = inbfn
-        self.cmatcls = cmatcls
-        self.bvtype = bvtype
+        self.ktype = ktype
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
-        self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs
-        self.ndset_wt = ndset_wt
         self.rng = rng
-        self.moalgo = moalgo    # must go after rng initialization!!!
+        self.soalgo = soalgo
 
     ############################################################################
     ############################ Object Properties #############################
@@ -263,51 +245,21 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def inbfn(self) -> Callable:
-        """Inbreeding control function."""
-        return self._inbfn
-    @inbfn.setter
-    def inbfn(self, value: Callable) -> None:
-        """Set inbreeding control function."""
-        check_is_callable(value, "inbfn")
-        self._inbfn = value
-    @inbfn.deleter
-    def inbfn(self) -> None:
-        """Delete inbreeding control function."""
-        del self._inbfn
-
-    @property
-    def cmatcls(self) -> Any:
-        """CoancestryMatrix class used for calculating coancestries."""
-        return self._cmatcls
-    @cmatcls.setter
-    def cmatcls(self, value: Any) -> None:
-        """Set CoancestryMatrix class used for calculating coancestries."""
-        check_inherits(value, "cmatcls", CoancestryMatrix)
-        self._cmatcls = value
-    @cmatcls.deleter
-    def cmatcls(self) -> None:
-        """Delete CoancestryMatrix class used for calculating coancestries."""
-        del self._cmatcls
-
-    @property
-    def bvtype(self) -> str:
-        """Breeding value matrix type."""
-        return self._bvtype
-    @bvtype.setter
-    def bvtype(self, value: str) -> None:
-        """Set breeding value matrix type."""
-        check_is_str(value, "bvtype")   # must be string
-        value = value.lower()           # convert to lowercase
-        options = ("gebv", "ebv")       # method options
-        # if not method supported raise ValueError
-        if value not in options:
-            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
-        self._bvtype = value
-    @bvtype.deleter
-    def bvtype(self) -> None:
-        """Delete breeding value matrix type."""
-        del self._bvtype
+    def ktype(self) -> str:
+        """Kinship matrix type."""
+        return self._ktype
+    @ktype.setter
+    def ktype(self, value: str) -> None:
+        """Set kinship matrix type."""
+        check_is_str(value, "ktype")
+        value = value.lower()
+        if value not in ["gmat","pgmat"]:
+            raise ValueError("'ktype' must be 'gmat' or 'pgmat'")
+        self._ktype = value
+    @ktype.deleter
+    def ktype(self) -> None:
+        """Delete kinship matrix type."""
+        del self._ktype
 
     @property
     def method(self) -> str:
@@ -373,74 +325,6 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         del self._objfn_wt
 
     @property
-    def ndset_trans(self) -> Union[Callable,None]:
-        """Nondominated set transformation function."""
-        return self._ndset_trans
-    @ndset_trans.setter
-    def ndset_trans(self, value: Union[Callable,None]) -> None:
-        """Set nondominated set transformation function."""
-        if value is not None:                       # if given object
-            check_is_callable(value, "ndset_trans") # must be callable
-        self._ndset_trans = value
-    @ndset_trans.deleter
-    def ndset_trans(self) -> None:
-        """Delete nondominated set transformation function."""
-        del self._ndset_trans
-
-    @property
-    def ndset_trans_kwargs(self) -> dict:
-        """Nondominated set transformation function keyword arguments."""
-        return self._ndset_trans_kwargs
-    @ndset_trans_kwargs.setter
-    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
-        """Set nondominated set transformation function keyword arguments."""
-        if value is None:                           # if given None
-            value = {}                              # set default to empty dict
-        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
-        self._ndset_trans_kwargs = value
-    @ndset_trans_kwargs.deleter
-    def ndset_trans_kwargs(self) -> None:
-        """Delete nondominated set transformation function keyword arguments."""
-        del self._ndset_trans_kwargs
-
-    @property
-    def ndset_wt(self) -> Union[float,numpy.ndarray]:
-        """Nondominated set weights."""
-        return self._ndset_wt
-    @ndset_wt.setter
-    def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
-        """Set nondominated set weights."""
-        self._ndset_wt = value
-    @ndset_wt.deleter
-    def ndset_wt(self) -> None:
-        """Delete nondominated set weights."""
-        del self._ndset_wt
-
-    @property
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective optimization algorithm."""
-        return self._moalgo
-    @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set multi-objective optimization algorithm."""
-        if value is None:
-            value = NSGA3UnityConstraintGeneticAlgorithm(
-                ngen = 600,             # number of generations to evolve
-                mu = 100,               # number of parents in population
-                lamb = 100,             # number of progeny to produce
-                cxeta = 30.0,           # crossover variance parameter
-                muteta = 20.0,          # mutation crossover parameter
-                refpnts = None,         # hyperplane reference points
-                save_logbook = False,   # whether to save logs or not
-                rng = self.rng          # PRNG source
-            )
-        self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective optimization algorithm."""
-        del self._moalgo
-
-    @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
         """Random number generator source."""
         return self._rng
@@ -456,36 +340,24 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         """Delete random number generator source."""
         del self._rng
 
+    @property
+    def soalgo(self) -> OptimizationAlgorithm:
+        """Description for property soalgo."""
+        return self._soalgo
+    @soalgo.setter
+    def soalgo(self, value: OptimizationAlgorithm) -> None:
+        """Set data for property soalgo."""
+        if value is None:
+            value = SteepestAscentSetHillClimber(rng = self.rng)
+        self._soalgo = value
+    @soalgo.deleter
+    def soalgo(self) -> None:
+        """Delete data for property soalgo."""
+        del self._soalgo
+
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _get_bv(
-            self, 
-            pgmat: Optional[PhasedGenotypeMatrix], 
-            gmat: Optional[GenotypeMatrix], 
-            bvmat: Optional[BreedingValueMatrix], 
-            gpmod: Optional[GenomicModel]
-        ) -> BreedingValueMatrix:
-        """
-        Calculate breeding value matrix for use in optimization.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            Breeding value matrix of shape ``(n,t)``.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        """
-        if self.bvtype == "gebv":       # use GEBVs estimated from genomic model
-            return gpmod.gebv(gmat)     # calculate GEBVs
-        elif self.bvtype == "ebv":      # use EBVs estimated by some means
-            return bvmat                # get breeding values
-        elif self.bvtype == "tbv":      # use true BVs
-            return gpmod.gebv(pgmat)    # calculate true BVs
-
     def _calc_G(
             self, 
             pgmat: Optional[PhasedGenotypeMatrix], 
@@ -510,13 +382,12 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
             - ``n`` is the number of individuals.
         """
-        if self.bvtype == "gebv":                   # use GEBVs estimated from genomic model
-            return self.cmatcls.from_gmat(gmat)     # calculate kinship using gmat
-        elif self.bvtype == "ebv":                  # use EBVs estimated by some means
-            # TODO: implement pedigree or something
-            return self.cmatcls.from_gmat(gmat)     # calculate kinship using gmat
-        elif self.bvtype == "tbv":                  # use true BVs
-            return self.cmatcls.from_gmat(pgmat)    # calculate true kinship
+        # use genotypes to determine kinship
+        if self.ktype == "gmat":
+            return DenseMolecularCoancestryMatrix.from_gmat(gmat)
+        # use genomes to determine kinshipe
+        elif self.ktype == "pgmat":
+            return DenseMolecularCoancestryMatrix.from_gmat(pgmat)
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -563,123 +434,43 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # Solve OCS using second order cone programming
+        # Solve problem using a single objective method
         if self.method == "single":
-            ##############################
-            # Optimization problem setup #
-            ##############################
+            # get vectorized objective function
+            objfn = self.objfn(
+                pgmat = pgmat,
+                gmat = gmat,
+                ptdf = ptdf,
+                bvmat = bvmat,
+                gpmod = gpmod,
+                t_cur = t_cur,
+                t_max = t_max
+            )
 
-            # get breeding values: (n,t)
-            bv = self._get_bv(pgmat, gmat, bvmat, gpmod).mat
+            # optimize using single objective algorithm
+            sel_score, sel, misc = self.soalgo.optimize(
+                objfn,                              # objective function
+                k = self.nparent,                   # number of parents to select
+                sspace = numpy.arange(pgmat.ntaxa), # parental indices
+                objfn_wt = self.objfn_wt,           # maximizing function
+                **kwargs
+            )
 
-            # apply transformation to each breeding value weight
-            if self.objfn_trans:
-                # for each row (individual), transform the row to a single objective
-                # (n,t) --transform--> (n,)
-                bv = numpy.array([self.objfn_trans(e, **self.objfn_trans_kwargs) for e in bv])
+            # shuffle selection to ensure random mating
+            numpy.random.shuffle(sel)
 
-            # make sure transformation is done correctly.
-            if bv.ndim > 1:
-                raise RuntimeError("objfn_trans does not return a scalar value")
-
-            # get genomic relationship matrix: (n,n)
-            G = self._calc_G(pgmat, gmat)
-
-            # declare contributions variable
-            contrib = None
-
-            # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-            # if we successfully were able to apply the jitter, then perform optimization.
-            if G.apply_jitter():
-                K = G.mat_asformat("kinship")                   # convert G to (1/2)G (kinship analogue): (n,n)
-                K_inv = numpy.linalg.inv(K)                     # get K^-1 needed for bounds check
-
-                inb_target = self.inbfn(t_cur, t_max)           # get target inbreeding level
-                inb_min = 1.0 / K_inv.sum()                     # 1 / (1'K^(-1)1)
-                inb_max = numpy.max(numpy.trace(K))             # max(trace(K))
-
-                # test for infeasibility
-                if inb_target < inb_min:
-                    warnings.warn(
-                        "Provided inbreeding target of {0} is infeasible.\n".format(inb_target) +
-                        "Increasing inbreeding target to {0} which is in feasible region...".format(inb_min + 1e-6)
-                    )
-                    # give some wiggle room for numerical inaccuracies due to matrix
-                    # inversion, which is by nature unstable.
-                    inb_target = inb_min + 1e-6
-                if inb_target > inb_max:
-                    warnings.warn(
-                        "Provided inbreeding target of {0} is infeasible.\n".format(inb_target) +
-                        "Decreasing inbreeding target to {0} which is in feasible region...".format(inb_max)
-                    )
-                    inb_target = inb_max
-
-                # calculate constants for optimization
-                C = numpy.linalg.cholesky(K).T                  # cholesky decomposition of K matrix: (n,n)
-
-                # get the number of taxa
-                ntaxa = len(bv)
-
-                # define vector variable to optimize
-                solution = cvxpy.Variable(ntaxa)                    # (n,)
-
-                # define the objective function
-                soc_objfn = cvxpy.Maximize(bv @ solution)           # max (bv)'(sel)
-
-                # define constraints
-                soc_constraints = [
-                    cvxpy.SOC(math.sqrt(inb_target), C @ solution), # ||C @ x||_2 <= sqrt(max inbreeding)
-                    cvxpy.sum(solution) == 1.0,                     # sum(x_i) == 1
-                    solution >= 0.0                                 # x_i >= 0 for all i
-                ]
-
-                # define problem
-                problem = cvxpy.Problem(
-                    soc_objfn,                              # maximize yield
-                    soc_constraints                         # diversity constraint
-                )
-
-                # solve the problem
-                problem.solve()
-
-                # store solution results
-                if problem.status == "optimal":
-                    contrib = numpy.array(solution.value)       # convert solution to numpy.ndarray
-                else:
-                    warnings.warn("Problem.status == {0}\n".format(problem.status))
-            else:
-                warnings.warn(
-                    "Unable to solve SOCP: Kinship matrix is not positive definite.\n"+
-                    "    This could be caused by lack of genetic diversity.\n"
-                )
-            
-            if contrib is None:
-                warnings.warn("Reverting to windowed fitness proportional or uniform selection...")
-                ntaxa = len(bv)                                 # get number of taxa
-                contrib = bv - bv.min()                         # window fitnesses
-                if contrib.sum() < 1e-10:                       # if everything is near identical
-                    contrib = numpy.repeat(1/ntaxa, ntaxa)      # default to equal chance
-
-            ##################
-            # select parents #
-            ##################
-
-            # sample selections using stochastic universal sampling
-            sel = stochastic_universal_sampling(self.nparent, contrib, self.rng)
-
-            # make sure parents are forced to outbreed
-            sel = two_way_outcross_shuffle(sel, self._rng)
-
-            # pack contribution proportions into output dictionary
+            # add optimization details to miscellaneous output
             if miscout is not None:
-                miscout["contrib"] = contrib
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, self.ncross, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config = self.pareto(
+            # raises error
+            self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -690,19 +481,6 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
                 miscout = miscout,
                 **kwargs
             )
-
-            # get scores for each of the points along the pareto frontier
-            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
@@ -730,10 +508,18 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to raw numpy.ndarray matrices
-        mat = self._get_bv(pgmat, gmat, bvmat, gpmod).mat   # (n,t) get breeding values
-        G = self._calc_G(pgmat, gmat)                       # (n,n) get genomic relationship matrix
-        K = G.mat_asformat("kinship")                       # (n,n) kinship matrix
+        G = self._calc_G(pgmat, gmat)       # get genomic relationship matrix: (n,n)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -741,7 +527,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             self.objfn_static.__code__,     # byte code pointer
             self.objfn_static.__globals__,  # global variables
             None,                           # new name for the function
-            (mat, K, trans, trans_kwargs),  # default values for arguments
+            (C, trans, trans_kwargs),       # default values for last 3 arguments
             self.objfn_static.__closure__   # closure byte code pointer
         )
 
@@ -751,14 +537,22 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
         """
         Return a vectorized objective function.
         """
-        # get default parameters if any are None
+        # get default parameters
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        # get pointers to raw numpy.ndarray matrices
-        mat = self._get_bv(pgmat, gmat, bvmat, gpmod).mat   # (n,t) get breeding values
-        G = self._calc_G(pgmat, gmat)                       # (n,n) get genomic relationship matrix
-        K = G.mat_asformat("kinship")                       # (n,n) kinship matrix
+        G = self._calc_G(pgmat, gmat)       # get genomic relationship matrix: (n,n)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -766,7 +560,7 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             self.objfn_vec_static.__code__,     # byte code pointer
             self.objfn_vec_static.__globals__,  # global variables
             None,                               # new name for the function
-            (mat, K, trans, trans_kwargs),      # default values for arguments
+            (C, trans, trans_kwargs),           # default values for last 3 arguments
             self.objfn_vec_static.__closure__   # closure byte code pointer
         )
 
@@ -814,69 +608,31 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get selection parameters
-        objfn_wt = self.objfn_wt
-
-        # get number of taxa
-        ntaxa = gmat.ntaxa
-
-        # create objective function
-        objfn = self.objfn(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max
-        )
-
-        # create search space
-        sspace = numpy.stack(
-            [numpy.repeat(0.0, ntaxa), numpy.repeat(1.0, ntaxa)]
-        )
-
-        # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,          # objective function
-            k = ntaxa,              # vector length to optimize (sspace^k)
-            sspace = sspace,        # search space options
-            objfn_wt = objfn_wt,    # weights to apply to each objective
-            **kwargs
-        )
-
-        # handle miscellaneous output
-        if miscout is not None:     # if miscout is provided
-            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
-
-        return frontier, sel_config
+        raise RuntimeError("BinaryMaximumMeanExpectedHeterozygositySelection is single objective")
 
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, K, trans, kwargs):
+    def objfn_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its expected breeding
-        value.
+        Score a parent contribution vector according to its mean expected heterozygosity.
 
         Parameters
         ----------
-        sel : numpy.ndarray, None
-            A parent contribution vector of shape ``(n,)`` and floating dtype.
+        sel : numpy.ndarray
+            A selection indices matrix of shape ``(k,)``.
 
             Where:
 
-            - ``n`` is the number of individuals.
-        mat : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``.
+            - ``k`` is the number of individuals to select.
 
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        K : numpy.ndarray
-            A kinship matrix of shape (n,n).
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, use all individuals.
+        C : numpy.ndarray
+            An upper triangle matrix of shape (n,n) resulting from a Cholesky 
+            decomposition of a kinship matrix: K = C'C.
 
             Where:
 
@@ -892,13 +648,13 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
         Returns
         -------
-        ocs : numpy.ndarray
-            A EBV matrix of shape (1+t,) if ``trans`` is ``None``.
+        meh : numpy.ndarray
+            A matrix of shape (1,) if ``trans`` is ``None``.
 
-            The first index in the array is the mean expected kinship:
+            The first index in the array is the mean expected heterozygosity:
 
             .. math::
-                mean expected inbreeding = \\textbf{(sel)}' \\textbf{K} \\textbf{(sel)}
+                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
@@ -907,50 +663,45 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
 
             - ``t`` is the number of traits.
         """
-        # Calculate the mean expected kinship: x'Kx
-        # Step 1: (n,) . (n,n) -> (n,)
-        # Step 2: (n,) . (n,) -> scalar
-        inb = sel.dot(K).dot(sel)
+        # calculate MEH
+        # (n,n)[:,(k,)] -> (n,k)
+        # (1/k) * (n,k).sum(1) -> (n,)
+        Cx = (1.0 / sel.shape[0]) * C[:,sel].sum(1)
 
-        # OCS calculation explanation
-        # Step 1: (n,) . (n,t) -> (t,)  # calculate mean expected BVs
-        mebv = sel.dot(mat)
+        # norm2( (n,) ) -> scalar
+        dist = numpy.linalg.norm(Cx, ord = 2)
 
-        # append values together with inbreeding first
-        # scalar and (t,) --append--> (1+t,)
-        ocs = numpy.insert(mebv, 0, inb)
-
-        # apply transformations
-        # (1+t,) ---trans---> (?,)
+        # scalar - scalar -> scalar
+        # [scalar] -> (1,)
+        meh = numpy.array([1.0 - dist])
+        
+        # apply transformations if needed
         if trans:
-            ocs = trans(ocs, **kwargs)
-
-        return ocs
+            meh = trans(meh, **kwargs)
+        
+        return meh
 
     @staticmethod
-    def objfn_vec_static(sel, mat, K, trans, kwargs):
+    def objfn_vec_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its expected breeding
-        value.
+        Score a parent contribution vector according to its mean expected heterozygosity.
 
         Parameters
         ----------
-        sel : numpy.ndarray, None
-            A parent contribution vector of shape ``(j,n)`` and floating dtype.
+        sel : numpy.ndarray
+            A selection indices matrix of shape ``(j,k)``.
 
             Where:
 
-            - ``j`` is the number of selection configurations.
-            - ``n`` is the number of individuals.
-        mat : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``.
+            - ``j`` is the number of configurations to score.
+            - ``k`` is the number of individuals to select.
 
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        K : numpy.ndarray
-            A kinship matrix of shape ``(n,n)``.
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            ``sel`` cannot be ``None``.
+        C : numpy.ndarray
+            An upper triangle matrix of shape (n,n) resulting from a Cholesky 
+            decomposition of a kinship matrix: K = C'C.
 
             Where:
 
@@ -959,46 +710,42 @@ class ContinuousOptimalContributionSelection(SelectionProtocol):
             A transformation operator to alter the output.
             Function must adhere to the following standard:
 
-            - Must accept a single numpy.ndarray argument.
-            - Must return a single object, whether scalar or numpy.ndarray.
+            - Must accept a single ``numpy.ndarray`` argument.
+            - Must return a single object, whether scalar or ``numpy.ndarray``.
         kwargs : dict
             Dictionary of keyword arguments to pass to ``trans`` function.
 
         Returns
         -------
-        cgs : numpy.ndarray
-            A EBV matrix of shape ``(j,1+t)`` if ``trans`` is ``None``.
-            The first column in the matrix is the mean expected kinship:
+        meh : numpy.ndarray
+            A matrix of shape (j,1) if ``trans`` is ``None``.
+
+            The first index in the array is the mean expected heterozygosity:
 
             .. math::
-                mean expected inbreeding = \\textbf{(sel)}' \\textbf{K} \\textbf{(sel)}
+                MEH = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
 
             Other indices are the mean expected trait values for the other ``t``
             traits. Otherwise, of shape specified by ``trans``.
 
             Where:
 
-            - ``j`` is the number of selection configurations.
             - ``t`` is the number of traits.
         """
-        # Calculate the mean expected kinship: x'Kx
-        # Step 1: for each row in range {1,2,...,j}
-        # Step 2: (n,) . (n,n) -> (n,)
-        # Step 3: (n,) . (n,) -> scalar
-        # Step 4: (j,)                              # construct array
-        inb = numpy.array([e.dot(K).dot(e) for e in sel])
+        # calculate MEH
+        # (n,n)[:,(j,k)] -> (n,j,k)
+        # (n,j,k).sum(2) -> (n,j)
+        Cx = (1.0 / sel.shape[1]) * C[:,sel].sum(2)
+        
+        # norm2( (n,j), axis=0 ) -> (j,)
+        # (j,)[:,None] -> (j,1)
+        dist = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
 
-        # OCS calculation explanation
-        # Step 1: (j,n) @ (n,t) -> (j,t)    # calculate mean expected BVs
-        mebv = sel @ mat
+        # scalar - (j,1) -> (j,1)
+        meh = 1.0 - dist
 
-        # append values together with inbreeding first
-        # (j,) and (j,t) --append--> (j,1+t)
-        ocs = numpy.insert(mebv, 0, inb, axis = 1)
-
-        # apply transformations
-        # (j,1+t) ---trans---> (?,?)
+        # apply transformations if needed
         if trans:
-            ocs = trans(ocs, **kwargs)
-
-        return ocs
+            meh = trans(meh, **kwargs)
+        
+        return meh

@@ -20,7 +20,7 @@ from pybrops.opt.prob.IntegerProblem import IntegerProblem
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
 class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
     """
-    docstring for IntegerSelectionProblem.
+    Semi-abstract class representing selection problems in integer search spaces.
     """
 
     ############################################################################

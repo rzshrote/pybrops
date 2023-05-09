@@ -1,201 +1,82 @@
 """
-Module implementing selection protocols for minimum mean genomic relationship selection.
+Module implementing selection protocols for binary general 2-norm genomic selection
 """
 
-import cvxpy
-import numpy
-import warnings
 import types
-from typing import Any, Optional, Union
+import numpy
+from typing import Union
 from typing import Callable
-from typing import Type
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
+from pybrops.breed.prot.sel.targetfn import target_positive
+from pybrops.breed.prot.sel.weightfn import weight_absolute
 from pybrops.core.error import check_is_callable
+from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.error import check_inherits
-from pybrops.core.error import check_is_class
-from pybrops.core.random import global_prng
-from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
-from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
+from pybrops.core.error import check_isinstance
+from pybrops.core.error import check_is_gt
+from pybrops.core.random.prng import global_prng
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.breed.prot.sel.sampling import stochastic_universal_sampling
-from pybrops.breed.prot.sel.sampling import two_way_outcross_shuffle
-from pybrops.opt.algo.MemeticSetGeneticAlgorithm import MemeticSetGeneticAlgorithm
 
-class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
+class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for minimum mean genomic relationship selection.
-
-    Minimum mean genomic relationship selection (MMGRS) is defined as:
-
-    .. math::
-        \\min_{\\mathbf{x}} f_{MMGRS}(\\mathbf{x}) = \\frac{1}{2}\\mathbf{x'Gx}
-
-    With constraints:
-
-    .. math::
-        \\mathbf{1_{n}'x} = 1
-
-        \\mathbf{x} \\in \\mathbb{R}^n
-
+    docstring for BinaryGeneralized2NormGenomicSelection.
     """
 
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    def __init__(self, 
-            nparent: int, 
-            ncross: int, 
+    def __init__(
+            self, 
+            nparent: int,
+            ncross: int,
             nprogeny: int,
-            gtype: str = "gmat", 
-            gcls: Type[CoancestryMatrix] = DenseVanRadenCoancestryMatrix, 
+            weight: Union[numpy.ndarray,Callable] = weight_absolute,
+            target: Union[numpy.ndarray,Callable] = target_positive,
             method: str = "single",
-            objfn_trans: Callable = None, 
-            objfn_trans_kwargs: dict = None, 
+            objfn_trans = None,
+            objfn_trans_kwargs = None, 
             objfn_wt = -1.0,
+            ndset_trans = None, 
+            ndset_trans_kwargs = None, 
+            ndset_wt = -1.0,
             rng = global_prng, 
             soalgo = None, 
-            **kwargs: dict
+            moalgo = None,
+            **kwargs
         ):
         """
-        Constructor for Optimal Contribution Selection (OCS).
-
+        Constructor for BinaryGeneralized2NormGenomicSelection.
+        
         Parameters
         ----------
         nparent : int
             Number of parents to select.
-        ncross : int
-            Number of crosses per configuration.
-        nprogeny : int
-            Number of progeny to derive from each cross.
-        gtype : str
-            Whether to use genotypes or genomes to calculate genomic relationship.
-
-            +-------------+---------------+
-            | Option      | Description   |
-            +=============+===============+
-            | ``"gmat"``  | Use genotypes |
-            +-------------+---------------+
-            | ``"pgmat"`` | Use genomes   |
-            +-------------+---------------+
-        gcls : Any
-            Which genomic relationship class to use to construct the genomic relationship matrix.
-        method : str
-            Optimization strategy.
-
-            +--------+---------------------------------------------------------+
-            | Option | Description                                             |
-            +========+=========================================================+
-            | single | Transform all breeding values into a single overall     |
-            |        | breeding value using the function ``objfn_trans``. Then |
-            |        | solve for OCS with a diversity constraint using         |
-            |        | transformed breeding values.                            |
-            +--------+---------------------------------------------------------+
-            | pareto | Treat inbreeding and each trait as different            |
-            |        | objectives. Transform this list of objectives using     |
-            |        | ``objfn_trans`` to get a list of transformed            |
-            |        | objectives. Approximate the Pareto by identifying a set |
-            |        | of non-dominated points along each transformed          |
-            |        | objective. Then apply ``ndset_trans`` to score the      |
-            |        | non-dominated points.                                   |
-            +--------+---------------------------------------------------------+
-        objfn_trans : function or callable
-            Function to transform the OCS objective function.
-
-            If method = "single", this function must accept an array of length
-            ``(t,)`` and return a scalar, where ``t`` is the number of trait
-            breeding values for an individual.
-
-            If method = "pareto", this function must accept an array of length
-            ``(1+t,)`` and return a numpy.ndarray, where ``t`` is the number of
-            trait breeding values for an individual. The first element of the
-            input array is the mean inbreeding coefficient for the selection.
-
-            General function definition::
-
-                objfn_trans(obj, **kwargs: dict):
-                    Parameters
-                        obj : scalar, numpy.ndarray
-                            Objective scalar or vector to be transformed
-                        kwargs : dict
-                            Additional keyword arguments
-                    Returns
-                        out : scalar, numpy.ndarray
-                            Transformed objective scalar or vector.
-        objfn_trans_kwargs : dict
-            Dictionary of keyword arguments to be passed to 'objfn_trans'.
-        objfn_wt : float, numpy.ndarray
-            Weight applied to transformed objective function. Indicates whether
-            a function is maximizing or minimizing:
-
-            - ``1.0`` for maximizing function.
-            - ``-1.0`` for minimizing function.
-        ndset_trans : numpy.ndarray
-            Function to transform nondominated points along the Pareto frontier
-            into a single score for each point.
-
-            Function definition::
-
-                ndset_trans(ndset, **kwargs: dict):
-                    Parameters
-                        ndset : numpy.ndarray
-                            Array of shape (j,o) containing nondominated points.
-                            Where 'j' is the number of nondominated points and
-                            'o' is the number of objectives.
-                        kwargs : dict
-                            Additional keyword arguments.
-                    Returns
-                        out : numpy.ndarray
-                            Array of shape (j,) containing transformed Pareto
-                            frontier points.
-        ndset_trans_kwargs : dict
-            Dictionary of keyword arguments to be passed to 'ndset_trans'.
-        ndset_wt : float
-            Weight applied to transformed nondominated points along Pareto
-            frontier. Indicates whether a function is maximizing or minimizing.
-                1.0 for maximizing function.
-                -1.0 for minimizing function.
-        moalgo : OptimizationAlgorithm
-            Multi-objective optimization algorithm to optimize the objective
-            functions. If ``None``, use a NSGA3UnityConstraintGeneticAlgorithm
-            with the following parameters::
-
-                moalgo = NSGA3UnityConstraintGeneticAlgorithm(
-                    ngen = 250,             # number of generations to evolve
-                    mu = 100,               # number of parents in population
-                    lamb = 100,             # number of progeny to produce
-                    cxeta = 30.0,           # crossover variance parameter
-                    muteta = 20.0,          # mutation crossover parameter
-                    refpnts = None,         # hyperplane reference points
-                    save_logbook = False,   # whether to save logs or not
-                    rng = self.rng          # PRNG source
-                )
-        rng : numpy.random.Generator or None
-            A random number generator source. Used for optimization algorithms.
         """
-        super(BinaryMinimumMeanGenomicRelationshipSelection, self).__init__(**kwargs)
-        
-        # variable assignment
+        super(BinaryGeneralized2NormGenomicSelection, self).__init__(**kwargs)
+
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.gtype = gtype
-        self.gcls = gcls
+        self.weight = weight
+        self.target = target
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs
         self.objfn_wt = objfn_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.ndset_wt = ndset_wt
         self.rng = rng
         self.soalgo = soalgo
-
+        self.moalgo = moalgo
+    
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
@@ -245,36 +126,32 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def gtype(self) -> str:
-        """Genomic relationship matrix type."""
-        return self._gtype
-    @gtype.setter
-    def gtype(self, value: str) -> None:
-        """Set genomic relationship matrix type."""
-        check_is_str(value, "gtype")
-        value = value.lower()
-        if value not in ["gmat","pgmat"]:
-            raise ValueError("'gtype' must be 'gmat' or 'pgmat'")
-        self._gtype = value
-    @gtype.deleter
-    def gtype(self) -> None:
-        """Delete genomic relationship matrix type."""
-        del self._gtype
+    def weight(self) -> Union[numpy.ndarray,Callable]:
+        """Marker weights or marker weight function."""
+        return self._weight
+    @weight.setter
+    def weight(self, value: Union[numpy.ndarray,Callable]) -> None:
+        """Set marker weights or marker weight function."""
+        check_isinstance(value, "weight", (numpy.ndarray, Callable))
+        self._weight = value
+    @weight.deleter
+    def weight(self) -> None:
+        """Delete marker weights or marker weight function."""
+        del self._weight
 
     @property
-    def gcls(self) -> Any:
-        """Genomic relationship matrix class."""
-        return self._gcls
-    @gcls.setter
-    def gcls(self, value: Any) -> None:
-        """Set genomic relationship matrix class."""
-        check_is_class(value, "gcls")
-        check_inherits(value, "gcls", CoancestryMatrix)
-        self._gcls = value
-    @gcls.deleter
-    def gcls(self) -> None:
-        """Delete genomic relationship matrix class."""
-        del self._gcls
+    def target(self) -> Union[numpy.ndarray,Callable]:
+        """Allele frequency targets or allele frequency target function."""
+        return self._target
+    @target.setter
+    def target(self, value: Union[numpy.ndarray,Callable]) -> None:
+        """Set allele frequency targets or allele frequency target function."""
+        check_isinstance(value, "target", (numpy.ndarray, Callable))
+        self._target = value
+    @target.deleter
+    def target(self) -> None:
+        """Delete allele frequency targets or allele frequency target function."""
+        del self._target
 
     @property
     def method(self) -> str:
@@ -340,6 +217,50 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         del self._objfn_wt
 
     @property
+    def ndset_trans(self) -> Union[Callable,None]:
+        """Nondominated set transformation function."""
+        return self._ndset_trans
+    @ndset_trans.setter
+    def ndset_trans(self, value: Union[Callable,None]) -> None:
+        """Set nondominated set transformation function."""
+        if value is not None:                       # if given object
+            check_is_callable(value, "ndset_trans") # must be callable
+        self._ndset_trans = value
+    @ndset_trans.deleter
+    def ndset_trans(self) -> None:
+        """Delete nondominated set transformation function."""
+        del self._ndset_trans
+
+    @property
+    def ndset_trans_kwargs(self) -> dict:
+        """Nondominated set transformation function keyword arguments."""
+        return self._ndset_trans_kwargs
+    @ndset_trans_kwargs.setter
+    def ndset_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set nondominated set transformation function keyword arguments."""
+        if value is None:                           # if given None
+            value = {}                              # set default to empty dict
+        check_is_dict(value, "ndset_trans_kwargs")  # check is dict
+        self._ndset_trans_kwargs = value
+    @ndset_trans_kwargs.deleter
+    def ndset_trans_kwargs(self) -> None:
+        """Delete nondominated set transformation function keyword arguments."""
+        del self._ndset_trans_kwargs
+
+    @property
+    def ndset_wt(self) -> Union[float,numpy.ndarray]:
+        """Nondominated set weights."""
+        return self._ndset_wt
+    @ndset_wt.setter
+    def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
+        """Set nondominated set weights."""
+        self._ndset_wt = value
+    @ndset_wt.deleter
+    def ndset_wt(self) -> None:
+        """Delete nondominated set weights."""
+        del self._ndset_wt
+
+    @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
         """Random number generator source."""
         return self._rng
@@ -357,52 +278,124 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
     @property
     def soalgo(self) -> OptimizationAlgorithm:
-        """Description for property soalgo."""
+        """Single objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: OptimizationAlgorithm) -> None:
-        """Set data for property soalgo."""
+    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set single objective optimization algorithm."""
         if value is None:
             value = SteepestAscentSetHillClimber(rng = self.rng)
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
     def soalgo(self) -> None:
-        """Delete data for property soalgo."""
+        """Delete single objective optimization algorithm."""
         del self._soalgo
+
+    @property
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Multi-objective opimization algorithm."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set multi-objective opimization algorithm."""
+        if value is None:
+            value = NSGA2SetGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                mu = 100,       # number of parents in population
+                lamb = 100,     # number of progeny to produce
+                M = 1.5,        # algorithm crossover genetic map length
+                rng = self.rng  # PRNG source
+            )
+        check_is_OptimizationAlgorithm(value, "moalgo")
+        self._moalgo = value
+    @moalgo.deleter
+    def moalgo(self) -> None:
+        """Delete multi-objective opimization algorithm."""
+        del self._moalgo
 
     ############################################################################
     ########################## Private Object Methods ##########################
     ############################################################################
-    def _calc_G(
-            self, 
-            pgmat: Optional[PhasedGenotypeMatrix], 
-            gmat: Optional[GenotypeMatrix]
-        ) -> CoancestryMatrix:
-        """
-        Calculate a kinship matrix from a genotype matrix.
+    def _calc_mkrwt(self, gpmod: AdditiveLinearGenomicModel):
+        if callable(self.weight):
+            return self.weight(gpmod.u_a)
+        elif isinstance(self.weight, numpy.ndarray):
+            return self.weight
+        else:
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+    
+    def _calc_tfreq(self, gpmod: AdditiveLinearGenomicModel):
+        if callable(self.target):
+            return self.target(gpmod.u_a)
+        elif isinstance(self.target, numpy.ndarray):
+            return self.target
+        else:
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
 
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix, None
-            True phased genome matrix.
-        gmat : GenotypeMatrix, None
-            Genotype matrix.
+    def _calc_C(self, gmat: GenotypeMatrix, gpmod: AdditiveLinearGenomicModel):
+        # get marker weights and target frequencies
+        mkrwt = self._calc_mkrwt(gpmod) # (p,t)
+        tfreq = self._calc_tfreq(gpmod) # (p,t)
 
-        Returns
-        -------
-        out : CoancestryMatrix
-            A coancestry matrix of shape ``(n,n)``.
+        # make sure mkrwt and tfreq have the same dimensions
+        if mkrwt.shape != tfreq.shape:
+            raise ValueError("marker weights and target allele frequencies do not have the same shape")
 
-            Where:
+        # get number of traits and taxa
+        ntrait = mkrwt.shape[1]
+        ntaxa = gmat.ntaxa
+        ploidy = float(gmat.ploidy)
 
-            - ``n`` is the number of individuals.
-        """
-        # use genotypes to determine kinship
-        if self.gtype == "gmat":
-            return self.gcls.from_gmat(gmat)
-        # use genomes to determine kinshipe
-        elif self.gtype == "pgmat":
-            return self.gcls.from_gmat(pgmat)
+        # allocate a tensor for storing distance matrices
+        C = numpy.empty((ntrait,ntaxa,ntaxa), dtype = "float64")
+
+        # get the genotype matrix as {0,1,2,...}
+        # (n,p)
+        X = gmat.tacount()
+
+        # calculate a distance matrix for each trait
+        for trait in range(ntrait):
+            # multiply afreq by ploidy level to get the number of alleles on which to center
+            # (p,t)[None,:,ix] -> (1,p)
+            # scalar * (1,p) -> (1,p)
+            M = ploidy * tfreq[None,:,trait]
+
+            # calculate the Z matrix
+            # (n,p) - (1,p) -> (n,p)
+            Z = X - M
+
+            # get marker weights
+            # (p,t)[None,:,ix] -> (1,p)
+            W = mkrwt[None,:,trait]
+
+            # calculate the weighted G matrix for the current trait
+            # (n,p) * (1,p) -> (n,p)
+            # (n,p) @ (p,n) -> (n,n)
+            G = (Z * W).dot(Z.T)
+
+            # apply jitter to G matrix if needed
+            diagix = numpy.diag_indices_from(G)
+            mat_diag_old = G[diagix].copy()
+            counter = 0
+            is_not_posdef = not numpy.all(numpy.linalg.eigvals(G) >= 2e-14)
+
+            # attempt to apply jitter in nattempt or less attempts
+            while (is_not_posdef) and (counter < 10):
+                G[diagix] = mat_diag_old + numpy.random.uniform(1e-10, 1e-6, len(mat_diag_old))
+                is_not_posdef = not numpy.all(numpy.linalg.eigvals(G) >= 2e-14)
+                counter += 1
+            
+            # if we still weren't able to find appropriate jitter, then give old diagonals and warn
+            if is_not_posdef:
+                G[diagix] = mat_diag_old
+                raise ValueError("Unable to successfully apply jitter to genomic relationship matrix meet eigenvalue tolerance")
+
+            # take Cholesky decomposition to get upper triangle 
+            C[trait,:,:] = numpy.linalg.cholesky(G).T
+
+        # return Cholesky decomposition tensor
+        return C
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -449,7 +442,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # Solve problem using quadratic programming
+        # Solve problem using a single objective method
         if self.method == "single":
             # get vectorized objective function
             objfn = self.objfn(
@@ -484,8 +477,8 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
-            # raises error
-            self.pareto(
+            # get the pareto frontier
+            frontier, sel_config = self.pareto(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,
@@ -496,6 +489,19 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
                 miscout = miscout,
                 **kwargs
             )
+
+            # get scores for each of the points along the pareto frontier
+            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
+
+            # get index of maximum score
+            ix = score.argmax()
+
+            # add fields to miscout
+            if miscout is not None:
+                miscout["frontier"] = frontier
+                miscout["sel_config"] = sel_config
+
+            return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
     def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
         """
@@ -523,18 +529,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        G = self._calc_G(pgmat, gmat)       # get genomic relationship matrix: (n,n)
-
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
-
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+        C = self._calc_C(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -556,18 +551,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
 
-        G = self._calc_G(pgmat, gmat)       # get genomic relationship matrix: (n,n)
-
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
-
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+        C = self._calc_C(gmat, gpmod)       # get Cholesky decomposition of genomic relationship matrix: (t,n,n)
 
         # copy objective function and modify default values
         # this avoids using functools.partial and reduces function execution time.
@@ -623,7 +607,38 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        raise RuntimeError("BinaryMinimumMeanGenomicRelationshipSelection is single objective")
+        # get selection parameters
+        nparent = self.nparent
+        objfn_wt = self.objfn_wt
+
+        # get number of taxa
+        ntaxa = gmat.ntaxa
+
+        # create objective function
+        objfn = self.objfn(
+            pgmat = pgmat,
+            gmat = gmat,
+            ptdf = ptdf,
+            bvmat = bvmat,
+            gpmod = gpmod,
+            t_cur = t_cur,
+            t_max = t_max
+        )
+
+        # use multi-objective optimization to approximate Pareto front.
+        frontier, sel_config, misc = self.moalgo.optimize(
+            objfn = objfn,                  # objective function
+            k = nparent,                    # vector length to optimize (sspace^k)
+            sspace = numpy.arange(ntaxa),   # search space options
+            objfn_wt = objfn_wt,            # weights to apply to each objective
+            **kwargs
+        )
+
+        # handle miscellaneous output
+        if miscout is not None:     # if miscout is provided
+            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
+
+        return frontier, sel_config
 
     ############################################################################
     ############################## Static Methods ##############################
@@ -631,16 +646,21 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
     @staticmethod
     def objfn_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean genomic relationship.
+        Score a parent contribution vector according to its distance from a utopian point.
+        The goal is to minimize this function.
 
         Parameters
         ----------
         sel : numpy.ndarray
-            A parent contribution vector of shape ``(n,)`` and floating dtype.
+            A selection indices matrix of shape ``(k,)``.
 
             Where:
 
-            - ``n`` is the number of individuals.
+            - ``k`` is the number of individuals to select.
+
+            Each index indicates which individuals to select.
+            Each index in ``sel`` represents a single individual's row.
+            If ``sel`` is ``None``, use all individuals.
         C : numpy.ndarray
             An upper triangle matrix of shape (n,n) resulting from a Cholesky 
             decomposition of a kinship matrix: K = C'C.
@@ -659,42 +679,34 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
         Returns
         -------
-        mgr : numpy.ndarray
-            A matrix of shape (1,) if ``trans`` is ``None``.
+        dist : numpy.ndarray
+            A matrix of shape (t,) if ``trans`` is ``None``.
 
-            The first index in the array is the mean genomic relationship:
-
-            .. math::
-                MGR = || \\textbf{C} \\textbf{(sel)} ||_2
-
-            Other indices are the mean expected trait values for the other ``t``
-            traits. Otherwise, of shape specified by ``trans``.
+            Distances for each target.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # calculate MGR
-        # (n,n)[:,(k,)] -> (n,k)
-        # (1/k) * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / sel.shape[0]) * C[:,sel].sum(1)
+        # calculate vector
+        # (t,n,n)[:,:,(k,)] -> (t,n,k)
+        # (1/k) * (t,n,k).sum(2) -> (t,n,)
+        Cx = (1.0 / sel.shape[0]) * C[:,:,sel].sum(2)
 
-        # norm2( (n,) ) -> scalar
-        mgr = numpy.linalg.norm(Cx, ord = 2)
+        # norm2( (t,n) ) -> (t,)
+        dist = numpy.linalg.norm(Cx, ord = 2, axis = 1)
 
-        # [scalar] -> (1,)
-        mgr = numpy.array([mgr])
-        
         # apply transformations if needed
         if trans:
-            mgr = trans(mgr, **kwargs)
+            dist = trans(dist, **kwargs)
         
-        return mgr
+        return dist
 
     @staticmethod
     def objfn_vec_static(sel: numpy.ndarray, C: numpy.ndarray, trans: Callable, kwargs: dict):
         """
-        Score a parent contribution vector according to its mean genomic relationship.
+        Score a parent contribution vector according to its distance from a utopian point.
+        The goal is to minimize this function.
 
         Parameters
         ----------
@@ -711,7 +723,7 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
             ``sel`` cannot be ``None``.
         C : numpy.ndarray
             An upper triangle matrix of shape (n,n) resulting from a Cholesky 
-            decomposition of half a genomic relationship matrix: (1/2)G = C'C.
+            decomposition of a kinship matrix: K = C'C.
 
             Where:
 
@@ -727,32 +739,26 @@ class BinaryMinimumMeanGenomicRelationshipSelection(SelectionProtocol):
 
         Returns
         -------
-        mgr : numpy.ndarray
-            A matrix of shape (j,1) if ``trans`` is ``None``.
+        dist : numpy.ndarray
+            A matrix of shape (j,t) if ``trans`` is ``None``.
 
-            The first index in the array is the mean genomic relationship:
-
-            .. math::
-                MGR = 1 - || \\textbf{C} \\textbf{(sel)} ||_2
-
-            Other indices are the mean expected trait values for the other ``t``
-            traits. Otherwise, of shape specified by ``trans``.
+            Distances for each target.
 
             Where:
 
             - ``t`` is the number of traits.
         """
         # calculate MEH
-        # (n,n)[:,(j,k)] -> (n,j,k)
-        # (n,j,k).sum(2) -> (n,j)
-        Cx = (1.0 / sel.shape[1]) * C[:,sel].sum(2)
+        # (t,n,n)[:,:,(j,k)] -> (t,n,j,k)
+        # (t,n,j,k).sum(2) -> (t,n,j)
+        Cx = (1.0 / sel.shape[1]) * C[:,:,sel].sum(3)
         
-        # norm2( (n,j), axis=0 ) -> (j,)
-        # (j,)[:,None] -> (j,1)
-        mgr = numpy.linalg.norm(Cx, ord = 2, axis = 0)[:,None]
+        # norm2( (t,n,j), axis=1 ) -> (t,j)
+        # (t,j).T -> (t,j)
+        dist = numpy.linalg.norm(Cx, ord = 2, axis = 0).T
 
         # apply transformations if needed
         if trans:
-            mgr = trans(mgr, **kwargs)
+            dist = trans(dist, **kwargs)
         
-        return mgr
+        return dist

@@ -5,13 +5,12 @@ Module implementing selection protocols for multi-objective genomic selection.
 import numpy
 import types
 from typing import Callable, Union
-
-from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.targetfn import target_positive
 from pybrops.breed.prot.sel.weightfn import weight_absolute
+from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error import check_isinstance
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
@@ -22,7 +21,7 @@ from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
-class MultiObjectiveGenomicSelection(SelectionProtocol):
+class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
     """
     Class implementing selection protocols for multi-objective genomic selection.
 
@@ -46,13 +45,13 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             ndset_trans = None, 
             ndset_trans_kwargs = None, 
             ndset_wt = -1.0,
-            rng = global_prng, 
             soalgo = None, 
             moalgo = None,
+            rng = global_prng, 
             **kwargs
         ):
         """
-        Constructor for MultiObjectiveGenomicSelection class.
+        Constructor for PopulationAlleleUnavailabilitySelection class.
 
         Parameters
         ----------
@@ -186,14 +185,14 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             A random number generator source. Used for optimization algorithms.
             If 'rng' is None, use pybrops.core.random module (NOT THREAD SAFE!).
         """
-        super(MultiObjectiveGenomicSelection, self).__init__(**kwargs)
+        super(PopulationAlleleUnavailabilitySelection, self).__init__(**kwargs)
 
         # error checks and assignments (ORDER DEPENDENT!!!)
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.weight = weight
         self.target = target
+        self.weight = weight
         self.method = method
         self.objfn_trans = objfn_trans
         self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
@@ -549,7 +548,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             )
 
             # optimize using hill-climber algorithm
-            opt = self.soalgo.optimize(
+            sel_score, sel, misc = self.soalgo.optimize(
                 objfn,                          # objective function
                 k = nparent,                    # number of parents to select
                 sspace = numpy.arange(ntaxa),   # parental indices
@@ -557,12 +556,14 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
                 **kwargs
             )
 
-            # get best solution
-            sel = opt["soln"]
+            # shuffle selection to ensure random mating
+            self.rng.shuffle(sel)
 
             # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(opt)     # add dict to dict
+            if miscout is not None:
+                miscout["sel_score"] = sel_score
+                miscout["sel"] = sel
+                miscout.update(misc) # add dict to dict
 
             return pgmat, sel, ncross, nprogeny
 
@@ -636,7 +637,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             self.objfn_static.__code__,                         # byte code pointer
             self.objfn_static.__globals__,                      # global variables
             None,                                               # new name for the function
-            (mat, ploidy, tfreq, tminor, thet, tmajor, mkrwt, trans, trans_kwargs),   # default values for arguments
+            (mat, ploidy, tminor, thet, tmajor, mkrwt, trans, trans_kwargs),   # default values for arguments
             self.objfn_static.__closure__                       # closure byte code pointer
         )
 
@@ -772,19 +773,8 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
     ############################## Static Methods ##############################
     ############################################################################
     @staticmethod
-    def objfn_static(sel, mat, ploidy, tfreq, tminor, thet, tmajor, mkrwt, trans, kwargs):
+    def objfn_static(sel, mat, ploidy, tminor, thet, tmajor, mkrwt, trans, kwargs):
         """
-        Multi-objective genomic selection objective function.
-
-        - The goal is to minimize all objectives for this function.
-        - This is a bare bones function. Minimal error checking is done.
-
-        Objectives: :math:`F(\\textbf{x})`
-
-        .. math::
-
-            F(\\textbf{x}) = {[f^{\\textup{PAU}}(\\textbf{x}), f^{\\textup{PAFD}}(\\textbf{x})]}'
-
         Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
 
         .. math::
@@ -801,20 +791,6 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
         Take the dot product between the binary score vector and the marker
         weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
         :math:`f^{\\textup{PAU}}(\\textbf{x})` and return the result.
-
-        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
-
-        .. math::
-            f^{\\textup{PAFD}}(\\textbf{x}) = \\textbf{w} \\cdot \\left | \\textbf{p}_{x} - \\textbf{p}_{t} \\right |
-
-        Given a genotype matrix ``mat`` and a selection indices vector
-        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency
-        :math:`\\textbf{p}_{x}`. From the selection allele frequencies and the
-        target allele frequencies :math:`\\textbf{p}_{t} =` ``tfreq``,
-        calculate the absolute value of the difference between the two vectors.
-        Finally, take the dot product between the difference vector and the marker
-        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
-        :math:`f^{\\textup{PAFD}}(\\textbf{x})` and return the result.
 
         Parameters
         ----------
@@ -895,52 +871,44 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             - The second set of ``t`` elements in the ``mogs`` output correspond
               to the ``t`` PAFD outputs for each trait.
         """
-        # calculate the allele frequency of the selected subset
-        # (n,p)[(k,),:,None] -> (p,1)
-        pfreq = (1.0 / (ploidy * len(sel))) * mat[sel,:,None].sum(0)
+        # get selection allele counts
+        # (n,p)[(k,),:,None] -> (k,p,1)
+        # (k,p,1).sum(0) -> (p,1)
+        sacount = mat[sel,:,None].sum(0)
 
-        # determine where allele frequencies are < 1.0
-        # (p,1)
-        p_ltmajor = (pfreq < 1.0)
+        # determine if the allele frequency is less than total fixation of the major allele
+        # (p,1) < scalar -> (p,1)
+        pltmajor = (sacount < (ploidy * len(sel)))
 
-        # determine where allele frequencies are > 0.0
-        # (p,1)
-        p_gtminor = (pfreq > 0.0)
+        # determine if the allele frequency is greater than total fixation of the minor allele
+        # (p,1) > scalar -> (p,1)
+        pgtminor = (sacount > 0)
 
-        # determine where allele frequencies are < 1.0 and > 0.0
-        # (p,1)
-        p_het = numpy.logical_and(p_ltmajor, p_gtminor)
+        # determine if the allele frequency is not fixed across the population
+        # (p,t) & (p,t) -> (p,t)
+        phet = numpy.logical_and(pltmajor, pgtminor)
 
-        # determine where alleles are unavailable using precomputed arrays
+        # use logic to determine if target allele frequency is obtainable (0) or unobtainable (1)
+        accum0 = numpy.logical_and(pltmajor, tminor)
+        accum1 = numpy.logical_and(phet, thet)
+        accum2 = numpy.logical_and(pgtminor, tmajor)
+
+        # logical or everything and take the logical not
         # (p,t)
-        allele_unavail = numpy.logical_not(
-            numpy.logical_or(
-                numpy.logical_and(p_ltmajor, tminor), 
-                numpy.logical_or(
-                    numpy.logical_and(p_het, thet), 
-                    numpy.logical_and(p_gtminor, tmajor)
-                )
-            )
-        )
+        allele_unavail = numpy.logical_not(numpy.logical_or(accum0, numpy.logical_or(accum1, accum2)))
 
-        # calculate the manhattan distance and PAFD
-        # (p,t) -> (t,)
-        pafd = (mkrwt * numpy.absolute(tfreq - pfreq)).sum(0)
-        
-        # calculate the allele unavailability
-        # (p,t) -> (t,)
+        # calculate PAU score
+        # (p,t) * (p,t) -> (p,t)
+        # (p,t).sum(0) -> (t,)
         pau = (mkrwt * allele_unavail).sum(0)
-
-        # concatenate to make MOGS vector
-        # (t,) and (t,) -> (t + t,)
-        mogs = numpy.concatenate([pau, pafd])
 
         # apply transformations
         if trans is not None:
-            mogs = trans(mogs, **kwargs)
+            pau = trans(pau, **kwargs)
 
-        return mogs
+        return pau
 
+    # TODO: optimize the vectorized version
     @staticmethod
     def objfn_vec_static(sel, mat, ploidy, tfreq, mkrwt, trans, kwargs):
         """
@@ -1073,7 +1041,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
 
         # calculate reciprocal number of phases
         # ploidy * number of individuals in 'sgeno'
-        rphase = 1.0 / (ploidy * sgeno.shape[1])
+        rphase = 1.0 / (ploidy * sgeno.shape[2])
 
         # calculate population frequencies; add axis for correct broadcast
         # (j,k,p).sum(1) -> (j,p)
@@ -1101,26 +1069,13 @@ class MultiObjectiveGenomicSelection(SelectionProtocol):
             )
         )
 
-        # calculate distance between target and population
-        # (p,t)-(j,p,1) -> (j,p,t)
-        dist = numpy.absolute(tfreq - pfreq)
-
         # compute f_PAU(x)
         # (p,t) * (j,p,t) -> (j,p,t)
         # (j,p,t).sum[1] -> (j,t)
         pau = (mkrwt * allele_unavail).sum(1)
 
-        # compute f_PAFD(x)
-        # (p,t) * (j,p,t) -> (j,p,t)
-        # (j,p,t).sum[1] -> (j,t)
-        pafd = (mkrwt * dist).sum(1)
-
-        # concatenate to make MOGS matrix
-        # (j,t) and (j,t) -> (j,t + t)
-        mogs = numpy.concatenate([pau, pafd], axis = 1)
-
         # apply transformations
         if trans is not None:
-            mogs = trans(mogs, **kwargs)
+            pau = trans(pau, **kwargs)
 
-        return mogs
+        return pau

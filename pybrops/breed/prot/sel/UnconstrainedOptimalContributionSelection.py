@@ -1,8 +1,8 @@
 """
-Module implementing selection protocols for optimal mean expected heterozygosit selection.
+Module implementing selection protocols for optimal contribution selection.
 """
 
-from typing import Callable, Union
+from typing import Any, Callable, Union
 import cvxpy
 import math
 import numpy
@@ -10,8 +10,9 @@ import warnings
 import types
 
 from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
+from pybrops.core.error import check_inherits
 from pybrops.core.error import check_is_callable
 from pybrops.core.error import check_is_dict
 from pybrops.core.error import check_is_int
@@ -19,25 +20,14 @@ from pybrops.core.error import check_is_gt
 from pybrops.core.error import check_is_str
 from pybrops.core.error import check_is_Generator_or_RandomState
 from pybrops.core.random import global_prng
+from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
+from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 
-class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
+class OptimalContributionSelection(UnconstrainedSelectionProtocol):
     """
-    Class implementing selection protocols for optimal mean expected heterozygosity selection.
+    Class implementing selection protocols for optimal contribution selection.
 
-    Optimal Mean Expected Heterozygosity Selection (OMEHS) is defined as:
-
-    .. math::
-        \\max_{\mathbf{x}}(\mathbf{x}) = \\mathbf{ebv'x}
-
-    With constraints:
-
-    .. math::
-        \\frac{1}{2} \\mathbf{x'Px} - \\mathbf{q'x} + mh_{t+1} \\leq 0
-
-        \\mathbf{1_{n}'x} = 1
-
-        \\mathbf{x} \\in \\mathbb{R}^n
-
+    # TODO: add formulae for methodology.
     """
 
     ############################################################################
@@ -45,12 +35,13 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
     ############################################################################
     def __init__(
             self,
-            nparent: int, 
-            ncross: int, 
-            nprogeny: int, 
-            mehfn: Callable,
-            bvtype: str = "gebv", 
-            method: str = "single",
+            nparent, 
+            ncross, 
+            nprogeny, 
+            inbfn,
+            cmatcls = DenseMolecularCoancestryMatrix, 
+            bvtype = "gebv", 
+            method = "single",
             objfn_trans = None, 
             objfn_trans_kwargs = None, 
             objfn_wt = 1.0,
@@ -60,7 +51,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             moalgo = None,
             rng = global_prng, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for Optimal Contribution Selection (OCS).
 
@@ -72,10 +63,25 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             Number of crosses per configuration.
         nprogeny : int
             Number of progeny to derive from each cross.
-        mehfn : function
-            Mean expected heterozygosity control function: ``mehfn(t_cur, t_max)``.
+        inbfn : function
+            Inbreeding control function: ``inbfn(t_cur, t_max)``.
 
-            Returns constraint for mean expected heterozygosity. 
+            Returns constraint for mean population inbreeding defined as:
+
+            .. math::
+
+                \\frac{1}{2} \\textbf{x}' \\textbf{A} \\textbf{x} =
+                \\textbf{x}' \\textbf{K} \\textbf{x} =
+                f^{\\textup{Inb}}(t_{cur}, t_{max})
+
+            Where:
+
+            - :math:`x` is the parental contribution vector.
+            - :math:`A` is the additive relationship matrix.
+            - :math:`K` is the kinship relationship matrix.
+            - :math:`f^{\\textup{Inb}}` is ``inbfn``.
+            - :math:`t_{cur}` is the current time.
+            - :math:`t_{max}` is the deadline time.
         cmatcls : class
             The class name of a CoancestryMatrix to generate.
         bvtype : str
@@ -181,13 +187,14 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         rng : numpy.random.Generator or None
             A random number generator source. Used for optimization algorithms.
         """
-        super(OptimalMeanExpectedHeterozygositySelection, self).__init__(**kwargs)
-        
+        super(OptimalContributionSelection, self).__init__(**kwargs)
+
         # variable assignment
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.mehfn = mehfn
+        self.inbfn = inbfn
+        self.cmatcls = cmatcls
         self.bvtype = bvtype
         self.method = method
         self.objfn_trans = objfn_trans
@@ -248,18 +255,32 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         del self._nprogeny
 
     @property
-    def mehfn(self) -> Callable:
-        """Mean expected heterozygosity control function."""
-        return self._mehfn
-    @mehfn.setter
-    def mehfn(self, value: Callable) -> None:
-        """Set mean expected heterozygosity control function."""
-        check_is_callable(value, "mehfn")
-        self._mehfn = value
-    @mehfn.deleter
-    def mehfn(self) -> None:
-        """Delete mean expected heterozygosity control function."""
-        del self._mehfn
+    def inbfn(self) -> Callable:
+        """Inbreeding control function."""
+        return self._inbfn
+    @inbfn.setter
+    def inbfn(self, value: Callable) -> None:
+        """Set inbreeding control function."""
+        check_is_callable(value, "inbfn")
+        self._inbfn = value
+    @inbfn.deleter
+    def inbfn(self) -> None:
+        """Delete inbreeding control function."""
+        del self._inbfn
+
+    @property
+    def cmatcls(self) -> Any:
+        """CoancestryMatrix class used for calculating coancestries."""
+        return self._cmatcls
+    @cmatcls.setter
+    def cmatcls(self, value: Any) -> None:
+        """Set CoancestryMatrix class used for calculating coancestries."""
+        check_inherits(value, "cmatcls", CoancestryMatrix)
+        self._cmatcls = value
+    @cmatcls.deleter
+    def cmatcls(self) -> None:
+        """Delete CoancestryMatrix class used for calculating coancestries."""
+        del self._cmatcls
 
     @property
     def bvtype(self) -> str:
@@ -389,11 +410,11 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
     @property
     def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective algorithm."""
+        """Multi-objective optimization algorithm."""
         return self._moalgo
     @moalgo.setter
     def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set multi-objective algorithm."""
+        """Set multi-objective optimization algorithm."""
         if value is None:
             value = NSGA3UnityConstraintGeneticAlgorithm(
                 ngen = 600,             # number of generations to evolve
@@ -405,11 +426,10 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
                 save_logbook = False,   # whether to save logs or not
                 rng = self.rng          # PRNG source
             )
-        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
     @moalgo.deleter
     def moalgo(self) -> None:
-        """Delete multi-objective algorithm."""
+        """Delete multi-objective optimization algorithm."""
         del self._moalgo
 
     @property
@@ -452,33 +472,26 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         elif self.bvtype == "tbv":               # use true BVs
             return gpmod.predict(pgmat).mat # calculate true BVs
 
-    def _calc_P_q(self, gmat):
+    def _calc_K(self, pgmat, gmat):
         """
-        Calculate the P matrix and q vector for the mean expected heterozygosity constraint.
-        
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Input genotype matrix from which to calculate heterozygosity constraints.
-        
         Returns
         -------
-        out : tuple
-            A tuple containing two numpy.ndarray's: (P, q). The first numpy.ndarray is the P matrix.
-            The second numpy.ndarray is the q vector
+        out : numpy.ndarray
+            A kinship matrix of shape ``(n,n)``.
+
+            Where:
+
+            - ``n`` is the number of individuals.
         """
-        # get the matrix in {0,1,2} format as required by the matrix calculations
-        X = gmat.mat_asformat("{0,1,2}")
+        if self.bvtype == "gebv":                    # use GEBVs estimated from genomic model
+            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
+        elif self.bvtype == "ebv":                   # use EBVs estimated by some means
+            # TODO: implement pedigree or something
+            return self.cmatcls.from_gmat(gmat).mat  # calculate kinship using gmat
+        elif self.bvtype == "tbv":                   # use true BVs
+            return self.cmatcls.from_gmat(pgmat).mat # calculate true kinship
 
-        # calculate P = X @ X'
-        P = X.dot(X.T)
-
-        # calculate q = X @ 1
-        q = X.sum(1)
-
-        return (P,q)
-
-    def _solve_OMEHS(self, bv, P_sqrtm, P_invsqrtm, P_inv, q, nvrnt, hetmin):
+    def _solve_OCS(self, bv, C, inbmax):
         """
         Define and solve OCS using CVXPY.
 
@@ -486,18 +499,11 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         ----------
         bv : numpy.ndarray
             Array of shape ``(n,)`` containing breeding values for each parent.
-        P_sqrtm : numpy.ndarray
-            Array of shape ``(n,n)`` containing the square root of the P matrix.
-        P_invsqrtm : numpy.ndarray
-            Array of shape ``(n,n)`` containing the inverse square root of the P matrix.
-        P_inv : numpy.ndarray
-            Array of shape ``(n,n)`` containing the inverse of the P matrix.
-        q : numpy.ndarray
-            Array of shape ``(n,)`` containing the q vector.
-        nvrnt : int
-            Number of markers.
-        hetmin : float
-            Minimum mean expected heterozyosity allowed.
+        C : numpy.ndarray
+            Array of shape ``(n,n)`` containing the Cholesky decomposition of
+            the kinship matrix. Must be an upper triangle matrix.
+        inbmax : float
+            Maximum mean inbreeding allowed.
 
         Returns
         -------
@@ -505,17 +511,6 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             A contribution vector of shape ``(n,)`` defining each parent's
             relative contribution.
         """
-        # calculate P^(-1/2) @ q
-        Pq = P_invsqrtm.dot(q)
-
-        # calculate q @ P^(-1) @ q
-        qPq = q.dot(P_inv).dot(q)
-
-        # calculate 2 * m * h_(t+1)
-        tmh = 2.0 * nvrnt * hetmin
-
-        hetconst = math.sqrt(qPq - tmh) if qPq > tmh else 0.0
-
         # get the number of taxa
         ntaxa = len(bv)
 
@@ -527,7 +522,7 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         # define constraints
         soc_constraints = [
-            cvxpy.SOC(hetconst, P_sqrtm @ x - Pq),  # ||P^(1/2) @ x - P^(-1/2) @ q||_2 <= sqrt(q' @ P @ q - 2 * m * h_(t+1))
+            cvxpy.SOC(inbmax, C @ x),               # ||C @ x||_2 <= inbmax
             cvxpy.sum(x) == 1.0,                    # sum(x_i) == 1
             x >= 0.0                                # x_i >= 0 for all i
         ]
@@ -756,8 +751,6 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         # get default parameters
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
         mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
@@ -782,8 +775,6 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
         # get default parameters if any are None
         trans = self.objfn_trans
         trans_kwargs = self.objfn_trans_kwargs
-        cmatcls = self.cmatcls
-        bvtype = self.bvtype
 
         # get pointers to raw numpy.ndarray matrices
         mat = self._get_bv(pgmat, gmat, bvmat, gpmod)    # (n,t) get breeding values
@@ -843,15 +834,6 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
             - ``v`` is the number of objectives for the frontier.
             - ``k`` is the number of search space decision variables.
         """
-        # get selection parameters
-        nparent = self.nparent
-        objfn_trans = self.objfn_trans
-        objfn_trans_kwargs = self.objfn_trans_kwargs
-        objfn_wt = self.objfn_wt
-
-        # get number of taxa
-        ntaxa = gmat.ntaxa
-
         # create objective function
         objfn = self.objfn(
             pgmat = pgmat,
@@ -865,15 +847,15 @@ class OptimalMeanExpectedHeterozygositySelection(SelectionProtocol):
 
         # create search space
         sspace = numpy.stack(
-            [numpy.repeat(0.0, ntaxa), numpy.repeat(1.0, ntaxa)]
+            [numpy.repeat(0.0, gmat.ntaxa), numpy.repeat(1.0, gmat.ntaxa)]
         )
 
         # use multi-objective optimization to approximate Pareto front.
         frontier, sel_config, misc = self.moalgo.optimize(
-            objfn = objfn,          # objective function
-            k = ntaxa,              # vector length to optimize (sspace^k)
-            sspace = sspace,        # search space options
-            objfn_wt = objfn_wt,    # weights to apply to each objective
+            objfn = objfn,              # objective function
+            k = gmat.ntaxa,             # vector length to optimize (sspace^k)
+            sspace = sspace,            # search space options
+            objfn_wt = self.objfn_wt,   # weights to apply to each objective
             **kwargs
         )
 

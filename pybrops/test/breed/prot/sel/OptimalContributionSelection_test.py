@@ -1,10 +1,13 @@
 import os
+from matplotlib import pyplot
 import numpy
 import pytest
 from numpy.random import Generator
 from numpy.random import PCG64
-from matplotlib import pyplot
-from matplotlib import animation
+from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
+from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
+from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
 from pybrops.test import not_raises
 from pybrops.test import assert_docstring
@@ -14,15 +17,9 @@ from pybrops.test import assert_abstract_property
 from pybrops.test import assert_concrete_method
 from pybrops.test import assert_concrete_function
 
-from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
-from pybrops.breed.prot.sel.transfn import trans_sum
-from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
-from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSelection
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
-from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
-from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.breed.prot.sel.transfn import trans_max_inbreeding_constraint, trans_ndpt_to_vec_dist, trans_sum_inbmax_penalty
+from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSubsetSelection
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################
@@ -33,89 +30,40 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 ######################## Genotypes #########################
 ############################################################
 @pytest.fixture
-def mat_int8():
-    yield numpy.int8([
-       [[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]],
-
-       [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0]]
-    ])
+def mat_ntaxa():
+    # must be divisible by 4
+    yield 40
 
 @pytest.fixture
-def mat_chrgrp():
-    yield numpy.int64([
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2
-    ])
+def mat_nvrnt():
+    # must be divisible by 2
+    yield 100
 
 @pytest.fixture
-def mat_phypos():
-    yield numpy.int64([
-         1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
-        11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-    ])
+def mat_int8(mat_ntaxa, mat_nvrnt):
+    yield numpy.random.binomial(1,0.1,(2,mat_ntaxa,mat_nvrnt)).astype('int8')
 
 @pytest.fixture
-def mat_genpos():
-    yield numpy.float64([
-        0.13, 0.32, 0.53, 0.54, 0.55, 0.61, 0.63, 0.7 , 0.75, 0.96,
-        0.14, 0.16, 0.26, 0.31, 0.31, 0.68, 0.7 , 0.74, 0.75, 0.91
-    ])
+def mat_chrgrp(mat_nvrnt):
+    yield numpy.repeat([1,2], mat_nvrnt // 2)
 
 @pytest.fixture
-def mat_taxa():
-    yield numpy.object_([
-        'Line01', 'Line02', 'Line03', 'Line04', 'Line05',
-        'Line06', 'Line07', 'Line08', 'Line09', 'Line10',
-        'Line11', 'Line12', 'Line13', 'Line14', 'Line15',
-        'Line16', 'Line17', 'Line18', 'Line19', 'Line20'
-    ])
+def mat_phypos(mat_nvrnt):
+    yield numpy.arange(1, mat_nvrnt+1)
 
 @pytest.fixture
-def mat_taxa_grp():
-    yield numpy.int64([
-        1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2,
-        3, 3, 3, 3, 3,
-        4, 4, 4, 4, 4
-    ])
+def mat_genpos(mat_nvrnt):
+    out = numpy.random.random(mat_nvrnt)
+    out.sort()
+    yield out
+
+@pytest.fixture
+def mat_taxa(mat_ntaxa):
+    yield numpy.array(["Line" + str(i).zfill(3) for i in range(1,mat_ntaxa+1)], dtype = 'object')
+
+@pytest.fixture
+def mat_taxa_grp(mat_ntaxa):
+    yield numpy.repeat([1,2,3,4], mat_ntaxa // 4)
 
 @pytest.fixture
 def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
@@ -137,47 +85,27 @@ def dgmat(dpgmat):
     yield out
 
 ############################################################
-###################### Genomic model #######################
+###################### Genomic Models ######################
 ############################################################
 @pytest.fixture
-def mat_beta():
-    yield numpy.float64([
-        [25.6, 13.4]
-    ])
-    # yield numpy.float64([[1.4, 2.5, 7.2]])
+def mat_ntrait():
+    yield 2
+
+@pytest.fixture
+def mat_beta(mat_ntrait):
+    yield numpy.random.uniform(10, 50, (1,mat_ntrait))
 
 @pytest.fixture
 def mat_u_misc():
     yield None
 
 @pytest.fixture
-def mat_u_a():
-    yield numpy.float64([
-        [ 1.25, -0.68],
-        [-0.02, -1.09],
-        [ 0.21, -0.5 ],
-        [-2.84,  0.64],
-        [-1.37, -0.81],
-        [-2.06,  2.22],
-        [ 1.52, -0.21],
-        [-0.23, -1.78],
-        [ 1.04, -0.55],
-        [-0.77, -1.4 ],
-        [-0.44,  0.89],
-        [ 0.12, -0.87],
-        [-0.44, -0.55],
-        [ 1.36,  0.73],
-        [ 1.04,  1.22],
-        [-0.05,  0.82],
-        [ 0.93,  0.73],
-        [-0.89,  1.21],
-        [ 0.05, -1.19],
-        [-1.27, -2.  ]
-    ])
+def mat_u_a(mat_nvrnt, mat_ntrait):
+    yield numpy.random.normal(0,1,(mat_nvrnt,mat_ntrait))
 
 @pytest.fixture
-def trait():
-    yield numpy.object_(["protein", "yield"])
+def trait(mat_ntrait):
+    yield numpy.array(["Trait" + str(i).zfill(2) for i in range(1,mat_ntrait+1)], dtype = 'object')
 
 @pytest.fixture
 def model_name():
@@ -198,16 +126,17 @@ def dalgmod(mat_beta, mat_u_misc, mat_u_a, trait, model_name, params):
         params = params
     )
 
-############################################################
-################## Breeding values model ###################
-############################################################
 @pytest.fixture
-def bvmat(dalgmod, dgmat):
-    yield dalgmod.gebv(dgmat)
+def bvmat(dalgmod, dpgmat):
+    yield dalgmod.gebv(dpgmat)
 
 ############################################################
-############### OptimalContributionSelection ###############
+############### BinaryOptimalContributionSelection ###############
 ############################################################
+@pytest.fixture
+def nconfig():
+    yield 5
+
 @pytest.fixture
 def nparent():
     yield 2
@@ -225,63 +154,74 @@ def rng():
     yield Generator(PCG64(192837465))
 
 @pytest.fixture
-def inbfn():
-    def fn(t_cur, t_max):
-        return 0.75
-    yield fn
-
-@pytest.fixture
-def cmatcls():
-    yield DenseMolecularCoancestryMatrix
-
-@pytest.fixture
 def method():
     yield "single"
 
 @pytest.fixture
-def ocs(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng):
-    yield OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
+def inbfn():
+    def fn(t_cur, t_max):
+        return 1 - (t_cur/t_max)
+    yield fn
+
+@pytest.fixture
+def cmatfcty():
+    yield DenseMolecularCoancestryMatrixFactory()
+
+@pytest.fixture
+def bocs(nparent, ncross, nprogeny, inbfn, cmatfcty, method, mat_ntrait, rng):
+    yield OptimalContributionSubsetSelection(
+        nparent = nparent, 
+        ncross = ncross, 
         nprogeny = nprogeny,
         inbfn = inbfn,
-        cmatcls = cmatcls,
+        cmatfcty = cmatfcty,
         method = method,
-        objfn_trans = trans_sum, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = 1.0, # maximizing
-        rng = rng
+        descale = True,
+        encode_trans = trans_max_inbreeding_constraint,
+        encode_trans_kwargs = {"maxinb": 0.5},
+        nobj = mat_ntrait,
+        obj_wt = numpy.repeat(1.0, mat_ntrait),
+        nineqcv = 1,
+        ineqcv_wt = numpy.repeat(1.0, 1),
+        neqcv = 0,
+        eqcv_wt = numpy.array([], dtype=float),
+        ndset_trans = None, 
+        ndset_trans_kwargs = None, 
+        ndset_wt = None,
+        rng = rng,
+        soalgo = None,
+        moalgo = None
     )
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(OptimalContributionSelection)
+    assert_docstring(OptimalContributionSubsetSelection)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "__init__")
+    assert_concrete_method(OptimalContributionSubsetSelection, "__init__")
 
 def test_select_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "select")
+    assert_concrete_method(OptimalContributionSubsetSelection, "select")
 
 def test_objfn_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "objfn")
+    assert_concrete_method(OptimalContributionSubsetSelection, "objfn")
 
 def test_objfn_vec_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "objfn_vec")
+    assert_concrete_method(OptimalContributionSubsetSelection, "objfn_vec")
 
 def test_pareto_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "pareto")
+    assert_concrete_method(OptimalContributionSubsetSelection, "pareto")
 
 def test_objfn_static_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "objfn_static")
+    assert_concrete_method(OptimalContributionSubsetSelection, "objfn_static")
 
 def test_objfn_vec_static_is_concrete():
-    assert_concrete_method(OptimalContributionSelection, "objfn_vec_static")
+    assert_concrete_method(OptimalContributionSubsetSelection, "objfn_vec_static")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -294,251 +234,120 @@ def test_objfn_vec_static_is_concrete():
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
-def test_select_single(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        inbfn = inbfn,
-        cmatcls = cmatcls,
-        method = "single",
-        objfn_trans = trans_sum, # sum of two traits
-        objfn_trans_kwargs = {}, # no kwargs
-        objfn_wt = 1.0, # maximizing
-        rng = rng
-    )
+def test_select_single(bocs, ncross, nprogeny, dpgmat, dgmat, dalgmod, bvmat):
     # make selections
-    pgmat, sel, ncross, nprogeny = sel.select(
+    sel_pgmat, sel, sel_ncross, sel_nprogeny = bocs.select(
         pgmat = dpgmat,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
-        gpmod = dalgmod,
+        gpmod = None,
         t_cur = 0,
         t_max = 20
     )
-
+    assert id(sel_pgmat) == id(dpgmat)
     assert sel.ndim == 1
+    assert sel_ncross == ncross
+    assert sel_nprogeny == nprogeny
 
-def test_select_single_objfn_trans_RuntimeError(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        inbfn = inbfn,
-        cmatcls = cmatcls,
-        method = "single",
-        objfn_trans = None, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = 1.0, # maximizing function
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
-            "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
-        },
-        rng = rng
-    )
+def test_select_pareto_TypeError(bocs, dpgmat, dgmat, bvmat):
+    # set to pareto selection
+    bocs.method = "pareto"
 
-    # make sure this raises an error due to lack of shape compatibility
-    with pytest.raises(RuntimeError):
+    # make sure pareto raises errors
+    with pytest.raises(TypeError):
         # make selections
-        pgmat, sel, ncross, nprogeny = sel.select(
-            pgmat = dpgmat,
+        pgmat, sel, ncross, nprogeny = bocs.select(
+            pgmat = None,
             gmat = dgmat,
             ptdf = None,
             bvmat = bvmat,
-            gpmod = dalgmod,
+            gpmod = None,
             t_cur = 0,
             t_max = 20
         )
 
-def test_select_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
+    # make sure pareto raises errors
+    with pytest.raises(TypeError):
+        # make selections
+        pgmat, sel, ncross, nprogeny = bocs.select(
+            pgmat = dpgmat,
+            gmat = None,
+            ptdf = None,
+            bvmat = bvmat,
+            gpmod = None,
+            t_cur = 0,
+            t_max = 20
+        )
+
+    # make sure pareto raises errors
+    with pytest.raises(TypeError):
+        # make selections
+        pgmat, sel, ncross, nprogeny = bocs.select(
+            pgmat = dpgmat,
+            gmat = dgmat,
+            ptdf = None,
+            bvmat = None,
+            gpmod = None,
+            t_cur = 0,
+            t_max = 20
+        )
+
+def test_select_pareto(nparent, ncross, nprogeny, inbfn, cmatfcty, rng, dpgmat, dgmat, bvmat):
+    bocs = OptimalContributionSubsetSelection(
+        nparent = nparent, 
+        ncross = ncross, 
         nprogeny = nprogeny,
         inbfn = inbfn,
-        cmatcls = cmatcls,
+        cmatfcty = cmatfcty,
         method = "pareto",
-        objfn_trans = None, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = numpy.array([1.0, 1.0, 1.0]), # maximizing function
+        objfn_trans = None, 
+        objfn_trans_kwargs = None, 
+        objfn_wt = numpy.array([-1.0,1.0,1.0]), # min inbreeding, max bv
         ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
-            "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
-        },
+        ndset_trans_kwargs = {"objfn_wt": numpy.array([-1.0,1.0,1.0]), "wt": numpy.array([0.33,0.33,0.33])},
+        ndset_wt = -1.0,
         rng = rng
     )
+
     # make selections
-    pgmat, sel, ncross, nprogeny = sel.select(
+    sel_pgmat, sel, sel_ncross, sel_nprogeny = bocs.select(
         pgmat = dpgmat,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
-        gpmod = dalgmod,
+        gpmod = None,
         t_cur = 0,
         t_max = 20
     )
-
+    assert id(sel_pgmat) == id(dpgmat)
     assert sel.ndim == 1
+    assert sel_ncross == ncross
+    assert sel_nprogeny == nprogeny
 
-def test_objfn_is_function(ocs, dgmat, bvmat, dalgmod):
-    objfn = ocs.objfn(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    assert callable(objfn)
-
-def test_objfn_multiobjective(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
+def test_pareto(nconfig, nparent, ncross, nprogeny, rng, dpgmat, dgmat, bvmat, inbfn, cmatfcty):
+    bocs = OptimalContributionSubsetSelection(
+        nparent = nparent, 
+        ncross = ncross, 
         nprogeny = nprogeny,
         inbfn = inbfn,
-        cmatcls = cmatcls,
+        cmatfcty = cmatfcty,
         method = "pareto",
-        objfn_trans = None, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = numpy.array([1.0, 1.0, 1.0]), # maximizing function
+        objfn_trans = None, 
+        objfn_trans_kwargs = None, 
+        objfn_wt = numpy.array([-1.0,1.0,1.0]), # min inbreeding, max bv
         ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
-            "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
-        },
+        ndset_trans_kwargs = {"objfn_wt": numpy.array([-1.0,1.0,1.0]), "wt": numpy.array([0.33,0.33,0.33])},
+        ndset_wt = -1.0,
         rng = rng
     )
 
-    # make objective function
-    objfn = sel.objfn(
-        pgmat = None,
+    frontier, sel_config = bocs.pareto(
+        pgmat = dpgmat,
         gmat = dgmat,
         ptdf = None,
         bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    # get number of taxa
-    ntaxa = dgmat.ntaxa
-
-    # make contribution selection
-    x = numpy.random.uniform(0,1,ntaxa)
-    x *= (1.0/x.sum())
-
-    out = objfn(x)
-
-    assert out.ndim == 1
-    assert out.shape[0] > 1
-
-def test_objfn_vec_is_callable(ocs, dgmat, bvmat, dalgmod):
-    objfn_vec = ocs.objfn_vec(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    assert callable(objfn_vec)
-
-def test_objfn_vec_multiobjective(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        inbfn = inbfn,
-        cmatcls = cmatcls,
-        method = "pareto",
-        objfn_trans = None, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = numpy.array([1.0, 1.0, 1.0]), # maximizing function
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
-            "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
-        },
-        rng = rng
-    )
-
-    # make objective function
-    objfn = sel.objfn_vec(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
-        t_cur = 0,
-        t_max = 20
-    )
-
-    # get number of taxa
-    ntaxa = dgmat.ntaxa
-
-    # number of simulated solutions
-    nsoln = 5
-
-    # make contribution selection
-    x = numpy.random.uniform(0,1,(nsoln,ntaxa))
-    x *= (1.0/x.sum(1))[:,None]
-
-    out = objfn(x)
-
-    assert out.ndim == 2
-    assert out.shape[0] == nsoln
-    assert out.shape[1] > 1
-
-def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, dgmat, bvmat, dalgmod):
-    # make selection object
-    sel = OptimalContributionSelection(
-        nparent = nparent,
-        ncross = ncross,
-        nprogeny = nprogeny,
-        inbfn = inbfn,
-        cmatcls = cmatcls,
-        method = "pareto",
-        objfn_trans = None, # sum of two traits
-        objfn_trans_kwargs = None, # no kwargs
-        objfn_wt = numpy.array([1.0, 1.0, 1.0]), # maximizing function
-        ndset_trans = trans_ndpt_to_vec_dist,
-        ndset_trans_kwargs = {
-            "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
-            "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
-        },
-        moalgo = NSGA3UnityConstraintGeneticAlgorithm(
-            ngen = 1000,            # number of generations to evolve
-            mu = 100,               # number of parents in population
-            lamb = 100,             # number of progeny to produce
-            cxeta = 30.0,           # crossover variance parameter
-            muteta = 20.0,          # mutation crossover parameter
-            refpnts = None,         # hyperplane reference points
-            save_logbook = False,   # whether to save logs or not
-            rng = rng               # PRNG source
-        ),
-        rng = rng
-    )
-
-    # get pareto frontier
-    frontier, sel_config = sel.pareto(
-        pgmat = None,
-        gmat = dgmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = dalgmod,
+        gpmod = None,
         t_cur = 0,
         t_max = 20
     )
@@ -548,18 +357,18 @@ def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, 
     zdata = frontier[:,2]
 
     xlabel = "inbreeding"
-    ylabel = dalgmod.trait[0]
-    zlabel = dalgmod.trait[1]
+    ylabel = bvmat.trait[0]
+    zlabel = bvmat.trait[1]
 
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes(projection = '3d')
     ax.scatter3D(xdata, ydata, zdata)
-    ax.set_title("Optimal Contribution Selection Test Pareto Frontier")
+    ax.set_title("Binary Optimal Contribution Selection Test Pareto Frontier")
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_zlabel(zlabel)
-    pyplot.savefig("OCS_3d_frontier.png", dpi = 250)
+    pyplot.savefig("BOCS_3d_frontier.png", dpi = 250)
 
     # create animation
     fig = pyplot.figure()
@@ -567,7 +376,7 @@ def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, 
 
     def init():
         ax.scatter3D(xdata, ydata, zdata)
-        ax.set_title("Optimal Contribution Selection Test Pareto Frontier")
+        ax.set_title("Binary Optimal Contribution Selection Test Pareto Frontier")
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
         ax.set_zlabel(zlabel)
@@ -586,34 +395,5 @@ def test_pareto(nparent, ncross, nprogeny, inbfn, cmatcls, method, rng, dpgmat, 
     for i in range(100):
     # for i in range(360):
         animate(i)
-        s = outdir + "/" + "OCS_3d_frontier_" + str(i).zfill(3) + ".png"
+        s = outdir + "/" + "BOCS_3d_frontier_" + str(i).zfill(3) + ".png"
         pyplot.savefig(s, dpi = 250)
-
-    # does not want to work!
-    # anim = animation.FuncAnimation(fig, animate, init_func = init, frames = 100, interval = 100, blit = True)
-    # writer = animation.PillowWriter(fps=30)
-    # writer = animation.FFMpegWriter(fps = 10)
-    # anim.save('OCS_3d_frontier.gif', writer = writer)
-
-
-# def test_objfn_static_multiobjective(ocs, mat_int8, mat_u_a):
-#     Z = mat_int8.sum(0) # (n,p) genotypes {0,1,2}
-#     u = mat_u_a         # (p,t) regression coefficients
-#     Y = Z@u             # (n,t) values
-#
-#     for i,taxon_bv in enumerate(Y):
-#         numpy.testing.assert_almost_equal(
-#             taxon_bv,
-#             ocs.objfn_static([i], Z, u, None, None)
-#         )
-#
-# def test_objfn_vec_static_multiobjective(ocs, dgmat, bvmat, dalgmod, mat_int8, mat_u_a):
-#     Z = mat_int8.sum(0) # (n,p) genotypes {0,1,2}
-#     u = mat_u_a         # (p,t) regression coefficients
-#     Y = Z@u             # (n,t) values
-#
-#     for i,taxon_bv in enumerate(Y):
-#         numpy.testing.assert_almost_equal(
-#             numpy.stack([taxon_bv, taxon_bv]),
-#             ocs.objfn_vec_static([[i],[i]], Z, u, None, None)
-#         )
