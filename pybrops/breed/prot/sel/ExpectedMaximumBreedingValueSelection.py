@@ -501,13 +501,17 @@ class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueBa
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = pgmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = ExpectedMaximumBreedingValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, ntaxa)
-        decn_space_upper = numpy.repeat(1.0, ntaxa)
-        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+        decn_space = numpy.arange(len(xmap))
+        decn_space_lower = numpy.repeat(0, self.nconfig)
+        decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
 
         # construct problem
         prob = ExpectedMaximumBreedingValueSubsetSelectionProblem.from_object(

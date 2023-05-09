@@ -19,8 +19,11 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.util.arrayix import triudix, triuix
+from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
 class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -182,6 +185,153 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     def ploidy(self) -> Integral:
         """ploidy."""
         return self._haplomat.shape[0]
+
+    ######################### Private Object Methods ###########################
+    @staticmethod
+    def _calc_haplomat(pgmat, gpmod, nhaploblk):
+        """
+        Calculate a haplotype matrix from a genome matrix and model.
+
+        Parameters
+        ----------
+        gmat : PhasedGenotypeMatrix
+            A genome matrix.
+        mod : DenseAdditiveLinearGenomicModel
+            A genomic prediction model.
+
+        Returns
+        -------
+        hmat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,b,t)``.
+        """
+        mat         = pgmat.mat              # get genotypes
+        genpos      = pgmat.vrnt_genpos      # get genetic positions
+        chrgrp_stix = pgmat.vrnt_chrgrp_stix # get chromosome start indices
+        chrgrp_spix = pgmat.vrnt_chrgrp_spix # get chromosome stop indices
+        chrgrp_len  = pgmat.vrnt_chrgrp_len  # get chromosome marker lengths
+        u           = gpmod.u_a              # get regression coefficients
+
+        if (chrgrp_stix is None) or (chrgrp_spix is None):
+            raise RuntimeError("markers are not sorted by chromosome position")
+
+        # get number of chromosomes
+        nchr = len(chrgrp_stix)
+
+        if nhaploblk < nchr:
+            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
+
+        # calculate number of marker blocks to assign to each chromosome
+        nblk = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
+
+        # ensure there are enough markers per chromosome
+        if numpy.any(nblk > chrgrp_len):
+            raise RuntimeError(
+                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
+            )
+
+        # calculate haplotype bins
+        hbin = haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+
+        # define shape
+        # (m,n,b,t)
+        s = (mat.shape[0], mat.shape[1], nhaploblk, u.shape[1])
+
+        # allocate haplotype matrix
+        # (m,n,b,t)
+        hmat = numpy.empty(s, dtype = u.dtype)
+
+        # get boundary indices
+        hstix, hspix, hlen = haplobin_bounds(hbin)
+
+        # OPTIMIZE: perhaps eliminate one loop using dot function
+        # fill haplotype matrix
+        for i in range(hmat.shape[3]):                          # for each trait
+            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
+                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
+
+        return hmat
+
+    @staticmethod
+    def _calc_xmap(ntaxa, nparent, unique_parents = True):
+        """
+        Calculate the cross map.
+
+        Parameters
+        ----------
+        ntaxa : int
+            Number of taxa.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(s,d)`` containing cross map indices.
+
+            Where:
+
+            - ``s`` is the number of elements in the upper triangle, including
+              or not including the diagonal (depending on ``unique_parents``).
+            - ``d`` is the number of parents in the cross.
+        """
+        if unique_parents:
+            return numpy.array(list(triudix(ntaxa,nparent)))
+        else:
+            return numpy.array(list(triuix(ntaxa,nparent)))
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_object(
+            cls,
+            nparent: Integral,
+            nhaploblk: Integral,
+            unique_parents: bool,
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "OptimalHaploidValueSelectionProblem":
+        # calculate estimated breeding values and relationships
+        haplomat = cls._calc_haplomat(pgmat, gpmod, nhaploblk)
+        xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
+        # construct class
+        out = cls(
+            haplomat = haplomat,
+            xmap = xmap,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
 
 class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHaploidValueSelectionProblem):
     """

@@ -18,6 +18,7 @@ from typing import Optional, Union
 from typing import Callable
 from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem, OptimalHaploidValueIntegerSelectionProblem, OptimalHaploidValueRealSelectionProblem, OptimalHaploidValueSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
 from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
@@ -354,9 +355,6 @@ class OptimalHaploidValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
             obj = soln.soln_obj[0]
             sel = soln.soln_decn[0]
 
-            # shuffle selection to ensure random mating
-            numpy.random.shuffle(sel)
-
             # add optimization details to miscellaneous output
             if miscout is not None:
                 miscout["obj"] = obj
@@ -402,6 +400,35 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueBaseSelection):
     # inherit __init__() implementation
 
     ############################ Object Properties #############################
+    @property
+    def soalgo(self) -> ConstrainedOptimizationAlgorithm:
+        """Single-objective optimization algorithm."""
+        return self._soalgo
+    @soalgo.setter
+    def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
+        """Set single-objective optimization algorithm."""
+        if value is None:
+            # construct default hillclimber
+            value = ConstrainedSteepestDescentSubsetHillClimber(self.rng)
+        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        self._soalgo = value
+
+    @property
+    def moalgo(self) -> ConstrainedOptimizationAlgorithm:
+        """Multi-objective opimization algorithm."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
+        """Set multi-objective opimization algorithm."""
+        if value is None:
+            # construct default multi-objective algorithm
+            value = ConstrainedNSGA2SubsetGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                pop_size = 100, # number of parents in population
+                rng = self.rng  # PRNG source
+            )
+        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        self._moalgo = value
 
     ############################## Object Methods ##############################
 
@@ -444,21 +471,26 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueBaseSelection):
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = gmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space = numpy.arange(len(xmap))
+        decn_space_lower = numpy.repeat(0, self.nconfig)
+        decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
 
         # construct problem
         prob = OptimalHaploidValueSubsetSelectionProblem.from_object(
-            gmat = gmat,
-            bvmat = bvmat,
-            cmatfcty = self.cmatfcty,
-            descale = self.descale,
-            ndecn = self.nparent,
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = self.nconfig,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -535,21 +567,26 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueBaseSelection):
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = gmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueRealSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, ntaxa)
-        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space_lower = numpy.repeat(0.0, len(xmap))
+        decn_space_upper = numpy.repeat(1.0, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
         prob = OptimalHaploidValueRealSelectionProblem.from_object(
-            gmat = gmat,
-            bvmat = bvmat,
-            cmatfcty = self.cmatfcty,
-            descale = self.descale,
-            ndecn = self.nparent,
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -626,21 +663,26 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueBaseSelection):
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = gmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueIntegerSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0, ntaxa)
-        decn_space_upper = numpy.repeat(ntaxa, ntaxa)
+        decn_space_lower = numpy.repeat(0, len(xmap))
+        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.ncross, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
         prob = OptimalHaploidValueIntegerSelectionProblem.from_object(
-            gmat = gmat,
-            bvmat = bvmat,
-            cmatfcty = self.cmatfcty,
-            descale = self.descale,
-            ndecn = self.nparent,
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -717,21 +759,26 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueBaseSelection):
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = gmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueBinarySelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0, ntaxa)
-        decn_space_upper = numpy.repeat(1, ntaxa)
+        decn_space_lower = numpy.repeat(0, len(xmap))
+        decn_space_upper = numpy.repeat(1, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
         prob = OptimalHaploidValueBinarySelectionProblem.from_object(
-            gmat = gmat,
-            bvmat = bvmat,
-            cmatfcty = self.cmatfcty,
-            descale = self.descale,
-            ndecn = self.nparent,
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

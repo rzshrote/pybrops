@@ -160,6 +160,32 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
 
     ########################## Private Object Methods ##########################
     @staticmethod
+    def _calc_xmap(ntaxa, nparent, unique_parents = True):
+        """
+        Calculate the cross map.
+
+        Parameters
+        ----------
+        ntaxa : int
+            Number of taxa.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(s,d)`` containing cross map indices.
+
+            Where:
+
+            - ``s`` is the number of elements in the upper triangle, including
+              or not including the diagonal (depending on ``unique_parents``).
+            - ``d`` is the number of parents in the cross.
+        """
+        if unique_parents:
+            return numpy.array(list(triudix(ntaxa,nparent)))
+        else:
+            return numpy.array(list(triuix(ntaxa,nparent)))
+    
+    @staticmethod
     def _calc_embv(
             nparent: int,
             ncross: int,
@@ -172,7 +198,11 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
         ) -> numpy.ndarray:
         # calculate cross map for our genotype matrix
         # (s,d)
-        xmap = numpy.array(list(triudix(pgmat.ntaxa,nparent))) if unique_parents else numpy.array(list(triuix(pgmat,nparent)))
+        xmap = ExpectedMaximumBreedingValueSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            nparent,
+            unique_parents
+        )
 
         # allocate matrix for output EMBVs
         # (s,t)
