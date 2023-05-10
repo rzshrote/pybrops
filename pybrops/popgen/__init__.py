@@ -1,15 +1,27 @@
+"""
+Module containing items related to population genetics.
+"""
+
+__all__ = [
+    "gmap",
+    "gmat",
+    "bvmat",
+    "cmat",
+    "ptdf"
+]
+
 # order dependent
 
 # genetic map components
-from . import gmap
+from pybrops.popgen import gmap
 
 # matrix components
-from . import gmat
-from . import bvmat
+from pybrops.popgen import gmat
+from pybrops.popgen import bvmat
 
 # other matrix components
-# from . import ldmat
-from . import cmat
+# from pybrops.popgen import ldmat
+from pybrops.popgen import cmat
 
 # data frame components
-from . import ptdf
+from pybrops.popgen import ptdf

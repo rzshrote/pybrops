@@ -2,8 +2,14 @@
 Module containing breeding program components.
 """
 
+__all__ = [
+    "prot",
+    "op",
+    "arch"
+]
+
 # order dependent imports!
 
-from . import prot
-from . import op
-from . import arch
+from pybrops.breed import prot
+from pybrops.breed import op
+from pybrops.breed import arch

@@ -11,7 +11,7 @@ from pybrops.core.error import check_is_ndarray
 from pybrops.core.error import check_ndarray_axis_len
 from pybrops.core.error import check_ndarray_dtype
 from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_float_in_interval
+from pybrops.core.error import check_is_in_interval
 from pybrops.core.error import check_ndarray_in_interval
 from pybrops.core.error import check_ndarray_dtype_is_object
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
@@ -169,7 +169,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
         # if p_anc is float, check for correct value range
         elif isinstance(p_anc, float):
             # check values
-            check_float_in_interval(p_anc, "p_anc", 0.0, 1.0)
+            check_is_in_interval(p_anc, "p_anc", 0.0, 1.0)
             p_anc = numpy.repeat(p_anc, gmat.nvrnt) # scalar -> (p,)
         
         # raise error for incorrect types

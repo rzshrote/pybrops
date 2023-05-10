@@ -2,19 +2,31 @@
 Module containing genetic map functionality.
 """
 
+__all__ = [
+    "util",
+    "GeneticMap",
+    "StandardGeneticMap",
+    "ExtendedGeneticMap",
+    "GeneticMapFunction",
+    "HaldaneMapFunction",
+    "KosambiMapFunction",
+    "GeneticMappableMatrix",
+    "DenseGeneticMappableMatrix"
+]
+
 # order dependent
-from . import util
+from pybrops.popgen.gmap import util
 
 # tier 0
-from . import GeneticMap
-from . import StandardGeneticMap
-from . import ExtendedGeneticMap
+from pybrops.popgen.gmap import GeneticMap
+from pybrops.popgen.gmap import StandardGeneticMap
+from pybrops.popgen.gmap import ExtendedGeneticMap
 
 # tier 1
-from . import GeneticMapFunction
-from . import HaldaneMapFunction
-from . import KosambiMapFunction
+from pybrops.popgen.gmap import GeneticMapFunction
+from pybrops.popgen.gmap import HaldaneMapFunction
+from pybrops.popgen.gmap import KosambiMapFunction
 
 # tier 2
-from . import GeneticMappableMatrix
-from . import DenseGeneticMappableMatrix
+from pybrops.popgen.gmap import GeneticMappableMatrix
+from pybrops.popgen.gmap import DenseGeneticMappableMatrix

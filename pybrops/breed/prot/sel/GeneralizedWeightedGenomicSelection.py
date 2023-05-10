@@ -12,7 +12,7 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
-from pybrops.core.error.error_value_python import check_Number_in_interval, check_is_gt
+from pybrops.core.error.error_value_python import check_is_in_interval, check_is_gt
 from pybrops.core.random import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
@@ -139,7 +139,7 @@ class ConstrainedGeneralizedWeightedGenomicSelection(SelectionProtocol):
     def alpha(self, value: Real) -> None:
         """Set exponent to which to raise the favorable allele frequency."""
         check_is_Real(value, "alpha")
-        check_Number_in_interval(value, "alpha", 0, 1)
+        check_is_in_interval(value, "alpha", 0.0, 1.0)
         self._alpha = value
 
     @property

@@ -68,63 +68,40 @@ def check_is_eq(v: object, vname: str, value: object) -> None:
     if v != value:
         raise ValueError("variable '{0}' is not equal to {1}".format(vname, value))
 
-def check_is_gt(v, vname, value):
+def check_is_gt(v: object, vname: str, value: object):
     """Raise error if ``obj`` is not greater than ``value``."""
     if v <= value:
         raise ValueError("variable '{0}' is not greater than {1}".format(vname, value))
 
-def check_is_gteq(v, vname, value):
+def check_is_gteq(v: object, vname: str, value: object):
     """Raise error if ``obj`` is not greater than ``value``."""
     if v < value:
         raise ValueError("variable '{0}' is not greater than {1}".format(vname, value))
 
-def check_is_lt(v, vname, value):
+def check_is_lt(v: object, vname: str, value: object):
     """Raise error if ``v`` is not less than ``value``."""
     if v >= value:
         raise ValueError("variable '{0}' is not less than {1}".format(vname, value))
 
-def check_is_lteq(v, vname, value):
+def check_is_lteq(v: object, vname: str, value: object):
     """Raise error if ``v`` is not less than ``value``."""
     if v > value:
         raise ValueError("variable '{0}' is not less than or equal to {1}".format(vname, value))
 
-def check_float_in_interval(v: float, vname: str, vmin: float, vmax: float) -> None:
+def check_is_in_interval(v: object, vname: str, vmin: object, vmax: object) -> None:
     """
-    Check if a floating point value is in the provided range.
+    Check if a value is in a specified interval.
     
     Parameters
     ----------
-    v : float
-        Input floating point value.
+    v : object
+        Input numerical value.
     vname : str
         Name of the variable of which to test.
-    vmin : float
-        Minimum value for the input floating point value.
-    vmax : float
-        Maximum value for the input floating point value.
-    
-    Returns
-    -------
-    out : outtype
-        outdesc
-    """
-    if (v < vmin) or (v > vmax):
-        raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
-
-def check_Number_in_interval(v: numbers.Number, vname: str, vmin: numbers.Number, vmax: numbers.Number):
-    """
-    Check if a number is in the provided range.
-    
-    Parameters
-    ----------
-    v : float
-        Input numeric value.
-    vname : str
-        Name of the variable of which to test.
-    vmin : float
-        Minimum value for the input numeric value (inclusive).
-    vmax : float
-        Maximum value for the input numeric value (inclusive).
+    vmin : object
+        Minimum value for the input value.
+    vmax : object
+        Maximum value for the input value.
     
     Returns
     -------

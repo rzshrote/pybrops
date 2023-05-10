@@ -1,14 +1,24 @@
 """
 Module containing genotype matrix containers
 """
+
+__all__ = [
+    "GenotypeMatrix",
+    "HaplotypeMatrix",
+    "PhasedGenotypeMatrix",
+    "PhasedHaplotypeMatrix",
+    "DenseGenotypeMatrix",
+    "DensePhasedGenotypeMatrix"
+]
+
 # imports are order dependent!!!
 
 # abstract classes
-from . import GenotypeMatrix
-from . import HaplotypeMatrix
-from . import PhasedGenotypeMatrix
-from . import PhasedHaplotypeMatrix
+from pybrops.popgen.gmat import GenotypeMatrix
+from pybrops.popgen.gmat import HaplotypeMatrix
+from pybrops.popgen.gmat import PhasedGenotypeMatrix
+from pybrops.popgen.gmat import PhasedHaplotypeMatrix
 
 # implemented dense classes
-from . import DenseGenotypeMatrix
-from . import DensePhasedGenotypeMatrix
+from pybrops.popgen.gmat import DenseGenotypeMatrix
+from pybrops.popgen.gmat import DensePhasedGenotypeMatrix

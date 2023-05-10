@@ -1,18 +1,30 @@
 """
 Module containing genomic prediction models.
 """
+
+__all__ = [
+    "GenomicModel",
+    "NonlinearGenomicModel",
+    "LinearGenomicModel",
+    "AdditiveLinearGenomicModel",
+    "AdditiveDominanceLinearGenomicModel",
+    "AdditiveDominanceEpistaticLinearGenomicModel",
+    "DenseLinearGenomicModel",
+    "DenseAdditiveLinearGenomicModel"
+]
+
 # imports are order dependent!!!
 
 # utilities
 
 # abstract interfaces
-from . import GenomicModel
-from . import NonlinearGenomicModel
-from . import LinearGenomicModel
-from . import AdditiveLinearGenomicModel
-from . import AdditiveDominanceLinearGenomicModel
-from . import AdditiveDominanceEpistaticLinearGenomicModel
+from pybrops.model.gmod import GenomicModel
+from pybrops.model.gmod import NonlinearGenomicModel
+from pybrops.model.gmod import LinearGenomicModel
+from pybrops.model.gmod import AdditiveLinearGenomicModel
+from pybrops.model.gmod import AdditiveDominanceLinearGenomicModel
+from pybrops.model.gmod import AdditiveDominanceEpistaticLinearGenomicModel
 
 # concrete class implementations
-from . import DenseLinearGenomicModel
-from . import DenseAdditiveLinearGenomicModel
+from pybrops.model.gmod import DenseLinearGenomicModel
+from pybrops.model.gmod import DenseAdditiveLinearGenomicModel

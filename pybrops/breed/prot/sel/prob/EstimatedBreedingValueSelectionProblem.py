@@ -27,7 +27,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
 class EstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
-    """Helper class containing common properties for CGS Problems."""
+    """Helper class containing common properties for EBV selection problems."""
 
     ########################## Special Object Methods ##########################
     @abstractmethod

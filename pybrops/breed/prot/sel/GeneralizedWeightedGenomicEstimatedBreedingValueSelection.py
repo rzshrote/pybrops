@@ -1,14 +1,18 @@
 """
-Module defining conventional genomic selection protocols.
+Module implementing selection protocols for selecting based on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs).
 """
+
+__all__ = [
+
+]
 
 # list of all public objects in this module
 __all__ = [
-    "GenomicEstimatedBreedingValueBaseSelection",
-    "GenomicEstimatedBreedingValueSubsetSelection",
-    "GenomicEstimatedBreedingValueRealSelection",
-    "GenomicEstimatedBreedingValueIntegerSelection",
-    "GenomicEstimatedBreedingValueBinarySelection"
+    "GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection"
 ]
 
 # imports
@@ -20,11 +24,12 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
+from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval
 from pybrops.core.random import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem, GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
@@ -34,9 +39,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
+class GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     """
-    Semi-abstract class for Conventional Genomic Selection (CGS) with constraints.
+    Semiabstract class for Generalized Weighted Genomic Estimated Breeding Value (gwGEBV) selection with constraints.
     """
 
     ########################## Special Object Methods ##########################
@@ -46,6 +51,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
             nparent: Integral, 
             ncross: Integral, 
             nprogeny: Integral,
+            alpha: Real,
             method: str,
             nobj: Integral,
             obj_wt: Optional[numpy.ndarray] = None,
@@ -75,7 +81,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         kwargs : dict
             Additional keyword arguments.
         """
-        super(GenomicEstimatedBreedingValueBaseSelection, self).__init__(
+        super(GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -98,43 +104,56 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
+        self.alpha = alpha
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
 
     ############################ Object Properties #############################
     @property
-    def nparent(self) -> int:
+    def nparent(self) -> Integral:
         """Number of parents to select."""
         return self._nparent
     @nparent.setter
-    def nparent(self, value: int) -> None:
+    def nparent(self, value: Integral) -> None:
         """Set number of parents to select."""
         check_is_Integral(value, "nparent")      # must be int
         check_is_gt(value, "nparent", 0)    # int must be >0
         self._nparent = value
 
     @property
-    def ncross(self) -> int:
+    def ncross(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
     @ncross.setter
-    def ncross(self, value: int) -> None:
+    def ncross(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
         self._ncross = value
 
     @property
-    def nprogeny(self) -> int:
+    def nprogeny(self) -> Integral:
         """Number of progeny to derive from each cross configuration."""
         return self._nprogeny
     @nprogeny.setter
-    def nprogeny(self, value: int) -> None:
+    def nprogeny(self, value: Integral) -> None:
         """Set number of progeny to derive from each cross configuration."""
         check_is_Integral(value, "nprogeny")     # must be int
         check_is_gt(value, "nprogeny", 0)   # int must be >0
         self._nprogeny = value
+
+    @property
+    def alpha(self) -> Real:
+        """Exponent with which to adjust allele values. Must be in range [0,1]."""
+        return self._alpha
+    @alpha.setter
+    def alpha(self, value: Real) -> None:
+        """Set exponent with which to adjust allele values. Must be in range [0,1]."""
+        check_is_Real(value, "alpha")
+        check_is_in_interval(value, "alpha", 0.0, 1.0)
+        self._alpha = value
+    
 
     @property
     def rng(self) -> Union[Generator,RandomState]:
@@ -152,37 +171,27 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
     @abstractmethod
     def soalgo(self) -> ConstrainedOptimizationAlgorithm:
         """Single-objective optimization algorithm."""
-        return self._soalgo
+        raise NotImplementedError("method is abstract")
     @soalgo.setter
     @abstractmethod
     def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
-        if value is None:
-            # construct default hillclimber
-            value = ConstrainedSteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
-        self._soalgo = value
+        raise NotImplementedError("method is abstract")
 
     @property
     @abstractmethod
     def moalgo(self) -> ConstrainedOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
-        return self._moalgo
+        raise NotImplementedError("method is abstract")
     @moalgo.setter
     @abstractmethod
     def moalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
-        if value is None:
-            # construct default multi-objective algorithm
-            value = ConstrainedNSGA2SubsetGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                pop_size = 100, # number of parents in population
-                rng = self.rng  # PRNG source
-            )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
-        self._moalgo = value
+        raise NotImplementedError("method is abstract")
 
+    ############################################################################
     ############################## Object Methods ##############################
+    ############################################################################
 
     ########## Optimization Problem Construction ###########
     # leave abstract since it depends on the problem type
@@ -388,14 +397,14 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
-class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValueBaseSelection):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    # use old init
+    # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ############################ Object Properties #############################
     @property
@@ -428,7 +437,9 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
+    ############################################################################
     ############################## Object Methods ##############################
+    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -437,7 +448,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
             gmat: GenotypeMatrix, 
             ptdf: PhenotypeDataFrame, 
             bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
+            gpmod: AdditiveLinearGenomicModel, 
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
@@ -478,9 +489,10 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_object(
             gmat = gmat,
-            gpmod = gpmod,
+            algpmod = gpmod,
+            alpha = self.alpha,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -502,19 +514,19 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         return prob
 
     ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    # pareto() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ################# Selection Functions ##################
-    # use super select() function
+    # select() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBaseSelection):
+class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a real search space.
     """
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    # use old init
+    # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -568,9 +580,10 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.from_object(
             gmat = gmat,
-            gpmod = gpmod,
+            algpmod = gpmod,
+            alpha = self.alpha,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -592,19 +605,19 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
         return prob
 
     ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    # pareto() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ################# Selection Functions ##################
-    # use super select() function
+    # select() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValueBaseSelection):
+class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in an integer search space.
     """
     ############################################################################
     ########################## Special Object Methods ##########################
     ############################################################################
-    # use old init
+    # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -658,9 +671,10 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.from_object(
             gmat = gmat,
-            gpmod = gpmod,
+            algpmod = gpmod,
+            alpha = self.alpha,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -682,23 +696,19 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         return prob
 
     ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    # pareto() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ################# Selection Functions ##################
-    # use super select() function
+    # select() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValueBaseSelection):
+class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    # use BaseConventionalGenomicSelection __init__()
+    # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -748,9 +758,10 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.from_object(
             gmat = gmat,
-            gpmod = gpmod,
+            algpmod = gpmod,
+            alpha = self.alpha,
             ndecn = self.nparent,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -772,7 +783,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         return prob
 
     ############## Pareto Frontier Functions ###############
-    # use BaseConventionalGenomicSelection pareto() function
+    # pareto() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ################# Selection Functions ##################
-    # use BaseConventionalGenomicSelection select() function
+    # select() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
