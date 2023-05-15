@@ -1,37 +1,49 @@
+"""
+Module implementing selection protocols for maximum mean expected heterozygosity selection.
+"""
+
+__all__ = [
+    "RandomBaseSelection",
+    "RandomBinarySelection",
+    "RandomIntegerSelection",
+    "RandomRealSelection",
+    "RandomSubsetSelection"
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
-from typing import Callable, Optional, Tuple, Union
-
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from typing import Optional, Union
+from typing import Callable
+from pybrops.breed.prot.sel.prob.RandomSelectionProblem import RandomBinarySelectionProblem, RandomIntegerSelectionProblem, RandomRealSelectionProblem, RandomSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.core.util.haplo import haplomat
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
-from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.random.prng import global_prng
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
+class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     """
-    Semi-abstract class for Optimal Population Value (OPV) Selection with constraints.
+    Semi-abstract class for Random Selection (RS) with constraints.
     """
+
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
             nparent: Integral, 
             ncross: Integral, 
             nprogeny: Integral,
-            nhaploblk: Integral,
+            ntrait: Integral,
             method: str,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
@@ -54,14 +66,14 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for OptimalPopulationValueSelection.
+        Constructor for ConventionalGenomicSelection.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(OptimalPopulationValueSelection, self).__init__(
+        super(RandomBaseSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -84,7 +96,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nhaploblk = nhaploblk
+        self.ntrait = ntrait
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
@@ -124,14 +136,16 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         self._nprogeny = value
 
     @property
-    def nhaploblk(self) -> Integral:
-        """Number of haplotype blocks to consider."""
-        return self._nhaploblk
-    @nhaploblk.setter
-    def nhaploblk(self, value: Integral) -> None:
-        """Set number of haplotype blocks to consider."""
-        self._nhaploblk = value
-    
+    def ntrait(self) -> Integral:
+        """Number of random traits."""
+        return self._ntrait
+    @ntrait.setter
+    def ntrait(self, value: Integral) -> None:
+        """Set number of random traits."""
+        check_is_Integral(value, "ntrait")      # must be int
+        check_is_gt(value, "ntrait", 0)    # int must be >0
+        self._ntrait = value
+
     @property
     def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""
@@ -174,18 +188,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
     # leave problem() abstract
 
     ############## Pareto Frontier Functions ###############
-    def pareto(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: AdditiveLinearGenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            miscout: dict = None, 
-            **kwargs: dict
-        ) -> Tuple[numpy.ndarray,numpy.ndarray]:
+    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -253,18 +256,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         return frontier, sel_config
 
     ################# Selection Functions ##################
-    def select(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: AdditiveLinearGenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            miscout: dict = None, 
-            **kwargs: dict
-        ) -> Tuple[PhasedGenotypeMatrix,numpy.ndarray,numpy.ndarray,numpy.ndarray]:
+    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.
 
@@ -308,7 +300,10 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         """
         # check inputs
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_AdditiveLinearGenomicModel(gpmod, "gpmod")
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+        check_is_Real(t_cur, "t_cur")
+        check_is_Real(t_max, "t_max")
 
         # Solve problem using a single objective method
         if self.method == "single":
@@ -372,7 +367,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
+class RandomSubsetSelection(RandomBaseSelection):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """
@@ -420,7 +415,7 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
             gmat: GenotypeMatrix, 
             ptdf: PhenotypeDataFrame, 
             bvmat: BreedingValueMatrix, 
-            gpmod: AdditiveLinearGenomicModel, 
+            gpmod: GenomicModel, 
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
@@ -459,11 +454,271 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = OptimalPopulationValueSubsetSelectionProblem.from_object(
-            nhaploblk = self.nhaploblk,
-            pgmat = pgmat,
-            gpmod = gpmod,
+        prob = RandomSubsetSelectionProblem.from_object(
+            ntaxa = ntaxa,
+            ntrait = self.ntrait,
             ndecn = self.nparent,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class RandomRealSelection(RandomBaseSelection):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    # inherit __init__() implementation
+
+    ############################ Object Properties #############################
+
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # get decision space parameters
+        ntaxa = pgmat.ntaxa
+        decn_space_lower = numpy.repeat(0.0, ntaxa)
+        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = RandomRealSelectionProblem.from_object(
+            ntaxa = ntaxa,
+            ntrait = self.ntrait,
+            ndecn = ntaxa,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class RandomIntegerSelection(RandomBaseSelection):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    # inherit __init__() implementation
+
+    ############################ Object Properties #############################
+
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # get decision space parameters
+        ntaxa = pgmat.ntaxa
+        decn_space_lower = numpy.repeat(0, ntaxa)
+        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.ncross, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = RandomIntegerSelectionProblem.from_object(
+            ntaxa = ntaxa,
+            ntrait = self.ntrait,
+            ndecn = ntaxa,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class RandomBinarySelection(RandomBaseSelection):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    # inherit __init__() implementation
+
+    ############################ Object Properties #############################
+
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # get decision space parameters
+        ntaxa = pgmat.ntaxa
+        decn_space_lower = numpy.repeat(0, ntaxa)
+        decn_space_upper = numpy.repeat(1, ntaxa)
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = RandomBinarySelectionProblem.from_object(
+            ntaxa = ntaxa,
+            ntrait = self.ntrait,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
