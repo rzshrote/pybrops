@@ -11,14 +11,14 @@ from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+# from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
+# from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval, check_is_lt
+from pybrops.core.error.error_value_python import check_is_in_interval
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

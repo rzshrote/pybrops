@@ -291,7 +291,6 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
         return out
 
-
 class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalContributionSelectionProblem):
     """
     Class representing an Optimal Contribution Selection Problem for subset
