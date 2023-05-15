@@ -1,12 +1,12 @@
 """
-Module implementing Optimal Population Value (OPV) Selection optimization problems.
+Module implementing Multi-Objective Genomic Selection (MOGS) optimization problems.
 """
 
 __all__ = [
-    "OptimalPopulationValueSubsetSelectionProblem"
+    "MultiObjectiveSubsetSelectionProblem"
 ]
 
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
@@ -15,20 +15,27 @@ import numpy
 # from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.targetfn import target_positive
+from pybrops.breed.prot.sel.weightfn import weight_absolute
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
-    """Helper class to implement properties common to OPV."""
+class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+    """Helper class to implement properties common to MOGS."""
 
     ########################## Special Object Methods ##########################
+    @abstractmethod
     def __init__(
             self,
-            haplomat: numpy.ndarray,
+            geno: numpy.ndarray,
+            ploidy: Integral,
+            mkrwt: numpy.ndarray,
+            tfreq: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -48,19 +55,51 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
             **kwargs: dict
         ) -> None:
         """
-        Constructor for OptimalPopulationValueSelectionProblem.
+        Constructor for MultiObjectiveSelectionProblem.
         
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        geno : numpy.ndarray
+            A genotype matrix of shape ``(n,p)`` representing only biallelic
+            loci. One of the two alleles at a locus is coded using a ``1``. The
+            other allele is coded as a ``0``. ``mat`` holds the counts of the
+            allele coded by ``1``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``p`` is the number of markers.
+
+            Example::
+
+                # matrix of shape (n = 3, p = 4)
+                geno = numpy.array([[0,2,1,0],
+                                    [2,2,1,1],
+                                    [0,1,0,2]])
+        ploidy : Integral
+            Number of phases that the genotype matrix ``mat`` represents.
+        tfreq : numpy.ndarray
+            A target allele frequency matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
             - ``t`` is the number of traits.
+
+            Example::
+
+                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
+        mkrwt : numpy.ndarray
+            A marker weight coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Remarks:
+
+            - All values in ``mkrwt`` must be non-negative.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -110,7 +149,7 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        super(OptimalPopulationValueSelectionProblem, self).__init__(
+        super(MultiObjectiveSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -130,108 +169,117 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
+        self.geno = geno
+        self.ploidy = ploidy
+        self.mkrwt = mkrwt
+        self.tfreq = tfreq
 
     ############################ Object Properties #############################
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""
         # return number of traits in haplotype matrix
-        return self._haplomat.shape[3]
+        return 2 * self._mkrwt.shape[1]
 
-    ################### Haplotype matrix ###################
+    ################# genotype information #################
     @property
-    def haplomat(self) -> numpy.ndarray:
-        """Haplotype effect matrix of shape ``(m,n,h,t)``."""
-        return self._haplomat
-    @haplomat.setter
-    def haplomat(self, value: numpy.ndarray) -> None:
-        """Set haplotype effect matrix."""
-        check_is_ndarray(value, "haplomat")
-        check_ndarray_ndim(value, "haplomat", 4)
-        self._haplomat = value
+    def geno(self) -> numpy.ndarray:
+        """Genotype matrix of shape (n,p) in {0,1,2} format."""
+        return self._geno
+    @geno.setter
+    def geno(self, value: numpy.ndarray) -> None:
+        """Set genotype matrix."""
+        check_is_ndarray(value, "geno")
+        check_ndarray_ndim(value, "geno", 2)
+        self._geno = value
     
     ##################### Ploidy level #####################
     @property
     def ploidy(self) -> Integral:
         """ploidy."""
-        return self._haplomat.shape[0]
+        return self._ploidy
+    @ploidy.setter
+    def ploidy(self, value: Integral) -> None:
+        """Set ploidy."""
+        check_is_Integral(value, "ploidy")
+        self._ploidy = value
+    
+    @property
+    def mkrwt(self) -> numpy.ndarray:
+        """Marker weights."""
+        return self._mkrwt
+    @mkrwt.setter
+    def mkrwt(self, value: numpy.ndarray) -> None:
+        """Set marker weights."""
+        self._mkrwt = value
 
+    ############ target allele frequency values ############
+    @property
+    def tfreq(self) -> numpy.ndarray:
+        """Target allele frequency."""
+        return self._tfreq
+    @tfreq.setter
+    def tfreq(self, value: numpy.ndarray) -> None:
+        """Set target allele frequency."""
+        check_is_ndarray(value, "tfreq")
+        self._tfreq = value
+        self._tminor = self._calc_tminor(self._tfreq)
+        self._thet = self._calc_thet(self._tfreq)
+        self._tmajor = self._calc_tminor(self._tfreq)
+    
+    @property
+    def tminor(self) -> numpy.ndarray:
+        """Whether the target allele frequency is fixation of a minor allele."""
+        return self._tminor
+    
+    @property
+    def thet(self) -> numpy.ndarray:
+        """Whether the target allele frequency is heterozygous."""
+        return self._thet
+    
+    @property
+    def tmajor(self) -> numpy.ndarray:
+        """Whether the target allele frequency is fixation of a major allele."""
+        return self._tmajor
+    
     ######################### Private Object Methods ###########################
     @staticmethod
-    def _calc_haplomat(
-            pgmat: PhasedGenotypeMatrix, 
-            algpmod: AdditiveLinearGenomicModel, 
-            nhaploblk: Integral
-        ) -> numpy.ndarray:
-        """
-        Calculate a haplotype matrix from a genome matrix and model.
+    def _calc_mkrwt(weight: Union[numpy.ndarray,Callable], u_a: numpy.ndarray):
+        if callable(weight):
+            return weight(u_a)
+        elif isinstance(weight, numpy.ndarray):
+            return weight
+        else:
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+    
+    @staticmethod
+    def _calc_tfreq(target: Union[numpy.ndarray,Callable], u_a: numpy.ndarray):
+        if callable(target):
+            return target(u_a)
+        elif isinstance(target, numpy.ndarray):
+            return target
+        else:
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
 
-        Parameters
-        ----------
-        gmat : PhasedGenotypeMatrix
-            A genome matrix.
-        mod : DenseAdditiveLinearGenomicModel
-            A genomic prediction model.
-
-        Returns
-        -------
-        hmat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,b,t)``.
-        """
-        mat         = pgmat.mat              # get genotypes
-        genpos      = pgmat.vrnt_genpos      # get genetic positions
-        chrgrp_stix = pgmat.vrnt_chrgrp_stix # get chromosome start indices
-        chrgrp_spix = pgmat.vrnt_chrgrp_spix # get chromosome stop indices
-        chrgrp_len  = pgmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        u           = algpmod.u_a              # get regression coefficients
-
-        if (chrgrp_stix is None) or (chrgrp_spix is None):
-            raise RuntimeError("markers are not sorted by chromosome position")
-
-        # get number of chromosomes
-        nchr = len(chrgrp_stix)
-
-        if nhaploblk < nchr:
-            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
-
-        # calculate number of marker blocks to assign to each chromosome
-        nblk = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
-
-        # ensure there are enough markers per chromosome
-        if numpy.any(nblk > chrgrp_len):
-            raise RuntimeError(
-                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
-            )
-
-        # calculate haplotype bins
-        hbin = haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
-
-        # define shape
-        # (m,n,b,t)
-        s = (mat.shape[0], mat.shape[1], nhaploblk, u.shape[1])
-
-        # allocate haplotype matrix
-        # (m,n,b,t)
-        hmat = numpy.empty(s, dtype = u.dtype)
-
-        # get boundary indices
-        hstix, hspix, hlen = haplobin_bounds(hbin)
-
-        # OPTIMIZE: perhaps eliminate one loop using dot function
-        # fill haplotype matrix
-        for i in range(hmat.shape[3]):                          # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
-
-        return hmat
-
+    @staticmethod
+    def _calc_tminor(tfreq: numpy.ndarray):
+        return (tfreq == 0.0)
+    
+    @staticmethod
+    def _calc_tmajor(tfreq: numpy.ndarray):
+        return (tfreq == 1.0)
+    
+    @staticmethod
+    def _calc_thet(tfreq: numpy.ndarray):
+        return (tfreq > 0.0) & (tfreq < 1.0)
+    
     ############################## Class Methods ###############################
     @classmethod
     def from_object(
             cls,
-            nhaploblk: Integral,
-            pgmat: PhasedGenotypeMatrix,
+            gmat: PhasedGenotypeMatrix,
+            weight: Union[numpy.ndarray,Callable],
+            target: Union[numpy.ndarray,Callable],
             gpmod: AdditiveLinearGenomicModel,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -250,13 +298,19 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "OptimalPopulationValueSelectionProblem":
-        # calculate estimated breeding values and relationships
-        haplomat = cls._calc_haplomat(pgmat, gpmod, nhaploblk)
+        ) -> "MultiObjectiveSelectionProblem":
+        # extract genotype matrix
+        geno = gmat.mat_asformat("{0,1,2}")
+        ploidy = gmat.ploidy
+        mkrwt = cls._calc_mkrwt(weight, gpmod.u_a)
+        tfreq = cls._calc_tfreq(target, gpmod.u_a)
 
         # construct class
         out = cls(
-            haplomat = haplomat,
+            geno = geno,
+            ploidy = ploidy,
+            mkrwt = mkrwt,
+            tfreq = tfreq,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -278,15 +332,18 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
 
         return out
 
-class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalPopulationValueSelectionProblem):
+class MultiObjectiveSubsetSelectionProblem(SubsetSelectionProblem,MultiObjectiveSelectionProblem):
     """
-    docstring for SubsetOptimalPopulationValueSelectionProblem.
+    docstring for SubsetMultiObjectiveSelectionProblem.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            haplomat: numpy.ndarray,
+            geno: numpy.ndarray,
+            ploidy: Integral,
+            mkrwt: numpy.ndarray,
+            tfreq: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -306,19 +363,51 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetOptimalPopulationValueSelectionProblem.
+        Constructor for SubsetMultiObjectiveSelectionProblem.
         
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        geno : numpy.ndarray
+            A genotype matrix of shape ``(n,p)`` representing only biallelic
+            loci. One of the two alleles at a locus is coded using a ``1``. The
+            other allele is coded as a ``0``. ``mat`` holds the counts of the
+            allele coded by ``1``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
             - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``p`` is the number of markers.
+
+            Example::
+
+                # matrix of shape (n = 3, p = 4)
+                geno = numpy.array([[0,2,1,0],
+                                    [2,2,1,1],
+                                    [0,1,0,2]])
+        ploidy : Integral
+            Number of phases that the genotype matrix ``mat`` represents.
+        tfreq : numpy.ndarray
+            A target allele frequency matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
             - ``t`` is the number of traits.
+
+            Example::
+
+                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
+        mkrwt : numpy.ndarray
+            A marker weight coefficients matrix of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+
+            Remarks:
+
+            - All values in ``mkrwt`` must be non-negative.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -368,7 +457,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        super(OptimalPopulationValueSubsetSelectionProblem, self).__init__(
+        super(MultiObjectiveSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -388,7 +477,10 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
+        self.geno = geno
+        self.ploidy = ploidy
+        self.mkrwt = mkrwt
+        self.tfreq = tfreq
 
     ############################## Object Methods ##############################
     def latentfn(
@@ -398,8 +490,47 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Score a population of individuals based on Optimal Population Value
-        Selection.
+        Multi-objective genomic selection objective function.
+
+        - The goal is to minimize all objectives for this function.
+        - This is a bare bones function. Minimal error checking is done.
+
+        Objectives: :math:`F(\\textbf{x})`
+
+        .. math::
+
+            F(\\textbf{x}) = {[f^{\\textup{PAU}}(\\textbf{x}), f^{\\textup{PAFD}}(\\textbf{x})]}'
+
+        Population Allele Unavailability (PAU): :math:`f^{\\textup{PAU}}(\\textbf{x})`
+
+        .. math::
+
+            f^{\\textup{PAU}}(\\textbf{x}) = \\textbf{w} \\cdot \\textbf{u}
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency.
+        From the selection allele frequencies and the target allele frequencies
+        ``tfreq``, determine if the target frequencies can be attained after
+        unlimited generations of selection. If the target allele frequency at a
+        locus cannot be attained, score locus as ``1``, otherwise score as
+        ``0``. Store this into a binary score vector :math:`\\textbf{u}`.
+        Take the dot product between the binary score vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAU}}(\\textbf{x})` and return the result.
+
+        Population Allele Frequency Distance (PAFD): :math:`f^{\\textup{PAFD}}(\\textbf{x})`
+
+        .. math::
+            f^{\\textup{PAFD}}(\\textbf{x}) = \\textbf{w} \\cdot \\left | \\textbf{p}_{x} - \\textbf{p}_{t} \\right |
+
+        Given a genotype matrix ``mat`` and a selection indices vector
+        :math:`\\textbf{x} =` ``sel``, calculate the selection allele frequency
+        :math:`\\textbf{p}_{x}`. From the selection allele frequencies and the
+        target allele frequencies :math:`\\textbf{p}_{t} =` ``tfreq``,
+        calculate the absolute value of the difference between the two vectors.
+        Finally, take the dot product between the difference vector and the marker
+        weight vector :math:`\\textbf{w} =` ``mkrwt`` to calculate
+        :math:`f^{\\textup{PAFD}}(\\textbf{x})` and return the result.
 
         Parameters
         ----------
@@ -413,38 +544,71 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
         Returns
         -------
         out : numpy.ndarray
-            An OPV matrix of shape ``(t,)``.
+            An MOGS matrix of shape ``(t,)``.
 
             Where:
 
             - ``t`` is the number of traits.
         """
-        # get max haplotype value
-        # (m,n,h,t)[:,(k,),:,:] -> (m,k,h,t)
-        # (m,k/2,2,h,t).max((0,1)) -> (h,t)
-        # (h,t).sum(0) -> (t,)
-        # scalar * (t,) -> (t,)
-        out = -self.ploidy * self._haplomat[:,x,:,:].max((0,1)).sum(0)
+        # calculate the allele frequency of the selected subset
+        # (n,p)[(k,),:,None] -> (p,1)
+        pfreq = (1.0 / (self.ploidy * len(x))) * self.geno[x,:,None].sum(0)
+
+        # determine where allele frequencies are < 1.0
+        # (p,1)
+        p_ltmajor = (pfreq < 1.0)
+
+        # determine where allele frequencies are > 0.0
+        # (p,1)
+        p_gtminor = (pfreq > 0.0)
+
+        # determine where allele frequencies are < 1.0 and > 0.0
+        # (p,1)
+        p_het = numpy.logical_and(p_ltmajor, p_gtminor)
+
+        # determine where alleles are unavailable using precomputed arrays
+        # (p,t)
+        allele_unavail = numpy.logical_not(
+            numpy.logical_or(
+                numpy.logical_and(p_ltmajor, self.tminor), 
+                numpy.logical_or(
+                    numpy.logical_and(p_het, self.thet), 
+                    numpy.logical_and(p_gtminor, self.tmajor)
+                )
+            )
+        )
+
+        # calculate the manhattan distance and PAFD
+        # (p,t) -> (t,)
+        pafd = (self.mkrwt * numpy.absolute(self.tfreq - pfreq)).sum(0)
+        
+        # calculate the allele unavailability
+        # (p,t) -> (t,)
+        pau = (self.mkrwt * allele_unavail).sum(0)
+
+        # concatenate to make MOGS vector
+        # (t,) and (t,) -> (t + t,)
+        out = numpy.concatenate([pau, pafd])
 
         return out
 
 # need better interpretation of the Real scenario
-# class OptimalPopulationValueRealSelectionProblem(RealSelectionProblem,OPVSProblemProperties):
+# class MultiObjectiveRealSelectionProblem(RealSelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for OptimalPopulationValueRealSelectionProblem.
+#     docstring for MultiObjectiveRealSelectionProblem.
 #     """
 #     pass
 
 # need better interpretation of the Integer scenario
-# class OptimalPopulationValueIntegerSelectionProblem(IntegerSelectionProblem,OPVSProblemProperties):
+# class MultiObjectiveIntegerSelectionProblem(IntegerSelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for OptimalPopulationValueIntegerSelectionProblem.
+#     docstring for MultiObjectiveIntegerSelectionProblem.
 #     """
 #     pass
 
 # need better interpretation of the Binary scenario
-# class OptimalPopulationValueBinarySelectionProblem(BinarySelectionProblem,OPVSProblemProperties):
+# class MultiObjectiveBinarySelectionProblem(BinarySelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for OptimalPopulationValueBinarySelectionProblem.
+#     docstring for MultiObjectiveBinarySelectionProblem.
 #     """
 #     pass
