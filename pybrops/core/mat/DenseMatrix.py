@@ -8,10 +8,10 @@ import h5py
 from typing import Any, Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_file_exists
-from pybrops.core.error import check_group_in_hdf5
-from pybrops.core.error import error_readonly
-from pybrops.core.error import check_is_ndarray
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.util.h5py import save_dict_to_hdf5

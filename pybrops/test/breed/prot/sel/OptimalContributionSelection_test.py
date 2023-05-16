@@ -9,13 +9,13 @@ from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory i
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
-from pybrops.test import not_raises
-from pybrops.test import assert_docstring
-from pybrops.test import assert_abstract_method
-from pybrops.test import assert_abstract_function
-from pybrops.test import assert_abstract_property
-from pybrops.test import assert_concrete_method
-from pybrops.test import assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_max_inbreeding_constraint, trans_ndpt_to_vec_dist, trans_sum_inbmax_penalty

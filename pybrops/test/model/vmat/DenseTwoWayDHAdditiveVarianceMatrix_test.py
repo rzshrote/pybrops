@@ -1,13 +1,13 @@
 import pytest
 import numpy
 
-from pybrops.test import not_raises
-from pybrops.test import assert_docstring
-from pybrops.test import assert_abstract_method
-from pybrops.test import assert_abstract_function
-from pybrops.test import assert_abstract_property
-from pybrops.test import assert_concrete_method
-from pybrops.test import assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix import DenseTwoWayDHAdditiveGeneticVarianceMatrix
 # from pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix import is_DenseTwoWayDHAdditiveGeneticVarianceMatrix

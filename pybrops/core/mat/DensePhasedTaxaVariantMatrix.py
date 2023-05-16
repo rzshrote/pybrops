@@ -8,7 +8,7 @@ from typing import Any, Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis

@@ -7,11 +7,11 @@ from typing import Any, Optional, Sequence, Union
 import numpy
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_iterable
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix

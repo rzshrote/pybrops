@@ -4,10 +4,10 @@ from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLine
 from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
-from pybrops.test import not_raises
-from pybrops.test import assert_docstring
-from pybrops.test import assert_concrete_method
-from pybrops.test import assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.fcty.DenseAdditiveGenicVarianceMatrixFactory import DenseAdditiveGenicVarianceMatrixFactory
 from pybrops.model.vmat.fcty.DenseAdditiveGenicVarianceMatrixFactory import check_is_DenseAdditiveGenicVarianceMatrixFactory

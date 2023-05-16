@@ -11,12 +11,12 @@ import h5py
 import numpy
 from numpy.typing import DTypeLike, ArrayLike
 
-from pybrops.core.error import check_file_exists
-from pybrops.core.error import check_group_in_hdf5
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int8
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix

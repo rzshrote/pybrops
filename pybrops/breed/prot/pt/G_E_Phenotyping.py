@@ -6,15 +6,15 @@ interaction.
 from typing import Union
 import numpy
 import numbers
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 import pybrops.core.random
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.core.error import check_is_positive
-from pybrops.core.error import check_is_Integral
-from pybrops.core.error import check_ndarray_is_positive
-from pybrops.core.error import check_ndarray_dtype_is_integer
-from pybrops.core.error import check_ndarray_size
+from pybrops.core.error.error_value_python import check_is_positive
+from pybrops.core.error.error_value_numpy import check_ndarray_is_positive
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_value_numpy import check_ndarray_size
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 

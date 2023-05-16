@@ -21,7 +21,7 @@ from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueBinarySelectionProblem, FamilyEstimatedBreedingValueIntegerSelectionProblem, FamilyEstimatedBreedingValueRealSelectionProblem, FamilyEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel

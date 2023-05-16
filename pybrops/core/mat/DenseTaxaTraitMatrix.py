@@ -9,7 +9,7 @@ import copy
 from typing import Optional, Sequence, Union
 from typing import Any
 
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix

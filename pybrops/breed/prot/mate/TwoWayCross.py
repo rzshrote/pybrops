@@ -8,7 +8,7 @@ import numpy
 
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_numpy import check_is_Integral_or_ndarray, check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict, check_is_int

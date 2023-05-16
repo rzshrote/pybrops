@@ -1,13 +1,13 @@
 import pytest
 import numpy
 
-from pybrops.test import not_raises
-from pybrops.test import assert_docstring
-from pybrops.test import assert_abstract_method
-from pybrops.test import assert_abstract_function
-from pybrops.test import assert_abstract_property
-from pybrops.test import assert_concrete_method
-from pybrops.test import assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.DenseMutableMatrix import is_DenseMutableMatrix

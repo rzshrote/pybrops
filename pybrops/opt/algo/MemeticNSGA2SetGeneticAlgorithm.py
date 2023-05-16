@@ -12,14 +12,14 @@ from deap import base
 from deap import creator
 from deap import tools
 
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
-from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_float
-from pybrops.core.error import check_is_lteq
-from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_python import check_is_float
+from pybrops.core.error.error_value_python import check_is_lteq
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
 class MemeticNSGA2SetGeneticAlgorithm(OptimizationAlgorithm):
     """

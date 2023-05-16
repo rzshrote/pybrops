@@ -1,9 +1,14 @@
 """
 Module containing breeding program mating operators.
 """
+
+__all__ = [
+    "MatingOperator"
+]
+
 # order dependent import
 
 # abstract classes
-from . import MatingOperator
+from pybrops.breed.op.mate import MatingOperator
 
 # concrete classes

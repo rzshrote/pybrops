@@ -6,9 +6,9 @@ routines.
 from typing import Any
 
 import numpy
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import check_ndarray_ndim
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 class StandardGeneticMap(GeneticMap):

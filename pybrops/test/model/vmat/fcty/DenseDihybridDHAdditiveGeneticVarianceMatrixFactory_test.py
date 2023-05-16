@@ -5,10 +5,10 @@ from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix import Dens
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
-from pybrops.test import not_raises
-from pybrops.test import assert_docstring
-from pybrops.test import assert_concrete_method
-from pybrops.test import assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory import check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory

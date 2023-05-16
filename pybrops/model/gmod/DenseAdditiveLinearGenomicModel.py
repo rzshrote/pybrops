@@ -8,15 +8,15 @@ from typing import Any, Optional, Union
 import h5py
 import numpy
 
-from pybrops.core.error import check_file_exists
-from pybrops.core.error import check_group_in_hdf5
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype_is_float64
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_ndarray_dtype_is_object
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix

@@ -12,9 +12,9 @@ from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
 from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_keys_in_dict
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_value_python import check_keys_in_dict
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """

@@ -11,7 +11,7 @@ from pybrops.opt.algo.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityCons
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.UnconstrainedOptimalContributionSelection import OptimalContributionSelection
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap

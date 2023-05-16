@@ -9,7 +9,7 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_python import check_len
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 from pybrops.core.df.PandasDataFrame import PandasDataFrame
-from pybrops.core.error import check_is_pandas_df
+from pybrops.core.error.error_type_pandas import check_is_pandas_df
 
 class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     """

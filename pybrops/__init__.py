@@ -8,7 +8,8 @@ __all__ = [
     "opt",
     "popgen",
     "model",
-    "breed"
+    "breed",
+    "test"
 ]
 
 # order dependent import of submodules
@@ -23,3 +24,6 @@ from pybrops import opt
 from pybrops import popgen
 from pybrops import model
 from pybrops import breed
+
+# testing
+from pybrops import test

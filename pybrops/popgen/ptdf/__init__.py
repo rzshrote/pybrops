@@ -2,9 +2,13 @@
 Module defining phenotype dataframes.
 """
 
+__all__ = [
+    "PhenotypeDataFrame",
+    "DictPhenotypeDataFrame"
+]
+
 # abstract interfaces
-from . import PhenotypeDataFrame
+from pybrops.popgen.ptdf import PhenotypeDataFrame
 
 # concrete implementations
-from . import DictPhenotypeDataFrame
-# from .PandasPhenotypeDataFrame import *
+from pybrops.popgen.ptdf import DictPhenotypeDataFrame

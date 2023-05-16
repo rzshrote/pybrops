@@ -10,14 +10,14 @@ import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_is_not_None
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_size
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_python import check_is_not_None
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_size
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 class ExtendedGeneticMap(GeneticMap):

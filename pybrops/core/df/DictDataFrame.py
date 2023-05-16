@@ -9,14 +9,14 @@ import numpy
 import pandas
 
 from pybrops.core.df.DataFrame import DataFrame
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_keys_in_dict
-from pybrops.core.error import check_keys_in_dict_all_type
-from pybrops.core.error import check_len
-from pybrops.core.error import check_values_in_dict_all_type
-from pybrops.core.error import check_values_in_dict_equal_len
-from pybrops.core.error import check_values_in_dict_len
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_python import check_keys_in_dict
+from pybrops.core.error.error_value_python import check_keys_in_dict_all_type
+from pybrops.core.error.error_value_python import check_len
+from pybrops.core.error.error_value_python import check_values_in_dict_all_type
+from pybrops.core.error.error_value_python import check_values_in_dict_equal_len
+from pybrops.core.error.error_value_python import check_values_in_dict_len
+from pybrops.core.error.error_attr_python import error_readonly
 
 class DictDataFrame(DataFrame):
     """

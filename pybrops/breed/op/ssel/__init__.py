@@ -1,9 +1,14 @@
 """
 Module containing breeding program survivor selection operators.
 """
+
+__all__ = [
+    "SurvivorSelectionOperator"
+]
+
 # order dependent import
 
 # abstract classes
-from . import SurvivorSelectionOperator
+from pybrops.breed.op.ssel import SurvivorSelectionOperator
 
 # concrete classes

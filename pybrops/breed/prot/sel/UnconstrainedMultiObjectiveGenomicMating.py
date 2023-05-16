@@ -17,14 +17,14 @@ from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
-from pybrops.core.error import check_isinstance
-from pybrops.core.error import check_is_bool
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_python import check_isinstance
+from pybrops.core.error.error_type_python import check_is_bool
+from pybrops.core.error.error_attr_python import check_is_callable
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel

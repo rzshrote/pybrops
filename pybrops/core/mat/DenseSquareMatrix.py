@@ -6,8 +6,8 @@ error checking routines.
 from typing import Any
 import numpy
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.SquareMatrix import SquareMatrix

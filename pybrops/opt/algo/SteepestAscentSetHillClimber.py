@@ -8,7 +8,7 @@ import numpy
 
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.random.prng import global_prng
-from pybrops.core.error import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
 class SteepestAscentSetHillClimber(OptimizationAlgorithm):
     """

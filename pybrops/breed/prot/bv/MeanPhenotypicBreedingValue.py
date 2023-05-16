@@ -5,8 +5,8 @@ Module for estimating breeding values using the mean across all environments.
 import numpy
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
-from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_str
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_type_python import check_is_str
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame

@@ -9,16 +9,16 @@ from typing import Any, Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_bool
-from pybrops.core.error import check_ndarray_dtype_is_int64
-from pybrops.core.error import check_ndarray_dtype_is_float64
-from pybrops.core.error import check_ndarray_dtype_is_object
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix

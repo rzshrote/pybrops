@@ -4,7 +4,7 @@ Module containing utility functions for sampling individuals.
 
 from typing import Union
 import numpy
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 
 __all__ = [
     "stochastic_universal_sampling",

@@ -1,6 +1,6 @@
 import operator
 
-from . import assert_ndarray_operator
+from pybrops.test.assert_numpy_mathops import assert_ndarray_operator
 
 def assert_ndarray_add(v1, v2, w1, w2):
     """

@@ -2,6 +2,10 @@
 Module containing error subroutines related to HDF5 files.
 """
 
+__all__ = [
+    "check_group_in_hdf5"
+]
+
 def check_group_in_hdf5(groupname: str, h5file, h5filename: str):
     """
     Subroutine to check whether a given group is in an HDF5 file.

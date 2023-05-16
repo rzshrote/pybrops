@@ -1,7 +1,7 @@
 import inspect
 import pytest
 
-from pybrops.test import assert_abstract_methods
+from pybrops.test.assert_python import assert_abstract_methods
 
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import is_SelectionProtocol

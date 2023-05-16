@@ -6,11 +6,12 @@ Instead, `__init__.py` should simply import the module.
 
 Do this:
 ```
-from . import Matrix
+from pybrops.core.mat.Matrix import Matrix
 ```
 
 Do NOT do this:
 ```
+from . import Matrix
 from .Matrix import *
 ```
 

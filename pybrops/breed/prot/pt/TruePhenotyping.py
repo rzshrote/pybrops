@@ -5,7 +5,7 @@ Module implementing phenotyping protocols for extracting true breeding values.
 import numpy
 
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix

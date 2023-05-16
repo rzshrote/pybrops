@@ -6,10 +6,10 @@ import math
 import numbers
 from typing import Any, Union
 import numpy
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_in_interval
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_in_interval
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_value_python import check_is_in_interval
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix

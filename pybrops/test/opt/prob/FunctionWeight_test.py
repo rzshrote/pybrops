@@ -1,7 +1,7 @@
 import pytest
 
-from pybrops.test import assert_docstring
-from pybrops.test import assert_concrete_method
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
 
 from pybrops.opt.prob.FunctionWeight import FunctionWeight, MaximizingFunctionWeight, MinimizingFunctionWeight
 

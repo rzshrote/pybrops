@@ -7,13 +7,13 @@ from typing import Any, Optional, Union
 import numpy
 import warnings
 from numpy.typing import DTypeLike
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_all_equal
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_python import check_all_equal
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix

@@ -19,7 +19,7 @@ from pybrops.breed.prot.sel.ConventionalGenomicSelection import ConventionalGeno
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.transfn import trans_dot
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap

@@ -1,7 +1,7 @@
 from typing import Any
 import numpy
 
-from . import generic_check_ndarray_shape
+from pybrops.core.error.error_generic_numpy import generic_check_ndarray_shape
 
 ################################################################################
 ############################### check functions ################################
