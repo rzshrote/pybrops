@@ -14,7 +14,7 @@ from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 
 import numpy
-from pybrops.breed.prot.sel.prob import BinarySelectionProblem
+from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem

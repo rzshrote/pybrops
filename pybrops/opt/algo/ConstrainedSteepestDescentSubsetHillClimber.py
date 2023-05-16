@@ -9,7 +9,7 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
-from pybrops.opt.prob.SubsetProblemType import SubsetProblemType, check_is_SubsetProblemType
+from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
 class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorithm):
@@ -62,7 +62,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblemType,
+            prob: SubsetProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
         ) -> SubsetSolution:
@@ -84,7 +84,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
             An object containing the solution to the provided problem.
         """
         # check inputs
-        check_is_SubsetProblemType(prob, "prob")
+        check_is_SubsetProblem(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
 

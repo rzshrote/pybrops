@@ -12,7 +12,7 @@ from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_in_interval
-from pybrops.core.error.error_type_numpy import check_ndarray_in_interval
+from pybrops.core.error.error_value_numpy import check_ndarray_in_interval
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix

@@ -11,9 +11,9 @@ import h5py
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
-from pybrops.core.error.error_type_numpy import check_ndarray_mean_is_approx
+from pybrops.core.error.error_value_numpy import check_ndarray_mean_is_approx
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_type_numpy import check_ndarray_std_is_approx
+from pybrops.core.error.error_value_numpy import check_ndarray_std_is_approx
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix

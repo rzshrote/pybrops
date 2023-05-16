@@ -20,7 +20,7 @@ from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblemType import SubsetProblemType
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pymoo.algorithms.moo.nsga2 import NSGA2
@@ -120,7 +120,7 @@ class ConstrainedNSGA2SubsetGeneticAlgorithm(ConstrainedOptimizationAlgorithm):
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblemType,
+            prob: SubsetProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
         ) -> SubsetSolution:
