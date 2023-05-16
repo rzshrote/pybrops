@@ -1,20 +1,18 @@
-import inspect
-import pytest
 import numpy
 from numpy.random import Generator
 
-from pybrops.core.random import *
+from pybrops.core.random.prng import *
 
 ################################################################################
 ############################# Assert import usage ##############################
 ################################################################################
 
 def test_pybrops_core_random_import():
-    import pybrops.core.random
+    import pybrops.core.random.prng
     rng = None
 
     if rng is None:
-        rng = pybrops.core.random
+        rng = pybrops.core.random.prng
 
     s = (10,10)
     m = rng.beta(3.1,5.2, s)

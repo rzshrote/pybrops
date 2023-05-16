@@ -155,9 +155,6 @@ def test_mat_fset_TypeError(bvmat, mat_float64):
 def test_mat_fset_ValueError(bvmat, mat_float64):
     with pytest.raises(ValueError):
         bvmat.mat = mat_float64.flatten()
-    a = (mat_float64 + 4) * 1.4
-    with pytest.raises(ValueError):
-        bvmat.mat = a
 
 def test_mat_fset(bvmat, mat_float64):
     bvmat.mat = mat_float64

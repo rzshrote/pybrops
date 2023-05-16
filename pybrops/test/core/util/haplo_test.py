@@ -36,12 +36,12 @@ def chrgrp_spix():
     yield a
 
 @pytest.fixture
-def nhaploblk_chrom():
+def nhaploblk_chrom_ptf():
     a = numpy.array([2, 1, 2])
     yield a
 
 @pytest.fixture
-def haplobin():
+def haplobin_ptf():
     a = numpy.array([
         0, 0, 0, 1, 1, 1, 1,    # chromosome 1
         2, 2, 2, 2,             # chromosome 2
@@ -92,16 +92,16 @@ def hlen_long():
 ################################################################################
 ############################ Test module functions #############################
 ################################################################################
-def test_calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix, nhaploblk_chrom):
+def test_calc_nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix, nhaploblk_chrom_ptf):
     out = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
-    assert numpy.all(out == nhaploblk_chrom)
+    assert numpy.all(out == nhaploblk_chrom_ptf)
 
-def test_calc_haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix, haplobin):
-    out = haplobin(nhaploblk_chrom, genpos, chrgrp_stix, chrgrp_spix)
-    assert numpy.all(out == haplobin)
+def test_calc_haplobin(nhaploblk_chrom_ptf, genpos, chrgrp_stix, chrgrp_spix, haplobin_ptf):
+    out = haplobin(nhaploblk_chrom_ptf, genpos, chrgrp_stix, chrgrp_spix)
+    assert numpy.all(out == haplobin_ptf)
 
-def test_calc_haplobin_bounds(haplobin, hstix, hspix, hlen):
-    out = haplobin_bounds(haplobin)
+def test_calc_haplobin_bounds(haplobin_ptf, hstix, hspix, hlen):
+    out = haplobin_bounds(haplobin_ptf)
     assert numpy.all(out[0] == hstix)
     assert numpy.all(out[1] == hspix)
     assert numpy.all(out[2] == hlen)

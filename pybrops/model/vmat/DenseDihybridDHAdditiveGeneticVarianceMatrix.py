@@ -75,7 +75,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         self._mat = value
 
     ############## Square Metadata Properties ##############
-    @DenseAdditiveGeneticVarianceMatrix.square_axes.setter
+    @DenseAdditiveGeneticVarianceMatrix.square_axes.getter
     def square_axes(self) -> tuple:
         """Get axis indices for axes that are square"""
         return (0,1) # (female, male)
