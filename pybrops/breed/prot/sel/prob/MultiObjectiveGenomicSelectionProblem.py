@@ -3,7 +3,7 @@ Module implementing Multi-Objective Genomic Selection (MOGS) optimization proble
 """
 
 __all__ = [
-    "MultiObjectiveSubsetSelectionProblem"
+    "MultiObjectiveGenomicSubsetSelectionProblem"
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -22,10 +22,11 @@ from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     """Helper class to implement properties common to MOGS."""
 
     ########################## Special Object Methods ##########################
@@ -149,7 +150,7 @@ class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        super(MultiObjectiveSelectionProblem, self).__init__(
+        super(MultiObjectiveGenomicSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -277,7 +278,7 @@ class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     @classmethod
     def from_object(
             cls,
-            gmat: PhasedGenotypeMatrix,
+            gmat: GenotypeMatrix,
             weight: Union[numpy.ndarray,Callable],
             target: Union[numpy.ndarray,Callable],
             gpmod: AdditiveLinearGenomicModel,
@@ -298,7 +299,7 @@ class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "MultiObjectiveSelectionProblem":
+        ) -> "MultiObjectiveGenomicSelectionProblem":
         # extract genotype matrix
         geno = gmat.mat_asformat("{0,1,2}")
         ploidy = gmat.ploidy
@@ -332,7 +333,7 @@ class MultiObjectiveSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
         return out
 
-class MultiObjectiveSubsetSelectionProblem(SubsetSelectionProblem,MultiObjectiveSelectionProblem):
+class MultiObjectiveGenomicSubsetSelectionProblem(SubsetSelectionProblem,MultiObjectiveGenomicSelectionProblem):
     """
     docstring for SubsetMultiObjectiveSelectionProblem.
     """
@@ -457,7 +458,7 @@ class MultiObjectiveSubsetSelectionProblem(SubsetSelectionProblem,MultiObjective
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
-        super(MultiObjectiveSubsetSelectionProblem, self).__init__(
+        super(MultiObjectiveGenomicSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -593,22 +594,22 @@ class MultiObjectiveSubsetSelectionProblem(SubsetSelectionProblem,MultiObjective
         return out
 
 # need better interpretation of the Real scenario
-# class MultiObjectiveRealSelectionProblem(RealSelectionProblem,MOGSSProblemProperties):
+# class MultiObjectiveGenomicRealSelectionProblem(RealSelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for MultiObjectiveRealSelectionProblem.
+#     docstring for MultiObjectiveGenomicRealSelectionProblem.
 #     """
 #     pass
 
 # need better interpretation of the Integer scenario
-# class MultiObjectiveIntegerSelectionProblem(IntegerSelectionProblem,MOGSSProblemProperties):
+# class MultiObjectiveGenomicIntegerSelectionProblem(IntegerSelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for MultiObjectiveIntegerSelectionProblem.
+#     docstring for MultiObjectiveGenomicIntegerSelectionProblem.
 #     """
 #     pass
 
 # need better interpretation of the Binary scenario
-# class MultiObjectiveBinarySelectionProblem(BinarySelectionProblem,MOGSSProblemProperties):
+# class MultiObjectiveGenomicBinarySelectionProblem(BinarySelectionProblem,MOGSSProblemProperties):
 #     """
-#     docstring for MultiObjectiveBinarySelectionProblem.
+#     docstring for MultiObjectiveGenomicBinarySelectionProblem.
 #     """
 #     pass

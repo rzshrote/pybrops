@@ -3,8 +3,8 @@ Module implementing selection protocols for Optimal Population Value selection.
 """
 
 __all__ = [
-    "OptimalPopulationValueBaseSelection",
-    "OptimalPopulationValueSubsetSelection"
+    "MultiObjectiveGenomicBaseSelection",
+    "MultiObjectiveGenomicSubsetSelection"
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -15,9 +15,10 @@ import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem import MultiObjectiveGenomicSubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
 from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
@@ -29,7 +30,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
+class MultiObjectiveGenomicSelection(SelectionProtocol,metaclass=ABCMeta):
     """
     Semi-abstract class for Optimal Population Value (OPV) Selection with constraints.
     """
@@ -39,7 +40,8 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
             nparent: Integral, 
             ncross: Integral, 
             nprogeny: Integral,
-            nhaploblk: Integral,
+            weight: Union[numpy.ndarray,Callable],
+            target: Union[numpy.ndarray,Callable],
             method: str,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
@@ -62,14 +64,14 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for OptimalPopulationValueSelection.
+        Constructor for MultiObjectiveGenomicSelection.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(OptimalPopulationValueSelection, self).__init__(
+        super(MultiObjectiveGenomicSelection, self).__init__(
             method = method,
             nobj = nobj,
             obj_wt = obj_wt,
@@ -92,7 +94,8 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         self.nparent = nparent
         self.ncross = ncross
         self.nprogeny = nprogeny
-        self.nhaploblk = nhaploblk
+        self.weight = weight
+        self.target = target
         self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
@@ -132,14 +135,35 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         self._nprogeny = value
 
     @property
-    def nhaploblk(self) -> Integral:
-        """Number of haplotype blocks to consider."""
-        return self._nhaploblk
-    @nhaploblk.setter
-    def nhaploblk(self, value: Integral) -> None:
-        """Set number of haplotype blocks to consider."""
-        self._nhaploblk = value
+    def weight(self) -> Union[numpy.ndarray,Callable]:
+        """Allele weights."""
+        return self._weight
+    @weight.setter
+    def weight(self, value: Union[numpy.ndarray,Callable]) -> None:
+        """Set allele weights."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "weight", 2)
+        elif callable(value):
+            pass
+        else:
+            raise TypeError("variable 'weight' must be a callable function or numpy.ndarray")
+        self._weight = value
     
+    @property
+    def target(self) -> Union[numpy.ndarray,Callable]:
+        """Target allele frequency."""
+        return self._target
+    @target.setter
+    def target(self, value: Union[numpy.ndarray,Callable]) -> None:
+        """Set target allele frequency."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "target", 2)
+        elif callable(value):
+            pass
+        else:
+            raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
+        self._target = value
+
     @property
     def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""
@@ -380,7 +404,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
 
             return pgmat, sel_config[ix], self.ncross, self.nprogeny
 
-class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
+class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelection):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """
@@ -461,15 +485,16 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
             An optimization problem definition.
         """
         # get decision space parameters
-        ntaxa = pgmat.ntaxa
+        ntaxa = gmat.ntaxa
         decn_space = numpy.arange(ntaxa)
         decn_space_lower = numpy.repeat(0, self.nparent)
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = OptimalPopulationValueSubsetSelectionProblem.from_object(
-            nhaploblk = self.nhaploblk,
-            pgmat = pgmat,
+        prob = MultiObjectiveGenomicSubsetSelectionProblem.from_object(
+            gmat = gmat,
+            weight = self.weight,
+            target = self.target,
             gpmod = gpmod,
             ndecn = self.nparent,
             decn_space = decn_space,
