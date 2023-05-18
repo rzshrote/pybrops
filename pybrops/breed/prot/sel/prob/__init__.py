@@ -35,10 +35,10 @@ from pybrops.breed.prot.sel.prob import trans
 
 # semi-concrete classes
 from pybrops.breed.prot.sel.prob import SelectionProblem
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
+from pybrops.breed.prot.sel.prob import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob import SubsetSelectionProblem
 
 # concrete classes
 from pybrops.breed.prot.sel.prob import EstimatedBreedingValueSelectionProblem

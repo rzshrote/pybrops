@@ -13,6 +13,31 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem, check
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
+class SelectionProblemTestClass(SelectionProblem):
+    def __init__(
+            self,
+            ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, obj_trans, obj_trans_kwargs,
+            nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs,
+            neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs,
+            **kwargs
+        ):
+        """NA"""
+        super(SelectionProblemTestClass, self).__init__(
+            ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, obj_trans, obj_trans_kwargs,
+            nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs,
+            neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs,
+            **kwargs
+        )
+    @property
+    def nlatent(self) -> int:
+        """nlatent."""
+        return 0
+    def latentfn(self, x, *args, **kwargs):
+        """NA"""
+        super(SelectionProblemTestClass, self).latentfn(x, *args, **kwargs)
+
 @pytest.fixture
 def ndecn():
     yield 4
@@ -96,7 +121,7 @@ def prob(
     eqcv_trans,
     eqcv_trans_kwargs
 ):
-    yield SelectionProblem(
+    yield SelectionProblemTestClass(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -118,7 +143,7 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_DenseSelectionProblem_docstring():
+def test_SelectionProblem_docstring():
     assert_docstring(SelectionProblem)
 
 ################################################################################
@@ -147,9 +172,8 @@ def test_obj_trans_fset_TypeError(prob):
         prob.obj_trans = {}
 
 def test_obj_trans_fdel(prob):
-    del prob.obj_trans
     with pytest.raises(AttributeError):
-        prob.obj_trans
+        del prob.obj_trans
 
 ###########################
 ### obj_trans_kwargs ###
@@ -175,9 +199,8 @@ def test_obj_trans_kwargs_fset_TypeError(prob):
         prob.obj_trans_kwargs = ()
 
 def test_obj_trans_kwargs_fdel(prob):
-    del prob.obj_trans_kwargs
     with pytest.raises(AttributeError):
-        prob.obj_trans_kwargs
+        del prob.obj_trans_kwargs
 
 ####################
 ### ineqcv_trans ###
@@ -201,9 +224,8 @@ def test_ineqcv_trans_fset_TypeError(prob):
         prob.ineqcv_trans = {}
 
 def test_ineqcv_trans_fdel(prob):
-    del prob.ineqcv_trans
     with pytest.raises(AttributeError):
-        prob.ineqcv_trans
+        del prob.ineqcv_trans
 
 ###########################
 ### ineqcv_trans_kwargs ###
@@ -229,9 +251,8 @@ def test_ineqcv_trans_kwargs_fset_TypeError(prob):
         prob.ineqcv_trans_kwargs = ()
 
 def test_ineqcv_trans_kwargs_fdel(prob):
-    del prob.ineqcv_trans_kwargs
     with pytest.raises(AttributeError):
-        prob.ineqcv_trans_kwargs
+        del prob.ineqcv_trans_kwargs
 
 ####################
 ### eqcv_trans ###
@@ -255,9 +276,8 @@ def test_eqcv_trans_fset_TypeError(prob):
         prob.eqcv_trans = {}
 
 def test_eqcv_trans_fdel(prob):
-    del prob.eqcv_trans
     with pytest.raises(AttributeError):
-        prob.eqcv_trans
+        del prob.eqcv_trans
 
 ###########################
 ### eqcv_trans_kwargs ###
@@ -283,9 +303,8 @@ def test_eqcv_trans_kwargs_fset_TypeError(prob):
         prob.eqcv_trans_kwargs = ()
 
 def test_eqcv_trans_kwargs_fdel(prob):
-    del prob.eqcv_trans_kwargs
     with pytest.raises(AttributeError):
-        prob.eqcv_trans_kwargs
+        del prob.eqcv_trans_kwargs
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -312,10 +331,10 @@ def test_latentfn_is_abstract(prob):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseSelectionProblem_is_concrete():
+def test_check_is_SelectionProblem_is_concrete():
     assert_concrete_function(check_is_SelectionProblem)
 
-def test_check_is_DenseSelectionProblem(prob):
+def test_check_is_SelectionProblem(prob):
     with not_raises(TypeError):
         check_is_SelectionProblem(prob, "prob")
     with pytest.raises(TypeError):

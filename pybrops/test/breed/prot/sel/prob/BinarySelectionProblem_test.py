@@ -5,12 +5,12 @@ from pybrops.test.assert_python import assert_concrete_function, assert_docstrin
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_abstract_method
 
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem, check_is_SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem, check_is_BinarySelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
-class SubsetSelectionProblemTestClass(SubsetSelectionProblem):
+class BinarySelectionProblemTestClass(BinarySelectionProblem):
     def __init__(
             self,
             ndecn, decn_space, decn_space_lower, decn_space_upper, 
@@ -20,7 +20,7 @@ class SubsetSelectionProblemTestClass(SubsetSelectionProblem):
             **kwargs
         ):
         """NA"""
-        super(SubsetSelectionProblemTestClass, self).__init__(
+        super(BinarySelectionProblemTestClass, self).__init__(
             ndecn, decn_space, decn_space_lower, decn_space_upper, 
             nobj, obj_wt, obj_trans, obj_trans_kwargs,
             nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs,
@@ -33,7 +33,7 @@ class SubsetSelectionProblemTestClass(SubsetSelectionProblem):
         return 0
     def latentfn(self, x, *args, **kwargs):
         """NA"""
-        super(SubsetSelectionProblemTestClass, self).latentfn(x, *args, **kwargs)
+        super(BinarySelectionProblemTestClass, self).latentfn(x, *args, **kwargs)
 
 @pytest.fixture
 def ndecn():
@@ -41,15 +41,15 @@ def ndecn():
 
 @pytest.fixture
 def decn_space_lower():
-    yield numpy.array([1,2,3,4], dtype=float)
+    yield numpy.array([0,0,0,0], dtype=int)
 
 @pytest.fixture
 def decn_space_upper():
-    yield numpy.array([5,6,7,8], dtype=float)
+    yield numpy.array([1,1,1,1], dtype=int)
 
 @pytest.fixture
 def decn_space(decn_space_lower, decn_space_upper):
-    yield numpy.concatenate([decn_space_lower, decn_space_upper])
+    yield numpy.stack([decn_space_lower, decn_space_upper])
 
 @pytest.fixture
 def nobj():
@@ -118,7 +118,7 @@ def prob(
     eqcv_trans,
     eqcv_trans_kwargs
 ):
-    yield SubsetSelectionProblemTestClass(
+    yield BinarySelectionProblemTestClass(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -140,8 +140,8 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_SubsetSelectionProblem_docstring():
-    assert_docstring(SubsetSelectionProblem)
+def test_BinarySelectionProblem_docstring():
+    assert_docstring(BinarySelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -151,7 +151,7 @@ def test_SubsetSelectionProblem_docstring():
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetSelectionProblem, "__init__")
+    assert_concrete_method(BinarySelectionProblem, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -166,11 +166,11 @@ def test_latentfn_is_abstract(prob):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_SubsetSelectionProblem_is_concrete():
-    assert_concrete_function(check_is_SubsetSelectionProblem)
+def test_check_is_BinarySelectionProblem_is_concrete():
+    assert_concrete_function(check_is_BinarySelectionProblem)
 
-def test_check_is_SubsetSelectionProblem(prob):
+def test_check_is_BinarySelectionProblem(prob):
     with not_raises(TypeError):
-        check_is_SubsetSelectionProblem(prob, "prob")
+        check_is_BinarySelectionProblem(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_SubsetSelectionProblem(None, "prob")
+        check_is_BinarySelectionProblem(None, "prob")

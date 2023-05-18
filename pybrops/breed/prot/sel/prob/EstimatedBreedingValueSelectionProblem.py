@@ -1,12 +1,12 @@
 """
-Module implementing Conventional Genomic Selection problems for multiple search space types.
+Module implementing selection based on Estimated Breeding Values for multiple search space types.
 """
 
 __all__ = [
-    "EstimatedBreedingValueSubsetSelectionProblem",
-    "EstimatedBreedingValueRealSelectionProblem",
+    "EstimatedBreedingValueBinarySelectionProblem",
     "EstimatedBreedingValueIntegerSelectionProblem",
-    "EstimatedBreedingValueBinarySelectionProblem"
+    "EstimatedBreedingValueRealSelectionProblem",
+    "EstimatedBreedingValueSubsetSelectionProblem"
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -21,9 +21,7 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
-from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
 class EstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -205,7 +203,7 @@ class EstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
 
 class EstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,EstimatedBreedingValueSelectionProblem):
     """
-    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
+    Class representing selection on Estimated Breeding Values (EBVs) in subset search spaces.
     """
 
     ############################################################################
@@ -233,7 +231,7 @@ class EstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,Estima
             **kwargs: dict
         ) -> None:
         """
-        Constructor for SubsetConventionalGenomicSelectionProblem.
+        Constructor for EstimatedBreedingValueSubsetSelectionProblem.
         
         Parameters
         ----------
@@ -289,6 +287,20 @@ class EstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,Estima
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(EstimatedBreedingValueSubsetSelectionProblem, self).__init__(
+            # method resolution order is:
+            #   EstimatedBreedingValueSubsetSelectionProblem (requires ebv)
+            #   SubsetSelectionProblem
+            #   SubsetProblem
+            #   EstimatedBreedingValueSelectionProblem (requires ebv)
+            #   SelectionProblem
+            #   Problem
+            #   pymoo.core.problem.Problem
+            #   object
+            #
+            # I think call to super(...) passes ebv in kwargs to EstimatedBreedingValueSelectionProblem along super(...) chain
+            #
+            # In conclusion, multiple inheritance is very messy.
+            ebv = ebv,  # required due to MRO: EstimatedBreedingValueSelectionProblem.__init__ is called in super(...) chain
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -363,7 +375,7 @@ class EstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,Estima
 
 class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedBreedingValueSelectionProblem):
     """
-    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
+    Class representing selection on Estimated Breeding Values (EBVs) in real search spaces.
     """
 
     ############################################################################
@@ -391,7 +403,7 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
             **kwargs: dict
         ) -> None:
         """
-        Constructor for RealConventionalGenomicSelectionProblem.
+        Constructor for EstimatedBreedingValueRealSelectionProblem.
         
         Parameters
         ----------
@@ -447,6 +459,7 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(EstimatedBreedingValueRealSelectionProblem, self).__init__(
+            ebv = ebv,  # required due to MRO: EstimatedBreedingValueSelectionProblem.__init__ is called in super(...) chain
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -516,7 +529,7 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
 
 class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,EstimatedBreedingValueSelectionProblem):
     """
-    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
+    Class representing selection on Estimated Breeding Values (EBVs) in integer search spaces.
     """
 
     ############################################################################
@@ -544,7 +557,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
             **kwargs: dict
         ) -> None:
         """
-        Constructor for IntegerConventionalGenomicSelectionProblem.
+        Constructor for EstimatedBreedingValueIntegerSelectionProblem.
         
         Parameters
         ----------
@@ -600,6 +613,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(EstimatedBreedingValueIntegerSelectionProblem, self).__init__(
+            ebv = ebv,  # required due to MRO: EstimatedBreedingValueSelectionProblem.__init__ is called in super(...) chain
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -669,7 +683,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
 
 class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,EstimatedBreedingValueSelectionProblem):
     """
-    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
+    Class representing selection on Estimated Breeding Values (EBVs) in binary search spaces.
     """
 
     ############################################################################
@@ -697,7 +711,7 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
             **kwargs: dict
         ) -> None:
         """
-        Constructor for BinaryConventionalGenomicSelectionProblem.
+        Constructor for EstimatedBreedingValueBinarySelectionProblem.
         
         Parameters
         ----------
@@ -753,6 +767,7 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(EstimatedBreedingValueBinarySelectionProblem, self).__init__(
+            ebv = ebv,  # required due to MRO: EstimatedBreedingValueSelectionProblem.__init__ is called in super(...) chain
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
