@@ -1,15 +1,11 @@
-from numbers import Integral, Number
-from typing import Callable, Iterable, Sequence
 import numpy
 import pytest
 
 from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.opt.soln.SubsetSolution import SubsetSolution, check_is_SubsetSolution
+from pybrops.opt.soln.RealSolution import RealSolution, check_is_RealSolution
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -20,15 +16,15 @@ def ndecn():
 
 @pytest.fixture
 def decn_space_lower():
-    yield numpy.array([1,2,3,4], dtype=float)
+    yield numpy.array([0,1,2,3], dtype=float)
 
 @pytest.fixture
 def decn_space_upper():
-    yield numpy.array([5,6,7,8], dtype=float)
+    yield numpy.array([4,5,6,7], dtype=float)
 
 @pytest.fixture
 def decn_space(decn_space_lower, decn_space_upper):
-    yield numpy.concatenate([decn_space_lower, decn_space_upper])
+    yield numpy.stack([decn_space_lower, decn_space_upper])
 
 @pytest.fixture
 def nobj():
@@ -92,7 +88,7 @@ def prob(
     soln_ineqcv,
     soln_eqcv
 ):
-    yield SubsetSolution(
+    yield RealSolution(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -113,8 +109,8 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_DenseSubsetSolution_docstring():
-    assert_docstring(SubsetSolution)
+def test_RealSolution_docstring():
+    assert_docstring(RealSolution)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -124,15 +120,15 @@ def test_DenseSubsetSolution_docstring():
 ### decn_space ###
 ##################
 def test_decn_space_is_concrete():
-    assert_concrete_property(SubsetSolution, "decn_space")
+    assert_concrete_property(RealSolution, "decn_space")
 
 def test_decn_space_fget(prob, ndecn):
     assert isinstance(prob.decn_space, numpy.ndarray) or (prob.decn_space is None)
-    assert prob.decn_space.shape[0] >= ndecn
+    assert prob.decn_space.shape == (2,ndecn)
 
 def test_decn_space_fset(prob, decn_space_lower, decn_space_upper):
     with not_raises(TypeError,ValueError,Exception):
-        prob.decn_space = numpy.concatenate([decn_space_lower,decn_space_upper])
+        prob.decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
 def test_decn_space_fset_TypeError(prob, ndecn):
     with pytest.raises(TypeError):
@@ -160,7 +156,7 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(SubsetSolution, "__init__")
+    assert_concrete_method(RealSolution, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -173,11 +169,11 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseSubsetSolution_is_concrete():
-    assert_concrete_function(check_is_SubsetSolution)
+def test_check_is_RealSolution_is_concrete():
+    assert_concrete_function(check_is_RealSolution)
 
-def test_check_is_DenseSubsetSolution(prob):
+def test_check_is_RealSolution(prob):
     with not_raises(TypeError):
-        check_is_SubsetSolution(prob, "prob")
+        check_is_RealSolution(prob, "prob")
     with pytest.raises(TypeError):
-        check_is_SubsetSolution(None, "prob")
+        check_is_RealSolution(None, "prob")

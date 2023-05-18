@@ -9,11 +9,11 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral
+from numbers import Integral, Real
 from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_real
-from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_shape_eq
 from pybrops.opt.soln.Solution import Solution
 
 class RealSolution(Solution):
@@ -27,20 +27,20 @@ class RealSolution(Solution):
     def __init__(
             self,
             ndecn: Integral,
-            decn_space: numpy.ndarray,
-            decn_space_lower: numpy.ndarray,
-            decn_space_upper: numpy.ndarray,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
+            obj_wt: Union[numpy.ndarray,Real,None],
+            nineqcv: Union[Integral,None],
+            ineqcv_wt: Union[numpy.ndarray,Real,None],
+            neqcv: Union[Integral,None],
+            eqcv_wt: Union[numpy.ndarray,Real,None],
             nsoln: Integral,
             soln_decn: numpy.ndarray,
             soln_obj: numpy.ndarray,
-            soln_ineqcv: numpy.ndarray,
-            soln_eqcv: numpy.ndarray,
+            soln_ineqcv: Union[numpy.ndarray,None],
+            soln_eqcv: Union[numpy.ndarray,None],
             **kwargs: dict
         ) -> None:
         """
@@ -77,13 +77,44 @@ class RealSolution(Solution):
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
         if isinstance(value, numpy.ndarray):
-            check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
             check_ndarray_dtype_is_real(value, "decn_space")
+            check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
         elif value is None:
             pass
         else:
             raise TypeError("'decn_space' must be of type numpy.ndarray or None")
         self._decn_space = value
+
+    # override decn_space setter properties
+    @Solution.decn_space_lower.setter
+    def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
+        """Set lower boundary of the decision space."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_real(value, "decn_space_lower")
+            check_ndarray_len_eq(value, "decn_space_lower", self.ndecn)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.ndecn)
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, an Integral type, or None")
+        self._decn_space_lower = value
+
+    # override decn_space setter properties
+    @Solution.decn_space_upper.setter
+    def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
+        """Set upper boundary of the decision space."""
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_real(value, "decn_space_upper")
+            check_ndarray_len_eq(value, "decn_space_upper", self.ndecn)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.ndecn)
+        elif value is None:
+            pass
+        else:
+            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, an Integral type, or None")
+        self._decn_space_upper = value
+
 
 
 

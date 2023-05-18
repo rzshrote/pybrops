@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-from numbers import Integral, Number
+from numbers import Integral, Real
 from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -36,20 +36,20 @@ class Solution(metaclass=ABCMeta):
     def __init__(
             self,
             ndecn: Integral,
-            decn_space: numpy.ndarray,
-            decn_space_lower: numpy.ndarray,
-            decn_space_upper: numpy.ndarray,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
             nobj: Integral,
-            obj_wt: numpy.ndarray,
-            nineqcv: Integral,
-            ineqcv_wt: numpy.ndarray,
-            neqcv: Integral,
-            eqcv_wt: numpy.ndarray,
+            obj_wt: Union[numpy.ndarray,Real,None],
+            nineqcv: Union[Integral,None],
+            ineqcv_wt: Union[numpy.ndarray,Real,None],
+            neqcv: Union[Integral,None],
+            eqcv_wt: Union[numpy.ndarray,Real,None],
             nsoln: Integral,
             soln_decn: numpy.ndarray,
             soln_obj: numpy.ndarray,
-            soln_ineqcv: numpy.ndarray,
-            soln_eqcv: numpy.ndarray,
+            soln_ineqcv: Union[numpy.ndarray,None],
+            soln_eqcv: Union[numpy.ndarray,None],
             **kwargs: dict
         ) -> None:
         """
@@ -111,16 +111,16 @@ class Solution(metaclass=ABCMeta):
         """Lower boundary of the decision space."""
         return self._decn_space_lower
     @decn_space_lower.setter
-    def decn_space_lower(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.ndecn)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
             pass
         else:
-            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'decn_space_lower' must be of type numpy.ndarray, Real, or None")
         self._decn_space_lower = value
         self._xl = value
     
@@ -129,16 +129,16 @@ class Solution(metaclass=ABCMeta):
         """Upper boundary of the decision space."""
         return self._decn_space_upper
     @decn_space_upper.setter
-    def decn_space_upper(self, value: Union[numpy.ndarray,Number,None]) -> None:
+    def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_len_eq(value, "xl", self.ndecn)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
             pass
         else:
-            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Number, or None")
+            raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Real, or None")
         self._decn_space_upper = value
         self._xu = value
 
@@ -159,15 +159,17 @@ class Solution(metaclass=ABCMeta):
         """Objective function weights."""
         return self._obj_wt
     @obj_wt.setter
-    def obj_wt(self, value: Union[numpy.ndarray,Number]) -> None:
+    def obj_wt(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set objective function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_ndim(value, "obj_wt", 1)
             check_ndarray_len_eq(value, "obj_wt", self.nobj)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.nobj)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nobj)
         else:
-            raise TypeError("'obj_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'obj_wt' must be of type numpy.ndarray or a Real type")
         self._obj_wt = value
 
     ######## Inequality constraint space properties ########
@@ -176,8 +178,10 @@ class Solution(metaclass=ABCMeta):
         """Number of inequality constraint violation functions."""
         return self._nineqcv
     @nineqcv.setter
-    def nineqcv(self, value: Integral) -> None:
+    def nineqcv(self, value: Union[Integral,None]) -> None:
         """Set number of inequality constraint violation functions."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "nineqcv")
         check_is_gteq(value, "nineqcv", 0)  # possible to have 0 inequality constraints
         self._nineqcv = value
@@ -187,15 +191,17 @@ class Solution(metaclass=ABCMeta):
         """Inequality constraint violation function weights."""
         return self._ineqcv_wt
     @ineqcv_wt.setter
-    def ineqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
+    def ineqcv_wt(self, value: Union[numpy.ndarray,Real]) -> None:
         """Set inequality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_ndim(value, "ineqcv_wt", 1)
             check_ndarray_len_eq(value, "ineqcv_wt", self.nineqcv)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.nineqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.nineqcv)
         else:
-            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'ineqcv_wt' must be of type numpy.ndarray or a Real type")
         self._ineqcv_wt = value
 
     ######### Equality constraint space properties #########
@@ -204,8 +210,10 @@ class Solution(metaclass=ABCMeta):
         """Number of equality constraint violations."""
         return self._neqcv
     @neqcv.setter
-    def neqcv(self, value: Integral) -> None:
+    def neqcv(self, value: Union[Integral,None]) -> None:
         """Set number of equality constraint violations."""
+        if value is None:
+            value = 0
         check_is_Integral(value, "neqcv")
         check_is_gteq(value, "neqcv", 0)    # possible to have 0 equality constraints
         self._neqcv = value
@@ -215,15 +223,17 @@ class Solution(metaclass=ABCMeta):
         """Equality constraint violation function weights."""
         return self._eqcv_wt
     @eqcv_wt.setter
-    def eqcv_wt(self, value: Union[numpy.ndarray,Number]) -> None:
+    def eqcv_wt(self, value: Union[numpy.ndarray,Real]) -> None:
         """Set equality constraint violation function weights."""
         if isinstance(value, numpy.ndarray):
             check_ndarray_ndim(value, "eqcv_wt", 1)
             check_ndarray_len_eq(value, "eqcv_wt", self.neqcv)
-        elif isinstance(value, Number):
+        elif isinstance(value, Real):
             value = numpy.repeat(value, self.neqcv)
+        elif value is None:
+            value = numpy.repeat(1.0, self.neqcv)
         else:
-            raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a numeric type")
+            raise TypeError("'eqcv_wt' must be of type numpy.ndarray or a Real type")
         self._eqcv_wt = value
 
     ################# Solution properties ##################
@@ -267,8 +277,10 @@ class Solution(metaclass=ABCMeta):
         """Solution inequality constraint violation function values."""
         return self._soln_ineqcv
     @soln_ineqcv.setter
-    def soln_ineqcv(self, value: numpy.ndarray) -> None:
+    def soln_ineqcv(self, value: Union[numpy.ndarray,None]) -> None:
         """Set solution inequality constraint violation function values."""
+        if value is None:
+            value = numpy.zeros((self.nsoln,self.nineqcv), dtype = self.soln_obj.dtype)
         check_is_ndarray(value, "soln_ineqcv")
         check_ndarray_ndim(value, "soln_ineqcv", 2)
         check_ndarray_shape_eq(value, "soln_ineqcv", (self.nsoln,self.nineqcv))
@@ -279,8 +291,10 @@ class Solution(metaclass=ABCMeta):
         """Solution equality constraint violation function values."""
         return self._soln_eqcv
     @soln_eqcv.setter
-    def soln_eqcv(self, value: numpy.ndarray) -> None:
+    def soln_eqcv(self, value: Union[numpy.ndarray,None]) -> None:
         """Set solution equality constraint violation function values."""
+        if value is None:
+            value = numpy.zeros((self.nsoln,self.nineqcv), dtype = self.soln_obj.dtype)
         check_is_ndarray(value, "soln_eqcv")
         check_ndarray_ndim(value, "soln_eqcv", 2)
         check_ndarray_shape_eq(value, "soln_eqcv", (self.nsoln,self.neqcv))

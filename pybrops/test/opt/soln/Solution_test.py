@@ -14,6 +14,19 @@ from pybrops.opt.soln.Solution import Solution, check_is_Solution
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
+class SolutionTestClass(Solution):
+    def __init__(
+            self, ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, 
+            nsoln, soln_decn, soln_obj, soln_ineqcv, soln_eqcv, **kwargs
+        ):
+        """NA"""
+        super(SolutionTestClass, self).__init__(
+            ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, 
+            nsoln, soln_decn, soln_obj, soln_ineqcv, soln_eqcv, **kwargs
+        )
+
 @pytest.fixture
 def ndecn():
     yield 4
@@ -92,7 +105,7 @@ def prob(
     soln_ineqcv,
     soln_eqcv
 ):
-    yield Solution(
+    yield SolutionTestClass(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -113,7 +126,7 @@ def prob(
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_DenseSolution_docstring():
+def test_Solution_docstring():
     assert_docstring(Solution)
 
 ################################################################################
@@ -301,12 +314,14 @@ def test_obj_wt_fset(prob, obj_wt):
         prob.obj_wt = obj_wt
     with not_raises(TypeError):
         prob.obj_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.obj_wt = None
 
 def test_obj_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.obj_wt = "string"
+        prob.obj_wt = object()
     with pytest.raises(TypeError):
-        prob.obj_wt = None
+        prob.obj_wt = "string"
 
 def test_obj_wt_fset_ValueError(prob, obj_wt):
     with pytest.raises(ValueError):
@@ -332,10 +347,12 @@ def test_nineqcv_fset(prob):
         prob.nineqcv = numpy.int64(1)
     with not_raises(TypeError):
         prob.nineqcv = int(1)
+    with not_raises(TypeError):
+        prob.nineqcv = None
 
 def test_nineqcv_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.nineqcv = None
+        prob.nineqcv = object()
     with pytest.raises(TypeError):
         prob.nineqcv = "string"
     with pytest.raises(TypeError):
@@ -363,12 +380,12 @@ def test_ineqcv_wt_fset(prob, ineqcv_wt):
         prob.ineqcv_wt = ineqcv_wt
     with not_raises(TypeError):
         prob.ineqcv_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.ineqcv_wt = None
 
 def test_ineqcv_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
         prob.ineqcv_wt = "string"
-    with pytest.raises(TypeError):
-        prob.ineqcv_wt = None
 
 def test_ineqcv_wt_fset_ValueError(prob, ineqcv_wt):
     with pytest.raises(ValueError):
@@ -394,10 +411,10 @@ def test_neqcv_fset(prob):
         prob.neqcv = numpy.int64(1)
     with not_raises(TypeError):
         prob.neqcv = int(1)
+    with not_raises(TypeError):
+        prob.neqcv = None
 
 def test_neqcv_fset_TypeError(prob):
-    with pytest.raises(TypeError):
-        prob.neqcv = None
     with pytest.raises(TypeError):
         prob.neqcv = "string"
     with pytest.raises(TypeError):
@@ -425,12 +442,14 @@ def test_eqcv_wt_fset(prob, eqcv_wt):
         prob.eqcv_wt = eqcv_wt
     with not_raises(TypeError):
         prob.eqcv_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.eqcv_wt = None
 
 def test_eqcv_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.eqcv_wt = "string"
+        prob.eqcv_wt = object()
     with pytest.raises(TypeError):
-        prob.eqcv_wt = None
+        prob.eqcv_wt = "string"
 
 def test_eqcv_wt_fset_ValueError(prob, eqcv_wt):
     with pytest.raises(ValueError):
@@ -558,10 +577,12 @@ def test_soln_ineqcv_fget(prob, nsoln, nineqcv):
 def test_soln_ineqcv_fset(prob, nsoln, nineqcv):
     with not_raises(TypeError):
         prob.soln_ineqcv = numpy.random.random((nsoln,nineqcv))
+    with not_raises(TypeError):
+        prob.soln_ineqcv = None
 
 def test_soln_ineqcv_fset_TypeError(prob, nineqcv):
     with pytest.raises(TypeError):
-        prob.soln_ineqcv = None
+        prob.soln_ineqcv = object()
     with pytest.raises(TypeError):
         prob.soln_ineqcv = "string"
     with pytest.raises(TypeError):
@@ -588,10 +609,12 @@ def test_soln_eqcv_fget(prob, nsoln, neqcv):
 def test_soln_eqcv_fset(prob, nsoln, neqcv):
     with not_raises(TypeError):
         prob.soln_eqcv = numpy.random.random((nsoln,neqcv))
+    with not_raises(TypeError):
+        prob.soln_eqcv = None
 
 def test_soln_eqcv_fset_TypeError(prob, neqcv):
     with pytest.raises(TypeError):
-        prob.soln_eqcv = None
+        prob.soln_eqcv = object()
     with pytest.raises(TypeError):
         prob.soln_eqcv = "string"
     with pytest.raises(TypeError):
@@ -622,10 +645,10 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseSolution_is_concrete():
+def test_check_is_Solution_is_concrete():
     assert_concrete_function(check_is_Solution)
 
-def test_check_is_DenseSolution(prob):
+def test_check_is_Solution(prob):
     with not_raises(TypeError):
         check_is_Solution(prob, "prob")
     with pytest.raises(TypeError):
