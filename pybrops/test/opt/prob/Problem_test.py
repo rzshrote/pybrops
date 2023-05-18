@@ -14,9 +14,28 @@ from pybrops.opt.prob.Problem import Problem, check_is_Problem
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
+class ProblemTestClass(Problem):
+    def __init__(
+            self, ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
+        ):
+        """NA"""
+        super(ProblemTestClass, self).__init__(
+            ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
+        )
+    ### method required by PyBrOpS interface ###
+    def evalfn(self, x, *args, **kwargs):
+        """NA"""
+        super(ProblemTestClass, self).evalfn(x, *args, **kwargs)
+    ### method required by PyMOO interface ###
+    def _evaluate(self, x, out, *args, **kwargs):
+        """NA"""
+        super(ProblemTestClass, self)._evaluate(x, out, *args, **kwargs)
+
 @pytest.fixture
 def ndecn():
-    yield 4
+    yield int(4)
 
 @pytest.fixture
 def decn_space_lower():
@@ -56,34 +75,26 @@ def eqcv_wt():
 
 @pytest.fixture
 def prob(
-    ndecn,
-    decn_space,
-    decn_space_lower,
-    decn_space_upper,
-    nobj,
-    obj_wt,
-    nineqcv,
-    ineqcv_wt,
-    neqcv,
-    eqcv_wt
-):
-    yield Problem(
-        ndecn = ndecn,
-        decn_space = decn_space,
-        decn_space_lower = decn_space_lower,
-        decn_space_upper = decn_space_upper,
-        nobj = nobj,
-        obj_wt = obj_wt,
-        nineqcv = nineqcv,
-        ineqcv_wt = ineqcv_wt,
-        neqcv = neqcv,
-        eqcv_wt = eqcv_wt
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt
+    ):
+    yield ProblemTestClass(
+        ndecn,
+        decn_space,
+        decn_space_lower,
+        decn_space_upper,
+        nobj,
+        obj_wt,
+        nineqcv,
+        ineqcv_wt,
+        neqcv,
+        eqcv_wt
     )
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_DenseProblem_docstring():
+def test_Problem_docstring():
     assert_docstring(Problem)
 
 ################################################################################
@@ -117,6 +128,8 @@ def test_n_var_fset(prob):
 
 def test_n_var_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.n_var = object()
+    with pytest.raises(TypeError):
         prob.n_var = None
     with pytest.raises(TypeError):
         prob.n_var = "string"
@@ -132,9 +145,8 @@ def test_n_var_fset_ValueError(prob):
         prob.n_var = int(-1)
 
 def test_n_var_fdel(prob):
-    del prob.n_var
     with pytest.raises(AttributeError):
-        prob.n_var
+        del prob.n_var
 
 #############
 ### n_obj ###
@@ -159,6 +171,8 @@ def test_n_obj_fset(prob):
 
 def test_n_obj_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.n_obj = object()
+    with pytest.raises(TypeError):
         prob.n_obj = None
     with pytest.raises(TypeError):
         prob.n_obj = "string"
@@ -174,9 +188,8 @@ def test_n_obj_fset_ValueError(prob):
         prob.n_obj = int(-1)
 
 def test_n_obj_fdel(prob):
-    del prob.n_obj
     with pytest.raises(AttributeError):
-        prob.n_obj
+        del prob.n_obj
 
 ####################
 ### n_ieq_constr ###
@@ -198,10 +211,12 @@ def test_n_ieq_constr_fset(prob):
         prob.n_ieq_constr = numpy.int64(1)
     with not_raises(TypeError):
         prob.n_ieq_constr = int(1)
+    with not_raises(TypeError):
+        prob.n_ieq_constr = None
 
 def test_n_ieq_constr_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.n_ieq_constr = None
+        prob.n_ieq_constr = object()
     with pytest.raises(TypeError):
         prob.n_ieq_constr = "string"
     with pytest.raises(TypeError):
@@ -216,9 +231,8 @@ def test_n_ieq_constr_fset_ValueError(prob):
         prob.n_ieq_constr = int(-1)
 
 def test_n_ieq_constr_fdel(prob):
-    del prob.n_ieq_constr
     with pytest.raises(AttributeError):
-        prob.n_ieq_constr
+        del prob.n_ieq_constr
 
 ###################
 ### n_eq_constr ###
@@ -240,10 +254,12 @@ def test_n_eq_constr_fset(prob):
         prob.n_eq_constr = numpy.int64(1)
     with not_raises(TypeError):
         prob.n_eq_constr = int(1)
+    with not_raises(TypeError):
+        prob.n_eq_constr = None
 
 def test_n_eq_constr_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.n_eq_constr = None
+        prob.n_eq_constr = object()
     with pytest.raises(TypeError):
         prob.n_eq_constr = "string"
     with pytest.raises(TypeError):
@@ -258,9 +274,8 @@ def test_n_eq_constr_fset_ValueError(prob):
         prob.n_eq_constr = int(-1)
 
 def test_n_eq_constr_fdel(prob):
-    del prob.n_eq_constr
     with pytest.raises(AttributeError):
-        prob.n_eq_constr
+        del prob.n_eq_constr
 
 ##########
 ### xl ###
@@ -282,6 +297,8 @@ def test_xl_fset(prob, decn_space_lower):
 
 def test_xl_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.xl = object()
+    with pytest.raises(TypeError):
         prob.xl = "string"
 
 def test_xl_fset_ValueError(prob, decn_space_lower):
@@ -289,9 +306,8 @@ def test_xl_fset_ValueError(prob, decn_space_lower):
         prob.xl = numpy.concatenate([decn_space_lower, decn_space_lower])
 
 def test_xl_fdel(prob):
-    del prob.xl
     with pytest.raises(AttributeError):
-        prob.xl
+        del prob.xl
 
 ##########
 ### xu ###
@@ -313,6 +329,8 @@ def test_xu_fset(prob, decn_space_upper):
 
 def test_xu_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.xu = object()
+    with pytest.raises(TypeError):
         prob.xu = "string"
 
 def test_xu_fset_ValueError(prob, decn_space_upper):
@@ -320,9 +338,8 @@ def test_xu_fset_ValueError(prob, decn_space_upper):
         prob.xu = numpy.concatenate([decn_space_upper, decn_space_upper])
 
 def test_xu_fdel(prob):
-    del prob.xu
     with pytest.raises(AttributeError):
-        prob.xu
+        del prob.xu
 
 #############
 ### vtype ###
@@ -352,12 +369,13 @@ def test_vars_fset(prob):
 
 def test_vars_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.vars = object()
+    with pytest.raises(TypeError):
         prob.vars = int(4)
 
 def test_vars_fdel(prob):
-    del prob.vars
     with pytest.raises(AttributeError):
-        prob.vars
+        del prob.vars
 
 ###################
 ### elementwise ###
@@ -374,12 +392,13 @@ def test_elementwise_fset(prob):
 
 def test_elementwise_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.elementwise = object()
+    with pytest.raises(TypeError):
         prob.elementwise = None
 
 def test_elementwise_fdel(prob):
-    del prob.elementwise
     with pytest.raises(AttributeError):
-        prob.elementwise
+        del prob.elementwise
 
 ########################
 ### elementwise_func ###
@@ -396,12 +415,13 @@ def test_elementwise_func_fset(prob):
 
 def test_elementwise_func_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.elementwise_func = object()
+    with pytest.raises(TypeError):
         prob.elementwise_func = None
 
 def test_elementwise_func_fdel(prob):
-    del prob.elementwise_func
     with pytest.raises(AttributeError):
-        prob.elementwise_func
+        del prob.elementwise_func
 
 ##########################
 ### elementwise_runner ###
@@ -419,6 +439,8 @@ def test_elementwise_runner_fset(prob):
         prob.elementwise_runner = fn
 
 def test_elementwise_runner_fset_TypeError(prob):
+    with pytest.raises(TypeError):
+        prob.elementwise_runner = object()
     with pytest.raises(TypeError):
         prob.elementwise_runner = None
 
@@ -439,12 +461,13 @@ def test_replace_nan_values_by_fset(prob):
 
 def test_replace_nan_values_by_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.replace_nan_values_by = object()
+    with pytest.raises(TypeError):
         prob.replace_nan_values_by = "string"
 
 def test_replace_nan_values_by_fdel(prob):
-    del prob.replace_nan_values_by
     with pytest.raises(AttributeError):
-        prob.replace_nan_values_by
+        del prob.replace_nan_values_by
 
 ##################################
 ### exclude_from_serialization ###
@@ -463,12 +486,13 @@ def test_exclude_from_serialization_fset(prob):
 
 def test_exclude_from_serialization_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.exclude_from_serialization = object()
+    with pytest.raises(TypeError):
         prob.exclude_from_serialization = int(1)
 
 def test_exclude_from_serialization_fdel(prob):
-    del prob.exclude_from_serialization
     with pytest.raises(AttributeError):
-        prob.exclude_from_serialization
+        del prob.exclude_from_serialization
 
 ################
 ### callback ###
@@ -489,12 +513,13 @@ def test_callback_fset(prob):
 
 def test_callback_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.callback = object()
+    with pytest.raises(TypeError):
         prob.callback = int(1)
 
 def test_callback_fdel(prob):
-    del prob.callback
     with pytest.raises(AttributeError):
-        prob.callback
+        del prob.callback
 
 ##############
 ### strict ###
@@ -511,14 +536,15 @@ def test_strict_fset(prob):
 
 def test_strict_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.strict = object()
+    with pytest.raises(TypeError):
         prob.strict = "string"
     with pytest.raises(TypeError):
         prob.strict = None
 
 def test_strict_fdel(prob):
-    del prob.strict
     with pytest.raises(AttributeError):
-        prob.strict
+        del prob.strict
 
 ############
 ### data ###
@@ -535,12 +561,13 @@ def test_data_fset(prob):
 
 def test_data_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.data = object()
+    with pytest.raises(TypeError):
         prob.data = int(1)
 
 def test_data_fdel(prob):
-    del prob.data
     with pytest.raises(AttributeError):
-        prob.data
+        del prob.data
 
 ############################################################
 ######## properties inherited from pybrops Problem #########
@@ -569,6 +596,8 @@ def test_ndecn_fset(prob):
 
 def test_ndecn_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.ndecn = object()
+    with pytest.raises(TypeError):
         prob.ndecn = None
     with pytest.raises(TypeError):
         prob.ndecn = "string"
@@ -584,9 +613,8 @@ def test_ndecn_fset_ValueError(prob):
         prob.ndecn = int(-1)
 
 def test_ndecn_fdel(prob):
-    del prob.ndecn
     with pytest.raises(AttributeError):
-        prob.ndecn
+        del prob.ndecn
 
 ##################
 ### decn_space ###
@@ -606,6 +634,8 @@ def test_decn_space_fset(prob, decn_space_lower, decn_space_upper):
         prob.decn_space = None
 
 def test_decn_space_fset_TypeError(prob, ndecn):
+    with pytest.raises(TypeError):
+        prob.decn_space = object()
     with pytest.raises(TypeError):
         prob.decn_space = "string"
     with pytest.raises(TypeError):
@@ -632,9 +662,8 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
         ])
 
 def test_decn_space_fdel(prob):
-    del prob.decn_space
     with pytest.raises(AttributeError):
-        prob.decn_space
+        del prob.decn_space
 
 ########################
 ### decn_space_lower ###
@@ -656,6 +685,8 @@ def test_decn_space_lower_fset(prob, decn_space_lower):
 
 def test_decn_space_lower_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.decn_space_lower = object()
+    with pytest.raises(TypeError):
         prob.decn_space_lower = "string"
 
 def test_decn_space_lower_fset_ValueError(prob, decn_space_lower):
@@ -663,9 +694,8 @@ def test_decn_space_lower_fset_ValueError(prob, decn_space_lower):
         prob.decn_space_lower = numpy.concatenate([decn_space_lower, decn_space_lower])
 
 def test_decn_space_lower_fdel(prob):
-    del prob.decn_space_lower
     with pytest.raises(AttributeError):
-        prob.decn_space_lower
+        del prob.decn_space_lower
 
 ########################
 ### decn_space_upper ###
@@ -687,6 +717,8 @@ def test_decn_space_upper_fset(prob, decn_space_upper):
 
 def test_decn_space_upper_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.decn_space_upper = object()
+    with pytest.raises(TypeError):
         prob.decn_space_upper = "string"
 
 def test_decn_space_upper_fset_ValueError(prob, decn_space_upper):
@@ -694,9 +726,8 @@ def test_decn_space_upper_fset_ValueError(prob, decn_space_upper):
         prob.decn_space_upper = numpy.concatenate([decn_space_upper, decn_space_upper])
 
 def test_decn_space_upper_fdel(prob):
-    del prob.decn_space_upper
     with pytest.raises(AttributeError):
-        prob.decn_space_upper
+        del prob.decn_space_upper
 
 ############
 ### nobj ###
@@ -721,6 +752,8 @@ def test_nobj_fset(prob):
 
 def test_nobj_fset_TypeError(prob):
     with pytest.raises(TypeError):
+        prob.nobj = object()
+    with pytest.raises(TypeError):
         prob.nobj = None
     with pytest.raises(TypeError):
         prob.nobj = "string"
@@ -736,9 +769,8 @@ def test_nobj_fset_ValueError(prob):
         prob.nobj = int(-1)
 
 def test_nobj_fdel(prob):
-    del prob.nobj
     with pytest.raises(AttributeError):
-        prob.nobj
+        del prob.nobj
 
 ##############
 ### obj_wt ###
@@ -754,21 +786,22 @@ def test_obj_wt_fset(prob, obj_wt):
         prob.obj_wt = obj_wt
     with not_raises(TypeError):
         prob.obj_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.obj_wt = None
 
 def test_obj_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.obj_wt = "string"
+        prob.obj_wt = object()
     with pytest.raises(TypeError):
-        prob.obj_wt = None
+        prob.obj_wt = "string"
 
 def test_obj_wt_fset_ValueError(prob, obj_wt):
     with pytest.raises(ValueError):
         prob.obj_wt = numpy.zeros(len(obj_wt)+1, dtype=obj_wt.dtype)
 
 def test_obj_wt_fdel(prob):
-    del prob.obj_wt
     with pytest.raises(AttributeError):
-        prob.obj_wt
+        del prob.obj_wt
 
 ###############
 ### nineqcv ###
@@ -790,10 +823,12 @@ def test_nineqcv_fset(prob):
         prob.nineqcv = numpy.int64(1)
     with not_raises(TypeError):
         prob.nineqcv = int(1)
+    with not_raises(TypeError):
+        prob.nineqcv = None
 
 def test_nineqcv_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.nineqcv = None
+        prob.nineqcv = object()
     with pytest.raises(TypeError):
         prob.nineqcv = "string"
     with pytest.raises(TypeError):
@@ -808,9 +843,8 @@ def test_nineqcv_fset_ValueError(prob):
         prob.nineqcv = int(-1)
 
 def test_nineqcv_fdel(prob):
-    del prob.nineqcv
     with pytest.raises(AttributeError):
-        prob.nineqcv
+        del prob.nineqcv
 
 #################
 ### ineqcv_wt ###
@@ -826,21 +860,22 @@ def test_ineqcv_wt_fset(prob, ineqcv_wt):
         prob.ineqcv_wt = ineqcv_wt
     with not_raises(TypeError):
         prob.ineqcv_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.ineqcv_wt = None
 
 def test_ineqcv_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.ineqcv_wt = "string"
+        prob.ineqcv_wt = object()
     with pytest.raises(TypeError):
-        prob.ineqcv_wt = None
+        prob.ineqcv_wt = "string"
 
 def test_ineqcv_wt_fset_ValueError(prob, ineqcv_wt):
     with pytest.raises(ValueError):
         prob.ineqcv_wt = numpy.zeros(len(ineqcv_wt)+1, dtype=ineqcv_wt.dtype)
 
 def test_ineqcv_wt_fdel(prob):
-    del prob.ineqcv_wt
     with pytest.raises(AttributeError):
-        prob.ineqcv_wt
+        del prob.ineqcv_wt
 
 #############
 ### neqcv ###
@@ -862,10 +897,12 @@ def test_neqcv_fset(prob):
         prob.neqcv = numpy.int64(1)
     with not_raises(TypeError):
         prob.neqcv = int(1)
+    with not_raises(TypeError):
+        prob.neqcv = None
 
 def test_neqcv_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.neqcv = None
+        prob.neqcv = object()
     with pytest.raises(TypeError):
         prob.neqcv = "string"
     with pytest.raises(TypeError):
@@ -880,9 +917,8 @@ def test_neqcv_fset_ValueError(prob):
         prob.neqcv = int(-1)
 
 def test_neqcv_fdel(prob):
-    del prob.neqcv
     with pytest.raises(AttributeError):
-        prob.neqcv
+        del prob.neqcv
 
 ###############
 ### eqcv_wt ###
@@ -898,21 +934,22 @@ def test_eqcv_wt_fset(prob, eqcv_wt):
         prob.eqcv_wt = eqcv_wt
     with not_raises(TypeError):
         prob.eqcv_wt = float(1.0)
+    with not_raises(TypeError):
+        prob.eqcv_wt = None
 
 def test_eqcv_wt_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.eqcv_wt = "string"
+        prob.eqcv_wt = object()
     with pytest.raises(TypeError):
-        prob.eqcv_wt = None
+        prob.eqcv_wt = "string"
 
 def test_eqcv_wt_fset_ValueError(prob, eqcv_wt):
     with pytest.raises(ValueError):
         prob.eqcv_wt = numpy.zeros(len(eqcv_wt)+1, dtype=eqcv_wt.dtype)
 
 def test_eqcv_wt_fdel(prob):
-    del prob.eqcv_wt
     with pytest.raises(AttributeError):
-        prob.eqcv_wt
+        del prob.eqcv_wt
 
 ################################################################################
 ############################# Test concrete methods ############################

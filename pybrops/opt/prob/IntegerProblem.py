@@ -93,8 +93,8 @@ class IntegerProblem(Problem):
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "decn_space")
             check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
-            check_ndarray_dtype_is_integer(value, "decn_space") # make sure Integral valued, not Real
         elif value is None:
             pass
         else:
@@ -106,8 +106,8 @@ class IntegerProblem(Problem):
     def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "decn_space_lower")
             check_ndarray_len_eq(value, "decn_space_lower", self.ndecn)
-            check_ndarray_dtype_is_integer(value, "decn_space_lower") # make sure Integral valued, not Real
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
@@ -122,8 +122,8 @@ class IntegerProblem(Problem):
     def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "decn_space_upper")
             check_ndarray_len_eq(value, "decn_space_upper", self.ndecn)
-            check_ndarray_dtype_is_integer(value, "decn_space_upper") # make sure Integral valued, not Real
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
@@ -132,7 +132,6 @@ class IntegerProblem(Problem):
             raise TypeError("'decn_space_upper' must be of type numpy.ndarray, Real, or None")
         self._decn_space_upper = value
         self._xu = value
-
 
 
 

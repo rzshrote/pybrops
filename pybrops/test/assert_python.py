@@ -3,7 +3,7 @@ import pytest
 from contextlib import contextmanager
 
 @contextmanager
-def not_raises(ForbiddenException):
+def not_raises(*ForbiddenExceptions):
     """
     Ensure that method does not raise an ForbiddenException.
 
@@ -14,44 +14,10 @@ def not_raises(ForbiddenException):
     """
     try:
         yield
-    except ForbiddenException:
-        raise AssertionError("{0} raised".format(ForbiddenException.__name__))
+    except ForbiddenExceptions as e:
+        raise AssertionError("{0} raised".format(type(e).__name__))
     except Exception:
         pass
-
-# TODO: generalize this to multiple exception types
-@contextmanager
-def not_raises2(ForbiddenException1, ForbiddenException2):
-    try:
-        yield
-    except ForbiddenException1:
-        raise AssertionError("{0} raised".format(ForbiddenException1.__name__))
-    except ForbiddenException2:
-        raise AssertionError("{0} raised".format(ForbiddenException2.__name__))
-    except Exception:
-        pass
-
-@contextmanager
-def not_raises_error():
-    try:
-        yield
-    except Exception:
-        raise AssertionError("{0} raised".format(Exception.__name__))
-
-def assert_operator(op, v, w):
-    """
-    Generic test an operator.
-
-    Tests::
-
-        op(*v) == op(*w)
-
-    Parameters
-    ----------
-    op : callable
-        Operator function to call.
-    """
-    assert op(*v) == op(*w)
 
 def assert_docstring(obj):
     """

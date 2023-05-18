@@ -1,19 +1,33 @@
-from numbers import Integral, Number
-from typing import Callable, Sequence
 import numpy
 import pytest
-
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises, not_raises2
+from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
-
 from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
+class SubsetProblemTestClass(SubsetProblem):
+    def __init__(
+            self, ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
+        ):
+        """NA"""
+        super(SubsetProblemTestClass, self).__init__(
+            ndecn, decn_space, decn_space_lower, decn_space_upper, 
+            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
+        )
+    ### method required by PyBrOpS interface ###
+    def evalfn(self, x, *args, **kwargs):
+        """NA"""
+        super(SubsetProblemTestClass, self).evalfn(x, *args, **kwargs)
+    ### method required by PyMOO interface ###
+    def _evaluate(self, x, out, *args, **kwargs):
+        """NA"""
+        super(SubsetProblemTestClass, self)._evaluate(x, out, *args, **kwargs)
+
 @pytest.fixture
 def ndecn():
     yield 4
@@ -56,28 +70,12 @@ def eqcv_wt():
 
 @pytest.fixture
 def prob(
-    ndecn,
-    decn_space,
-    decn_space_lower,
-    decn_space_upper,
-    nobj,
-    obj_wt,
-    nineqcv,
-    ineqcv_wt,
-    neqcv,
-    eqcv_wt
-):
-    yield SubsetProblem(
-        ndecn = ndecn,
-        decn_space = decn_space,
-        decn_space_lower = decn_space_lower,
-        decn_space_upper = decn_space_upper,
-        nobj = nobj,
-        obj_wt = obj_wt,
-        nineqcv = nineqcv,
-        ineqcv_wt = ineqcv_wt,
-        neqcv = neqcv,
-        eqcv_wt = eqcv_wt
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt
+    ):
+    yield SubsetProblemTestClass(
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt
     )
 
 ################################################################################
@@ -105,10 +103,12 @@ def test_decn_space_fget(prob, ndecn):
     assert prob.decn_space.shape[0] >= ndecn
 
 def test_decn_space_fset(prob, decn_space_lower, decn_space_upper):
-    with not_raises2(TypeError,ValueError):
+    with not_raises(TypeError,ValueError):
         prob.decn_space = numpy.concatenate([decn_space_lower,decn_space_upper])
 
 def test_decn_space_fset_TypeError(prob, ndecn):
+    with pytest.raises(TypeError):
+        prob.decn_space = object()
     with pytest.raises(TypeError):
         prob.decn_space = None
     with pytest.raises(TypeError):
@@ -128,9 +128,8 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
         ])
 
 def test_decn_space_fdel(prob):
-    del prob.decn_space
     with pytest.raises(AttributeError):
-        prob.decn_space
+        del prob.decn_space
 
 
 ################################################################################

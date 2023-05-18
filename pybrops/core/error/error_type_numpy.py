@@ -197,8 +197,12 @@ def check_ndarray_dtype_is_unicode(v: numpy.ndarray, vname: str):
 ################################################################################
 #################### compound ndarray dtype check functions ####################
 ################################################################################
+def check_ndarray_dtype_is_bool_or_integer(v: numpy.ndarray, vname: str) -> None:
+    if not (numpy.issubdtype(v.dtype, numpy.dtype(bool)) or numpy.issubdtype(v.dtype, numpy.integer)):
+        raise TypeError("numpy.ndarray '{0}' must be of dtype 'bool' or be numeric but received {1}".format(vname,v.dtype))
+
 def check_ndarray_dtype_is_bool_or_number(v: numpy.ndarray, vname: str):
-    if not (numpy.issubdtype(v.dtype, numpy.dtype("bool_")) or numpy.issubdtype(v.dtype, numpy.number)):
+    if not (numpy.issubdtype(v.dtype, numpy.dtype(bool)) or numpy.issubdtype(v.dtype, numpy.number)):
         raise TypeError("numpy.ndarray '{0}' must be of dtype 'bool' or be numeric".format(vname))
 
 def check_ndarray_dtype_is_integer_or_floating(v: numpy.ndarray, vname: str):
@@ -206,5 +210,5 @@ def check_ndarray_dtype_is_integer_or_floating(v: numpy.ndarray, vname: str):
         raise TypeError("numpy.ndarray '{0}' must be an integer or floating dtype".format(vname))
 
 def check_ndarray_dtype_is_object_or_string(v: numpy.ndarray, vname: str):
-    if not (numpy.issubdtype(v.dtype, numpy.dtype("object_")) or numpy.issubdtype(v.dtype, numpy.dtype("string_"))):
-        raise TypeError("numpy.ndarray '{0}' must be of dtype 'object_' or 'string_'".format(vname))
+    if not (numpy.issubdtype(v.dtype, numpy.dtype(object)) or numpy.issubdtype(v.dtype, numpy.dtype("string_"))):
+        raise TypeError("numpy.ndarray '{0}' must be of dtype 'object' or 'string_'".format(vname))

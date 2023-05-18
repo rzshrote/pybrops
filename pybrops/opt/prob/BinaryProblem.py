@@ -13,8 +13,8 @@ from numbers import Integral, Real
 from typing import Callable, Iterable, Optional, Sequence, Union
 import numpy
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_shape_eq
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool_or_integer
+from pybrops.core.error.error_value_numpy import check_ndarray_is_binary, check_ndarray_len_eq, check_ndarray_shape_eq
 from pybrops.opt.prob.Problem import Problem
 
 # inheritance ordering is important for method resolution order
@@ -93,8 +93,9 @@ class BinaryProblem(Problem):
     def decn_space(self, value: Union[numpy.ndarray,None]) -> None:
         """Set decision space boundaries."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_bool_or_integer(value, "decn_space")
             check_ndarray_shape_eq(value, "decn_space", (2,self.ndecn))
-            check_ndarray_dtype_is_bool(value, "decn_space") # make sure Boolean valued, not Real
+            check_ndarray_is_binary(value, "decn_space")
         elif value is None:
             pass
         else:
@@ -106,8 +107,9 @@ class BinaryProblem(Problem):
     def decn_space_lower(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set lower boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_bool_or_integer(value, "decn_space_lower")
             check_ndarray_len_eq(value, "decn_space_lower", self.ndecn)
-            check_ndarray_dtype_is_bool(value, "decn_space_lower") # make sure Boolean valued, not Real
+            check_ndarray_is_binary(value, "decn_space")
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
@@ -122,8 +124,9 @@ class BinaryProblem(Problem):
     def decn_space_upper(self, value: Union[numpy.ndarray,Real,None]) -> None:
         """Set upper boundary of the decision space."""
         if isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_bool_or_integer(value, "decn_space_upper")
             check_ndarray_len_eq(value, "decn_space_upper", self.ndecn)
-            check_ndarray_dtype_is_bool(value, "decn_space_upper") # make sure Boolean valued, not Real
+            check_ndarray_is_binary(value, "decn_space")
         elif isinstance(value, Real):
             value = numpy.repeat(value, self.ndecn)
         elif value is None:
