@@ -448,7 +448,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection)
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = EstimatedBreedingValueSubsetSelectionProblem.from_object(
+        prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
             bvmat = bvmat,
             ndecn = self.nparent,
             decn_space = decn_space,
@@ -537,7 +537,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = EstimatedBreedingValueRealSelectionProblem.from_object(
+        prob = EstimatedBreedingValueRealSelectionProblem.from_bvmat(
             bvmat = bvmat,
             ndecn = self.nparent,
             decn_space = decn_space,
@@ -626,7 +626,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueBaseSelection
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = EstimatedBreedingValueIntegerSelectionProblem.from_object(
+        prob = EstimatedBreedingValueIntegerSelectionProblem.from_bvmat(
             bvmat = bvmat,
             ndecn = self.nparent,
             decn_space = decn_space,
@@ -715,7 +715,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = EstimatedBreedingValueBinarySelectionProblem.from_object(
+        prob = EstimatedBreedingValueBinarySelectionProblem.from_bvmat(
             bvmat = bvmat,
             ndecn = self.nparent,
             decn_space = decn_space,

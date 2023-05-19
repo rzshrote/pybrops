@@ -22,6 +22,7 @@ from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionPr
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
 from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
@@ -154,7 +155,56 @@ class GenomicEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=A
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_bvmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GenomicEstimatedBreedingValueSelectionProblem":
+        # extract EBVs for all individuals
+        gebv = bvmat.mat
+
+        # construct class
+        out = cls(
+            gebv = gebv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_gmat_gpmod(
             cls,
             gmat: GenotypeMatrix, 
             gpmod: GenomicModel, 
@@ -177,11 +227,11 @@ class GenomicEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=A
             **kwargs: dict
         ) -> "GenomicEstimatedBreedingValueSelectionProblem":
         # calculate GEBVs for all individuals
-        gebv = gpmod.gebv(gmat).mat
+        gebvmat = gpmod.gebv(gmat)
 
         # construct class
-        out = cls(
-            gebv = gebv,
+        out = cls.from_bvmat(
+            bvmat = gebvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

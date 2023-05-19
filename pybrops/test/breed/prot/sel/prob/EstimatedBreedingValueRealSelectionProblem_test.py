@@ -1,5 +1,6 @@
 import numpy
 import pytest
+from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
@@ -132,6 +133,15 @@ def prob(
         eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
+########### Breeding value matrix class fixtures ###########
+@pytest.fixture
+def bvmat(ebv):
+    yield DenseBreedingValueMatrix(
+        mat = ebv,
+        location = 0.0,
+        scale = 1.0
+    )
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
@@ -211,5 +221,27 @@ def test_latentfn(prob, ntaxa, ebv):
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
-########################### Test abstract properties ###########################
+############################## Test class methods ##############################
 ################################################################################
+def test_from_bvmat(
+        ntaxa, ebv,
+        bvmat, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    ):
+    # construct problem
+    ebvprob = EstimatedBreedingValueRealSelectionProblem.from_bvmat(
+        bvmat, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    )
+    # test problem calculations
+    x = numpy.random.binomial(1, 0.5, ntaxa)
+    x = (1.0 / x.sum()) * x
+    a = ebvprob.latentfn(x)
+    b = -x.dot(ebv)
+    assert numpy.all(numpy.isclose(a,b))

@@ -273,7 +273,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     @model_name.setter
     def model_name(self, value: str) -> None:
         """Set data for property model_name."""
-        if value is None:
+        if value is not None:
             check_is_str(value, "model_name")
         self._model_name = value
     @model_name.deleter
@@ -304,7 +304,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     @trait.setter
     def trait(self, value: numpy.ndarray) -> None:
         """Set data for property trait."""
-        if value is None:
+        if value is not None:
             check_is_ndarray(value, "trait")
             check_ndarray_ndim(value, "trait", 1)
             check_ndarray_dtype_is_object(value, "trait")

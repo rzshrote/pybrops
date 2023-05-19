@@ -4,16 +4,15 @@ for dense breeding value matrices.
 """
 
 import copy
-from typing import Any, Optional
+from numbers import Real
+from typing import Optional, Union
 import numpy
 import h5py
 
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
-from pybrops.core.error.error_value_numpy import check_ndarray_mean_is_approx
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_value_numpy import check_ndarray_std_is_approx
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
@@ -52,8 +51,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     def __init__(
             self, 
             mat: numpy.ndarray, 
-            location: numpy.ndarray, 
-            scale: numpy.ndarray, 
+            location: Union[numpy.ndarray,Real] = 0.0, 
+            scale: Union[numpy.ndarray,Real] = 1.0, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
@@ -70,10 +69,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             standard deviations of this array along the ``taxa`` axis are 0 and
             1, respectively, if the breeding values are with respect to the
             individuals in the breeding value matrix.
-        location : numpy.ndarray
+        location : numpy.ndarray, Real
             A numpy.ndarray of shape ``(t,)`` containing breeding value locations.
-        scale : numpy.ndarray
+            If given a Real, create a numpy.ndarray of shape ``(t,)`` filled with the provided value.
+        scale : numpy.ndarray, Real
             A numpy.ndarray of shape ``(t,)`` containing breeding value scales.
+            If given a Real, create a numpy.ndarray of shape ``(t,)`` filled with the provided value.
         taxa : numpy.ndarray, None
             A numpy.ndarray of shape ``(n,)`` containing taxa names.
             If ``None``, do not store any taxa name information.
@@ -168,20 +169,22 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         """Set raw matrix"""
         check_is_ndarray(value, "mat")
         check_ndarray_ndim(value, "mat", 2)
-        # check_ndarray_mean_is_approx(value, "mat", 0.0, self.taxa_axis)
-        # check_ndarray_std_is_approx(value, "mat", 1.0, self.taxa_axis)
         self._mat = value
 
     @property
-    def location(self) -> Any:
+    def location(self) -> numpy.ndarray:
         """Mean of the phenotype values used to calculate breeding values."""
         return self._location
     @location.setter
-    def location(self, value: Any) -> None:
+    def location(self, value: Union[numpy.ndarray,Real]) -> None:
         """Set the mean of the phenotype values used to calculate breeding values"""
-        check_is_ndarray(value, "location")
-        check_ndarray_ndim(value, "location", 1)
-        check_ndarray_axis_len(value, "location", 0, self.ntrait)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "location", 1)
+            check_ndarray_axis_len(value, "location", 0, self.ntrait)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.ntrait)
+        else:
+            raise TypeError("variable 'location' must be of type 'numpy.ndarray' or 'Real'")
         self._location = value
     @location.deleter
     def location(self) -> None:
@@ -189,15 +192,19 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         del self._location
     
     @property
-    def scale(self) -> Any:
+    def scale(self) -> numpy.ndarray:
         """Standard deviation of the phenotype values used to calculate breeding values."""
         return self._scale
     @scale.setter
-    def scale(self, value: Any) -> None:
+    def scale(self, value: Union[numpy.ndarray,Real]) -> None:
         """Set the standard deviation of the phenotype values used to calculate breeding values"""
-        check_is_ndarray(value, "scale")
-        check_ndarray_ndim(value, "scale", 1)
-        check_ndarray_axis_len(value, "scale", 0, self.ntrait)
+        if isinstance(value, numpy.ndarray):
+            check_ndarray_ndim(value, "scale", 1)
+            check_ndarray_axis_len(value, "scale", 0, self.ntrait)
+        elif isinstance(value, Real):
+            value = numpy.repeat(value, self.ntrait)
+        else:
+            raise TypeError("variable 'scale' must be of type 'numpy.ndarray' or 'Real'")
         self._scale = value
     @scale.deleter
     def scale(self) -> None:
@@ -622,13 +629,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseBreedingValueMatrix(v: Any) -> bool:
+def is_DenseBreedingValueMatrix(v: object) -> bool:
     """
     Determine whether an object is a DenseBreedingValueMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -638,13 +645,13 @@ def is_DenseBreedingValueMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseBreedingValueMatrix)
 
-def check_is_DenseBreedingValueMatrix(v: Any, vname: str) -> None:
+def check_is_DenseBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     varname : str
         Name of variable to print in TypeError message.

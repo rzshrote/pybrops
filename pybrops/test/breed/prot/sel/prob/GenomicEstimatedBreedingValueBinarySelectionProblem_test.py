@@ -1,10 +1,12 @@
 import numpy
 import pytest
 
+from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
+from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
-
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem
 
 ################################################################################
@@ -17,6 +19,10 @@ def ntaxa():
 @pytest.fixture
 def ntrait():
     yield 2
+
+@pytest.fixture
+def nvrnt():
+    yield 1000
 
 @pytest.fixture
 def trait_mean(ntrait):
@@ -132,6 +138,36 @@ def prob(
         eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
+########### Breeding value matrix class fixtures ###########
+@pytest.fixture
+def bvmat(gebv):
+    yield DenseBreedingValueMatrix(
+        mat = gebv,
+        location = 0.0,
+        scale = 1.0
+    )
+
+@pytest.fixture
+def gmat(ntaxa, nvrnt):
+    mat = numpy.random.binomial(2, 0.5, (ntaxa, nvrnt)).astype("int8")
+    taxa = numpy.array(["Taxa"+str(i).zfill(3) for i in range(1,ntaxa+1)], dtype=object)
+    yield DenseGenotypeMatrix(
+        mat = mat,
+        taxa = taxa
+    )
+
+@pytest.fixture
+def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
+    beta = numpy.ones((1,ntrait), dtype=float)
+    u_a = numpy.random.multivariate_normal(trait_mean, trait_cov, (nvrnt,))
+    trait = numpy.array(["Trait"+str(i).zfill(2) for i in range(1,ntrait+1)], dtype=object)
+    yield DenseAdditiveLinearGenomicModel(
+        beta = beta,
+        u_misc = None,
+        u_a = u_a,
+        trait = trait
+    )
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
@@ -211,5 +247,52 @@ def test_latentfn(prob, ntaxa, gebv):
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
-########################### Test abstract properties ###########################
+############################## Test class methods ##############################
 ################################################################################
+def test_from_bvmat(
+        ntaxa, gebv,
+        bvmat, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    ):
+    # construct problem
+    gebvprob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_bvmat(
+        bvmat, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    )
+    # test problem calculations
+    x = numpy.random.binomial(1, 0.5, ntaxa)
+    x = (1.0 / x.sum()) * x
+    a = gebvprob.latentfn(x)
+    b = -x.dot(gebv)
+    assert numpy.all(numpy.isclose(a,b))
+
+def test_from_gmat_gpmod(
+        ntaxa,
+        gmat, gpmod, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    ):
+    # construct problem
+    gebvprob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_gpmod(
+        gmat, gpmod, 
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    )
+    # calculate GEBVs
+    gebv = gpmod.gebv(gmat).mat
+    # test problem calculations
+    x = numpy.random.binomial(1, 0.5, ntaxa)
+    x = (1.0 / x.sum()) * x
+    a = gebvprob.latentfn(x)
+    b = -x.dot(gebv)
+    assert numpy.all(numpy.isclose(a,b))

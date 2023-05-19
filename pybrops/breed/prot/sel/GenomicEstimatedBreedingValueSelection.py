@@ -478,7 +478,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_object(
+        prob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
             ndecn = self.nparent,
@@ -568,7 +568,7 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_object(
+        prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
             ndecn = self.nparent,
@@ -658,7 +658,7 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_object(
+        prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
             ndecn = self.nparent,
@@ -748,7 +748,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_object(
+        prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
             ndecn = self.nparent,
