@@ -485,7 +485,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(Generalize
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_algpmod(
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
@@ -576,7 +576,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.from_gmat_algpmod(
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
@@ -667,7 +667,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_algpmod(
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
@@ -754,7 +754,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(Generalize
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.from_object(
+        prob = GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_algpmod(
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,

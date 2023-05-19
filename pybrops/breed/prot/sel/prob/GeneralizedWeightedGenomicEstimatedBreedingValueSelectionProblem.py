@@ -3,10 +3,10 @@ Module implementing generalized weighted genomic selection as a subset optimizat
 """
 
 __all__ = [
-    "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem",
     "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem"
+    "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem"
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -18,13 +18,9 @@ from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelection
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Real
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_in_interval
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -61,7 +57,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
+        super(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -156,7 +152,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
         return out
 
     @classmethod
-    def from_object(
+    def from_gmat_algpmod(
             cls,
             gmat: GenotypeMatrix,
             algpmod: AdditiveLinearGenomicModel,
@@ -242,6 +238,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Sub
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
+            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -341,6 +338,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealS
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, self).__init__(
+            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -444,6 +442,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(In
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
+            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -547,6 +546,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(Bin
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem, self).__init__(
+            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
