@@ -15,15 +15,11 @@ import numpy
 # from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.breed.prot.sel.targetfn import target_positive
-from pybrops.breed.prot.sel.weightfn import weight_absolute
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
 class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -459,6 +455,10 @@ class MultiObjectiveGenomicSubsetSelectionProblem(SubsetSelectionProblem,MultiOb
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(MultiObjectiveGenomicSubsetSelectionProblem, self).__init__(
+            geno = geno,
+            ploidy = ploidy,
+            mkrwt = mkrwt,
+            tfreq = tfreq,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

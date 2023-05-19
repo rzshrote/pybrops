@@ -305,6 +305,7 @@ class MeanExpectedHeterozygositySubsetSelectionProblem(SubsetSelectionProblem,Me
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygositySubsetSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -457,6 +458,7 @@ class MeanExpectedHeterozygosityRealSelectionProblem(RealSelectionProblem,MeanEx
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityRealSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -609,6 +611,7 @@ class MeanExpectedHeterozygosityIntegerSelectionProblem(IntegerSelectionProblem,
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityIntegerSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -759,6 +762,7 @@ class MeanExpectedHeterozygosityBinarySelectionProblem(BinarySelectionProblem,Me
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityBinarySelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

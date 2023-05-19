@@ -432,6 +432,8 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(OptimalHaploidValueSubsetSelectionProblem, self).__init__(
+            haplomat = haplomat,
+            xmap = xmap,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -597,6 +599,8 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(OptimalHaploidValueRealSelectionProblem, self).__init__(
+            haplomat = haplomat,
+            xmap = xmap,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -765,6 +769,8 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(OptimalHaploidValueIntegerSelectionProblem, self).__init__(
+            haplomat = haplomat,
+            xmap = xmap,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -933,6 +939,8 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(OptimalHaploidValueBinarySelectionProblem, self).__init__(
+            haplomat = haplomat,
+            xmap = xmap,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

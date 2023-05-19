@@ -380,6 +380,8 @@ class GenotypeBuilderSubsetSelectionProblem(SubsetSelectionProblem,GenotypeBuild
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenotypeBuilderSubsetSelectionProblem, self).__init__(
+            haplomat = haplomat,
+            nbestfndr = nbestfndr,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

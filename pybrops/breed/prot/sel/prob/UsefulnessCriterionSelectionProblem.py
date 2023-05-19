@@ -317,7 +317,6 @@ class UsefulnessCriterionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
         return out
 
-
 class UsefulnessCriterionSubsetSelectionProblem(SubsetSelectionProblem,UsefulnessCriterionSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
@@ -407,6 +406,7 @@ class UsefulnessCriterionSubsetSelectionProblem(SubsetSelectionProblem,Usefulnes
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(UsefulnessCriterionSubsetSelectionProblem, self).__init__(
+            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -569,6 +569,7 @@ class UsefulnessCriterionRealSelectionProblem(RealSelectionProblem,UsefulnessCri
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(UsefulnessCriterionRealSelectionProblem, self).__init__(
+            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -724,6 +725,7 @@ class UsefulnessCriterionIntegerSelectionProblem(IntegerSelectionProblem,Usefuln
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(UsefulnessCriterionIntegerSelectionProblem, self).__init__(
+            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -879,6 +881,7 @@ class UsefulnessCriterionBinarySelectionProblem(BinarySelectionProblem,Usefulnes
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(UsefulnessCriterionBinarySelectionProblem, self).__init__(
+            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

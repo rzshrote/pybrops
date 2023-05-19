@@ -288,6 +288,7 @@ class RandomSubsetSelectionProblem(SubsetSelectionProblem,RandomSelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomSubsetSelectionProblem, self).__init__(
+            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -446,6 +447,7 @@ class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomRealSelectionProblem, self).__init__(
+            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -599,6 +601,7 @@ class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProbl
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomIntegerSelectionProblem, self).__init__(
+            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -752,6 +755,7 @@ class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomBinarySelectionProblem, self).__init__(
+            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

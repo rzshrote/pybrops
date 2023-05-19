@@ -389,6 +389,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(ExpectedMaximumBreedingValueSubsetSelectionProblem, self).__init__(
+            embv = embv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -551,6 +552,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(RealSelectionProblem,Expe
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(ExpectedMaximumBreedingValueRealSelectionProblem, self).__init__(
+            embv = embv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -706,6 +708,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(IntegerSelectionProble
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(ExpectedMaximumBreedingValueIntegerSelectionProblem, self).__init__(
+            embv = embv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -861,6 +864,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(BinarySelectionProblem,
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(ExpectedMaximumBreedingValueBinarySelectionProblem, self).__init__(
+            embv = embv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

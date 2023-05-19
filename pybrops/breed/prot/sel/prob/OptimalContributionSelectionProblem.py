@@ -58,7 +58,7 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         
         Parameters
         ----------
-        bv : numpy.ndarray
+        ebv : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``. 
             If you are using a penalization transformation function, preferably
             these breeding values are centered and scaled to make the penalies 
@@ -126,7 +126,7 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionSelectionProblem, self).__init__(
-            bv = ebv,
+            ebv = ebv,
             C = C,
             ndecn = ndecn,
             decn_space = decn_space,
@@ -325,7 +325,7 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         
         Parameters
         ----------
-        bv : numpy.ndarray
+        ebv : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``. 
             If you are using a penalization transformation function, preferably
             these breeding values are centered and scaled to make the penalies 
@@ -393,7 +393,7 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionSubsetSelectionProblem, self).__init__(
-            bv = ebv,
+            ebv = ebv,
             C = C,
             ndecn = ndecn,
             decn_space = decn_space,
@@ -485,7 +485,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
+            ebv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -510,7 +510,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         
         Parameters
         ----------
-        bv : numpy.ndarray
+        ebv : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``. 
             If you are using a penalization transformation function, preferably
             these breeding values are centered and scaled to make the penalies 
@@ -578,7 +578,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionRealSelectionProblem, self).__init__(
-            bv = bv,
+            ebv = ebv,
             C = C,
             ndecn = ndecn,
             decn_space = decn_space,
@@ -599,7 +599,7 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
             **kwargs
         )
         # order dependent assignments
-        self.ebv = bv
+        self.ebv = ebv
         self.C = C
 
     ############################## Object Methods ##############################
@@ -671,7 +671,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
+            ebv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -696,7 +696,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         
         Parameters
         ----------
-        bv : numpy.ndarray
+        ebv : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``. 
             If you are using a penalization transformation function, preferably
             these breeding values are centered and scaled to make the penalies 
@@ -764,7 +764,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionIntegerSelectionProblem, self).__init__(
-            bv = bv,
+            ebv = ebv,
             C = C,
             ndecn = ndecn,
             decn_space = decn_space,
@@ -785,7 +785,7 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs
         )
         # order dependent assignments
-        self.ebv = bv
+        self.ebv = ebv
         self.C = C
 
     ############################## Object Methods ##############################
@@ -857,7 +857,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            bv: numpy.ndarray,
+            ebv: numpy.ndarray,
             C: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
@@ -882,7 +882,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         
         Parameters
         ----------
-        bv : numpy.ndarray
+        ebv : numpy.ndarray
             A breeding value matrix of shape ``(n,t)``. 
             If you are using a penalization transformation function, preferably
             these breeding values are centered and scaled to make the penalies 
@@ -950,7 +950,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionBinarySelectionProblem, self).__init__(
-            bv = bv,
+            ebv = ebv,
             C = C,
             ndecn = ndecn,
             decn_space = decn_space,
@@ -971,7 +971,7 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
             **kwargs
         )
         # order dependent assignments
-        self.ebv = bv
+        self.ebv = ebv
         self.C = C
 
     ############################## Object Methods ##############################

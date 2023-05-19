@@ -369,6 +369,7 @@ class OptimalPopulationValueSubsetSelectionProblem(SubsetSelectionProblem,Optima
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(OptimalPopulationValueSubsetSelectionProblem, self).__init__(
+            haplomat = haplomat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

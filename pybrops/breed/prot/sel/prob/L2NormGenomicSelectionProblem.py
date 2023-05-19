@@ -309,6 +309,7 @@ class L2NormGenomicSubsetSelectionProblem(SubsetSelectionProblem,L2NormGenomicSe
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(L2NormGenomicSubsetSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -463,6 +464,7 @@ class L2NormGenomicRealSelectionProblem(RealSelectionProblem,L2NormGenomicSelect
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(L2NormGenomicRealSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -618,6 +620,7 @@ class L2NormGenomicIntegerSelectionProblem(IntegerSelectionProblem,L2NormGenomic
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(L2NormGenomicIntegerSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -773,6 +776,7 @@ class L2NormGenomicBinarySelectionProblem(BinarySelectionProblem,L2NormGenomicSe
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(L2NormGenomicBinarySelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

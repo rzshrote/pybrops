@@ -305,6 +305,7 @@ class MeanGenomicRelationshipSubsetSelectionProblem(SubsetSelectionProblem,MeanG
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(MeanGenomicRelationshipSubsetSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -453,6 +454,7 @@ class MeanGenomicRelationshipRealSelectionProblem(RealSelectionProblem,MeanGenom
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(MeanGenomicRelationshipRealSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -604,6 +606,7 @@ class MeanGenomicRelationshipIntegerSelectionProblem(IntegerSelectionProblem,Mea
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(MeanGenomicRelationshipIntegerSelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -753,6 +756,7 @@ class MeanGenomicRelationshipBinarySelectionProblem(BinarySelectionProblem,MeanG
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(MeanGenomicRelationshipBinarySelectionProblem, self).__init__(
+            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

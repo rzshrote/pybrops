@@ -319,6 +319,8 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
+            ebv = ebv,
+            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -501,6 +503,8 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Fami
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueRealSelectionProblem, self).__init__(
+            ebv = ebv,
+            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -663,6 +667,8 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProble
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
+            ebv = ebv,
+            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -825,6 +831,8 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueBinarySelectionProblem, self).__init__(
+            ebv = ebv,
+            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
