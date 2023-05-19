@@ -3,10 +3,10 @@ Module implementing Conventional Genomic Selection problems for multiple search 
 """
 
 __all__ = [
-    "GenomicEstimatedBreedingValueSubsetSelectionProblem",
-    "GenomicEstimatedBreedingValueRealSelectionProblem",
+    "GenomicEstimatedBreedingValueBinarySelectionProblem",
     "GenomicEstimatedBreedingValueIntegerSelectionProblem",
-    "GenomicEstimatedBreedingValueBinarySelectionProblem"
+    "GenomicEstimatedBreedingValueRealSelectionProblem",
+    "GenomicEstimatedBreedingValueSubsetSelectionProblem"
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -289,6 +289,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenomicEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
+            gebv = gebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -447,6 +448,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Gen
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenomicEstimatedBreedingValueRealSelectionProblem, self).__init__(
+            gebv = gebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -600,6 +602,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProbl
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenomicEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
+            gebv = gebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -753,6 +756,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenomicEstimatedBreedingValueBinarySelectionProblem, self).__init__(
+            gebv = gebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
