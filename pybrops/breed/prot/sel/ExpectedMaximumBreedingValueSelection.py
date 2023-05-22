@@ -514,7 +514,7 @@ class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueBa
         decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
 
         # construct problem
-        prob = ExpectedMaximumBreedingValueSubsetSelectionProblem.from_object(
+        prob = ExpectedMaximumBreedingValueSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             ncross = self.ncross,
             nprogeny = self.nprogeny,
@@ -609,7 +609,7 @@ class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueBase
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = ExpectedMaximumBreedingValueRealSelectionProblem.from_object(
+        prob = ExpectedMaximumBreedingValueRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             ncross = self.ncross,
             nprogeny = self.nprogeny,
@@ -704,7 +704,7 @@ class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueB
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = ExpectedMaximumBreedingValueIntegerSelectionProblem.from_object(
+        prob = ExpectedMaximumBreedingValueIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             ncross = self.ncross,
             nprogeny = self.nprogeny,
@@ -799,7 +799,7 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueBa
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = ExpectedMaximumBreedingValueBinarySelectionProblem.from_object(
+        prob = ExpectedMaximumBreedingValueBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             ncross = self.ncross,
             nprogeny = self.nprogeny,

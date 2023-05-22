@@ -185,6 +185,8 @@ class TwoWayDHCross(MatingProtocol):
         # check data type
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
         check_ndarray_len_is_multiple_of(sel, "sel", 2)
+        if pgmat.vrnt_xoprob is None:
+            raise ValueError("PhasedGenotypeMatrix '{0}' must have crossover probabilities (vrnt_xoprob)")
 
         ########################################################################
         ########################## Progeny generation ##########################

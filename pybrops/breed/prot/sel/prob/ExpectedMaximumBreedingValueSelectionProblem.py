@@ -13,17 +13,18 @@ from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 import numpy
-from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
+from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
 from pybrops.core.util.arrayix import triudix, triuix
-from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
 class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -245,12 +246,12 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_pgmat_gpmod(
             cls,
-            nparent: int,
-            ncross: int,
-            nprogeny: int,
-            nrep: int,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nrep: Integral,
             unique_parents: bool,
             pgmat: PhasedGenotypeMatrix, 
             gpmod: GenomicModel, 
@@ -273,6 +274,16 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "ExpectedMaximumBreedingValueSelectionProblem":
+        # check input types
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nrep, "nrep")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_MatingProtocol(mateprot, "mateprot")
+
         # calculate estimated maximum breeding values
         embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
 
