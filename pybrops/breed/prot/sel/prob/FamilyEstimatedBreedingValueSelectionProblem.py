@@ -182,7 +182,7 @@ class FamilyEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
             ndecn: Integral,
