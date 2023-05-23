@@ -13,12 +13,14 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_in_interval
 from pybrops.core.util.arrayix import triudix, triuix
-from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
 class UsefulnessCriterionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -240,7 +242,7 @@ class UsefulnessCriterionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_pgmat_gpmod(
             cls,
             nparent: Integral, 
             ncross: Integral, 
@@ -270,6 +272,19 @@ class UsefulnessCriterionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "UsefulnessCriterionSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # convert percentile to selection intensity
         selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
         

@@ -537,7 +537,7 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
         decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
 
         # construct problem
-        prob = UsefulnessCriterionSubsetSelectionProblem.from_object(
+        prob = UsefulnessCriterionSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
             ncross = self.ncross, 
             nprogeny = self.nprogeny, 
@@ -638,7 +638,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionRealSelectionProblem.from_object(
+        prob = UsefulnessCriterionRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
             ncross = self.ncross, 
             nprogeny = self.nprogeny, 
@@ -739,7 +739,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionIntegerSelectionProblem.from_object(
+        prob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
             ncross = self.ncross, 
             nprogeny = self.nprogeny, 
@@ -840,7 +840,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionBinarySelectionProblem.from_object(
+        prob = UsefulnessCriterionBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
             ncross = self.ncross, 
             nprogeny = self.nprogeny, 
