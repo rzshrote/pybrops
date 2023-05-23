@@ -238,10 +238,10 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_bvmat_gmat(
             cls,
-            gmat: GenotypeMatrix, 
             bvmat: BreedingValueMatrix,
+            gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
             descale: bool,
             ndecn: Integral,
@@ -455,10 +455,14 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
 
             - ``t`` is the number of traits.
         """
+        # calculate individual contribution
+        # scalar
+        indcontrib = 1.0 / len(x)
+
         # calculate MEH
         # (n,n)[:,(k,)] -> (n,k)
         # scalar * (n,k).sum(1) -> (n,)
-        Cx = (1.0 / len(x)) * self.C[:,x].sum(1)
+        Cx = indcontrib * self.C[:,x].sum(1)
 
         # calculate mean genomic relationship
         # norm2( (n,), keepdims=True ) -> (1,)
@@ -467,7 +471,7 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         # calculate negative mean breeding value of the selection
         # (n,t)[(k,),:] -> (k,t)
         # (k,t).sum(0) -> (t,)
-        gain = -(self.ebv[x,:].sum(0))
+        gain = -indcontrib * self.ebv[x,:].sum(0)
         
         # concatenate everything
         # (1,) concat (t,) -> (1+t,)

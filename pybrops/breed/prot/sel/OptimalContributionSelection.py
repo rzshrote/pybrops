@@ -501,9 +501,9 @@ class OptimalContributionSubsetSelection(OptimalContributionBaseSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = OptimalContributionSubsetSelectionProblem.from_object(
-            gmat = gmat,
+        prob = OptimalContributionSubsetSelectionProblem.from_bvmat_gmat(
             bvmat = bvmat,
+            gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
             ndecn = self.nparent,
@@ -592,9 +592,9 @@ class OptimalContributionRealSelection(OptimalContributionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalContributionRealSelectionProblem.from_object(
-            gmat = gmat,
+        prob = OptimalContributionRealSelectionProblem.from_bvmat_gmat(
             bvmat = bvmat,
+            gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
             ndecn = self.nparent,
@@ -683,9 +683,9 @@ class OptimalContributionIntegerSelection(OptimalContributionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalContributionIntegerSelectionProblem.from_object(
-            gmat = gmat,
+        prob = OptimalContributionIntegerSelectionProblem.from_bvmat_gmat(
             bvmat = bvmat,
+            gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
             ndecn = self.nparent,
@@ -774,9 +774,9 @@ class OptimalContributionBinarySelection(OptimalContributionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalContributionBinarySelectionProblem.from_object(
-            gmat = gmat,
+        prob = OptimalContributionBinarySelectionProblem.from_bvmat_gmat(
             bvmat = bvmat,
+            gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
             ndecn = self.nparent,
