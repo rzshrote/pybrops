@@ -1,11 +1,12 @@
 import numpy
 import pytest
+from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.RandomSelectionProblem import RandomRealSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -33,7 +34,7 @@ def trait_cov(ntrait):
     yield out
 
 @pytest.fixture
-def gebv(ntaxa, trait_mean, trait_cov):
+def rbv(ntaxa, trait_mean, trait_cov):
     yield numpy.random.multivariate_normal(
         mean = trait_mean,
         cov = trait_cov,
@@ -41,20 +42,20 @@ def gebv(ntaxa, trait_mean, trait_cov):
     )
 
 @pytest.fixture
-def ndecn():
-    yield 4
+def ndecn(ntaxa):
+    yield ntaxa
 
 @pytest.fixture
-def decn_space_lower():
-    yield numpy.array([1,2,3,4], dtype=float)
+def decn_space_lower(ntaxa):
+    yield numpy.repeat(0.0, ntaxa)
 
 @pytest.fixture
-def decn_space_upper():
-    yield numpy.array([5,6,7,8], dtype=float)
+def decn_space_upper(ntaxa):
+    yield numpy.repeat(1.0, ntaxa)
 
 @pytest.fixture
 def decn_space(decn_space_lower, decn_space_upper):
-    yield numpy.concatenate([decn_space_lower, decn_space_upper])
+    yield numpy.stack([decn_space_lower, decn_space_upper])
 
 @pytest.fixture
 def nobj():
@@ -106,26 +107,14 @@ def eqcv_trans_kwargs():
 
 @pytest.fixture
 def prob(
-    gebv,
-    ndecn,
-    decn_space,
-    decn_space_lower,
-    decn_space_upper,
-    nobj,
-    obj_wt,
-    obj_trans,
-    obj_trans_kwargs,
-    nineqcv,
-    ineqcv_wt,
-    ineqcv_trans,
-    ineqcv_trans_kwargs,
-    neqcv,
-    eqcv_wt,
-    eqcv_trans,
-    eqcv_trans_kwargs
+    rbv, 
+    ndecn, decn_space, decn_space_lower, decn_space_upper, 
+    nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+    nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+    neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
 ):
-    yield GenomicEstimatedBreedingValueSubsetSelectionProblem(
-        gebv = gebv,
+    yield RandomRealSelectionProblem(
+        rbv = rbv,
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -144,11 +133,20 @@ def prob(
         eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
+########### Breeding value matrix class fixtures ###########
+@pytest.fixture
+def bvmat(rbv):
+    yield DenseBreedingValueMatrix(
+        mat = rbv,
+        location = 0.0,
+        scale = 1.0
+    )
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_SubsetConventionalGenomicSelectionProblem_docstring():
-    assert_docstring(GenomicEstimatedBreedingValueSubsetSelectionProblem)
+def test_RealConventionalSelectionProblem_docstring():
+    assert_docstring(RandomRealSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -158,47 +156,46 @@ def test_SubsetConventionalGenomicSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(GenomicEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
+    assert_concrete_property_fget(RandomRealSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
 
 ############
-### gebv ###
+### rbv ###
 ############
-def test_gebv_is_concrete():
-    assert_concrete_property(GenomicEstimatedBreedingValueSubsetSelectionProblem, "gebv")
+def test_rbv_is_concrete():
+    assert_concrete_property(RandomRealSelectionProblem, "rbv")
 
-def test_gebv_fget(prob, ntaxa, ntrait):
-    assert isinstance(prob.gebv, numpy.ndarray)
-    assert prob.gebv.shape == (ntaxa,ntrait)
+def test_rbv_fget(prob, ntaxa, ntrait):
+    assert isinstance(prob.rbv, numpy.ndarray)
+    assert prob.rbv.shape == (ntaxa,ntrait)
 
-def test_gebv_fset(prob, ntaxa, ntrait):
+def test_rbv_fset(prob, ntaxa, ntrait):
     with not_raises(Exception):
-        prob.gebv = numpy.random.random((ntaxa,ntrait))
+        prob.rbv = numpy.random.random((ntaxa,ntrait))
 
-def test_gebv_fset_TypeError(prob):
+def test_rbv_fset_TypeError(prob):
     with pytest.raises(TypeError):
-        prob.gebv = None
+        prob.rbv = None
     with pytest.raises(TypeError):
-        prob.gebv = "string"
+        prob.rbv = "string"
     with pytest.raises(TypeError):
-        prob.gebv = int(1)
+        prob.rbv = int(1)
     with pytest.raises(TypeError):
-        prob.gebv = float(1.0)
+        prob.rbv = float(1.0)
 
-def test_gebv_fset_ValueError(prob, ntaxa, ntrait):
+def test_rbv_fset_ValueError(prob, ntaxa, ntrait):
     with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random(ntaxa)
+        prob.rbv = numpy.random.random(ntaxa)
     with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random(ntrait)
+        prob.rbv = numpy.random.random(ntrait)
     with pytest.raises(ValueError):
-        prob.gebv = numpy.random.random((ntaxa,ntaxa,ntrait,ntrait))
+        prob.rbv = numpy.random.random((ntaxa,ntaxa,ntrait,ntrait))
 
-def test_gebv_fdel(prob):
-    del prob.gebv
+def test_rbv_fdel(prob):
     with pytest.raises(AttributeError):
-        prob.gebv
+        del prob.rbv
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -208,7 +205,7 @@ def test_gebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
+    assert_concrete_method(RandomRealSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
@@ -216,12 +213,34 @@ def test_init_is_concrete():
 def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
 
-def test_latentfn(prob, ntaxa, gebv):
-    x = numpy.random.choice(ntaxa, ntaxa // 2)
+def test_latentfn(prob, ndecn, rbv):
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = gebv[x,:].sum(0)
-    assert numpy.all(a == b)
+    b = -y.dot(rbv)
+    assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
-########################### Test abstract properties ###########################
+############################## Test class methods ##############################
 ################################################################################
+def test_from_object(
+        ntaxa, ntrait,
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    ):
+    # construct problem
+    rbvprob = RandomRealSelectionProblem.from_object(
+        ntaxa, ntrait,
+        ndecn, decn_space, decn_space_lower, decn_space_upper, 
+        nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+        nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+        neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
+    )
+    # test problem calculations
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
+    a = rbvprob.latentfn(x)
+    b = -y.dot(rbvprob.rbv)
+    assert numpy.all(numpy.isclose(a,b))
