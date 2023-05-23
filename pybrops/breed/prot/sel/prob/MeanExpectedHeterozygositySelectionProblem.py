@@ -156,7 +156,7 @@ class MeanExpectedHeterozygositySelectionProblem(SelectionProblem,metaclass=ABCM
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_gmat(
             cls,
             gmat: GenotypeMatrix,
             cmatfcty: CoancestryMatrixFactory,

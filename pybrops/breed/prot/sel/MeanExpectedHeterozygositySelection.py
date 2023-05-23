@@ -479,7 +479,7 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygosityBaseSe
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = MeanExpectedHeterozygositySubsetSelectionProblem.from_object(
+        prob = MeanExpectedHeterozygositySubsetSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
             ndecn = self.nparent,
@@ -569,7 +569,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygosityBaseSele
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanExpectedHeterozygosityRealSelectionProblem.from_object(
+        prob = MeanExpectedHeterozygosityRealSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
             ndecn = self.nparent,
@@ -659,7 +659,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygosityBaseS
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanExpectedHeterozygosityIntegerSelectionProblem.from_object(
+        prob = MeanExpectedHeterozygosityIntegerSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
             ndecn = self.nparent,
@@ -749,7 +749,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygosityBaseSe
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanExpectedHeterozygosityBinarySelectionProblem.from_object(
+        prob = MeanExpectedHeterozygosityBinarySelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
             ndecn = self.nparent,
