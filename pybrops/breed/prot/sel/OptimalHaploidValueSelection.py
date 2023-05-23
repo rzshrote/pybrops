@@ -484,7 +484,7 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueBaseSelection):
         decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
 
         # construct problem
-        prob = OptimalHaploidValueSubsetSelectionProblem.from_object(
+        prob = OptimalHaploidValueSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             nhaploblk = self.nhaploblk,
             unique_parents = self.unique_parents,
@@ -580,7 +580,7 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalHaploidValueRealSelectionProblem.from_object(
+        prob = OptimalHaploidValueRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             nhaploblk = self.nhaploblk,
             unique_parents = self.unique_parents,
@@ -676,7 +676,7 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalHaploidValueIntegerSelectionProblem.from_object(
+        prob = OptimalHaploidValueIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             nhaploblk = self.nhaploblk,
             unique_parents = self.unique_parents,
@@ -772,7 +772,7 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = OptimalHaploidValueBinarySelectionProblem.from_object(
+        prob = OptimalHaploidValueBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
             nhaploblk = self.nhaploblk,
             unique_parents = self.unique_parents,

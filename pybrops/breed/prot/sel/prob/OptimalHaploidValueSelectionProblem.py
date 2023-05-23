@@ -22,6 +22,8 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
+from pybrops.core.util.subroutines import srange
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
@@ -33,8 +35,7 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     @abstractmethod
     def __init__(
             self,
-            haplomat: numpy.ndarray,
-            xmap: numpy.ndarray,
+            ohvmat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -58,23 +59,13 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        ohvmat : numpy.ndarray
+            An optimal haploid value matrix of shape ``(s,t)``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
             - ``t`` is the number of traits.
-        xmap : numpy.ndarray
-            A cross selection map array of shape ``(s,d)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -144,8 +135,7 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
-        self.xmap = xmap
+        self.ohvmat = ohvmat
 
     ############################ Object Properties #############################
 
@@ -154,41 +144,27 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     def nlatent(self) -> Integral:
         """Number of latent variables."""
         # return number of traits in haplotype matrix
-        return self._haplomat.shape[3]
+        return self._ohvmat.shape[1]
 
-    ############## Cross selection map array ###############
+    ############# Optimal haploid value array ##############
     @property
-    def xmap(self) -> numpy.ndarray:
-        """Cross selection map array of shape ``(s,d)``."""
-        return self._xmap
-    @xmap.setter
-    def xmap(self, value: numpy.ndarray) -> None:
-        """Set cross selection map array."""
-        check_is_ndarray(value, "xmap")
-        check_ndarray_ndim(value, "xmap", 2)
-        self._xmap = value
+    def ohvmat(self) -> numpy.ndarray:
+        """Optimal haploid value matrix of shape ``(s,t)``."""
+        return self._ohvmat
+    @ohvmat.setter
+    def ohvmat(self, value: numpy.ndarray) -> None:
+        """Set optimal haploid value matrix."""
+        check_is_ndarray(value, "ohvmat")
+        check_ndarray_ndim(value, "ohvmat", 2)
+        self._ohvmat = value
     
-    ################### Haplotype matrix ###################
-    @property
-    def haplomat(self) -> numpy.ndarray:
-        """Haplotype effect matrix of shape ``(m,n,h,t)``."""
-        return self._haplomat
-    @haplomat.setter
-    def haplomat(self, value: numpy.ndarray) -> None:
-        """Set haplotype effect matrix."""
-        check_is_ndarray(value, "haplomat")
-        check_ndarray_ndim(value, "haplomat", 4)
-        self._haplomat = value
-    
-    ##################### Ploidy level #####################
-    @property
-    def ploidy(self) -> Integral:
-        """ploidy."""
-        return self._haplomat.shape[0]
-
     ######################### Private Object Methods ###########################
     @staticmethod
-    def _calc_haplomat(pgmat, gpmod, nhaploblk):
+    def _calc_haplomat(
+            pgmat: PhasedGenotypeMatrix, 
+            gpmod: AdditiveLinearGenomicModel, 
+            nhaploblk: Integral
+        ) -> numpy.ndarray:
         """
         Calculate a haplotype matrix from a genome matrix and model.
 
@@ -210,22 +186,22 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         chrgrp_spix = pgmat.vrnt_chrgrp_spix # get chromosome stop indices
         chrgrp_len  = pgmat.vrnt_chrgrp_len  # get chromosome marker lengths
         u           = gpmod.u_a              # get regression coefficients
-
-        if (chrgrp_stix is None) or (chrgrp_spix is None):
-            raise RuntimeError("markers are not sorted by chromosome position")
+        
+        if not pgmat.is_grouped_vrnt():
+            raise ValueError("PhasedGenotypeMatrix 'pgmat' variants are not sorted by chromosome position")
 
         # get number of chromosomes
         nchr = len(chrgrp_stix)
 
         if nhaploblk < nchr:
-            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
+            raise ValueError("number of haplotype blocks is less than the number of chromosomes")
 
         # calculate number of marker blocks to assign to each chromosome
         nblk = nhaploblk_chrom(nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
 
         # ensure there are enough markers per chromosome
         if numpy.any(nblk > chrgrp_len):
-            raise RuntimeError(
+            raise ValueError(
                 "number of haplotype blocks assigned to a chromosome greater than number of available markers"
             )
 
@@ -252,7 +228,11 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         return hmat
 
     @staticmethod
-    def _calc_xmap(ntaxa, nparent, unique_parents = True):
+    def _calc_xmap(
+            ntaxa: Integral, 
+            nparent: Integral, 
+            unique_parents: bool = True
+        ) -> numpy.ndarray:
         """
         Calculate the cross map.
 
@@ -277,9 +257,75 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         else:
             return numpy.array(list(triuix(ntaxa,nparent)))
 
+    @staticmethod
+    def _calc_ohvmat(
+            ploidy: Integral,
+            haplomat: numpy.ndarray,
+            xmap: numpy.ndarray,
+            mem: Union[Integral,None] = 1024
+        ) -> numpy.ndarray:
+        """
+        Compute optimal haploid values in chunks for memory efficiency.
+
+        Parameters
+        ----------
+        haplomat : numpy.ndarray
+            A haplotype effect matrix of shape ``(m,n,h,t)``.
+
+            Where:
+
+            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
+            - ``n`` is the number of individuals.
+            - ``h`` is the number of haplotype blocks.
+            - ``t`` is the number of traits.
+        xmap : numpy.ndarray
+            A cross selection map array of shape ``(s,d)``.
+
+            Where:
+
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
+            - ``p`` is the number of parents.
+        mem : int, default = 1024
+            Memory chunk size to use during matrix operations. If ``None``,
+            then memory chunk size is not limited.
+
+        Returns
+        -------
+        out : numpy.ndarray
+            A optimal haploid value matrix of shape ``(s,t)``.
+
+        Where:
+
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
+            - ``t`` is the number of traits.
+        """
+        # get number of cross configurations
+        nconfig = xmap.shape[0]
+
+        # allocate memory for output matrix
+        out = numpy.empty((nconfig,haplomat.shape[3]), dtype = haplomat.dtype)
+
+        # calculate the memory chunk step
+        step = nconfig if mem is None else mem
+
+        # calculate optimal haploid values in chunks
+        for rst,rsp in zip(range(0,nconfig,step),srange(step,nconfig,step)):
+            # get cross configuration for memory chunk
+            # (s,d)[a:a+k,:] -> (k,d)
+            xconfig = xmap[rst:rsp,:]
+
+            # get max haplotype values for memory chunk
+            # (m,n,h,t)[:,(k,d),:,:] -> (m,k,d,h,t)     # select k crosses
+            # (m,k,d,h,t).max((0,2)) -> (k,h,t)         # find maximum haplotype across all parental phases
+            # (k,h,t).sum(1) -> (k,t)                   # add maximum haplotypes for k crosses and b blocks
+            # scalar * (k,t) -> (k,t)                   # multiply by ploidy
+            out[rst:rsp,:] = ploidy * (haplomat[:,xconfig,:,:].max((0,2)).sum(1))
+
+        return out
+
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_pgmat_gpmod(
             cls,
             nparent: Integral,
             nhaploblk: Integral,
@@ -304,14 +350,23 @@ class OptimalHaploidValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "OptimalHaploidValueSelectionProblem":
-        # calculate estimated breeding values and relationships
+        # calculate haplotypes
         haplomat = cls._calc_haplomat(pgmat, gpmod, nhaploblk)
+
+        # calculate cross map
         xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
+        # calculate optimal haploid values
+        ohvmat = cls._calc_ohvmat(
+            ploidy = haplomat.shape[0],
+            haplomat = haplomat,
+            xmap = xmap,
+            mem = 1024
+        )
 
         # construct class
         out = cls(
-            haplomat = haplomat,
-            xmap = xmap,
+            ohvmat = ohvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -340,8 +395,7 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            haplomat: numpy.ndarray,
-            xmap: numpy.ndarray,
+            ohvmat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -365,23 +419,13 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
 
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        ohvmat : numpy.ndarray
+            An optimal haploid value matrix of shape ``(s,t)``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
             - ``t`` is the number of traits.
-        xmap : numpy.ndarray
-            A cross selection map array of shape ``(s,d)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -432,8 +476,7 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(OptimalHaploidValueSubsetSelectionProblem, self).__init__(
-            haplomat = haplomat,
-            xmap = xmap,
+            ohvmat = ohvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -453,8 +496,7 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
-        self.xmap = xmap
+        self.ohvmat = ohvmat
 
     ############################## Object Methods ##############################
 
@@ -487,16 +529,11 @@ class OptimalHaploidValueSubsetSelectionProblem(SubsetSelectionProblem,OptimalHa
 
             - ``t`` is the number of traits.
         """
-        # get the cross configurations
-        # (s,d)[(k,),:] -> (k,d)
-        xconfig = self._xmap[x,:]
-
-        # get max haplotype value
-        # (m,n,h,t)[:,(k,d),:,:] -> (m,k,d,h,t)     # select k crosses
-        # (m,k,d,h,t).max((0,2)) -> (k,h,t)         # find maximum haplotype across all parental phases
-        # (k,h,t).sum((0,1)) -> (t,)                # add maximum haplotypes for k crosses and b blocks
-        # scalar * (t,) -> (t,)                     # multiply by ploidy, divide by number of crosses, and negate
-        out = -(self.ploidy / len(x)) * (self._haplomat[:,xconfig,:,:].max((0,2)).sum((0,1)))
+        # select crosses and take the negative mean of their OHVs
+        # Step 1: (s,t)[(k,),:] -> (k,t)    # select crosses
+        # Step 2: (k,t).sum(0)  -> (t,)     # sum across all crosses
+        # Step 3: scalar * (t,) -> (t,)     # take mean across selection
+        out = -(1.0 / len(x)) * (self._ohvmat[x,:].sum(0))
 
         return out
 
@@ -507,8 +544,7 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            haplomat: numpy.ndarray,
-            xmap: numpy.ndarray,
+            ohvmat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -532,23 +568,13 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
 
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        ohvmat : numpy.ndarray
+            An optimal haploid value matrix of shape ``(s,t)``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
             - ``t`` is the number of traits.
-        xmap : numpy.ndarray
-            A cross selection map array of shape ``(s,d)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -599,8 +625,7 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(OptimalHaploidValueRealSelectionProblem, self).__init__(
-            haplomat = haplomat,
-            xmap = xmap,
+            ohvmat = ohvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -620,8 +645,7 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
-        self.xmap = xmap
+        self.ohvmat = ohvmat
 
     ############################## Object Methods ##############################
 
@@ -656,17 +680,14 @@ class OptimalHaploidValueRealSelectionProblem(RealSelectionProblem,OptimalHaploi
 
             - ``t`` is the number of traits.
         """
-        # scale x to have a sum of ploidy (ploidy * contribution; sum(contibution) == 1)
-        # (s,) -> (s,)
-        contrib = (self.ploidy / x.sum()) * x
+        # scale x to have a sum of one
+        # scalar * (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
 
-        # get max haplotype value
-        # (m,n,h,t)[:,(s,d),:,:] -> (m,s,d,h,t)     # select k crosses
-        # (m,s,d,h,t).max((0,2)) -> (s,h,t)         # find maximum haplotype across all parental phases
-        # (s,h,t).sum(1)) -> (s,t)                  # add maximum haplotypes for b blocks
-        # (s,) . (s,t) -> (t,)                      # take dot product with contributions per cross
-        # scalar * (t,) -> (t,)                     # multiply by ploidy and negate
-        out = -contrib.dot(self._haplomat[:,self._xmap,:,:].max((0,2)).sum(1))
+        # select individuals and take the negative mean of their EMBVs
+        # (s,) . (s,t) -> (t,)      # take dot product with contributions
+        # -(t,) -> (t,)             # negate objectives so all are minimizing
+        out = -contrib.dot(self._ohvmat)
 
         return out
 
@@ -677,8 +698,7 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            haplomat: numpy.ndarray,
-            xmap: numpy.ndarray,
+            ohvmat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -702,23 +722,13 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
 
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        ohvmat : numpy.ndarray
+            An optimal haploid value matrix of shape ``(s,t)``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
             - ``t`` is the number of traits.
-        xmap : numpy.ndarray
-            A cross selection map array of shape ``(s,d)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -769,8 +779,7 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(OptimalHaploidValueIntegerSelectionProblem, self).__init__(
-            haplomat = haplomat,
-            xmap = xmap,
+            ohvmat = ohvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -790,8 +799,7 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
-        self.xmap = xmap
+        self.ohvmat = ohvmat
 
     ############################## Object Methods ##############################
 
@@ -826,17 +834,14 @@ class OptimalHaploidValueIntegerSelectionProblem(IntegerSelectionProblem,Optimal
 
             - ``t`` is the number of traits.
         """
-        # scale x to have a sum of ploidy (ploidy * contribution; sum(contibution) == 1)
-        # (s,) -> (s,)
-        contrib = (self.ploidy / x.sum()) * x
+        # scale x to have a sum of one
+        # scalar * (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
 
-        # get max haplotype value
-        # (m,n,h,t)[:,(s,d),:,:] -> (m,s,d,h,t)     # select k crosses
-        # (m,s,d,h,t).max((0,2)) -> (s,h,t)         # find maximum haplotype across all parental phases
-        # (s,h,t).sum(1)) -> (s,t)                  # add maximum haplotypes for b blocks
-        # (s,) . (s,t) -> (t,)                      # take dot product with contributions per cross
-        # scalar * (t,) -> (t,)                     # multiply by ploidy and negate
-        out = -contrib.dot(self._haplomat[:,self._xmap,:,:].max((0,2)).sum(1))
+        # select individuals and take the negative mean of their EMBVs
+        # (s,) . (s,t) -> (t,)      # take dot product with contributions
+        # -(t,) -> (t,)             # negate objectives so all are minimizing
+        out = -contrib.dot(self._ohvmat)
 
         return out
 
@@ -847,8 +852,7 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            haplomat: numpy.ndarray,
-            xmap: numpy.ndarray,
+            ohvmat: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -872,23 +876,13 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
 
         Parameters
         ----------
-        haplomat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,h,t)``.
+        ohvmat : numpy.ndarray
+            An optimal haploid value matrix of shape ``(s,t)``.
 
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``h`` is the number of haplotype blocks.
+            - ``s`` is the size of the sample space (number of cross combinations for ``d`` parents).
             - ``t`` is the number of traits.
-        xmap : numpy.ndarray
-            A cross selection map array of shape ``(s,d)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -939,8 +933,7 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(OptimalHaploidValueBinarySelectionProblem, self).__init__(
-            haplomat = haplomat,
-            xmap = xmap,
+            ohvmat = ohvmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -960,8 +953,7 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
             **kwargs
         )
         # assignments
-        self.haplomat = haplomat
-        self.xmap = xmap
+        self.ohvmat = ohvmat
 
     ############################## Object Methods ##############################
 
@@ -996,17 +988,14 @@ class OptimalHaploidValueBinarySelectionProblem(BinarySelectionProblem,OptimalHa
 
             - ``t`` is the number of traits.
         """
-        # scale x to have a sum of ploidy (ploidy * contribution; sum(contibution) == 1)
-        # (s,) -> (s,)
-        contrib = (self.ploidy / x.sum()) * x
+        # scale x to have a sum of one
+        # scalar * (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
 
-        # get max haplotype value
-        # (m,n,h,t)[:,(s,d),:,:] -> (m,s,d,h,t)     # select k crosses
-        # (m,s,d,h,t).max((0,2)) -> (s,h,t)         # find maximum haplotype across all parental phases
-        # (s,h,t).sum(1)) -> (s,t)                  # add maximum haplotypes for b blocks
-        # (s,) . (s,t) -> (t,)                      # take dot product with contributions per cross
-        # scalar * (t,) -> (t,)                     # multiply by ploidy and negate
-        out = -contrib.dot(self._haplomat[:,self._xmap,:,:].max((0,2)).sum(1))
+        # select individuals and take the negative mean of their EMBVs
+        # (s,) . (s,t) -> (t,)      # take dot product with contributions
+        # -(t,) -> (t,)             # negate objectives so all are minimizing
+        out = -contrib.dot(self._ohvmat)
 
         return out
 

@@ -9,7 +9,6 @@ import numbers
 from typing import Optional, Union
 import numpy
 import pandas
-from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_int, check_is_int_or_None
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
