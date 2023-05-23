@@ -236,7 +236,7 @@ class GenotypeBuilderSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_pgmat_gpmod(
             cls,
             pgmat: PhasedGenotypeMatrix,
             gpmod: GenomicModel,

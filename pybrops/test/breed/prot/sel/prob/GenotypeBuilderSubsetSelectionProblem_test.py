@@ -8,7 +8,7 @@ from pybrops.test.assert_python import assert_concrete_property_fget, assert_doc
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
-from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem import GenotypeBuilderSubsetSelectionProblem
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -28,6 +28,10 @@ def nvrnt():
 @pytest.fixture
 def nhaploblk():
     yield 10
+
+@pytest.fixture
+def nbestfndr():
+    yield 2
 
 @pytest.fixture
 def trait_mean(ntrait):
@@ -117,26 +121,15 @@ def eqcv_trans_kwargs():
 
 @pytest.fixture
 def prob(
-    haplomat,
-    ndecn,
-    decn_space,
-    decn_space_lower,
-    decn_space_upper,
-    nobj,
-    obj_wt,
-    obj_trans,
-    obj_trans_kwargs,
-    nineqcv,
-    ineqcv_wt,
-    ineqcv_trans,
-    ineqcv_trans_kwargs,
-    neqcv,
-    eqcv_wt,
-    eqcv_trans,
-    eqcv_trans_kwargs
+    haplomat, nbestfndr, 
+    ndecn, decn_space, decn_space_lower, decn_space_upper, 
+    nobj, obj_wt, obj_trans, obj_trans_kwargs, 
+    nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
+    neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
 ):
-    yield OptimalPopulationValueSubsetSelectionProblem(
+    yield GenotypeBuilderSubsetSelectionProblem(
         haplomat = haplomat,
+        nbestfndr = nbestfndr,
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -191,7 +184,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(OptimalPopulationValueSubsetSelectionProblem)
+    assert_docstring(GenotypeBuilderSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -201,7 +194,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(OptimalPopulationValueSubsetSelectionProblem, "nlatent")
+    assert_concrete_property_fget(GenotypeBuilderSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -210,7 +203,7 @@ def test_nlatent_fget(prob, ntrait):
 ### haplomat ###
 ############
 def test_haplomat_is_concrete():
-    assert_concrete_property(OptimalPopulationValueSubsetSelectionProblem, "haplomat")
+    assert_concrete_property(GenotypeBuilderSubsetSelectionProblem, "haplomat")
 
 def test_haplomat_fget(prob, nhaploblk, ntaxa, ntrait):
     assert isinstance(prob.haplomat, numpy.ndarray)
@@ -250,7 +243,7 @@ def test_haplomat_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelectionProblem, "__init__")
+    assert_concrete_method(GenotypeBuilderSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
@@ -262,23 +255,24 @@ def test_latentfn(prob, ntaxa, haplomat):
     x = numpy.random.binomial(1, 0.5, ntaxa)
     x = numpy.flatnonzero(x)
     a = prob.latentfn(x)
-    b = -2.0 * haplomat[:,x,:,:].max((0,1)).sum(0)
-    assert numpy.all(numpy.isclose(a,b))
+    b = -2.0 * haplomat[:,x,:,:].max((0,1)).sum(0) # OPV upper limit
+    assert numpy.all(a >= b) # GB should always be worse than OPV
+    # TODO: test true GB calculations
 
 ################################################################################
 ############################## Test class methods ##############################
 ################################################################################
 def test_from_object(
         ntaxa,
-        nhaploblk, pgmat, gpmod,
+        pgmat, gpmod, nhaploblk, nbestfndr,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     ):
     # construct problem
-    opvprob = OptimalPopulationValueSubsetSelectionProblem.from_pgmat_gpmod(
-        nhaploblk, pgmat, gpmod,
+    opvprob = GenotypeBuilderSubsetSelectionProblem.from_pgmat_gpmod(
+        pgmat, gpmod, nhaploblk, nbestfndr,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -288,5 +282,6 @@ def test_from_object(
     x = numpy.random.binomial(1, 0.5, ntaxa)
     x = numpy.flatnonzero(x)
     a = opvprob.latentfn(x)
-    b = -2.0 * opvprob.haplomat[:,x,:,:].max((0,1)).sum(0)
-    assert numpy.all(numpy.isclose(a,b))
+    b = -2.0 * opvprob.haplomat[:,x,:,:].max((0,1)).sum(0) # OPV upper limit
+    assert numpy.all(a >= b) # GB should always be worse than OPV
+    # TODO: test true GB calculations

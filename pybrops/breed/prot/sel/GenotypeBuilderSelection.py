@@ -487,7 +487,7 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderBaseSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = GenotypeBuilderSubsetSelectionProblem.from_object(
+        prob = GenotypeBuilderSubsetSelectionProblem.from_pgmat_gpmod(
             pgmat = pgmat,
             gpmod = gpmod,
             nhaploblk = self.nhaploblk,
