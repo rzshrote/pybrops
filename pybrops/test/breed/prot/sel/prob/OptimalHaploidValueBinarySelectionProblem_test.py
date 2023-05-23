@@ -261,9 +261,9 @@ def test_latentfn_is_concrete(prob):
 
 def test_latentfn(prob, ndecn, ohvmat):
     x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(ohvmat)
+    b = -y.dot(ohvmat)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -287,7 +287,7 @@ def test_from_pgmat_gpmod(
     )
     # test problem calculations
     x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = ohvprob.latentfn(x)
-    b = -x.dot(ohvprob.ohvmat)
+    b = -y.dot(ohvprob.ohvmat)
     assert numpy.all(numpy.isclose(a,b))

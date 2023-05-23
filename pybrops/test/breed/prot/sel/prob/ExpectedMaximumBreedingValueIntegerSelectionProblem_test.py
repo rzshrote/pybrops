@@ -278,10 +278,10 @@ def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, embv):
-    x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(embv)
+    b = -y.dot(embv)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -303,8 +303,8 @@ def test_from_pgmat_gpmod(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebvprob.embv)
+    b = -y.dot(gebvprob.embv)
     assert numpy.all(numpy.isclose(a,b))

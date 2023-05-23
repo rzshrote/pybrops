@@ -260,17 +260,16 @@ def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, ohvmat):
-    x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(ohvmat)
+    b = -y.dot(ohvmat)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
 ############################## Test class methods ##############################
 ################################################################################
 def test_from_pgmat_gpmod(
-        ohvmat,
         nparent, nhaploblk, unique_parents, pgmat, gpmod,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
@@ -286,8 +285,8 @@ def test_from_pgmat_gpmod(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ndecn)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
     a = ohvprob.latentfn(x)
-    b = -x.dot(ohvprob.ohvmat)
+    b = -y.dot(ohvprob.ohvmat)
     assert numpy.all(numpy.isclose(a,b))

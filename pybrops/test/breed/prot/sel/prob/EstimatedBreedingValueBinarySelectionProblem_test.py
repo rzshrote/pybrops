@@ -216,9 +216,9 @@ def test_latentfn_is_concrete(prob):
 
 def test_latentfn(prob, ntaxa, ebv):
     x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(ebv)
+    b = -y.dot(ebv)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -242,7 +242,7 @@ def test_from_bvmat(
     )
     # test problem calculations
     x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = ebvprob.latentfn(x)
-    b = -x.dot(ebv)
+    b = -y.dot(ebv)
     assert numpy.all(numpy.isclose(a,b))

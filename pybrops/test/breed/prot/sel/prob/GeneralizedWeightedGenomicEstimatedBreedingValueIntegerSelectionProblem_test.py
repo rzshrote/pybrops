@@ -239,11 +239,11 @@ def test_init_is_concrete():
 def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
 
-def test_latentfn(prob, ntaxa, gwgebv):
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+def test_latentfn(prob, ndecn, gwgebv):
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(gwgebv)
+    b = -y.dot(gwgebv)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -271,10 +271,10 @@ def test_from_numpy(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gwgebv)
+    b = -y.dot(gwgebv)
     assert numpy.all(numpy.isclose(a,b))
 
 def test_from_gmat_algpmod(
@@ -300,8 +300,8 @@ def test_from_gmat_algpmod(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gwgebv)
+    b = -y.dot(gwgebv)
     assert numpy.all(numpy.isclose(a,b))

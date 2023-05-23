@@ -241,9 +241,9 @@ def test_latentfn_is_concrete(prob):
 
 def test_latentfn(prob, ntaxa, gebv):
     x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = prob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -267,9 +267,9 @@ def test_from_bvmat(
     )
     # test problem calculations
     x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))
 
 def test_from_gmat_gpmod(
@@ -292,7 +292,7 @@ def test_from_gmat_gpmod(
     gebv = gpmod.gebv(gmat).mat
     # test problem calculations
     x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))

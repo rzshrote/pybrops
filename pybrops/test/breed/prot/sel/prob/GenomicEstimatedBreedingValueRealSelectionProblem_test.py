@@ -250,7 +250,7 @@ def test_latentfn(prob, ntaxa, gebv):
 ############################## Test class methods ##############################
 ################################################################################
 def test_from_bvmat(
-        ntaxa, gebv,
+        gebv,
         bvmat, 
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
@@ -266,10 +266,10 @@ def test_from_bvmat(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))
 
 def test_from_gmat_gpmod(
@@ -291,8 +291,8 @@ def test_from_gmat_gpmod(
     # calculate GEBVs
     gebv = gpmod.gebv(gmat).mat
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.random(ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))

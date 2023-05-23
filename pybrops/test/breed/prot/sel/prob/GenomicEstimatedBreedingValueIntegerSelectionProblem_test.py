@@ -266,10 +266,10 @@ def test_from_bvmat(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))
 
 def test_from_gmat_gpmod(
@@ -291,8 +291,8 @@ def test_from_gmat_gpmod(
     # calculate GEBVs
     gebv = gpmod.gebv(gmat).mat
     # test problem calculations
-    x = numpy.random.binomial(1, 0.5, ntaxa)
-    x = (1.0 / x.sum()) * x
+    x = numpy.random.randint(0, ndecn, ndecn)
+    y = (1.0 / x.sum()) * x
     a = gebvprob.latentfn(x)
-    b = -x.dot(gebv)
+    b = -y.dot(gebv)
     assert numpy.all(numpy.isclose(a,b))
