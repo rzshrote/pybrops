@@ -242,7 +242,7 @@ def test_latentfn(prob, ndecn, C):
 ################################################################################
 ############################## Test class methods ##############################
 ################################################################################
-def test_from_bvmat_gmat(
+def test_from_gmat(
         gmat, cmatfcty,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 

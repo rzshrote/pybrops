@@ -8,7 +8,7 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_property
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
-from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipSubsetSelectionProblem
 
 ################################ Test fixtures #################################
 
@@ -60,16 +60,16 @@ def ndecn(ntaxa):
     yield ntaxa
 
 @pytest.fixture
-def decn_space_lower(ntaxa):
-    yield numpy.repeat(0, ntaxa)
+def decn_space_lower(ndecn):
+    yield numpy.repeat(0, ndecn)
 
 @pytest.fixture
-def decn_space_upper(ntaxa):
-    yield numpy.repeat(1, ntaxa)
+def decn_space_upper(ndecn):
+    yield numpy.repeat(ndecn-1, ndecn)
 
 @pytest.fixture
-def decn_space(decn_space_lower, decn_space_upper):
-    yield numpy.stack([decn_space_lower, decn_space_upper])
+def decn_space(ndecn):
+    yield numpy.arange(ndecn)
 
 @pytest.fixture
 def nobj():
@@ -127,7 +127,7 @@ def prob(
     nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
     neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
 ):
-    yield MeanExpectedHeterozygosityIntegerSelectionProblem(
+    yield MeanGenomicRelationshipSubsetSelectionProblem(
         C = C,
         ndecn = ndecn,
         decn_space = decn_space,
@@ -160,8 +160,8 @@ def gmat(ntaxa, nvrnt):
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
-def test_IntegerConventionalSelectionProblem_docstring():
-    assert_docstring(MeanExpectedHeterozygosityIntegerSelectionProblem)
+def test_SubsetConventionalSelectionProblem_docstring():
+    assert_docstring(MeanGenomicRelationshipSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -171,7 +171,7 @@ def test_IntegerConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(MeanExpectedHeterozygosityIntegerSelectionProblem, "nlatent")
+    assert_concrete_property_fget(MeanGenomicRelationshipSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == 1
@@ -180,7 +180,7 @@ def test_nlatent_fget(prob, ntrait):
 ### C ###
 #########
 def test_C_is_concrete():
-    assert_concrete_property(MeanExpectedHeterozygosityIntegerSelectionProblem, "C")
+    assert_concrete_property(MeanGenomicRelationshipSubsetSelectionProblem, "C")
 
 def test_C_fget(prob, ntaxa):
     assert isinstance(prob.C, numpy.ndarray)
@@ -224,7 +224,7 @@ def test_C_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityIntegerSelectionProblem, "__init__")
+    assert_concrete_method(MeanGenomicRelationshipSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
@@ -233,10 +233,11 @@ def test_latentfn_is_concrete(prob):
     assert_concrete_method(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, C):
-    x = numpy.random.randint(0, ndecn, ndecn)
+    x = numpy.random.binomial(1, 0.5, ndecn)
     y = (1.0 / x.sum()) * x
+    x = numpy.flatnonzero(x)
     a = prob.latentfn(x)
-    b = numpy.linalg.norm(C.dot(y), ord = 2, keepdims = True) - 1.0
+    b = numpy.linalg.norm(C.dot(y), ord = 2, keepdims = True)
     assert numpy.all(numpy.isclose(a,b))
 
 ################################################################################
@@ -250,7 +251,7 @@ def test_from_gmat(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     ):
     # construct problem
-    ocsprob = MeanExpectedHeterozygosityIntegerSelectionProblem.from_gmat(
+    ocsprob = MeanGenomicRelationshipSubsetSelectionProblem.from_gmat(
         gmat, cmatfcty,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
@@ -258,8 +259,9 @@ def test_from_gmat(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     )
     # test problem calculations
-    x = numpy.random.randint(0, ndecn, ndecn)
+    x = numpy.random.binomial(1, 0.5, ndecn)
     y = (1.0 / x.sum()) * x
+    x = numpy.flatnonzero(x)
     a = ocsprob.latentfn(x)
-    b = numpy.linalg.norm(ocsprob.C.dot(y), ord = 2, keepdims = True) - 1.0
+    b = numpy.linalg.norm(ocsprob.C.dot(y), ord = 2, keepdims = True)
     assert numpy.all(numpy.isclose(a,b))

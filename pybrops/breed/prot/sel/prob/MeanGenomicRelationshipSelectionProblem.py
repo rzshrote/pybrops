@@ -156,7 +156,7 @@ class MeanGenomicRelationshipSelectionProblem(SelectionProblem,metaclass=ABCMeta
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_gmat(
             cls,
             gmat: GenotypeMatrix,
             cmatfcty: CoancestryMatrixFactory,
