@@ -15,11 +15,12 @@ class Matrix(HDF5InputOutput):
     An abstract class for matrix wrapper objects.
 
     The purpose of this abstract class is to define base functionality for:
-        1) Matrix mathematical operators
-        2) Matrix logical & bitwise operators
-        3) Matrix container operators
-        4) Matrix copy operators
-        5) Matrix read-only matrix shape changing routines.
+    
+        1. Matrix mathematical operators
+        2. Matrix logical & bitwise operators
+        3. Matrix container operators
+        4. Matrix copy operators
+        5. Matrix read-only matrix shape changing routines.
 
     The shape of a Matrix should be immutable.
     """

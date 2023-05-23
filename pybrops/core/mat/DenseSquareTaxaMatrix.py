@@ -23,9 +23,10 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     The purpose of this abstract class is to merge the following implementations
     and interfaces:
-        1) DenseSquareMatrix (implementation)
-        2) DenseTaxaMatrix (implementation)
-        3) SquareTaxaMatrix (interface)
+
+        1. DenseSquareMatrix (implementation)
+        2. DenseTaxaMatrix (implementation)
+        3. SquareTaxaMatrix (interface)
     """
 
     ############################################################################

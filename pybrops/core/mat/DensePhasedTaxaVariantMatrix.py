@@ -23,9 +23,10 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
     The purpose of this concrete class is to merge the following classes and
     interfaces:
-        1) DenseTaxaVariantMatrix
-        2) DensePhasedMatrix
-        3) PhasedTaxaVariantMatrix
+
+        1. DenseTaxaVariantMatrix
+        2. DensePhasedMatrix
+        3. PhasedTaxaVariantMatrix
     """
 
     ############################################################################

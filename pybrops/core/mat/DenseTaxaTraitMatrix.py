@@ -22,9 +22,10 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     The purpose of this concrete class is to merge the following implementations
     and interfaces:
-        1) DenseTaxaMatrix
-        2) DenseTraitMatrix
-        3) TaxaTraitMatrix
+
+        1. DenseTaxaMatrix
+        2. DenseTraitMatrix
+        3. TaxaTraitMatrix
     """
 
     ############################################################################

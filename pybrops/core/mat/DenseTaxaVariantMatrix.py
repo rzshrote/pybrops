@@ -16,11 +16,12 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     """
     A concrete class for dense matrices with taxa and variant metadata.
 
-    The purpose of this concrete class is to merge the following implementations
+    The purpose of this concrete class is to merge the following implementations 
     and interfaces:
-        1) DenseTaxaMatrix (implementation)
-        2) DenseVariantMatrix (implementation)
-        3) TaxaVariantMatrix (interface)
+
+        1. DenseTaxaMatrix (implementation)
+        2. DenseVariantMatrix (implementation)
+        3. TaxaVariantMatrix (interface)
     """
 
     ############################################################################
