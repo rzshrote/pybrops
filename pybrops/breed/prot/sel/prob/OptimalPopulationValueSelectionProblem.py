@@ -16,10 +16,11 @@ import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
 class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -228,7 +229,7 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_pgmat_gpmod(
             cls,
             nhaploblk: Integral,
             pgmat: PhasedGenotypeMatrix,
@@ -251,6 +252,11 @@ class OptimalPopulationValueSelectionProblem(SelectionProblem,metaclass=ABCMeta)
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "OptimalPopulationValueSelectionProblem":
+        # type checks
+        check_is_Integral(nhaploblk, "nhaploblk")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_AdditiveLinearGenomicModel(gpmod, "gpmod")
+        
         # calculate estimated breeding values and relationships
         haplomat = cls._calc_haplomat(pgmat, gpmod, nhaploblk)
 

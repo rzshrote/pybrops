@@ -467,7 +467,7 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = OptimalPopulationValueSubsetSelectionProblem.from_object(
+        prob = OptimalPopulationValueSubsetSelectionProblem.from_pgmat_gpmod(
             nhaploblk = self.nhaploblk,
             pgmat = pgmat,
             gpmod = gpmod,
