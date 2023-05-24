@@ -209,11 +209,11 @@ class GeneticMapFunction:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMapFunction(v: Any) -> bool:
+def is_GeneticMapFunction(v: object) -> bool:
     """Return whether an object is a GeneticMapFunction or not"""
     return isinstance(v, GeneticMapFunction)
 
-def check_is_GeneticMapFunction(v: Any, vname: str) -> None:
+def check_is_GeneticMapFunction(v: object, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):
         raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))

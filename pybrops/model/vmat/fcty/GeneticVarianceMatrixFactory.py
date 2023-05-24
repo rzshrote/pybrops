@@ -84,7 +84,7 @@ def check_is_GeneticVarianceMatrixFactory(v: object, vname: str) -> None:
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

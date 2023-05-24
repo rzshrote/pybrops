@@ -252,9 +252,9 @@ class ThreeWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayCross(v: Any) -> bool:
+def is_ThreeWayCross(v: object) -> bool:
     return isinstance(v, ThreeWayCross)
 
-def check_is_ThreeWayCross(v: Any, varname: str) -> None:
+def check_is_ThreeWayCross(v: object, vname: str) -> None:
     if not isinstance(v, ThreeWayCross):
         raise TypeError("'%s' must be a ThreeWayCross." % varname)

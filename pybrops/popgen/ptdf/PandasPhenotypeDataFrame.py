@@ -210,13 +210,13 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasPhenotypeDataFrame(v: Any) -> bool:
+def is_PandasPhenotypeDataFrame(v: object) -> bool:
     """
     Determine whether an object is a PandasPhenotypeDataFrame.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -226,15 +226,15 @@ def is_PandasPhenotypeDataFrame(v: Any) -> bool:
     """
     return isinstance(v, PandasPhenotypeDataFrame)
 
-def check_is_PandasPhenotypeDataFrame(v: Any, vname: str) -> None:
+def check_is_PandasPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PandasPhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PandasPhenotypeDataFrame):

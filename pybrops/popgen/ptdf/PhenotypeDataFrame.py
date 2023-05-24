@@ -61,13 +61,13 @@ class PhenotypeDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypeDataFrame(v: Any) -> bool:
+def is_PhenotypeDataFrame(v: object) -> bool:
     """
     Determine whether an object is a PhenotypeDataFrame.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -77,15 +77,15 @@ def is_PhenotypeDataFrame(v: Any) -> bool:
     """
     return isinstance(v, PhenotypeDataFrame)
 
-def check_is_PhenotypeDataFrame(v: Any, vname: str) -> None:
+def check_is_PhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypeDataFrame):

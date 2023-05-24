@@ -2,9 +2,8 @@
 Module defining basal coancestry matrix factory interfaces and associated error checking routines.
 """
 
-import numbers
+from numbers import Real
 from typing import Any, Union
-
 import numpy
 from pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix import DenseGeneralizedWeightedCoancestryMatrix
 from pybrops.popgen.cmat.fcty.DenseCoancestryMatrixFactory import DenseCoancestryMatrixFactory
@@ -39,8 +38,8 @@ class DenseGeneralizedWeightedCoancestryMatrixFactory(DenseCoancestryMatrixFacto
     def from_gmat(
             self, 
             gmat: GenotypeMatrix, 
-            mkrwt: Union[numpy.ndarray,numbers.Number,None] = None,
-            afreq: Union[numpy.ndarray,numbers.Number,None] = None, 
+            mkrwt: Union[numpy.ndarray,Real,None] = None,
+            afreq: Union[numpy.ndarray,Real,None] = None, 
             **kwargs: dict
         ) -> DenseGeneralizedWeightedCoancestryMatrix:
         """
@@ -71,15 +70,15 @@ class DenseGeneralizedWeightedCoancestryMatrixFactory(DenseCoancestryMatrixFacto
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseGeneralizedWeightedCoancestryMatrixFactory(v: Any, vname: str) -> None:
+def check_is_DenseGeneralizedWeightedCoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGeneralizedWeightedCoancestryMatrixFactory. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseGeneralizedWeightedCoancestryMatrixFactory):

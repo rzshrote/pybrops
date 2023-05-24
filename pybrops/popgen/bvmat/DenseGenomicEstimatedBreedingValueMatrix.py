@@ -82,13 +82,13 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenomicEstimatedBreedingValueMatrix(v: Any) -> bool:
+def is_DenseGenomicEstimatedBreedingValueMatrix(v: object) -> bool:
     """
     Determine whether an object is a DenseGenomicEstimatedBreedingValueMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -98,15 +98,15 @@ def is_DenseGenomicEstimatedBreedingValueMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseGenomicEstimatedBreedingValueMatrix)
 
-def check_is_DenseGenomicEstimatedBreedingValueMatrix(v: Any, vname: str) -> None:
+def check_is_DenseGenomicEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGenomicEstimatedBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseGenomicEstimatedBreedingValueMatrix):

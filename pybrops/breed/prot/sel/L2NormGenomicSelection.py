@@ -492,7 +492,7 @@ class L2NormGenomicSubsetSelection(L2NormGenomicBaseSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = L2NormGenomicSubsetSelectionProblem.from_object(
+        prob = L2NormGenomicSubsetSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             ndecn = self.nparent,
@@ -582,7 +582,7 @@ class L2NormGenomicRealSelection(L2NormGenomicBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = L2NormGenomicRealSelectionProblem.from_object(
+        prob = L2NormGenomicRealSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             ndecn = self.nparent,
@@ -672,7 +672,7 @@ class L2NormGenomicIntegerSelection(L2NormGenomicBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = L2NormGenomicIntegerSelectionProblem.from_object(
+        prob = L2NormGenomicIntegerSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             ndecn = self.nparent,
@@ -762,7 +762,7 @@ class L2NormGenomicBinarySelection(L2NormGenomicBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = L2NormGenomicBinarySelectionProblem.from_object(
+        prob = L2NormGenomicBinarySelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             ndecn = self.nparent,

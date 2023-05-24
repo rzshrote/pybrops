@@ -414,13 +414,13 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseDihybridDHAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

@@ -272,11 +272,11 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HaplotypeMatrix(v: Any) -> bool:
+def is_HaplotypeMatrix(v: object) -> bool:
     """Return whether an object is a HaplotypeMatrix or not"""
     return isinstance(v, HaplotypeMatrix)
 
-def check_is_HaplotypeMatrix(v: Any, varname: str) -> None:
+def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a HaplotypeMatrix"""
     if not isinstance(v, HaplotypeMatrix):
         raise TypeError("'%s' must be a HaplotypeMatrix." % varname)

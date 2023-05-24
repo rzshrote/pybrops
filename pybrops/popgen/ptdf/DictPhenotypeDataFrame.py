@@ -275,13 +275,13 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictPhenotypeDataFrame(v: Any) -> bool:
+def is_DictPhenotypeDataFrame(v: object) -> bool:
     """
     Determine whether an object is a DictPhenotypeDataFrame.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -291,15 +291,15 @@ def is_DictPhenotypeDataFrame(v: Any) -> bool:
     """
     return isinstance(v, DictPhenotypeDataFrame)
 
-def check_is_DictPhenotypeDataFrame(v: Any, vname: str) -> None:
+def check_is_DictPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DictPhenotypeDataFrame):

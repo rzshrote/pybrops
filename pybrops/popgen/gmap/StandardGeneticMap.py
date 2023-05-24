@@ -115,13 +115,13 @@ class StandardGeneticMap(GeneticMap):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_StandardGeneticMap(v: Any) -> bool:
+def is_StandardGeneticMap(v: object) -> bool:
     """
     Determine whether an object is a StandardGeneticMap.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -131,15 +131,15 @@ def is_StandardGeneticMap(v: Any) -> bool:
     """
     return isinstance(v, StandardGeneticMap)
 
-def check_is_StandardGeneticMap(v: Any, varname: str) -> None:
+def check_is_StandardGeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type StandardGeneticMap. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, StandardGeneticMap):

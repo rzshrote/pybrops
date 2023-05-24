@@ -4,14 +4,14 @@ from typing import Any
 ################################################################################
 ############################### check functions ################################
 ################################################################################
-def check_is_not_None(v: Any, vname: str) -> None:
+def check_is_not_None(v: object, vname: str) -> None:
     """
     Check if an object is not None.
     Raise error if object is None.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object
     vname : str
         Name of the Python object for use in the error message.
@@ -19,14 +19,14 @@ def check_is_not_None(v: Any, vname: str) -> None:
     if v is None:
         raise ValueError("variable '{0}' is not 'None'".format(vname))
 
-def check_len(v: Any, vname: str, vlen: int) -> None:
+def check_len(v: object, vname: str, vlen: int) -> None:
     """
     Check if an object has a length equal to a provided value.
     Raise error if object length is not equal to provided value.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object
     vname : str
         Name of the Python object for use in the error message.
@@ -36,11 +36,11 @@ def check_len(v: Any, vname: str, vlen: int) -> None:
     if len(v) != vlen:
         raise ValueError("the length of '{0}' is not equal to {1}".format(vname,vlen))
 
-def check_len_eq(v: Any, vname: str, w: Any, wname: str) -> None:
+def check_len_eq(v: object, vname: str, w: Any, wname: str) -> None:
     if len(v) != len(w):
         raise ValueError("the lengths of '{0}' and '{1}' are not equivalent".format(vname, wname))
 
-def check_all_equal(v: Any, vname: str) -> None:
+def check_all_equal(v: object, vname: str) -> None:
     viter = iter(v)
     try:
         e0 = next(viter)
@@ -49,13 +49,13 @@ def check_all_equal(v: Any, vname: str) -> None:
     if any(e0 != e for e in viter):
         raise ValueError("not all elements in {0} are equal to {1}".format(vname, e0))
 
-def check_is_positive(v: Any, vname: str) -> None:
+def check_is_positive(v: object, vname: str) -> None:
     """
     Check if a Python object is positive. Raise error if it is not.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object,
     vname : str
         Name of the Python object for use in the error message.
@@ -143,7 +143,7 @@ def check_values_in_dict_all_type(v, vname, vtype):
     if any(not isinstance(e, vtype) for e in v.values()):
         raise ValueError("not all values in dict '{0}' are of type {1}".format(vname, str(vtype)))
 
-def check_values_in_dict_equal_len(v: Any, vname: str) -> None:
+def check_values_in_dict_equal_len(v: object, vname: str) -> None:
     viter = iter(v.values())
     try:
         e0 = next(viter)

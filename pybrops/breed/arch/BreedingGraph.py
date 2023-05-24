@@ -62,13 +62,13 @@ class BreedingGraph:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingGraph(v: Any) -> bool:
+def is_BreedingGraph(v: object) -> bool:
     """
     Determine whether an object is a BreedingGraph.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -78,15 +78,15 @@ def is_BreedingGraph(v: Any) -> bool:
     """
     return isinstance(v, BreedingGraph)
 
-def check_is_BreedingGraph(v: Any, varname: str) -> None:
+def check_is_BreedingGraph(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingGraph. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingGraph):

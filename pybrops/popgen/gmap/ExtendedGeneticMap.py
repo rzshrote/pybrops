@@ -1358,9 +1358,9 @@ class ExtendedGeneticMap(GeneticMap):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ExtendedGeneticMap(v: Any) -> bool:
+def is_ExtendedGeneticMap(v: object) -> bool:
     return isinstance(v, ExtendedGeneticMap)
 
-def check_is_ExtendedGeneticMap(v: Any, varname: str) -> None:
+def check_is_ExtendedGeneticMap(v: object, vname: str) -> None:
     if not isinstance(v, ExtendedGeneticMap):
         raise TypeError("'%s' must be an ExtendedGeneticMap." % varname)

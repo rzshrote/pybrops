@@ -446,13 +446,13 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_DenseFourWayDHAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_DenseFourWayDHAdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseFourWayDHAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

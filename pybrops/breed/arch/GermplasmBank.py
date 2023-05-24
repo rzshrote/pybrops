@@ -44,13 +44,13 @@ class GermplasmBank(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GermplasmBank(v: Any) -> bool:
+def is_GermplasmBank(v: object) -> bool:
     """
     Determine whether an object is a GermplasmBank.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -60,15 +60,15 @@ def is_GermplasmBank(v: Any) -> bool:
     """
     return isinstance(v, GermplasmBank)
 
-def check_is_GermplasmBank(v: Any, varname: str) -> None:
+def check_is_GermplasmBank(v: object, vname: str) -> None:
     """
     Check if object is of type GermplasmBank. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GermplasmBank):

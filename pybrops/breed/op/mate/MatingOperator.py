@@ -78,13 +78,13 @@ class MatingOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MatingOperator(v: Any) -> bool:
+def is_MatingOperator(v: object) -> bool:
     """
     Determine whether an object is a MatingOperator.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -94,15 +94,15 @@ def is_MatingOperator(v: Any) -> bool:
     """
     return isinstance(v, MatingOperator)
 
-def check_is_MatingOperator(v: Any, varname: str) -> None:
+def check_is_MatingOperator(v: object, vname: str) -> None:
     """
     Check if object is of type MatingOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingOperator):

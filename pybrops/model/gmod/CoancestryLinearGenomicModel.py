@@ -108,13 +108,13 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CoancestryLinearGenomicModel(v: Any) -> bool:
+def is_CoancestryLinearGenomicModel(v: object) -> bool:
     """
     Determine whether an object is a CoancestryLinearGenomicModel.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -124,15 +124,15 @@ def is_CoancestryLinearGenomicModel(v: Any) -> bool:
     """
     return isinstance(v, CoancestryLinearGenomicModel)
 
-def check_is_CoancestryLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_CoancestryLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CoancestryLinearGenomicModel):

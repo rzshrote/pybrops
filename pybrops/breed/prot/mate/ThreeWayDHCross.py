@@ -279,13 +279,13 @@ class ThreeWayDHCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ThreeWayDHCross(v: Any) -> bool:
+def is_ThreeWayDHCross(v: object) -> bool:
     """
     Determine whether an object is a ThreeWayDHCross.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -295,15 +295,15 @@ def is_ThreeWayDHCross(v: Any) -> bool:
     """
     return isinstance(v, ThreeWayDHCross)
 
-def check_is_ThreeWayDHCross(v: Any, varname: str) -> None:
+def check_is_ThreeWayDHCross(v: object, vname: str) -> None:
     """
     Check if object is of type ThreeWayDHCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ThreeWayDHCross):

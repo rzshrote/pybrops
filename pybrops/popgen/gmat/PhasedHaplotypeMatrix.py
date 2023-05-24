@@ -39,11 +39,11 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedHaplotypeMatrix(v: Any) -> bool:
+def is_PhasedHaplotypeMatrix(v: object) -> bool:
     """Return whether an object is a PhasedHaplotypeMatrix or not"""
     return isinstance(v, PhasedHaplotypeMatrix)
 
-def check_is_PhasedHaplotypeMatrix(v: Any, varname: str) -> None:
+def check_is_PhasedHaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedHaplotypeMatrix"""
     if not isinstance(v, PhasedHaplotypeMatrix):
         raise TypeError("'%s' must be a PhasedHaplotypeMatrix." % varname)

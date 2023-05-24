@@ -214,13 +214,13 @@ class DataFrame:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DataFrame(v: Any) -> bool:
+def is_DataFrame(v: object) -> bool:
     """
     Determine whether an object is a DataFrame.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -230,15 +230,15 @@ def is_DataFrame(v: Any) -> bool:
     """
     return isinstance(v, DataFrame)
 
-def check_is_DataFrame(v: Any, vname: str) -> None:
+def check_is_DataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DataFrame. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DataFrame):

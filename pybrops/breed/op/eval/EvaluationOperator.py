@@ -76,13 +76,13 @@ class EvaluationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_EvaluationOperator(v: Any) -> bool:
+def is_EvaluationOperator(v: object) -> bool:
     """
     Determine whether an object is a EvaluationOperator.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -92,15 +92,15 @@ def is_EvaluationOperator(v: Any) -> bool:
     """
     return isinstance(v, EvaluationOperator)
 
-def check_is_EvaluationOperator(v: Any, varname: str) -> None:
+def check_is_EvaluationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EvaluationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EvaluationOperator):

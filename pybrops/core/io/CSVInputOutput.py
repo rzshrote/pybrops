@@ -77,13 +77,13 @@ class CSVInputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CSVInputOutput(v: Any) -> bool:
+def is_CSVInputOutput(v: object) -> bool:
     """
     Determine whether an object is a CSVInputOutput.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -93,15 +93,15 @@ def is_CSVInputOutput(v: Any) -> bool:
     """
     return isinstance(v, CSVInputOutput)
 
-def check_is_CSVInputOutput(v: Any, vname: str) -> None:
+def check_is_CSVInputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type CSVInputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CSVInputOutput):

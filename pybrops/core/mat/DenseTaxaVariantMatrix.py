@@ -1359,13 +1359,13 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTaxaVariantMatrix(v: Any) -> bool:
+def is_DenseTaxaVariantMatrix(v: object) -> bool:
     """
     Determine whether an object is a DenseTaxaVariantMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -1375,15 +1375,15 @@ def is_DenseTaxaVariantMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseTaxaVariantMatrix)
 
-def check_is_DenseTaxaVariantMatrix(v: Any, vname: str) -> None:
+def check_is_DenseTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not is_DenseTaxaVariantMatrix(v):

@@ -83,13 +83,13 @@ class GeneticMappableMatrix(VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMappableMatrix(v: Any) -> bool:
+def is_GeneticMappableMatrix(v: object) -> bool:
     """
     Determine whether an object is a GeneticMappableMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -99,15 +99,15 @@ def is_GeneticMappableMatrix(v: Any) -> bool:
     """
     return isinstance(v, GeneticMappableMatrix)
 
-def check_is_GeneticMappableMatrix(v: Any, varname: str) -> None:
+def check_is_GeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMappableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GeneticMappableMatrix):

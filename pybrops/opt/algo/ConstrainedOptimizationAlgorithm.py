@@ -73,7 +73,7 @@ def check_is_ConstrainedOptimizationAlgorithm(v: object, vname: str) -> None:
     ----------
     v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ConstrainedOptimizationAlgorithm):

@@ -63,13 +63,13 @@ class BreedingValueProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingValueProtocol(v: Any) -> bool:
+def is_BreedingValueProtocol(v: object) -> bool:
     """
     Determine whether an object is a BreedingValueProtocol.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -79,15 +79,15 @@ def is_BreedingValueProtocol(v: Any) -> bool:
     """
     return isinstance(v, BreedingValueProtocol)
 
-def check_is_BreedingValueProtocol(v: Any, varname: str) -> None:
+def check_is_BreedingValueProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingValueProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueProtocol):

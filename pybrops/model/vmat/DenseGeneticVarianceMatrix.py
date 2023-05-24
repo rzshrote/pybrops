@@ -95,13 +95,13 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGeneticVarianceMatrix(v: Any) -> bool:
+def is_DenseGeneticVarianceMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``DenseGeneticVarianceMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -111,13 +111,13 @@ def is_DenseGeneticVarianceMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseGeneticVarianceMatrix)
 
-def check_is_DenseGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_DenseGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

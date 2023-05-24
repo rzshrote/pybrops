@@ -317,13 +317,13 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenotypeMatrix(v: Any) -> bool:
+def is_GenotypeMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``GenotypeMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -333,15 +333,15 @@ def is_GenotypeMatrix(v: Any) -> bool:
     """
     return isinstance(v, GenotypeMatrix)
 
-def check_is_GenotypeMatrix(v: Any, varname: str) -> None:
+def check_is_GenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenotypeMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, GenotypeMatrix):

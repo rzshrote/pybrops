@@ -60,15 +60,15 @@ class CoancestryMatrixFactory:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_CoancestryMatrixFactory(v: Any, vname: str) -> None:
+def check_is_CoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryMatrixFactory. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CoancestryMatrixFactory):

@@ -38,13 +38,13 @@ class NonlinearGenomicModel(GenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_NonlinearGenomicModel(v: Any) -> bool:
+def is_NonlinearGenomicModel(v: object) -> bool:
     """
     Determine whether an object is a NonlinearGenomicModel.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -54,15 +54,15 @@ def is_NonlinearGenomicModel(v: Any) -> bool:
     """
     return isinstance(v, NonlinearGenomicModel)
 
-def check_is_NonlinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_NonlinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type NonlinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, NonlinearGenomicModel):

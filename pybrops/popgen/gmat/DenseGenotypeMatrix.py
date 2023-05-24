@@ -1219,13 +1219,13 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenotypeMatrix(v: Any) -> bool:
+def is_DenseGenotypeMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``DenseGenotypeMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -1235,15 +1235,15 @@ def is_DenseGenotypeMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseGenotypeMatrix)
 
-def check_is_DenseGenotypeMatrix(v: Any, varname: str) -> None:
+def check_is_DenseGenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGenotypeMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseGenotypeMatrix):

@@ -109,13 +109,13 @@ class MutableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MutableMatrix(v: Any) -> bool:
+def is_MutableMatrix(v: object) -> bool:
     """
     Determine whether an object is a MutableMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -125,15 +125,15 @@ def is_MutableMatrix(v: Any) -> bool:
     """
     return isinstance(v, MutableMatrix)
 
-def check_is_MutableMatrix(v: Any, varname: str) -> None:
+def check_is_MutableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MutableMatrix):

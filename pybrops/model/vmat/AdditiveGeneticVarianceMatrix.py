@@ -97,13 +97,13 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveGeneticVarianceMatrix(v: Any) -> bool:
+def is_AdditiveGeneticVarianceMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``AdditiveGeneticVarianceMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -113,13 +113,13 @@ def is_AdditiveGeneticVarianceMatrix(v: Any) -> bool:
     """
     return isinstance(v, AdditiveGeneticVarianceMatrix)
 
-def check_is_AdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_AdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

@@ -78,13 +78,13 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveGeneticVarianceMatrix(v: Any) -> bool:
+def is_DenseAdditiveGeneticVarianceMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``DenseAdditiveGeneticVarianceMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -94,13 +94,13 @@ def is_DenseAdditiveGeneticVarianceMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseAdditiveGeneticVarianceMatrix)
 
-def check_is_DenseAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_DenseAdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

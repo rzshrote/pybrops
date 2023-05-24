@@ -99,13 +99,13 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveDominanceLinearGenomicModel(v: Any) -> bool:
+def is_AdditiveDominanceLinearGenomicModel(v: object) -> bool:
     """
     Determine whether an object is a AdditiveDominanceLinearGenomicModel.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -115,15 +115,15 @@ def is_AdditiveDominanceLinearGenomicModel(v: Any) -> bool:
     """
     return isinstance(v, AdditiveDominanceLinearGenomicModel)
 
-def check_is_AdditiveDominanceLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_AdditiveDominanceLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveDominanceLinearGenomicModel):

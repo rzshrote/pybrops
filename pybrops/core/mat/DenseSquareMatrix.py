@@ -186,13 +186,13 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseSquareMatrix(v: Any) -> bool:
+def is_DenseSquareMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``DenseSquareMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -202,7 +202,7 @@ def is_DenseSquareMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseSquareMatrix)
 
-def check_is_DenseSquareMatrix(v: Any, vname: str) -> None:
+def check_is_DenseSquareMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseSquareMatrix``. Otherwise raise ``TypeError``.
 

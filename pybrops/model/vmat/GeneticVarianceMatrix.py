@@ -111,13 +111,13 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticVarianceMatrix(v: Any) -> bool:
+def is_GeneticVarianceMatrix(v: object) -> bool:
     """
     Determine whether an object is a ``GeneticVarianceMatrix``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -127,13 +127,13 @@ def is_GeneticVarianceMatrix(v: Any) -> bool:
     """
     return isinstance(v, GeneticVarianceMatrix)
 
-def check_is_GeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_GeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

@@ -80,13 +80,13 @@ class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_AdditiveGeneticVarianceMatrixFactory(v: Any, vname: str) -> None:
+def check_is_AdditiveGeneticVarianceMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

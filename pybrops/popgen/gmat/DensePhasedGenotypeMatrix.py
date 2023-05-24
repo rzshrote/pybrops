@@ -639,9 +639,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedGenotypeMatrix(v: Any) -> bool:
+def is_DensePhasedGenotypeMatrix(v: object) -> bool:
     return isinstance(v, DensePhasedGenotypeMatrix)
 
-def check_is_DensePhasedGenotypeMatrix(v: Any, varname: str) -> None:
+def check_is_DensePhasedGenotypeMatrix(v: object, vname: str) -> None:
     if not isinstance(v, DensePhasedGenotypeMatrix):
         raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(varname))

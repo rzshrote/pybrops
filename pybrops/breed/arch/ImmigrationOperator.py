@@ -59,13 +59,13 @@ class ImmigrationOperator(BreedingEdge):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ImmigrationOperator(v: Any) -> bool:
+def is_ImmigrationOperator(v: object) -> bool:
     """
     Determine whether an object is a ImmigrationOperator.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -75,15 +75,15 @@ def is_ImmigrationOperator(v: Any) -> bool:
     """
     return isinstance(v, ImmigrationOperator)
 
-def check_is_ImmigrationOperator(v: Any, varname: str) -> None:
+def check_is_ImmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ImmigrationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ImmigrationOperator):

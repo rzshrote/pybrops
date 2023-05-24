@@ -5,13 +5,13 @@ from typing import Any
 ################################################################################
 ############################### check functions ################################
 ################################################################################
-def generic_check_isinstance(v: Any, vname, vtype):
+def generic_check_isinstance(v: object, vname, vtype):
     """
     Generic check type function.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Reference to object variable.
     vname : str
         Name associated with the object variable.
@@ -40,7 +40,7 @@ def generic_check_hasattr(v, vname, vattr):
 
     Parameters
     ----------
-    v : Any
+    v : object
         Reference to object variable.
     vname : str
         Name associated with the object variable.

@@ -77,13 +77,13 @@ class ParentSelectionOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ParentSelectionOperator(v: Any) -> bool:
+def is_ParentSelectionOperator(v: object) -> bool:
     """
     Determine whether an object is a ParentSelectionOperator.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -93,15 +93,15 @@ def is_ParentSelectionOperator(v: Any) -> bool:
     """
     return isinstance(v, ParentSelectionOperator)
 
-def check_is_ParentSelectionOperator(v: Any, varname: str) -> None:
+def check_is_ParentSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ParentSelectionOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ParentSelectionOperator):

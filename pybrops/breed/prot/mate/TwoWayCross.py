@@ -268,13 +268,13 @@ class TwoWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TwoWayCross(v: Any) -> bool:
+def is_TwoWayCross(v: object) -> bool:
     """
     Determine whether an object is a TwoWayCross.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -284,15 +284,15 @@ def is_TwoWayCross(v: Any) -> bool:
     """
     return isinstance(v, TwoWayCross)
 
-def check_is_TwoWayCross(v: Any, varname: str) -> None:
+def check_is_TwoWayCross(v: object, vname: str) -> None:
     """
     Check if object is of type TwoWayCross. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TwoWayCross):

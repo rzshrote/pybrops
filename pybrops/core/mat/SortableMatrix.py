@@ -113,13 +113,13 @@ class SortableMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SortableMatrix(v: Any) -> bool:
+def is_SortableMatrix(v: object) -> bool:
     """
     Determine whether an object is a SortableMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -129,15 +129,15 @@ def is_SortableMatrix(v: Any) -> bool:
     """
     return isinstance(v, SortableMatrix)
 
-def check_is_SortableMatrix(v: Any, varname: str) -> None:
+def check_is_SortableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SortableMatrix):

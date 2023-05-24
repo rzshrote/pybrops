@@ -267,13 +267,13 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingValueMatrix(v: Any) -> bool:
+def is_BreedingValueMatrix(v: object) -> bool:
     """
     Determine whether an object is a BreedingValueMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -283,15 +283,15 @@ def is_BreedingValueMatrix(v: Any) -> bool:
     """
     return isinstance(v, BreedingValueMatrix)
 
-def check_is_BreedingValueMatrix(v: Any, vname: str) -> None:
+def check_is_BreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueMatrix):

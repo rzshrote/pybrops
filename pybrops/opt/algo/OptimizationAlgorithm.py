@@ -76,13 +76,13 @@ class OptimizationAlgorithm:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_OptimizationAlgorithm(v: Any) -> bool:
+def is_OptimizationAlgorithm(v: object) -> bool:
     """
     Determine whether an object is a OptimizationAlgorithm.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -92,15 +92,15 @@ def is_OptimizationAlgorithm(v: Any) -> bool:
     """
     return isinstance(v, OptimizationAlgorithm)
 
-def check_is_OptimizationAlgorithm(v: Any, vname: str) -> None:
+def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, OptimizationAlgorithm):

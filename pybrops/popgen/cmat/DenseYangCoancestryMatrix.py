@@ -225,13 +225,13 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseYangCoancestryMatrix(v: Any) -> bool:
+def is_DenseYangCoancestryMatrix(v: object) -> bool:
     """
     Determine whether an object is a DenseYangCoancestryMatrix.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -241,15 +241,15 @@ def is_DenseYangCoancestryMatrix(v: Any) -> bool:
     """
     return isinstance(v, DenseYangCoancestryMatrix)
 
-def check_is_DenseYangCoancestryMatrix(v: Any, vname: str) -> None:
+def check_is_DenseYangCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseYangCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseYangCoancestryMatrix):

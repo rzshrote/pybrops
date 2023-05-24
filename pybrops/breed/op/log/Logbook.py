@@ -217,13 +217,13 @@ class Logbook:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Logbook(v: Any) -> bool:
+def is_Logbook(v: object) -> bool:
     """
     Determine whether an object is a Logbook.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -233,15 +233,15 @@ def is_Logbook(v: Any) -> bool:
     """
     return isinstance(v, Logbook)
 
-def check_is_Logbook(v: Any, varname: str) -> None:
+def check_is_Logbook(v: object, vname: str) -> None:
     """
     Check if object is of type Logbook. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, Logbook):

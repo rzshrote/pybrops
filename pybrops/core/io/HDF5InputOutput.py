@@ -83,13 +83,13 @@ class HDF5InputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HDF5InputOutput(v: Any) -> bool:
+def is_HDF5InputOutput(v: object) -> bool:
     """
     Determine whether an object is a HDF5InputOutput.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
 
     Returns
@@ -99,15 +99,15 @@ def is_HDF5InputOutput(v: Any) -> bool:
     """
     return isinstance(v, HDF5InputOutput)
 
-def check_is_HDF5InputOutput(v: Any, vname: str) -> None:
+def check_is_HDF5InputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HDF5InputOutput):
