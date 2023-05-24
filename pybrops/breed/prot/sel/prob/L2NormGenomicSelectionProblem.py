@@ -20,8 +20,8 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_square, check_ndarray_is_triu, check_ndarray_ndim
-from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
 
 class L2NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
@@ -163,6 +163,8 @@ class L2NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             cls,
             gmat: GenotypeMatrix,
             cmatfcty: CoancestryMatrixFactory,
+            mkrwt: numpy.ndarray,
+            afreq: numpy.ndarray,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -181,23 +183,51 @@ class L2NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "L2NormGenomicSelectionProblem":
-        # calculate coancestry
-        G = cmatfcty.from_gmat(gmat)
+        """
+        Construct an L2 Norm Genomic Selection Problem from a Genotype Matrix.
 
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight matrix of shape ``(p,t)``.
+        afreq : numpy.ndarray
+            A marker target allele frequency matrix of shape ``(p,t)``.
+        """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_CoancestryMatrixFactory(cmatfcty, "cmatfcty")
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(afreq, "afreq")
 
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+        # get shapes
+        ntrait = mkrwt.shape[1]
+        ntaxa = gmat.ntaxa
+
+        # allocate memory for cholesky decomposition
+        Ctensor = numpy.empty((ntrait,ntaxa,ntaxa), dtype=float)
+
+        # for each trait, calculate cholesky decomposition and store
+        for i in range(ntrait):
+            # calculate coancestry
+            G = cmatfcty.from_gmat(gmat, mkrwt = mkrwt, afreq = afreq)
+
+            # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+            # if we are unable to fix, then raise value error
+            if not G.apply_jitter():
+                raise ValueError(
+                    "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                    "    This could be caused by lack of genetic diversity.\n"
+                )
+
+            K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+            C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+
+            # store cholesky decomposition in tensor
+            Ctensor[i,:,:] = C
 
         # construct class
         out = cls(
-            C = C,
+            C = Ctensor,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
