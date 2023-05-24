@@ -158,6 +158,67 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         check_ndarray_ndim(value, "V", 3)
         self._V = value
 
+    ########################## Private Static Methods ##########################
+    @staticmethod
+    def _calc_V(
+            mkrwt: numpy.ndarray,
+            tafreq: numpy.ndarray,
+            tfreq: numpy.ndarray
+        ) -> numpy.ndarray:
+        """
+        Calculate a distance difference matrix for fast L1 computations.
+
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        tafreq : numpy.ndarray
+            Taxa allele frequency array of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``p`` is the number of markers.
+        tfreq : numpy.ndarray
+            Target allele frequency array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A distance difference matrix for fast L1 distance compuations of shape ``(t,p,n)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+            - ``p`` is the number of markers.
+            - ``n`` is the number of taxa.
+        """
+        # get number of traits and taxa
+        ntaxa = tafreq.shape[0]
+        nvrnt = mkrwt.shape[0]
+        ntrait = mkrwt.shape[1]
+
+        # allocate a tensor for storing distance matrices
+        # (t,p,n)
+        out = numpy.empty((ntrait,nvrnt,ntaxa), dtype = "float64")
+
+        # calculate a distance matrix for each trait
+        for trait in range(ntrait):
+            # (p,n) = (p,1) * ( (p,n) - (p,1) )
+            out[trait,:,:] = mkrwt[:,trait,None] * (tafreq.T - tfreq[:,trait,None])
+        
+        return out
+
     ############################## Class Methods ###############################
     @classmethod
     def from_numpy(
@@ -208,6 +269,11 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             - ``p`` is the number of markers.
             - ``t`` is the number of traits.
         """
+        # type checks
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(tafreq, "tafreq")
+        check_is_ndarray(tfreq, "tfreq")
+        
         # check for dimension compatability
         if mkrwt.shape[0] != tafreq.shape[1]:
             raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
@@ -216,23 +282,12 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
         if mkrwt.shape[1] != tfreq.shape[1]:
             raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
 
-        # get number of traits and taxa
-        ntaxa = tafreq.shape[0]
-        nvrnt = mkrwt.shape[0]
-        ntrait = mkrwt.shape[1]
-
-        # allocate a tensor for storing distance matrices
-        # (t,p,n)
-        V = numpy.empty((ntrait,nvrnt,ntaxa), dtype = "float64")
-
-        # calculate a distance matrix for each trait
-        for trait in range(ntrait):
-            # (p,n) = (p,1) * ( (p,n) - (p,1) )
-            V[trait,:,:] = mkrwt[:,trait,None] * (tafreq.T - tfreq[:,trait,None])
+        # calculate distance tensor
+        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
 
         # construct class
         out = cls(
-            V = V,
+            V = Vtensor,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -872,12 +927,13 @@ class L1NormGenomicBinarySelectionProblem(BinarySelectionProblem,L1NormGenomicSe
 
             - ``t`` is the number of traits.
         """
+        # scale x to have a sum of 1 (contribution)
+        contrib = (1.0 / x.sum()) * x
+
         # calculate vector
-        # (t,p,n)[:,:,(k,)] -> (t,p,k)
-        # (t,p,k).sum(2) -> (t,p)
-        # scalar * (t,p) -> (t,p)
+        # (t,p,n) . (n,) -> (t,p)
         # | (t,p) | -> (t,p)
         # (t,p).sum(1) -> (t,)
-        out = numpy.absolute((1.0 / len(x)) * self._V[:,:,x].sum(2)).sum(1)
+        out = numpy.absolute(self._V.dot(contrib)).sum(1)
 
         return out
