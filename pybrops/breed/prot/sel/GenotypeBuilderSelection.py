@@ -23,7 +23,7 @@ from pybrops.core.error.error_value_python import check_is_gt, check_is_in_inter
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
@@ -417,7 +417,7 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderBaseSelection):
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -434,7 +434,7 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderBaseSelection):
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################

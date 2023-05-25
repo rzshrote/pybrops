@@ -20,7 +20,7 @@ from pybrops.breed.prot.sel.prob.RandomSelectionProblem import RandomBinarySelec
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
@@ -386,7 +386,7 @@ class RandomSubsetSelection(RandomBaseSelection):
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -403,7 +403,7 @@ class RandomSubsetSelection(RandomBaseSelection):
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################

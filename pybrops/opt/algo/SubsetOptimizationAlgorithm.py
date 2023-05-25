@@ -1,19 +1,19 @@
 """
-Module defining interfaces and associated error checking routines for
-constrained optimization algorithms.
+Module defining interfaces and error checking routines for subset optimization algorithms.
 """
 
 from abc import ABCMeta, abstractmethod
 from typing import Optional
-from pybrops.opt.prob.Problem import Problem
-from pybrops.opt.soln.Solution import Solution
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
+from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class OptimizationAlgorithm(metaclass=ABCMeta):
+class SubsetOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
     """
-    An abstract class for optimization algorithms.
+    An abstract class for optimization algorithms optimizing in subset search spaces.
 
     The purpose of this abstract class is to provide functionality for:
-        1) Optimization of objective functions.
+        1) Optimization of objective functions in subset search spaces.
     """
 
     ########################## Special Object Methods ##########################
@@ -22,17 +22,17 @@ class OptimizationAlgorithm(metaclass=ABCMeta):
     @abstractmethod
     def minimize(
             self, 
-            prob: Problem,
+            prob: SubsetProblem,
             miscout: Optional[dict],
             **kwargs: dict
-        ) -> Solution:
+        ) -> SubsetSolution:
         """
         Minimize an optimization problem.
 
         Parameters
         ----------
-        prob : Problem
-            A problem definition object on which to optimize.
+        prob : SubsetProblem
+            A subset problem definition object on which to optimize.
         miscout : dict
             Miscellaneous output from the constrained optimizaiont algorithm.
         kwargs : dict
@@ -40,8 +40,8 @@ class OptimizationAlgorithm(metaclass=ABCMeta):
 
         Returns
         -------
-        out : Solution
-            An object containing the solution to the provided problem.
+        out : SubsetSolution
+            An object containing the solution to the provided subset problem.
         """
         raise NotImplementedError("method is abstract")
 
@@ -50,9 +50,9 @@ class OptimizationAlgorithm(metaclass=ABCMeta):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
+def check_is_SubsetOptimizationAlgorithm(v: object, vname: str) -> None:
     """
-    Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.
+    Check if object is of type SubsetOptimizationAlgorithm. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -62,4 +62,4 @@ def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, OptimizationAlgorithm):
-        raise TypeError("variable '{0}' must be a OptimizationAlgorithm".format(vname))
+        raise TypeError("variable '{0}' must be a SubsetOptimizationAlgorithm".format(vname))

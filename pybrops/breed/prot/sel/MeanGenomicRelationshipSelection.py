@@ -27,7 +27,7 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipBinarySelectionProblem, MeanGenomicRelationshipIntegerSelectionProblem, MeanGenomicRelationshipRealSelectionProblem, MeanGenomicRelationshipSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
@@ -174,7 +174,7 @@ class MeanGenomicRelationshipBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -193,7 +193,7 @@ class MeanGenomicRelationshipBaseSelection(SelectionProtocol,metaclass=ABCMeta):
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################
@@ -422,7 +422,7 @@ class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipBaseSelectio
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -439,7 +439,7 @@ class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipBaseSelectio
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################

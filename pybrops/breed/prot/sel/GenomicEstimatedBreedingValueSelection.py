@@ -27,7 +27,7 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem, GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
@@ -160,7 +160,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -179,7 +179,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################
@@ -408,7 +408,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         if value is None:
             # construct default hillclimber
             value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
+        check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
@@ -425,7 +425,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")
+        check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################

@@ -17,7 +17,7 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
 from pybrops.opt.prob.SubsetProblem import SubsetProblem
@@ -27,7 +27,7 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 
-class NSGA2SubsetGeneticAlgorithm(OptimizationAlgorithm):
+class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
