@@ -8,11 +8,11 @@ from numpy.random import Generator, RandomState
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class SteepestDescentSubsetHillClimber(OptimizationAlgorithm):
+class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
     """
     docstring for ConstrainedSteepestDescentSubsetHillClimber.
     """
@@ -52,10 +52,6 @@ class SteepestDescentSubsetHillClimber(OptimizationAlgorithm):
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     ############################################################################
     ############################## Object Methods ##############################

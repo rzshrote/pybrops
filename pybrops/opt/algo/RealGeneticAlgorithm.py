@@ -5,7 +5,7 @@ optimization.
 
 # all public classes and functions available in this module
 __all__ = [
-    "NSGA2SubsetGeneticAlgorithm"
+    "RealGeneticAlgorithm"
 ]
 
 # imports
@@ -17,17 +17,18 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
-from pybrops.core.util.pareto import is_pareto_efficient
-from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pymoo.algorithms.moo.nsga2 import NSGA2
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
+from pybrops.opt.prob.RealProblem import RealProblem, check_is_RealProblem
+from pybrops.opt.soln.RealSolution import RealSolution
+from pybrops.opt.soln.RealSolution import RealSolution
+from pymoo.algorithms.soo.nonconvex.ga import GA
+from pymoo.operators.crossover.pcx import ParentCentricCrossover
+from pymoo.operators.mutation.pm import PolynomialMutation
+from pymoo.operators.sampling.rnd import FloatRandomSampling
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 
-class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class RealGeneticAlgorithm(RealOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -61,7 +62,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA2SubsetGeneticAlgorithm, self).__init__(**kwargs)
+        super(RealGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
         self.rng = rng
@@ -108,16 +109,16 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblem,
+            prob: RealProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> RealSolution:
         """
         Optimize an objective function.
 
         Parameters
         ----------
-        prob : SubsetProblem
+        prob : RealProblem
             A problem definition object on which to optimize.
         miscout : dict
             Miscellaneous output from the constrained optimizaiont algorithm.
@@ -126,20 +127,20 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
 
         Returns
         -------
-        out : SubsetSolution
+        out : RealSolution
             An object containing the solution to the provided problem.
         """
         # type checks
-        check_is_SubsetProblem(prob, "prob")
+        check_is_RealProblem(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         
-        # construct the NSGA2 algorithm with custom operators
-        algo = NSGA2(
+        # construct the genetic algorithm with custom operators
+        algo = GA(
             pop_size = self.pop_size,
-            sampling = SubsetRandomSampling(setspace = prob.decn_space),
-            crossover = ReducedExchangeCrossover(),
-            mutation = ReducedExchangeMutation(setspace = prob.decn_space),
+            sampling = FloatRandomSampling(),
+            crossover = ParentCentricCrossover(),
+            mutation = PolynomialMutation(),
         )
 
         # optimize the objective function
@@ -166,7 +167,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
             soln_eqcv = res.H
 
         # construct a solution
-        soln = SubsetSolution(
+        soln = RealSolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
             decn_space_lower = prob.decn_space_lower,

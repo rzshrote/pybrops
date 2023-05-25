@@ -3,6 +3,8 @@ from pymoo.core.sampling import Sampling
 from pymoo.core.problem import Problem
 from pymoo.core.crossover import Crossover
 from pymoo.core.mutation import Mutation
+from pymoo.operators.crossover.sbx import SimulatedBinaryCrossover
+from pymoo.operators.mutation.pm import PolynomialMutation
 
 class SubsetRandomSampling(Sampling):
     """
@@ -247,7 +249,7 @@ class ReducedExchangeMutation(Mutation):
         problem : Problem
             An optimization problem.
         X : numpy.ndarray
-            An array of shape ``(n_indiv, n_var)`` containing individuals which to mate.
+            An array of shape ``(n_indiv, n_var)`` containing individuals which to mutate.
             This array is unmodified by this function.
         kwargs : dict
             Additional keyword arguments.
@@ -280,3 +282,77 @@ class ReducedExchangeMutation(Mutation):
             Xm[i,mab] = ap                          # overwrite mutations to indiv
         
         return Xm
+
+class IntegerSimulatedBinaryCrossover(SimulatedBinaryCrossover):
+    def _do(
+            self, 
+            problem: Problem, 
+            X: np.ndarray, 
+            **kwargs: dict
+        ) -> np.ndarray:
+        """
+        Perform simulated binary crossover, but round results to nearest integer.
+
+        Parameters
+        ----------
+        problem : Problem
+            An optimization problem.
+        X : numpy.ndarray
+            An array of shape ``(n_parents, n_matings, n_var)`` containing parents which to mate.
+            This array is unmodified by this function.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(n_parents, n_matings, n_var)`` containing progeny chromosomes.
+        """
+        # perform SBX
+        out = super(IntegerSimulatedBinaryCrossover, self)._do(
+            problem = problem,
+            X = X,
+            **kwargs
+        )
+
+        # round results and convert type
+        out = out.round(0).astype(X.dtype)
+
+        return out
+
+class IntegerPolynomialMutation(PolynomialMutation):
+    def _do(
+            self, 
+            problem: Problem, 
+            X: np.ndarray, 
+            **kwargs: dict
+        ) -> np.ndarray:
+        """
+        Perform polynomial muation, but round results to nearest integer.
+
+        Parameters
+        ----------
+        problem : Problem
+            An optimization problem.
+        X : numpy.ndarray
+            An array of shape ``(n_indiv, n_var)`` containing individuals which to mutate.
+            This array is unmodified by this function.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(n_parents, n_matings, n_var)`` containing progeny chromosomes.
+        """
+        # perform PM
+        out = super(IntegerPolynomialMutation, self)._do(
+            problem = problem,
+            X = X,
+            **kwargs
+        )
+
+        # round results and convert type
+        out = out.round(0).astype(X.dtype)
+
+        return out

@@ -5,7 +5,7 @@ optimization.
 
 # all public classes and functions available in this module
 __all__ = [
-    "NSGA2SubsetGeneticAlgorithm"
+    "NSGA2BinaryGeneticAlgorithm"
 ]
 
 # imports
@@ -17,17 +17,18 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
-from pybrops.core.util.pareto import is_pareto_efficient
-from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
+from pybrops.opt.prob.BinaryProblem import BinaryProblem, check_is_BinaryProblem
+from pybrops.opt.soln.BinarySolution import BinarySolution
+from pybrops.opt.soln.BinarySolution import BinarySolution
 from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
+from pymoo.operators.crossover.pntx import SinglePointCrossover
+from pymoo.operators.mutation.bitflip import BitflipMutation
+from pymoo.operators.sampling.rnd import BinaryRandomSampling
 
-class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA2BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -61,7 +62,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA2SubsetGeneticAlgorithm, self).__init__(**kwargs)
+        super(NSGA2BinaryGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
         self.rng = rng
@@ -108,16 +109,16 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
     ############################################################################
     def minimize(
             self, 
-            prob: SubsetProblem,
+            prob: BinaryProblem,
             miscout: Optional[dict] = None,
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> BinarySolution:
         """
         Optimize an objective function.
 
         Parameters
         ----------
-        prob : SubsetProblem
+        prob : BinaryProblem
             A problem definition object on which to optimize.
         miscout : dict
             Miscellaneous output from the constrained optimizaiont algorithm.
@@ -126,20 +127,20 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
 
         Returns
         -------
-        out : SubsetSolution
+        out : BinarySolution
             An object containing the solution to the provided problem.
         """
         # type checks
-        check_is_SubsetProblem(prob, "prob")
+        check_is_BinaryProblem(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         
         # construct the NSGA2 algorithm with custom operators
         algo = NSGA2(
             pop_size = self.pop_size,
-            sampling = SubsetRandomSampling(setspace = prob.decn_space),
-            crossover = ReducedExchangeCrossover(),
-            mutation = ReducedExchangeMutation(setspace = prob.decn_space),
+            sampling = BinaryRandomSampling(),
+            crossover = SinglePointCrossover(),
+            mutation = BitflipMutation(),
         )
 
         # optimize the objective function
@@ -166,7 +167,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
             soln_eqcv = res.H
 
         # construct a solution
-        soln = SubsetSolution(
+        soln = BinarySolution(
             ndecn = prob.ndecn,
             decn_space = prob.decn_space,
             decn_space_lower = prob.decn_space_lower,
