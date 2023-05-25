@@ -5,9 +5,9 @@ subset selection optimization.
 
 import numpy
 
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
 
-class StochasticAscentSetHillClimber(OptimizationAlgorithm):
+class UnconstrainedStochasticAscentSetHillClimber(UnconstrainedOptimizationAlgorithm):
     """
     Class implementing a stochastic ascent hill climber algorithm adapted for
     subset selection optimization. The search space is discrete and nominal in
@@ -36,7 +36,7 @@ class StochasticAscentSetHillClimber(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(StochasticAscentSetHillClimber, self).__init__(**kwargs)
+        super(UnconstrainedStochasticAscentSetHillClimber, self).__init__(**kwargs)
         self.k = k
         self.setspace = setspace
         self.rng = rng

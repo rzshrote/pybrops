@@ -3,20 +3,20 @@ Module containing optimization algorithms
 """
 
 __all__ = [
-    "OptimizationAlgorithm",
-    "SteepestAscentSetHillClimber",
-    "StochasticAscentSetHillClimber",
-    "NSGA2SetGeneticAlgorithm",
-    "NSGA3UnityConstraintGeneticAlgorithm"
+    "UnconstrainedOptimizationAlgorithm",
+    "UnconstrainedSteepestAscentSetHillClimber",
+    "UnconstrainedStochasticAscentSetHillClimber",
+    "UnconstrainedNSGA2SetGeneticAlgorithm",
+    "UnconstrainedNSGA3UnityConstraintGeneticAlgorithm"
 ]
 
 # order dependent imports
 
 # abstract classes
-from pybrops.opt.algo import OptimizationAlgorithm
+from pybrops.opt.algo import UnconstrainedOptimizationAlgorithm
 
 # concrete classes
-from pybrops.opt.algo import SteepestAscentSetHillClimber
-from pybrops.opt.algo import StochasticAscentSetHillClimber
-from pybrops.opt.algo import NSGA2SetGeneticAlgorithm
-from pybrops.opt.algo import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.opt.algo import UnconstrainedSteepestAscentSetHillClimber
+from pybrops.opt.algo import UnconstrainedStochasticAscentSetHillClimber
+from pybrops.opt.algo import UnconstrainedNSGA2SetGeneticAlgorithm
+from pybrops.opt.algo import UnconstrainedNSGA3UnityConstraintGeneticAlgorithm

@@ -11,17 +11,16 @@ from deap import base
 from deap import creator
 from deap import tools
 from deap import benchmarks
-import random
 
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_float
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
-class SetGeneticAlgorithm(OptimizationAlgorithm):
+class UnconstrainedNSGA2SetGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -49,7 +48,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SetGeneticAlgorithm, self).__init__(**kwargs)
+        super(UnconstrainedNSGA2SetGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.mu = mu
         self.lamb = lamb
@@ -200,28 +199,6 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
                 ind[i] = self.rng.choice(sspace[mab], 1, False)[0]
         return ind
 
-    def selRandomReplacement(self, individuals, k):
-        sel = []
-        while len(sel) + len(individuals) <= k:
-            sel += random.sample(individuals, len(individuals))
-        sel += random.sample(individuals, k % len(sel))
-        return sel
-
-    def selTournamentReplacement(self, individuals, k, tournsize, fit_attr = 'fitness'):
-        tourn = []
-        while len(tourn) + len(individuals) <= (k*tournsize):
-            tourn += random.sample(individuals, len(individuals))
-        tourn += random.sample(individuals, (k*tournsize) % len(tourn))
-        sel = []
-        for i in range(0, len(tourn), tournsize):
-            subtourn = tourn[i:i+tournsize]
-            subbest = subtourn[0]
-            for e in subtourn[1:]:
-                if getattr(subbest, fit_attr) < getattr(e, fit_attr):
-                    subbest = e
-            sel.append(subbest)
-        return sel
-
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.
@@ -250,11 +227,16 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
               for the corresponding Pareto frontier points.
             - ``misc`` is a dictionary of miscellaneous output.
         """
+        # convert objective function weights to a numpy array
+        if not hasattr(objfn_wt, "__iter__"):
+            objfn_wt = [objfn_wt]
+        objfn_wt = numpy.array(objfn_wt)
+
         # MOGS objectives are minimizing (DEAP uses larger fitness as better)
         creator.create(
             "FitnessMax",
             base.Fitness,
-            weights = tuple(objfn_wt) if hasattr(objfn_wt, "__iter__") else (objfn_wt,)
+            weights = tuple(objfn_wt)
         )
 
         # create an individual, which is a list representation
@@ -310,6 +292,12 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             indpb = 2.0 / k         # probability of mutation
         )
 
+        # register the selection operator
+        toolbox.register(
+            "select",
+            tools.selNSGA2
+        )
+
         # register logbook statistics to take
         stats = tools.Statistics(lambda ind: ind.fitness.values)
         stats.register("min", numpy.min, axis=0)
@@ -328,7 +316,10 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         invalid_ind = [ind for ind in pop if not ind.fitness.valid]
         fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
         for ind, fit in zip(invalid_ind, fitnesses):
-            ind.fitness.values = fit if hasattr(fit, "__iter__") else (fit,)
+            ind.fitness.values = fit
+
+        # assign crowding distances (no actual selection is done)
+        pop = toolbox.select(pop, len(pop))
 
         # compile population statistics
         record = stats.compile(pop)
@@ -339,8 +330,7 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         # main genetic algorithm loop
         for gen in range(1, self.ngen):
             # create lambda progeny using distance crowding tournament selection
-            # random selection with replacement
-            offspring = self.selRandomReplacement(pop, self.lamb)
+            offspring = tools.selTournamentDCD(pop, self.lamb)
 
             # clone individuals for modification
             offspring = [toolbox.clone(ind) for ind in offspring]
@@ -357,11 +347,10 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             invalid_ind = [ind for ind in offspring if not ind.fitness.valid]
             fitnesses = toolbox.map(toolbox.evaluate, invalid_ind)
             for ind, fit in zip(invalid_ind, fitnesses):
-                ind.fitness.values = fit if hasattr(fit, "__iter__") else (fit,)
+                ind.fitness.values = fit
 
             # Select the next generation population
-            # this is where the selection pressure occurs
-            pop = self.selTournamentReplacement(pop + offspring, self.mu, 2, "fitness")
+            pop = toolbox.select(pop + offspring, self.mu)
 
             # save logs
             record = stats.compile(pop)
@@ -373,10 +362,18 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
         # extract population decision configurations
         pop_decn = numpy.array(pop)
 
-        # get best solution
-        solnix = pop_soln.argmax()
-        soln = pop_soln[solnix]
-        decn = pop_decn[solnix]
+        # get pareto frontier mask
+        pareto_mask = is_pareto_efficient(
+            pop_soln,
+            wt = objfn_wt,
+            return_mask = True
+        )
+
+        # get pareto frontier
+        frontier = pop_soln[pareto_mask]
+
+        # get selection configurations
+        sel_config = pop_decn[pareto_mask]
 
         # stuff everything else into a dictionary
         misc = {
@@ -386,4 +383,4 @@ class SetGeneticAlgorithm(OptimizationAlgorithm):
             "logbook" : logbook
         }
 
-        return soln, decn, misc
+        return frontier, sel_config, misc

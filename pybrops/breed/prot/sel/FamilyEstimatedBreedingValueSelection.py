@@ -25,9 +25,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueBinarySelectionProblem, FamilyEstimatedBreedingValueIntegerSelectionProblem, FamilyEstimatedBreedingValueRealSelectionProblem, FamilyEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.ConstrainedNSGA2SubsetGeneticAlgorithm import ConstrainedNSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
-from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
+from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -62,8 +62,8 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -150,28 +150,28 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
         self._rng = value
 
     @property
-    def soalgo(self) -> ConstrainedOptimizationAlgorithm:
+    def soalgo(self) -> OptimizationAlgorithm:
         """Single-objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
         if value is None:
             # construct default hillclimber
-            value = ConstrainedSteepestDescentSubsetHillClimber(self.rng)
+            value = SteepestDescentSubsetHillClimber(self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
-    def moalgo(self) -> ConstrainedOptimizationAlgorithm:
+    def moalgo(self) -> OptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[ConstrainedOptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
-            value = ConstrainedNSGA2SubsetGeneticAlgorithm(
+            value = NSGA2SubsetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source

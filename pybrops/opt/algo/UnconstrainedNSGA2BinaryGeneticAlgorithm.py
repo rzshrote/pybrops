@@ -13,14 +13,14 @@ from deap import tools
 from deap import benchmarks
 
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
 from pybrops.core.util.pareto import is_pareto_efficient
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_float
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
-class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
+class UnconstrainedNSGA2BinaryGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is binary in nature.
@@ -48,7 +48,7 @@ class NSGA2BinaryGeneticAlgorithm(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA2BinaryGeneticAlgorithm, self).__init__(**kwargs)
+        super(UnconstrainedNSGA2BinaryGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.mu = mu
         self.lamb = lamb

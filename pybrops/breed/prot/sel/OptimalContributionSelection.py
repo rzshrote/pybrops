@@ -17,9 +17,9 @@ from typing import Optional, Union
 from typing import Callable
 from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionBinarySelectionProblem, OptimalContributionIntegerSelectionProblem, OptimalContributionRealSelectionProblem, OptimalContributionSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.opt.algo.ConstrainedSteepestDescentSubsetHillClimber import ConstrainedSteepestDescentSubsetHillClimber
-from pybrops.opt.algo.MemeticNSGA2SetGeneticAlgorithm import MemeticNSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
+from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_ConstrainedOptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Real, check_is_int
@@ -62,8 +62,8 @@ class OptimalContributionBaseSelection(SelectionProtocol):
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -169,32 +169,28 @@ class OptimalContributionBaseSelection(SelectionProtocol):
         self._rng = value
 
     @property
-    def soalgo(self) -> ConstrainedOptimizationAlgorithm:
+    def soalgo(self) -> OptimizationAlgorithm:
         """Description for property soalgo."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
+    def soalgo(self, value: OptimizationAlgorithm) -> None:
         """Set data for property soalgo."""
         if value is None:
-            value = ConstrainedSteepestDescentSubsetHillClimber(rng = self.rng)
+            value = SteepestDescentSubsetHillClimber(rng = self.rng)
         check_is_ConstrainedOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
-    def moalgo(self) -> ConstrainedOptimizationAlgorithm:
+    def moalgo(self) -> OptimizationAlgorithm:
         """Description for property moalgo."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: ConstrainedOptimizationAlgorithm) -> None:
+    def moalgo(self, value: OptimizationAlgorithm) -> None:
         """Set data for property moalgo."""
         if value is None:
-            value = MemeticNSGA2SetGeneticAlgorithm(
+            value = NSGA2SubsetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
-                mu = 100,       # number of parents in population
-                lamb = 100,     # number of progeny to produce
-                M = 1.5,        # algorithm crossover genetic map length
-                mememu = 15,    # number to local search in parent population
-                memelamb = 15,  # number to local search in progeny population
+                pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
         check_is_ConstrainedOptimizationAlgorithm(value, "moalgo")

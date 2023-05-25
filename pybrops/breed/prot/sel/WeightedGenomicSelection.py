@@ -15,7 +15,7 @@ from typing import Callable, Optional, Union
 import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection, GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection, GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
-from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 
 class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection):
     """
@@ -46,8 +46,8 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -114,8 +114,8 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -182,8 +182,8 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -250,8 +250,8 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[ConstrainedOptimizationAlgorithm] = None,
-            moalgo: Optional[ConstrainedOptimizationAlgorithm] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None, 
             **kwargs: dict
         ) -> None:
         """

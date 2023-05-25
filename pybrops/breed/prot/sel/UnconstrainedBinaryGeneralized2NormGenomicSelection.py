@@ -7,9 +7,9 @@ import numpy
 from typing import Union
 from typing import Callable
 
-from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm import UnconstrainedNSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber import UnconstrainedSteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.breed.prot.sel.targetfn import target_positive
 from pybrops.breed.prot.sel.weightfn import weight_absolute
@@ -277,14 +277,14 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
         del self._rng
 
     @property
-    def soalgo(self) -> OptimizationAlgorithm:
+    def soalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Single objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[UnconstrainedOptimizationAlgorithm,None]) -> None:
         """Set single objective optimization algorithm."""
         if value is None:
-            value = SteepestAscentSetHillClimber(rng = self.rng)
+            value = UnconstrainedSteepestAscentSetHillClimber(rng = self.rng)
         check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
@@ -293,14 +293,14 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
         del self._soalgo
 
     @property
-    def moalgo(self) -> OptimizationAlgorithm:
+    def moalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[UnconstrainedOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         if value is None:
-            value = NSGA2SetGeneticAlgorithm(
+            value = UnconstrainedNSGA2SetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 mu = 100,       # number of parents in population
                 lamb = 100,     # number of progeny to produce

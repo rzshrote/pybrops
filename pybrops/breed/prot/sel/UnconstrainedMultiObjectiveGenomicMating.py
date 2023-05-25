@@ -7,15 +7,15 @@ from typing import Callable, Union
 import numpy
 import math
 import types
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.breed.prot.sel.targetfn import target_negative, target_positive, target_stabilizing
 from pybrops.breed.prot.sel.weightfn import weight_absolute, weight_one
 from pybrops.core.error.error_type_python import check_is_int_or_inf
 from pybrops.core.error.error_value_python import check_is_gteq
 
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
+from pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm import UnconstrainedNSGA2SetGeneticAlgorithm
+from pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber import UnconstrainedSteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.core.error.error_type_python import check_isinstance
 from pybrops.core.error.error_type_python import check_is_bool
@@ -666,19 +666,19 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
         del self._rng
     
     @property
-    def soalgo(self) -> OptimizationAlgorithm:
+    def soalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Description for property soalgo."""
         return self._soalgo
     @soalgo.getter
-    def soalgo(self) -> OptimizationAlgorithm:
+    def soalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Get data for property soalgo."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[UnconstrainedOptimizationAlgorithm,None]) -> None:
         """Set data for property soalgo."""
         # if value is None, use a default hillclimber
         if value is None:
-            value = SteepestAscentSetHillClimber(rng = self.rng)
+            value = UnconstrainedSteepestAscentSetHillClimber(rng = self.rng)
         check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
     @soalgo.deleter
@@ -687,19 +687,19 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
         del self._soalgo
     
     @property
-    def moalgo(self) -> OptimizationAlgorithm:
+    def moalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.getter
-    def moalgo(self) -> OptimizationAlgorithm:
+    def moalgo(self) -> UnconstrainedOptimizationAlgorithm:
         """Get data for property moalgo."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[UnconstrainedOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         # if value is None, use a default nsga-ii algorithm
         if value is None:
-            value = NSGA2SetGeneticAlgorithm(
+            value = UnconstrainedNSGA2SetGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 mu = 100,       # number of parents in population
                 lamb = 100,     # number of progeny to produce

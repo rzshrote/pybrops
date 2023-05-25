@@ -6,11 +6,11 @@ selection optimization.
 from typing import Union
 import numpy
 
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
 from pybrops.core.random.prng import global_prng
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
-class SteepestAscentSetHillClimber(OptimizationAlgorithm):
+class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorithm):
     """
     Class implementing a steepest ascent hill climber algorithm adapted for
     subset selection optimization. The search space is discrete and nominal in
@@ -35,7 +35,7 @@ class SteepestAscentSetHillClimber(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SteepestAscentSetHillClimber, self).__init__(**kwargs)
+        super(UnconstrainedSteepestAscentSetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
     ############################################################################

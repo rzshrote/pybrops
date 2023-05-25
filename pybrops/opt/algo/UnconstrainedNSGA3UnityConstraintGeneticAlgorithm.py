@@ -6,7 +6,7 @@ from deap import creator
 from deap import tools
 from math import factorial
 
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_float
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
@@ -14,7 +14,7 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.random.prng import global_prng
 from pybrops.core.util.pareto import is_pareto_efficient
 
-class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
+class UnconstrainedNSGA3UnityConstraintGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
     """
     Class implementing an NSGA-II genetic algorithm adapted for continuous
     search space optimization with a unity constraint in the decision space.
@@ -54,7 +54,7 @@ class NSGA3UnityConstraintGeneticAlgorithm(OptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA3UnityConstraintGeneticAlgorithm, self).__init__(**kwargs)
+        super(UnconstrainedNSGA3UnityConstraintGeneticAlgorithm, self).__init__(**kwargs)
 
         # perform error checks
         check_is_int(ngen, "ngen")

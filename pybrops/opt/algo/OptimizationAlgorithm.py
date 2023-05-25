@@ -1,12 +1,11 @@
 """
 Module defining interfaces and associated error checking routines for
-optimization algorithms.
+constrained optimization algorithms.
 """
 
-from typing import Any, Callable
-
-import numpy
-
+from typing import Optional
+from pybrops.opt.prob.Problem import Problem
+from pybrops.opt.soln.Solution import Solution
 
 class OptimizationAlgorithm:
     """
@@ -24,7 +23,7 @@ class OptimizationAlgorithm:
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class OptimizationAlgorithm.
+        Constructor for the abstract class ConstrainedOptimizationAlgorithm.
 
         Parameters
         ----------
@@ -36,65 +35,39 @@ class OptimizationAlgorithm:
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
-    def optimize(
+    def minimize(
             self, 
-            objfn: Callable, 
-            k: int, 
-            sspace: numpy.ndarray, 
-            objfn_wt : numpy.ndarray, 
+            prob: Problem,
+            miscout: Optional[dict],
             **kwargs: dict
-        ):
+        ) -> Solution:
         """
-        Optimize an objective function.
+        Minimize an optimization problem.
 
         Parameters
         ----------
-        objfn : callable
-            Objective function which to optimize.
-        k : int
-            Number of decision variables in the search space.
-            A vector is formed as sspace^k
-        sspace : numpy.ndarray
-            Search space that the OptimizationAlgorithm searches in.
-        objfn_wt : numpy.ndarray
-            Weight(s) applied to output(s) from the objfn.
+        prob : Problem
+            A problem definition object on which to optimize.
+        miscout : dict
+            Miscellaneous output from the constrained optimizaiont algorithm.
         kwargs : dict
             Additional keyword arguments
 
         Returns
         -------
-        out : tuple
-            A tuple of length 3 (soln, decn, misc)
+        out : Solution
+            An object containing the solution to the provided problem.
         """
         raise NotImplementedError("method is abstract")
-
-    # def optimize_vec(fn):
-    #     raise NotImplementedError("method is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_OptimizationAlgorithm(v: object) -> bool:
+def check_is_ConstrainedOptimizationAlgorithm(v: object, vname: str) -> None:
     """
-    Determine whether an object is a OptimizationAlgorithm.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a OptimizationAlgorithm object instance.
-    """
-    return isinstance(v, OptimizationAlgorithm)
-
-def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
-    """
-    Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.
+    Check if object is of type ConstrainedOptimizationAlgorithm. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -104,4 +77,4 @@ def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, OptimizationAlgorithm):
-        raise TypeError("variable '{0}' must be a OptimizationAlgorithm".format(vname))
+        raise TypeError("variable '{0}' must be a ConstrainedOptimizationAlgorithm".format(vname))

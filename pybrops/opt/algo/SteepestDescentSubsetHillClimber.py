@@ -8,11 +8,11 @@ from numpy.random import Generator, RandomState
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.ConstrainedOptimizationAlgorithm import ConstrainedOptimizationAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorithm):
+class SteepestDescentSubsetHillClimber(OptimizationAlgorithm):
     """
     docstring for ConstrainedSteepestDescentSubsetHillClimber.
     """
@@ -35,7 +35,7 @@ class ConstrainedSteepestDescentSubsetHillClimber(ConstrainedOptimizationAlgorit
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(ConstrainedSteepestDescentSubsetHillClimber, self).__init__(**kwargs)
+        super(SteepestDescentSubsetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
     ############################################################################
