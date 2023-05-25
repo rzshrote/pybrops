@@ -491,7 +491,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelection):
         decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
 
         # construct problem
-        prob = MultiObjectiveGenomicSubsetSelectionProblem.from_object(
+        prob = MultiObjectiveGenomicSubsetSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             weight = self.weight,
             target = self.target,

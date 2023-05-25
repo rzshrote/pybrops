@@ -18,6 +18,7 @@ from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionPr
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -199,6 +200,7 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     def ploidy(self, value: Integral) -> None:
         """Set ploidy."""
         check_is_Integral(value, "ploidy")
+        check_is_gt(value, "ploidy", 0)
         self._ploidy = value
     
     @property
@@ -208,6 +210,8 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     @mkrwt.setter
     def mkrwt(self, value: numpy.ndarray) -> None:
         """Set marker weights."""
+        check_is_ndarray(value, "mkrwt")
+        check_ndarray_ndim(value, "mkrwt", 2)
         self._mkrwt = value
 
     ############ target allele frequency values ############
@@ -219,6 +223,7 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     def tfreq(self, value: numpy.ndarray) -> None:
         """Set target allele frequency."""
         check_is_ndarray(value, "tfreq")
+        check_ndarray_ndim(value, "tfreq", 2)
         self._tfreq = value
         self._tminor = self._calc_tminor(self._tfreq)
         self._thet = self._calc_thet(self._tfreq)
@@ -272,7 +277,7 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     
     ############################## Class Methods ###############################
     @classmethod
-    def from_object(
+    def from_gmat_gpmod(
             cls,
             gmat: GenotypeMatrix,
             weight: Union[numpy.ndarray,Callable],
