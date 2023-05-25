@@ -46,4 +46,4 @@ def is_PhasedHaplotypeMatrix(v: object) -> bool:
 def check_is_PhasedHaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedHaplotypeMatrix"""
     if not isinstance(v, PhasedHaplotypeMatrix):
-        raise TypeError("'%s' must be a PhasedHaplotypeMatrix." % varname)
+        raise TypeError("'%s' must be a PhasedHaplotypeMatrix." % vname)

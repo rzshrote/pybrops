@@ -169,4 +169,4 @@ def check_is_BreedingNode(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingNode):
-        raise TypeError("'%s' must be a BreedingNode." % varname)
+        raise TypeError("'%s' must be a BreedingNode." % vname)

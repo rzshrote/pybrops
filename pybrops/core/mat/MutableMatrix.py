@@ -137,4 +137,4 @@ def check_is_MutableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MutableMatrix):
-        raise TypeError("'%s' must be a MutableMatrix." % varname)
+        raise TypeError("'%s' must be a MutableMatrix." % vname)

@@ -312,4 +312,4 @@ def check_is_FourWayDHCross(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, FourWayDHCross):
-        raise TypeError("'%s' must be a FourWayDHCross." % varname)
+        raise TypeError("'%s' must be a FourWayDHCross." % vname)

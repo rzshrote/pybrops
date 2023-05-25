@@ -243,4 +243,4 @@ def check_is_KosambiMapFunction(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, KosambiMapFunction):
-        raise TypeError("'{0}' must be of type KosambiMapFunction.".format(varname))
+        raise TypeError("'{0}' must be of type KosambiMapFunction.".format(vname))

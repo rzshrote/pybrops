@@ -296,4 +296,4 @@ def check_is_TwoWayCross(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TwoWayCross):
-        raise TypeError("'%s' must be a TwoWayCross." % varname)
+        raise TypeError("'%s' must be a TwoWayCross." % vname)

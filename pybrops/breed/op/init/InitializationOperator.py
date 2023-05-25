@@ -90,4 +90,4 @@ def check_is_InitializationOperator(v: object, vname: str):
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, InitializationOperator):
-        raise TypeError("'%s' must be a InitializationOperator." % varname)
+        raise TypeError("'%s' must be a InitializationOperator." % vname)

@@ -1247,4 +1247,4 @@ def check_is_DenseGenotypeMatrix(v: object, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseGenotypeMatrix):
-        raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(varname))
+        raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(vname))

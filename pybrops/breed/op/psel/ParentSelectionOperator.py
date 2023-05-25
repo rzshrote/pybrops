@@ -105,4 +105,4 @@ def check_is_ParentSelectionOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ParentSelectionOperator):
-        raise TypeError("'%s' must be a ParentSelectionOperator." % varname)
+        raise TypeError("'%s' must be a ParentSelectionOperator." % vname)

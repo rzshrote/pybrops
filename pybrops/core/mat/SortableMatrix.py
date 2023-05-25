@@ -141,4 +141,4 @@ def check_is_SortableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SortableMatrix):
-        raise TypeError("'%s' must be a SortableMatrix." % varname)
+        raise TypeError("'%s' must be a SortableMatrix." % vname)

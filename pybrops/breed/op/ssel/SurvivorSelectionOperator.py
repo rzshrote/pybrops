@@ -104,4 +104,4 @@ def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SurvivorSelectionOperator):
-        raise TypeError("'%s' must be a SurvivorSelectionOperator." % varname)
+        raise TypeError("'%s' must be a SurvivorSelectionOperator." % vname)

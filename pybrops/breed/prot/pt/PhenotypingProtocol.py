@@ -174,4 +174,4 @@ def check_is_PhenotypingProtocol(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypingProtocol):
-        raise TypeError("'%s' must be a PhenotypingProtocol." % varname)
+        raise TypeError("'%s' must be a PhenotypingProtocol." % vname)

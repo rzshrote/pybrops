@@ -104,4 +104,4 @@ def check_is_EvaluationOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EvaluationOperator):
-        raise TypeError("'%s' must be a EvaluationOperator." % varname)
+        raise TypeError("'%s' must be a EvaluationOperator." % vname)

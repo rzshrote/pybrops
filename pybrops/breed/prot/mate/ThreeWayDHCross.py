@@ -307,4 +307,4 @@ def check_is_ThreeWayDHCross(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ThreeWayDHCross):
-        raise TypeError("'%s' must be a ThreeWayDHCross." % varname)
+        raise TypeError("'%s' must be a ThreeWayDHCross." % vname)

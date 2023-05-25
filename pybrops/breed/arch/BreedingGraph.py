@@ -90,4 +90,4 @@ def check_is_BreedingGraph(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingGraph):
-        raise TypeError("'%s' must be a BreedingGraph." % varname)
+        raise TypeError("'%s' must be a BreedingGraph." % vname)

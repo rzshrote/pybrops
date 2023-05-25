@@ -345,4 +345,4 @@ def check_is_GenotypeMatrix(v: object, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, GenotypeMatrix):
-        raise TypeError("'%s' must be a GenotypeMatrix." % varname)
+        raise TypeError("'%s' must be a GenotypeMatrix." % vname)

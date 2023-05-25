@@ -72,4 +72,4 @@ def check_is_GermplasmBank(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GermplasmBank):
-        raise TypeError("'%s' must be a GermplasmBank." % varname)
+        raise TypeError("'%s' must be a GermplasmBank." % vname)

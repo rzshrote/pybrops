@@ -84,4 +84,4 @@ def check_is_EmigrationOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EmigrationOperator):
-        raise TypeError("'%s' must be a EmigrationOperator." % varname)
+        raise TypeError("'%s' must be a EmigrationOperator." % vname)

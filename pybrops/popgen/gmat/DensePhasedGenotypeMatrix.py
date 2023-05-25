@@ -644,4 +644,4 @@ def is_DensePhasedGenotypeMatrix(v: object) -> bool:
 
 def check_is_DensePhasedGenotypeMatrix(v: object, vname: str) -> None:
     if not isinstance(v, DensePhasedGenotypeMatrix):
-        raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(varname))
+        raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(vname))

@@ -143,4 +143,4 @@ def check_is_StandardGeneticMap(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, StandardGeneticMap):
-        raise TypeError("'{0}' must be of type StandardGeneticMap.".format(varname))
+        raise TypeError("'{0}' must be of type StandardGeneticMap.".format(vname))

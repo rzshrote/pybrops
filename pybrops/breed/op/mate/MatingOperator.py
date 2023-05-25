@@ -106,4 +106,4 @@ def check_is_MatingOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingOperator):
-        raise TypeError("'%s' must be a MatingOperator." % varname)
+        raise TypeError("'%s' must be a MatingOperator." % vname)

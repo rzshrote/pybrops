@@ -96,4 +96,4 @@ def check_is_PrunableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PrunableMatrix):
-        raise TypeError("'%s' must be a PrunableMatrix." % varname)
+        raise TypeError("'%s' must be a PrunableMatrix." % vname)

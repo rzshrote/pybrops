@@ -257,4 +257,4 @@ def is_ThreeWayCross(v: object) -> bool:
 
 def check_is_ThreeWayCross(v: object, vname: str) -> None:
     if not isinstance(v, ThreeWayCross):
-        raise TypeError("'%s' must be a ThreeWayCross." % varname)
+        raise TypeError("'%s' must be a ThreeWayCross." % vname)

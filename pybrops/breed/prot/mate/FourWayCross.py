@@ -251,4 +251,4 @@ def is_FourWayCross(v: object) -> bool:
 
 def check_is_FourWayCross(v: object, vname: str) -> None:
     if not isinstance(v, FourWayCross):
-        raise TypeError("'%s' must be a FourWayCross." % varname)
+        raise TypeError("'%s' must be a FourWayCross." % vname)

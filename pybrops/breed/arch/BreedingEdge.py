@@ -71,4 +71,4 @@ def check_is_BreedingEdge(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingEdge):
-        raise TypeError("'%s' must be a BreedingEdge." % varname)
+        raise TypeError("'%s' must be a BreedingEdge." % vname)

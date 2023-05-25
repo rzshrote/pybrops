@@ -66,4 +66,4 @@ def check_is_TaxaTraitMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TaxaTraitMatrix):
-        raise TypeError("'{0}' must be a TaxaTraitMatrix".format(varname))
+        raise TypeError("'{0}' must be a TaxaTraitMatrix".format(vname))

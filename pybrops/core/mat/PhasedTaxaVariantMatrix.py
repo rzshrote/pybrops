@@ -68,4 +68,4 @@ def check_is_PhasedTaxaVariantMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhasedTaxaVariantMatrix):
-        raise TypeError("'{0}' must be a PhasedTaxaVariantMatrix".format(varname))
+        raise TypeError("'{0}' must be a PhasedTaxaVariantMatrix".format(vname))

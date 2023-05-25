@@ -599,4 +599,4 @@ def check_is_RecurrentSelectionBreedingProgram(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, RecurrentSelectionBreedingProgram):
-        raise TypeError("'%s' must be a RecurrentSelectionBreedingProgram." % varname)
+        raise TypeError("'%s' must be a RecurrentSelectionBreedingProgram." % vname)

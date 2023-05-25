@@ -284,4 +284,4 @@ def check_is_SelfCross(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SelfCross):
-        raise TypeError("'%s' must be a SelfCross." % varname)
+        raise TypeError("'%s' must be a SelfCross." % vname)

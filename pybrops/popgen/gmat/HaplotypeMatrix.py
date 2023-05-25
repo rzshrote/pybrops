@@ -279,4 +279,4 @@ def is_HaplotypeMatrix(v: object) -> bool:
 def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a HaplotypeMatrix"""
     if not isinstance(v, HaplotypeMatrix):
-        raise TypeError("'%s' must be a HaplotypeMatrix." % varname)
+        raise TypeError("'%s' must be a HaplotypeMatrix." % vname)

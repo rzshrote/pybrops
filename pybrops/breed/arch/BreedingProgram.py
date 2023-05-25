@@ -278,4 +278,4 @@ def check_is_BreedingProgram(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingProgram):
-        raise TypeError("'%s' must be a BreedingProgram." % varname)
+        raise TypeError("'%s' must be a BreedingProgram." % vname)

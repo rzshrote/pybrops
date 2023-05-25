@@ -245,4 +245,4 @@ def check_is_Logbook(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, Logbook):
-        raise TypeError("'%s' must be a Logbook." % varname)
+        raise TypeError("'%s' must be a Logbook." % vname)

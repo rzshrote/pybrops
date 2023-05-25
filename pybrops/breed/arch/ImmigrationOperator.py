@@ -87,4 +87,4 @@ def check_is_ImmigrationOperator(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ImmigrationOperator):
-        raise TypeError("'%s' must be a ImmigrationOperator." % varname)
+        raise TypeError("'%s' must be a ImmigrationOperator." % vname)

@@ -52,4 +52,4 @@ def is_PhasedGenotypeMatrix(v: object) -> bool:
 def check_is_PhasedGenotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedGenotypeMatrix"""
     if not isinstance(v, PhasedGenotypeMatrix):
-        raise TypeError("'%s' must be a PhasedGenotypeMatrix." % varname)
+        raise TypeError("'%s' must be a PhasedGenotypeMatrix." % vname)

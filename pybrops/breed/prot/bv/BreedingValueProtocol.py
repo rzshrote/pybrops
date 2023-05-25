@@ -91,4 +91,4 @@ def check_is_BreedingValueProtocol(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueProtocol):
-        raise TypeError("'%s' must be a BreedingValueProtocol." % varname)
+        raise TypeError("'%s' must be a BreedingValueProtocol." % vname)

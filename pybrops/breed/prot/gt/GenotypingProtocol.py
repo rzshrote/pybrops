@@ -88,4 +88,4 @@ def check_is_GenotypingProtocol(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GenotypingProtocol):
-        raise TypeError("'%s' must be a GenotypingProtocol." % varname)
+        raise TypeError("'%s' must be a GenotypingProtocol." % vname)

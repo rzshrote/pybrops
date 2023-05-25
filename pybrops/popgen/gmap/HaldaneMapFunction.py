@@ -245,4 +245,4 @@ def check_is_HaldaneMapFunction(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HaldaneMapFunction):
-        raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(varname))
+        raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(vname))

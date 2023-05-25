@@ -111,4 +111,4 @@ def check_is_GeneticMappableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GeneticMappableMatrix):
-        raise TypeError("'{0}' must be a GeneticMappableMatrix".format(varname))
+        raise TypeError("'{0}' must be a GeneticMappableMatrix".format(vname))

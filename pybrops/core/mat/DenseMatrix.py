@@ -684,4 +684,4 @@ def check_is_DenseMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMatrix):
-        raise TypeError("'%s' must be a DenseMatrix." % varname)
+        raise TypeError("'%s' must be a DenseMatrix." % vname)
