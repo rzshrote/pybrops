@@ -61,6 +61,8 @@ class BinarySelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
         self.pgmat = pgmat
         self.xconfig_decn = xconfig_decn
         self.rng = rng
+        # sample cross configuration
+        self.sample_xconfig(return_xconfig=False)
 
     ############################ Object Properties #############################
     @SampledSelectionConfigurationMixin.xconfig_decn.setter
