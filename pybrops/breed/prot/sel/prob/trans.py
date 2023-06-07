@@ -8,6 +8,7 @@ __all__ = [
     "trans_ndpt_to_vec_dist"
 ]
 
+from numbers import Real
 import numpy
 
 
@@ -60,6 +61,17 @@ def trans_empty(
         An array of shape (0,) with the same dtype as the input.
     """
     return numpy.empty((0,), dtype = latentvec.dtype)
+
+def trans_decnvec_sum_eq(
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray,
+        decnvec_sum: Real = 1.0,
+        **kwargs
+    ) -> numpy.ndarray:
+    """
+    Return a vector with the 
+    """
+    return numpy.absolute(decnvec.sum(0, keepdims = True) - decnvec_sum)
 
 def trans_ndpt_to_vec_dist(
         mat: numpy.ndarray, 

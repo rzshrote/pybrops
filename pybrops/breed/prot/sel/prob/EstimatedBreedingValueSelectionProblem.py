@@ -516,6 +516,12 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
@@ -670,6 +676,12 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
         contrib = (1.0 / x.sum()) * x
@@ -810,6 +822,8 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
             A candidate solution vector of shape ``(ndecn,) == (ntaxa,)``.
             On entry, this vector is scaled to have a unit sum, such that
             ``latentfn(x) == latentfn(kx)`` where ``k`` is any number.
+            In the case that ``sum(x)`` is approximately zero, then do not scale
+            ``x`` to avoid division by zero.
         args : tuple
             Additional non-keyword arguments.
         kwargs : dict
@@ -824,9 +838,15 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation

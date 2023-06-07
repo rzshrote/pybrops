@@ -221,7 +221,7 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
                 # create progeny
                 progeny = mateprot.mate(
                     pgmat = pgmat,
-                    sel = xconfig,
+                    xconfig = xconfig,
                     ncross = ncross,
                     nprogeny = nprogeny,
                     miscout = None
