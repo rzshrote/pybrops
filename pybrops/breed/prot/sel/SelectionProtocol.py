@@ -16,10 +16,12 @@ from typing import Callable, Optional, Union
 import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_ndarray_all_gteq, check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
 from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -32,10 +34,12 @@ class SelectionProtocol(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
     def __init__(
             self, 
-            method: str,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -51,7 +55,8 @@ class SelectionProtocol(metaclass=ABCMeta):
             ndset_wt: Optional[Real] = None,
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
-            **kwargs: dict
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None
         ) -> None:
         """
         Constructor for the abstract class ConstrainedSelectionProtocol.
@@ -61,9 +66,11 @@ class SelectionProtocol(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SelectionProtocol, self).__init__(**kwargs)
         # order dependent assignments
-        self.method = method
+        self.ncross = ncross
+        self.nparent = nparent
+        self.nmating = nmating
+        self.nprogeny = nprogeny
         self.nobj = nobj
         self.obj_wt = obj_wt
         self.obj_trans = obj_trans
@@ -79,22 +86,53 @@ class SelectionProtocol(metaclass=ABCMeta):
         self.ndset_wt = ndset_wt
         self.ndset_trans = ndset_trans
         self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.soalgo = soalgo
+        self.moalgo = moalgo
 
     ############################ Object Properties #############################
     @property
-    def method(self) -> str:
-        """Selection method."""
-        return self._method
-    @method.setter
-    def method(self, value: str) -> None:
-        """Set selection method."""
-        check_is_str(value, "method")       # must be string
-        value = value.lower()               # convert to lowercase
-        options = ("single", "pareto")      # method options
-        # if not method supported raise ValueError
-        if value not in options:
-            raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
-        self._method = value
+    def ncross(self) -> Integral:
+        """Number of cross configurations to consider."""
+        return self._ncross
+    @ncross.setter
+    def ncross(self, value: Integral) -> None:
+        """Set number of cross configurations."""
+        self._ncross = value
+    
+    @property
+    def nparent(self) -> Integral:
+        """Number of parents per cross configuration."""
+        return self._nparent
+    @nparent.setter
+    def nparent(self, value: Integral) -> None:
+        """Set number of parents per cross configuration."""
+        self._nparent = value
+
+    @property
+    def nmating(self) -> numpy.ndarray:
+        """Number of matings per configuration."""
+        return self._nmating
+    @nmating.setter
+    def nmating(self, value: Union[Integral,numpy.ndarray]) -> None:
+        """Set number of matings per configuration."""
+        if isinstance(value, Integral):
+            value = numpy.repeat(value, self.ncross)
+        check_is_ndarray(value, "nmating")
+        check_ndarray_all_gteq(value, "nmating", 0)
+        self._nmating = value
+
+    @property
+    def nprogeny(self) -> numpy.ndarray:
+        """Number of progeny to derive from each mating event."""
+        return self._nprogeny
+    @nprogeny.setter
+    def nprogeny(self, value: Union[Integral,numpy.ndarray]) -> None:
+        """Set number of progeny to derive from each mating event."""
+        if isinstance(value, Integral):
+            value = numpy.repeat(value, self.ncross)
+        check_is_ndarray(value, "nprogeny")
+        check_ndarray_all_gteq(value, "nprogeny", 0)
+        self._nprogeny = value
 
     @property
     def nobj(self) -> Integral:
@@ -297,6 +335,28 @@ class SelectionProtocol(metaclass=ABCMeta):
             }
         check_is_dict(value, "ndset_trans_kwargs")  # check is dict
         self._ndset_trans_kwargs = value
+
+    @property
+    @abstractmethod
+    def soalgo(self) -> OptimizationAlgorithm:
+        """Single-objective optimization algorithm."""
+        raise NotImplementedError("property is abstract")
+    @soalgo.setter
+    @abstractmethod
+    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set single-objective optimization algorithm."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def moalgo(self) -> OptimizationAlgorithm:
+        """Multi-objective opimization algorithm."""
+        raise NotImplementedError("property is abstract")
+    @moalgo.setter
+    @abstractmethod
+    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+        """Set multi-objective opimization algorithm."""
+        raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
 

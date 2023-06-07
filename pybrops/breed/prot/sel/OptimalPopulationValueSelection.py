@@ -90,7 +90,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         )
         # order dependent assignments
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.nhaploblk = nhaploblk
         self.rng = rng
@@ -110,11 +110,11 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
         self._nparent = value
 
     @property
-    def ncross(self) -> Integral:
+    def nmating(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: Integral) -> None:
+    @nmating.setter
+    def nmating(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -350,7 +350,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["sel"] = sel
                 miscout.update(misc) # add dict to dict
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
@@ -378,7 +378,7 @@ class OptimalPopulationValueSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
 
 class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelection):
     """

@@ -104,7 +104,7 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         # order dependent assignments
         self.nconfig = nconfig
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.nself = nself
         self.upper_percentile = upper_percentile
@@ -139,11 +139,11 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         self._nparent = value
 
     @property
-    def ncross(self) -> Integral:
+    def nmating(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: Integral) -> None:
+    @nmating.setter
+    def nmating(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -414,7 +414,7 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["sel"] = sel
                 miscout.update(misc) # add dict to dict
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
@@ -442,7 +442,7 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
 
 class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
     """
@@ -539,7 +539,7 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
         # construct problem
         prob = UsefulnessCriterionSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
-            ncross = self.ncross, 
+            ncross = self.nmating, 
             nprogeny = self.nprogeny, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
@@ -640,7 +640,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
         # construct problem
         prob = UsefulnessCriterionRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
-            ncross = self.ncross, 
+            ncross = self.nmating, 
             nprogeny = self.nprogeny, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
@@ -735,13 +735,13 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
 
         # get decision space parameters
         decn_space_lower = numpy.repeat(0, len(xmap))
-        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.ncross, len(xmap))
+        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.nmating, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
         prob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
-            ncross = self.ncross, 
+            ncross = self.nmating, 
             nprogeny = self.nprogeny, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
@@ -842,7 +842,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
         # construct problem
         prob = UsefulnessCriterionBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent, 
-            ncross = self.ncross, 
+            ncross = self.nmating, 
             nprogeny = self.nprogeny, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,

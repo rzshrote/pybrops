@@ -94,7 +94,7 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         )
         # order dependent assignments
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.ntrait = ntrait
         self.rng = rng
@@ -114,11 +114,11 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         self._nparent = value
 
     @property
-    def ncross(self) -> Integral:
+    def nmating(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: Integral) -> None:
+    @nmating.setter
+    def nmating(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -337,7 +337,7 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["sel"] = sel
                 miscout.update(misc) # add dict to dict
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
@@ -365,7 +365,7 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
 
 class RandomSubsetSelection(RandomBaseSelection):
     """
@@ -624,7 +624,7 @@ class RandomIntegerSelection(RandomBaseSelection):
         # get decision space parameters
         ntaxa = pgmat.ntaxa
         decn_space_lower = numpy.repeat(0, ntaxa)
-        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.ncross, ntaxa)
+        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.nmating, ntaxa)
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem

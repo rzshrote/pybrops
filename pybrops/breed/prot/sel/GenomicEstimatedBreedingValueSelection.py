@@ -96,7 +96,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         )
         # order dependent assignments
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.rng = rng
         self.soalgo = soalgo
@@ -115,11 +115,11 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
         self._nparent = value
 
     @property
-    def ncross(self) -> int:
+    def nmating(self) -> int:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: int) -> None:
+    @nmating.setter
+    def nmating(self, value: int) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -355,7 +355,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
             # shuffle indices for random mating
             self.rng.shuffle(sel)
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
@@ -384,7 +384,7 @@ class GenomicEstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABC
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 

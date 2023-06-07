@@ -100,7 +100,7 @@ class ExpectedMaximumBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCM
         # order dependent assignments
         self.nconfig = nconfig
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.mateprot = mateprot
         self.unique_parents = unique_parents
@@ -132,11 +132,11 @@ class ExpectedMaximumBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCM
         self._nparent = value
 
     @property
-    def ncross(self) -> Integral:
+    def nmating(self) -> Integral:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: Integral) -> None:
+    @nmating.setter
+    def nmating(self, value: Integral) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -388,7 +388,7 @@ class ExpectedMaximumBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCM
             # extract decision variables
             sel = soln.soln_decn[0]
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
@@ -417,7 +417,7 @@ class ExpectedMaximumBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCM
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
         else:
             raise ValueError("argument 'method' must be either 'single' or 'pareto'")
 
@@ -516,7 +516,7 @@ class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueBa
         # construct problem
         prob = ExpectedMaximumBreedingValueSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.ncross,
+            ncross = self.nmating,
             nprogeny = self.nprogeny,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
@@ -611,7 +611,7 @@ class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueBase
         # construct problem
         prob = ExpectedMaximumBreedingValueRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.ncross,
+            ncross = self.nmating,
             nprogeny = self.nprogeny,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
@@ -706,7 +706,7 @@ class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueB
         # construct problem
         prob = ExpectedMaximumBreedingValueIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.ncross,
+            ncross = self.nmating,
             nprogeny = self.nprogeny,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
@@ -801,7 +801,7 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueBa
         # construct problem
         prob = ExpectedMaximumBreedingValueBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.ncross,
+            ncross = self.nmating,
             nprogeny = self.nprogeny,
             nrep = self.nrep,
             unique_parents = self.unique_parents,

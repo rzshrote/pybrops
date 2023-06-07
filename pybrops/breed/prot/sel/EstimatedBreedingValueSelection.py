@@ -12,40 +12,44 @@ __all__ = [
 ]
 
 # imports
+from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.prob.trans import trans_decnvec_sum_eq
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
 from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueBinarySelectionProblem, EstimatedBreedingValueIntegerSelectionProblem, EstimatedBreedingValueRealSelectionProblem, EstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.opt.algo.BinaryGeneticAlgorithm import BinaryGeneticAlgorithm
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm, check_is_BinaryOptimizationAlgorithm
+from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class EstimatedBreedingValueBaseSelection(SelectionProtocol):
+class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
-    ############################################################################
+
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             nparent: Integral, 
             ncross: Integral, 
             nprogeny: Integral,
-            method: str,
             nobj: Integral,
             obj_wt: Optional[numpy.ndarray] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -71,11 +75,49 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
 
         Parameters
         ----------
+        nobj: Integral
+            Number of objectives.
+            If None, the number of objectives is inferred from the input ``bvmat`` as ``bvmat.ntrait``.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
         kwargs : dict
             Additional keyword arguments.
         """
+        # order dependent assignments
+        self.nparent = nparent
+        self.nmating = ncross
+        self.nprogeny = nprogeny
+        self.rng = rng
         super(EstimatedBreedingValueBaseSelection, self).__init__(
-            method = method,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -90,20 +132,13 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
             ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            soalgo = soalgo,
+            moalgo = moalgo,
             **kwargs
         )
-        # order dependent assignments
-        self.nparent = nparent
-        self.ncross = ncross
-        self.nprogeny = nprogeny
-        self.rng = rng
-        self.soalgo = soalgo
-        self.moalgo = moalgo
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> int:
         """Number of parents to select."""
@@ -116,11 +151,11 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
         self._nparent = value
 
     @property
-    def ncross(self) -> int:
+    def nmating(self) -> int:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: int) -> None:
+    @nmating.setter
+    def nmating(self, value: int) -> None:
         """Set number of crosses per configuration."""
         check_is_Integral(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -149,25 +184,50 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
 
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    # problem() abstract function from SelectionProtocol
+
+    ############## Pareto Frontier Functions ###############
+    # pareto() abstract function from SelectionProtocol
+
+    ################# Selection Functions ##################
+    # select() abstract function from SelectionProtocol
+
+class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection):
+    """
+    Conventional Genomic Selection in a subset search space.
+    """
+    ########################## Special Object Methods ##########################
+    # __init__() concrete function from SelectionProtocol
+
+    ############################ Object Properties #############################
     @property
-    def soalgo(self) -> OptimizationAlgorithm:
+    def soalgo(self) -> SubsetOptimizationAlgorithm:
         """Single-objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
         if value is None:
+            # construct default multi-objective algorithm
+            value = SubsetGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                pop_size = 100, # number of parents in population
+                rng = self.rng  # PRNG source
+            )
             # construct default hillclimber
-            value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_OptimizationAlgorithm(value, "soalgo")
+            # value = SteepestDescentSubsetHillClimber(self.rng)
+        check_is_SubsetOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
-    def moalgo(self) -> OptimizationAlgorithm:
+    def moalgo(self) -> SubsetOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
@@ -176,18 +236,82 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
                 pop_size = 100, # number of parents in population
                 rng = self.rng  # PRNG source
             )
-        check_is_OptimizationAlgorithm(value, "moalgo")
+        check_is_SubsetOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
-    # leave abstract since it depends on the problem type
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SelectionProblem
+            An optimization problem definition.
+        """
+        # get number of individuals
+        ntaxa = bvmat.ntaxa
+
+        # get decision space parameters
+        decn_space = numpy.arange(ntaxa)
+        decn_space_lower = numpy.repeat(0, self.nparent)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+
+        # construct problem
+        prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
+            bvmat = bvmat,
+            ndecn = self.nparent,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
 
     ############## Pareto Frontier Functions ###############
-    # implement since this is problem type agnostic
     def pareto(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -271,7 +395,6 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
         return frontier, sel_config
 
     ################# Selection Functions ##################
-    # implement since this is problem type agnostic
     def select(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -325,9 +448,8 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
             - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
               progeny to generate per cross.
         """
-        # single-objective method: objfn_trans returns a single value for each
-        # selection configuration
-        if self.method == "single":
+        # if the number of objectives is 1, then we use a single objective algorithm
+        if self.nobj == 1:
             # construct the problem
             prob = self.problem(
                 pgmat = pgmat,
@@ -348,17 +470,14 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
             if miscout is not None:
                 miscout["soln"] = soln
 
-            # extract decision variables
+            # extract decision variables as a vector (ndecn,)
             sel = soln.soln_decn[0]
 
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            return pgmat, sel, self.ncross, self.nprogeny
-
+            return pgmat, sel, self.nmating, self.nprogeny
+        # else, we use a multi-objective algorithm and apply a transformation on the non-dominated points to identify a 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
-        elif self.method == "pareto":
+        elif self.nobj > 1:
             # get the pareto frontier
             frontier, sel_config = self.pareto(
                 pgmat = pgmat,
@@ -383,111 +502,20 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
         else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection):
-    """
-    Conventional Genomic Selection in a subset search space.
-    """
-    ############################################################################
-    ########################## Special Object Methods ##########################
-    ############################################################################
-    # use old init
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-
-    ########## Optimization Problem Construction ###########
-    def problem(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            **kwargs: dict
-        ) -> SelectionProblem:
-        """
-        Create an optimization problem definition using provided inputs.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : SelectionProblem
-            An optimization problem definition.
-        """
-        # get number of individuals
-        ntaxa = bvmat.ntaxa
-
-        # get decision space parameters
-        decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
-
-        # construct problem
-        prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
-            bvmat = bvmat,
-            ndecn = self.nparent,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = self.nobj,
-            obj_wt = self.obj_wt,
-            obj_trans = self.obj_trans,
-            obj_trans_kwargs = self.obj_trans_kwargs,
-            nineqcv = self.nineqcv,
-            ineqcv_wt = self.ineqcv_wt,
-            ineqcv_trans = self.ineqcv_trans,
-            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
-            neqcv = self.neqcv,
-            eqcv_wt = self.eqcv_wt,
-            eqcv_trans = self.eqcv_trans,
-            eqcv_trans_kwargs = self.eqcv_trans_kwargs
-        )
-
-        return prob
-
-    ############## Pareto Frontier Functions ###############
-    # use super pareto() function
-
-    ################# Selection Functions ##################
-    # use super select() function
+            raise ValueError("number of objectives must be greater than zero")
 
 class EstimatedBreedingValueRealSelection(EstimatedBreedingValueBaseSelection):
     """
     Conventional Genomic Selection in a real search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    # use old init
+    # __init__() concrete function from SelectionProtocol
 
-    ############################################################################
+    ############################ Object Properties #############################
+
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -573,6 +601,10 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueBaseSelection
     ########################## Special Object Methods ##########################
     ############################################################################
     # use old init
+
+    ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -664,6 +696,70 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
     # use BaseConventionalGenomicSelection __init__()
 
     ############################################################################
+    ############################ Object Properties #############################
+    ############################################################################
+    @EstimatedBreedingValueBaseSelection.neqcv.setter
+    def neqcv(self, value) -> Integral:
+        """Set number of equality constraint violations. If None, set to 1 for ``nparent`` summation constraint."""
+        if value is None:
+            value = 1
+        check_is_Integral(value, "neqcv")
+        check_is_gteq(value, "neqcv", 0)    # possible to have 0 equality constraints
+        self._neqcv = value
+    
+    @EstimatedBreedingValueBaseSelection.eqcv_trans.setter
+    def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
+        """Set latent space to equality constraint violation transformation function. If None, set to the empty function."""
+        if value is None:
+            value = trans_decnvec_sum_eq
+        check_is_Callable(value, "eqcv_trans")
+        self._eqcv_trans = value 
+
+    @EstimatedBreedingValueBaseSelection.eqcv_trans_kwargs.setter
+    def eqcv_trans_kwargs(self, value: Union[dict,None]) -> None:
+        """Set keyword arguments for the latent space to equality constraint violation transformation function. If None, set to empty dict."""
+        if value is None:
+            value = {"decnvec_sum": self.nparent}
+        check_is_dict(value, "eqcv_trans_kwargs")
+        self._eqcv_trans_kwargs = value
+
+    @property
+    def soalgo(self) -> BinaryOptimizationAlgorithm:
+        """Single-objective optimization algorithm."""
+        return self._soalgo
+    @soalgo.setter
+    def soalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
+        """Set single-objective optimization algorithm."""
+        if value is None:
+            # construct default multi-objective algorithm
+            value = BinaryGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                pop_size = 100, # number of parents in population
+                rng = self.rng  # PRNG source
+            )
+            # construct default hillclimber
+            # value = SteepestDescentSubsetHillClimber(self.rng)
+        check_is_BinaryOptimizationAlgorithm(value, "soalgo")
+        self._soalgo = value
+
+    @property
+    def moalgo(self) -> BinaryOptimizationAlgorithm:
+        """Multi-objective opimization algorithm."""
+        return self._moalgo
+    @moalgo.setter
+    def moalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
+        """Set multi-objective opimization algorithm."""
+        if value is None:
+            # construct default multi-objective algorithm
+            value = NSGA2BinaryGeneticAlgorithm(
+                ngen = 250,     # number of generations to evolve
+                pop_size = 100, # number of parents in population
+                rng = self.rng  # PRNG source
+            )
+        check_is_BinaryOptimizationAlgorithm(value, "moalgo")
+        self._moalgo = value
+
+    ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
 
@@ -706,6 +802,9 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
         # get number of individuals
         ntaxa = bvmat.ntaxa
 
@@ -717,7 +816,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
         # construct problem
         prob = EstimatedBreedingValueBinarySelectionProblem.from_bvmat(
             bvmat = bvmat,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

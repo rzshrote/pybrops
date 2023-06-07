@@ -95,7 +95,7 @@ class OptimalContributionBaseSelection(SelectionProtocol):
         )
         # order dependent assignments
         self.nparent = nparent
-        self.ncross = ncross
+        self.nmating = ncross
         self.nprogeny = nprogeny
         self.cmatfcty = cmatfcty
         self.descale = descale
@@ -116,11 +116,11 @@ class OptimalContributionBaseSelection(SelectionProtocol):
         self._nparent = value
 
     @property
-    def ncross(self) -> int:
+    def nmating(self) -> int:
         """Number of crosses per configuration."""
         return self._ncross
-    @ncross.setter
-    def ncross(self, value: int) -> None:
+    @nmating.setter
+    def nmating(self, value: int) -> None:
         """Set number of crosses per configuration."""
         check_is_int(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
@@ -407,7 +407,7 @@ class OptimalContributionBaseSelection(SelectionProtocol):
                 miscout["sel"] = sel
                 miscout.update(misc) # add dict to dict
 
-            return pgmat, sel, self.ncross, self.nprogeny
+            return pgmat, sel, self.nmating, self.nprogeny
 
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
@@ -435,7 +435,7 @@ class OptimalContributionBaseSelection(SelectionProtocol):
                 miscout["frontier"] = frontier
                 miscout["sel_config"] = sel_config
 
-            return pgmat, sel_config[ix], self.ncross, self.nprogeny
+            return pgmat, sel_config[ix], self.nmating, self.nprogeny
 
 class OptimalContributionSubsetSelection(OptimalContributionBaseSelection):
     """
