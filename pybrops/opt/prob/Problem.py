@@ -130,6 +130,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
     ############################ Object Properties #############################
 
     # Variables inherited from pymoo.core.problem.Problem ##
+    # Use PyBrOpS interface to set these values for type safety!!! #
     @property
     def n_var(self) -> Integral:
         """Number of decision variables."""
@@ -139,7 +140,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         """Set number of decision variables."""
         check_is_Integral(value, "n_var")
         self._n_var = value
-        self._ndecn = value # set ndecn too; used for easy separation from PyMOO
+        # self._ndecn = value # set ndecn too; used for easy separation from PyMOO
     
     @property
     def n_obj(self) -> Integral:
@@ -151,7 +152,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         check_is_Integral(value, "n_obj")
         check_is_gteq(value, "n_obj", 1)
         self._n_obj = value
-        self._nobj = value # set nobj too; used for easy separation from PyMOO
+        # self._nobj = value # set nobj too; used for easy separation from PyMOO
     
     @property
     def n_ieq_constr(self) -> Integral:
@@ -165,7 +166,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         check_is_Integral(value, "n_ieq_constr")
         check_is_gteq(value, "n_ieq_constr", 0)
         self._n_ieq_constr = value
-        self._nineqcv = value # used for easy separation from PyMOO
+        # self._nineqcv = value # used for easy separation from PyMOO
     
     @property
     def n_eq_constr(self) -> Integral:
@@ -179,7 +180,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         check_is_Integral(value, "n_eq_constr")
         check_is_gteq(value, "n_eq_constr", 0)
         self._n_eq_constr = value
-        self._neqcv = value # used for easy separation from PyMOO
+        # self._neqcv = value # used for easy separation from PyMOO
     
     @property
     def xl(self) -> Union[numpy.ndarray,None]:
@@ -197,7 +198,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         else:
             raise TypeError("'xl' must be of type numpy.ndarray, Real, or None")
         self._xl = value
-        self._decn_space_lower = value
+        # self._decn_space_lower = value
     
     @property
     def xu(self) -> Union[numpy.ndarray,None]:
@@ -215,7 +216,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         else:
             raise TypeError("'xu' must be of type numpy.ndarray, Real, or None")
         self._xu = value
-        self._decn_space_upper = value
+        # self._decn_space_upper = value
 
     @property
     def vtype(self) -> Union[type,None]:
