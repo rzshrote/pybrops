@@ -295,4 +295,4 @@ def check_is_BreedingValueMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingValueMatrix):
-        raise TypeError("variable '{0}' must be a BreedingValueMatrix".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,BreedingValueMatrix.__name__,type(v).__name__))
