@@ -104,7 +104,7 @@ class FourWayCross(MatingProtocol):
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 
-            sel: numpy.ndarray, 
+            xconfig: numpy.ndarray, 
             ncross: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
@@ -118,7 +118,7 @@ class FourWayCross(MatingProtocol):
         ----------
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
-        sel : numpy.ndarray
+        xconfig : numpy.ndarray
             A 1D array of indices of selected individuals of shape ``(k,)``.
 
             Where:
@@ -134,7 +134,7 @@ class FourWayCross(MatingProtocol):
 
             Example::
 
-                sel = [1,5,3,8]
+                xconfig = [1,5,3,8]
                 female2 = 1
                 male2 = 5
                 female1 = 3
@@ -162,10 +162,10 @@ class FourWayCross(MatingProtocol):
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
-        f2sel = numpy.repeat(sel[0::4], ncross)
-        m2sel = numpy.repeat(sel[1::4], ncross)
-        f1sel = numpy.repeat(sel[2::4], ncross)
-        m1sel = numpy.repeat(sel[3::4], ncross)
+        f2sel = numpy.repeat(xconfig[0::4], ncross)
+        m2sel = numpy.repeat(xconfig[1::4], ncross)
+        f1sel = numpy.repeat(xconfig[2::4], ncross)
+        m1sel = numpy.repeat(xconfig[3::4], ncross)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -199,7 +199,7 @@ class FourWayCross(MatingProtocol):
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(sel) // 4                    # calculate number of families
+        nfam = len(xconfig) // 4                    # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp
             numpy.repeat(                       # repeat for progeny
                 numpy.arange(                   # repeat for crosses

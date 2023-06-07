@@ -113,7 +113,7 @@ class SelfCross(MatingProtocol):
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 
-            sel: numpy.ndarray, 
+            xconfig: numpy.ndarray, 
             ncross: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
@@ -142,7 +142,7 @@ class SelfCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
-        sel : numpy.ndarray
+        xconfig : numpy.ndarray
             A 1D array of indices of selected individuals of shape ``(k,)``.
 
             Where:
@@ -155,7 +155,7 @@ class SelfCross(MatingProtocol):
 
             Example::
 
-                [1,5,3,8,2,7]
+                xconfig = [1,5,3,8,2,7]
                 female = 1,5,3,8,2,7
         ncross : numpy.ndarray
             Number of cross patterns to perform.
@@ -184,7 +184,7 @@ class SelfCross(MatingProtocol):
         xoprob = pgmat.vrnt_xoprob
 
         # get female selections; repeat by ncross
-        fsel = numpy.repeat(sel, ncross*nprogeny)
+        fsel = numpy.repeat(xconfig, ncross*nprogeny)
 
         # self genotypes
         sgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
@@ -209,7 +209,7 @@ class SelfCross(MatingProtocol):
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(sel)                         # calculate number of families
+        nfam = len(xconfig)                         # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp
             numpy.repeat(                       # repeat for progeny
                 numpy.arange(                   # repeat for crosses

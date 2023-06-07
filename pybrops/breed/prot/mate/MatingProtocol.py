@@ -4,7 +4,7 @@ mating protocols.
 """
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -58,7 +58,7 @@ class MatingProtocol:
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 
-            sel: numpy.ndarray, 
+            xconfig: numpy.ndarray, 
             ncross: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict], 
@@ -71,9 +71,9 @@ class MatingProtocol:
         ----------
         pgmat : PhasedGenotypeMatrix
             A PhasedGenotypeMatrix of parental candidates.
-        sel : numpy.ndarray
-            Array of indices specifying a cross pattern. Each index corresponds
-            to an individual in 'pgvmat'.
+        xconfig : numpy.ndarray
+            Array of indices specifying a cross configuration. Each index corresponds
+            to an individual in ``pgmat``.
         ncross : numpy.ndarray
             Number of crosses to perform per cross pattern.
         nprogeny : numpy.ndarray

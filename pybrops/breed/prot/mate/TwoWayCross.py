@@ -116,7 +116,7 @@ class TwoWayCross(MatingProtocol):
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 
-            sel: numpy.ndarray, 
+            xconfig: numpy.ndarray, 
             ncross: Union[Integral,numpy.ndarray], 
             nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
@@ -145,7 +145,7 @@ class TwoWayCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
-        sel : numpy.ndarray
+        xconfig : numpy.ndarray
             A 1D array of indices of selected individuals of shape ``(k,)``.
 
             Where:
@@ -159,7 +159,7 @@ class TwoWayCross(MatingProtocol):
 
             Example::
 
-                sel = [1,5,3,8,2,7]
+                xconfig = [1,5,3,8,2,7]
                 female = 1,3,2
                 male = 5,8,7
         ncross : numpy.ndarray
@@ -184,8 +184,8 @@ class TwoWayCross(MatingProtocol):
         """
         # check data types
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_ndarray(sel, "sel")
-        check_ndarray_len_is_multiple_of(sel, "sel", 2)
+        check_is_ndarray(xconfig, "sel")
+        check_ndarray_len_is_multiple_of(xconfig, "sel", 2)
         check_is_Integral_or_ndarray(ncross, "ncross")
         check_is_Integral_or_ndarray(nprogeny, "nprogeny")
         if miscout is not None:
@@ -193,8 +193,8 @@ class TwoWayCross(MatingProtocol):
         check_is_Integral(nself, "nself")
 
         # get female and male selections; repeat by ncross
-        fsel = numpy.repeat(sel[0::2], ncross * nprogeny)
-        msel = numpy.repeat(sel[1::2], ncross * nprogeny)
+        fsel = numpy.repeat(xconfig[0::2], ncross * nprogeny)
+        msel = numpy.repeat(xconfig[1::2], ncross * nprogeny)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -224,7 +224,7 @@ class TwoWayCross(MatingProtocol):
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(sel) // 2                    # calculate number of families
+        nfam = len(xconfig) // 2                    # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp vector
             numpy.arange(                       # repeat for crosses * progeny
                 self.family_counter,            # start family number (inclusive)
