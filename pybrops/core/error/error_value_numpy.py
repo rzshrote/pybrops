@@ -1,3 +1,4 @@
+from numbers import Real
 from typing import Any
 import numpy
 
@@ -10,6 +11,14 @@ from pybrops.core.error.error_generic_numpy import generic_check_ndarray_shape
 def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: float, vmax: float) -> None:
     if numpy.any(v < vmin) or numpy.any(v > vmax):
         raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
+
+def check_ndarray_all_gt(v: numpy.ndarray, vname: str, vmin: Real) -> None:
+    if numpy.any(v <= vmin):
+        raise ValueError("array '{0}' must must have all values greater than {1}".format(vname,vmin))
+
+def check_ndarray_all_gteq(v: numpy.ndarray, vname: str, vmin: Real) -> None:
+    if numpy.any(v < vmin):
+        raise ValueError("array '{0}' must must have all values greater than or equal to {1}".format(vname,vmin))
 
 ################# check_ndarray_eq #################
 def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
