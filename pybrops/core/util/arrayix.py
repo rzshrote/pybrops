@@ -5,7 +5,8 @@ Module with utility functions for generating matrix indices.
 __all__ = [
     "sqarrayix", 
     "triuix", 
-    "triuix"
+    "triuix",
+    "sliceaxisix"
 ]
 
 def sqarrayix(n: int, k: int) -> list:
@@ -98,3 +99,27 @@ def triudix(n: int, k: int) -> list:
                 yield from recurse(l,n,k)
                 l.pop()
     yield from recurse([],n,k)
+
+def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
+    def recurse(l: list, s: tuple, a: tuple) -> tuple:
+        if len(l) == len(s)-1:
+            if len(l) in a:
+                for i in range(s[len(l)]):
+                    l.append(i)
+                    yield tuple(l)
+                    l.pop()
+            else:
+                l.append(slice(None))
+                yield tuple(l)
+                l.pop()
+        else:
+            if len(l) in a:
+                for i in range(s[len(l)]):
+                    l.append(i)
+                    yield from recurse(l, s, a)
+                    l.pop()
+            else:
+                l.append(slice(None))
+                yield from recurse(l, s, a)
+                l.pop()
+    yield from recurse([],shape,axis)
