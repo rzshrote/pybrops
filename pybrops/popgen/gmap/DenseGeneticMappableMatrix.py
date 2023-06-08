@@ -17,9 +17,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     GeneticMap.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -66,9 +64,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################# Interpolation Methods ################
     def interp_genpos(

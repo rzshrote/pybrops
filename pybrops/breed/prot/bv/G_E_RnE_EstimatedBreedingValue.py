@@ -21,9 +21,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
     environment. This class interfaces with R and lme4 to estimate effects.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, G_efct = "fixed", E_efct = "random", RnE_efct = "random", **kwargs: dict):
         """
         Get estimated breeding values for an additive model of:
@@ -63,9 +61,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
         self.E_efct = E_efct
         self.RnE_efct = RnE_efct
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def estimate_ptdf(ptdf, gmat, **kwargs: dict):
         """
         Helper method to handle breeding value estimation when passed a

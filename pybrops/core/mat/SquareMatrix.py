@@ -29,9 +29,7 @@ class SquareMatrix(Matrix):
         2) Determination of square matrix conformity.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -91,9 +89,7 @@ class SquareMatrix(Matrix):
         """Delete axis lengths for axes that are square"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
     def is_square(

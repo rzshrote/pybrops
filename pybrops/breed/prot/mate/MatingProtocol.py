@@ -18,9 +18,7 @@ class MatingProtocol:
         1) Mating simulation and progeny generation from genotype matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -52,9 +50,7 @@ class MatingProtocol:
         raise NotImplementedError("property is abstract")
     
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 

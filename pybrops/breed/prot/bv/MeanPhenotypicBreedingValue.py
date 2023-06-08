@@ -17,9 +17,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     all environments.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, taxa_col, trait_col, **kwargs: dict):
         """
         Constructor for the concrete class Mean MeanPhenotypicBreedingValue.
@@ -49,9 +47,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     ############################ Object Properties #############################
     ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def estimate(self, ptobj, gtobj, miscout = None, **kwargs: dict):
         """
         Estimate breeding values by taking the mean performance.

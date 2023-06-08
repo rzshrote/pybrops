@@ -27,9 +27,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         1) Dense matrix phase manipulation routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -121,9 +119,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         """Delete phase axis number"""
         error_readonly("phase_axis")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(

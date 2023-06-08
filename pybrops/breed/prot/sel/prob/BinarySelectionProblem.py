@@ -23,9 +23,7 @@ class BinarySelectionProblem(BinaryProblem,SelectionProblem):
     Semi-abstract class representing selection problems in binary search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ndecn: Integral,
@@ -167,9 +165,7 @@ class BinarySelectionProblem(BinaryProblem,SelectionProblem):
     ############################################################################
     # leave nlatent property abstract
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     # leave latentfn abstract
     # evalfn defined by DenseSelectionProblem
     # _evaluate defined by DenseSelectionProblem

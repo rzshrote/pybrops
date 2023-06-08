@@ -60,9 +60,7 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict

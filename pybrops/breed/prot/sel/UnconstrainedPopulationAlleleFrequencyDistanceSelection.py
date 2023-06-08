@@ -27,9 +27,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
     # TODO: add formulae for methodology.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             nparent: int, 
@@ -488,9 +486,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
         else:
             raise TypeError("variable 'target' must be a string or numpy.ndarray")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select individuals for breeding.

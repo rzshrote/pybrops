@@ -15,9 +15,7 @@ class Logbook:
         1) Logging data on an entire breeding program.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -61,9 +59,7 @@ class Logbook:
         """Delete replicate number."""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'InitializationOperator.initialize'

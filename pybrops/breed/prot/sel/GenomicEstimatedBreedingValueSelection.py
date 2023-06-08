@@ -392,9 +392,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
     ############################ Object Properties #############################
@@ -511,14 +509,10 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueBa
     """
     Conventional Genomic Selection in a real search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -601,14 +595,10 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
     """
     Conventional Genomic Selection in an integer search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -691,14 +681,10 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use BaseConventionalGenomicSelection __init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(

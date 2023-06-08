@@ -29,9 +29,7 @@ class Generalized1NormGenomicSelection(UnconstrainedSelectionProtocol):
     docstring for Generalized1NormGenomicSelection.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             nparent: int,
@@ -366,9 +364,7 @@ class Generalized1NormGenomicSelection(UnconstrainedSelectionProtocol):
         # (n,p,t)
         return V
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.

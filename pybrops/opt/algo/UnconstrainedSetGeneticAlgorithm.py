@@ -27,9 +27,7 @@ class UnconstrainedSetGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
     optimization. The search space is discrete and nominal in nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, M = 1.5, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
@@ -135,9 +133,7 @@ class UnconstrainedSetGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
         """Delete random number generator source."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     # define set crossover operator
     def cxSet(self, ind1, ind2, indpb):

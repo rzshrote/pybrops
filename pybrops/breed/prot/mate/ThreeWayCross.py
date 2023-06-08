@@ -21,9 +21,7 @@ class ThreeWayCross(MatingProtocol):
     Class implementing mating protocols for three-way crosses.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             progeny_counter: Integral = 0, 
@@ -108,9 +106,7 @@ class ThreeWayCross(MatingProtocol):
         """Delete random number generator."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 

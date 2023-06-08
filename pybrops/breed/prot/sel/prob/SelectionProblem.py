@@ -56,9 +56,7 @@ class SelectionProblem(Problem,metaclass=ABCMeta):
             vector to an equality constraint violation vector.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     @abstractmethod
     def __init__(
             self,
@@ -271,9 +269,7 @@ class SelectionProblem(Problem,metaclass=ABCMeta):
         check_is_dict(value, "eqcv_trans_kwargs")
         self._eqcv_trans_kwargs = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     # leave latentfn abstract
     @abstractmethod
     def latentfn(

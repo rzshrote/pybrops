@@ -2,8 +2,7 @@
 Module defining HDF5 I/O interfaces and associated error checking routines.
 """
 
-from typing import Any, Optional
-from typing import Type
+from typing import Optional
 
 
 class HDF5InputOutput:
@@ -16,9 +15,7 @@ class HDF5InputOutput:
     - ``from_hdf5`` - load an object from an HDF5 file.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -34,14 +31,16 @@ class HDF5InputOutput:
         """
         super(HDF5InputOutput, self).__init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
-    def to_hdf5(self, filename: str, groupname: Optional[str]) -> None:
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str]
+        ) -> None:
         """
-        Write object to an HDF5 file.
+        Write an object to an HDF5 file.
 
         Parameters
         ----------
@@ -53,15 +52,17 @@ class HDF5InputOutput:
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
     @classmethod
-    def from_hdf5(cls, filename: str, groupname: Optional[str]) -> 'HDF5InputOutput':
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str]
+        ) -> 'HDF5InputOutput':
         """
-        Read object from an HDF5 file.
+        Read an object from an HDF5 file.
 
         Parameters
         ----------
@@ -73,8 +74,8 @@ class HDF5InputOutput:
 
         Returns
         -------
-        obj : cls
-            A genotype matrix read from file.
+        obj : HDF5InputOutput
+            An object read from an HDF5 file.
         """
         raise NotImplementedError("method is abstract")
 
@@ -83,22 +84,6 @@ class HDF5InputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HDF5InputOutput(v: object) -> bool:
-    """
-    Determine whether an object is a HDF5InputOutput.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a HDF5InputOutput object instance.
-    """
-    return isinstance(v, HDF5InputOutput)
-
 def check_is_HDF5InputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.

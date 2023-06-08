@@ -17,9 +17,7 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
         2) PhasedMatrix
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict

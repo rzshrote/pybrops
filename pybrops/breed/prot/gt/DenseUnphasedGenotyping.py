@@ -13,9 +13,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
     genotype values.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -32,9 +30,7 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
         """
         super(DenseUnphasedGenotyping, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def genotype(self, pgmat, miscout = None, **kwargs: dict):
         """
         Genotype a genome. Returned matrix is in {0,1,2} format.

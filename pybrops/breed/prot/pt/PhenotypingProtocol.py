@@ -22,9 +22,7 @@ class PhenotypingProtocol:
         3) Manipulation and setting of environmental variance metadata.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -71,9 +69,7 @@ class PhenotypingProtocol:
         """Delete error variance"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def phenotype(
             self, 
             pgmat: PhasedGenotypeMatrix, 

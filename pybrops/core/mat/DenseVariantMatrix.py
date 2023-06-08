@@ -33,9 +33,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         2) Dense matrix variant routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -447,9 +445,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Delete variant chromosome group length array"""
         del self._vrnt_chrgrp_len
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(

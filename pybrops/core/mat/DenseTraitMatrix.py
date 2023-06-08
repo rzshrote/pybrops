@@ -30,9 +30,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         2) Dense matrix trait routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 

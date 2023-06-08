@@ -11,9 +11,7 @@ class AdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
     Abstract factory class for producing AdditiveGenicVarianceMatrix objects.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -28,9 +26,7 @@ class AdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
         """
         super(AdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_algmod(
             self, 
             algmod: AdditiveLinearGenomicModel, 

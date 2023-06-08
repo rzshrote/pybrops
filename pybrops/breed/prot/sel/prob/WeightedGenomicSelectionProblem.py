@@ -21,9 +21,7 @@ class WeightedGenomicSubsetSelectionProblem(GeneralizedWeightedGenomicEstimatedB
     """
     docstring for SubsetWeightedGenomicSelectionProblem.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gwgebv: numpy.ndarray,
@@ -181,9 +179,7 @@ class WeightedGenomicRealSelectionProblem(GeneralizedWeightedGenomicEstimatedBre
     """
     docstring for RealWeightedGenomicSelectionProblem.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gwgebv: numpy.ndarray,
@@ -341,9 +337,7 @@ class WeightedGenomicIntegerSelectionProblem(GeneralizedWeightedGenomicEstimated
     """
     docstring for IntegerWeightedGenomicSelectionProblem.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gwgebv: numpy.ndarray,
@@ -501,9 +495,7 @@ class WeightedGenomicBinarySelectionProblem(GeneralizedWeightedGenomicEstimatedB
     """
     docstring for BinaryWeightedGenomicSelectionProblem.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gwgebv: numpy.ndarray,

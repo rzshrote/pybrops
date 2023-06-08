@@ -3,8 +3,6 @@ Module defining comma separated value I/O interfaces and associated error
 checking routines.
 """
 
-from typing import Any
-
 
 class CSVInputOutput:
     """
@@ -16,9 +14,7 @@ class CSVInputOutput:
     - ``from_csv`` - load an object from a csv file.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -34,14 +30,15 @@ class CSVInputOutput:
         """
         super(CSVInputOutput, self).__init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ####################### File I/O #######################
-    def to_csv(self, filename: str) -> None:
+    def to_csv(
+            self, 
+            filename: str
+        ) -> None:
         """
-        Write and object to a CSV file.
+        Write an object to a CSV file.
 
         Parameters
         ----------
@@ -50,15 +47,16 @@ class CSVInputOutput:
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ####################### File I/O #######################
     @classmethod
-    def from_csv(cls, filename: str) -> 'CSVInputOutput':
+    def from_csv(
+            cls, 
+            filename: str
+        ) -> 'CSVInputOutput':
         """
-        Read object from a CSV file.
+        Read an object from a CSV file.
 
         Parameters
         ----------
@@ -67,8 +65,8 @@ class CSVInputOutput:
 
         Returns
         -------
-        out : cls
-            An object of the appropriate class type.
+        out : CSVInputOutput
+            An object read from a CSV file.
         """
         raise NotImplementedError("method is abstract")
 
@@ -77,22 +75,6 @@ class CSVInputOutput:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CSVInputOutput(v: object) -> bool:
-    """
-    Determine whether an object is a CSVInputOutput.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a CSVInputOutput object instance.
-    """
-    return isinstance(v, CSVInputOutput)
-
 def check_is_CSVInputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type CSVInputOutput. Otherwise raise TypeError.

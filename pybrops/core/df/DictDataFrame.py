@@ -24,9 +24,7 @@ class DictDataFrame(DataFrame):
     storage container.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, data, col_grp = None, row_name = None, **kwargs: dict):
         """
         Constructor for the concrete class DictDataFrame.
@@ -286,9 +284,7 @@ class DictDataFrame(DataFrame):
         """Delete row names"""
         del self._row_name
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def col_data(
             self, 
             index = None, 

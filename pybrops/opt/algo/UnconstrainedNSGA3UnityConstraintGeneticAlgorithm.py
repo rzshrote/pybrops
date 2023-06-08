@@ -24,9 +24,7 @@ class UnconstrainedNSGA3UnityConstraintGeneticAlgorithm(UnconstrainedOptimizatio
     ranges of [0.0, 1.0] and the sum of the chromosome genes must be 1.0.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, cxeta = 30.0, muteta = 20.0,
     refpnts = None, save_logbook = False, rng = None, **kwargs: dict):
         """
@@ -219,9 +217,7 @@ class UnconstrainedNSGA3UnityConstraintGeneticAlgorithm(UnconstrainedOptimizatio
         # return individual wrapped in tuple
         return out
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """
         Optimize an objective function.

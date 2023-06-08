@@ -33,9 +33,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         2) Dense matrix taxa routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -270,9 +268,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Delete taxa group length array"""
         del self._taxa_grp_len
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(

@@ -30,9 +30,7 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
         2) Dense coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -126,9 +124,7 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_ndim(value, "taxa_grp_len", 1)
         self._taxa_grp_len = value
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
     def from_gmat(
             cls, 

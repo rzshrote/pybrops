@@ -13,9 +13,7 @@ class GenotypingProtocol:
         1) Genotyping of individuals (converting a genome matrix to genotype matrix).
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -30,9 +28,7 @@ class GenotypingProtocol:
         """
         super(GenotypingProtocol, self).__init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def genotype(self, pgmat, miscout, **kwargs: dict):
         """
         Genotype a genome.

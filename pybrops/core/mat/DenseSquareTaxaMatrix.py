@@ -29,9 +29,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         3. SquareTaxaMatrix (interface)
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -87,9 +85,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     ################### Fill data lookup ###################
     # _fill_value inherited from DenseSquareMatrix
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
     # is_square inherited from DenseSquareMatrix

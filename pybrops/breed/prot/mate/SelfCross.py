@@ -20,9 +20,7 @@ class SelfCross(MatingProtocol):
     Class implementing mating protocols for self-fertilization.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             progeny_counter: Integral = 0, 
@@ -107,9 +105,7 @@ class SelfCross(MatingProtocol):
         """Delete random number generator."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 

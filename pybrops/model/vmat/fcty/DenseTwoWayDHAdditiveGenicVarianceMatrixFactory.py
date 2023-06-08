@@ -12,9 +12,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
     docstring for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -29,9 +27,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
         """
         super(DenseTwoWayDHAdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmod(
             self, 
             gmod: GenomicModel, 

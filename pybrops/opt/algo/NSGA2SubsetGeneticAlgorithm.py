@@ -29,9 +29,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
     optimization. The search space is discrete and nominal in nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             ngen: Integral = 250, 
@@ -85,9 +83,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         check_is_gt(value, "mu", 0)         # int must be >0
         self._pop_size = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def minimize(
             self, 
             prob: SubsetProblem,

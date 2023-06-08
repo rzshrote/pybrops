@@ -185,9 +185,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection(SelectionPro
         """Set multi-objective opimization algorithm."""
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     # leave abstract since it depends on the problem type
@@ -397,9 +395,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(Generalize
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
     ############################ Object Properties #############################
@@ -433,9 +429,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(Generalize
         check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -519,14 +513,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
     """
     Conventional Genomic Selection in a real search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -610,14 +600,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
     """
     Conventional Genomic Selection in an integer search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # __init__() inherited from GeneralizedWeightedGenomicEstimatedBreedingValueBaseSelection
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(

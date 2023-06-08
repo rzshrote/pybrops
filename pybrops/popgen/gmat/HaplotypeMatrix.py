@@ -19,9 +19,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         2) haplotype math functions.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -85,9 +83,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """Delete matrix representation format"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############## Matrix summary statistics ###############
     def thcount(

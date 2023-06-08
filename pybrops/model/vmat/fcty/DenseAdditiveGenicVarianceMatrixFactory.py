@@ -13,9 +13,7 @@ class DenseAdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
     Abstract factory class for producing AdditiveGenicVarianceMatrix objects.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -30,9 +28,7 @@ class DenseAdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
         """
         super(DenseAdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmod(
             self, 
             gmod: GenomicModel, 

@@ -19,9 +19,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
     dictionaries as a storage container.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             data, 
@@ -157,9 +155,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
         """Delete analysis variable effect type array"""
         del self._col_analysis_effect
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def col_data(
             self, 
             index = None, 

@@ -12,9 +12,7 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
     docstring for DenseGeneticVarianceMatrixFactory.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, **kwargs: dict):
         """
         Constructor for DenseGeneticVarianceMatrixFactory.
@@ -26,9 +24,7 @@ class DenseGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory):
         """
         super(DenseGeneticVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmod(
             self, 
             gmod: GenomicModel, 

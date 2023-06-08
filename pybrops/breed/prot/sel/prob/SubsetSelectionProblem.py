@@ -23,9 +23,7 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     Semi-abstract class representing selection problems in subset search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ndecn: Integral,
@@ -167,9 +165,7 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     ############################################################################
     # leave nlatent property abstract
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     # leave latentfn abstract
     # evalfn defined by DenseSelectionProblem
     # _evaluate defined by DenseSelectionProblem

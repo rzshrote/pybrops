@@ -23,9 +23,7 @@ class TwoWayCross(MatingProtocol):
     Class implementing mating protocols for two-way crosses.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             progeny_counter: Integral = 0, 
@@ -110,9 +108,7 @@ class TwoWayCross(MatingProtocol):
         """Delete random number generator."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 

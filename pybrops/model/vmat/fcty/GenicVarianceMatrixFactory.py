@@ -13,9 +13,7 @@ class GenicVarianceMatrixFactory:
         1) Construction of genetic variance matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -30,9 +28,7 @@ class GenicVarianceMatrixFactory:
         """
         super(GenicVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmod(
             self, 
             gmod: GenomicModel, 

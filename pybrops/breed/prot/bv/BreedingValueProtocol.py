@@ -14,9 +14,7 @@ class BreedingValueProtocol:
         1) Estimation of breeding values from phenotype values.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -31,9 +29,7 @@ class BreedingValueProtocol:
         """
         super(BreedingValueProtocol, self).__init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def estimate(self, ptobj, gtobj, miscout, **kwargs: dict):
         """
         Estimate breeding values.

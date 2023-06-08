@@ -24,9 +24,7 @@ class RealProblem(Problem):
     variables where the goal is to select an optimal subset.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ndecn: Integral,

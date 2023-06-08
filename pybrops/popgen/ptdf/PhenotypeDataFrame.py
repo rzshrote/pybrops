@@ -13,9 +13,7 @@ class PhenotypeDataFrame(DataFrame):
         1) Data frame column analysis and effect types
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict

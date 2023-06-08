@@ -17,9 +17,7 @@ class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorit
     nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             rng = global_prng, 
@@ -57,9 +55,7 @@ class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorit
         """Delete random number generator source."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         # randomly initialize a solution
         gbest_soln = self.rng.choice(sspace, (k,))

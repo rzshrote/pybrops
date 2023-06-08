@@ -14,9 +14,7 @@ class UnconstrainedStochasticAscentSetHillClimber(UnconstrainedOptimizationAlgor
     nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, k, setspace, rng, objwt = 1.0, **kwargs: dict):
         """
         Constructor for a stochastic ascent set hill-climber.
@@ -42,9 +40,7 @@ class UnconstrainedStochasticAscentSetHillClimber(UnconstrainedOptimizationAlgor
         self.rng = rng
         self.objwt = objwt
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def optimize(self, objfn, k = None, setspace = None, objwt = None, **kwargs: dict):
         """
         Optimize an objective function.

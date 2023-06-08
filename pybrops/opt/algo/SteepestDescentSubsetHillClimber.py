@@ -17,9 +17,7 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
     docstring for ConstrainedSteepestDescentSubsetHillClimber.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             rng: Optional[Union[Generator,RandomState]] = None, 
@@ -53,9 +51,7 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def minimize(
             self, 
             prob: SubsetProblem,

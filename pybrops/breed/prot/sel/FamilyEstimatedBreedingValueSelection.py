@@ -37,9 +37,7 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             nparent: Integral, 
@@ -179,9 +177,7 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
         check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     # leave abstract since it depends on the problem type
@@ -391,14 +387,10 @@ class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueBa
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -480,14 +472,10 @@ class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueBase
     """
     Conventional Genomic Selection in a real search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -569,14 +557,10 @@ class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueB
     """
     Conventional Genomic Selection in an integer search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -658,14 +642,10 @@ class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueBa
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use BaseConventionalGenomicSelection __init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(

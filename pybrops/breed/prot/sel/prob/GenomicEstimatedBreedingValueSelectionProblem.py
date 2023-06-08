@@ -258,9 +258,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gebv: numpy.ndarray,
@@ -417,9 +415,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Gen
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gebv: numpy.ndarray,
@@ -520,9 +516,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Gen
         # assignments
         self.gebv = gebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -571,9 +565,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProbl
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gebv: numpy.ndarray,
@@ -674,9 +666,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProbl
         # assignments
         self.gebv = gebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -725,9 +715,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             gebv: numpy.ndarray,
@@ -828,9 +816,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem
         # assignments
         self.gebv = gebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

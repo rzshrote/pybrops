@@ -20,9 +20,7 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
     docstring for DenseGeneralizedWeightedCoancestryMatrix.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray,
@@ -45,9 +43,7 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
     
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
     def from_gmat(
             cls, 

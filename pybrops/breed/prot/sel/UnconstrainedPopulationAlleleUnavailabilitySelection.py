@@ -28,9 +28,7 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
     # TODO: add formulae for methodology.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             nparent: int, 
@@ -470,9 +468,7 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
     def _calc_thet(self, tminor: numpy.ndarray, tmajor: numpy.ndarray):
         return numpy.logical_not(numpy.logical_or(tminor, tmajor))
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select individuals for breeding.

@@ -14,9 +14,7 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
     docstring for RealLookAheadGeneralizedWeightedGenomicSelectionProblem.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             fndr_pgmat: PhasedGenotypeMatrix,
@@ -187,9 +185,7 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Delete number of simulations to evaluate a candidate solution."""
         del self._nsimul
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

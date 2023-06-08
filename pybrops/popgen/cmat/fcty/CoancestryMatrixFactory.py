@@ -12,9 +12,7 @@ class CoancestryMatrixFactory:
     Factory class for producing CoancestryMatrix objects.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -29,9 +27,7 @@ class CoancestryMatrixFactory:
         """
         super(CoancestryMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmat(
             cls, 
             gmat: GenotypeMatrix, 

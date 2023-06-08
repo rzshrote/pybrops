@@ -41,9 +41,7 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
     # TODO: add formulae for methodology.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self,
             nconfig: int, 
             nparent: int, 
@@ -797,9 +795,7 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
         )
         return vmat.mat
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select individuals for breeding.

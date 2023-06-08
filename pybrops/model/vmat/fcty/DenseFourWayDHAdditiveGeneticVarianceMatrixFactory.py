@@ -13,9 +13,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
     docstring for DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -30,9 +28,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
         """
         super(DenseFourWayDHAdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def from_gmod(
             self, 
             gmod: GenomicModel, 

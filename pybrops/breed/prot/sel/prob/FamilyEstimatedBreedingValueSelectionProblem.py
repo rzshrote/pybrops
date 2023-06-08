@@ -237,9 +237,7 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -421,9 +419,7 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Fami
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -527,9 +523,7 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Fami
         self.ebv = ebv
         self.familyid = familyid
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -585,9 +579,7 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProble
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -691,9 +683,7 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProble
         self.ebv = ebv
         self.familyid = familyid
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -749,9 +739,7 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -855,9 +843,7 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,
         self.ebv = ebv
         self.familyid = familyid
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

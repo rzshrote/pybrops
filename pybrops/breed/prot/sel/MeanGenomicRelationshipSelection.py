@@ -406,9 +406,7 @@ class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipBaseSelectio
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
     ############################ Object Properties #############################
@@ -525,14 +523,10 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipBaseSelection)
     """
     Conventional Genomic Selection in a real search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -615,14 +609,10 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipBaseSelecti
     """
     Conventional Genomic Selection in an integer search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use old init
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(
@@ -705,14 +695,10 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipBaseSelectio
     """
     Conventional Genomic Selection in a subset search space.
     """
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     # use BaseConventionalGenomicSelection __init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Optimization Problem Construction ###########
     def problem(

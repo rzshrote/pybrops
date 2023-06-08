@@ -30,9 +30,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         2) I/O for two-way DH progeny variance matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -85,9 +83,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         """Get a tuple of the expected parental genome contributions."""
         return (0.5, 0.5)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def to_csv(
             self, 
             fname: str
@@ -127,9 +123,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         # write DataFrame to file
         out_df.to_csv(fname, index = False)
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     # TODO: provide support for non-linear models
     @classmethod
     def from_gmod(

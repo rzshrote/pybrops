@@ -206,9 +206,7 @@ class EstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,Estima
     Class representing selection on Estimated Breeding Values (EBVs) in subset search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -378,9 +376,7 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
     Class representing selection on Estimated Breeding Values (EBVs) in real search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -481,9 +477,7 @@ class EstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,EstimatedB
         # assignments
         self.ebv = ebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -538,9 +532,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
     Class representing selection on Estimated Breeding Values (EBVs) in integer search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -641,9 +633,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,Esti
         # assignments
         self.ebv = ebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -698,9 +688,7 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
     Class representing selection on Estimated Breeding Values (EBVs) in binary search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             ebv: numpy.ndarray,
@@ -801,9 +789,7 @@ class EstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,Estima
         # assignments
         self.ebv = ebv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

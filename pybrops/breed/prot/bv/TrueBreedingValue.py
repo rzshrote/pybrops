@@ -11,9 +11,7 @@ class TrueBreedingValue(BreedingValueProtocol):
     Class implementing the extraction of true breeding value.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, gpmod, **kwargs: dict):
         """
         Constructor for the concrete class TrueBreedingValue.
@@ -46,9 +44,7 @@ class TrueBreedingValue(BreedingValueProtocol):
         """Delete genomic prediction model."""
         del self._gpmod
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs: dict):
         """
         Estimate breeding values.

@@ -22,9 +22,7 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
         2) PhasedTaxaVariantMatrix
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict

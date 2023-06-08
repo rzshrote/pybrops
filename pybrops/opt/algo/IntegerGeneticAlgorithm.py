@@ -33,9 +33,7 @@ class IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
     optimization. The search space is discrete and nominal in nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             ngen: Integral = 250, 
@@ -103,9 +101,7 @@ class IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def minimize(
             self, 
             prob: IntegerProblem,

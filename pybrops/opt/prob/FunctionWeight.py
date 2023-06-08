@@ -17,9 +17,7 @@ class FunctionWeight:
     MaximizingFunctionWeight.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             wt: Real, 
@@ -92,9 +90,7 @@ class MinimizingFunctionWeight(FunctionWeight):
     Class for representing weights for functions that are minimizing in their natural state.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             wt: Real, 
@@ -150,9 +146,7 @@ class MaximizingFunctionWeight(FunctionWeight):
     Class for representing weights for functions that are maximizing in their natural state.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             wt: Real, 

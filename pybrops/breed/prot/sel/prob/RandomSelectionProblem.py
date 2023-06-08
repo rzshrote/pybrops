@@ -366,9 +366,7 @@ class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
     Class representing selection on Random Breeding Values (RBVs) in real search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             rbv: numpy.ndarray,
@@ -469,9 +467,7 @@ class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
         # assignments
         self.rbv = rbv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -520,9 +516,7 @@ class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProbl
     Class representing selection on Random Breeding Values (RBVs) in integer search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             rbv: numpy.ndarray,
@@ -623,9 +617,7 @@ class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProbl
         # assignments
         self.rbv = rbv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 
@@ -674,9 +666,7 @@ class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem
     Class representing selection on Random Breeding Values (RBVs) in binary search spaces.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self,
             rbv: numpy.ndarray,
@@ -777,9 +767,7 @@ class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem
         # assignments
         self.rbv = rbv
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def latentfn(
             self, 
             x: numpy.ndarray, 

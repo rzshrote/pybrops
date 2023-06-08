@@ -16,9 +16,7 @@ class UnconstrainedOptimizationAlgorithm:
         1) Optimization of objective functions.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -33,9 +31,7 @@ class UnconstrainedOptimizationAlgorithm:
         """
         super(UnconstrainedOptimizationAlgorithm, self).__init__()
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def optimize(
             self, 
             objfn: Callable, 

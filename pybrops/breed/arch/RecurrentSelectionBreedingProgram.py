@@ -22,9 +22,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     highly modular to facilitate rapid prototyping.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs: dict):
         """
         Constructor for the concrete class RecurrentSelectionBreedingProgram.
@@ -312,9 +310,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Delete the maximum time for the BreedingNode"""
         del self._t_max
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############# Initialize breeding program ##############
     def initialize(self, **kwargs: dict):

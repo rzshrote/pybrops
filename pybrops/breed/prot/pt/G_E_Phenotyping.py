@@ -24,9 +24,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     GxE interaction.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             gpmod: GenomicModel, 
@@ -246,9 +244,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Delete number of replications per environment"""
         del self._nrep
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def phenotype(
             self, 
             pgmat, 

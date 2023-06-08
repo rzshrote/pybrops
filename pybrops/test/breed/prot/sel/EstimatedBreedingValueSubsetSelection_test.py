@@ -6,6 +6,7 @@ from matplotlib import pyplot
 from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueSubsetSelection
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
+from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
 
 from pybrops.test.assert_python import not_raises
 from pybrops.test.assert_python import assert_docstring
@@ -22,12 +23,14 @@ from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotypin
 from pybrops.breed.prot.sel.prob.trans import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueSubsetSelectionProblem
 
+numpy.random.seed(20230608)
+
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def ntaxa():
-    yield 100
+    yield 4*10
 
 @pytest.fixture
 def nvrnt():
@@ -96,11 +99,15 @@ def bvmat(algmod, gmat):
 ######### EstimatedBreedingValueSubsetSelection ##########
 ############################################################
 @pytest.fixture
-def nparent():
+def ncross():
     yield 5
 
 @pytest.fixture
-def ncross():
+def nparent():
+    yield 2
+
+@pytest.fixture
+def nmating():
     yield 1
 
 @pytest.fixture
@@ -185,7 +192,7 @@ def moalgo():
 
 @pytest.fixture
 def selprot(
-    nparent, ncross, nprogeny, method,
+    ntrait, ncross, nparent, nmating, nprogeny,
     nobj, obj_wt, obj_trans, obj_trans_kwargs, 
     nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
     neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs, 
@@ -193,10 +200,11 @@ def selprot(
     rng, soalgo, moalgo
 ):
     yield EstimatedBreedingValueSubsetSelection(
-        nparent = 5, 
-        nmating = 1, 
-        nprogeny = 10,
-        method = method,
+        ntrait = ntrait,
+        ncross = ncross,
+        nparent = nparent,
+        nmating = nmating,
+        nprogeny = nprogeny,
         nobj = nobj,
         obj_wt = obj_wt,
         obj_trans = obj_trans,
@@ -232,8 +240,11 @@ def test_init_is_concrete():
 def test_objfn_is_concrete():
     assert_concrete_method(EstimatedBreedingValueSubsetSelection, "problem")
 
-def test_pareto_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueSubsetSelection, "pareto")
+def test_sosolve_is_concrete():
+    assert_concrete_method(EstimatedBreedingValueSubsetSelection, "sosolve")
+
+def test_mosolve_is_concrete():
+    assert_concrete_method(EstimatedBreedingValueSubsetSelection, "mosolve")
 
 def test_select_is_concrete():
     assert_concrete_method(EstimatedBreedingValueSubsetSelection, "select")
@@ -265,9 +276,13 @@ def test_problem(selprot, pgmat, gmat, bvmat, algmod):
     assert isinstance(prob, SubsetSelectionProblem)
     assert isinstance(prob, EstimatedBreedingValueSubsetSelectionProblem)
 
+def test_mosolve(selprot, pgmat, gmat, bvmat, algmod):
+    selprot.moalgo = NSGA2SubsetGeneticAlgorithm(
+        ngen = 250,     # number of generations to evolve
+        pop_size = 100  # number of parents in population
+    )
 
-def test_pareto(selprot, pgmat, gmat, bvmat, algmod):
-    frontier, sel_config = selprot.pareto(
+    mosoln = selprot.mosolve(
         pgmat = pgmat,
         gmat = gmat,
         ptdf = None,
@@ -277,8 +292,8 @@ def test_pareto(selprot, pgmat, gmat, bvmat, algmod):
         t_max = 20
     )
 
-    xdata = frontier[:,0]
-    ydata = frontier[:,1]
+    xdata = mosoln.soln_obj[:,0]
+    ydata = mosoln.soln_obj[:,1]
     # zdata = frontier[:,2]
 
     xlabel = algmod.trait[0]
@@ -293,11 +308,6 @@ def test_pareto(selprot, pgmat, gmat, bvmat, algmod):
     # ax = pyplot.axes(projection='3d')
     # ax.scatter3D(xdata, ydata, zdata)
     pyplot.savefig("EBV_Subset_2d_frontier.png", dpi = 250)
-
-    print(sel_config)
-    print(sel_config.sum(0))
-    print(sel_config.sum(1))
-    assert False
 
 # def test_select_single(selprot, pgmat, gmat, bvmat, algmod):
 #     selprot.method = "single"
@@ -315,8 +325,8 @@ def test_pareto(selprot, pgmat, gmat, bvmat, algmod):
 
 #     assert sel.ndim == 1
 
-# def test_select_pareto(selprot, pgmat, gmat, bvmat, algmod):
-#     selprot.method = "pareto"
+# def test_select_mosolve(selprot, pgmat, gmat, bvmat, algmod):
+#     selprot.method = "mosolve"
 
 #     pgmat, sel, ncross, nprogeny = selprot.select(
 #         pgmat = pgmat,

@@ -35,9 +35,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         2) Determination of square matrix conformity.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -156,9 +154,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         numpy.dtype("float"): numpy.float_(numpy.nan),                  # NaN
     }
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
     def is_square(

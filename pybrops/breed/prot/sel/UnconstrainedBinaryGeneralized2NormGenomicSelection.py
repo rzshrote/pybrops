@@ -29,9 +29,7 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
     docstring for BinaryGeneralized2NormGenomicSelection.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             nparent: int,
@@ -397,9 +395,7 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
         # return Cholesky decomposition tensor
         return C
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Select parents individuals for breeding.

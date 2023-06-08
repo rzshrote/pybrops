@@ -15,9 +15,7 @@ class DataFrame:
         3) Data frame conversion
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -178,9 +176,7 @@ class DataFrame:
         """Delete row names"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def col_data(self, **kwargs: dict):
         """
         Get a column's data from the dataframe.

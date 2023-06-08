@@ -15,9 +15,7 @@ class TruePhenotyping(PhenotypingProtocol):
     Class implementing phenotyping protocols for extracting true breeding values.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             gpmod: GenomicModel, 
@@ -69,9 +67,7 @@ class TruePhenotyping(PhenotypingProtocol):
         """Delete error variance"""
         error_readonly("var_err")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def phenotype(self, pgmat, miscout = None, gpmod = None, **kwargs: dict):
         """
         Phenotype a set of genotypes using a genomic prediction model.

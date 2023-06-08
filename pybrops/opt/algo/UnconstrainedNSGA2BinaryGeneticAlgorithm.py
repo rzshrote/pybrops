@@ -26,9 +26,7 @@ class UnconstrainedNSGA2BinaryGeneticAlgorithm(UnconstrainedOptimizationAlgorith
     optimization. The search space is binary in nature.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, ngen = 250, mu = 100, lamb = 100, rng = global_prng, **kwargs: dict):
         """
         Constructor for NSGA-II set optimization algorithm.
@@ -118,9 +116,7 @@ class UnconstrainedNSGA2BinaryGeneticAlgorithm(UnconstrainedOptimizationAlgorith
         """Delete random number generator source."""
         del self._rng
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):
         """

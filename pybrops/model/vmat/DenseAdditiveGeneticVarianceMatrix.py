@@ -21,9 +21,7 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
     remain abstract and must be implemented by inheriting classes.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -56,13 +54,9 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
     ############################ Object Properties #############################
     ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     # from_gmod
     # this method should remain abstract; it depends on the cross structure
     # maybe in the future if generic cross structures are implemented,

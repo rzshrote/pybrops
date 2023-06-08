@@ -17,9 +17,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
     storage container.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(self, data, col_atype, col_aefct, **kwargs: dict):
         super(PandasPhenotypeDataFrame, self).__init__(
             data = data,
@@ -90,9 +88,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         """Delete analysis variable effect type array"""
         del self._col_aefct
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def col_data(
             self, 
             index = None, 
