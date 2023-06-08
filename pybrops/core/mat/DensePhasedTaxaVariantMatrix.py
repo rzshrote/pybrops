@@ -3,8 +3,13 @@ Module implementing a dense matrix with phase, taxa, and variant metadata
 and associated error checking routines.
 """
 
+__all__ = [
+    "DensePhasedTaxaVariantMatrix",
+    "check_is_DensePhasedTaxaVariantMatrix"
+]
+
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 

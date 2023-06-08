@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 with axes that are square and with taxa metadata.
 """
 
-from typing import Any
+__all__ = [
+    "SquareTaxaMatrix",
+    "check_is_SquareTaxaMatrix"
+]
+
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 

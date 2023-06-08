@@ -3,7 +3,12 @@ Module defining interfaces and associated error checking routines for matrices
 with variant metadata.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "VariantMatrix",
+    "check_is_VariantMatrix"
+]
+
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike

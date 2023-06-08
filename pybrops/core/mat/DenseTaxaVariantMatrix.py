@@ -1,6 +1,11 @@
+"""
+Module defining implementing dense matrices with taxa and variant metadata and
+associated error checking routines.
+"""
+
 import copy
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 

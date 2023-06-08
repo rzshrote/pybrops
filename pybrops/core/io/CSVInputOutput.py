@@ -3,6 +3,10 @@ Module defining comma separated value I/O interfaces and associated error
 checking routines.
 """
 
+__all__ = [
+    "CSVInputOutput",
+    "check_is_CSVInputOutput"
+]
 
 class CSVInputOutput:
     """

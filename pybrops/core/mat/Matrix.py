@@ -2,8 +2,13 @@
 Module defining basal Matrix interfaces and associated error checking routines.
 """
 
+__all__ = [
+    "Matrix",
+    "check_is_Matrix"
+]
+
 import numpy
-from typing import Any, Union
+from typing import Union
 
 from typing import Sequence
 from numpy.typing import ArrayLike

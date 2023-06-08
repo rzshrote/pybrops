@@ -3,7 +3,12 @@ Module implementing a dense matrix with taxa metadata and axes that are square
 and associated error checking routines.
 """
 
-from typing import Any, Optional, Sequence, Union
+__all__ = [
+    "DenseSquareTaxaMatrix",
+    "check_is_DenseSquareTaxaMatrix"
+]
+
+from typing import Optional, Sequence, Union
 import numpy
 from numpy.typing import ArrayLike
 

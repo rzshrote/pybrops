@@ -4,7 +4,12 @@ Module implementing a dense mutable matrix and associated error checking routine
 Mutable refers to the ability of adding/removing rows and columns from the matrix.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "DenseMutableMatrix",
+    "check_is_DenseMutableMatrix"
+]
+
+from typing import Sequence, Union
 import numpy
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix

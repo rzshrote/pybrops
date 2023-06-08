@@ -2,6 +2,11 @@
 Module defining HDF5 I/O interfaces and associated error checking routines.
 """
 
+__all__ = [
+    "HDF5InputOutput",
+    "check_is_HDF5InputOutput"
+]
+
 from typing import Optional
 
 

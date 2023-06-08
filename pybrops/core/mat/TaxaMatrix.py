@@ -3,7 +3,12 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa metadata.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "TaxaMatrix",
+    "check_is_TaxaMatrix"
+]
+
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike

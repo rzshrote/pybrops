@@ -3,7 +3,10 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes grouped.
 """
 
-from typing import Any
+__all__ = [
+    "GroupableMatrix",
+    "check_is_GroupableMatrix"
+]
 
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 

@@ -3,7 +3,11 @@ Module implementing a dense matrix with axes that are square and associated
 error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "DenseSquareMatrix",
+    "check_is_DenseSquareMatrix"
+]
+
 import numpy
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray

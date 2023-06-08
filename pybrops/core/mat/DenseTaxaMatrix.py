@@ -3,10 +3,14 @@ Module defining implementing dense matrices with taxa metadata and associated
 error checking routines.
 """
 
+__all__ = [
+    "DenseTaxaMatrix",
+    "check_is_DenseTaxaMatrix"
+]
+
 import copy
 import numpy
 from typing import Optional, Sequence, Union
-from typing import Any
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_type_python import check_is_array_like

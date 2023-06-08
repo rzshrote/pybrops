@@ -2,7 +2,12 @@
 Module defining phased matrix interfaces and associated error checking routines.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "PhasedMatrix",
+    "check_is_PhasedMatrix"
+]
+
+from typing import Sequence, Union
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.Matrix import Matrix

@@ -3,9 +3,14 @@ Module implementing a dense matrix with trait metadata and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseTraitMatrix",
+    "check_is_DenseTraitMatrix"
+]
+
 import numpy
 import copy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 

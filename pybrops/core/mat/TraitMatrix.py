@@ -3,7 +3,12 @@ Module defining interfaces and associated error checking routines for matrices
 with trait metadata.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "TraitMatrix",
+    "check_is_TraitMatrix"
+]
+
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike

@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 with axes that are square.
 """
 
-from typing import Any
+__all__ = [
+    "SquareMatrix",
+    "check_is_SquareMatrix"
+]
+
 from pybrops.core.mat.Matrix import Matrix
 
 class SquareMatrix(Matrix):

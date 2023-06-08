@@ -2,7 +2,12 @@
 Module defining mutable matrix interfaces and associated error checking routines.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "MutableMatrix",
+    "check_is_MutableMatrix"
+]
+
+from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.Matrix import Matrix

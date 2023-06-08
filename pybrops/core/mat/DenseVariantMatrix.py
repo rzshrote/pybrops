@@ -3,9 +3,14 @@ Module implementing a dense matrix with variant metadata and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseVariantMatrix",
+    "check_is_DenseVariantMatrix"
+]
+
 import copy
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 

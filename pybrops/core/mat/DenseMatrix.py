@@ -2,6 +2,11 @@
 Module implementing a dense matrix and associated error checking routines.
 """
 
+__all__ = [
+    "DenseMatrix",
+    "check_is_DenseMatrix"
+]
+
 import copy
 import numpy
 import h5py

@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa and variant metadata.
 """
 
-from typing import Any
+__all__ = [
+    "TaxaVariantMatrix",
+    "check_is_TaxaVariantMatrix"
+]
+
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 

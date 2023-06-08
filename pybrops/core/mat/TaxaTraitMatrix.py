@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa and trait metadata.
 """
 
-from typing import Any
+__all__ = [
+    "TaxaTraitMatrix",
+    "check_is_TaxaTraitMatrix"
+]
+
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 

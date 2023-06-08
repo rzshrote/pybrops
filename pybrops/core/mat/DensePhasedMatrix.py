@@ -2,9 +2,14 @@
 Module implementing a dense phased matrix and associated error checking routines.
 """
 
+__all__ = [
+    "DensePhasedMatrix",
+    "check_is_DensePhasedMatrix"
+]
+
 import copy
 import numpy
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_type_python import check_is_array_like

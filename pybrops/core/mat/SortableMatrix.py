@@ -3,7 +3,12 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes sorted.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "SortableMatrix",
+    "check_is_SortableMatrix"
+]
+
+from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix

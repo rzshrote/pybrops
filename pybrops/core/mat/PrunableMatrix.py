@@ -3,7 +3,10 @@ Module defining interfaces and associated error checking routines for matrices
 that can be pruned along an axis.
 """
 
-from typing import Any
+__all__ = [
+    "PrunableMatrix",
+    "check_is_PrunableMatrix"
+]
 
 import numpy
 from pybrops.core.mat.Matrix import Matrix
