@@ -86,9 +86,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         self.rng = pybrops.core.random if rng is None else rng
 
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genomic Model Properties ###############
     @property

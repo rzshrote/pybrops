@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseMatrix import DenseMatrix
-from pybrops.core.mat.DenseMatrix import is_DenseMatrix
 from pybrops.core.mat.DenseMatrix import check_is_DenseMatrix
 
 ################################################################################
@@ -206,12 +205,6 @@ def test_floordiv(mat, mat_float64):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseMatrix_is_concrete():
-    assert_concrete_function(is_DenseMatrix)
-
-def test_is_DenseMatrix(mat):
-    assert is_DenseMatrix(mat)
-
 def test_check_is_DenseMatrix_is_concrete():
     assert_concrete_function(check_is_DenseMatrix)
 

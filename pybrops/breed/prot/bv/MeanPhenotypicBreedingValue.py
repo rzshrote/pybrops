@@ -43,9 +43,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         check_is_array_like(trait_col, "trait_col")
         self.trait_col = trait_col
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############################## Object Methods ##############################
     def estimate(self, ptobj, gtobj, miscout = None, **kwargs: dict):

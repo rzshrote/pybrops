@@ -128,9 +128,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Taxa Metadata Properites ###############
     @DenseTaxaMatrix.taxa_axis.getter

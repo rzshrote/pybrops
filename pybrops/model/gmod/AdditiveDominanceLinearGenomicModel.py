@@ -75,9 +75,7 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
         """
         super(AdditiveDominanceLinearGenomicModel, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     @property
     def u_d(self) -> Any:

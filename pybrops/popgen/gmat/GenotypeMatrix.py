@@ -40,9 +40,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         super(GenotypeMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Matrix Metadata Properites ##############
     @property

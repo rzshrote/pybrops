@@ -64,9 +64,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     #################### Matrix copying ####################
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     # mat inherited from DenseSquareMatrix

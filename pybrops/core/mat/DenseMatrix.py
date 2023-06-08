@@ -5,7 +5,7 @@ Module implementing a dense matrix and associated error checking routines.
 import copy
 import numpy
 import h5py
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_io_python import check_file_exists
@@ -29,9 +29,7 @@ class DenseMatrix(Matrix):
         5) Dense matrix read-only matrix shape changing routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -41,7 +39,7 @@ class DenseMatrix(Matrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Matrix to store
+            Matrix to store.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -283,9 +281,7 @@ class DenseMatrix(Matrix):
             mat = copy.deepcopy(self.mat, memo)
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @property
@@ -330,9 +326,7 @@ class DenseMatrix(Matrix):
         """Delete the shape of the raw numpy.ndarray"""
         error_readonly("mat_shape")
     
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Matrix copying ####################
     def copy(
@@ -594,9 +588,7 @@ class DenseMatrix(Matrix):
         ######################################################### write conclusion
         h5file.close()                                          # close the file
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
     @classmethod
@@ -656,22 +648,6 @@ class DenseMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseMatrix object instance.
-    """
-    return isinstance(v, DenseMatrix)
-
 def check_is_DenseMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMatrix. Otherwise raise TypeError.

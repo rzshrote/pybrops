@@ -58,9 +58,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         self.start_bval = start_bval
         self.start_gmod = start_gmod
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############ Starting condition containers #############
     @property

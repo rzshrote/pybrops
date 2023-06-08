@@ -209,9 +209,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @DenseTaxaMatrix.mat.setter

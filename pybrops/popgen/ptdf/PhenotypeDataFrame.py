@@ -23,9 +23,7 @@ class PhenotypeDataFrame(DataFrame):
         """
         super(PhenotypeDataFrame, self).__init__()
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     # TODO: maybe eliminate these. it seems like this information should go in other modules
     @property
     def col_analysis_type(self) -> Any:

@@ -52,9 +52,7 @@ class UnconstrainedNSGA2BinaryGeneticAlgorithm(UnconstrainedOptimizationAlgorith
         self.lamb = lamb
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def ngen(self) -> int:
         """Number of generations."""

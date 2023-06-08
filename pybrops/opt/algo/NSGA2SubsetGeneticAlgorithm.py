@@ -58,9 +58,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         self.ngen = ngen
         self.pop_size = pop_size
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def ngen(self) -> Integral:
         """Number of generations."""

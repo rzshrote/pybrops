@@ -201,9 +201,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genotype Data Properites ###############
     @DenseGenotypeMatrix.mat.setter

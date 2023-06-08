@@ -65,9 +65,7 @@ class BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
         self.pop_size = pop_size
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def ngen(self) -> Integral:
         """Number of generations."""

@@ -1,5 +1,5 @@
 """
-Module providing input/output interfaces.
+Module providing input/output interfaces for reading/writing files.
 """
 
 __all__ = [

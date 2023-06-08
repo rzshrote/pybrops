@@ -56,9 +56,7 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         self.meme = meme
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def ngen(self) -> int:
         """Number of generations."""

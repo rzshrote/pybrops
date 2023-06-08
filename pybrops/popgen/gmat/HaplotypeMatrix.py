@@ -35,9 +35,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         super(HaplotypeMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## General matrix properties ###############
     ############## Matrix Metadata Properites ##############

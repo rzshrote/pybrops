@@ -78,9 +78,7 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
         """
         super(AdditiveDominanceEpistaticLinearGenomicModel, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def u_i(self) -> Any:
         """Epistatic genomic marker effects."""

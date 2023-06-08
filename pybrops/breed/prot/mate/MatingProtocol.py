@@ -33,9 +33,7 @@ class MatingProtocol:
         """
         super(MatingProtocol, self).__init__()
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> Integral:
         """Number of parents the mating protocol requires."""

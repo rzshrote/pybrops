@@ -54,9 +54,7 @@ class DataFrame:
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def data(self) -> Any:
         """Access to raw data frame object."""

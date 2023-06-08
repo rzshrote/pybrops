@@ -160,9 +160,7 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
         self.eqcv_trans = eqcv_trans
         self.eqcv_trans_kwargs = eqcv_trans_kwargs
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     # leave nlatent property abstract
 
     ############################## Object Methods ##############################

@@ -1,5 +1,5 @@
 """
-Module providing basic matrix functionality.
+Module providing matrix interfaces and basic matrix functionality.
 """
 
 __all__ = [

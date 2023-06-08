@@ -36,9 +36,7 @@ class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorit
         super(UnconstrainedSteepestAscentSetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
         """Random number generator source."""

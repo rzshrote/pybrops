@@ -26,9 +26,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         self.col_atype = col_atype
         self.col_aefct = col_aefct
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################## Column attributes ###################
     @property

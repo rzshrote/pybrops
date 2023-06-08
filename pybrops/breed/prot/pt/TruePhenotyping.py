@@ -34,9 +34,7 @@ class TruePhenotyping(PhenotypingProtocol):
         super(TruePhenotyping, self).__init__(**kwargs)
         self.gpmod = gpmod
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genomic Model Properties ###############
     @property

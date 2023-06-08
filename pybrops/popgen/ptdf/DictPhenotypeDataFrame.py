@@ -89,9 +89,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
             row_name = copy.deepcopy(self.row_name)
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def col_analysis_type(self) -> numpy.ndarray:
         """Analysis variable type array."""

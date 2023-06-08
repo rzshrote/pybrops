@@ -72,9 +72,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
         """
         super(AdditiveLinearGenomicModel, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def u_misc(self) -> Any:
         """Miscellaneous random effects."""

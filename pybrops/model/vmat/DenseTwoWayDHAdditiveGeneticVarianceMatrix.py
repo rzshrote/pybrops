@@ -59,9 +59,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @DenseAdditiveGeneticVarianceMatrix.mat.setter

@@ -83,9 +83,7 @@ class SubsetProblem(Problem):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     # override decn_space setter properties
     @Problem.decn_space.setter
     def decn_space(self, value: numpy.ndarray) -> None:

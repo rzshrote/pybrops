@@ -33,9 +33,7 @@ class AdditiveGenicVarianceMatrix(GenicVarianceMatrix):
         """
         super(AdditiveGenicVarianceMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############################## Object Methods ##############################
     @classmethod

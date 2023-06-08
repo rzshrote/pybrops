@@ -35,9 +35,7 @@ class PandasDataFrame(DataFrame):
         if col_dtype is not None:
             self.col_dtype = col_dtype
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def data(self) -> pandas.DataFrame:
         """Access to raw dataframe."""

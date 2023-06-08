@@ -51,9 +51,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
         self.taxa_grp = taxa_grp
         self.trait = trait
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Square Metadata Properties ##############
     @DenseSquareTaxaMatrix.square_axes.getter

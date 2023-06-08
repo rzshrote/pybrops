@@ -79,9 +79,7 @@ class DictDataFrame(DataFrame):
             row_name = copy.deepcopy(self.row_name)
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def data(self) -> dict:
         """Access to raw data frame object."""

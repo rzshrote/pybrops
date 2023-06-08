@@ -36,9 +36,7 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         super(SteepestDescentSubsetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def rng(self) -> Union[Generator,RandomState]:
         """Random number generator source."""

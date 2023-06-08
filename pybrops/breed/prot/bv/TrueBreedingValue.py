@@ -25,9 +25,7 @@ class TrueBreedingValue(BreedingValueProtocol):
         super(TrueBreedingValue, self).__init__(**kwargs)
         self.gpmod = gpmod
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genomic Model Properties ###############
     @property

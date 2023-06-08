@@ -75,9 +75,7 @@ class Generalized1NormGenomicSelection(UnconstrainedSelectionProtocol):
         self.soalgo = soalgo
         self.moalgo = moalgo
     
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> int:
         """Number of parents to select."""

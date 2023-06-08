@@ -54,9 +54,7 @@ class FunctionWeight:
         """Convert a weight to a string representation."""
         return str(self.wt)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def wt(self) -> Real:
         """A weight value."""

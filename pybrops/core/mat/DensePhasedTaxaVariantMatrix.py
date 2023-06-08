@@ -82,9 +82,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @DenseTaxaVariantMatrix.mat.setter

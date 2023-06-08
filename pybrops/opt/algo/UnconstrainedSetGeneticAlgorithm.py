@@ -54,9 +54,7 @@ class UnconstrainedSetGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
         self.M = M
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def ngen(self) -> int:
         """Number of generations."""

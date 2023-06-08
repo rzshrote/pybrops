@@ -36,9 +36,7 @@ class FourWayCross(MatingProtocol):
         self.family_counter = family_counter
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> Integral:
         """Number of parents the mating protocol requires."""

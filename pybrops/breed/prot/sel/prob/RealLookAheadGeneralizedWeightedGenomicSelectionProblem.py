@@ -78,9 +78,7 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         self.nprogeny = nprogeny
         self.nsimul = nsimul
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nlatent(self) -> Integral:
         """Number of latent variables."""

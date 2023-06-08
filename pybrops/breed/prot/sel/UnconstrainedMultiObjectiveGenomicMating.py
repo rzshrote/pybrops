@@ -279,9 +279,7 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
         self.soalgo = soalgo
         self.moalgo = moalgo
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nconfig(self) -> int:
         """Description for property nconfig."""

@@ -59,9 +59,7 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Coancestry Data Properites ##############
     @DenseCoancestryMatrix.mat.setter

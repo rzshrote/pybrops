@@ -202,9 +202,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
         self.soalgo = soalgo
         self.moalgo = moalgo
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> int:
         """Number of parents to select."""
