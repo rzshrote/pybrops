@@ -50,7 +50,7 @@ def stochastic_universal_sampling(
     Returns
     -------
     out : numpy.ndarray
-        Sampling of indices for ``a``.
+        Sampling of items from ``a``.
     """
     if rng is None:                                 # if no rng provided
         rng = global_prng                           # set to global rng
@@ -83,7 +83,10 @@ def tiled_choice(
     ) -> numpy.ndarray:
     """
     Generate a random sample from a given 1-D array.
-    If sampling without replacement, tile the sampling.
+
+    If sampling without replacement, tile the sampling by filling with complete 
+    sets until a complete set cannot be put into the output, then sample without 
+    replacement to fill the remaining samples in the output.
 
     Parameters
     ----------
@@ -154,6 +157,19 @@ def axis_shuffle(
         axis: Optional[Union[Integral,Tuple[Integral,...]]] = None,
         rng: Optional[Union[Generator,RandomState]] = None
     ) -> None:
+    """
+    Perform an in-place shuffle for an array along a set of axes.
+
+    Parameters
+    ----------
+    a : numpy.ndarray
+        An array to shuffle.
+    axis : Integral, Tuple[Integral,...]
+        Axis or axes along which to perform an in-place shuffle.
+    rng : numpy.random.Generator, numpy.random.RandomState, None
+        A random number generator source.
+        If None, then use the default global random number generator.
+    """
     # check type for ``x``
     if not isinstance(a, numpy.ndarray):
         raise TypeError("'x' must be of type numpy.ndarray, but received type '{0}'".format(type(a).__name__))
@@ -189,10 +205,11 @@ def outcross_shuffle(
 
     Parameters
     ----------
-    sel : numpy.ndarray
+    xconfig : numpy.ndarray
         Array of shape (ncross, nparent) containing indices of individuals to shuffle.
-    rng: Any
-        Random number source. If None, use default rng.
+    rng : numpy.random.Generator, numpy.random.RandomState, None
+        A random number generator source.
+        If None, then use the default global random number generator.
     """
     # handle prng
     if rng is None:
