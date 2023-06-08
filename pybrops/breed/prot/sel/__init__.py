@@ -35,7 +35,6 @@ __all__ = [
 from pybrops.breed.prot.sel import prob
 
 # import utilities
-from pybrops.breed.prot.sel import sampling
 from pybrops.breed.prot.sel import targetfn
 from pybrops.breed.prot.sel import transfn
 from pybrops.breed.prot.sel import weightfn
