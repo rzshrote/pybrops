@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SortableMatrix import SortableMatrix
-from pybrops.core.mat.SortableMatrix import is_SortableMatrix
 from pybrops.core.mat.SortableMatrix import check_is_SortableMatrix
 
 ################################################################################
@@ -47,12 +46,6 @@ def test_sort_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_SortableMatrix_is_concrete():
-    assert_concrete_function(is_SortableMatrix)
-
-def test_is_SortableMatrix(mat):
-    assert is_SortableMatrix(mat)
-
 def test_check_is_SortableMatrix_is_concrete():
     assert_concrete_function(check_is_SortableMatrix)
 

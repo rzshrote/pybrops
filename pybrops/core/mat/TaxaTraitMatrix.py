@@ -36,22 +36,6 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TaxaTraitMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a TaxaTraitMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a TaxaTraitMatrix object instance.
-    """
-    return isinstance(v, TaxaTraitMatrix)
-
 def check_is_TaxaTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaTraitMatrix. Otherwise raise TypeError.

@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
-from pybrops.core.mat.DensePhasedTaxaVariantMatrix import is_DensePhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import check_is_DensePhasedTaxaVariantMatrix
 
 ################################################################################
@@ -364,12 +363,6 @@ def test_concat_phase_cls(mat, mat_int8):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    assert_concrete_function(is_DensePhasedTaxaVariantMatrix)
-
-def test_is_DensePhasedTaxaVariantMatrix(mat):
-    assert is_DensePhasedTaxaVariantMatrix(mat)
-
 def test_check_is_DensePhasedTaxaVariantMatrix_is_concrete():
     assert_concrete_function(check_is_DensePhasedTaxaVariantMatrix)
 

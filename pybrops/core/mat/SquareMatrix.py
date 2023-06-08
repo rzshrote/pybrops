@@ -109,22 +109,6 @@ class SquareMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SquareMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``SquareMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``SquareMatrix`` object instance.
-    """
-    return isinstance(v, SquareMatrix)
-
 def check_is_SquareMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``SquareMatrix``. Otherwise raise ``TypeError``.

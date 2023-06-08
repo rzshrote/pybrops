@@ -37,22 +37,6 @@ class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SquareTaxaMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``SquareTaxaMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``SquareTaxaMatrix`` object instance.
-    """
-    return isinstance(v, SquareTaxaMatrix)
-
 def check_is_SquareTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``SquareTaxaMatrix``. Otherwise raise ``TypeError``.

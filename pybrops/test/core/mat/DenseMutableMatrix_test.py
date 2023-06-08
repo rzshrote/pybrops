@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
-from pybrops.core.mat.DenseMutableMatrix import is_DenseMutableMatrix
 from pybrops.core.mat.DenseMutableMatrix import check_is_DenseMutableMatrix
 
 ################################################################################
@@ -44,12 +43,6 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseMutableMatrix_is_concrete():
-    assert_concrete_function(is_DenseMutableMatrix)
-
-def test_is_DenseMutableMatrix(mat):
-    assert is_DenseMutableMatrix(mat)
-
 def test_check_is_DenseMutableMatrix_is_concrete():
     assert_concrete_function(check_is_DenseMutableMatrix)
 

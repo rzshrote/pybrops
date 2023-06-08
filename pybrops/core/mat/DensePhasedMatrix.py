@@ -708,22 +708,6 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DensePhasedMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DensePhasedMatrix object instance.
-    """
-    return isinstance(v, DensePhasedMatrix)
-
 def check_is_DensePhasedMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.

@@ -84,22 +84,6 @@ class GroupableMatrix(SortableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GroupableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a GroupableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GroupableMatrix object instance.
-    """
-    return isinstance(v, GroupableMatrix)
-
 def check_is_GroupableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GroupableMatrix. Otherwise raise TypeError.
@@ -111,5 +95,5 @@ def check_is_GroupableMatrix(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_GroupableMatrix(v):
+    if not isinstance(v, GroupableMatrix):
         raise TypeError("'{0}' must be a GroupableMatrix".format(vname))

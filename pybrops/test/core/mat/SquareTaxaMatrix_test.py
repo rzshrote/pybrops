@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
-from pybrops.core.mat.SquareTaxaMatrix import is_SquareTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import check_is_SquareTaxaMatrix
 
 ################################################################################
@@ -43,12 +42,6 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_SquareTaxaMatrix_is_concrete():
-    assert_concrete_function(is_SquareTaxaMatrix)
-
-def test_is_SquareTaxaMatrix(mat):
-    assert is_SquareTaxaMatrix(mat)
-
 def test_check_is_SquareTaxaMatrix_is_concrete():
     assert_concrete_function(check_is_SquareTaxaMatrix)
 

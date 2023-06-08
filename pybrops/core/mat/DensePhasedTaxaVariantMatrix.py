@@ -827,22 +827,6 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DensePhasedTaxaVariantMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DensePhasedTaxaVariantMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DensePhasedTaxaVariantMatrix object instance.
-    """
-    return isinstance(v, DensePhasedTaxaVariantMatrix)
-
 def check_is_DensePhasedTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedTaxaVariantMatrix. Otherwise raise TypeError.

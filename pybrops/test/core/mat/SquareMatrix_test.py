@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SquareMatrix import SquareMatrix
-from pybrops.core.mat.SquareMatrix import is_SquareMatrix
 from pybrops.core.mat.SquareMatrix import check_is_SquareMatrix
 
 ################################################################################
@@ -53,12 +52,6 @@ def test_append_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_SquareMatrix_is_concrete():
-    assert_concrete_function(is_SquareMatrix)
-
-def test_is_SquareMatrix(mat):
-    assert is_SquareMatrix(mat)
-
 def test_check_is_SquareMatrix_is_concrete():
     assert_concrete_function(check_is_SquareMatrix)
 

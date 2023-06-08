@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
-from pybrops.core.mat.DensePhasedMatrix import is_DensePhasedMatrix
 from pybrops.core.mat.DensePhasedMatrix import check_is_DensePhasedMatrix
 
 ################################################################################
@@ -178,12 +177,6 @@ def test_phase_axis_fdel(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DensePhasedMatrix_is_concrete():
-    assert_concrete_function(is_DensePhasedMatrix)
-
-def test_is_DensePhasedMatrix(mat):
-    assert is_DensePhasedMatrix(mat)
-
 def test_check_is_DensePhasedMatrix_is_concrete():
     assert_concrete_function(check_is_DensePhasedMatrix)
 

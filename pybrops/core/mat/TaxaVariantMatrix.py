@@ -36,22 +36,6 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TaxaVariantMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a TaxaVariantMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a TaxaVariantMatrix object instance.
-    """
-    return isinstance(v, TaxaVariantMatrix)
-
 def check_is_TaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaVariantMatrix. Otherwise raise TypeError.

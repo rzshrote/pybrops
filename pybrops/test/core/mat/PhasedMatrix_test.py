@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
-from pybrops.core.mat.PhasedMatrix import is_PhasedMatrix
 from pybrops.core.mat.PhasedMatrix import check_is_PhasedMatrix
 
 ################################################################################
@@ -68,12 +67,6 @@ def test_incorp_phase_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhasedMatrix_is_concrete():
-    assert_concrete_function(is_PhasedMatrix)
-
-def test_is_PhasedMatrix(mat):
-    assert is_PhasedMatrix(mat)
-
 def test_check_is_PhasedMatrix_is_concrete():
     assert_concrete_function(check_is_PhasedMatrix)
 

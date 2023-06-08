@@ -342,22 +342,6 @@ class TraitMatrix(SortableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TraitMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a TraitMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a TraitMatrix object instance.
-    """
-    return isinstance(v, TraitMatrix)
-
 def check_is_TraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TraitMatrix. Otherwise raise TypeError.

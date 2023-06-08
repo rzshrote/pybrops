@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.VariantMatrix import VariantMatrix
-from pybrops.core.mat.VariantMatrix import is_VariantMatrix
 from pybrops.core.mat.VariantMatrix import check_is_VariantMatrix
 
 ################################################################################
@@ -122,12 +121,6 @@ def test_assign_hapgrp_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_VariantMatrix_is_concrete():
-    assert_concrete_function(is_VariantMatrix)
-
-def test_is_VariantMatrix(mat):
-    assert is_VariantMatrix(mat)
-
 def test_check_is_VariantMatrix_is_concrete():
     assert_concrete_function(check_is_VariantMatrix)
 

@@ -38,22 +38,6 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedTaxaVariantMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a PhasedTaxaVariantMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhasedTaxaVariantMatrix object instance.
-    """
-    return isinstance(v, PhasedTaxaVariantMatrix)
-
 def check_is_PhasedTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PhasedTaxaVariantMatrix. Otherwise raise TypeError.

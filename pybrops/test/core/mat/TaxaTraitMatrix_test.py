@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
-from pybrops.core.mat.TaxaTraitMatrix import is_TaxaTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import check_is_TaxaTraitMatrix
 
 ################################################################################
@@ -35,12 +34,6 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_TaxaTraitMatrix_is_concrete():
-    assert_concrete_function(is_TaxaTraitMatrix)
-
-def test_is_TaxaTraitMatrix(mat):
-    assert is_TaxaTraitMatrix(mat)
-
 def test_check_is_TaxaTraitMatrix_is_concrete():
     assert_concrete_function(check_is_TaxaTraitMatrix)
 

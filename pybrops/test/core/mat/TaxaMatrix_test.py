@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
-from pybrops.core.mat.TaxaMatrix import is_TaxaMatrix
 from pybrops.core.mat.TaxaMatrix import check_is_TaxaMatrix
 
 ################################################################################
@@ -104,12 +103,6 @@ def test_is_grouped_taxa_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_TaxaMatrix_is_concrete():
-    assert_concrete_function(is_TaxaMatrix)
-
-def test_is_TaxaMatrix(mat):
-    assert is_TaxaMatrix(mat)
-
 def test_check_is_TaxaMatrix_is_concrete():
     assert_concrete_function(check_is_TaxaMatrix)
 

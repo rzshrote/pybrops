@@ -457,22 +457,6 @@ class TaxaMatrix(GroupableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_TaxaMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a TaxaMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a TaxaMatrix object instance.
-    """
-    return isinstance(v, TaxaMatrix)
-
 def check_is_TaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaMatrix. Otherwise raise TypeError.

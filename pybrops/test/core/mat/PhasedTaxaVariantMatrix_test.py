@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
-from pybrops.core.mat.PhasedTaxaVariantMatrix import is_PhasedTaxaVariantMatrix
 from pybrops.core.mat.PhasedTaxaVariantMatrix import check_is_PhasedTaxaVariantMatrix
 
 ################################################################################
@@ -35,12 +34,6 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhasedTaxaVariantMatrix_is_concrete():
-    assert_concrete_function(is_PhasedTaxaVariantMatrix)
-
-def test_is_PhasedTaxaVariantMatrix(mat):
-    assert is_PhasedTaxaVariantMatrix(mat)
-
 def test_check_is_PhasedTaxaVariantMatrix_is_concrete():
     assert_concrete_function(check_is_PhasedTaxaVariantMatrix)
 

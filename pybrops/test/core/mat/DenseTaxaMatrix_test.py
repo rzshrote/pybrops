@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
-from pybrops.core.mat.DenseTaxaMatrix import is_DenseTaxaMatrix
 from pybrops.core.mat.DenseTaxaMatrix import check_is_DenseTaxaMatrix
 
 ################################################################################
@@ -425,12 +424,6 @@ def test_is_grouped_taxa(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseTaxaMatrix_is_concrete():
-    assert_concrete_function(is_DenseTaxaMatrix)
-
-def test_is_DenseTaxaMatrix(mat):
-    assert is_DenseTaxaMatrix(mat)
-
 def test_check_is_DenseTaxaMatrix_is_concrete():
     assert_concrete_function(check_is_DenseTaxaMatrix)
 

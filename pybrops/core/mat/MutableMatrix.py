@@ -105,22 +105,6 @@ class MutableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MutableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a MutableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a MutableMatrix object instance.
-    """
-    return isinstance(v, MutableMatrix)
-
 def check_is_MutableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.

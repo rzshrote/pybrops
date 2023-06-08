@@ -1007,22 +1007,6 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseTraitMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseTraitMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseTraitMatrix object instance.
-    """
-    return isinstance(v, DenseTraitMatrix)
-
 def check_is_DenseTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
@@ -1034,5 +1018,5 @@ def check_is_DenseTraitMatrix(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTraitMatrix(v):
+    if not isinstance(v, DenseTraitMatrix):
         raise TypeError("'{0}' must be a DenseTraitMatrix".format(vname))

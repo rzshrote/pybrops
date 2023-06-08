@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
-from pybrops.core.mat.GroupableMatrix import is_GroupableMatrix
 from pybrops.core.mat.GroupableMatrix import check_is_GroupableMatrix
 
 ################################################################################
@@ -44,12 +43,6 @@ def test_is_grouped_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GroupableMatrix_is_concrete():
-    assert_concrete_function(is_GroupableMatrix)
-
-def test_is_GroupableMatrix(mat):
-    assert is_GroupableMatrix(mat)
-
 def test_check_is_GroupableMatrix_is_concrete():
     assert_concrete_function(check_is_GroupableMatrix)
 

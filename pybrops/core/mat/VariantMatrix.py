@@ -662,22 +662,6 @@ class VariantMatrix(GroupableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_VariantMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a VariantMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a VariantMatrix object instance.
-    """
-    return isinstance(v, VariantMatrix)
-
 def check_is_VariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type VariantMatrix. Otherwise raise TypeError.

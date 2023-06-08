@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
-from pybrops.core.mat.DenseTraitMatrix import is_DenseTraitMatrix
 from pybrops.core.mat.DenseTraitMatrix import check_is_DenseTraitMatrix
 
 ################################################################################
@@ -287,12 +286,6 @@ def test_sort_trait_tuple(mat, mat_float64, trait_object, trait_lexsort_indices)
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseTraitMatrix_is_concrete():
-    assert_concrete_function(is_DenseTraitMatrix)
-
-def test_is_DenseTraitMatrix(mat):
-    assert is_DenseTraitMatrix(mat)
-
 def test_check_is_DenseTraitMatrix_is_concrete():
     assert_concrete_function(check_is_DenseTraitMatrix)
 

@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TraitMatrix import TraitMatrix
-from pybrops.core.mat.TraitMatrix import is_TraitMatrix
 from pybrops.core.mat.TraitMatrix import check_is_TraitMatrix
 
 ################################################################################
@@ -80,12 +79,6 @@ def test_sort_trait_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_TraitMatrix_is_concrete():
-    assert_concrete_function(is_TraitMatrix)
-
-def test_is_TraitMatrix(mat):
-    assert is_TraitMatrix(mat)
-
 def test_check_is_TraitMatrix_is_concrete():
     assert_concrete_function(check_is_TraitMatrix)
 

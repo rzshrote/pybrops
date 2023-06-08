@@ -8,7 +8,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PrunableMatrix import PrunableMatrix
-from pybrops.core.mat.PrunableMatrix import is_PrunableMatrix
 from pybrops.core.mat.PrunableMatrix import check_is_PrunableMatrix
 
 ################################################################################
@@ -43,12 +42,6 @@ def test_prune_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PrunableMatrix_is_concrete():
-    assert_concrete_function(is_PrunableMatrix)
-
-def test_is_PrunableMatrix(mat):
-    assert is_PrunableMatrix(mat)
-
 def test_check_is_PrunableMatrix_is_concrete():
     assert_concrete_function(check_is_PrunableMatrix)
 

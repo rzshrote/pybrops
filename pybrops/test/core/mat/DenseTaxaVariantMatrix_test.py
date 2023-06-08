@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
-from pybrops.core.mat.DenseTaxaVariantMatrix import is_DenseTaxaVariantMatrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import check_is_DenseTaxaVariantMatrix
 
 ################################################################################
@@ -646,12 +645,6 @@ def test_concat_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vr
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseTaxaVariantMatrix_is_concrete():
-    assert_concrete_function(is_DenseTaxaVariantMatrix)
-
-def test_is_DenseTaxaVariantMatrix(mat):
-    assert is_DenseTaxaVariantMatrix(mat)
-
 def test_check_is_DenseTaxaVariantMatrix_is_concrete():
     assert_concrete_function(check_is_DenseTaxaVariantMatrix)
 

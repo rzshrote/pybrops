@@ -1988,22 +1988,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVariantMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseVariantMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseVariantMatrix object instance.
-    """
-    return isinstance(v, DenseVariantMatrix)
-
 def check_is_DenseVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVariantMatrix. Otherwise raise TypeError.
@@ -2015,5 +1999,5 @@ def check_is_DenseVariantMatrix(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseVariantMatrix(v):
+    if not isinstance(v, DenseVariantMatrix):
         raise TypeError("'{0}' must be a DenseVariantMatrix".format(vname))

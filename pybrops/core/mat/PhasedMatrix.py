@@ -255,22 +255,6 @@ class PhasedMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a PhasedMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhasedMatrix object instance.
-    """
-    return isinstance(v, PhasedMatrix)
-
 def check_is_PhasedMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PhasedMatrix. Otherwise raise TypeError.

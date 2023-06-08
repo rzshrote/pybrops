@@ -1149,22 +1149,6 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseSquareTaxaMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseSquareTaxaMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseSquareTaxaMatrix object instance.
-    """
-    return isinstance(v, DenseSquareTaxaMatrix)
-
 def check_is_DenseSquareTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseSquareTaxaMatrix. Otherwise raise TypeError.

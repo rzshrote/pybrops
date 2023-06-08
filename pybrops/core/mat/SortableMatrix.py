@@ -113,22 +113,6 @@ class SortableMatrix(MutableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SortableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a SortableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a SortableMatrix object instance.
-    """
-    return isinstance(v, SortableMatrix)
-
 def check_is_SortableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.

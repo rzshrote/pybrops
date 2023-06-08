@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.MutableMatrix import MutableMatrix
-from pybrops.core.mat.MutableMatrix import is_MutableMatrix
 from pybrops.core.mat.MutableMatrix import check_is_MutableMatrix
 
 ################################################################################
@@ -47,12 +46,6 @@ def test_incorp_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_MutableMatrix_is_concrete():
-    assert_concrete_function(is_MutableMatrix)
-
-def test_is_MutableMatrix(mat):
-    assert is_MutableMatrix(mat)
-
 def test_check_is_MutableMatrix_is_concrete():
     assert_concrete_function(check_is_MutableMatrix)
 

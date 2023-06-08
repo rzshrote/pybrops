@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
-from pybrops.core.mat.DenseTaxaTraitMatrix import is_DenseTaxaTraitMatrix
 from pybrops.core.mat.DenseTaxaTraitMatrix import check_is_DenseTaxaTraitMatrix
 
 ################################################################################
@@ -409,12 +408,6 @@ def test_concat_trait_cls(mat, mat_float64, trait_object):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseTaxaTraitMatrix_is_concrete():
-    assert_concrete_function(is_DenseTaxaTraitMatrix)
-
-def test_is_DenseTaxaTraitMatrix(mat):
-    assert is_DenseTaxaTraitMatrix(mat)
-
 def test_check_is_DenseTaxaTraitMatrix_is_concrete():
     assert_concrete_function(check_is_DenseTaxaTraitMatrix)
 

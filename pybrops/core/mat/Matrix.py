@@ -608,22 +608,6 @@ class Matrix(HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Matrix(v: object) -> bool:
-    """
-    Determine whether an object is a Matrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a Matrix object instance.
-    """
-    return isinstance(v, Matrix)
-
 def check_is_Matrix(v: object, vname: str) -> None:
     """
     Check if object is of type Matrix. Otherwise raise TypeError.

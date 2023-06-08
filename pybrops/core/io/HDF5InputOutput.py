@@ -96,4 +96,4 @@ def check_is_HDF5InputOutput(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HDF5InputOutput):
-        raise TypeError("variable '{0}' must be a HDF5InputOutput".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,HDF5InputOutput.__name__,type(v).__name__))

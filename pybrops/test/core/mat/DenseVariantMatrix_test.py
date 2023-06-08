@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
-from pybrops.core.mat.DenseVariantMatrix import is_DenseVariantMatrix
 from pybrops.core.mat.DenseVariantMatrix import check_is_DenseVariantMatrix
 
 ################################################################################
@@ -745,12 +744,6 @@ def test_is_grouped_vrnt(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseVariantMatrix_is_concrete():
-    assert_concrete_function(is_DenseVariantMatrix)
-
-def test_is_DenseVariantMatrix(mat):
-    assert is_DenseVariantMatrix(mat)
-
 def test_check_is_DenseVariantMatrix_is_concrete():
     assert_concrete_function(check_is_DenseVariantMatrix)
 

@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
-from pybrops.core.mat.DenseSquareMatrix import is_DenseSquareMatrix
 from pybrops.core.mat.DenseSquareMatrix import check_is_DenseSquareMatrix
 
 ################################################################################
@@ -122,12 +121,6 @@ def test_is_square(mat, mat_rectangle):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseSquareMatrix_is_concrete():
-    assert_concrete_function(is_DenseSquareMatrix)
-
-def test_is_DenseSquareMatrix(mat):
-    assert is_DenseSquareMatrix(mat)
-
 def test_check_is_DenseSquareMatrix_is_concrete():
     assert_concrete_function(check_is_DenseSquareMatrix)
 

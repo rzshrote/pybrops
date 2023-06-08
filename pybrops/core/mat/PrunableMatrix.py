@@ -64,22 +64,6 @@ class PrunableMatrix(Matrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PrunableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a PrunableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PrunableMatrix object instance.
-    """
-    return isinstance(v, PrunableMatrix)
-
 def check_is_PrunableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PrunableMatrix. Otherwise raise TypeError.

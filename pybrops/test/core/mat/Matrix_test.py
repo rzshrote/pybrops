@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.Matrix import is_Matrix
 from pybrops.core.mat.Matrix import check_is_Matrix
 
 ################################################################################
@@ -214,12 +213,6 @@ def test_concat_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_Matrix_is_concrete():
-    assert_concrete_function(is_Matrix)
-
-def test_is_Matrix(mat):
-    assert is_Matrix(mat)
-
 def test_check_is_Matrix_is_concrete():
     assert_concrete_function(check_is_Matrix)
 
