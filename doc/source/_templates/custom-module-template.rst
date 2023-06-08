@@ -1,6 +1,6 @@
-{{ fullname | escape | underline}}
+{{ objname | escape | underline}}
 
-.. automodule:: {{ fullname }}
+.. automodule:: {{ objname }}
 
    {% block classes %}
    {% if classes %}
