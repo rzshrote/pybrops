@@ -1,62 +1,62 @@
 """
-Module defining a general class for subset selection protocols.
+Module defining a general class for binary selection protocols.
 """
 
 from numbers import Integral
 from typing import Optional, Union
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
+from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
-from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
+from pybrops.opt.algo.BinaryGeneticAlgorithm import BinaryGeneticAlgorithm
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm, check_is_BinaryOptimizationAlgorithm
+from pybrops.opt.soln.BinarySolution import BinarySolution
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
-class SubsetSelectionProtocol(SelectionProtocol):
+class BinarySelectionProtocol(SelectionProtocol):
     """
-    Semi-abstract class for creating subset selection protocols.
+    Semi-abstract class for creating binary selection protocols.
     """
     ########################## Special Object Methods ##########################
     # __init__ method from SelectionProtocol
 
     ############################ Object Properties #############################
     @property
-    def soalgo(self) -> SubsetOptimizationAlgorithm:
+    def soalgo(self) -> BinaryOptimizationAlgorithm:
         """Single-objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
-            value = SubsetGeneticAlgorithm(
+            value = BinaryGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100  # number of parents in population
             )
             # construct default hillclimber
-            # value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_SubsetOptimizationAlgorithm(value, "soalgo")
+            # value = SteepestDescentBinaryHillClimber(self.rng)
+        check_is_BinaryOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
-    def moalgo(self) -> SubsetOptimizationAlgorithm:
+    def moalgo(self) -> BinaryOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
-            value = NSGA2SubsetGeneticAlgorithm(
+            value = NSGA2BinaryGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100  # number of parents in population
             )
-        check_is_SubsetOptimizationAlgorithm(value, "moalgo")
+        check_is_BinaryOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################
@@ -76,7 +76,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> BinarySolution:
         """
         Solve the selection problem using a single-objective optimization algorithm.
 
@@ -144,7 +144,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> BinarySolution:
         """
         Calculate a Pareto frontier for objectives.
 
@@ -225,7 +225,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> SubsetSelectionConfiguration:
+        ) -> BinarySelectionConfiguration:
         """
         Select individuals for breeding.
 
@@ -254,7 +254,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
 
         Returns
         -------
-        out : SubsetSelectionConfiguration
+        out : BinarySelectionConfiguration
             A selection configuration object, requiring all necessary information to mate individuals.
         """
         # if the number of objectives is 1, then we use a single objective algorithm
@@ -276,8 +276,8 @@ class SubsetSelectionProtocol(SelectionProtocol):
             if miscout is not None:
                 miscout["sosoln"] = sosoln
 
-            # construct a SubsetSelectionConfiguration
-            selcfg = SubsetSelectionConfiguration(
+            # construct a BinarySelectionConfiguration
+            selcfg = BinarySelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,
@@ -319,8 +319,8 @@ class SubsetSelectionProtocol(SelectionProtocol):
             if miscout is not None:
                 miscout["mosoln"] = mosoln
 
-            # construct a SubsetSelectionConfiguration
-            selcfg = SubsetSelectionConfiguration(
+            # construct a BinarySelectionConfiguration
+            selcfg = BinarySelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,

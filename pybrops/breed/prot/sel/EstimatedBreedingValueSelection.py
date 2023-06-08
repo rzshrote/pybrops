@@ -4,7 +4,7 @@ Module defining conventional genomic selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "EstimatedBreedingValueBaseSelection",
+    "EstimatedBreedingValueSelectionMixin",
     "EstimatedBreedingValueSubsetSelection",
     "EstimatedBreedingValueRealSelection",
     "EstimatedBreedingValueIntegerSelection",
@@ -39,7 +39,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
+class EstimatedBreedingValueSelectionMixin(SelectionProtocol,metaclass=ABCMeta):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
@@ -117,7 +117,7 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         self.nmating = nmating
         self.nprogeny = nprogeny
         self.rng = rng
-        super(EstimatedBreedingValueBaseSelection, self).__init__(
+        super(EstimatedBreedingValueSelectionMixin, self).__init__(
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -195,7 +195,7 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     ################# Selection Functions ##################
     # select() abstract function from SelectionProtocol
 
-class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection):
+class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -506,7 +506,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection)
         else:
             raise ValueError("number of objectives must be greater than zero")
 
-class EstimatedBreedingValueRealSelection(EstimatedBreedingValueBaseSelection):
+class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin):
     """
     Conventional Genomic Selection in a real search space.
     """
@@ -593,7 +593,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueBaseSelection):
     ################# Selection Functions ##################
     # use super select() function
 
-class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueBaseSelection):
+class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixin):
     """
     Conventional Genomic Selection in an integer search space.
     """
@@ -686,7 +686,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueBaseSelection
     ################# Selection Functions ##################
     # use super select() function
 
-class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection):
+class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin):
     """
     Conventional Genomic Selection in a subset search space.
     """
@@ -698,7 +698,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
     ############################################################################
     ############################ Object Properties #############################
     ############################################################################
-    @EstimatedBreedingValueBaseSelection.neqcv.setter
+    @EstimatedBreedingValueSelectionMixin.neqcv.setter
     def neqcv(self, value) -> Integral:
         """Set number of equality constraint violations. If None, set to 1 for ``nparent`` summation constraint."""
         if value is None:
@@ -707,7 +707,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
         check_is_gteq(value, "neqcv", 0)    # possible to have 0 equality constraints
         self._neqcv = value
     
-    @EstimatedBreedingValueBaseSelection.eqcv_trans.setter
+    @EstimatedBreedingValueSelectionMixin.eqcv_trans.setter
     def eqcv_trans(self, value: Union[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray],None]) -> None:
         """Set latent space to equality constraint violation transformation function. If None, set to the empty function."""
         if value is None:
@@ -715,7 +715,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueBaseSelection)
         check_is_Callable(value, "eqcv_trans")
         self._eqcv_trans = value 
 
-    @EstimatedBreedingValueBaseSelection.eqcv_trans_kwargs.setter
+    @EstimatedBreedingValueSelectionMixin.eqcv_trans_kwargs.setter
     def eqcv_trans_kwargs(self, value: Union[dict,None]) -> None:
         """Set keyword arguments for the latent space to equality constraint violation transformation function. If None, set to empty dict."""
         if value is None:

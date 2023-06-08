@@ -14,13 +14,15 @@ from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
-from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict, check_is_str
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_ndarray_all_gteq, check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
+from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.soln.Solution import Solution
@@ -57,6 +59,7 @@ class SelectionProtocol(metaclass=ABCMeta):
             ndset_wt: Optional[Real] = None,
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
             moalgo: Optional[OptimizationAlgorithm] = None
         ) -> None:
@@ -88,6 +91,7 @@ class SelectionProtocol(metaclass=ABCMeta):
         self.ndset_wt = ndset_wt
         self.ndset_trans = ndset_trans
         self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.rng = rng
         self.soalgo = soalgo
         self.moalgo = moalgo
 
@@ -337,6 +341,18 @@ class SelectionProtocol(metaclass=ABCMeta):
             }
         check_is_dict(value, "ndset_trans_kwargs")  # check is dict
         self._ndset_trans_kwargs = value
+
+    @property
+    def rng(self) -> Union[Generator,RandomState]:
+        """rng."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
+        """Set rng."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
 
     @property
     @abstractmethod

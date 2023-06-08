@@ -1,62 +1,62 @@
 """
-Module defining a general class for subset selection protocols.
+Module defining a general class for real selection protocols.
 """
 
 from numbers import Integral
 from typing import Optional, Union
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
+from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionConfiguration
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
-from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
-from pybrops.opt.soln.SubsetSolution import SubsetSolution
+from pybrops.opt.algo.NSGA2RealGeneticAlgorithm import NSGA2RealGeneticAlgorithm
+from pybrops.opt.algo.RealGeneticAlgorithm import RealGeneticAlgorithm
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm, check_is_RealOptimizationAlgorithm
+from pybrops.opt.soln.RealSolution import RealSolution
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
-class SubsetSelectionProtocol(SelectionProtocol):
+class RealSelectionProtocol(SelectionProtocol):
     """
-    Semi-abstract class for creating subset selection protocols.
+    Semi-abstract class for creating real selection protocols.
     """
     ########################## Special Object Methods ##########################
     # __init__ method from SelectionProtocol
 
     ############################ Object Properties #############################
     @property
-    def soalgo(self) -> SubsetOptimizationAlgorithm:
+    def soalgo(self) -> RealOptimizationAlgorithm:
         """Single-objective optimization algorithm."""
         return self._soalgo
     @soalgo.setter
-    def soalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
+    def soalgo(self, value: Union[RealOptimizationAlgorithm,None]) -> None:
         """Set single-objective optimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
-            value = SubsetGeneticAlgorithm(
+            value = RealGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100  # number of parents in population
             )
             # construct default hillclimber
-            # value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_SubsetOptimizationAlgorithm(value, "soalgo")
+            # value = SteepestDescentRealHillClimber(self.rng)
+        check_is_RealOptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
 
     @property
-    def moalgo(self) -> SubsetOptimizationAlgorithm:
+    def moalgo(self) -> RealOptimizationAlgorithm:
         """Multi-objective opimization algorithm."""
         return self._moalgo
     @moalgo.setter
-    def moalgo(self, value: Union[SubsetOptimizationAlgorithm,None]) -> None:
+    def moalgo(self, value: Union[RealOptimizationAlgorithm,None]) -> None:
         """Set multi-objective opimization algorithm."""
         if value is None:
             # construct default multi-objective algorithm
-            value = NSGA2SubsetGeneticAlgorithm(
+            value = NSGA2RealGeneticAlgorithm(
                 ngen = 250,     # number of generations to evolve
                 pop_size = 100  # number of parents in population
             )
-        check_is_SubsetOptimizationAlgorithm(value, "moalgo")
+        check_is_RealOptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
 
     ############################## Object Methods ##############################
@@ -76,7 +76,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> RealSolution:
         """
         Solve the selection problem using a single-objective optimization algorithm.
 
@@ -144,7 +144,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> SubsetSolution:
+        ) -> RealSolution:
         """
         Calculate a Pareto frontier for objectives.
 
@@ -225,7 +225,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> SubsetSelectionConfiguration:
+        ) -> RealSelectionConfiguration:
         """
         Select individuals for breeding.
 
@@ -254,7 +254,7 @@ class SubsetSelectionProtocol(SelectionProtocol):
 
         Returns
         -------
-        out : SubsetSelectionConfiguration
+        out : RealSelectionConfiguration
             A selection configuration object, requiring all necessary information to mate individuals.
         """
         # if the number of objectives is 1, then we use a single objective algorithm
@@ -276,8 +276,8 @@ class SubsetSelectionProtocol(SelectionProtocol):
             if miscout is not None:
                 miscout["sosoln"] = sosoln
 
-            # construct a SubsetSelectionConfiguration
-            selcfg = SubsetSelectionConfiguration(
+            # construct a RealSelectionConfiguration
+            selcfg = RealSelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,
@@ -319,8 +319,8 @@ class SubsetSelectionProtocol(SelectionProtocol):
             if miscout is not None:
                 miscout["mosoln"] = mosoln
 
-            # construct a SubsetSelectionConfiguration
-            selcfg = SubsetSelectionConfiguration(
+            # construct a RealSelectionConfiguration
+            selcfg = RealSelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,
