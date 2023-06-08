@@ -99,4 +99,4 @@ def check_is_GroupableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GroupableMatrix):
-        raise TypeError("'{0}' must be a GroupableMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,GroupableMatrix.__name__,type(v).__name__))

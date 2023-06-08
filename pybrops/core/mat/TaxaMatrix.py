@@ -474,4 +474,4 @@ def check_is_TaxaMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TaxaMatrix):
-        raise TypeError("'{0}' must be a TaxaMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,TaxaMatrix.__name__,type(v).__name__))

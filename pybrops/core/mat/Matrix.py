@@ -625,4 +625,4 @@ def check_is_Matrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, Matrix):
-        raise TypeError("'{0}' must be of type Matrix.".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,Matrix.__name__,type(v).__name__))

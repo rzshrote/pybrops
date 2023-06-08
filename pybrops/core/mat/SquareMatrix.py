@@ -125,4 +125,4 @@ def check_is_SquareMatrix(v: object, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, SquareMatrix):
-        raise TypeError("'{0}' must be a SquareMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SquareMatrix.__name__,type(v).__name__))

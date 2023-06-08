@@ -130,4 +130,4 @@ def check_is_SortableMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SortableMatrix):
-        raise TypeError("'%s' must be a SortableMatrix." % vname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SortableMatrix.__name__,type(v).__name__))

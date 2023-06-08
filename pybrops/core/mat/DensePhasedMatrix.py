@@ -725,4 +725,4 @@ def check_is_DensePhasedMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DensePhasedMatrix):
-        raise TypeError("'%s' must be a DensePhasedMatrix." % vname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DensePhasedMatrix.__name__,type(v).__name__))

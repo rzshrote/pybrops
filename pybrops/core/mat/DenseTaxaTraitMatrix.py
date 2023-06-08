@@ -1070,4 +1070,4 @@ def check_is_DenseTaxaTraitMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseTaxaTraitMatrix):
-        raise TypeError("'{0}' must be a DenseTaxaTraitMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseTaxaTraitMatrix.__name__,type(v).__name__))

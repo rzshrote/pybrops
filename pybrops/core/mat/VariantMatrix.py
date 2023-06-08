@@ -679,4 +679,4 @@ def check_is_VariantMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, VariantMatrix):
-        raise TypeError("'{0}' must be a VariantMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,VariantMatrix.__name__,type(v).__name__))

@@ -359,4 +359,4 @@ def check_is_TraitMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TraitMatrix):
-        raise TypeError("'{0}' must be a TraitMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,TraitMatrix.__name__,type(v).__name__))

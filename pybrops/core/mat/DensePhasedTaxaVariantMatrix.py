@@ -844,4 +844,4 @@ def check_is_DensePhasedTaxaVariantMatrix(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DensePhasedTaxaVariantMatrix):
-        raise TypeError("'{0}' must be a DensePhasedTaxaVariantMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DensePhasedTaxaVariantMatrix.__name__,type(v).__name__))
