@@ -167,15 +167,18 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
         # get number of individuals
         ntaxa = bvmat.ntaxa
 
+        # get number of selected individuals
+        ndecn = self.ncross * self.nparent
+
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, ndecn)
+        decn_space_upper = numpy.repeat(ntaxa-1, ndecn)
 
         # construct problem
         prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
             bvmat = bvmat,
-            ndecn = self.nparent,
+            ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -328,7 +331,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
         # construct problem
         prob = EstimatedBreedingValueRealSelectionProblem.from_bvmat(
             bvmat = bvmat,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -481,7 +484,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
         # construct problem
         prob = EstimatedBreedingValueIntegerSelectionProblem.from_bvmat(
             bvmat = bvmat,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

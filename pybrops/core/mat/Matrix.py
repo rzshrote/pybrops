@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 import numpy
-from typing import Union
+from typing import Any, Union
 
 from typing import Sequence
 from numpy.typing import ArrayLike

@@ -8,7 +8,7 @@ __all__ = [
     "check_is_TaxaMatrix"
 ]
 
-from typing import Sequence, Union
+from typing import Any, Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike

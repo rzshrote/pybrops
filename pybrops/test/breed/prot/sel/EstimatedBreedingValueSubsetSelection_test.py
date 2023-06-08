@@ -30,7 +30,7 @@ numpy.random.seed(20230608)
 ################################################################################
 @pytest.fixture
 def ntaxa():
-    yield 4*10
+    yield 4*50
 
 @pytest.fixture
 def nvrnt():
