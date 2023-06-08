@@ -48,7 +48,7 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     def __init__(
             self, 
             nparent: Integral, 
-            ncross: Integral, 
+            nmating: Integral, 
             nprogeny: Integral,
             nobj: Integral,
             obj_wt: Optional[numpy.ndarray] = None,
@@ -114,7 +114,7 @@ class EstimatedBreedingValueBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         """
         # order dependent assignments
         self.nparent = nparent
-        self.nmating = ncross
+        self.nmating = nmating
         self.nprogeny = nprogeny
         self.rng = rng
         super(EstimatedBreedingValueBaseSelection, self).__init__(
@@ -312,7 +312,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection)
         return prob
 
     ############## Pareto Frontier Functions ###############
-    def pareto(
+    def mosolve(
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
@@ -479,7 +479,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueBaseSelection)
         # selection configuration
         elif self.nobj > 1:
             # get the pareto frontier
-            frontier, sel_config = self.pareto(
+            frontier, sel_config = self.mosolve(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,

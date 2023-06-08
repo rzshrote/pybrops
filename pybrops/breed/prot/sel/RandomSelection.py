@@ -188,7 +188,7 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     # leave problem() abstract
 
     ############## Pareto Frontier Functions ###############
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
+    def mosolve(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
         """
         Calculate a Pareto frontier for objectives.
 
@@ -342,7 +342,7 @@ class RandomBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
             # raises error
-            frontier, sel_config = self.pareto(
+            frontier, sel_config = self.mosolve(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,

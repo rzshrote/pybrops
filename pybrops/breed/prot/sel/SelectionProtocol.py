@@ -14,6 +14,7 @@ from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
+from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -22,6 +23,7 @@ from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_nda
 from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.soln.Solution import Solution
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -402,9 +404,9 @@ class SelectionProtocol(metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
-    ############## Pareto Frontier Functions ###############
+    ################ Single Objective Solve ################
     @abstractmethod
-    def pareto(
+    def sosolve(
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
@@ -415,9 +417,9 @@ class SelectionProtocol(metaclass=ABCMeta):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> tuple:
+        ) -> Solution:
         """
-        Calculate a Pareto frontier for objectives.
+        Solve the selection problem using a single-objective optimization algorithm.
 
         Parameters
         ----------
@@ -444,22 +446,56 @@ class SelectionProtocol(metaclass=ABCMeta):
 
         Returns
         -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
+        out : Solution
+            A single-objective solution to the posed selection problem.
+        """
+        raise NotImplementedError("method is abstract")
 
-            Where:
+    ################ Multi Objective Solve #################
+    @abstractmethod
+    def mosolve(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> Solution:
+        """
+        Solve the selection problem using a multi-objective optimization algorithm.
+        This calculates a Pareto frontier for the objectives.
 
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        miscout : dict, None
+            Pointer to a dictionary for miscellaneous user defined output.
+            If ``dict``, write to dict (may overwrite previously defined fields).
+            If ``None``, user defined output is not calculated or stored.
+        kwargs : dict
+            Additional keyword arguments.
 
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
+        Returns
+        -------
+        out : Solution
+            A multi-objective solution to the posed selection problem.
         """
         raise NotImplementedError("method is abstract")
 
@@ -476,9 +512,18 @@ class SelectionProtocol(metaclass=ABCMeta):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> tuple:
+        ) -> SelectionConfiguration:
         """
-        Select individuals for breeding.
+        Select a single selection configuration of individuals for breeding.
+        
+        If there is a single objective, then optimize using a single-objective 
+        optimization algorithm and create a selection configuration from the
+        identified solution.
+
+        If there is are multiple objectives, then optimize using a multi-objective
+        optimization algorithm, apply a transformation on the non-dominated set
+        of solutions to find the single best solution among the set, and create
+        a selection configuration from the identified solution.
 
         Parameters
         ----------
@@ -505,18 +550,8 @@ class SelectionProtocol(metaclass=ABCMeta):
 
         Returns
         -------
-        out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
+        out : SelectionConfiguration
+            A selection configuration object, requiring all necessary information to mate individuals.
         """
         raise NotImplementedError("method is abstract")
 

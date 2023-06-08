@@ -194,7 +194,7 @@ def selprot(
 ):
     yield EstimatedBreedingValueSubsetSelection(
         nparent = 5, 
-        ncross = 1, 
+        nmating = 1, 
         nprogeny = 10,
         method = method,
         nobj = nobj,

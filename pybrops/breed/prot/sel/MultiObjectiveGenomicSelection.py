@@ -206,7 +206,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol,metaclass=ABCMeta):
     # leave problem() abstract
 
     ############## Pareto Frontier Functions ###############
-    def pareto(
+    def mosolve(
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
@@ -379,7 +379,7 @@ class MultiObjectiveGenomicSelection(SelectionProtocol,metaclass=ABCMeta):
         # estimate Pareto frontier, then choose from non-dominated points.
         elif self.method == "pareto":
             # raises error
-            frontier, sel_config = self.pareto(
+            frontier, sel_config = self.mosolve(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,

@@ -181,7 +181,7 @@ def selprot(
 ):
     yield EstimatedBreedingValueBinarySelection(
         nparent = 5, 
-        ncross = 1, 
+        nmating = 1, 
         nprogeny = 10,
         method = "single",
         nobj = nobj,

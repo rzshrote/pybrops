@@ -190,7 +190,7 @@ class MeanExpectedHeterozygosityBaseSelection(SelectionProtocol,metaclass=ABCMet
 
     ############## Pareto Frontier Functions ###############
     # implement since this is problem type agnostic
-    def pareto(
+    def mosolve(
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
@@ -362,7 +362,7 @@ class MeanExpectedHeterozygosityBaseSelection(SelectionProtocol,metaclass=ABCMet
         # selection configuration
         elif self.method == "pareto":
             # get the pareto frontier
-            frontier, sel_config = self.pareto(
+            frontier, sel_config = self.mosolve(
                 pgmat = pgmat,
                 gmat = gmat,
                 ptdf = ptdf,

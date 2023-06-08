@@ -342,7 +342,7 @@ def test_pareto(nconfig, nparent, ncross, nprogeny, rng, dpgmat, dgmat, bvmat, i
         rng = rng
     )
 
-    frontier, sel_config = bocs.pareto(
+    frontier, sel_config = bocs.mosolve(
         pgmat = dpgmat,
         gmat = dgmat,
         ptdf = None,
