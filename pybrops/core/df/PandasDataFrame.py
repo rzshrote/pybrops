@@ -7,7 +7,7 @@ from typing import Any
 import numpy
 import pandas
 from pybrops.core.df.DataFrame import DataFrame
-from pybrops.core.error.error_type_pandas import check_is_pandas_df
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_python import check_len
@@ -43,7 +43,7 @@ class PandasDataFrame(DataFrame):
     @data.setter
     def data(self, value: pandas.DataFrame) -> None:
         """Set dataframe"""
-        check_is_pandas_df(value, "df")
+        check_is_pandas_DataFrame(value, "df")
         self._data = value
     @data.deleter
     def data(self) -> None:
