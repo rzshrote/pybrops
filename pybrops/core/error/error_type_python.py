@@ -1,6 +1,38 @@
+"""
+Module containing subroutines to check Python types.
+"""
+
+__all__ = [
+    "check_inherits",
+    "check_isinstance",
+    "check_is_bool",
+    "check_is_class",
+    "check_is_dict",
+    "check_is_float",
+    "check_is_int",
+    "check_is_int_or_inf",
+    "check_is_int_or_None",
+    "check_is_list",
+    "check_is_range",
+    "check_is_set",
+    "check_is_str",
+    "check_is_tuple",
+    "check_is_type",
+    "check_is_Complex",
+    "check_is_Integral",
+    "check_is_Number",
+    "check_is_Real",
+    "check_is_Callable",
+    "check_is_Container",
+    "check_is_Sequence",
+    "check_is_array_like",
+    "check_is_str_or_iterable",
+    "check_is_list_or_tuple"
+]
+
 import math
 from numbers import Complex, Integral, Number, Real
-from typing import Any, Callable, Container, Sequence
+from typing import Callable, Container, Sequence
 from typing import Union
 import inspect
 

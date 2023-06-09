@@ -2,6 +2,12 @@
 Module containing error subroutines related to Python object attributes.
 """
 
+__all__ = [
+    "error_readonly",
+    "check_is_callable",
+    "check_is_iterable"
+]
+
 from typing import Any
 
 ### read/write ###

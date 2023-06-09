@@ -1,3 +1,34 @@
+"""
+Module containing subroutines to check ``numpy.ndarray`` values.
+"""
+
+__all__ = [
+    "check_ndarray_in_interval",
+    "check_ndarray_all_gt",
+    "check_ndarray_all_gteq",
+    "check_ndarray_eq",
+    "check_ndarray_is_binary",
+    "check_ndarray_is_positive",
+    "check_ndarray_ndim",
+    "check_ndarray_ndim_gteq",
+    "check_ndarray_size",
+    "check_ndarray_sum",
+    "check_ndarray_mean_is_approx",
+    "check_ndarray_std_is_approx",
+    "check_ndarray_len_eq",
+    "check_ndarray_len_gteq",
+    "check_ndarray_shape_eq",
+    "check_ndarray_axis_len",
+    "check_ndarray_axis_len_eq",
+    "check_ndarray_axis_len_lt",
+    "check_ndarray_axis_len_lteq",
+    "check_ndarray_axis_len_gt",
+    "check_ndarray_axis_len_gteq",
+    "check_ndarray_is_hypercube",
+    "check_ndarray_is_square",
+    "check_ndarray_is_triu",
+    "check_ndarray_len_is_multiple_of"
+]
 from numbers import Real
 import numpy
 

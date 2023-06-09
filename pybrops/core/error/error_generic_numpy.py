@@ -1,3 +1,17 @@
+"""
+Module containing generic subroutines for other ``numpy`` error subroutines.
+"""
+
+__all__ = [
+    "generic_check_ndarray_eq",
+    "generic_check_ndarray_ndim",
+    "generic_check_ndarray_ndim_gteq",
+    "generic_check_ndarray_size",
+    "generic_check_ndarray_sum",
+    "generic_check_ndarray_shape",
+    "generic_check_ndarray_is_square"
+]
+
 from numbers import Real
 from typing import Optional, Tuple, Union
 import numpy

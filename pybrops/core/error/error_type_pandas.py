@@ -1,3 +1,11 @@
+"""
+Module containing subroutines to check Pandas types.
+"""
+
+__all__ = [
+    "check_is_pandas_DataFrame"
+]
+
 from pandas import DataFrame
 
 ################################################################################
