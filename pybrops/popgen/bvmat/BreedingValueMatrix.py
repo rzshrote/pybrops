@@ -3,6 +3,11 @@ Module defining basal matrix interfaces and associated error checking routines
 for breeding value matrices.
 """
 
+__all__ = [
+    "BreedingValueMatrix",
+    "check_is_BreedingValueMatrix"
+]
+
 from typing import Any
 
 import numpy
@@ -267,22 +272,6 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingValueMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a BreedingValueMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingValueMatrix object instance.
-    """
-    return isinstance(v, BreedingValueMatrix)
-
 def check_is_BreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingValueMatrix. Otherwise raise TypeError.

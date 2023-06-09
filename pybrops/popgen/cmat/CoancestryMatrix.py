@@ -2,6 +2,11 @@
 Module defining basal coancestry matrix interfaces and associated error checking routines.
 """
 
+__all__ = [
+    "CoancestryMatrix",
+    "check_is_CoancestryMatrix"
+]
+
 from numbers import Real
 from typing import Any, Optional, Union
 import numpy
@@ -331,22 +336,6 @@ class CoancestryMatrix(SquareTaxaMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CoancestryMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a CoancestryMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a CoancestryMatrix object instance.
-    """
-    return isinstance(v, CoancestryMatrix)
-
 def check_is_CoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryMatrix. Otherwise raise TypeError.

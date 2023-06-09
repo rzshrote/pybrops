@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.popgen.gmat.DenseGenotypeMatrix import is_DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import check_is_DenseGenotypeMatrix
 
 ################################################################################
@@ -818,12 +817,6 @@ def test_meh_float32(mat, mat_int8, mat_ploidy):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseGenotypeMatrix_is_concrete():
-    assert_concrete_function(is_DenseGenotypeMatrix)
-
-def test_is_DenseGenotypeMatrix(mat):
-    assert is_DenseGenotypeMatrix(mat)
-
 def test_check_is_DenseGenotypeMatrix_is_concrete():
     assert_concrete_function(check_is_DenseGenotypeMatrix)
 

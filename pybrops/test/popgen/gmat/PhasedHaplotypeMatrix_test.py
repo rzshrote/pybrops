@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.PhasedHaplotypeMatrix import PhasedHaplotypeMatrix
-from pybrops.popgen.gmat.PhasedHaplotypeMatrix import is_PhasedHaplotypeMatrix
 from pybrops.popgen.gmat.PhasedHaplotypeMatrix import check_is_PhasedHaplotypeMatrix
 
 ################################################################################
@@ -36,18 +35,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_PhasedHaplotypeMatrix_is_concrete():
-    assert_concrete_function(is_PhasedHaplotypeMatrix)
-
 def test_check_is_PhasedHaplotypeMatrix_is_concrete():
     assert_concrete_function(check_is_PhasedHaplotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhasedHaplotypeMatrix(mat):
-    assert is_PhasedHaplotypeMatrix(mat)
-
 def test_check_is_PhasedHaplotypeMatrix(mat):
     with not_raises(TypeError):
         check_is_PhasedHaplotypeMatrix(mat, "mat")

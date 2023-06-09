@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 that can have variant positions placed on a genetic map.
 """
 
-from typing import Any
+__all__ = [
+    "GeneticMappableMatrix",
+    "check_is_GeneticMappableMatrix"
+]
+
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -79,22 +83,6 @@ class GeneticMappableMatrix(VariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMappableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a GeneticMappableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GeneticMappableMatrix object instance.
-    """
-    return isinstance(v, GeneticMappableMatrix)
-
 def check_is_GeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMappableMatrix. Otherwise raise TypeError.

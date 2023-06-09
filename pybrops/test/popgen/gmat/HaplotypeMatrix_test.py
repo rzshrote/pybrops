@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
-from pybrops.popgen.gmat.HaplotypeMatrix import is_HaplotypeMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import check_is_HaplotypeMatrix
 
 ################################################################################
@@ -75,18 +74,12 @@ def test_gtfreq_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_HaplotypeMatrix_is_concrete():
-    assert_concrete_function(is_HaplotypeMatrix)
-
 def test_check_is_HaplotypeMatrix_is_concrete():
     assert_concrete_function(check_is_HaplotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_HaplotypeMatrix(mat):
-    assert is_HaplotypeMatrix(mat)
-
 def test_check_is_HaplotypeMatrix(mat):
     with not_raises(TypeError):
         check_is_HaplotypeMatrix(mat, "mat")

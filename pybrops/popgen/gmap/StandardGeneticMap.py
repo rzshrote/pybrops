@@ -3,7 +3,10 @@ Module implementing a standard genetic map format and associated error checking
 routines.
 """
 
-from typing import Any
+__all__ = [
+    "StandardGeneticMap",
+    "check_is_StandardGeneticMap"
+]
 
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -115,22 +118,6 @@ class StandardGeneticMap(GeneticMap):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_StandardGeneticMap(v: object) -> bool:
-    """
-    Determine whether an object is a StandardGeneticMap.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a StandardGeneticMap object instance.
-    """
-    return isinstance(v, StandardGeneticMap)
-
 def check_is_StandardGeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type StandardGeneticMap. Otherwise raise TypeError.

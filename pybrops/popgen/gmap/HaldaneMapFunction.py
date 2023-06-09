@@ -2,7 +2,11 @@
 Module implementing the Haldane genetic map function and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "HaldaneMapFunction",
+    "check_is_HaldaneMapFunction"
+]
+
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -217,22 +221,6 @@ class HaldaneMapFunction(GeneticMapFunction):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HaldaneMapFunction(v: object) -> bool:
-    """
-    Determine whether an object is a HaldaneMapFunction.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a HaldaneMapFunction object instance.
-    """
-    return isinstance(v, HaldaneMapFunction)
-
 def check_is_HaldaneMapFunction(v: object, vname: str) -> None:
     """
     Check if object is of type HaldaneMapFunction. Otherwise raise TypeError.

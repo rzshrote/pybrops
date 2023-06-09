@@ -2,6 +2,11 @@
 Module providing an implementation for a dense generalized weighted genomic relationship matrix.
 """
 
+__all__ = [
+    "DenseGeneralizedWeightedCoancestryMatrix",
+    "check_is_DenseGeneralizedWeightedCoancestryMatrix"
+]
+
 import math
 from numbers import Real
 from typing import Union

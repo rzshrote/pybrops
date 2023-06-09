@@ -2,10 +2,13 @@
 Module defining basal coancestry matrix factory interfaces and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "CoancestryMatrixFactory",
+    "check_is_CoancestryMatrixFactory"
+]
+
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
 
 class CoancestryMatrixFactory:
     """
@@ -49,7 +52,6 @@ class CoancestryMatrixFactory:
             A coancestry matrix.
         """
         raise NotImplementedError("class method is abstract")
-
 
 
 

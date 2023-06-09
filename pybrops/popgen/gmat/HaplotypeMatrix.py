@@ -3,8 +3,13 @@ Module defining basal matrix interfaces and associated error checking routines
 for haplotype matrices.
 """
 
+__all__ = [
+    "HaplotypeMatrix",
+    "check_is_HaplotypeMatrix"
+]
+
 import numbers
-from typing import Any, Optional
+from typing import Optional
 import numpy
 from numpy.typing import DTypeLike
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
@@ -266,10 +271,6 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_HaplotypeMatrix(v: object) -> bool:
-    """Return whether an object is a HaplotypeMatrix or not"""
-    return isinstance(v, HaplotypeMatrix)
-
 def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a HaplotypeMatrix"""
     if not isinstance(v, HaplotypeMatrix):

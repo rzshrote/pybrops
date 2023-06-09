@@ -3,6 +3,11 @@ Module implementing matrix routines and associated error checking routines
 for dense breeding value matrices.
 """
 
+__all__ = [
+    "DenseBreedingValueMatrix",
+    "check_is_DenseBreedingValueMatrix"
+]
+
 import copy
 from numbers import Real
 from typing import Optional, Union
@@ -629,22 +634,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseBreedingValueMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseBreedingValueMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseBreedingValueMatrix object instance.
-    """
-    return isinstance(v, DenseBreedingValueMatrix)
-
 def check_is_DenseBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.

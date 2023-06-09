@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
-from pybrops.popgen.bvmat.DenseBreedingValueMatrix import is_DenseBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import check_is_DenseBreedingValueMatrix
 
 ################################################################################
@@ -259,12 +258,6 @@ def test_tvar(bvmat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseBreedingValueMatrix_is_concrete():
-    assert_concrete_function(is_DenseBreedingValueMatrix)
-
-def test_is_DenseBreedingValueMatrix(bvmat):
-    assert is_DenseBreedingValueMatrix(bvmat)
-
 def test_check_is_DenseBreedingValueMatrix_is_concrete():
     assert_concrete_function(check_is_DenseBreedingValueMatrix)
 

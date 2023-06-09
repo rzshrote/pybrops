@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
-from pybrops.popgen.gmap.GeneticMap import is_GeneticMap
 from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
 
 ################################################################################
@@ -140,18 +139,12 @@ def test_to_csv_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GeneticMap_is_concrete():
-    assert_concrete_function(is_GeneticMap)
-
 def test_check_is_GeneticMap_is_concrete():
     assert_concrete_function(check_is_GeneticMap)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GeneticMap(gmap):
-    assert is_GeneticMap(gmap)
-
 def test_check_is_GeneticMap(gmap):
     with not_raises(TypeError):
         check_is_GeneticMap(gmap, "gmap")

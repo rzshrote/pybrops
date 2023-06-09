@@ -57,22 +57,6 @@ class PhenotypeDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypeDataFrame(v: object) -> bool:
-    """
-    Determine whether an object is a PhenotypeDataFrame.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhenotypeDataFrame object instance.
-    """
-    return isinstance(v, PhenotypeDataFrame)
-
 def check_is_PhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PhenotypeDataFrame. Otherwise raise TypeError.

@@ -2,11 +2,11 @@
 Module containing miscellaneous genetic map subroutines.
 """
 
-import numpy
-
 __all__ = [
     "cM2d"
 ]
+
+import numpy
 
 def cM2d(
         cM: numpy.ndarray

@@ -2,11 +2,14 @@
 Module defining basal genetic map interfaces and associated error checking routines.
 """
 
-from typing import Any, Optional, Union
+__all__ = [
+    "GeneticMap",
+    "check_is_GeneticMap"
+]
 
+from typing import Any, Optional, Union
 import numpy
 import pandas
-
 
 class GeneticMap:
     """
@@ -626,22 +629,6 @@ class GeneticMap:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMap(v: object) -> bool:
-    """
-    Determine whether an object is a GeneticMap.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GeneticMap object instance.
-    """
-    return isinstance(v, GeneticMap)
-
 def check_is_GeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMap. Otherwise raise TypeError.

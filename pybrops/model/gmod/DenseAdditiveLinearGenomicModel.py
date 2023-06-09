@@ -4,7 +4,7 @@ models that incorporate genomic additive effects.
 """
 
 import copy
-from typing import Any, Optional, Union
+from typing import Union
 import h5py
 import numpy
 
@@ -20,9 +20,9 @@ from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     """
@@ -536,9 +536,9 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             - ``t`` is the number of traits.
         """
         # process ptobj
-        if is_BreedingValueMatrix(ptobj):
+        if isinstance(ptobj, BreedingValueMatrix):
             Y = ptobj.descale()
-        elif is_PhenotypeDataFrame(ptobj):
+        elif isinstance(ptobj, PhenotypeDataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):
             Y = ptobj

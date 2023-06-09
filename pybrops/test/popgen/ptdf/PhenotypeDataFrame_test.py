@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 from pybrops.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
 
 
@@ -50,18 +49,12 @@ def test_ncol_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_PhenotypeDataFrame_is_concrete():
-    assert_concrete_function(is_PhenotypeDataFrame)
-
 def test_check_is_PhenotypeDataFrame_is_concrete():
     assert_concrete_function(check_is_PhenotypeDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhenotypeDataFrame(df):
-    assert is_PhenotypeDataFrame(df)
-
 def test_check_is_PhenotypeDataFrame(df):
     with not_raises(TypeError):
         check_is_PhenotypeDataFrame(df, "df")

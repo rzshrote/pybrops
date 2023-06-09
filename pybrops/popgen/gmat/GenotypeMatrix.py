@@ -6,9 +6,7 @@ for genotype matrices.
 import numbers
 import numpy
 from numpy.typing import DTypeLike
-
-from typing import Any, Optional
-
+from typing import Optional
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
@@ -311,22 +309,6 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenotypeMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``GenotypeMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``v`` is a ``GenotypeMatrix`` object instance.
-    """
-    return isinstance(v, GenotypeMatrix)
-
 def check_is_GenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenotypeMatrix``. Otherwise raise ``TypeError``.

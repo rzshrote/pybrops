@@ -2,8 +2,13 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
+__all__ = [
+    "DenseCoancestryMatrix",
+    "check_is_DenseCoancestryMatrix"
+]
+
 from numbers import Real
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
 import warnings
 from numpy.typing import DTypeLike
@@ -493,22 +498,6 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseCoancestryMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseCoancestryMatrix)
-
 def check_is_DenseCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseCoancestryMatrix. Otherwise raise TypeError.

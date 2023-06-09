@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import is_GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
 ################################################################################
@@ -80,18 +79,12 @@ def test_gtfreq_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GenotypeMatrix_is_concrete():
-    assert_concrete_function(is_GenotypeMatrix)
-
 def test_check_is_GenotypeMatrix_is_concrete():
     assert_concrete_function(check_is_GenotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GenotypeMatrix(mat):
-    assert is_GenotypeMatrix(mat)
-
 def test_check_is_GenotypeMatrix(mat):
     with not_raises(TypeError):
         check_is_GenotypeMatrix(mat, "mat")

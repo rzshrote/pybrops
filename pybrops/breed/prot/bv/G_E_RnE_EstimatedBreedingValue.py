@@ -8,11 +8,14 @@ from rpy2.robjects import globalenv
 from rpy2.robjects import vectors
 from rpy2.robjects.vectors import DataFrame as rpy2_DataFrame
 
+import numpy
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.core.util.rpy2 import numpy_to_R_BoolVector
 from pybrops.core.util.rpy2 import numpy_to_R_FloatVector
 from pybrops.core.util.rpy2 import numpy_to_R_IntFactorVector
 from pybrops.core.util.rpy2 import numpy_to_R_IntVector
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
     """
@@ -62,7 +65,7 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
         self.RnE_efct = RnE_efct
 
     ############################## Object Methods ##############################
-    def estimate_ptdf(ptdf, gmat, **kwargs: dict):
+    def estimate_ptdf(self, ptdf, gmat, **kwargs: dict):
         """
         Helper method to handle breeding value estimation when passed a
         PhenotypeDataFrame.
@@ -228,9 +231,9 @@ class G_E_RnE_EstimatedBreedingValue(BreedingValueProtocol):
             Breeding value matrix.
         """
         # check data types
-        if is_PhenotypeDataFrame(pt_or_bv):
+        if isinstance(pt_or_bv, PhenotypeDataFrame):
             self._estimate_ptdf(pt_or_bv, gmat, **kwargs)
-        elif is_BreedingValueMatrix(pt_or_bv):
+        elif isinstance(pt_or_bv, BreedingValueMatrix):
             return pt_or_bv # if we received a breeding value matrix, return it
         else:
             raise TypeError("'pt_or_bv' must be of type PhenotypeDataFrame or BreedingValueMatrix")

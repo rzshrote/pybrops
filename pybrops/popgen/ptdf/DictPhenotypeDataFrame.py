@@ -3,7 +3,11 @@ Module implementing a phenotype dataframe using dictionaries and its associated
 error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "DictPhenotypeDataFrame",
+    "check_is_DictPhenotypeDataFrame"
+]
+
 import numpy
 import copy
 
@@ -269,22 +273,6 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictPhenotypeDataFrame(v: object) -> bool:
-    """
-    Determine whether an object is a DictPhenotypeDataFrame.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DictPhenotypeDataFrame object instance.
-    """
-    return isinstance(v, DictPhenotypeDataFrame)
-
 def check_is_DictPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.

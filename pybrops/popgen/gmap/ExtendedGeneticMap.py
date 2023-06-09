@@ -3,6 +3,11 @@ Module implementing a custom, extended genetic map format and associated error
 checking routines.
 """
 
+__all__ = [
+    "ExtendedGeneticMap",
+    "check_is_ExtendedGeneticMap"
+]
+
 from typing import Any, Optional, Sequence, Union
 import numpy
 import math
@@ -1358,9 +1363,6 @@ class ExtendedGeneticMap(GeneticMap):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ExtendedGeneticMap(v: object) -> bool:
-    return isinstance(v, ExtendedGeneticMap)
-
 def check_is_ExtendedGeneticMap(v: object, vname: str) -> None:
     if not isinstance(v, ExtendedGeneticMap):
         raise TypeError("'%s' must be an ExtendedGeneticMap." % vname)

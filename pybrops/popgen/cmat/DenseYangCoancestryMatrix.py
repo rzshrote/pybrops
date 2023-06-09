@@ -3,9 +3,13 @@ Module providing a dense coancestry matrix implementation using the Yang et al. 
 method and associated error checking routines.
 """
 
+__all__ = [
+    "DenseYangCoancestryMatrix",
+    "check_is_DenseYangCoancestryMatrix"
+]
+
 import numpy
 from typing import Union
-from typing import Any
 
 from pybrops.core.error.error_value_python import check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -15,7 +19,6 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_in_interval
 from pybrops.core.error.error_value_numpy import check_ndarray_in_interval
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_type_python import check_isinstance
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
@@ -219,22 +222,6 @@ class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseYangCoancestryMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseYangCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseYangCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseYangCoancestryMatrix)
-
 def check_is_DenseYangCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseYangCoancestryMatrix. Otherwise raise TypeError.

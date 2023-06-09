@@ -15,7 +15,7 @@ from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import is_DenseAdditiveL
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import check_is_DenseAdditiveLinearGenomicModel
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -263,7 +263,7 @@ def test_predict(dalgmod, mat_intercept, mat_beta, mat_int8, mat_u_a, dpgmat):
     b = (mat_intercept @ mat_beta) + (geno @ mat_u_a)
     b = (b - b.mean(0)) / b.std(0)
     assert numpy.all(a == b)
-    assert is_BreedingValueMatrix(a)
+    assert isinstance(a, BreedingValueMatrix)
 
 def test_score_numpy(dalgmod, mat_intercept, mat_int8):
     geno = mat_int8.sum(0)

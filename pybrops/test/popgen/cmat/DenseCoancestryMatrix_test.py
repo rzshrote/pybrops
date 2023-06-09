@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
-from pybrops.popgen.cmat.DenseCoancestryMatrix import is_DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import check_is_DenseCoancestryMatrix
 
 ################################################################################
@@ -183,18 +182,12 @@ def test_apply_jitter(cmat):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseCoancestryMatrix_is_concrete():
-    assert_concrete_function(is_DenseCoancestryMatrix)
-
 def test_check_is_DenseCoancestryMatrix_is_concrete():
     assert_concrete_function(check_is_DenseCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseCoancestryMatrix(cmat):
-    assert is_DenseCoancestryMatrix(cmat)
-
 def test_check_is_DenseCoancestryMatrix(cmat):
     with not_raises(TypeError):
         check_is_DenseCoancestryMatrix(cmat, "cmat")

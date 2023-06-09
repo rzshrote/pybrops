@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
-from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import is_DenseMolecularCoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import check_is_DenseMolecularCoancestryMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
@@ -120,18 +119,12 @@ def test_from_gmat_pgmat_vs_gmat(cmat_pgmat_sample, cmat_gmat_sample):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseMolecularCoancestryMatrix_is_concrete():
-    assert_concrete_function(is_DenseMolecularCoancestryMatrix)
-
 def test_check_is_DenseMolecularCoancestryMatrix_is_concrete():
     assert_concrete_function(check_is_DenseMolecularCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseMolecularCoancestryMatrix(cmat_sample):
-    assert is_DenseMolecularCoancestryMatrix(cmat_sample)
-
 def test_check_is_DenseMolecularCoancestryMatrix(cmat_sample):
     with not_raises(TypeError):
         check_is_DenseMolecularCoancestryMatrix(cmat_sample, "cmat_sample")

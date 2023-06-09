@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
-from pybrops.popgen.cmat.CoancestryMatrix import is_CoancestryMatrix
 from pybrops.popgen.cmat.CoancestryMatrix import check_is_CoancestryMatrix
 
 ################################################################################
@@ -57,18 +56,12 @@ def test_from_gmat_is_abstract():
 ################################################################################
 ################## Test for concrete class utility functions ###################
 ################################################################################
-def test_is_CoancestryMatrix_is_concrete():
-    assert_concrete_function(is_CoancestryMatrix)
-
 def test_check_is_CoancestryMatrix_is_concrete():
     assert_concrete_function(check_is_CoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_CoancestryMatrix(cmat):
-    assert is_CoancestryMatrix(cmat)
-
 def test_check_is_CoancestryMatrix(cmat):
     with not_raises(TypeError):
         check_is_CoancestryMatrix(cmat, "cmat")

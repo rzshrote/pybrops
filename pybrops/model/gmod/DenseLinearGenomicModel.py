@@ -19,10 +19,10 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
-from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, is_GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class DenseLinearGenomicModel(LinearGenomicModel):
     """
@@ -348,7 +348,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             raise TypeError("accepted types are numpy.ndarray")
 
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             taxa = gtobj.taxa
             taxa_grp = gtobj.taxa_grp
@@ -454,9 +454,9 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             - ``t`` is the number of traits.
         """
         # process ptobj
-        if is_BreedingValueMatrix(ptobj):
+        if isinstance(ptobj, BreedingValueMatrix):
             Y = ptobj.descale()
-        elif is_PhenotypeDataFrame(ptobj):
+        elif isinstance(ptobj, PhenotypeDataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):
             Y = ptobj
@@ -470,7 +470,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             raise TypeError("must be numpy.ndarray")
 
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
         elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
@@ -530,7 +530,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             Genomic estimated breeding values.
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             taxa = gtobj.taxa
             taxa_grp = gtobj.taxa_grp
@@ -610,7 +610,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
         elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
@@ -662,7 +662,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
         elif isinstance(gtobj, numpy.ndarray):
             Z = gtobj
@@ -725,7 +725,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
         elif isinstance(gtobj, numpy.ndarray):
@@ -793,7 +793,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             genic variance is zero, NaN's are produced.
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             Z = gtobj.mat_asformat("{0,1,2}")
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
@@ -1157,7 +1157,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
         elif isinstance(gtobj, numpy.ndarray):
@@ -1225,7 +1225,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         out : numpy.ndarray
         """
         # process gtobj
-        if is_GenotypeMatrix(gtobj):
+        if isinstance(gtobj, GenotypeMatrix):
             p = gtobj.afreq()
             ploidy = gtobj.ploidy
         elif isinstance(gtobj, numpy.ndarray):

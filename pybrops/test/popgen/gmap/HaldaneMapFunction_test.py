@@ -12,7 +12,6 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
-from pybrops.popgen.gmap.HaldaneMapFunction import is_HaldaneMapFunction
 from pybrops.popgen.gmap.HaldaneMapFunction import check_is_HaldaneMapFunction
 
 ################################################################################
@@ -76,18 +75,12 @@ def test_mapfn_NaN(mapfn):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_HaldaneMapFunction_is_concrete():
-    assert_concrete_function(is_HaldaneMapFunction)
-
 def test_check_is_HaldaneMapFunction_is_concrete():
     assert_concrete_function(check_is_HaldaneMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_HaldaneMapFunction(mapfn):
-    assert is_HaldaneMapFunction(mapfn)
-
 def test_check_is_HaldaneMapFunction(mapfn):
     with not_raises(TypeError):
         check_is_HaldaneMapFunction(mapfn, "mapfn")

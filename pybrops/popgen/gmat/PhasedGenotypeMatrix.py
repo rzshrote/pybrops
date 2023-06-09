@@ -43,10 +43,6 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedGenotypeMatrix(v: object) -> bool:
-    """Return whether an object is a PhasedGenotypeMatrix or not"""
-    return isinstance(v, PhasedGenotypeMatrix)
-
 def check_is_PhasedGenotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedGenotypeMatrix"""
     if not isinstance(v, PhasedGenotypeMatrix):

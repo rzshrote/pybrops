@@ -2,12 +2,14 @@
 Module defining basal coancestry matrix factory interfaces and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "DenseCoancestryMatrixFactory",
+    "check_is_DenseCoancestryMatrixFactory"
+]
+
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
 
 class DenseCoancestryMatrixFactory(CoancestryMatrixFactory):
     """
@@ -54,7 +56,6 @@ class DenseCoancestryMatrixFactory(CoancestryMatrixFactory):
             gmat = gmat,
             **kwargs
         )
-
 
 
 

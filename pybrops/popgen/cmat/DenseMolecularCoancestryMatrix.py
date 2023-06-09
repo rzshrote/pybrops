@@ -234,22 +234,6 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseMolecularCoancestryMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseMolecularCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseMolecularCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseMolecularCoancestryMatrix)
-
 def check_is_DenseMolecularCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise TypeError.

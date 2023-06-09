@@ -3,7 +3,12 @@ Module implementing dense matrices that can have their variants placed on a
 genetic map and associated error checking routines.
 """
 
-from typing import Any, Optional
+__all__ = [
+    "DenseGeneticMappableMatrix",
+    "check_is_DenseGeneticMappableMatrix"
+]
+
+from typing import Optional
 
 import numpy
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
@@ -125,22 +130,6 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGeneticMappableMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseGeneticMappableMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseGeneticMappableMatrix object instance.
-    """
-    return isinstance(v, DenseGeneticMappableMatrix)
-
 def check_is_DenseGeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGeneticMappableMatrix. Otherwise raise TypeError.

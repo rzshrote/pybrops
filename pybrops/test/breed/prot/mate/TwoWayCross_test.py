@@ -12,11 +12,9 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.TwoWayCross import TwoWayCross
-from pybrops.breed.prot.mate.TwoWayCross import is_TwoWayCross
 from pybrops.breed.prot.mate.TwoWayCross import check_is_TwoWayCross
 
 ################################################################################
@@ -86,7 +84,7 @@ def test_mate(mprot, dpgvmat, sel):
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
-    assert is_DensePhasedGenotypeMatrix(progeny)
+    assert isinstance(progeny, DensePhasedGenotypeMatrix)
     mat = progeny.mat
     for i in range(1,len(mat)):
         assert numpy.any(mat[0] != mat[i])

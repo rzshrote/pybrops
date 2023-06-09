@@ -3,9 +3,14 @@ Module providing implementations of dense genotype matrices and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseGenotypeMatrix",
+    "check_is_DenseGenotypeMatrix"
+]
+
 import copy
 import numbers
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 import cyvcf2
 import h5py
 import numpy
@@ -1219,22 +1224,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenotypeMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``DenseGenotypeMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``v`` is a ``DenseGenotypeMatrix`` object instance.
-    """
-    return isinstance(v, DenseGenotypeMatrix)
-
 def check_is_DenseGenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGenotypeMatrix``. Otherwise raise ``TypeError``.

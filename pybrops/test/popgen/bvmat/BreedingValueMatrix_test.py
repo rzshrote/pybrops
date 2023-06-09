@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import check_is_BreedingValueMatrix
 
 ################################################################################
@@ -71,18 +70,12 @@ def test_tvar_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_BreedingValueMatrix_is_concrete():
-    assert_concrete_function(is_BreedingValueMatrix)
-
 def test_check_is_BreedingValueMatrix_is_concrete():
     assert_concrete_function(check_is_BreedingValueMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_BreedingValueMatrix(mat):
-    assert is_BreedingValueMatrix(mat)
-
 def test_check_is_BreedingValueMatrix(mat):
     with not_raises(TypeError):
         check_is_BreedingValueMatrix(mat, "mat")

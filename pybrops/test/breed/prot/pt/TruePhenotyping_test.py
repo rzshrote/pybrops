@@ -15,7 +15,7 @@ from pybrops.test.assert_python import assert_concrete_function
 from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -257,7 +257,7 @@ def test_var_err_fdel(ptprot):
 ################################################################################
 def test_phenotype(ptprot, dpgmat, gpmod):
     df = ptprot.phenotype(dpgmat, gpmod)
-    assert is_PhenotypeDataFrame(df)
+    assert isinstance(df, PhenotypeDataFrame)
 
     expected_ncol = gpmod.ntrait
     if dpgmat.taxa is not None:

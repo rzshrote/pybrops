@@ -2,7 +2,11 @@
 Module implementing the Kosambi genetic map function and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "KosambiMapFunction",
+    "check_is_KosambiMapFunction"
+]
+
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -215,22 +219,6 @@ class KosambiMapFunction(GeneticMapFunction):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_KosambiMapFunction(v: object) -> bool:
-    """
-    Determine whether an object is a KosambiMapFunction.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a KosambiMapFunction object instance.
-    """
-    return isinstance(v, KosambiMapFunction)
-
 def check_is_KosambiMapFunction(v: object, vname: str) -> None:
     """
     Check if object is of type KosambiMapFunction. Otherwise raise TypeError.

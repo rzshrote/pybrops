@@ -3,7 +3,11 @@ Module implementing a phenotype dataframe using Pandas DataFrames and its
 associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "PandasPhenotypeDataFrame",
+    "check_is_PandasPhenotypeDataFrame"
+]
+
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_python import check_len
@@ -204,22 +208,6 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasPhenotypeDataFrame(v: object) -> bool:
-    """
-    Determine whether an object is a PandasPhenotypeDataFrame.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PandasPhenotypeDataFrame object instance.
-    """
-    return isinstance(v, PandasPhenotypeDataFrame)
-
 def check_is_PandasPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PandasPhenotypeDataFrame. Otherwise raise TypeError.

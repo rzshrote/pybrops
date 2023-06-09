@@ -3,7 +3,12 @@ Module implementing matrix routines and associated error checking routines
 for dense breeding value matrices estimated from genomic and phenotypic data.
 """
 
-from typing import Any, Optional
+__all__ = [
+    "DenseGenomicEstimatedBreedingValueMatrix",
+    "check_is_DenseGenomicEstimatedBreedingValueMatrix"
+]
+
+from typing import Optional
 
 import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
@@ -82,22 +87,6 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGenomicEstimatedBreedingValueMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseGenomicEstimatedBreedingValueMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseGenomicEstimatedBreedingValueMatrix object instance.
-    """
-    return isinstance(v, DenseGenomicEstimatedBreedingValueMatrix)
-
 def check_is_DenseGenomicEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGenomicEstimatedBreedingValueMatrix. Otherwise raise TypeError.

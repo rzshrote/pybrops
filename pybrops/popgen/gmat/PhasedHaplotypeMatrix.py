@@ -3,7 +3,11 @@ Module defining basal matrix interfaces and associated error checking routines
 for phased haplotype matrices.
 """
 
-from typing import Any
+__all__ = [
+    "PhasedHaplotypeMatrix",
+    "check_is_PhasedHaplotypeMatrix"
+]
+
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 
@@ -37,10 +41,6 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhasedHaplotypeMatrix(v: object) -> bool:
-    """Return whether an object is a PhasedHaplotypeMatrix or not"""
-    return isinstance(v, PhasedHaplotypeMatrix)
-
 def check_is_PhasedHaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedHaplotypeMatrix"""
     if not isinstance(v, PhasedHaplotypeMatrix):

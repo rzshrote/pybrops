@@ -2,14 +2,17 @@
 Module defining basal coancestry matrix factory interfaces and associated error checking routines.
 """
 
-from typing import Any, Union
+__all__ = [
+    "DenseVanRadenCoancestryMatrixFactory",
+    "check_is_DenseVanRadenCoancestryMatrixFactory"
+]
+
+from typing import Union
 
 import numpy
 from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoancestryMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
 
 class DenseVanRadenCoancestryMatrixFactory(CoancestryMatrixFactory):
     """
@@ -58,7 +61,6 @@ class DenseVanRadenCoancestryMatrixFactory(CoancestryMatrixFactory):
             p_anc = p_anc,
             **kwargs
         )
-
 
 
 

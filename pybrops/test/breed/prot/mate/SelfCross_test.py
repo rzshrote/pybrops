@@ -12,7 +12,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.SelfCross import SelfCross
@@ -83,7 +82,7 @@ def test_mate(mprot, dpgvmat, sel, rng):
     # print("parents:\n", dpgvmat.mat)
     # print("progeny:\n", progeny.mat)
     # raise RuntimeError("stop")
-    assert is_DensePhasedGenotypeMatrix(progeny)
+    assert isinstance(progeny, DensePhasedGenotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

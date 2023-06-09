@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmap.GeneticMapFunction import is_GeneticMapFunction
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 ################################################################################
@@ -60,18 +59,12 @@ def test_rprob2p_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GeneticMapFunction_is_concrete():
-    assert_concrete_function(is_GeneticMapFunction)
-
 def test_check_is_GeneticMapFunction_is_concrete():
     assert_concrete_function(check_is_GeneticMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GeneticMapFunction(gmapfn):
-    assert is_GeneticMapFunction(gmapfn)
-
 def test_check_is_GeneticMapFunction(gmapfn):
     with not_raises(TypeError):
         check_is_GeneticMapFunction(gmapfn, "gmapfn")

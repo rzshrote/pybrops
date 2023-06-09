@@ -12,7 +12,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import DictPhenotypeDataFrame
-from pybrops.popgen.ptdf.DictPhenotypeDataFrame import is_DictPhenotypeDataFrame
 from pybrops.popgen.ptdf.DictPhenotypeDataFrame import check_is_DictPhenotypeDataFrame
 
 ################################################################################
@@ -166,7 +165,7 @@ def test_deepcopy_is_concrete():
 ########################## Test Class Special Methods ##########################
 ################################################################################
 def test_init(df):
-    assert is_DictPhenotypeDataFrame(df)
+    assert isinstance(df, DictPhenotypeDataFrame)
 
 def test_copy(df):
     a = copy.copy(df)
@@ -265,18 +264,12 @@ def test_col_data(df, data_oil, data_taxa):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DictPhenotypeDataFrame_is_concrete():
-    assert_concrete_function(is_DictPhenotypeDataFrame)
-
 def test_check_is_DictPhenotypeDataFrame_is_concrete():
     assert_concrete_function(check_is_DictPhenotypeDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DictPhenotypeDataFrame(df):
-    assert is_DictPhenotypeDataFrame(df)
-
 def test_check_is_DictPhenotypeDataFrame(df):
     with not_raises(TypeError):
         check_is_DictPhenotypeDataFrame(df, "df")

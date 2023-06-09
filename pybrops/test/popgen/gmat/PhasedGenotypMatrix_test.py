@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import is_PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 ################################################################################
@@ -36,18 +35,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_PhasedGenotypeMatrix_is_concrete():
-    assert_concrete_function(is_PhasedGenotypeMatrix)
-
 def test_check_is_PhasedGenotypeMatrix_is_concrete():
     assert_concrete_function(check_is_PhasedGenotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhasedGenotypeMatrix(mat):
-    assert is_PhasedGenotypeMatrix(mat)
-
 def test_check_is_PhasedGenotypeMatrix(mat):
     with not_raises(TypeError):
         check_is_PhasedGenotypeMatrix(mat, "mat")

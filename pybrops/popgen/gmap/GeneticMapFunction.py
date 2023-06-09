@@ -3,12 +3,13 @@ Module defining basal genetic map function interfaces and associated error
 checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "GeneticMapFunction",
+    "check_is_GeneticMapFunction"
+]
 
 import numpy
-
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
-
 
 class GeneticMapFunction:
     """
@@ -209,10 +210,6 @@ class GeneticMapFunction:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticMapFunction(v: object) -> bool:
-    """Return whether an object is a GeneticMapFunction or not"""
-    return isinstance(v, GeneticMapFunction)
-
 def check_is_GeneticMapFunction(v: object, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):

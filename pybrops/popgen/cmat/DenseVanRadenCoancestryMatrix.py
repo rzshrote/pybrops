@@ -3,8 +3,13 @@ Module providing a dense coancestry matrix implementation using the VanRaden
 method and associated error checking routines.
 """
 
+__all__ = [
+    "DenseVanRadenCoancestryMatrix",
+    "check_is_DenseVanRadenCoancestryMatrix"
+]
+
 import numpy
-from typing import Any, Union
+from typing import Union
 
 from pybrops.core.error.error_value_python import check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -217,22 +222,6 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseVanRadenCoancestryMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a DenseVanRadenCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseVanRadenCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseVanRadenCoancestryMatrix)
-
 def check_is_DenseVanRadenCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise TypeError.
