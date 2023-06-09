@@ -160,9 +160,8 @@ def test_mat_fset(bvmat, mat_float64):
     assert numpy.all(bvmat.mat == mat_float64)
 
 def test_mat_fdel(bvmat, mat_float64):
-    del bvmat.mat
     with pytest.raises(AttributeError):
-        bvmat.mat
+        del bvmat.mat
 
 ############### location ###############
 def test_location_fget(bvmat, location_float64):
@@ -183,9 +182,8 @@ def test_location_fset(bvmat, location_float64):
     assert numpy.all(bvmat.location == location_float64)
 
 def test_location_fdel(bvmat, location_float64):
-    del bvmat.location
     with pytest.raises(AttributeError):
-        bvmat.location
+        del bvmat.location
 
 ################ scale #################
 def test_scale_fget(bvmat, scale_float64):
@@ -206,9 +204,8 @@ def test_scale_fset(bvmat, scale_float64):
     assert numpy.all(bvmat.scale == scale_float64)
 
 def test_scale_fdel(bvmat, scale_float64):
-    del bvmat.scale
     with pytest.raises(AttributeError):
-        bvmat.scale
+        del bvmat.scale
 
 ################################################################################
 ###################### Test concrete method functionality ######################

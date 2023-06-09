@@ -122,9 +122,8 @@ def test_trait_fset(mat, trait_object):
     assert numpy.all(mat.trait == trait_object)
 
 def test_trait_fdel(mat):
-    del mat.trait
     with pytest.raises(AttributeError):
-        mat.trait
+        del mat.trait
 
 ################# Taxa Metadata Properites #################
 def test_ntrait_fget(mat, mat_float64):

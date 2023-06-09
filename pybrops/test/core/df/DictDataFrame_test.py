@@ -261,8 +261,8 @@ def test_row_name_fset_dict(df, row_name_row_name):
     assert all(e in l for e in df.row_name)
 
 def test_row_name_fdel(df):
-    del df.row_name
-    assert not hasattr(df, "_row_name")
+    with pytest.raises(AttributeError):
+        del df.row_name
 
 ################################################################################
 ###################### Test concrete method functionality ######################

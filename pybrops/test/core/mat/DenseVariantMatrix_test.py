@@ -230,9 +230,8 @@ def test_vrnt_chrgrp_fset(mat, vrnt_chrgrp_int64):
     assert numpy.all(mat.vrnt_chrgrp == vrnt_chrgrp_int64)
 
 def test_vrnt_chrgrp_fdel(mat):
-    del mat.vrnt_chrgrp
     with pytest.raises(AttributeError):
-        mat.vrnt_chrgrp
+        del mat.vrnt_chrgrp
 
 def test_vrnt_phypos_fget(mat, vrnt_phypos_int64):
     assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
@@ -242,9 +241,8 @@ def test_vrnt_phypos_fset(mat, vrnt_phypos_int64):
     assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
 
 def test_vrnt_phypos_fdel(mat):
-    del mat.vrnt_phypos
     with pytest.raises(AttributeError):
-        mat.vrnt_phypos
+        del mat.vrnt_phypos
 
 def test_vrnt_name_fget(mat, vrnt_name_object):
     assert numpy.all(mat.vrnt_name == vrnt_name_object)
@@ -254,9 +252,8 @@ def test_vrnt_name_fset(mat, vrnt_name_object):
     assert numpy.all(mat.vrnt_name == vrnt_name_object)
 
 def test_vrnt_name_fdel(mat):
-    del mat.vrnt_name
     with pytest.raises(AttributeError):
-        mat.vrnt_name
+        del mat.vrnt_name
 
 def test_vrnt_genpos_fget(mat, vrnt_genpos_float64):
     assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
@@ -266,9 +263,8 @@ def test_vrnt_genpos_fset(mat, vrnt_genpos_float64):
     assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
 
 def test_vrnt_genpos_fdel(mat):
-    del mat.vrnt_genpos
     with pytest.raises(AttributeError):
-        mat.vrnt_genpos
+        del mat.vrnt_genpos
 
 def test_vrnt_xoprob_fget(mat, vrnt_xoprob_float64):
     assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
@@ -278,9 +274,8 @@ def test_vrnt_xoprob_fset(mat, vrnt_xoprob_float64):
     assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
 
 def test_vrnt_xoprob_fdel(mat):
-    del mat.vrnt_xoprob
     with pytest.raises(AttributeError):
-        mat.vrnt_xoprob
+        del mat.vrnt_xoprob
 
 def test_vrnt_hapgrp_fget(mat, vrnt_hapgrp_int64):
     assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
@@ -290,9 +285,8 @@ def test_vrnt_hapgrp_fset(mat, vrnt_hapgrp_int64):
     assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
 
 def test_vrnt_hapgrp_fdel(mat):
-    del mat.vrnt_hapgrp
     with pytest.raises(AttributeError):
-        mat.vrnt_hapgrp
+        del mat.vrnt_hapgrp
 
 def test_vrnt_hapalt_fget(mat, vrnt_hapalt_object):
     assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
@@ -302,9 +296,8 @@ def test_vrnt_hapalt_fset(mat, vrnt_hapalt_object):
     assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
 
 def test_vrnt_hapalt_fdel(mat):
-    del mat.vrnt_hapalt
     with pytest.raises(AttributeError):
-        mat.vrnt_hapalt
+        del mat.vrnt_hapalt
 
 def test_vrnt_hapref_fget(mat, vrnt_hapref_object):
     assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
@@ -314,9 +307,8 @@ def test_vrnt_hapref_fset(mat, vrnt_hapref_object):
     assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
 
 def test_vrnt_hapref_fdel(mat):
-    del mat.vrnt_hapref
     with pytest.raises(AttributeError):
-        mat.vrnt_hapref
+        del mat.vrnt_hapref
 
 def test_vrnt_mask_fget(mat, vrnt_mask_bool):
     assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
@@ -326,9 +318,8 @@ def test_vrnt_mask_fset(mat, vrnt_mask_bool):
     assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
 
 def test_vrnt_mask_fdel(mat):
-    del mat.vrnt_mask
     with pytest.raises(AttributeError):
-        mat.vrnt_mask
+        del mat.vrnt_mask
 
 ################# Taxa Metadata Properites #################
 def test_nvrnt_fget(mat, mat_int8):
@@ -361,9 +352,8 @@ def test_vrnt_chrgrp_name_fset(mat, vrnt_chrgrp_name_int64):
     assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
 
 def test_vrnt_chrgrp_name_fdel(mat):
-    del mat.vrnt_chrgrp_name
     with pytest.raises(AttributeError):
-        mat.vrnt_chrgrp_name
+        del mat.vrnt_chrgrp_name
 
 def test_vrnt_chrgrp_stix_fget(mat, vrnt_chrgrp_stix_int64):
     assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
@@ -373,9 +363,8 @@ def test_vrnt_chrgrp_stix_fset(mat, vrnt_chrgrp_stix_int64):
     assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
 
 def test_vrnt_chrgrp_stix_fdel(mat):
-    del mat.vrnt_chrgrp_stix
     with pytest.raises(AttributeError):
-        mat.vrnt_chrgrp_stix
+        del mat.vrnt_chrgrp_stix
 
 def test_vrnt_chrgrp_spix_fget(mat, vrnt_chrgrp_spix_int64):
     assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
@@ -385,9 +374,8 @@ def test_vrnt_chrgrp_spix_fset(mat, vrnt_chrgrp_spix_int64):
     assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
 
 def test_vrnt_chrgrp_spix_fdel(mat):
-    del mat.vrnt_chrgrp_spix
     with pytest.raises(AttributeError):
-        mat.vrnt_chrgrp_spix
+        del mat.vrnt_chrgrp_spix
 
 def test_vrnt_chrgrp_len_fget(mat, vrnt_chrgrp_len_int64):
     assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
@@ -397,9 +385,8 @@ def test_vrnt_chrgrp_len_fset(mat, vrnt_chrgrp_len_int64):
     assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
 
 def test_vrnt_chrgrp_len_fdel(mat):
-    del mat.vrnt_chrgrp_len
     with pytest.raises(AttributeError):
-        mat.vrnt_chrgrp_len
+        del mat.vrnt_chrgrp_len
 
 ################################################################################
 ###################### Test concrete method functionality ######################

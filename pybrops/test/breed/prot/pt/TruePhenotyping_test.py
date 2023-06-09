@@ -238,8 +238,8 @@ def test_gpmod_fset(ptprot, gpmod):
     assert id(ptprot.gpmod) == id(a)
 
 def test_gpmod_fdel(ptprot):
-    del ptprot.gpmod
-    assert not hasattr(ptprot, "_gpmod")
+    with pytest.raises(AttributeError):
+        del ptprot.gpmod
 
 def test_var_err_fget(ptprot):
     assert numpy.all(ptprot.var_err == 1.0)

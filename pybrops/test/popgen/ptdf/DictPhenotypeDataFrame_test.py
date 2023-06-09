@@ -228,8 +228,8 @@ def test_col_analysis_type_fset_dict(df):
     assert all(e in l for e in df.col_analysis_type)
 
 def test_col_analysis_type_fdel(df):
-    del df.col_analysis_type
-    assert not hasattr(df, "_col_analysis_type")
+    with pytest.raises(AttributeError):
+        del df.col_analysis_type
 
 def test_col_analysis_effect_fget(df, col_analysis_effect):
     assert numpy.all(df.col_analysis_effect == list(col_analysis_effect.values()))
@@ -251,8 +251,8 @@ def test_col_analysis_effect_fset_dict(df):
     assert all(e in l for e in df.col_analysis_effect)
 
 def test_col_analysis_effect_fdel(df):
-    del df.col_analysis_effect
-    assert not hasattr(df, "_col_analysis_effect")
+    with pytest.raises(AttributeError):
+        del df.col_analysis_effect
 
 ################################################################################
 ###################### Test concrete method functionality ######################

@@ -163,9 +163,8 @@ def test_taxa_fset(mat, taxa_object):
     assert numpy.all(mat.taxa == taxa_object)
 
 def test_taxa_fdel(mat):
-    del mat.taxa
     with pytest.raises(AttributeError):
-        mat.taxa
+        del mat.taxa
 
 def test_taxa_grp_fget(mat, taxa_grp_int64):
     assert numpy.all(mat.taxa_grp == taxa_grp_int64)
@@ -175,9 +174,8 @@ def test_taxa_grp_fset(mat, taxa_grp_int64):
     assert numpy.all(mat.taxa_grp == taxa_grp_int64)
 
 def test_taxa_grp_fdel(mat):
-    del mat.taxa_grp
     with pytest.raises(AttributeError):
-        mat.taxa_grp
+        del mat.taxa_grp
 
 ################# Taxa Metadata Properites #################
 def test_ntaxa_fget(mat, mat_float64):
@@ -210,9 +208,8 @@ def test_taxa_grp_name_fset(mat, taxa_grp_name_int64):
     assert numpy.all(mat.taxa_grp_name == taxa_grp_name_int64)
 
 def test_taxa_grp_name_fdel(mat):
-    del mat.taxa_grp_name
     with pytest.raises(AttributeError):
-        mat.taxa_grp_name
+        del mat.taxa_grp_name
 
 def test_taxa_grp_stix_fget(mat, taxa_grp_stix_int64):
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
@@ -222,9 +219,8 @@ def test_taxa_grp_stix_fset(mat, taxa_grp_stix_int64):
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
 
 def test_taxa_grp_stix_fdel(mat):
-    del mat.taxa_grp_stix
     with pytest.raises(AttributeError):
-        mat.taxa_grp_stix
+        del mat.taxa_grp_stix
 
 def test_taxa_grp_spix_fget(mat, taxa_grp_spix_int64):
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
@@ -234,9 +230,8 @@ def test_taxa_grp_spix_fset(mat, taxa_grp_spix_int64):
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
 
 def test_taxa_grp_spix_fdel(mat):
-    del mat.taxa_grp_spix
     with pytest.raises(AttributeError):
-        mat.taxa_grp_spix
+        del mat.taxa_grp_spix
 
 def test_taxa_grp_len_fget(mat, taxa_grp_len_int64):
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
@@ -246,9 +241,8 @@ def test_taxa_grp_len_fset(mat, taxa_grp_len_int64):
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
 
 def test_taxa_grp_len_fdel(mat):
-    del mat.taxa_grp_len
     with pytest.raises(AttributeError):
-        mat.taxa_grp_len
+        del mat.taxa_grp_len
 
 ################################################################################
 ###################### Test concrete method functionality ######################

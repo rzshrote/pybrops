@@ -67,9 +67,8 @@ def test_mat_fset(mat, mat_float64):
     assert numpy.all(mat.mat == mat_float64.T)
 
 def test_mat_fdel(mat):
-    del mat.mat
     with pytest.raises(AttributeError):
-        mat.mat
+        del mat.mat
 
 ################ Square Metadata Properites ################
 def test_nsquare_fget(mat, mat_float64):

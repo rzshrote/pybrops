@@ -91,9 +91,8 @@ def test_mat_fset(cmat, A_mat_float64):
     assert numpy.all(cmat.mat == A_mat_float64)
 
 def test_mat_fdel(cmat, A_mat_float64):
-    del cmat.mat
     with pytest.raises(AttributeError):
-        cmat.mat
+        del cmat.mat
 
 ################################################################################
 ###################### Test concrete method functionality ######################
