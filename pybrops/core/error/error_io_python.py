@@ -9,9 +9,8 @@ __all__ = [
 ]
 
 from os.path import exists, isfile
-from _typeshed import FileDescriptorOrPath
 
-def check_path_exists(path: FileDescriptorOrPath) -> None:
+def check_path_exists(path: str) -> None:
     """
     Subroutine to check whether a given path exists.
     If the path does not exist, raise an FileNotFoundError with a custom error
@@ -25,7 +24,7 @@ def check_path_exists(path: FileDescriptorOrPath) -> None:
     if not exists(path):
         raise FileNotFoundError("{0} does not exist".format(path))
 
-def check_file_exists(fname: FileDescriptorOrPath) -> None:
+def check_file_exists(fname: str) -> None:
     """
     Subroutine to check whether a given file exists.
     If the file does not exist, raise an FileNotFoundError with a custom error
@@ -39,7 +38,7 @@ def check_file_exists(fname: FileDescriptorOrPath) -> None:
     if not isfile(fname):
         raise FileNotFoundError("{0} does not exist".format(fname))
 
-def check_directory_exists(path: FileDescriptorOrPath) -> None:
+def check_directory_exists(path: str) -> None:
     """
     Subroutine to check whether a given directory exists.
     If the directory does not exist, raise an NotADirectoryError with a custom
