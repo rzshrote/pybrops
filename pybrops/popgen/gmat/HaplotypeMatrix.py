@@ -52,10 +52,6 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     def ploidy(self, value: int) -> None:
         """Set ploidy level"""
         raise NotImplementedError("property is abstract")
-    @ploidy.deleter
-    def ploidy(self) -> None:
-        """Delete ploidy level"""
-        raise NotImplementedError("property is abstract")
     
     # REMARK: this property is defined in PhasedMatrix as well. the purpose of
     # adding this here as well is to facilitate determination of the number of
@@ -68,10 +64,6 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     def nphase(self, value: int) -> None:
         """Set number of phases represented by the haplotype matrix"""
         raise NotImplementedError("property is abstract")
-    @nphase.deleter
-    def nphase(self) -> None:
-        """Delete number of phases represented by the haplotype matrix"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def mat_format(self) -> str:
@@ -80,10 +72,6 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     @mat_format.setter
     def mat_format(self, value: str) -> None:
         """Set matrix representation format"""
-        raise NotImplementedError("property is abstract")
-    @mat_format.deleter
-    def mat_format(self) -> None:
-        """Delete matrix representation format"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################

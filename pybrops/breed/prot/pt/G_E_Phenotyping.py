@@ -98,10 +98,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Set genomic prediction model."""
         check_is_GenomicModel(value, "gpmod")
         self._gpmod = value
-    @gpmod.deleter
-    def gpmod(self) -> None:
-        """Delete genomic prediction model."""
-        del self._gpmod
 
     ################ Stochastic Parameters #################
     @property
@@ -132,10 +128,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             raise TypeError("'var_env' must be a numeric or numpy.ndarray type")
         self._var_env = value
-    @var_env.deleter
-    def var_env(self) -> None:
-        """Delete variance across environments"""
-        del self._var_env
 
     @property
     def var_rep(self) -> numpy.ndarray:
@@ -165,10 +157,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             raise TypeError("'var_rep' must be a numeric or numpy.ndarray type")
         self._var_rep = value
-    @var_rep.deleter
-    def var_rep(self) -> None:
-        """Delete replicate variance"""
-        del self._var_rep
 
     @property
     def var_err(self) -> numpy.ndarray:
@@ -198,10 +186,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             raise TypeError("'var_err' must be a numeric or numpy.ndarray type")
         self._var_err = value
-    @var_err.deleter
-    def var_err(self) -> None:
-        """Delete error variance"""
-        del self._var_err
 
     ################ Replication Parameters ################
     @property
@@ -213,10 +197,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Set number of environments"""
         check_is_Integral(value, "nenv")
         self._nenv = value
-    @nenv.deleter
-    def nenv(self) -> None:
-        """Delete number of environments"""
-        del self._nenv
 
     @property
     def nrep(self) -> numpy.ndarray:
@@ -237,10 +217,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         else:
             raise TypeError("'nrep' must be an integer type or numpy.ndarray")
         self._nrep = value
-    @nrep.deleter
-    def nrep(self) -> None:
-        """Delete number of replications per environment"""
-        del self._nrep
 
     ############################## Object Methods ##############################
     def phenotype(

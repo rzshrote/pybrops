@@ -3,7 +3,7 @@ Module implementing classes and associated error checking routines for matrices
 storing dense additive genetic variance estimates.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 import numpy
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
@@ -70,22 +70,6 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveGeneticVarianceMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``DenseAdditiveGeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``DenseAdditiveGeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, DenseAdditiveGeneticVarianceMatrix)
-
 def check_is_DenseAdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.

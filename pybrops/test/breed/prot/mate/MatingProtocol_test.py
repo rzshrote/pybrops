@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.breed.prot.mate.MatingProtocol import is_MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_mate_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_MatingProtocol_is_concrete():
-    assert_concrete_function(is_MatingProtocol)
-
 def test_check_is_MatingProtocol_is_concrete():
     assert_concrete_function(check_is_MatingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_MatingProtocol(mprot):
-    assert is_MatingProtocol(mprot)
-
 def test_check_is_MatingProtocol(mprot):
     with not_raises(TypeError):
         check_is_MatingProtocol(mprot, "mprot")

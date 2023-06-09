@@ -48,10 +48,6 @@ class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorit
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     ############################## Object Methods ##############################
     def optimize(self, objfn, k, sspace, objfn_wt, **kwargs: dict):

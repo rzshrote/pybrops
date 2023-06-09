@@ -46,10 +46,6 @@ class TruePhenotyping(PhenotypingProtocol):
         """Set genomic prediction model"""
         check_is_GenomicModel(value, "gpmod")
         self._gpmod = value
-    @gpmod.deleter
-    def gpmod(self) -> None:
-        """Delete genomic prediction model"""
-        del self._gpmod
 
     ################ Stochastic Parameters #################
     @property
@@ -59,10 +55,6 @@ class TruePhenotyping(PhenotypingProtocol):
     @var_err.setter
     def var_err(self, value: numpy.ndarray) -> None:
         """Set error variance"""
-        error_readonly("var_err")
-    @var_err.deleter
-    def var_err(self) -> None:
-        """Delete error variance"""
         error_readonly("var_err")
 
     ############################## Object Methods ##############################

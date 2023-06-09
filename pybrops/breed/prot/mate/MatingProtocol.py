@@ -42,10 +42,6 @@ class MatingProtocol:
     def nparent(self, value: Integral) -> None:
         """Set number of parents the mating protocol requires."""
         raise NotImplementedError("property is abstract")
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents the mating protocol requires."""
-        raise NotImplementedError("property is abstract")
     
 
     ############################## Object Methods ##############################
@@ -91,22 +87,6 @@ class MatingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MatingProtocol(v: object) -> bool:
-    """
-    Determine whether an object is a MatingProtocol.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a MatingProtocol object instance.
-    """
-    return isinstance(v, MatingProtocol)
-
 def check_is_MatingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type MatingProtocol. Otherwise raise TypeError.

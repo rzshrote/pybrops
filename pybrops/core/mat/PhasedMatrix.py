@@ -55,10 +55,6 @@ class PhasedMatrix(MutableMatrix):
     def nphase(self, value: int) -> None:
         """Set number of phases"""
         raise NotImplementedError("property is abstract")
-    @nphase.deleter
-    def nphase(self) -> None:
-        """Delete number of phases"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def phase_axis(self) -> int:
@@ -67,10 +63,6 @@ class PhasedMatrix(MutableMatrix):
     @phase_axis.setter
     def phase_axis(self, value: int) -> None:
         """Set phase axis number"""
-        raise NotImplementedError("property is abstract")
-    @phase_axis.deleter
-    def phase_axis(self) -> None:
-        """Delete phase axis number"""
         raise NotImplementedError("property is abstract")
     
     ############################################################################

@@ -93,10 +93,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Set founder genotypes."""
         check_is_PhasedGenotypeMatrix(value, "fndr_pgmat")
         self._fndr_pgmat = value
-    @fndr_pgmat.deleter
-    def fndr_pgmat(self) -> None:
-        """Delete founder genotypes."""
-        del self._fndr_pgmat
     
     @property
     def fndr_algmod(self) -> AdditiveLinearGenomicModel:
@@ -109,10 +105,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         if value.ntrait > 1:
             raise ValueError("Selection method does not support >1 traits")
         self._fndr_algmod = value
-    @fndr_algmod.deleter
-    def fndr_algmod(self) -> None:
-        """Delete founder genomic prediction model."""
-        del self._fndr_algmod
     
     @property
     def mtprot(self) -> MatingProtocol:
@@ -123,10 +115,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Set mtprot."""
         check_is_MatingProtocol(value, "mtprot")
         self._mtprot = value
-    @mtprot.deleter
-    def mtprot(self) -> None:
-        """Delete mtprot."""
-        del self._mtprot
     
     @property
     def nparent(self) -> Integral:
@@ -137,10 +125,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Set nparent."""
         check_is_Integral(value, "nparent")
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete nparent."""
-        del self._nparent
     
     @property
     def ncross(self) -> Integral:
@@ -151,10 +135,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Set ncross."""
         check_is_Integral(value, "ncross")
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete ncross."""
-        del self._ncross
     
     @property
     def nprogeny(self) -> Integral:
@@ -165,10 +145,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
         """Set nprogeny."""
         check_is_Integral(value, "nprogeny")
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete nprogeny."""
-        del self._nprogeny
     
     @property
     def nsimul(self) -> Integral:
@@ -178,10 +154,6 @@ class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProbl
     def nsimul(self, value: Integral) -> None:
         """Set number of simulations to evaluate a candidate solution."""
         self._nsimul = value
-    @nsimul.deleter
-    def nsimul(self) -> None:
-        """Delete number of simulations to evaluate a candidate solution."""
-        del self._nsimul
 
     ############################## Object Methods ##############################
     def latentfn(

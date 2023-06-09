@@ -55,10 +55,6 @@ class TraitMatrix(SortableMatrix):
     def trait(self, value: Any) -> None:
         """Set trait label array"""
         raise NotImplementedError("property is abstract")
-    @trait.deleter
-    def trait(self) -> None:
-        """Delete trait label array"""
-        raise NotImplementedError("property is abstract")
     
     #################### Trait metadata ####################
     @property
@@ -69,10 +65,6 @@ class TraitMatrix(SortableMatrix):
     def ntrait(self, value: int) -> None:
         """Set number of traits"""
         raise NotImplementedError("property is abstract")
-    @ntrait.deleter
-    def ntrait(self) -> None:
-        """Delete number of traits"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def trait_axis(self) -> int:
@@ -81,10 +73,6 @@ class TraitMatrix(SortableMatrix):
     @trait_axis.setter
     def trait_axis(self, value: int) -> None:
         """Set trait axis number"""
-        raise NotImplementedError("property is abstract")
-    @trait_axis.deleter
-    def trait_axis(self) -> None:
-        """Delete trait axis number"""
         raise NotImplementedError("property is abstract")
     
     ############################################################################

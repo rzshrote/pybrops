@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
-from typing import Any
+__all__ = [
+    "GermplasmBank",
+    "check_is_GermplasmBank"
+]
+
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
 class GermplasmBank(BreedingNode):
@@ -44,22 +48,6 @@ class GermplasmBank(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GermplasmBank(v: object) -> bool:
-    """
-    Determine whether an object is a GermplasmBank.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GermplasmBank object instance.
-    """
-    return isinstance(v, GermplasmBank)
-
 def check_is_GermplasmBank(v: object, vname: str) -> None:
     """
     Check if object is of type GermplasmBank. Otherwise raise TypeError.

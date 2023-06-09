@@ -60,10 +60,6 @@ class SquareMatrix(Matrix):
     def nsquare(self, value: int) -> None:
         """Set the number of axes that are square"""
         raise NotImplementedError("property is abstract")
-    @nsquare.deleter
-    def nsquare(self) -> None:
-        """Delete the number of axes that are square"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def square_axes(self) -> tuple:
@@ -73,10 +69,6 @@ class SquareMatrix(Matrix):
     def square_axes(self, value: tuple) -> None:
         """Set axis indices for axes that are square"""
         raise NotImplementedError("property is abstract")
-    @square_axes.deleter
-    def square_axes(self) -> None:
-        """Delete axis indices for axes that are square"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def square_axes_len(self) -> tuple:
@@ -85,10 +77,6 @@ class SquareMatrix(Matrix):
     @square_axes_len.setter
     def square_axes_len(self, value: tuple) -> None:
         """Set axis lengths for axes that are square"""
-        raise NotImplementedError("property is abstract")
-    @square_axes_len.deleter
-    def square_axes_len(self) -> None:
-        """Delete axis lengths for axes that are square"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################

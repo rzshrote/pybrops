@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.DenseLinearGenomicModel import DenseLinearGenomicModel
-from pybrops.model.gmod.DenseLinearGenomicModel import is_DenseLinearGenomicModel
 from pybrops.model.gmod.DenseLinearGenomicModel import check_is_DenseLinearGenomicModel
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
@@ -342,18 +341,12 @@ def test_to_from_hdf5(glgmod, shared_datadir):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseLinearGenomicModel_is_concrete():
-    assert_concrete_function(is_DenseLinearGenomicModel)
-
 def test_check_is_DenseLinearGenomicModel_is_concrete():
     assert_concrete_function(check_is_DenseLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseLinearGenomicModel(glgmod):
-    assert is_DenseLinearGenomicModel(glgmod)
-
 def test_check_is_DenseLinearGenomicModel(glgmod):
     with not_raises(TypeError):
         check_is_DenseLinearGenomicModel(glgmod, "glgmod")

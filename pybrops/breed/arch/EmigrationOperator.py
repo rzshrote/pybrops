@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for
 emigration operators.
 """
 
-from typing import Any
+__all__ = [
+    "EmigrationOperator",
+    "check_is_EmigrationOperator"
+]
+
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 
 class EmigrationOperator(BreedingEdge):
@@ -56,22 +60,6 @@ class EmigrationOperator(BreedingEdge):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_EmigrationOperator(v: object) -> bool:
-    """
-    Determine whether an object is a EmigrationOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a EmigrationOperator object instance.
-    """
-    return isinstance(v, EmigrationOperator)
-
 def check_is_EmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EmigrationOperator. Otherwise raise TypeError.

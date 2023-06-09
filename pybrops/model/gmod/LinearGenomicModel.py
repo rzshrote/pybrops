@@ -66,10 +66,6 @@ class LinearGenomicModel(GenomicModel):
     def beta(self, value: Any) -> None:
         """Set fixed effect regression coefficients"""
         raise NotImplementedError("property is abstract")
-    @beta.deleter
-    def beta(self) -> None:
-        """Delete fixed effect regression coefficients"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def u(self) -> Any:
@@ -78,10 +74,6 @@ class LinearGenomicModel(GenomicModel):
     @u.setter
     def u(self, value: Any) -> None:
         """Set random effect regression coefficients"""
-        raise NotImplementedError("property is abstract")
-    @u.deleter
-    def u(self) -> None:
-        """Delete random effect regression coefficients"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################
@@ -93,22 +85,6 @@ class LinearGenomicModel(GenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_LinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a LinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a LinearGenomicModel object instance.
-    """
-    return isinstance(v, LinearGenomicModel)
-
 def check_is_LinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type LinearGenomicModel. Otherwise raise TypeError.

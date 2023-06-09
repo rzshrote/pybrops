@@ -81,10 +81,6 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
     def u_misc(self, value: Any) -> None:
         """Set miscellaneous random effects"""
         raise NotImplementedError("property is abstract")
-    @u_misc.deleter
-    def u_misc(self) -> None:
-        """Delete miscellaneous random effects"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def u_c(self) -> Any:
@@ -94,32 +90,12 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
     def u_c(self, value: Any) -> None:
         """Set genomic coancestry effects"""
         raise NotImplementedError("property is abstract")
-    @u_c.deleter
-    def u_c(self) -> None:
-        """Delete genomic coancestry effects"""
-        raise NotImplementedError("property is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_CoancestryLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a CoancestryLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a CoancestryLinearGenomicModel object instance.
-    """
-    return isinstance(v, CoancestryLinearGenomicModel)
-
 def check_is_CoancestryLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.

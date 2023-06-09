@@ -122,10 +122,6 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
             check_ndarray_ndim(value, "trait", 1)
             check_ndarray_axis_len(value, "trait", 0, self.ntrait)
         self._trait = value
-    @trait.deleter
-    def trait(self) -> None:
-        """Delete trait label array"""
-        del self._trait
     
     #################### Trait metadata ####################
     @property
@@ -136,10 +132,6 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     def ntrait(self, value: int) -> None:
         """Set number of traits"""
         error_readonly("ntrait")
-    @ntrait.deleter
-    def ntrait(self) -> None:
-        """Delete number of traits"""
-        error_readonly("ntrait")
     
     @property
     def trait_axis(self) -> int:
@@ -148,10 +140,6 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
     @trait_axis.setter
     def trait_axis(self, value: int) -> None:
         """Set trait axis number"""
-        error_readonly("ntrait")
-    @trait_axis.deleter
-    def trait_axis(self) -> None:
-        """Delete trait axis number"""
         error_readonly("ntrait")
     
     ######### Matrix element copy-on-manipulation ##########

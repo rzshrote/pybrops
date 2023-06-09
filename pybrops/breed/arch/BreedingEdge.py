@@ -4,8 +4,10 @@ breeding edges. Breeding edges define how information and germplasm flows
 between breeding nodes.
 """
 
-from typing import Any
-
+__all__ = [
+    "BreedingEdge",
+    "check_is_BreedingEdge"
+]
 
 class BreedingEdge:
     """
@@ -43,22 +45,6 @@ class BreedingEdge:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingEdge(v: object) -> bool:
-    """
-    Determine whether an object is a BreedingEdge.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingEdge object instance.
-    """
-    return isinstance(v, BreedingEdge)
-
 def check_is_BreedingEdge(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingEdge. Otherwise raise TypeError.

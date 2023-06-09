@@ -104,10 +104,6 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     def nphase(self, value: int) -> None:
         """Set number of phases"""
         error_readonly("nphase")
-    @nphase.deleter
-    def nphase(self) -> None:
-        """Delete number of phases"""
-        error_readonly("nphase")
     
     @property
     def phase_axis(self) -> int:
@@ -116,10 +112,6 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     @phase_axis.setter
     def phase_axis(self, value: int) -> None:
         """Set phase axis number"""
-        error_readonly("phase_axis")
-    @phase_axis.deleter
-    def phase_axis(self) -> None:
-        """Delete phase axis number"""
         error_readonly("phase_axis")
 
     ############################## Object Methods ##############################

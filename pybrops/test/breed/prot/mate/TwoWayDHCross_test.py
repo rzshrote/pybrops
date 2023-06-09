@@ -15,7 +15,6 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
-from pybrops.breed.prot.mate.TwoWayDHCross import is_TwoWayDHCross
 from pybrops.breed.prot.mate.TwoWayDHCross import check_is_TwoWayDHCross
 
 ################################################################################
@@ -135,12 +134,6 @@ def test_mate_ncross_nprogeny_s(mprot, dpgvmat, sel, rng):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_TwoWayDHCross_is_concrete():
-    assert_concrete_function(is_TwoWayDHCross)
-
-def test_is_TwoWayDHCross(mprot):
-    assert is_TwoWayDHCross(mprot)
-
 def test_check_is_TwoWayDHCross_is_concrete():
     assert_concrete_function(check_is_TwoWayDHCross)
 

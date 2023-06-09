@@ -205,10 +205,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         check_ndarray_ndim(value, "beta", 2)
         check_ndarray_dtype_is_float64(value, "beta")
         self._beta = value
-    @beta.deleter
-    def beta(self) -> None:
-        """Delete fixed effect regression coefficients"""
-        del self._beta
 
     @property
     def u(self) -> numpy.ndarray:
@@ -221,10 +217,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     @u.setter
     def u(self, value: numpy.ndarray) -> None:
         """Set random effect regression coefficients"""
-        raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
-    @u.deleter
-    def u(self) -> None:
-        """Delete random effect regression coefficients"""
         raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
 
     @property
@@ -241,10 +233,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         check_ndarray_ndim(value, "u_misc", 2)
         check_ndarray_dtype_is_float64(value, "u_misc")
         self._u_misc = value
-    @u_misc.deleter
-    def u_misc(self) -> None:
-        """Delete miscellaneous random effect regression coefficients"""
-        del self._u_misc
 
     @property
     def u_a(self) -> numpy.ndarray:
@@ -260,10 +248,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         check_ndarray_ndim(value, "u_a", 2)
         check_ndarray_dtype_is_float64(value, "u_a")
         self._u_a = value
-    @u_a.deleter
-    def u_a(self) -> None:
-        """Delete additive genomic marker effect regression coefficients"""
-        del self._u_a
 
     ################## Genomic Model Data ##################
     @property
@@ -276,10 +260,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         if value is not None:
             check_is_str(value, "model_name")
         self._model_name = value
-    @model_name.deleter
-    def model_name(self) -> None:
-        """Delete data for property model_name."""
-        del self._model_name
     
     @property
     def params(self) -> dict:
@@ -292,10 +272,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             value = {}
         check_is_dict(value, "params")
         self._params = value
-    @params.deleter
-    def params(self) -> None:
-        """Delete data for property params."""
-        del self._params
     
     @property
     def trait(self) -> numpy.ndarray:
@@ -309,10 +285,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             check_ndarray_ndim(value, "trait", 1)
             check_ndarray_dtype_is_object(value, "trait")
         self._trait = value
-    @trait.deleter
-    def trait(self) -> None:
-        """Delete data for property trait."""
-        del self._trait
     
     @property
     def ntrait(self) -> int:
@@ -321,10 +293,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     @ntrait.setter
     def ntrait(self, value: int) -> None:
         """Set the number of traits predicted by the model"""
-        error_readonly("ntrait")
-    @ntrait.deleter
-    def ntrait(self) -> None:
-        """Delete the number of traits predicted by the model"""
         error_readonly("ntrait")
 
     ############################################################################
@@ -1678,22 +1646,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseAdditiveLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a DenseAdditiveLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseAdditiveLinearGenomicModel object instance.
-    """
-    return isinstance(v, DenseAdditiveLinearGenomicModel)
-
 def check_is_DenseAdditiveLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.

@@ -72,22 +72,6 @@ class UnconstrainedOptimizationAlgorithm:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_OptimizationAlgorithm(v: object) -> bool:
-    """
-    Determine whether an object is a OptimizationAlgorithm.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a OptimizationAlgorithm object instance.
-    """
-    return isinstance(v, UnconstrainedOptimizationAlgorithm)
-
 def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.

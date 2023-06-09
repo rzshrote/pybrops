@@ -122,10 +122,6 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
             self._col_analysis_type = {k: value[k] for k in self._data.keys()}
         else:
             raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-    @col_analysis_type.deleter
-    def col_analysis_type(self) -> None:
-        """Delete analysis variable type array"""
-        del self._col_analysis_type
 
     @property
     def col_analysis_effect(self) -> numpy.ndarray:
@@ -152,10 +148,6 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
             self._col_analysis_effect = {k: value[k] for k in self._data.keys()}
         else:
             raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-    @col_analysis_effect.deleter
-    def col_analysis_effect(self) -> None:
-        """Delete analysis variable effect type array"""
-        del self._col_analysis_effect
 
     ############################## Object Methods ##############################
     def col_data(

@@ -2,6 +2,11 @@
 Module defining interfaces and error checking routines for real optimization algorithms.
 """
 
+__all__ = [
+    "RealOptimizationAlgorithm",
+    "check_is_RealOptimizationAlgorithm"
+]
+
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm

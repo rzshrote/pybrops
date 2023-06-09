@@ -87,32 +87,12 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     def u_i(self, value: Any) -> None:
         """Set epistatic genomic marker effects"""
         raise NotImplementedError("property is abstract")
-    @u_i.deleter
-    def u_i(self) -> None:
-        """Delete epistatic genomic marker effects"""
-        raise NotImplementedError("property is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveDominanceEpistaticLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a AdditiveDominanceEpistaticLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveDominanceEpistaticLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveDominanceEpistaticLinearGenomicModel)
-
 def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceEpistaticLinearGenomicModel. Otherwise raise TypeError.

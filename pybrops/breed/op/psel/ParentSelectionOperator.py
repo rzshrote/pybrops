@@ -3,8 +3,10 @@ Module defining interfaces and associated error checking routines for
 breeding program parental selection operators.
 """
 
-from typing import Any
-
+__all__ = [
+    "ParentSelectionOperator",
+    "check_is_ParentSelectionOperator"
+]
 
 class ParentSelectionOperator:
     """
@@ -77,22 +79,6 @@ class ParentSelectionOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ParentSelectionOperator(v: object) -> bool:
-    """
-    Determine whether an object is a ParentSelectionOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a ParentSelectionOperator object instance.
-    """
-    return isinstance(v, ParentSelectionOperator)
-
 def check_is_ParentSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ParentSelectionOperator. Otherwise raise TypeError.

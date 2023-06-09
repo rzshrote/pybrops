@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.EmigrationOperator import EmigrationOperator
-from pybrops.breed.arch.EmigrationOperator import is_EmigrationOperator
 from pybrops.breed.arch.EmigrationOperator import check_is_EmigrationOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_EmigrationOperator_is_concrete():
-    assert_concrete_function(is_EmigrationOperator)
-
 def test_check_is_EmigrationOperator_is_concrete():
     assert_concrete_function(check_is_EmigrationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_EmigrationOperator(arch):
-    assert is_EmigrationOperator(arch)
-
 def test_check_is_EmigrationOperator(arch):
     with not_raises(TypeError):
         check_is_EmigrationOperator(arch, "arch")

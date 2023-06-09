@@ -12,7 +12,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.df.DictDataFrame import DictDataFrame
-from pybrops.core.df.DictDataFrame import is_DictDataFrame
 from pybrops.core.df.DictDataFrame import check_is_DictDataFrame
 
 ################################################################################
@@ -112,7 +111,7 @@ def test_deepcopy_is_concrete():
 ########################## Test Class Special Methods ##########################
 ################################################################################
 def test_init(df):
-    assert is_DictDataFrame(df)
+    assert isinstance(df, DictDataFrame)
 
 def test_copy(df):
     a = copy.copy(df)
@@ -281,18 +280,12 @@ def test_to_dict(df):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DictDataFrame_is_concrete():
-    assert_concrete_function(is_DictDataFrame)
-
 def test_check_is_DictDataFrame_is_concrete():
     assert_concrete_function(check_is_DictDataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DictDataFrame(df):
-    assert is_DictDataFrame(df)
-
 def test_check_is_DictDataFrame(df):
     with not_raises(TypeError):
         check_is_DictDataFrame(df, "df")

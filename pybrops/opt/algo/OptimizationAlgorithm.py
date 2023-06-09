@@ -3,6 +3,11 @@ Module defining interfaces and associated error checking routines for
 constrained optimization algorithms.
 """
 
+__all__ = [
+    "OptimizationAlgorithm",
+    "check_is_OptimizationAlgorithm"
+]
+
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 from pybrops.opt.prob.Problem import Problem

@@ -237,10 +237,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def ploidy(self, value: int) -> None:
         """Set matrix ploidy number"""
         error_readonly("ploidy")
-    @ploidy.deleter
-    def ploidy(self) -> None:
-        """Delete matrix ploidy number"""
-        error_readonly("ploidy")
 
     @property
     def nphase(self) -> int:
@@ -250,10 +246,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def nphase(self, value: int) -> None:
         """Set number of phases"""
         error_readonly("nphase")
-    @nphase.deleter
-    def nphase(self) -> None:
-        """Delete number of phases"""
-        error_readonly("nphase")
 
     @property
     def mat_format(self) -> str:
@@ -262,10 +254,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     @mat_format.setter
     def mat_format(self, value: str) -> None:
         """Set matrix representation format"""
-        error_readonly("mat_format")
-    @mat_format.deleter
-    def mat_format(self) -> None:
-        """Delete matrix representation format"""
         error_readonly("mat_format")
 
     ############### Taxa Metadata Properites ###############

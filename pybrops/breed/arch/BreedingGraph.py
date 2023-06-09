@@ -5,8 +5,12 @@ populations. Germplasm and information is passed between breeding nodes through
 breeding edges.
 """
 
-from typing import Any
+__all__ = [
+    "BreedingGraph",
+    "check_is_BreedingGraph"
+]
 
+from typing import Any
 
 class BreedingGraph:
     """
@@ -48,10 +52,6 @@ class BreedingGraph:
     def graph(self, value: Any) -> None:
         """Set graph data structure."""
         raise NotImplementedError("property is abstract")
-    @graph.deleter
-    def graph(self) -> None:
-        """Delete graph data structure."""
-        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -62,22 +62,6 @@ class BreedingGraph:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingGraph(v: object) -> bool:
-    """
-    Determine whether an object is a BreedingGraph.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingGraph object instance.
-    """
-    return isinstance(v, BreedingGraph)
-
 def check_is_BreedingGraph(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingGraph. Otherwise raise TypeError.

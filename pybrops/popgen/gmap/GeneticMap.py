@@ -58,10 +58,6 @@ class GeneticMap:
     def vrnt_chrgrp(self, value: Any) -> None:
         """Set variant chromosome group label array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp.deleter
-    def vrnt_chrgrp(self) -> None:
-        """Delete variant chromosome group label array"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def vrnt_phypos(self) -> Any:
@@ -71,10 +67,6 @@ class GeneticMap:
     def vrnt_phypos(self, value: Any) -> None:
         """Set variant physical position array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_phypos.deleter
-    def vrnt_phypos(self) -> None:
-        """Delete variant physical position array"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def vrnt_genpos(self) -> Any:
@@ -83,10 +75,6 @@ class GeneticMap:
     @vrnt_genpos.setter
     def vrnt_genpos(self, value: Any) -> None:
         """Set variant genetic position array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_genpos.deleter
-    def vrnt_genpos(self) -> None:
-        """Delete variant genetic position array"""
         raise NotImplementedError("property is abstract")
     
     ################# Metadata Properites ##################
@@ -98,10 +86,6 @@ class GeneticMap:
     def vrnt_chrgrp_name(self, value: Any) -> None:
         """Set variant chromosome group name array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_name.deleter
-    def vrnt_chrgrp_name(self) -> None:
-        """Delete variant chromosome group name array"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def vrnt_chrgrp_stix(self) -> Any:
@@ -110,10 +94,6 @@ class GeneticMap:
     @vrnt_chrgrp_stix.setter
     def vrnt_chrgrp_stix(self, value: Any) -> None:
         """Set variant chromosome group start indices array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_stix.deleter
-    def vrnt_chrgrp_stix(self) -> None:
-        """Delete variant chromosome group start indices array"""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -124,10 +104,6 @@ class GeneticMap:
     def vrnt_chrgrp_spix(self, value: Any) -> None:
         """Set variant chromosome group stop indices array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_spix.deleter
-    def vrnt_chrgrp_spix(self) -> None:
-        """Delete variant chromosome group stop indices array"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def vrnt_chrgrp_len(self) -> Any:
@@ -136,10 +112,6 @@ class GeneticMap:
     @vrnt_chrgrp_len.setter
     def vrnt_chrgrp_len(self, value: Any) -> None:
         """Set variant chromosome group length array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_len.deleter
-    def vrnt_chrgrp_len(self) -> None:
-        """Delete variant chromosome group length array"""
         raise NotImplementedError("property is abstract")
 
     ################## Spline Properites ###################
@@ -151,10 +123,6 @@ class GeneticMap:
     def spline(self, value: Any) -> None:
         """Set interpolation spline(s)"""
         raise NotImplementedError("property is abstract")
-    @spline.deleter
-    def spline(self) -> None:
-        """Delete interpolation spline(s)"""
-        raise NotImplementedError("property is abstract")
 
     ############# Spline Metadata Properites ###############
     @property
@@ -165,10 +133,6 @@ class GeneticMap:
     def spline_kind(self, value: Any) -> None:
         """Set the spline kind"""
         raise NotImplementedError("property is abstract")
-    @spline_kind.deleter
-    def spline_kind(self) -> None:
-        """Delete the spline kind"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def spline_fill_value(self) -> Any:
@@ -177,10 +141,6 @@ class GeneticMap:
     @spline_fill_value.setter
     def spline_fill_value(self, value: Any) -> None:
         """Set the default spline fill value"""
-        raise NotImplementedError("property is abstract")
-    @spline_fill_value.deleter
-    def spline_fill_value(self) -> None:
-        """Delete the default spline fill value"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################

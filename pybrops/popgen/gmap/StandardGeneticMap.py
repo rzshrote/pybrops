@@ -72,10 +72,6 @@ class StandardGeneticMap(GeneticMap):
         check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
         check_ndarray_ndim(value, "vrnt_chrgrp", 1)
         self._vrnt_chrgrp = value
-    @vrnt_chrgrp.deleter
-    def vrnt_chrgrp(self) -> None:
-        """Delete data for property vrnt_chrgrp."""
-        del self._vrnt_chrgrp
 
     @property
     def vrnt_phypos(self) -> numpy.ndarray:
@@ -88,10 +84,6 @@ class StandardGeneticMap(GeneticMap):
         check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
         check_ndarray_ndim(value, "vrnt_phypos", 1)
         self._vrnt_phypos = value
-    @vrnt_phypos.deleter
-    def vrnt_phypos(self) -> None:
-        """Delete data for property vrnt_phypos."""
-        del self._vrnt_phypos
 
     @property
     def vrnt_genpos(self) -> numpy.ndarray:
@@ -104,10 +96,6 @@ class StandardGeneticMap(GeneticMap):
         check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
         check_ndarray_ndim(value, "vrnt_genpos", 1)
         self._vrnt_genpos = value
-    @vrnt_genpos.deleter
-    def vrnt_genpos(self) -> None:
-        """Delete data for property vrnt_genpos."""
-        del self._vrnt_genpos
 
     ############################################################################
     ############################# Static Methods ###############################

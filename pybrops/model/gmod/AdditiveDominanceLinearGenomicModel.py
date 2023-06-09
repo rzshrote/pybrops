@@ -85,32 +85,12 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     def u_d(self, value: Any) -> None:
         """Set dominance genomic marker effects"""
         raise NotImplementedError("property is abstract")
-    @u_d.deleter
-    def u_d(self) -> None:
-        """Delete dominance genomic marker effects"""
-        raise NotImplementedError("property is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveDominanceLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a AdditiveDominanceLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveDominanceLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveDominanceLinearGenomicModel)
-
 def check_is_AdditiveDominanceLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.

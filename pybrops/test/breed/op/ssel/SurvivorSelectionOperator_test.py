@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
-from pybrops.breed.op.ssel.SurvivorSelectionOperator import is_SurvivorSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_sselect_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_SurvivorSelectionOperator_is_concrete():
-    assert_concrete_function(is_SurvivorSelectionOperator)
-
 def test_check_is_SurvivorSelectionOperator_is_concrete():
     assert_concrete_function(check_is_SurvivorSelectionOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_SurvivorSelectionOperator(operator):
-    assert is_SurvivorSelectionOperator(operator)
-
 def test_check_is_SurvivorSelectionOperator(operator):
     with not_raises(TypeError):
         check_is_SurvivorSelectionOperator(operator, "operator")

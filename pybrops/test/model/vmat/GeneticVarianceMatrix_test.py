@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrix import is_GeneticVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import check_is_GeneticVarianceMatrix
 
 ################################################################################
@@ -45,12 +44,6 @@ def test_append_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(is_GeneticVarianceMatrix)
-
-def test_is_GeneticVarianceMatrix(mat):
-    assert is_GeneticVarianceMatrix(mat)
-
 def test_check_is_GeneticVarianceMatrix_is_concrete():
     assert_concrete_function(check_is_GeneticVarianceMatrix)
 

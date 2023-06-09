@@ -48,10 +48,6 @@ class PhenotypingProtocol:
     def gpmod(self, value: GenomicModel) -> None:
         """Set genomic prediction model"""
         raise NotImplementedError("property is abstract")
-    @gpmod.deleter
-    def gpmod(self) -> None:
-        """Delete genomic prediction model"""
-        raise NotImplementedError("property is abstract")
 
     ################ Stochastic Parameters #################
     @property
@@ -61,10 +57,6 @@ class PhenotypingProtocol:
     @var_err.setter
     def var_err(self, value: Any) -> None:
         """Set error variance"""
-        raise NotImplementedError("property is abstract")
-    @var_err.deleter
-    def var_err(self) -> None:
-        """Delete error variance"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
@@ -140,22 +132,6 @@ class PhenotypingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PhenotypingProtocol(v: object) -> bool:
-    """
-    Determine whether an object is a PhenotypingProtocol.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhenotypingProtocol object instance.
-    """
-    return isinstance(v, PhenotypingProtocol)
-
 def check_is_PhenotypingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type PhenotypingProtocol. Otherwise raise TypeError.

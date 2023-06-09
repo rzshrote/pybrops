@@ -33,10 +33,6 @@ class PhenotypeDataFrame(DataFrame):
     def col_analysis_type(self, value: Any) -> None:
         """Set analysis variable type array"""
         raise NotImplementedError("property is abstract")
-    @col_analysis_type.deleter
-    def col_analysis_type(self) -> None:
-        """Delete analysis variable type array"""
-        raise NotImplementedError("property is abstract")
 
     # TODO: maybe eliminate these. it seems like this information should go in other modules
     @property
@@ -46,10 +42,6 @@ class PhenotypeDataFrame(DataFrame):
     @col_analysis_effect.setter
     def col_analysis_effect(self, value: Any) -> None:
         """Set analysis variable effect type array"""
-        raise NotImplementedError("property is abstract")
-    @col_analysis_effect.deleter
-    def col_analysis_effect(self) -> None:
-        """Delete analysis variable effect type array"""
         raise NotImplementedError("property is abstract")
 
 

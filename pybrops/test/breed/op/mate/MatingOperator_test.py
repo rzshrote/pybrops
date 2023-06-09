@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.mate.MatingOperator import MatingOperator
-from pybrops.breed.op.mate.MatingOperator import is_MatingOperator
 from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_mate_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_MatingOperator_is_concrete():
-    assert_concrete_function(is_MatingOperator)
-
 def test_check_is_MatingOperator_is_concrete():
     assert_concrete_function(check_is_MatingOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_MatingOperator(operator):
-    assert is_MatingOperator(operator)
-
 def test_check_is_MatingOperator(operator):
     with not_raises(TypeError):
         check_is_MatingOperator(operator, "operator")

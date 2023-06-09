@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.BreedingNode import BreedingNode
-from pybrops.breed.arch.BreedingNode import is_BreedingNode
 from pybrops.breed.arch.BreedingNode import check_is_BreedingNode
 
 ################################################################################
@@ -66,18 +65,12 @@ def test_t_max_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_BreedingNode_is_concrete():
-    assert_concrete_function(is_BreedingNode)
-
 def test_check_is_BreedingNode_is_concrete():
     assert_concrete_function(check_is_BreedingNode)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_BreedingNode(arch):
-    assert is_BreedingNode(arch)
-
 def test_check_is_BreedingNode(arch):
     with not_raises(TypeError):
         check_is_BreedingNode(arch, "arch")

@@ -2,6 +2,11 @@
 Module implementing mating protocols for four-way crosses.
 """
 
+__all__ = [
+    "FourWayCross",
+    "check_is_FourWayCross"
+]
+
 from numbers import Integral
 from typing import Any, Optional, Union
 import numpy
@@ -45,10 +50,6 @@ class FourWayCross(MatingProtocol):
     def nparent(self, value: Integral) -> None:
         """Set number of parents the mating protocol requires."""
         error_readonly("nparent")
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents the mating protocol requires."""
-        error_readonly("nparent")
 
     @property
     def progeny_counter(self) -> int:
@@ -59,10 +60,6 @@ class FourWayCross(MatingProtocol):
         """Set data for property progeny_counter."""
         check_is_int(value, "progeny_counter")
         self._progeny_counter = value
-    @progeny_counter.deleter
-    def progeny_counter(self) -> None:
-        """Delete data for property progeny_counter."""
-        del self._progeny_counter
 
     @property
     def family_counter(self) -> int:
@@ -73,10 +70,6 @@ class FourWayCross(MatingProtocol):
         """Set data for property family_counter."""
         check_is_int(value, "family_counter")
         self._family_counter = value
-    @family_counter.deleter
-    def family_counter(self) -> None:
-        """Delete data for property family_counter."""
-        del self._family_counter
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
@@ -89,10 +82,6 @@ class FourWayCross(MatingProtocol):
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator."""
-        del self._rng
 
     ############################## Object Methods ##############################
     def mate(
@@ -240,9 +229,6 @@ class FourWayCross(MatingProtocol):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_FourWayCross(v: object) -> bool:
-    return isinstance(v, FourWayCross)
-
 def check_is_FourWayCross(v: object, vname: str) -> None:
     if not isinstance(v, FourWayCross):
         raise TypeError("'%s' must be a FourWayCross." % vname)

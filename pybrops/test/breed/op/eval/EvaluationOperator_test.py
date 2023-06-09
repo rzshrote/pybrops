@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
-from pybrops.breed.op.eval.EvaluationOperator import is_EvaluationOperator
 from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_evaluate_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_EvaluationOperator_is_concrete():
-    assert_concrete_function(is_EvaluationOperator)
-
 def test_check_is_EvaluationOperator_is_concrete():
     assert_concrete_function(check_is_EvaluationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_EvaluationOperator(operator):
-    assert is_EvaluationOperator(operator)
-
 def test_check_is_EvaluationOperator(operator):
     with not_raises(TypeError):
         check_is_EvaluationOperator(operator, "operator")

@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for matrices
 storing genic variance estimates.
 """
 
-from typing import Any
+__all__ = [
+    "GenicVarianceMatrix",
+    "check_is_GenicVarianceMatrix"
+]
+
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
@@ -52,10 +56,6 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
     def epgc(self, value: tuple) -> None:
         """Set a tuple of the expected parental genome contributions."""
         raise NotImplementedError("property is abstract")    
-    @epgc.deleter
-    def epgc(self) -> None:
-        """Delete the expected parental genome contributions tuple."""
-        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -95,22 +95,6 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenicVarianceMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``GenicVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``GenicVarianceMatrix`` object instance.
-    """
-    return isinstance(v, GenicVarianceMatrix)
-
 def check_is_GenicVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenicVarianceMatrix``. Otherwise raise ``TypeError``.

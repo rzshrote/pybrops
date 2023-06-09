@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.df.DataFrame import DataFrame
-from pybrops.core.df.DataFrame import is_DataFrame
 from pybrops.core.df.DataFrame import check_is_DataFrame
 
 
@@ -79,18 +78,12 @@ def test_to_dict_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DataFrame_is_concrete():
-    assert_concrete_function(is_DataFrame)
-
 def test_check_is_DataFrame_is_concrete():
     assert_concrete_function(check_is_DataFrame)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DataFrame(df):
-    assert is_DataFrame(df)
-
 def test_check_is_DataFrame(df):
     with not_raises(TypeError):
         check_is_DataFrame(df, "df")

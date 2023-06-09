@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
-from pybrops.breed.arch.BreedingProgram import is_BreedingProgram
 from pybrops.breed.arch.BreedingProgram import check_is_BreedingProgram
 
 ################################################################################
@@ -86,18 +85,12 @@ def test_evolve_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_BreedingProgram_is_concrete():
-    assert_concrete_function(is_BreedingProgram)
-
 def test_check_is_BreedingProgram_is_concrete():
     assert_concrete_function(check_is_BreedingProgram)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_BreedingProgram(arch):
-    assert is_BreedingProgram(arch)
-
 def test_check_is_BreedingProgram(arch):
     with not_raises(TypeError):
         check_is_BreedingProgram(arch, "arch")

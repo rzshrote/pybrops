@@ -4,7 +4,7 @@ Module implementing classes and associated error checking routines for matrices
 storing dense additive genic variance estimates.
 """
 
-from typing import Any, Optional
+from typing import Optional
 import numpy
 from pybrops.model.vmat.DenseGenicVarianceMatrix import DenseGenicVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix

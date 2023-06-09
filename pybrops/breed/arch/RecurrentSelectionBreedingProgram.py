@@ -2,6 +2,11 @@
 Module implementing recurrent selection.
 """
 
+__all__ = [
+    "RecurrentSelectionBreedingProgram",
+    "check_is_RecurrentSelectionBreedingProgram"
+]
+
 import copy
 from typing import Any, Union
 import numpy
@@ -71,10 +76,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         if value is not None:
             check_is_dict(value, "start_genome")
         self._start_genome = value
-    @start_genome.deleter
-    def start_genome(self) -> None:
-        """Delete starting genomes for individuals in the breeding program"""
-        del self._start_genome
 
     @property
     def start_geno(self) -> Union[dict,None]:
@@ -86,10 +87,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         if value is not None:
             check_is_dict(value, "start_geno")
         self._start_geno = value
-    @start_geno.deleter
-    def start_geno(self) -> None:
-        """Delete starting genotypes for individuals in the breeding program"""
-        del self._start_geno
 
     @property
     def start_pheno(self) -> Union[dict,None]:
@@ -101,10 +98,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         if value is not None:
             check_is_dict(value, "start_pheno")
         self._start_pheno = value
-    @start_pheno.deleter
-    def start_pheno(self) -> None:
-        """Delete starting phenotypes for individuals in the breeding program"""
-        del self._start_pheno
 
     @property
     def start_bval(self) -> Union[dict,None]:
@@ -116,10 +109,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         if value is not None:
             check_is_dict(value, "start_bval")
         self._start_bval = value
-    @start_bval.deleter
-    def start_bval(self) -> None:
-        """Delete starting breeding values for individuals in the breeding program"""
-        del self._start_bval
 
     @property
     def start_gmod(self) -> Union[dict,None]:
@@ -131,10 +120,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         if value is not None:
             check_is_dict(value, "start_gmod")
         self._start_gmod = value
-    @start_gmod.deleter
-    def start_gmod(self) -> None:
-        """Delete starting genomic models for individuals in the breeding program"""
-        del self._start_gmod
 
 
     ############ Program information containers ############
@@ -147,10 +132,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set genomes for individuals in the breeding program"""
         check_is_dict(value, "genome")
         self._genome = value
-    @genome.deleter
-    def genome(self) -> None:
-        """Delete genomes for individuals in the breeding program"""
-        del self._genome
 
     @property
     def geno(self) -> Any:
@@ -161,10 +142,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set genotypes for individuals in the breeding program"""
         check_is_dict(value, "geno")
         self._geno = value
-    @geno.deleter
-    def geno(self) -> None:
-        """Delete genotypes for individuals in the breeding program"""
-        del self._geno
 
     @property
     def pheno(self) -> Any:
@@ -175,10 +152,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set phenotypes for individuals in the breeding program"""
         check_is_dict(value, "pheno")
         self._pheno = value
-    @pheno.deleter
-    def pheno(self) -> None:
-        """Delete phenotypes for individuals in the breeding program"""
-        del self._pheno
 
     @property
     def bval(self) -> Any:
@@ -189,10 +162,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set breeding values for individuals in the breeding program"""
         check_is_dict(value, "bval")
         self._bval = value
-    @bval.deleter
-    def bval(self) -> None:
-        """Delete breeding values for individuals in the breeding program"""
-        del self._bval
 
     @property
     def gmod(self) -> Any:
@@ -203,10 +172,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set genomic models for individuals in the breeding program"""
         check_is_dict(value, "gmod")
         self._gmod = value
-    @gmod.deleter
-    def gmod(self) -> None:
-        """Delete genomic models for individuals in the breeding program"""
-        del self._gmod
 
     ######### Breeding program operator properties #########
     @property
@@ -218,10 +183,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the initialization operator"""
         check_is_InitializationOperator(value, "initop")
         self._initop = value
-    @initop.deleter
-    def initop(self) -> None:
-        """Delete the initialization operator"""
-        del self._initop
 
     @property
     def pselop(self) -> Any:
@@ -232,10 +193,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the parent selection operator"""
         check_is_ParentSelectionOperator(value, "pselop")
         self._pselop = value
-    @pselop.deleter
-    def pselop(self) -> None:
-        """Delete the parent selection operator"""
-        del self._pselop
 
     @property
     def mateop(self) -> Any:
@@ -246,10 +203,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the mating operator"""
         check_is_MatingOperator(value, "mateop")
         self._mateop = value
-    @mateop.deleter
-    def mateop(self) -> None:
-        """Delete the mating operator"""
-        del self._mateop
 
     @property
     def evalop(self) -> Any:
@@ -260,10 +213,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the evaluation operator"""
         check_is_EvaluationOperator(value, "evalop")
         self._evalop = value
-    @evalop.deleter
-    def evalop(self) -> None:
-        """Delete the evaluation operator"""
-        del self._evalop
 
     @property
     def sselop(self) -> Any:
@@ -274,10 +223,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the survivor selection operator"""
         check_is_SurvivorSelectionOperator(value, "sselop")
         self._sselop = value
-    @sselop.deleter
-    def sselop(self) -> None:
-        """Delete the survivor selection operator"""
-        del self._sselop
 
     ############# Generation number properties #############
     @property
@@ -289,10 +234,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the current time for the BreedingNode"""
         check_is_int(value, "t_cur")
         self._t_cur = value
-    @t_cur.deleter
-    def t_cur(self) -> None:
-        """Delete the current time for the BreedingNode"""
-        del self._t_cur
 
     @property
     def t_max(self) -> int:
@@ -303,10 +244,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
         """Set the maximum time for the BreedingNode"""
         check_is_int(value, "t_max")
         self._t_max = value
-    @t_max.deleter
-    def t_max(self) -> None:
-        """Delete the maximum time for the BreedingNode"""
-        del self._t_max
 
     ############################## Object Methods ##############################
 
@@ -565,22 +502,6 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_RecurrentSelectionBreedingProgram(v: object) -> bool:
-    """
-    Determine whether an object is a RecurrentSelectionBreedingProgram.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a RecurrentSelectionBreedingProgram object instance.
-    """
-    return isinstance(v, RecurrentSelectionBreedingProgram)
-
 def check_is_RecurrentSelectionBreedingProgram(v: object, vname: str) -> None:
     """
     Check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.

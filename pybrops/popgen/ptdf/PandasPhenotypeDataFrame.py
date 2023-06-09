@@ -46,10 +46,6 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         if any(e not in options for e in value):
             raise ValueError("elements in 'col_ctype' must be in {0}".format(options))
         self._col_ctype = value
-    @col_ctype.deleter
-    def col_ctype(self) -> None:
-        """Delete column types"""
-        del self._col_ctype
 
     @property
     def col_atype(self) -> numpy.ndarray:
@@ -67,10 +63,6 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         if any(e not in options for e in value):
             raise ValueError("elements in 'col_atype' must be in {0}".format(options))
         self._col_atype = value
-    @col_atype.deleter
-    def col_atype(self) -> None:
-        """Delete analysis variable type array"""
-        del self._col_atype
 
     @property
     def col_aefct(self) -> numpy.ndarray:
@@ -85,10 +77,6 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
         if any(e not in col_aefct_options for e in value):
             raise ValueError("elements in 'col_aefct' must be in {0}".format(col_aefct_options))
         self._col_aefct = value
-    @col_aefct.deleter
-    def col_aefct(self) -> None:
-        """Delete analysis variable effect type array"""
-        del self._col_aefct
 
     ############################## Object Methods ##############################
     def col_data(

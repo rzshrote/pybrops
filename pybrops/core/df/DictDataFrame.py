@@ -92,10 +92,6 @@ class DictDataFrame(DataFrame):
         check_values_in_dict_all_type(value, "data", numpy.ndarray)
         check_values_in_dict_equal_len(value, "data")
         self._data = value
-    @data.deleter
-    def data(self) -> None:
-        """Delete dataframe"""
-        del self._data
 
     ################## Column attributes ###################
     @property
@@ -106,10 +102,6 @@ class DictDataFrame(DataFrame):
     def ncol(self, value: int) -> None:
         """Set number of columns"""
         error_readonly("ncol")
-    @ncol.deleter
-    def ncol(self) -> None:
-        """Delete number of columns"""
-        error_readonly("ncol")
 
     @property
     def col_axis(self) -> int:
@@ -118,10 +110,6 @@ class DictDataFrame(DataFrame):
     @col_axis.setter
     def col_axis(self, value: int) -> None:
         """Set column axis index"""
-        error_readonly("col_axis")
-    @col_axis.deleter
-    def col_axis(self) -> None:
-        """Delete column axis index"""
         error_readonly("col_axis")
 
     @property
@@ -156,10 +144,6 @@ class DictDataFrame(DataFrame):
         for k,v in value.items():                   # for each key, value pair
             if self._data[k].dtype != v:              # if dtypes do not match up
                 self._data[k] = self._data[k].astype(v) # convert data types
-    @col_dtype.deleter
-    def col_dtype(self) -> None:
-        """Delete column data types"""
-        error_readonly("col_dtype")
 
     @property
     def col_name(self) -> numpy.ndarray:
@@ -192,10 +176,6 @@ class DictDataFrame(DataFrame):
             raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
         for k,v in value.items():                       # for each key, value pair
             self._data[v] = self._data.pop(k)           # rename old key
-    @col_name.deleter
-    def col_name(self) -> None:
-        """Delete column names"""
-        error_readonly("col_name")
 
     @property
     def col_grp(self) -> Union[numpy.ndarray,None]:
@@ -217,10 +197,6 @@ class DictDataFrame(DataFrame):
             self._col_grp = {k: value[k] for k in self._data.keys()}
         else:
             raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-    @col_grp.deleter
-    def col_grp(self) -> None:
-        """Delete column groups"""
-        del self._col_grp
 
     #################### Row attributes ####################
     @property
@@ -235,10 +211,6 @@ class DictDataFrame(DataFrame):
     def nrow(self, value: int) -> None:
         """Set number of rows"""
         error_readonly("nrow")
-    @nrow.deleter
-    def nrow(self) -> None:
-        """Delete number of rows"""
-        error_readonly("nrow")
 
     @property
     def row_axis(self) -> int:
@@ -247,10 +219,6 @@ class DictDataFrame(DataFrame):
     @row_axis.setter
     def row_axis(self, value: int) -> None:
         """Set row axis index"""
-        error_readonly("row_axis")
-    @row_axis.deleter
-    def row_axis(self) -> None:
-        """Delete row axis index"""
         error_readonly("row_axis")
 
     @property
@@ -277,10 +245,6 @@ class DictDataFrame(DataFrame):
             self._row_name = value
         else:
             raise TypeError("unsupported type: supported types are dict, list, tuple, numpy.ndarray")
-    @row_name.deleter
-    def row_name(self) -> None:
-        """Delete row names"""
-        del self._row_name
 
     ############################## Object Methods ##############################
     def col_data(
@@ -404,22 +368,6 @@ class DictDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DictDataFrame(v: object) -> bool:
-    """
-    Determine whether an object is a DictDataFrame.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DictDataFrame object instance.
-    """
-    return isinstance(v, DictDataFrame)
-
 def check_is_DictDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DictDataFrame. Otherwise raise TypeError.

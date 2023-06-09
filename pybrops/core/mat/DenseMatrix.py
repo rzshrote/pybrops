@@ -300,10 +300,6 @@ class DenseMatrix(Matrix):
         # Let the user decide whether to overwrite error checks.
         check_is_ndarray(value, "mat")
         self._mat = value
-    @mat.deleter
-    def mat(self) -> None:
-        """Delete pointer to raw numpy.ndarray object."""
-        del self._mat
     
     @property
     def mat_ndim(self) -> int:
@@ -313,10 +309,6 @@ class DenseMatrix(Matrix):
     def mat_ndim(self, value: int) -> None:
         """Set number of dimensions of the raw numpy.ndarray"""
         error_readonly("mat_ndim")
-    @mat_ndim.deleter
-    def mat_ndim(self) -> None:
-        """Delete number of dimensions of the raw numpy.ndarray"""
-        error_readonly("mat_ndim")
     
     @property
     def mat_shape(self) -> tuple:
@@ -325,10 +317,6 @@ class DenseMatrix(Matrix):
     @mat_shape.setter
     def mat_shape(self, value: tuple) -> None:
         """Set the shape of the raw numpy.ndarray"""
-        error_readonly("mat_shape")
-    @mat_shape.deleter
-    def mat_shape(self) -> None:
-        """Delete the shape of the raw numpy.ndarray"""
         error_readonly("mat_shape")
     
     ############################## Object Methods ##############################

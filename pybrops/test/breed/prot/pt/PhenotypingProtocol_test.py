@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.breed.prot.pt.PhenotypingProtocol import is_PhenotypingProtocol
 from pybrops.breed.prot.pt.PhenotypingProtocol import check_is_PhenotypingProtocol
 
 ################################################################################
@@ -56,18 +55,12 @@ def test_set_H2_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_PhenotypingProtocol_is_concrete():
-    assert_concrete_function(is_PhenotypingProtocol)
-
 def test_check_is_PhenotypingProtocol_is_concrete():
     assert_concrete_function(check_is_PhenotypingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_PhenotypingProtocol(ptprot):
-    assert is_PhenotypingProtocol(ptprot)
-
 def test_check_is_PhenotypingProtocol(ptprot):
     with not_raises(TypeError):
         check_is_PhenotypingProtocol(ptprot, "ptprot")

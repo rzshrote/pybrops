@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
-from pybrops.breed.arch.BreedingEdge import is_BreedingEdge
 from pybrops.breed.arch.BreedingEdge import check_is_BreedingEdge
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_BreedingEdge_is_concrete():
-    assert_concrete_function(is_BreedingEdge)
-
 def test_check_is_BreedingEdge_is_concrete():
     assert_concrete_function(check_is_BreedingEdge)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_BreedingEdge(arch):
-    assert is_BreedingEdge(arch)
-
 def test_check_is_BreedingEdge(arch):
     with not_raises(TypeError):
         check_is_BreedingEdge(arch, "arch")

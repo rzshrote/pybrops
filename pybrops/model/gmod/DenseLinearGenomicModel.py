@@ -161,10 +161,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         check_ndarray_ndim(value, "beta", 2)
         check_ndarray_dtype_is_float64(value, "beta")
         self._beta = value
-    @beta.deleter
-    def beta(self) -> None:
-        """Delete fixed effect regression coefficients"""
-        del self._beta
 
     @property
     def u(self) -> numpy.ndarray:
@@ -177,10 +173,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         check_ndarray_ndim(value, "u", 2)
         check_ndarray_dtype_is_float64(value, "u")
         self._u = value
-    @u.deleter
-    def u(self) -> None:
-        """Delete random effect regression coefficients"""
-        del self._u
 
     ################## Genomic Model Data ##################
     @property
@@ -194,10 +186,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             value = "unnamed"
         check_is_str(value, "model_name")
         self._model_name = value
-    @model_name.deleter
-    def model_name(self) -> None:
-        """Delete name of the model."""
-        del self._model_name
     
     @property
     def params(self) -> dict:
@@ -210,10 +198,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             value = {}
         check_is_dict(value, "params")
         self._params = value
-    @params.deleter
-    def params(self) -> None:
-        """Delete model parameters."""
-        del self._params
 
     @property
     def trait(self) -> Union[numpy.ndarray,None]:
@@ -227,10 +211,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             check_ndarray_ndim(value, "trait", 1)
             check_ndarray_dtype_is_object(value, "trait")
         self._trait = value
-    @trait.deleter
-    def trait(self) -> None:
-        """Delete names of the traits predicted by the model."""
-        del self._trait
 
     @property
     def ntrait(self) -> int:
@@ -239,10 +219,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
     @ntrait.setter
     def ntrait(self, value: int) -> None:
         """Set number of traits predicted by the model."""
-        error_readonly("ntrait")
-    @ntrait.deleter
-    def ntrait(self) -> None:
-        """Delete number of traits predicted by the model."""
         error_readonly("ntrait")
 
     ############################################################################
@@ -1345,22 +1321,6 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a DenseLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseLinearGenomicModel object instance.
-    """
-    return isinstance(v, DenseLinearGenomicModel)
-
 def check_is_DenseLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.

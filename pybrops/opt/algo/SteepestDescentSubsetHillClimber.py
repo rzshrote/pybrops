@@ -2,6 +2,10 @@
 Module implementing a steepest ascent hill climber capable of handling constraints.
 """
 
+__all__ = [
+    "SteepestDescentSubsetHillClimber"
+]
+
 from typing import Optional, Union
 import numpy
 from numpy.random import Generator, RandomState

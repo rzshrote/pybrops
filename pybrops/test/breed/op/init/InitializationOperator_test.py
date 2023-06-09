@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
-from pybrops.breed.op.init.InitializationOperator import is_InitializationOperator
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_initialize_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_InitializationOperator_is_concrete():
-    assert_concrete_function(is_InitializationOperator)
-
 def test_check_is_InitializationOperator_is_concrete():
     assert_concrete_function(check_is_InitializationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_InitializationOperator(operator):
-    assert is_InitializationOperator(operator)
-
 def test_check_is_InitializationOperator(operator):
     with not_raises(TypeError):
         check_is_InitializationOperator(operator, "operator")

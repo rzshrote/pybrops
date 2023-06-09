@@ -204,10 +204,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_chrgrp", 1)
             check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
         self._vrnt_chrgrp = value
-    @vrnt_chrgrp.deleter
-    def vrnt_chrgrp(self) -> None:
-        """Delete variant chromosome group lable array"""
-        del self._vrnt_chrgrp
 
     @property
     def vrnt_phypos(self) -> Union[numpy.ndarray,None]:
@@ -222,10 +218,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_phypos", 1)
             check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
         self._vrnt_phypos = value
-    @vrnt_phypos.deleter
-    def vrnt_phypos(self) -> None:
-        """Delete variant physical position array"""
-        del self._vrnt_phypos
 
     @property
     def vrnt_name(self) -> Union[numpy.ndarray,None]:
@@ -240,10 +232,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_name", 1)
             check_ndarray_axis_len(value, "vrnt_name", 0, self.nvrnt)
         self._vrnt_name = value
-    @vrnt_name.deleter
-    def vrnt_name(self) -> None:
-        """Delete variant name array"""
-        del self._vrnt_name
 
     @property
     def vrnt_genpos(self) -> Union[numpy.ndarray,None]:
@@ -258,10 +246,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_genpos", 1)
             check_ndarray_axis_len(value, "vrnt_genpos", 0, self.nvrnt)
         self._vrnt_genpos = value
-    @vrnt_genpos.deleter
-    def vrnt_genpos(self) -> None:
-        """Delete variant genetic position array"""
-        del self._vrnt_genpos
 
     @property
     def vrnt_xoprob(self) -> Union[numpy.ndarray,None]:
@@ -276,10 +260,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_xoprob", 1)
             check_ndarray_axis_len(value, "vrnt_xoprob", 0, self.nvrnt)
         self._vrnt_xoprob = value
-    @vrnt_xoprob.deleter
-    def vrnt_xoprob(self) -> None:
-        """Delete variant crossover sequential probability array"""
-        del self._vrnt_xoprob
 
     @property
     def vrnt_hapgrp(self) -> Union[numpy.ndarray,None]:
@@ -294,10 +274,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_hapgrp", 1)
             check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
         self._vrnt_hapgrp = value
-    @vrnt_hapgrp.deleter
-    def vrnt_hapgrp(self) -> None:
-        """Delete variant haplotype group label array"""
-        del self._vrnt_hapgrp
 
     @property
     def vrnt_hapalt(self) -> Union[numpy.ndarray,None]:
@@ -312,10 +288,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_hapalt", 1)
             check_ndarray_axis_len(value, "vrnt_hapalt", 0, self.nvrnt)
         self._vrnt_hapalt = value
-    @vrnt_hapalt.deleter
-    def vrnt_hapalt(self) -> None:
-        """Delete variant haplotype sequence"""
-        del self._vrnt_hapalt
 
     @property
     def vrnt_hapref(self) -> Union[numpy.ndarray,None]:
@@ -330,10 +302,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_hapref", 1)
             check_ndarray_axis_len(value, "vrnt_hapref", 0, self.nvrnt)
         self._vrnt_hapref = value
-    @vrnt_hapref.deleter
-    def vrnt_hapref(self) -> None:
-        """Delete variant reference haplotype sequence"""
-        del self._vrnt_hapref
 
     @property
     def vrnt_mask(self) -> Union[numpy.ndarray,None]:
@@ -348,10 +316,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_ndim(value, "vrnt_mask", 1)
             check_ndarray_axis_len(value, "vrnt_mask", 0, self.nvrnt)
         self._vrnt_mask = value
-    @vrnt_mask.deleter
-    def vrnt_mask(self) -> None:
-        """Delete variant mask"""
-        del self._vrnt_mask
 
     ############# Variant Metadata Properites ##############
     @property
@@ -362,10 +326,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     def nvrnt(self, value: int) -> None:
         """Set number of variants"""
         error_readonly("nvrnt")
-    @nvrnt.deleter
-    def nvrnt(self) -> None:
-        """Delete number of variants"""
-        error_readonly("nvrnt")
 
     @property
     def vrnt_axis(self) -> int:
@@ -374,10 +334,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     @vrnt_axis.setter
     def vrnt_axis(self, value: int) -> None:
         """Set variant axis"""
-        error_readonly("vrnt_axis")
-    @vrnt_axis.deleter
-    def vrnt_axis(self) -> None:
-        """Delete variant axis"""
         error_readonly("vrnt_axis")
 
     @property
@@ -392,10 +348,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
             check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
         self._vrnt_chrgrp_name = value
-    @vrnt_chrgrp_name.deleter
-    def vrnt_chrgrp_name(self) -> None:
-        """Delete variant chromosome group name array"""
-        del self._vrnt_chrgrp_name
 
     @property
     def vrnt_chrgrp_stix(self) -> Union[numpy.ndarray,None]:
@@ -409,10 +361,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
             check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
         self._vrnt_chrgrp_stix = value
-    @vrnt_chrgrp_stix.deleter
-    def vrnt_chrgrp_stix(self) -> None:
-        """Delete variant chromosome group start indices array"""
-        del self._vrnt_chrgrp_stix
 
     @property
     def vrnt_chrgrp_spix(self) -> Union[numpy.ndarray,None]:
@@ -426,10 +374,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
             check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
         self._vrnt_chrgrp_spix = value
-    @vrnt_chrgrp_spix.deleter
-    def vrnt_chrgrp_spix(self) -> None:
-        """Delete variant chromosome group stop indices array"""
-        del self._vrnt_chrgrp_spix
 
     @property
     def vrnt_chrgrp_len(self) -> Union[numpy.ndarray,None]:
@@ -443,10 +387,6 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
             check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
         self._vrnt_chrgrp_len = value
-    @vrnt_chrgrp_len.deleter
-    def vrnt_chrgrp_len(self) -> None:
-        """Delete variant chromosome group length array"""
-        del self._vrnt_chrgrp_len
 
     ############################## Object Methods ##############################
 

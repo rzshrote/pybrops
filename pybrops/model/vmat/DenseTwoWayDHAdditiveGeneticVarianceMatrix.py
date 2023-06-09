@@ -4,7 +4,6 @@ storing dense additive genetic variance estimates calculated using two-way DH
 formulae.
 """
 
-import math
 import numbers
 from typing import Optional, Union
 import numpy

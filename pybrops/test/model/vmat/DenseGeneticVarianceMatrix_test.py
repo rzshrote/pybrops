@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
-from pybrops.model.vmat.DenseGeneticVarianceMatrix import is_DenseGeneticVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import check_is_DenseGeneticVarianceMatrix
 
 ################################################################################
@@ -70,12 +69,6 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseGeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(is_DenseGeneticVarianceMatrix)
-
-def test_is_DenseGeneticVarianceMatrix(mat):
-    assert is_DenseGeneticVarianceMatrix(mat)
-
 def test_check_is_DenseGeneticVarianceMatrix_is_concrete():
     assert_concrete_function(check_is_DenseGeneticVarianceMatrix)
 

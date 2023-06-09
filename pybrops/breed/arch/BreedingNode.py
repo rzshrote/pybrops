@@ -6,7 +6,6 @@ structure. They are points were germplasm and information are located.
 
 from typing import Any
 
-
 class BreedingNode:
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
@@ -48,10 +47,6 @@ class BreedingNode:
     def genome(self, value: Any) -> None:
         """Set genomes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @genome.deleter
-    def genome(self) -> None:
-        """Delete genomes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def geno(self) -> Any:
@@ -60,10 +55,6 @@ class BreedingNode:
     @geno.setter
     def geno(self, value: Any) -> None:
         """Set genotypes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
-    @geno.deleter
-    def geno(self) -> None:
-        """Delete genotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -74,10 +65,6 @@ class BreedingNode:
     def pheno(self, value: Any) -> None:
         """Set phenotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @pheno.deleter
-    def pheno(self) -> None:
-        """Delete phenotypes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def bval(self) -> Any:
@@ -87,10 +74,6 @@ class BreedingNode:
     def bval(self, value: Any) -> None:
         """Set breeding values for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @bval.deleter
-    def bval(self) -> None:
-        """Delete breeding values for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def gmod(self) -> Any:
@@ -99,10 +82,6 @@ class BreedingNode:
     @gmod.setter
     def gmod(self, value: Any) -> None:
         """Set genomic models for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
-    @gmod.deleter
-    def gmod(self) -> None:
-        """Delete genomic models for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     ############# Generation number properties #############
@@ -114,10 +93,6 @@ class BreedingNode:
     def t_cur(self, value: int) -> None:
         """Set the current time for the BreedingNode"""
         raise NotImplementedError("property is abstract")
-    @t_cur.deleter
-    def t_cur(self) -> None:
-        """Delete the current time for the BreedingNode"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def t_max(self) -> int:
@@ -126,10 +101,6 @@ class BreedingNode:
     @t_max.setter
     def t_max(self, value: int) -> None:
         """Set the maximum time for the BreedingNode"""
-        raise NotImplementedError("property is abstract")
-    @t_max.deleter
-    def t_max(self) -> None:
-        """Delete the maximum time for the BreedingNode"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################
@@ -141,22 +112,6 @@ class BreedingNode:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingNode(v: object) -> bool:
-    """
-    Determine whether an object is a BreedingNode.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingNode object instance.
-    """
-    return isinstance(v, BreedingNode)
-
 def check_is_BreedingNode(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingNode. Otherwise raise TypeError.

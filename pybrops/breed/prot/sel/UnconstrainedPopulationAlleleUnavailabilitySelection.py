@@ -214,10 +214,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         check_is_int(value, "nparent")      # must be int
         check_is_gt(value, "nparent", 0)    # int must be >0
         self._nparent = value
-    @nparent.deleter
-    def nparent(self) -> None:
-        """Delete number of parents to select."""
-        del self._nparent
 
     @property
     def ncross(self) -> int:
@@ -229,10 +225,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         check_is_int(value, "ncross")       # must be int
         check_is_gt(value, "ncross", 0)     # int must be >0
         self._ncross = value
-    @ncross.deleter
-    def ncross(self) -> None:
-        """Delete number of crosses per configuration."""
-        del self._ncross
 
     @property
     def nprogeny(self) -> int:
@@ -244,10 +236,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         check_is_int(value, "nprogeny")     # must be int
         check_is_gt(value, "nprogeny", 0)   # int must be >0
         self._nprogeny = value
-    @nprogeny.deleter
-    def nprogeny(self) -> None:
-        """Delete number of progeny to derive from each cross configuration."""
-        del self._nprogeny
 
     @property
     def weight(self) -> Union[numpy.ndarray,Callable]:
@@ -258,10 +246,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         """Set marker weights or marker weight function."""
         check_isinstance(value, "weight", (numpy.ndarray, Callable))
         self._weight = value
-    @weight.deleter
-    def weight(self) -> None:
-        """Delete marker weights or marker weight function."""
-        del self._weight
 
     @property
     def target(self) -> Union[numpy.ndarray,Callable]:
@@ -272,10 +256,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         """Set allele frequency targets or allele frequency target function."""
         check_isinstance(value, "target", (numpy.ndarray, Callable))
         self._target = value
-    @target.deleter
-    def target(self) -> None:
-        """Delete allele frequency targets or allele frequency target function."""
-        del self._target
 
     @property
     def method(self) -> str:
@@ -291,10 +271,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         if value not in options:
             raise ValueError("Unsupported 'method'. Options are: " + ", ".join(map(str, options)))
         self._method = value
-    @method.deleter
-    def method(self) -> None:
-        """Delete selection method."""
-        del self._method
 
     @property
     def objfn_trans(self) -> Union[Callable,None]:
@@ -306,10 +282,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         if value is not None:                       # if given object
             check_is_callable(value, "objfn_trans") # must be callable
         self._objfn_trans = value
-    @objfn_trans.deleter
-    def objfn_trans(self) -> None:
-        """Delete objective function transformation function."""
-        del self._objfn_trans
 
     @property
     def objfn_trans_kwargs(self) -> dict:
@@ -322,10 +294,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
             value = {}                              # set default to empty dict
         check_is_dict(value, "objfn_trans_kwargs")  # check is dict
         self._objfn_trans_kwargs = value
-    @objfn_trans_kwargs.deleter
-    def objfn_trans_kwargs(self) -> None:
-        """Delete objective function transformation function keyword arguments."""
-        del self._objfn_trans_kwargs
 
     @property
     def objfn_wt(self) -> Union[float,numpy.ndarray]:
@@ -335,10 +303,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
     def objfn_wt(self, value: Union[float,numpy.ndarray]) -> None:
         """Set objective function weights."""
         self._objfn_wt = value
-    @objfn_wt.deleter
-    def objfn_wt(self) -> None:
-        """Delete objective function weights."""
-        del self._objfn_wt
 
     @property
     def ndset_trans(self) -> Union[Callable,None]:
@@ -350,10 +314,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
         if value is not None:                       # if given object
             check_is_callable(value, "ndset_trans") # must be callable
         self._ndset_trans = value
-    @ndset_trans.deleter
-    def ndset_trans(self) -> None:
-        """Delete nondominated set transformation function."""
-        del self._ndset_trans
 
     @property
     def ndset_trans_kwargs(self) -> dict:
@@ -366,10 +326,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
             value = {}                              # set default to empty dict
         check_is_dict(value, "ndset_trans_kwargs")  # check is dict
         self._ndset_trans_kwargs = value
-    @ndset_trans_kwargs.deleter
-    def ndset_trans_kwargs(self) -> None:
-        """Delete nondominated set transformation function keyword arguments."""
-        del self._ndset_trans_kwargs
 
     @property
     def ndset_wt(self) -> Union[float,numpy.ndarray]:
@@ -379,10 +335,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
     def ndset_wt(self, value: Union[float,numpy.ndarray]) -> None:
         """Set nondominated set weights."""
         self._ndset_wt = value
-    @ndset_wt.deleter
-    def ndset_wt(self) -> None:
-        """Delete nondominated set weights."""
-        del self._ndset_wt
 
     @property
     def soalgo(self) -> UnconstrainedOptimizationAlgorithm:
@@ -395,10 +347,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
             value = UnconstrainedSteepestAscentSetHillClimber(rng = self.rng)
         check_is_OptimizationAlgorithm(value, "soalgo")
         self._soalgo = value
-    @soalgo.deleter
-    def soalgo(self) -> None:
-        """Delete single objective optimization algorithm."""
-        del self._soalgo
 
     @property
     def moalgo(self) -> UnconstrainedOptimizationAlgorithm:
@@ -417,10 +365,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
             )
         check_is_OptimizationAlgorithm(value, "moalgo")
         self._moalgo = value
-    @moalgo.deleter
-    def moalgo(self) -> None:
-        """Delete multi-objective opimization algorithm."""
-        del self._moalgo
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
@@ -433,10 +377,6 @@ class PopulationAlleleUnavailabilitySelection(UnconstrainedSelectionProtocol):
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     ############################################################################
     ########################## Private Object Methods ##########################

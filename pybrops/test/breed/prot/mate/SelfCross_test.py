@@ -15,7 +15,6 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.SelfCross import SelfCross
-from pybrops.breed.prot.mate.SelfCross import is_SelfCross
 from pybrops.breed.prot.mate.SelfCross import check_is_SelfCross
 
 ################################################################################
@@ -87,12 +86,6 @@ def test_mate(mprot, dpgvmat, sel, rng):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_SelfCross_is_concrete():
-    assert_concrete_function(is_SelfCross)
-
-def test_is_SelfCross(mprot):
-    assert is_SelfCross(mprot)
-
 def test_check_is_SelfCross_is_concrete():
     assert_concrete_function(check_is_SelfCross)
 

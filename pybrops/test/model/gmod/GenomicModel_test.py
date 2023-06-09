@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.gmod.GenomicModel import is_GenomicModel
 from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 
 ################################################################################
@@ -113,18 +112,12 @@ def test_lsl_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GenomicModel_is_concrete():
-    assert_concrete_function(is_GenomicModel)
-
 def test_check_is_GenomicModel_is_concrete():
     assert_concrete_function(check_is_GenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GenomicModel(gmod):
-    assert is_GenomicModel(gmod)
-
 def test_check_is_GenomicModel(gmod):
     with not_raises(TypeError):
         check_is_GenomicModel(gmod, "gmod")

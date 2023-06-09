@@ -68,10 +68,6 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     def location(self, value: Any) -> None:
         """Set the mean of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
-    @location.deleter
-    def location(self) -> None:
-        """Delete the mean of the phenotype values used to calculate breeding values"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def scale(self) -> Any:
@@ -80,10 +76,6 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     @scale.setter
     def scale(self, value: Any) -> None:
         """Set the standard deviation of the phenotype values used to calculate breeding values"""
-        raise NotImplementedError("property is abstract")
-    @scale.deleter
-    def scale(self) -> None:
-        """Delete the standard deviation of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################

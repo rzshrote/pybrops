@@ -37,10 +37,6 @@ class TrueBreedingValue(BreedingValueProtocol):
         """Set genomic prediction model."""
         check_is_GenomicModel(value, "gpmod")
         self._gpmod = value
-    @gpmod.deleter
-    def gpmod(self) -> None:
-        """Delete genomic prediction model."""
-        del self._gpmod
 
     ############################## Object Methods ##############################
     def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs: dict):

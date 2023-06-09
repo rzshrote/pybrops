@@ -55,10 +55,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_chrgrp(self, value: Any) -> None:
         """Set variant chromosome group lable array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp.deleter
-    def vrnt_chrgrp(self) -> None:
-        """Delete variant chromosome group lable array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_phypos(self) -> Any:
@@ -67,10 +63,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_phypos.setter
     def vrnt_phypos(self, value: Any) -> None:
         """Set variant physical position array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_phypos.deleter
-    def vrnt_phypos(self) -> None:
-        """Delete variant physical position array"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -81,10 +73,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_name(self, value: Any) -> None:
         """Set variant name array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_name.deleter
-    def vrnt_name(self) -> None:
-        """Delete variant name array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_genpos(self) -> Any:
@@ -93,10 +81,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_genpos.setter
     def vrnt_genpos(self, value: Any) -> None:
         """Set variant genetic position array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_genpos.deleter
-    def vrnt_genpos(self) -> None:
-        """Delete variant genetic position array"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -107,10 +91,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_xoprob(self, value: Any) -> None:
         """Set variant crossover sequential probability array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_xoprob.deleter
-    def vrnt_xoprob(self) -> None:
-        """Delete variant crossover sequential probability array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_hapgrp(self) -> Any:
@@ -119,10 +99,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_hapgrp.setter
     def vrnt_hapgrp(self, value: Any) -> None:
         """Set variant haplotype group label array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_hapgrp.deleter
-    def vrnt_hapgrp(self) -> None:
-        """Delete variant haplotype group label array"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -133,10 +109,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_hapalt(self, value: Any) -> None:
         """Set variant haplotype sequence"""
         raise NotImplementedError("property is abstract")
-    @vrnt_hapalt.deleter
-    def vrnt_hapalt(self) -> None:
-        """Delete variant haplotype sequence"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_hapref(self) -> Any:
@@ -146,10 +118,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_hapref(self, value: Any) -> None:
         """Set variant reference haplotype sequence"""
         raise NotImplementedError("property is abstract")
-    @vrnt_hapref.deleter
-    def vrnt_hapref(self) -> None:
-        """Delete variant reference haplotype sequence"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_mask(self) -> Any:
@@ -158,10 +126,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_mask.setter
     def vrnt_mask(self, value: Any) -> None:
         """Set variant mask"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_mask.deleter
-    def vrnt_mask(self) -> None:
-        """Delete variant mask"""
         raise NotImplementedError("property is abstract")
     
     ############# Variant Metadata Properites ##############
@@ -173,10 +137,6 @@ class VariantMatrix(GroupableMatrix):
     def nvrnt(self, value: int) -> None:
         """Set number of variants"""
         raise NotImplementedError("property is abstract")
-    @nvrnt.deleter
-    def nvrnt(self) -> None:
-        """Delete number of variants"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_axis(self) -> int:
@@ -185,10 +145,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_axis.setter
     def vrnt_axis(self, value: int) -> None:
         """Set variant axis"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_axis.deleter
-    def vrnt_axis(self) -> None:
-        """Delete variant axis"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -199,10 +155,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_chrgrp_name(self, value: Any) -> None:
         """Set variant chromosome group name array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_name.deleter
-    def vrnt_chrgrp_name(self) -> None:
-        """Delete variant chromosome group name array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_chrgrp_stix(self) -> Any:
@@ -211,10 +163,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_chrgrp_stix.setter
     def vrnt_chrgrp_stix(self, value: Any) -> None:
         """Set variant chromosome group start indices array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_stix.deleter
-    def vrnt_chrgrp_stix(self) -> None:
-        """Delete variant chromosome group start indices array"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -225,10 +173,6 @@ class VariantMatrix(GroupableMatrix):
     def vrnt_chrgrp_spix(self, value: Any) -> None:
         """Set variant chromosome group stop indices array"""
         raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_spix.deleter
-    def vrnt_chrgrp_spix(self) -> None:
-        """Delete variant chromosome group stop indices array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def vrnt_chrgrp_len(self) -> Any:
@@ -237,10 +181,6 @@ class VariantMatrix(GroupableMatrix):
     @vrnt_chrgrp_len.setter
     def vrnt_chrgrp_len(self, value: Any) -> None:
         """Set variant chromosome group length array"""
-        raise NotImplementedError("property is abstract")
-    @vrnt_chrgrp_len.deleter
-    def vrnt_chrgrp_len(self) -> None:
-        """Delete variant chromosome group length array"""
         raise NotImplementedError("property is abstract")
     
     ############################################################################

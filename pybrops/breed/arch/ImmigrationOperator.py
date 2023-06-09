@@ -3,7 +3,11 @@ Module defining interfaces and associated error checking routines for
 immigration operators.
 """
 
-from typing import Any
+__all__ = [
+    "ImmigrationOperator",
+    "check_is_ImmigrationOperator"
+]
+
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 
 class ImmigrationOperator(BreedingEdge):
@@ -59,22 +63,6 @@ class ImmigrationOperator(BreedingEdge):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_ImmigrationOperator(v: object) -> bool:
-    """
-    Determine whether an object is a ImmigrationOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a ImmigrationOperator object instance.
-    """
-    return isinstance(v, ImmigrationOperator)
-
 def check_is_ImmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ImmigrationOperator. Otherwise raise TypeError.

@@ -68,10 +68,6 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
     def epgc(self, value: tuple) -> None:
         """Set data for property epgc."""
         error_readonly("epgc")
-    @epgc.deleter
-    def epgc(self) -> None:
-        """Delete data for property epgc."""
-        error_readonly("epgc")
 
 
     ############################## Object Methods ##############################
@@ -87,22 +83,6 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_DenseGeneticVarianceMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``DenseGeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``DenseGeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, DenseGeneticVarianceMatrix)
-
 def check_is_DenseGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGeneticVarianceMatrix``. Otherwise raise ``TypeError``.

@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.GermplasmBank import GermplasmBank
-from pybrops.breed.arch.GermplasmBank import is_GermplasmBank
 from pybrops.breed.arch.GermplasmBank import check_is_GermplasmBank
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GermplasmBank_is_concrete():
-    assert_concrete_function(is_GermplasmBank)
-
 def test_check_is_GermplasmBank_is_concrete():
     assert_concrete_function(check_is_GermplasmBank)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GermplasmBank(arch):
-    assert is_GermplasmBank(arch)
-
 def test_check_is_GermplasmBank(arch):
     with not_raises(TypeError):
         check_is_GermplasmBank(arch, "arch")

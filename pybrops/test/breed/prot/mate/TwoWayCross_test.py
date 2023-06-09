@@ -134,11 +134,6 @@ def test_mate(mprot, dpgvmat, sel):
 # ################################################################################
 # ######################### Test class utility functions #########################
 # ################################################################################
-# def test_is_TwoWayCross_is_concrete():
-#     generic_assert_concrete_function(is_TwoWayCross)
-
-# def test_is_TwoWayCross(mprot):
-#     assert is_TwoWayCross(mprot)
 
 # def test_check_is_TwoWayCross_is_concrete():
 #     generic_assert_concrete_function(check_is_TwoWayCross)

@@ -3,8 +3,10 @@ Module defining interfaces and associated error checking routines for
 breeding program mating operators.
 """
 
-from typing import Any
-
+__all__ = [
+    "MatingOperator",
+    "check_is_MatingOperator"
+]
 
 class MatingOperator:
     """
@@ -78,22 +80,6 @@ class MatingOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_MatingOperator(v: object) -> bool:
-    """
-    Determine whether an object is a MatingOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a MatingOperator object instance.
-    """
-    return isinstance(v, MatingOperator)
-
 def check_is_MatingOperator(v: object, vname: str) -> None:
     """
     Check if object is of type MatingOperator. Otherwise raise TypeError.

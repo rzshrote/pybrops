@@ -80,10 +80,6 @@ class GenomicModel(HDF5InputOutput):
     def model_name(self, value: str) -> None:
         """Set the name of the model"""
         raise NotImplementedError("property is abstract")
-    @model_name.deleter
-    def model_name(self) -> None:
-        """Delete the name of the model"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def params(self) -> dict:
@@ -92,10 +88,6 @@ class GenomicModel(HDF5InputOutput):
     @params.setter
     def params(self, value: dict) -> None:
         """Set the model parameters"""
-        raise NotImplementedError("property is abstract")
-    @params.deleter
-    def params(self) -> None:
-        """Delete the model parameters"""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -106,10 +98,6 @@ class GenomicModel(HDF5InputOutput):
     def trait(self, value: numpy.ndarray) -> None:
         """Set the names of the traits predicted by the model"""
         raise NotImplementedError("property is abstract")
-    @trait.deleter
-    def trait(self) -> None:
-        """Delete the names of the traits predicted by the model"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def ntrait(self) -> int:
@@ -118,10 +106,6 @@ class GenomicModel(HDF5InputOutput):
     @ntrait.setter
     def ntrait(self, value: int) -> None:
         """Set the number of traits predicted by the model"""
-        raise NotImplementedError("property is abstract")
-    @ntrait.deleter
-    def ntrait(self) -> None:
-        """Delete the number of traits predicted by the model"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################
@@ -817,22 +801,6 @@ class GenomicModel(HDF5InputOutput):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a GenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GenomicModel object instance.
-    """
-    return isinstance(v, GenomicModel)
-
 def check_is_GenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type GenomicModel. Otherwise raise TypeError.

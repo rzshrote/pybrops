@@ -15,7 +15,6 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.breed.prot.mate.FourWayDHCross import FourWayDHCross
-from pybrops.breed.prot.mate.FourWayDHCross import is_FourWayDHCross
 from pybrops.breed.prot.mate.FourWayDHCross import check_is_FourWayDHCross
 
 ################################################################################
@@ -87,12 +86,6 @@ def test_mate(mprot, dpgvmat, sel, rng):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_FourWayDHCross_is_concrete():
-    assert_concrete_function(is_FourWayDHCross)
-
-def test_is_FourWayDHCross(mprot):
-    assert is_FourWayDHCross(mprot)
-
 def test_check_is_FourWayDHCross_is_concrete():
     assert_concrete_function(check_is_FourWayDHCross)
 

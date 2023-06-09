@@ -3,6 +3,11 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
+__all__ = [
+    "BreedingProgram",
+    "check_is_BreedingProgram"
+]
+
 from typing import Any
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
@@ -47,10 +52,6 @@ class BreedingProgram(BreedingNode):
     def start_genome(self, value: Any) -> None:
         """Set starting genomes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @start_genome.deleter
-    def start_genome(self) -> None:
-        """Delete starting genomes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def start_geno(self) -> Any:
@@ -59,10 +60,6 @@ class BreedingProgram(BreedingNode):
     @start_geno.setter
     def start_geno(self, value: Any) -> None:
         """Set starting genotypes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
-    @start_geno.deleter
-    def start_geno(self) -> None:
-        """Delete starting genotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -73,10 +70,6 @@ class BreedingProgram(BreedingNode):
     def start_pheno(self, value: Any) -> None:
         """Set starting phenotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @start_pheno.deleter
-    def start_pheno(self) -> None:
-        """Delete starting phenotypes for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def start_bval(self) -> Any:
@@ -86,10 +79,6 @@ class BreedingProgram(BreedingNode):
     def start_bval(self, value: Any) -> None:
         """Set starting breeding values for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
-    @start_bval.deleter
-    def start_bval(self) -> None:
-        """Delete starting breeding values for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def start_gmod(self) -> Any:
@@ -98,10 +87,6 @@ class BreedingProgram(BreedingNode):
     @start_gmod.setter
     def start_gmod(self, value: Any) -> None:
         """Set starting genomic models for individuals in the breeding program"""
-        raise NotImplementedError("property is abstract")
-    @start_gmod.deleter
-    def start_gmod(self) -> None:
-        """Delete starting genomic models for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     ######### Breeding program operator properties #########
@@ -113,10 +98,6 @@ class BreedingProgram(BreedingNode):
     def initop(self, value: Any) -> None:
         """Set the initialization operator"""
         raise NotImplementedError("property is abstract")
-    @initop.deleter
-    def initop(self) -> None:
-        """Delete the initialization operator"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def pselop(self) -> Any:
@@ -125,10 +106,6 @@ class BreedingProgram(BreedingNode):
     @pselop.setter
     def pselop(self, value: Any) -> None:
         """Set the parent selection operator"""
-        raise NotImplementedError("property is abstract")
-    @pselop.deleter
-    def pselop(self) -> None:
-        """Delete the parent selection operator"""
         raise NotImplementedError("property is abstract")
 
     @property
@@ -139,10 +116,6 @@ class BreedingProgram(BreedingNode):
     def mateop(self, value: Any) -> None:
         """Set the mating operator"""
         raise NotImplementedError("property is abstract")
-    @mateop.deleter
-    def mateop(self) -> None:
-        """Delete the mating operator"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def evalop(self) -> Any:
@@ -152,10 +125,6 @@ class BreedingProgram(BreedingNode):
     def evalop(self, value: Any) -> None:
         """Set the evaluation operator"""
         raise NotImplementedError("property is abstract")
-    @evalop.deleter
-    def evalop(self) -> None:
-        """Delete the evaluation operator"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def sselop(self) -> Any:
@@ -164,10 +133,6 @@ class BreedingProgram(BreedingNode):
     @sselop.setter
     def sselop(self, value: Any) -> None:
         """Set the survivor selection operator"""
-        raise NotImplementedError("property is abstract")
-    @sselop.deleter
-    def sselop(self) -> None:
-        """Delete the survivor selection operator"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################
@@ -250,22 +215,6 @@ class BreedingProgram(BreedingNode):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_BreedingProgram(v: object) -> bool:
-    """
-    Determine whether an object is a BreedingProgram.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingProgram object instance.
-    """
-    return isinstance(v, BreedingProgram)
-
 def check_is_BreedingProgram(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingProgram. Otherwise raise TypeError.

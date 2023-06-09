@@ -67,10 +67,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         check_is_int(value, "ngen")     # must be int
         check_is_gt(value, "ngen", 0)   # int must be >0
         self._ngen = value
-    @ngen.deleter
-    def ngen(self) -> None:
-        """Delete number of generations."""
-        del self._ngen
 
     @property
     def mu(self) -> int:
@@ -82,10 +78,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         check_is_int(value, "mu")   # must be int
         check_is_gt(value, "mu", 0) # int must be >0
         self._mu = value
-    @mu.deleter
-    def mu(self) -> None:
-        """Delete number of individuals in the main chromosome population."""
-        del self._mu
 
     @property
     def lamb(self) -> int:
@@ -97,10 +89,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         check_is_int(value, "lamb")     # must be int
         check_is_gt(value, "lamb", 0)   # int must be >0
         self._lamb = value
-    @lamb.deleter
-    def lamb(self) -> None:
-        """Delete number of progenies to generate from the main chromosome population."""
-        del self._lamb
 
     @property
     def M(self) -> float:
@@ -112,10 +100,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         check_is_float(value, "M")  # must be int
         check_is_gt(value, "M", 0)  # int must be >0
         self._M = value
-    @M.deleter
-    def M(self) -> None:
-        """Delete length of the genetic map in Morgans."""
-        del self._M
 
     @property
     def meme(self) -> int:
@@ -127,10 +111,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
         check_is_int(value, "meme")
         check_is_lteq(value, "meme", self.mu)
         self._meme = value
-    @meme.deleter
-    def meme(self) -> None:
-        """Delete number of individuals on which to perform local search."""
-        del self._meme
 
     @property
     def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
@@ -143,10 +123,6 @@ class UnconstrainedSteepestAscentSetGeneticAlgorithm(UnconstrainedOptimizationAl
             value = global_prng
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
-    @rng.deleter
-    def rng(self) -> None:
-        """Delete random number generator source."""
-        del self._rng
 
     ############################## Object Methods ##############################
 

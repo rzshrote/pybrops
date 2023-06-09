@@ -191,10 +191,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         else:
             raise TypeError("variable 'location' must be of type 'numpy.ndarray' or 'Real'")
         self._location = value
-    @location.deleter
-    def location(self) -> None:
-        """Delete the mean of the phenotype values used to calculate breeding values"""
-        del self._location
     
     @property
     def scale(self) -> numpy.ndarray:
@@ -211,10 +207,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         else:
             raise TypeError("variable 'scale' must be of type 'numpy.ndarray' or 'Real'")
         self._scale = value
-    @scale.deleter
-    def scale(self) -> None:
-        """Delete the standard deviation of the phenotype values used to calculate breeding values"""
-        del self._scale
 
     ############################################################################
     ############################## Object Methods ##############################

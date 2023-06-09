@@ -7,7 +7,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
-from pybrops.model.vmat.AdditiveGenicVarianceMatrix import is_AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import check_is_AdditiveGenicVarianceMatrix
 
 ################################################################################
@@ -42,12 +41,6 @@ def test_from_algmod_is_abstract(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_AdditiveGenicVarianceMatrix_is_concrete():
-    assert_concrete_function(is_AdditiveGenicVarianceMatrix)
-
-def test_is_AdditiveGenicVarianceMatrix(mat):
-    assert is_AdditiveGenicVarianceMatrix(mat)
-
 def test_check_is_AdditiveGenicVarianceMatrix_is_concrete():
     assert_concrete_function(check_is_AdditiveGenicVarianceMatrix)
 

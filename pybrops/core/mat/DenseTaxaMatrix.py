@@ -152,10 +152,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_ndim(value, "taxa", 1)
             check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
         self._taxa = value
-    @taxa.deleter
-    def taxa(self) -> None:
-        """Delete taxa label array"""
-        del self._taxa
 
     @property
     def taxa_grp(self) -> Union[numpy.ndarray,None]:
@@ -170,10 +166,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_ndim(value, "taxa_grp", 1)
             check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
         self._taxa_grp = value
-    @taxa_grp.deleter
-    def taxa_grp(self) -> None:
-        """Delete taxa group label array"""
-        del self._taxa_grp
 
     ############### Taxa Metadata Properites ###############
     @property
@@ -184,10 +176,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     def ntaxa(self, value: int) -> None:
         """Set number of taxa"""
         error_readonly("ntaxa")
-    @ntaxa.deleter
-    def ntaxa(self) -> None:
-        """Delete number of taxa"""
-        error_readonly("ntaxa")
     
     @property
     def taxa_axis(self) -> int:
@@ -196,10 +184,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     @taxa_axis.setter
     def taxa_axis(self, value: int) -> None:
         """Set taxa axis number"""
-        error_readonly("taxa_axis")
-    @taxa_axis.deleter
-    def taxa_axis(self) -> None:
-        """Delete taxa axis number"""
         error_readonly("taxa_axis")
     
     @property
@@ -214,10 +198,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_dtype_is_int64(value, "taxa_grp_name")
             check_ndarray_ndim(value, "taxa_grp_name", 1)
         self._taxa_grp_name = value
-    @taxa_grp_name.deleter
-    def taxa_grp_name(self) -> None:
-        """Delete taxa group array"""
-        del self._taxa_grp_name
 
     @property
     def taxa_grp_stix(self) -> Union[numpy.ndarray,None]:
@@ -231,10 +211,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
             check_ndarray_ndim(value, "taxa_grp_stix", 1)
         self._taxa_grp_stix = value
-    @taxa_grp_stix.deleter
-    def taxa_grp_stix(self) -> None:
-        """Delete taxa group start indices array"""
-        del self._taxa_grp_stix
 
     @property
     def taxa_grp_spix(self) -> Union[numpy.ndarray,None]:
@@ -248,10 +224,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
             check_ndarray_ndim(value, "taxa_grp_spix", 1)
         self._taxa_grp_spix = value
-    @taxa_grp_spix.deleter
-    def taxa_grp_spix(self) -> None:
-        """Delete taxa group stop indices array"""
-        del self._taxa_grp_spix
 
     @property
     def taxa_grp_len(self) -> Union[numpy.ndarray,None]:
@@ -265,10 +237,6 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             check_ndarray_dtype_is_int64(value, "taxa_grp_len")
             check_ndarray_ndim(value, "taxa_grp_len", 1)
         self._taxa_grp_len = value
-    @taxa_grp_len.deleter
-    def taxa_grp_len(self) -> None:
-        """Delete taxa group length array"""
-        del self._taxa_grp_len
 
     ############################## Object Methods ##############################
 

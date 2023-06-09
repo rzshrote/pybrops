@@ -11,7 +11,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import is_DenseAdditiveLinearGenomicModel
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import check_is_DenseAdditiveLinearGenomicModel
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
@@ -352,18 +351,12 @@ def test_to_from_hdf5(dalgmod, shared_datadir):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseAdditiveLinearGenomicModel_is_concrete():
-    assert_concrete_function(is_DenseAdditiveLinearGenomicModel)
-
 def test_check_is_DenseAdditiveLinearGenomicModel_is_concrete():
     assert_concrete_function(check_is_DenseAdditiveLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseAdditiveLinearGenomicModel(dalgmod):
-    assert is_DenseAdditiveLinearGenomicModel(dalgmod)
-
 def test_check_is_DenseAdditiveLinearGenomicModel(dalgmod):
     with not_raises(TypeError):
         check_is_DenseAdditiveLinearGenomicModel(dalgmod, "dalgmod")

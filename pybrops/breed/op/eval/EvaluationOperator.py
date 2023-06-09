@@ -3,8 +3,10 @@ Module defining interfaces and associated error checking routines for
 breeding program evaluation operators.
 """
 
-from typing import Any
-
+__all__ = [
+    "EvaluationOperator",
+    "check_is_EvaluationOperator"
+]
 
 class EvaluationOperator:
     """
@@ -76,22 +78,6 @@ class EvaluationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_EvaluationOperator(v: object) -> bool:
-    """
-    Determine whether an object is a EvaluationOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a EvaluationOperator object instance.
-    """
-    return isinstance(v, EvaluationOperator)
-
 def check_is_EvaluationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EvaluationOperator. Otherwise raise TypeError.

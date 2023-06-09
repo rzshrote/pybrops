@@ -16,7 +16,6 @@ from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
 
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
-from pybrops.breed.arch.RecurrentSelectionBreedingProgram import is_RecurrentSelectionBreedingProgram
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import check_is_RecurrentSelectionBreedingProgram
 
 ################################################################################
@@ -82,18 +81,12 @@ def test_init_is_concrete():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_RecurrentSelectionBreedingProgram_is_concrete():
-    assert_concrete_function(is_RecurrentSelectionBreedingProgram)
-
 def test_check_is_RecurrentSelectionBreedingProgram_is_concrete():
     assert_concrete_function(check_is_RecurrentSelectionBreedingProgram)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_RecurrentSelectionBreedingProgram(arch):
-    assert is_RecurrentSelectionBreedingProgram(arch)
-
 def test_check_is_RecurrentSelectionBreedingProgram(arch):
     with not_raises(TypeError):
         check_is_RecurrentSelectionBreedingProgram(arch, "arch")

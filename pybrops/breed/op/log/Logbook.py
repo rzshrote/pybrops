@@ -3,8 +3,12 @@ Module defining interfaces and associated error checking routines for
 breeding program logbook operators.
 """
 
-from typing import Any
+__all__ = [
+    "Logbook",
+    "check_is_Logbook"
+]
 
+from typing import Any
 
 class Logbook:
     """
@@ -39,10 +43,6 @@ class Logbook:
     def data(self, value: Any) -> None:
         """Set logbook data."""
         raise NotImplementedError("property is abstract")
-    @data.deleter
-    def data(self) -> None:
-        """Delete logbook data."""
-        raise NotImplementedError("property is abstract")
 
     @property
     def rep(self) -> int:
@@ -51,10 +51,6 @@ class Logbook:
     @rep.setter
     def rep(self, value: int) -> None:
         """Set replicate number."""
-        raise NotImplementedError("property is abstract")
-    @rep.deleter
-    def rep(self) -> None:
-        """Delete replicate number."""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
@@ -211,22 +207,6 @@ class Logbook:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_Logbook(v: object) -> bool:
-    """
-    Determine whether an object is a Logbook.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a Logbook object instance.
-    """
-    return isinstance(v, Logbook)
-
 def check_is_Logbook(v: object, vname: str) -> None:
     """
     Check if object is of type Logbook. Otherwise raise TypeError.

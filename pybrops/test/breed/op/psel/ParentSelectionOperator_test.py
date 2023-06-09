@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
-from pybrops.breed.op.psel.ParentSelectionOperator import is_ParentSelectionOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_pselect_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_ParentSelectionOperator_is_concrete():
-    assert_concrete_function(is_ParentSelectionOperator)
-
 def test_check_is_ParentSelectionOperator_is_concrete():
     assert_concrete_function(check_is_ParentSelectionOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_ParentSelectionOperator(operator):
-    assert is_ParentSelectionOperator(operator)
-
 def test_check_is_ParentSelectionOperator(operator):
     with not_raises(TypeError):
         check_is_ParentSelectionOperator(operator, "operator")

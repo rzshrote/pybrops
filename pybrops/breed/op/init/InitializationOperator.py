@@ -3,8 +3,10 @@ Module defining interfaces and associated error checking routines for
 breeding program initialization operators.
 """
 
-from typing import Any
-
+__all__ = [
+    "InitializationOperator",
+    "check_is_InitializationOperator"
+]
 
 class InitializationOperator:
     """
@@ -62,22 +64,6 @@ class InitializationOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_InitializationOperator(v: object) -> bool:
-    """
-    Determine whether an object is a InitializationOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a InitializationOperator object instance.
-    """
-    return isinstance(v, InitializationOperator)
-
 def check_is_InitializationOperator(v: object, vname: str):
     """
     Check if object is of type InitializationOperator. Otherwise raise TypeError.

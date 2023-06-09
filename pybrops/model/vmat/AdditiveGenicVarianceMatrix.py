@@ -3,7 +3,6 @@ Module defining interfaces and associated error checking routines for matrices
 storing additive genic variance estimates.
 """
 
-from typing import Any
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -71,22 +70,6 @@ class AdditiveGenicVarianceMatrix(GenicVarianceMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveGenicVarianceMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``AdditiveGenicVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``AdditiveGenicVarianceMatrix`` object instance.
-    """
-    return isinstance(v, AdditiveGenicVarianceMatrix)
-
 def check_is_AdditiveGenicVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGenicVarianceMatrix``. Otherwise raise ``TypeError``.

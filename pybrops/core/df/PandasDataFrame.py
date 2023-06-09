@@ -45,10 +45,6 @@ class PandasDataFrame(DataFrame):
         """Set dataframe"""
         check_is_pandas_DataFrame(value, "df")
         self._data = value
-    @data.deleter
-    def data(self) -> None:
-        """Delete dataframe"""
-        del self._data
 
     ################## Column attributes ###################
     @property
@@ -59,10 +55,6 @@ class PandasDataFrame(DataFrame):
     def ncol(self, value: int) -> None:
         """Set number of columns"""
         error_readonly("ncol")
-    @ncol.deleter
-    def ncol(self) -> None:
-        """Delete number of columns"""
-        error_readonly("ncol")
 
     @property
     def col_axis(self) -> int:
@@ -71,10 +63,6 @@ class PandasDataFrame(DataFrame):
     @col_axis.setter
     def col_axis(self, value: int) -> None:
         """Set column axis index"""
-        error_readonly("col_axis")
-    @col_axis.deleter
-    def col_axis(self) -> None:
-        """Delete column axis index"""
         error_readonly("col_axis")
     
     @property
@@ -94,10 +82,6 @@ class PandasDataFrame(DataFrame):
             self._data = self._data.astype(value)           # convert data types
         else:
             raise TypeError("unknown type: available types are numpy.ndarray, list, tuple, and dict")
-    @col_dtype.deleter
-    def col_dtype(self) -> None:
-        """Delete column data types"""
-        error_readonly("col_dtype")
     
     @property
     def col_name(self) -> numpy.ndarray:
@@ -107,10 +91,6 @@ class PandasDataFrame(DataFrame):
     def col_name(self, value: numpy.ndarray) -> None:
         """Set column names"""
         self._data.columns = value
-    @col_name.deleter
-    def col_name(self) -> None:
-        """Delete column names"""
-        del self._data.columns
 
     @property
     def col_ctype(self) -> numpy.ndarray:
@@ -122,10 +102,6 @@ class PandasDataFrame(DataFrame):
         check_is_ndarray(value, "col_ctype")
         check_len(value, "col_ctype", self.ncol)
         self._col_ctype = value
-    @col_ctype.deleter
-    def col_ctype(self) -> None:
-        """Delete column types"""
-        del self._col_ctype
 
     #################### Row attributes ####################
     @property
@@ -136,10 +112,6 @@ class PandasDataFrame(DataFrame):
     def nrow(self, value: int) -> None:
         """Set number of rows"""
         error_readonly("nrow")
-    @nrow.deleter
-    def nrow(self) -> None:
-        """Delete number of rows"""
-        error_readonly("nrow")
 
     @property
     def row_axis(self) -> int:
@@ -148,10 +120,6 @@ class PandasDataFrame(DataFrame):
     @row_axis.setter
     def row_axis(self, value: int) -> None:
         """Set row axis index"""
-        error_readonly("row_axis")
-    @row_axis.deleter
-    def row_axis(self) -> None:
-        """Delete row axis index"""
         error_readonly("row_axis")
 
     @property
@@ -162,10 +130,6 @@ class PandasDataFrame(DataFrame):
     def row_name(self, value: numpy.ndarray) -> None:
         """Set row names"""
         self._data.index = value
-    @row_name.deleter
-    def row_name(self) -> None:
-        """Delete row names"""
-        del self._data.index
 
     ############################## Object Methods ##############################
     def col_data(self, index = None, name = None, ctype = None, dtype = None, return_index = False, return_name = False, return_ctype = False, return_dtype = False, **kwargs: dict):
@@ -269,9 +233,6 @@ class PandasDataFrame(DataFrame):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_PandasDataFrame(v: object) -> bool:
-    return isinstance(v, PandasDataFrame)
-
 def check_is_PandasDataFrame(v: object, vname: str) -> None:
     if not isinstance(v, PandasDataFrame):
         raise TypeError("variable '{0}' must be a PandasDataFrame".format(vname))

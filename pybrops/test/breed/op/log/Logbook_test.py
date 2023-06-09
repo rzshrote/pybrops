@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.log.Logbook import Logbook
-from pybrops.breed.op.log.Logbook import is_Logbook
 from pybrops.breed.op.log.Logbook import check_is_Logbook
 
 ################################################################################
@@ -68,18 +67,12 @@ def test_write_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_Logbook_is_concrete():
-    assert_concrete_function(is_Logbook)
-
 def test_check_is_Logbook_is_concrete():
     assert_concrete_function(check_is_Logbook)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_Logbook(logbook):
-    assert is_Logbook(logbook)
-
 def test_check_is_Logbook(logbook):
     with not_raises(TypeError):
         check_is_Logbook(logbook, "logbook")

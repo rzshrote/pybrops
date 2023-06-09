@@ -55,10 +55,6 @@ class TaxaMatrix(GroupableMatrix):
     def taxa(self, value: Any) -> None:
         """Set taxa label array"""
         raise NotImplementedError("property is abstract")
-    @taxa.deleter
-    def taxa(self) -> None:
-        """Delete taxa label array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def taxa_grp(self) -> Any:
@@ -67,10 +63,6 @@ class TaxaMatrix(GroupableMatrix):
     @taxa_grp.setter
     def taxa_grp(self, value: Any) -> None:
         """Set taxa group label array"""
-        raise NotImplementedError("property is abstract")
-    @taxa_grp.deleter
-    def taxa_grp(self) -> None:
-        """Delete taxa group label array"""
         raise NotImplementedError("property is abstract")
     
     ############### Taxa Metadata Properites ###############
@@ -82,10 +74,6 @@ class TaxaMatrix(GroupableMatrix):
     def ntaxa(self, value: int) -> None:
         """Set number of taxa"""
         raise NotImplementedError("property is abstract")
-    @ntaxa.deleter
-    def ntaxa(self) -> None:
-        """Delete number of taxa"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def taxa_axis(self) -> int:
@@ -94,10 +82,6 @@ class TaxaMatrix(GroupableMatrix):
     @taxa_axis.setter
     def taxa_axis(self, value: int) -> None:
         """Set taxa axis number"""
-        raise NotImplementedError("property is abstract")
-    @taxa_axis.deleter
-    def taxa_axis(self) -> None:
-        """Delete taxa axis number"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -108,10 +92,6 @@ class TaxaMatrix(GroupableMatrix):
     def taxa_grp_name(self, value: Any) -> None:
         """Set taxa group name array"""
         raise NotImplementedError("property is abstract")
-    @taxa_grp_name.deleter
-    def taxa_grp_name(self) -> None:
-        """Delete taxa group array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def taxa_grp_stix(self) -> Any:
@@ -120,10 +100,6 @@ class TaxaMatrix(GroupableMatrix):
     @taxa_grp_stix.setter
     def taxa_grp_stix(self, value: Any) -> None:
         """Set taxa group start indices array"""
-        raise NotImplementedError("property is abstract")
-    @taxa_grp_stix.deleter
-    def taxa_grp_stix(self) -> None:
-        """Delete taxa group start indices array"""
         raise NotImplementedError("property is abstract")
     
     @property
@@ -134,10 +110,6 @@ class TaxaMatrix(GroupableMatrix):
     def taxa_grp_spix(self, value: Any) -> None:
         """Set taxa group stop indices array"""
         raise NotImplementedError("property is abstract")
-    @taxa_grp_spix.deleter
-    def taxa_grp_spix(self) -> None:
-        """Delete taxa group stop indices array"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def taxa_grp_len(self) -> Any:
@@ -146,10 +118,6 @@ class TaxaMatrix(GroupableMatrix):
     @taxa_grp_len.setter
     def taxa_grp_len(self, value: Any) -> None:
         """Set taxa group length array"""
-        raise NotImplementedError("property is abstract")
-    @taxa_grp_len.deleter
-    def taxa_grp_len(self) -> None:
-        """Delete taxa group length array"""
         raise NotImplementedError("property is abstract")
     
     ############################################################################

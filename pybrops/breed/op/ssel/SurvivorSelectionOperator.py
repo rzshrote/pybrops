@@ -3,8 +3,10 @@ Module defining interfaces and associated error checking routines for
 breeding program survivor selection operators.
 """
 
-from typing import Any
-
+__all__ = [
+    "SurvivorSelectionOperator",
+    "check_is_SurvivorSelectionOperator"
+]
 
 class SurvivorSelectionOperator:
     """
@@ -76,22 +78,6 @@ class SurvivorSelectionOperator:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_SurvivorSelectionOperator(v: object) -> bool:
-    """
-    Determine whether an object is a SurvivorSelectionOperator.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a SurvivorSelectionOperator object instance.
-    """
-    return isinstance(v, SurvivorSelectionOperator)
-
 def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.

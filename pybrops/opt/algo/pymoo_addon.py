@@ -1,3 +1,15 @@
+"""
+Module containing addons for PyMOO needed in optimization algorithms.
+"""
+
+__all__ = [
+    "SubsetRandomSampling",
+    "ReducedExchangeCrossover",
+    "ReducedExchangeMutation",
+    "IntegerPolynomialMutation",
+    "IntegerSimulatedBinaryCrossover"
+]
+
 import numpy as np
 from pymoo.core.sampling import Sampling
 from pymoo.core.problem import Problem
@@ -45,10 +57,6 @@ class SubsetRandomSampling(Sampling):
         if not isinstance(value, np.ndarray):
             raise TypeError("'setspace' must be of type numpy.ndarray")
         self._setspace = value
-    @setspace.deleter
-    def setspace(self) -> None:
-        """Delete the set space from which to sample elements."""
-        del self._setspace
     
     @property
     def replace(self) -> bool:
@@ -60,10 +68,6 @@ class SubsetRandomSampling(Sampling):
         if not isinstance(value, bool):
             raise TypeError("'replace' must be of type bool")
         self._replace = value
-    @replace.deleter
-    def replace(self) -> None:
-        """Delete whether to replace elements when subset sampling."""
-        del self._replace
     
     ########### Abstract method implementations ############
     def _do(
@@ -229,10 +233,6 @@ class ReducedExchangeMutation(Mutation):
         if not isinstance(value, np.ndarray):
             raise TypeError("'setspace' must be of type numpy.ndarray")
         self._setspace = value
-    @setspace.deleter
-    def setspace(self) -> None:
-        """Delete the set space from which to sample elements."""
-        del self._setspace
     
     ########### Abstract method implementations ############
     def _do(

@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
-from pybrops.model.gmod.LinearGenomicModel import is_LinearGenomicModel
 from pybrops.model.gmod.LinearGenomicModel import check_is_LinearGenomicModel
 
 ################################################################################
@@ -48,18 +47,12 @@ def test_u_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_LinearGenomicModel_is_concrete():
-    assert_concrete_function(is_LinearGenomicModel)
-
 def test_check_is_LinearGenomicModel_is_concrete():
     assert_concrete_function(check_is_LinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_LinearGenomicModel(gmod):
-    assert is_LinearGenomicModel(gmod)
-
 def test_check_is_LinearGenomicModel(gmod):
     with not_raises(TypeError):
         check_is_LinearGenomicModel(gmod, "gmod")

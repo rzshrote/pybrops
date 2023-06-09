@@ -10,7 +10,6 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
-from pybrops.breed.prot.gt.GenotypingProtocol import is_GenotypingProtocol
 from pybrops.breed.prot.gt.GenotypingProtocol import check_is_GenotypingProtocol
 
 ################################################################################
@@ -45,18 +44,12 @@ def test_genotype_is_abstract():
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_GenotypingProtocol_is_concrete():
-    assert_concrete_function(is_GenotypingProtocol)
-
 def test_check_is_GenotypingProtocol_is_concrete():
     assert_concrete_function(check_is_GenotypingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_GenotypingProtocol(bvprot):
-    assert is_GenotypingProtocol(bvprot)
-
 def test_check_is_GenotypingProtocol(bvprot):
     with not_raises(TypeError):
         check_is_GenotypingProtocol(bvprot, "bvprot")

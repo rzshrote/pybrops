@@ -56,22 +56,6 @@ class GenotypingProtocol:
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GenotypingProtocol(v: object) -> bool:
-    """
-    Determine whether an object is a GenotypingProtocol.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GenotypingProtocol object instance.
-    """
-    return isinstance(v, GenotypingProtocol)
-
 def check_is_GenotypingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type GenotypingProtocol. Otherwise raise TypeError.

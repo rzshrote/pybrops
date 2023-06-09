@@ -45,18 +45,10 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
     def epgc(self) -> tuple:
         """Expected parental genome contribution to the offspring."""
         raise NotImplementedError("property is abstract")
-    @epgc.getter
-    def epgc(self) -> tuple:
-        """Get a tuple of the expected parental genome contributions."""
-        raise NotImplementedError("property is abstract")
     @epgc.setter
     def epgc(self, value: tuple) -> None:
         """Set a tuple of the expected parental genome contributions."""
         raise NotImplementedError("property is abstract")    
-    @epgc.deleter
-    def epgc(self) -> None:
-        """Delete the expected parental genome contributions tuple."""
-        raise NotImplementedError("property is abstract")
 
     ############################################################################
     ############################## Object Methods ##############################
@@ -111,22 +103,6 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_GeneticVarianceMatrix(v: object) -> bool:
-    """
-    Determine whether an object is a ``GeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``GeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, GeneticVarianceMatrix)
-
 def check_is_GeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GeneticVarianceMatrix``. Otherwise raise ``TypeError``.

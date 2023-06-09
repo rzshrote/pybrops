@@ -398,10 +398,6 @@ class Matrix(HDF5InputOutput):
     def mat(self, value: Any) -> None:
         """Set pointer to raw matrix object"""
         raise NotImplementedError("property is abstract")
-    @mat.deleter
-    def mat(self) -> None:
-        """Delete raw matrix object"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def mat_ndim(self) -> int:
@@ -411,10 +407,6 @@ class Matrix(HDF5InputOutput):
     def mat_ndim(self, value: int) -> None:
         """Set number of dimensions of the raw matrix"""
         raise NotImplementedError("property is abstract")
-    @mat_ndim.deleter
-    def mat_ndim(self) -> None:
-        """Delete number of dimensions of the raw matrix"""
-        raise NotImplementedError("property is abstract")
     
     @property
     def mat_shape(self) -> tuple:
@@ -423,10 +415,6 @@ class Matrix(HDF5InputOutput):
     @mat_shape.setter
     def mat_shape(self, value: tuple) -> None:
         """Set the shape of the raw matrix"""
-        raise NotImplementedError("property is abstract")
-    @mat_shape.deleter
-    def mat_shape(self) -> None:
-        """Delete the shape of the raw matrix"""
         raise NotImplementedError("property is abstract")
 
     ############################################################################

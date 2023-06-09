@@ -2,6 +2,11 @@
 Module defining interfaces and error checking routines for subset optimization algorithms.
 """
 
+__all__ = [
+    "SubsetOptimizationAlgorithm",
+    "check_is_SubsetOptimizationAlgorithm"
+]
+
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm

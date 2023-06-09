@@ -2,6 +2,11 @@
 Module defining interfaces and error checking routines for binary optimization algorithms.
 """
 
+__all__ = [
+    "BinaryOptimizationAlgorithm",
+    "check_is_BinaryOptimizationAlgorithm"
+]
+
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm

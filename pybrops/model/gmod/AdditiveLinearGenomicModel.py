@@ -81,10 +81,6 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     def u_misc(self, value: Any) -> None:
         """Set miscellaneous random effects"""
         raise NotImplementedError("property is abstract")
-    @u_misc.deleter
-    def u_misc(self) -> None:
-        """Delete miscellaneous random effects"""
-        raise NotImplementedError("property is abstract")
 
     @property
     def u_a(self) -> Any:
@@ -94,32 +90,12 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     def u_a(self, value: Any) -> None:
         """Set additive genomic marker effects"""
         raise NotImplementedError("property is abstract")
-    @u_a.deleter
-    def u_a(self) -> None:
-        """Delete additive genomic marker effects"""
-        raise NotImplementedError("property is abstract")
 
 
 
 ################################################################################
 ################################## Utilities ###################################
 ################################################################################
-def is_AdditiveLinearGenomicModel(v: object) -> bool:
-    """
-    Determine whether an object is a AdditiveLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveLinearGenomicModel)
-
 def check_is_AdditiveLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.

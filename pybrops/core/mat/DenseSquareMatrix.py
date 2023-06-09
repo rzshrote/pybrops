@@ -78,10 +78,6 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     def nsquare(self, value: int) -> None:
         """Set the number of axes that are square"""
         error_readonly("nsquare")
-    @nsquare.deleter
-    def nsquare(self) -> None:
-        """Delete the number of axes that are square"""
-        error_readonly("nsquare")
 
     @property
     def square_axes(self) -> tuple:
@@ -91,10 +87,6 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     def square_axes(self, value: tuple) -> None:
         """Set axis indices for axes that are square"""
         error_readonly("square_axes")
-    @square_axes.deleter
-    def square_axes(self) -> None:
-        """Delete axis indices for axes that are square"""
-        error_readonly("square_axes")
 
     @property
     def square_axes_len(self) -> tuple:
@@ -103,10 +95,6 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     @square_axes_len.setter
     def square_axes_len(self, value: tuple) -> None:
         """Set axis lengths for axes that are square"""
-        error_readonly("square_axes_len")
-    @square_axes_len.deleter
-    def square_axes_len(self) -> None:
-        """Delete axis lengths for axes that are square"""
         error_readonly("square_axes_len")
 
     ################### Fill data lookup ###################
