@@ -33,9 +33,7 @@ def check_is_callable(v: object, vname: str) -> None:
         Name of the Python object variable.
     """
     if not hasattr(v, "__call__"):
-        raise AttributeError(
-            "variable '{0}' must be callable (have the '__call__' attribute)".format(vname)
-        )
+        raise AttributeError("variable '{0}' must be callable (have the '__call__' attribute)".format(vname))
 
 def check_is_iterable(v: object, vname: str) -> None:
     """
@@ -51,6 +49,4 @@ def check_is_iterable(v: object, vname: str) -> None:
         Name of the Python object variable.
     """
     if not hasattr(v, "__iter__"):
-        raise AttributeError(
-            "variable '{0}' must be callable (have the '__iter__' attribute)".format(vname)
-        )
+        raise AttributeError("variable '{0}' must be iterable (have the '__iter__' attribute)".format(vname))

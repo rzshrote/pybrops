@@ -101,6 +101,22 @@ def triudix(n: int, k: int) -> list:
     yield from recurse([],n,k)
 
 def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
+    """
+    Generate tuples containing indices for iteratively slicing 
+    a ``numpy.ndarray`` along a set of axes.
+
+    Parameters
+    ----------
+    shape : tuple
+        The shape of the ``numpy.ndarray``.
+    axis : tuple
+        The axes along which to iterate.
+    
+    Yields
+    ------
+    out : tuple
+        A tuple which can be used to slice an array.
+    """
     def recurse(l: list, s: tuple, a: tuple) -> tuple:
         if len(l) == len(s)-1:
             if len(l) in a:

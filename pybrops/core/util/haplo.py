@@ -55,7 +55,7 @@ def nhaploblk_chrom(
 
     Returns
     -------
-    nhaploblk_chrom : numpy.ndarray
+    out : numpy.ndarray
         Array of shape ``(c,)`` containing the number of haplotype blocks
         assigned to each chromosome.
 
@@ -138,7 +138,7 @@ def haplobin(
 
     Returns
     -------
-    haplobin : numpy.ndarray
+    out : numpy.ndarray
         Array of shape ``(p,)`` containing haplotype bin assignments for each
         marker across the genome. Bins are assigned starting at ``0`` and
         strictly increase as the index in the array increases due to constraints
@@ -296,7 +296,7 @@ def haplomat(
 
     Returns
     -------
-    hmat : numpy.ndarray
+    out : numpy.ndarray
         A haplotype effect matrix of shape ``(m,n,b,t)``.
 
         Where:
