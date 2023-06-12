@@ -23,23 +23,24 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
     """
 
     ########################## Special Object Methods ##########################
-    # should NOT be an abstract method
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
     def __init__(
             self, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral,
-            method: str,
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray] = None,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
@@ -47,7 +48,7 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -59,11 +60,12 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
             Additional keyword arguments.
         """
         super(WeightedGenomicSubsetSelection, self).__init__(
-            nparent = nparent, 
-            ncross = ncross, 
-            nprogeny = nprogeny,
+            ntrait = ntrait,
             alpha = 0.5,
-            method = method,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -77,9 +79,9 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
-            ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs,
-            rng = rng,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
             soalgo = soalgo,
             moalgo = moalgo,
             **kwargs
@@ -91,23 +93,24 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
     """
 
     ########################## Special Object Methods ##########################
-    # should NOT be an abstract method
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
     def __init__(
             self, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral,
-            method: str,
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray] = None,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
@@ -115,7 +118,7 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -127,11 +130,12 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
             Additional keyword arguments.
         """
         super(WeightedGenomicRealSelection, self).__init__(
-            nparent = nparent, 
-            ncross = ncross, 
-            nprogeny = nprogeny,
+            ntrait = ntrait,
             alpha = 0.5,
-            method = method,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -145,9 +149,9 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
-            ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs,
-            rng = rng,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
             soalgo = soalgo,
             moalgo = moalgo,
             **kwargs
@@ -159,23 +163,24 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
     """
 
     ########################## Special Object Methods ##########################
-    # should NOT be an abstract method
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
     def __init__(
             self, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral,
-            method: str,
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray] = None,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
@@ -183,7 +188,7 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -195,11 +200,12 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
             Additional keyword arguments.
         """
         super(WeightedGenomicIntegerSelection, self).__init__(
-            nparent = nparent, 
-            ncross = ncross, 
-            nprogeny = nprogeny,
+            ntrait = ntrait,
             alpha = 0.5,
-            method = method,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -213,9 +219,9 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
-            ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs,
-            rng = rng,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
             soalgo = soalgo,
             moalgo = moalgo,
             **kwargs
@@ -227,23 +233,24 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
     """
 
     ########################## Special Object Methods ##########################
-    # should NOT be an abstract method
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
     def __init__(
             self, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral,
-            method: str,
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray] = None,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
@@ -251,7 +258,7 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -263,11 +270,12 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
             Additional keyword arguments.
         """
         super(WeightedGenomicBinarySelection, self).__init__(
-            nparent = nparent, 
-            ncross = ncross, 
-            nprogeny = nprogeny,
+            ntrait = ntrait,
             alpha = 0.5,
-            method = method,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -281,9 +289,9 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
             eqcv_trans = eqcv_trans,
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
-            ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs,
-            rng = rng,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
             soalgo = soalgo,
             moalgo = moalgo,
             **kwargs

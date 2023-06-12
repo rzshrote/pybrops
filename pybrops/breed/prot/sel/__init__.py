@@ -3,6 +3,7 @@ Module containing selection protocols.
 """
 
 __all__ = [
+    "cfg",
     "prob",
     "sampling",
     "targetfn",
@@ -32,6 +33,7 @@ __all__ = [
 # order dependent imports
 
 # import submodules
+from pybrops.breed.prot.sel import cfg
 from pybrops.breed.prot.sel import prob
 
 # import utilities
