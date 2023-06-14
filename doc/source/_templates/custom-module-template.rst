@@ -1,6 +1,6 @@
 {{ objname | escape | underline}}
 
-.. automodule:: {{ objname }}
+.. automodule:: {{ fullname }}
 
    {% block classes %}
    {% if classes %}
@@ -34,6 +34,7 @@
 
    .. autosummary::
       :toctree:
+      :template: custom-function-template.rst
       :nosignatures:
    {% for item in functions %}
       {{ item }}
@@ -43,7 +44,7 @@
 
    {% block attributes %}
    {% if attributes %}
-   .. rubric:: Module attributes
+   .. rubric:: {{ _('Module attributes') }}
 
    .. autosummary::
       :toctree:
