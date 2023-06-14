@@ -87,6 +87,10 @@ def ucmat(ndecn, trait_mean, trait_cov):
     )
 
 @pytest.fixture
+def xmap(ndecn):
+    yield numpy.random.randint(0, 50, (ndecn,2))
+
+@pytest.fixture
 def ndecn(ntaxa, unique_parents):
     if unique_parents:
         yield (ntaxa * (ntaxa-1)) // 2
@@ -155,7 +159,7 @@ def eqcv_trans_kwargs():
 
 @pytest.fixture
 def prob(
-    ucmat,
+    ucmat, xmap,
     ndecn, decn_space, decn_space_lower, decn_space_upper, 
     nobj, obj_wt, obj_trans, obj_trans_kwargs, 
     nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -163,6 +167,7 @@ def prob(
 ):
     yield UsefulnessCriterionSubsetSelectionProblem(
         ucmat = ucmat,
+        xmap = xmap,
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
