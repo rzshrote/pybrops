@@ -100,6 +100,29 @@ def triudix(n: int, k: int) -> list:
                 l.pop()
     yield from recurse([],n,k)
 
+def xmapix(ntaxa: int, nparent: int, unique_parents: bool) -> list:
+    """
+    Generate lists containing indices for cross maps.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of parental candidates.
+    nparent : int
+        Number of parents to select from the parental candidates per cross.
+    unique_parents : bool
+        Whether parents should be unique. If ``False`` allow self crosses.
+
+    Returns
+    -------
+    out : list
+        A list of length ``nparent`` containing parental indices.
+    """
+    if unique_parents:
+        yield from triudix(ntaxa,nparent)
+    else:
+        yield from triuix(ntaxa,nparent)
+
 def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
     """
     Generate tuples containing indices for iteratively slicing 
