@@ -8,7 +8,7 @@ __all__ = [
     "check_is_Solution"
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from numbers import Integral, Real
 from typing import Union
 import numpy
@@ -32,50 +32,7 @@ class Solution(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Union[numpy.ndarray,Real,None],
-            nineqcv: Union[Integral,None],
-            ineqcv_wt: Union[numpy.ndarray,Real,None],
-            neqcv: Union[Integral,None],
-            eqcv_wt: Union[numpy.ndarray,Real,None],
-            nsoln: Integral,
-            soln_decn: numpy.ndarray,
-            soln_obj: numpy.ndarray,
-            soln_ineqcv: Union[numpy.ndarray,None],
-            soln_eqcv: Union[numpy.ndarray,None],
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for Solution.
-        
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        # order dependent assignments
-        self.ndecn = ndecn
-        self.decn_space = decn_space
-        self.decn_space_lower = decn_space_lower
-        self.decn_space_upper = decn_space_upper
-        self.nobj = nobj
-        self.obj_wt = obj_wt
-        self.nineqcv = nineqcv
-        self.ineqcv_wt = ineqcv_wt
-        self.neqcv = neqcv
-        self.eqcv_wt = eqcv_wt
-        self.nsoln = nsoln
-        self.soln_decn = soln_decn
-        self.soln_obj = soln_obj
-        self.soln_ineqcv = soln_ineqcv
-        self.soln_eqcv = soln_eqcv
+    # do not implement __init__() since this is an interface/mixin class
 
     ############################ Object Properties #############################
 

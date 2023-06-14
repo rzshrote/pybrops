@@ -51,24 +51,22 @@ class RealSolution(Solution):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(RealSolution, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            nsoln = nsoln,
-            soln_decn = soln_decn,
-            soln_obj = soln_obj,
-            soln_ineqcv = soln_ineqcv,
-            soln_eqcv = soln_eqcv,
-            **kwargs
-        )
+        # order dependent assignments
+        self.ndecn = ndecn
+        self.decn_space = decn_space
+        self.decn_space_lower = decn_space_lower
+        self.decn_space_upper = decn_space_upper
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+        self.nsoln = nsoln
+        self.soln_decn = soln_decn
+        self.soln_obj = soln_obj
+        self.soln_ineqcv = soln_ineqcv
+        self.soln_eqcv = soln_eqcv
 
     ############################ Object Properties #############################
     
