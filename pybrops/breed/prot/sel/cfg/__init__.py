@@ -4,7 +4,7 @@ Module containing selection configuration definitions.
 
 __all__ = [
     "SampledSelectionConfigurationMixin",
-    "CrossMapSelectionConfigurationMixin",
+    "MateSelectionConfigurationMixin",
     "SelectionConfiguration",
     "SimpleSelectionConfiguration",
     "BinarySelectionConfiguration",
@@ -16,7 +16,7 @@ __all__ = [
 # order dependent imports
 # mixin semi-abstract classes
 from pybrops.breed.prot.sel.cfg import SampledSelectionConfigurationMixin
-from pybrops.breed.prot.sel.cfg import CrossMapSelectionConfigurationMixin
+from pybrops.breed.prot.sel.cfg import MateSelectionConfigurationMixin
 
 
 # basal semi-abstract class

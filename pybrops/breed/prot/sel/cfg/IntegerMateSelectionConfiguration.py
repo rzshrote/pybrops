@@ -1,21 +1,23 @@
+"""
+Module containing representations of subset selection configurations 
+where the subset originates from a cross map.
+"""
+
 from numbers import Integral
 from typing import Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration import SimpleSelectionConfiguration
-from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
-from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, tiled_choice
+from pybrops.breed.prot.sel.cfg.MateSelectionConfigurationMixin import CrossMapSelectionConfigurationMixin
+from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSelectionConfiguration
+from pybrops.core.random.sampling import axis_shuffle, tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-
-class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSelectionConfiguration):
+class CrossMapIntegerSelectionConfiguration(CrossMapSelectionConfigurationMixin,IntegerSelectionConfiguration):
     """
-    docstring for SubsetSelectionConfiguration.
+    Class representing a subset selection configuration where the subset 
+    originates from a cross map.
     """
-
     ########################## Special Object Methods ##########################
     def __init__(
             self,
@@ -25,6 +27,7 @@ class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
             nprogeny: Union[Integral,numpy.ndarray],
             pgmat: PhasedGenotypeMatrix,
             xconfig_decn: numpy.ndarray,
+            xconfig_xmap: numpy.ndarray,
             rng: Optional[Union[Generator,RandomState]],
             **kwargs: dict
         ) -> None:
@@ -60,18 +63,12 @@ class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
         # set genotypes and cross configuration third
         self.pgmat = pgmat
         self.xconfig_decn = xconfig_decn
+        self.xconfig_xmap = xconfig_xmap
         self.rng = rng
         # sample cross configuration
         self.sample_xconfig(return_xconfig=False)
 
     ############################ Object Properties #############################
-    @SampledSelectionConfigurationMixin.xconfig_decn.setter
-    def xconfig_decn(self, value) -> numpy.ndarray:
-        """Set decision vector for calculating the cross configuration matrix."""
-        check_is_ndarray(value, "xconfig_decn")
-        check_ndarray_ndim(value, "xconfig_decn", 1)
-        check_ndarray_dtype_is_integer(value, "xconfig_decn")
-        self._xconfig_decn = value
 
     ############################## Object Methods ##############################
     def sample_xconfig(
@@ -93,20 +90,29 @@ class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
             The sampled ``xconfig`` matrix if ``return_xconfig`` is true,
             otherwise return nothing.
         """
+        # get an appropriate number of duplications for indices marking selections
+        options = numpy.repeat(
+            numpy.arange(len(self.xconfig_decn)), 
+            self.xconfig_decn
+        )
+
         # create sample
+        # (ncross,)
         out = tiled_choice(
-            self.xconfig_decn,
-            size = (self.ncross, self.nparent),
+            options,
+            size = (self.ncross,),
             replace = False,
             rng = self.rng
         )
 
-        # at least locally ensure outcrossing
-        outcross_shuffle(out, rng = self.rng)
-
         # shuffle within mating configurations just for good measure
-        axis_shuffle(out, 0, rng = self.rng)
-        
+        # (ncross,)
+        self.rng.shuffle(out)
+
+        # extract mating configurations from cross map
+        # (s,d)[(ncross,),:] -> (ncross,d)
+        out = self.xconfig_xmap[out,:]
+
         # set cross configuration
         self.xconfig = out
 
