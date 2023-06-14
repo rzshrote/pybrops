@@ -60,17 +60,26 @@ class BinaryProblem(Problem):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(BinaryProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
+        # order dependent assignments (for PyBrOpS interface)
+        self.ndecn = ndecn
+        self.decn_space = decn_space
+        self.decn_space_lower = decn_space_lower
+        self.decn_space_upper = decn_space_upper
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+
+        # call PyMOO constructor to set things its way (for PyMOO interface)
+        super(Problem, self).__init__(
+            n_var = ndecn,
+            n_obj = nobj,
+            n_ieq_constr = nineqcv,
+            n_eq_constr = neqcv,
+            xl = decn_space_lower,
+            xu = decn_space_upper,
             vtype = vtype,
             vars = vars,
             elementwise = elementwise,

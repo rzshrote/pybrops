@@ -11,12 +11,11 @@ __all__ = [
 # imports
 from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
-from typing import Callable, Container, Iterable, Optional, Tuple, Union
+from typing import Callable, Container, Iterable, Tuple, Union
 import numpy
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_type
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 import pymoo.core.problem
 
 class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
@@ -49,83 +48,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            vtype: Optional[type] = None,
-            vars: Optional[Container] = None,
-            elementwise: bool = True,
-            elementwise_func: type = ElementwiseEvaluationFunction,
-            elementwise_runner: Callable = LoopedElementwiseEvaluation(),
-            replace_nan_values_by: Optional[Real] = None,
-            exclude_from_serialization: Optional[Iterable] = None,
-            callback: Optional[Callable] = None,
-            strict: bool = True,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for Problem.
-        
-        Parameters
-        ----------
-        n_var : int
-            Number of variables.
-        n_obj : int
-            Number of objectives.
-        n_ieq_constr : int
-            Number of Inequality Constraints
-        n_eq_constr : int
-            Number of Equality Constraints
-        xl : np.array, float, int
-            Lower bounds for the variables. if integer all lower bounds are equal.
-        xu : np.array, float, int
-            Upper bounds for the variable. if integer all upper bounds are equal.
-        vtype : type
-            The variable type. So far, just used as a type hint.
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        # order dependent assignments (for PyBrOpS interface)
-        self.ndecn = ndecn
-        self.decn_space = decn_space
-        self.decn_space_lower = decn_space_lower
-        self.decn_space_upper = decn_space_upper
-        self.nobj = nobj
-        self.obj_wt = obj_wt
-        self.nineqcv = nineqcv
-        self.ineqcv_wt = ineqcv_wt
-        self.neqcv = neqcv
-        self.eqcv_wt = eqcv_wt
-
-        # call PyMOO constructor to set things their way (for PyMOO interface)
-        super(Problem, self).__init__(
-            n_var = ndecn,
-            n_obj = nobj,
-            n_ieq_constr = nineqcv,
-            n_eq_constr = neqcv,
-            xl = decn_space_lower,
-            xu = decn_space_upper,
-            vtype = vtype,
-            vars = vars,
-            elementwise = elementwise,
-            elementwise_func = elementwise_func,
-            elementwise_runner = elementwise_runner,
-            replace_nan_values_by = replace_nan_values_by,
-            exclude_from_serialization = exclude_from_serialization,
-            callback = callback,
-            strict = strict,
-            **kwargs
-        )
+    # inherit __init__() from pymoo.Problem to keep this class semi-abstrac/mixin type
 
     ############################ Object Properties #############################
 
