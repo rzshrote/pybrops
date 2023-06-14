@@ -17,7 +17,8 @@ from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseE
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
-# inheritance ordering is important here to avoid circular dependency/method resolution issues
+# inheritance ordering is important here to avoid method resolution issues
+# SelectionProblem functions as a semi-abstract/mixin-esque class and must go second
 class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
     """
     Semi-abstract class representing selection problems in subset search spaces.
@@ -123,7 +124,7 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
         """
-        # call the DenseSubsetProblem constructor
+        # call the SubsetProblem constructor
         super(SubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
@@ -131,16 +132,10 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
             decn_space_upper = decn_space_upper,
             nobj = nobj,
             obj_wt = obj_wt,
-            obj_trans = obj_trans, # somehow required??? TODO: understand why
-            obj_trans_kwargs = obj_trans_kwargs, # somehow required??? TODO: understand why
             nineqcv = nineqcv,
             ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans, # somehow required??? TODO: understand why
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs, # somehow required??? TODO: understand why
             neqcv = neqcv,
             eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans, # somehow required??? TODO: understand why
-            eqcv_trans_kwargs = eqcv_trans_kwargs, # somehow required??? TODO: understand why
             vtype = vtype,
             vars = vars,
             elementwise = elementwise,

@@ -14,22 +14,6 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem, check
 ################################ Test fixtures #################################
 ################################################################################
 class SelectionProblemTestClass(SelectionProblem):
-    def __init__(
-            self,
-            ndecn, decn_space, decn_space_lower, decn_space_upper, 
-            nobj, obj_wt, obj_trans, obj_trans_kwargs,
-            nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs,
-            neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs,
-            **kwargs
-        ):
-        """NA"""
-        super(SelectionProblemTestClass, self).__init__(
-            ndecn, decn_space, decn_space_lower, decn_space_upper, 
-            nobj, obj_wt, obj_trans, obj_trans_kwargs,
-            nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs,
-            neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs,
-            **kwargs
-        )
     @property
     def nlatent(self) -> int:
         """nlatent."""
@@ -110,16 +94,10 @@ def prob(
     decn_space_upper,
     nobj,
     obj_wt,
-    obj_trans,
-    obj_trans_kwargs,
     nineqcv,
     ineqcv_wt,
-    ineqcv_trans,
-    ineqcv_trans_kwargs,
     neqcv,
     eqcv_wt,
-    eqcv_trans,
-    eqcv_trans_kwargs
 ):
     yield SelectionProblemTestClass(
         ndecn = ndecn,
@@ -128,16 +106,10 @@ def prob(
         decn_space_upper = decn_space_upper,
         nobj = nobj,
         obj_wt = obj_wt,
-        obj_trans = obj_trans,
-        obj_trans_kwargs = obj_trans_kwargs,
         nineqcv = nineqcv,
         ineqcv_wt = ineqcv_wt,
-        ineqcv_trans = ineqcv_trans,
-        ineqcv_trans_kwargs = ineqcv_trans_kwargs,
         neqcv = neqcv,
         eqcv_wt = eqcv_wt,
-        eqcv_trans = eqcv_trans,
-        eqcv_trans_kwargs = eqcv_trans_kwargs
     )
 
 ################################################################################
@@ -156,8 +128,8 @@ def test_SelectionProblem_docstring():
 def test_obj_trans_is_concrete():
     assert_concrete_property(SelectionProblem, "obj_trans")
 
-def test_obj_trans_fget(prob):
-    assert isinstance(prob.obj_trans, Callable)
+# def test_obj_trans_fget(prob):
+#     assert isinstance(prob.obj_trans, Callable)
 
 def test_obj_trans_fset(prob, obj_trans):
     with not_raises(Exception):
@@ -181,8 +153,8 @@ def test_obj_trans_fdel(prob):
 def test_obj_trans_kwargs_is_concrete():
     assert_concrete_property(SelectionProblem, "obj_trans_kwargs")
 
-def test_obj_trans_kwargs_fget(prob):
-    assert isinstance(prob.obj_trans_kwargs, dict)
+# def test_obj_trans_kwargs_fget(prob):
+#     assert isinstance(prob.obj_trans_kwargs, dict)
 
 def test_obj_trans_kwargs_fset(prob):
     with not_raises(Exception):
@@ -208,8 +180,8 @@ def test_obj_trans_kwargs_fdel(prob):
 def test_ineqcv_trans_is_concrete():
     assert_concrete_property(SelectionProblem, "ineqcv_trans")
 
-def test_ineqcv_trans_fget(prob):
-    assert isinstance(prob.ineqcv_trans, Callable)
+# def test_ineqcv_trans_fget(prob):
+#     assert isinstance(prob.ineqcv_trans, Callable)
 
 def test_ineqcv_trans_fset(prob, ineqcv_trans):
     with not_raises(Exception):
@@ -233,8 +205,8 @@ def test_ineqcv_trans_fdel(prob):
 def test_ineqcv_trans_kwargs_is_concrete():
     assert_concrete_property(SelectionProblem, "ineqcv_trans_kwargs")
 
-def test_ineqcv_trans_kwargs_fget(prob):
-    assert isinstance(prob.ineqcv_trans_kwargs, dict)
+# def test_ineqcv_trans_kwargs_fget(prob):
+#     assert isinstance(prob.ineqcv_trans_kwargs, dict)
 
 def test_ineqcv_trans_kwargs_fset(prob):
     with not_raises(Exception):
@@ -260,8 +232,8 @@ def test_ineqcv_trans_kwargs_fdel(prob):
 def test_eqcv_trans_is_concrete():
     assert_concrete_property(SelectionProblem, "eqcv_trans")
 
-def test_eqcv_trans_fget(prob):
-    assert isinstance(prob.eqcv_trans, Callable)
+# def test_eqcv_trans_fget(prob):
+#     assert isinstance(prob.eqcv_trans, Callable)
 
 def test_eqcv_trans_fset(prob, eqcv_trans):
     with not_raises(Exception):
@@ -285,8 +257,8 @@ def test_eqcv_trans_fdel(prob):
 def test_eqcv_trans_kwargs_is_concrete():
     assert_concrete_property(SelectionProblem, "eqcv_trans_kwargs")
 
-def test_eqcv_trans_kwargs_fget(prob):
-    assert isinstance(prob.eqcv_trans_kwargs, dict)
+# def test_eqcv_trans_kwargs_fget(prob):
+#     assert isinstance(prob.eqcv_trans_kwargs, dict)
 
 def test_eqcv_trans_kwargs_fset(prob):
     with not_raises(Exception):

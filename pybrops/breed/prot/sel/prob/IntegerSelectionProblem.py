@@ -123,7 +123,7 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
         """
-        # call the DenseIntegerProblem constructor
+        # call the IntegerProblem constructor
         super(IntegerSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
@@ -131,16 +131,10 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
             decn_space_upper = decn_space_upper,
             nobj = nobj,
             obj_wt = obj_wt,
-            obj_trans = obj_trans, # somehow required??? TODO: understand why
-            obj_trans_kwargs = obj_trans_kwargs, # somehow required??? TODO: understand why
             nineqcv = nineqcv,
             ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans, # somehow required??? TODO: understand why
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs, # somehow required??? TODO: understand why
             neqcv = neqcv,
             eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans, # somehow required??? TODO: understand why
-            eqcv_trans_kwargs = eqcv_trans_kwargs, # somehow required??? TODO: understand why
             vtype = vtype,
             vars = vars,
             elementwise = elementwise,
@@ -165,8 +159,8 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
 
     ############################## Object Methods ##############################
     # leave latentfn abstract
-    # evalfn defined by DenseSelectionProblem
-    # _evaluate defined by DenseSelectionProblem
+    # evalfn defined by SelectionProblem
+    # _evaluate defined by SelectionProblem
 
 
 
