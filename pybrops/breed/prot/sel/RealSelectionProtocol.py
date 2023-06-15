@@ -2,27 +2,89 @@
 Module defining a general class for real selection protocols.
 """
 
-from numbers import Integral
-from typing import Optional, Union
+from abc import ABCMeta, abstractmethod
+from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
+import numpy
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionConfiguration
+from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2RealGeneticAlgorithm import NSGA2RealGeneticAlgorithm
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.algo.RealGeneticAlgorithm import RealGeneticAlgorithm
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm, check_is_RealOptimizationAlgorithm
-from pybrops.opt.soln.RealSolution import RealSolution
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
-class RealSelectionProtocol(SelectionProtocol):
+class RealSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
     """
     Semi-abstract class for creating real selection protocols.
     """
     ########################## Special Object Methods ##########################
-    # __init__ method from SelectionProtocol
+    def __init__(
+            self, 
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        self.ncross = ncross
+        self.nparent = nparent
+        self.nmating = nmating
+        self.nprogeny = nprogeny
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.obj_trans = obj_trans
+        self.obj_trans_kwargs = obj_trans_kwargs
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.ineqcv_trans = ineqcv_trans
+        self.ineqcv_trans_kwargs = ineqcv_trans_kwargs
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+        self.eqcv_trans = eqcv_trans
+        self.eqcv_trans_kwargs = eqcv_trans_kwargs
+        self.ndset_wt = ndset_wt
+        self.ndset_trans = ndset_trans
+        self.ndset_trans_kwargs = ndset_trans_kwargs
+        self.rng = rng
+        self.soalgo = soalgo
+        self.moalgo = moalgo
 
     ############################ Object Properties #############################
     @property
@@ -62,7 +124,46 @@ class RealSelectionProtocol(SelectionProtocol):
     ############################## Object Methods ##############################
 
     ########## Optimization Problem Construction ###########
-    # abstract `problem` method from SelectionProtocol
+    @abstractmethod
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: PhenotypeDataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> RealSelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : PhenotypeDataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : RealSelectionProblem
+            An optimization problem definition.
+        """
+        raise NotImplementedError("method is abstract")
 
     ################ Single Objective Solve ################
     def sosolve(
@@ -76,7 +177,7 @@ class RealSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> RealSolution:
+        ) -> RealSelectionSolution:
         """
         Solve the selection problem using a single-objective optimization algorithm.
 
@@ -130,7 +231,27 @@ class RealSelectionProtocol(SelectionProtocol):
             miscout = miscout
         )
 
-        return soln
+        # convert real solution to real selection solution
+        # this has the exact same metadata as a RealSolution
+        out = RealSelectionSolution(
+            ndecn = soln.ndecn,
+            decn_space = soln.decn_space,
+            decn_space_lower = soln.decn_space_lower,
+            decn_space_upper = soln.decn_space_upper,
+            nobj = soln.nobj,
+            obj_wt = soln.obj_wt,
+            nineqcv = soln.nineqcv,
+            ineqcv_wt = soln.ineqcv_wt,
+            neqcv = soln.neqcv,
+            eqcv_wt = soln.eqcv_wt,
+            nsoln = soln.nsoln,
+            soln_decn = soln.soln_decn,
+            soln_obj = soln.soln_obj,
+            soln_ineqcv = soln.soln_ineqcv,
+            soln_eqcv = soln.soln_eqcv
+        )
+
+        return out
 
     ############## Pareto Frontier Functions ###############
     def mosolve(
@@ -144,7 +265,7 @@ class RealSelectionProtocol(SelectionProtocol):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> RealSolution:
+        ) -> RealSelectionSolution:
         """
         Calculate a Pareto frontier for objectives.
 
@@ -202,7 +323,8 @@ class RealSelectionProtocol(SelectionProtocol):
             bvmat = bvmat,
             gpmod = gpmod,
             t_cur = t_cur,
-            t_max = t_max
+            t_max = t_max,
+            **kwargs
         )
 
         # optimize the problem
@@ -211,7 +333,27 @@ class RealSelectionProtocol(SelectionProtocol):
             miscout = miscout
         )
 
-        return soln
+        # convert real solution to real selection solution
+        # this has the exact same metadata as a RealSolution
+        out = RealSelectionSolution(
+            ndecn = soln.ndecn,
+            decn_space = soln.decn_space,
+            decn_space_lower = soln.decn_space_lower,
+            decn_space_upper = soln.decn_space_upper,
+            nobj = soln.nobj,
+            obj_wt = soln.obj_wt,
+            nineqcv = soln.nineqcv,
+            ineqcv_wt = soln.ineqcv_wt,
+            neqcv = soln.neqcv,
+            eqcv_wt = soln.eqcv_wt,
+            nsoln = soln.nsoln,
+            soln_decn = soln.soln_decn,
+            soln_obj = soln.soln_obj,
+            soln_ineqcv = soln.soln_ineqcv,
+            soln_eqcv = soln.soln_eqcv
+        )
+
+        return out
 
     ################# Selection Functions ##################
     def select(
@@ -288,11 +430,12 @@ class RealSelectionProtocol(SelectionProtocol):
             )
 
             return selcfg
+
         # else, we use a multi-objective algorithm and apply a transformation on the non-dominated points to identify a 
         # multi-objective method: objfn_trans returns a multiple values for each
         # selection configuration
         elif self.nobj > 1:
-            # solve the single-objective problem
+            # solve the multi-objective problem
             mosoln = self.mosolve(
                 pgmat = pgmat,
                 gmat = gmat,
@@ -331,5 +474,7 @@ class RealSelectionProtocol(SelectionProtocol):
             )
 
             return selcfg
+
+        # else raise an error as the number of objectives is an illegal value
         else:
             raise ValueError("number of objectives must be greater than zero")

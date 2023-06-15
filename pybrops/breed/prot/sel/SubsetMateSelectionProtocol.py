@@ -1,125 +1,32 @@
 """
-Module defining a general class for binary selection protocols.
+Module defining a general class for subset selection protocols.
 """
 
 from abc import ABCMeta, abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from typing import Optional
 
-import numpy
-from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
+from pybrops.breed.prot.sel.MateSelectionProtocol import MateSelectionProtocol
+from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
+from pybrops.breed.prot.sel.cfg.SubsetMateSelectionConfiguration import SubsetMateSelectionConfiguration
+from pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution import SubsetMateSelectionSolution
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
-from pybrops.opt.algo.BinaryGeneticAlgorithm import BinaryGeneticAlgorithm
-from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm, check_is_BinaryOptimizationAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
-class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
+class SubsetMateSelectionProtocol(SubsetSelectionProtocol,MateSelectionProtocol,metaclass=ABCMeta):
     """
-    Semi-abstract class for creating binary selection protocols.
+    Semi-abstract class for creating subset selection protocols.
     """
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            ncross: Integral,
-            nparent: Integral,
-            nmating: Union[Integral,numpy.ndarray],
-            nprogeny: Union[Integral,numpy.ndarray],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            ndset_wt: Optional[Real] = None,
-            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
-            ndset_trans_kwargs: Optional[dict] = None, 
-            rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        # order dependent assignments
-        self.ncross = ncross
-        self.nparent = nparent
-        self.nmating = nmating
-        self.nprogeny = nprogeny
-        self.nobj = nobj
-        self.obj_wt = obj_wt
-        self.obj_trans = obj_trans
-        self.obj_trans_kwargs = obj_trans_kwargs
-        self.nineqcv = nineqcv
-        self.ineqcv_wt = ineqcv_wt
-        self.ineqcv_trans = ineqcv_trans
-        self.ineqcv_trans_kwargs = ineqcv_trans_kwargs
-        self.neqcv = neqcv
-        self.eqcv_wt = eqcv_wt
-        self.eqcv_trans = eqcv_trans
-        self.eqcv_trans_kwargs = eqcv_trans_kwargs
-        self.ndset_wt = ndset_wt
-        self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs
-        self.rng = rng
-        self.soalgo = soalgo
-        self.moalgo = moalgo
+    # inherit __init__ from SubsetSelectionProtocol
 
     ############################ Object Properties #############################
-    @property
-    def soalgo(self) -> BinaryOptimizationAlgorithm:
-        """Single-objective optimization algorithm."""
-        return self._soalgo
-    @soalgo.setter
-    def soalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
-        """Set single-objective optimization algorithm."""
-        if value is None:
-            # construct default multi-objective algorithm
-            value = BinaryGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                pop_size = 100  # number of parents in population
-            )
-            # construct default hillclimber
-            # value = SteepestDescentBinaryHillClimber(self.rng)
-        check_is_BinaryOptimizationAlgorithm(value, "soalgo")
-        self._soalgo = value
-
-    @property
-    def moalgo(self) -> BinaryOptimizationAlgorithm:
-        """Multi-objective opimization algorithm."""
-        return self._moalgo
-    @moalgo.setter
-    def moalgo(self, value: Union[BinaryOptimizationAlgorithm,None]) -> None:
-        """Set multi-objective opimization algorithm."""
-        if value is None:
-            # construct default multi-objective algorithm
-            value = NSGA2BinaryGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                pop_size = 100  # number of parents in population
-            )
-        check_is_BinaryOptimizationAlgorithm(value, "moalgo")
-        self._moalgo = value
+    # inherit properties from SubsetSelectionProtocol
 
     ############################## Object Methods ##############################
 
@@ -135,7 +42,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> BinarySelectionProblem:
+        ) -> SubsetMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -160,7 +67,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
 
         Returns
         -------
-        out : BinarySelectionProblem
+        out : SubsetMateSelectionProblem
             An optimization problem definition.
         """
         raise NotImplementedError("method is abstract")
@@ -177,7 +84,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             t_max: Integral, 
             miscout: Optional[dict], 
             **kwargs: dict
-        ) -> BinarySelectionSolution:
+        ) -> SubsetMateSelectionSolution:
         """
         Solve the selection problem using a single-objective optimization algorithm.
 
@@ -206,7 +113,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
 
         Returns
         -------
-        out : Solution
+        out : SubsetMateSelectionSolution
             A single-objective solution to the posed selection problem.
         """
         # check the number of objectives and raise error if needed
@@ -231,13 +138,14 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             miscout = miscout
         )
 
-        # convert binary solution to binary selection solution
-        # this has the exact same metadata as a BinarySolution
-        out = BinarySelectionSolution(
+        # convert subset solution to subset selection solution
+        # add cross map metadata from problem to metadata from SubsetSolution
+        out = SubsetMateSelectionSolution(
             ndecn = soln.ndecn,
             decn_space = soln.decn_space,
             decn_space_lower = soln.decn_space_lower,
             decn_space_upper = soln.decn_space_upper,
+            decn_space_xmap = prob.decn_space_xmap,
             nobj = soln.nobj,
             obj_wt = soln.obj_wt,
             nineqcv = soln.nineqcv,
@@ -265,7 +173,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> BinarySelectionSolution:
+        ) -> SubsetMateSelectionSolution:
         """
         Calculate a Pareto frontier for objectives.
 
@@ -294,22 +202,8 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
 
         Returns
         -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
+        out : SubsetMateSelectionSolution
+            A multi-objective solution to the posed selection problem.
         """
         # check the number of objectives and raise error if needed
         if self.nobj <= 1:
@@ -332,13 +226,14 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             miscout = miscout
         )
 
-        # convert binary solution to binary selection solution
-        # this has the exact same metadata as a BinarySolution
-        out = BinarySelectionSolution(
+        # convert subset solution to subset selection solution
+        # add cross map metadata from problem to metadata from SubsetSolution
+        out = SubsetMateSelectionSolution(
             ndecn = soln.ndecn,
             decn_space = soln.decn_space,
             decn_space_lower = soln.decn_space_lower,
             decn_space_upper = soln.decn_space_upper,
+            decn_space_xmap = prob.decn_space_xmap,
             nobj = soln.nobj,
             obj_wt = soln.obj_wt,
             nineqcv = soln.nineqcv,
@@ -366,7 +261,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             t_max: Integral, 
             miscout: Optional[dict] = None, 
             **kwargs: dict
-        ) -> BinarySelectionConfiguration:
+        ) -> SubsetMateSelectionConfiguration:
         """
         Select individuals for breeding.
 
@@ -395,7 +290,7 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
 
         Returns
         -------
-        out : BinarySelectionConfiguration
+        out : SubsetMateSelectionConfiguration
             A selection configuration object, requiring all necessary information to mate individuals.
         """
         # if the number of objectives is 1, then we use a single objective algorithm
@@ -417,14 +312,15 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             if miscout is not None:
                 miscout["sosoln"] = sosoln
 
-            # construct a BinarySelectionConfiguration
-            selcfg = BinarySelectionConfiguration(
+            # construct a SubsetMateSelectionConfiguration
+            selcfg = SubsetMateSelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,
                 nprogeny = self.nprogeny,
                 pgmat = pgmat,
                 xconfig_decn = sosoln.soln_decn[0],
+                xconfig_xmap = sosoln.decn_space_xmap,
                 rng = None
             )
 
@@ -461,14 +357,15 @@ class BinarySelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             if miscout is not None:
                 miscout["mosoln"] = mosoln
 
-            # construct a BinarySelectionConfiguration
-            selcfg = BinarySelectionConfiguration(
+            # construct a SubsetMateSelectionConfiguration
+            selcfg = SubsetMateSelectionConfiguration(
                 ncross = self.ncross,
                 nparent = self.nparent,
                 nmating = self.nmating,
                 nprogeny = self.nprogeny,
                 pgmat = pgmat,
                 xconfig_decn = mosoln.soln_decn[ix],
+                xconfig_xmap = mosoln.decn_space_xmap,
                 rng = None
             )
 
