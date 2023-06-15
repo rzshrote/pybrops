@@ -3,15 +3,15 @@ from typing import Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration import SimpleSelectionConfiguration
+from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_bool_or_integer, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_bool_or_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_is_binary, check_ndarray_ndim
 from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class BinarySelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSelectionConfiguration):
+class BinarySelectionConfiguration(SampledSelectionConfigurationMixin,SelectionConfiguration):
     """
     docstring for BinarySelectionConfiguration.
     """
@@ -25,7 +25,7 @@ class BinarySelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
             nprogeny: Union[Integral,numpy.ndarray],
             pgmat: PhasedGenotypeMatrix,
             xconfig_decn: numpy.ndarray,
-            rng: Optional[Union[Generator,RandomState]],
+            rng: Optional[Union[Generator,RandomState]] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -124,23 +124,3 @@ class BinarySelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
     ############################## Class Methods ###############################
 
     ############################## Static Methods ##############################
-
-
-# get quotient and remainder
-nsample = 17
-ndecn = 5
-xconfig_decn = numpy.arange(5)
-
-# create output vector
-out = numpy.empty(nsample, dtype = int)
-
-qu, re = divmod(nsample, ndecn)
-
-# fill the decisions
-for i in range(qu):
-    out[(i*ndecn):((i+1)*ndecn)] = xconfig_decn
-
-out[(qu*ndecn):] = numpy.random.choice(xconfig_decn, re, replace = False)
-
-# shuffle the decisions
-numpy.random.shuffle(out)

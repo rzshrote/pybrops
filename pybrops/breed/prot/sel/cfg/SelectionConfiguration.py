@@ -7,8 +7,12 @@ from numbers import Integral
 from typing import Union
 
 import numpy
-
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
 class SelectionConfiguration(metaclass=ABCMeta):
@@ -17,74 +21,83 @@ class SelectionConfiguration(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
+    # do not define __init__ since this is a semi-abstract class
 
     ############################ Object Properties #############################
     @property
-    @abstractmethod
     def ncross(self) -> Integral:
         """Number of cross configurations to consider."""
-        raise NotImplementedError("method is abstract")
+        return self._ncross
     @ncross.setter
-    @abstractmethod
     def ncross(self, value: Integral) -> None:
         """Set number of cross configurations to consider."""
-        raise NotImplementedError("method is abstract")
+        check_is_Integral(value, "ncross")
+        check_is_gt(value, "ncross", 0)
+        self._ncross = value
     
     @property
-    @abstractmethod
     def nparent(self) -> Integral:
         """Number of parents in a given cross configuration."""
-        raise NotImplementedError("method is abstract")
+        return self._nparent
     @nparent.setter
-    @abstractmethod
     def nparent(self, value: Integral) -> None:
         """Set number of parents in a given cross configuration."""
-        raise NotImplementedError("method is abstract")
+        check_is_Integral(value, "nparent")
+        check_is_gt(value, "nparent", 0)
+        self._nparent = value
     
     @property
-    @abstractmethod
     def nmating(self) -> numpy.ndarray:
         """Number of times an individual cross configuration is executed."""
-        raise NotImplementedError("method is abstract")
+        return self._nmating
     @nmating.setter
-    @abstractmethod
     def nmating(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of times an individual cross configuration is executed."""
-        raise NotImplementedError("method is abstract")
+        if isinstance(value, Integral):
+            value = numpy.repeat(value, self.ncross)
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "nmating")
+        else:
+            raise TypeError("variable 'nmating' must be of type '{0}' but received type '{1}'".format(Integral.__name__,type(value).__name__))
+        self._nmating = value
     
     @property
-    @abstractmethod
     def nprogeny(self) -> numpy.ndarray:
         """Number of progeny to derive from a mating event."""
-        raise NotImplementedError("method is abstract")
+        return self._nprogeny
     @nprogeny.setter
-    @abstractmethod
     def nprogeny(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of progeny to derive from a mating event."""
-        raise NotImplementedError("method is abstract")
+        if isinstance(value, Integral):
+            value = numpy.repeat(value, self.ncross)
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "nprogeny")
+        else:
+            raise TypeError("variable 'nprogeny' must be of type '{0}' but received type '{1}'".format(Integral.__name__,type(value).__name__))
+        self._nprogeny = value
 
     @property
-    @abstractmethod
     def pgmat(self) -> PhasedGenotypeMatrix:
         """Genome matrix for the parental candidates."""
-        raise NotImplementedError("method is abstract")
+        return self._pgmat
     @pgmat.setter
-    @abstractmethod
     def pgmat(self, value: PhasedGenotypeMatrix) -> None:
         """Set genome matrix for the parental candidates."""
-        raise NotImplementedError("method is abstract")
+        check_is_PhasedGenotypeMatrix(value, "pgmat")
+        self._pgmat = value
     
     @property
-    @abstractmethod
     def xconfig(self) -> numpy.ndarray:
         """xconfig."""
-        raise NotImplementedError("method is abstract")
+        return self._xconfig
     @xconfig.setter
-    @abstractmethod
     def xconfig(self, value: numpy.ndarray) -> None:
         """Set xconfig."""
-        raise NotImplementedError("method is abstract")
-    
+        check_is_ndarray(value, "xconfig")
+        check_ndarray_dtype_is_integer(value, "xconfig")
+        check_ndarray_shape_eq(value, "xconfig", (self.ncross,self.nparent))
+        self._xconfig = value
+
     ############################## Object Methods ##############################
 
     ############################## Class Methods ###############################

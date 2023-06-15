@@ -5,12 +5,12 @@ Mixin class to provide functionality for selection configurations that require c
 from abc import ABCMeta, abstractmethod
 
 import numpy
-
+from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim
 
 
-class CrossMapSelectionConfigurationMixin(metaclass=ABCMeta):
+class MateSelectionConfiguration(SelectionConfiguration,metaclass=ABCMeta):
     """
     A mixin class to provide functionality for selection configurations which 
     require random samples to be drawn.
@@ -28,6 +28,7 @@ class CrossMapSelectionConfigurationMixin(metaclass=ABCMeta):
         """Set xconfig_xmap."""
         check_is_ndarray(value, "xconfig_xmap")
         check_ndarray_ndim(value, "xconfig_xmap", 2)
+        check_ndarray_axis_len(value, "xconfig_xmap", 1, self.nparent)
         self._xconfig_xmap = value
 
     ############################## Object Methods ##############################

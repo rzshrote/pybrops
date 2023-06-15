@@ -3,7 +3,7 @@ from typing import Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration import SimpleSelectionConfiguration
+from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
 from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -11,7 +11,7 @@ from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, tiled_c
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSelectionConfiguration):
+class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionConfiguration):
     """
     docstring for SubsetSelectionConfiguration.
     """
@@ -25,7 +25,7 @@ class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSele
             nprogeny: Union[Integral,numpy.ndarray],
             pgmat: PhasedGenotypeMatrix,
             xconfig_decn: numpy.ndarray,
-            rng: Optional[Union[Generator,RandomState]],
+            rng: Optional[Union[Generator,RandomState]] = None,
             **kwargs: dict
         ) -> None:
         """

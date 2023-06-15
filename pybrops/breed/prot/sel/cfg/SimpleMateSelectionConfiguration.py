@@ -6,11 +6,12 @@ from numbers import Integral
 from typing import Union
 
 import numpy
-from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
+from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import MateSelectionConfiguration
+from pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration import SimpleSelectionConfiguration
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class SimpleSelectionConfiguration(SelectionConfiguration):
+class SimpleMateSelectionConfiguration(SimpleSelectionConfiguration,MateSelectionConfiguration):
     """
     A simple selection configuration class containing the basic necessities for
     a SelectionConfiguration object.
@@ -25,6 +26,7 @@ class SimpleSelectionConfiguration(SelectionConfiguration):
             nprogeny: Union[Integral,numpy.ndarray],
             pgmat: PhasedGenotypeMatrix,
             xconfig: numpy.ndarray,
+            xconfig_xmap: numpy.ndarray,
             **kwargs: dict
         ) -> None:
         """
@@ -52,15 +54,17 @@ class SimpleSelectionConfiguration(SelectionConfiguration):
             The number of progeny to derive from a mating event.
         """
         # order dependent assignments!
-        # set shape parameters first
-        self.ncross = ncross
-        self.nparent = nparent
-        # mating parameters second
-        self.nmating = nmating
-        self.nprogeny = nprogeny
-        # set genotypes and cross configuration third
-        self.pgmat = pgmat
-        self.xconfig = xconfig
+        super(SimpleMateSelectionConfiguration, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            pgmat = pgmat,
+            xconfig = xconfig,
+            **kwargs
+        )
+        # make assignments to cross map
+        self.xconfig_xmap = xconfig_xmap
 
     ############################ Object Properties #############################
     

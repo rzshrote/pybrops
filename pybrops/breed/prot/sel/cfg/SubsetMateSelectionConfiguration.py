@@ -8,12 +8,12 @@ from typing import Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.cfg.MateSelectionConfigurationMixin import CrossMapSelectionConfigurationMixin
+from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import MateSelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
-from pybrops.core.random.sampling import axis_shuffle, tiled_choice
+from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class CrossMapSubsetSelectionConfiguration(CrossMapSelectionConfigurationMixin,SubsetSelectionConfiguration):
+class SubsetMateSelectionConfiguration(SubsetSelectionConfiguration,MateSelectionConfiguration):
     """
     Class representing a subset selection configuration where the subset 
     originates from a cross map.

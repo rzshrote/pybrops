@@ -3,15 +3,15 @@ from typing import Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration import SimpleSelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
+from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
+from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, stochastic_universal_sampling, tiled_choice
+from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, stochastic_universal_sampling
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class RealSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSelectionConfiguration):
+class RealSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionConfiguration):
     """
     docstring for RealSelectionConfiguration.
     """
@@ -25,7 +25,7 @@ class RealSelectionConfiguration(SampledSelectionConfigurationMixin,SimpleSelect
             nprogeny: Union[Integral,numpy.ndarray],
             pgmat: PhasedGenotypeMatrix,
             xconfig_decn: numpy.ndarray,
-            rng: Optional[Union[Generator,RandomState]],
+            rng: Optional[Union[Generator,RandomState]] = None,
             **kwargs: dict
         ) -> None:
         """
