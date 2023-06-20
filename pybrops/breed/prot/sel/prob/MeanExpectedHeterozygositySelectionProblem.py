@@ -25,114 +25,11 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class MeanExpectedHeterozygositySelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class MeanExpectedHeterozygositySelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for Mean Expected Heterozygosity Selection Problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            C: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for MeanExpectedHeterozygositySelectionProblem
-
-        Parameters
-        ----------
-        C : numpy.ndarray
-            An upper triangle matrix of shape (n,n) resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(MeanExpectedHeterozygositySelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.C = C
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     @property
@@ -156,6 +53,7 @@ class MeanExpectedHeterozygositySelectionProblem(SelectionProblem,metaclass=ABCM
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_gmat(
             cls,
             gmat: GenotypeMatrix,
@@ -177,46 +75,10 @@ class MeanExpectedHeterozygositySelectionProblem(SelectionProblem,metaclass=ABCM
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "MeanExpectedHeterozygositySelectionProblem":
-        # calculate coancestry
-        G = cmatfcty.from_gmat(gmat)
+        ) -> "MeanExpectedHeterozygositySelectionProblemMixin":
+        raise NotImplementedError("class method is abstract")
 
-        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
-        # if we are unable to fix, then raise value error
-        if not G.apply_jitter():
-            raise ValueError(
-                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
-                "    This could be caused by lack of genetic diversity.\n"
-            )
-
-        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
-        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
-
-        # construct class
-        out = cls(
-            C = C,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class MeanExpectedHeterozygositySubsetSelectionProblem(SubsetSelectionProblem,MeanExpectedHeterozygositySelectionProblem):
+class MeanExpectedHeterozygositySubsetSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in subset search spaces.
     """
@@ -305,7 +167,6 @@ class MeanExpectedHeterozygositySubsetSelectionProblem(SubsetSelectionProblem,Me
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygositySubsetSelectionProblem, self).__init__(
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -369,7 +230,69 @@ class MeanExpectedHeterozygositySubsetSelectionProblem(SubsetSelectionProblem,Me
 
         return out
 
-class MeanExpectedHeterozygosityRealSelectionProblem(RealSelectionProblem,MeanExpectedHeterozygositySelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_gmat(
+            cls,
+            gmat: GenotypeMatrix,
+            cmatfcty: CoancestryMatrixFactory,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "MeanExpectedHeterozygositySubsetSelectionProblem":
+        # calculate coancestry
+        G = cmatfcty.from_gmat(gmat)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+
+        # construct class
+        out = cls(
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class MeanExpectedHeterozygosityRealSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,RealSelectionProblem):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in real search spaces.
     """
@@ -458,7 +381,6 @@ class MeanExpectedHeterozygosityRealSelectionProblem(RealSelectionProblem,MeanEx
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityRealSelectionProblem, self).__init__(
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -522,7 +444,69 @@ class MeanExpectedHeterozygosityRealSelectionProblem(RealSelectionProblem,MeanEx
 
         return out
 
-class MeanExpectedHeterozygosityIntegerSelectionProblem(IntegerSelectionProblem,MeanExpectedHeterozygositySelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_gmat(
+            cls,
+            gmat: GenotypeMatrix,
+            cmatfcty: CoancestryMatrixFactory,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "MeanExpectedHeterozygosityRealSelectionProblem":
+        # calculate coancestry
+        G = cmatfcty.from_gmat(gmat)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+
+        # construct class
+        out = cls(
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class MeanExpectedHeterozygosityIntegerSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """
@@ -611,7 +595,6 @@ class MeanExpectedHeterozygosityIntegerSelectionProblem(IntegerSelectionProblem,
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityIntegerSelectionProblem, self).__init__(
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -673,7 +656,69 @@ class MeanExpectedHeterozygosityIntegerSelectionProblem(IntegerSelectionProblem,
 
         return out
 
-class MeanExpectedHeterozygosityBinarySelectionProblem(BinarySelectionProblem,MeanExpectedHeterozygositySelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_gmat(
+            cls,
+            gmat: GenotypeMatrix,
+            cmatfcty: CoancestryMatrixFactory,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "MeanExpectedHeterozygosityIntegerSelectionProblem":
+        # calculate coancestry
+        G = cmatfcty.from_gmat(gmat)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+
+        # construct class
+        out = cls(
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class MeanExpectedHeterozygosityBinarySelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """
@@ -762,7 +807,6 @@ class MeanExpectedHeterozygosityBinarySelectionProblem(BinarySelectionProblem,Me
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(MeanExpectedHeterozygosityBinarySelectionProblem, self).__init__(
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -824,3 +868,64 @@ class MeanExpectedHeterozygosityBinarySelectionProblem(BinarySelectionProblem,Me
 
         return out
 
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_gmat(
+            cls,
+            gmat: GenotypeMatrix,
+            cmatfcty: CoancestryMatrixFactory,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "MeanExpectedHeterozygosityBinarySelectionProblem":
+        # calculate coancestry
+        G = cmatfcty.from_gmat(gmat)
+
+        # to ensure we're able to perform cholesky decomposition, apply jitter if needed.
+        # if we are unable to fix, then raise value error
+        if not G.apply_jitter():
+            raise ValueError(
+                "Unable to construct objective function: Kinship matrix is not positive definite.\n"+
+                "    This could be caused by lack of genetic diversity.\n"
+            )
+
+        K = G.mat_asformat("kinship")       # convert G to (1/2)G (kinship analogue): (n,n)
+        C = numpy.linalg.cholesky(K).T      # cholesky decomposition of K matrix: (n,n)
+
+        # construct class
+        out = cls(
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out

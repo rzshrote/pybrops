@@ -9,7 +9,7 @@ __all__ = [
     "ExpectedMaximumBreedingValueBinarySelectionProblem"
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 import numpy
@@ -17,7 +17,6 @@ from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_Mati
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
@@ -27,114 +26,11 @@ from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class ExpectedMaximumBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class to implement properties common to EMBV selection problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            embv: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for ExpectedMaximumBreedingValueSelectionProblem
-
-        Parameters
-        ----------
-        embv : numpy.ndarray
-            An expected maximum breeding value matrix of shape ``(s,t)``.
-
-            Where:
-
-            - ``s`` is the number of cross candidates.
-            - ``t`` is the number of traits.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(ExpectedMaximumBreedingValueSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.embv = embv
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
 
@@ -199,7 +95,7 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
         ) -> numpy.ndarray:
         # calculate cross map for our genotype matrix
         # (s,d)
-        xmap = ExpectedMaximumBreedingValueSelectionProblem._calc_xmap(
+        xmap = ExpectedMaximumBreedingValueSelectionProblemMixin._calc_xmap(
             pgmat.ntaxa,
             nparent,
             unique_parents
@@ -244,74 +140,7 @@ class ExpectedMaximumBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
 
         return embv
 
-    ############################## Class Methods ###############################
-    @classmethod
-    def from_pgmat_gpmod(
-            cls,
-            nparent: Integral,
-            ncross: Integral,
-            nprogeny: Integral,
-            nrep: Integral,
-            unique_parents: bool,
-            pgmat: PhasedGenotypeMatrix, 
-            gpmod: GenomicModel, 
-            mateprot: MatingProtocol,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "ExpectedMaximumBreedingValueSelectionProblem":
-        # check input types
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nrep, "nrep")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        check_is_MatingProtocol(mateprot, "mateprot")
-
-        # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
-
-        # construct class
-        out = cls(
-            embv = embv,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class ExpectedMaximumBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,ExpectedMaximumBreedingValueSelectionProblem):
+class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in subset search spaces.
     """
@@ -425,7 +254,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
     ############################ Object Properties #############################
 
     ##################### EMBV matrix ######################
-    @ExpectedMaximumBreedingValueSelectionProblem.embv.setter
+    @ExpectedMaximumBreedingValueSelectionProblemMixin.embv.setter
     def embv(self, value: numpy.ndarray) -> None:
         """Set expected maximum breeding value matrix."""
         check_is_ndarray(value, "embv")
@@ -474,7 +303,74 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
 
         return out
 
-class ExpectedMaximumBreedingValueRealSelectionProblem(RealSelectionProblem,ExpectedMaximumBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nrep: Integral,
+            unique_parents: bool,
+            pgmat: PhasedGenotypeMatrix, 
+            gpmod: GenomicModel, 
+            mateprot: MatingProtocol,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "ExpectedMaximumBreedingValueSubsetSelectionProblem":
+        # check input types
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nrep, "nrep")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_MatingProtocol(mateprot, "mateprot")
+
+        # calculate estimated maximum breeding values
+        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+
+        # construct class
+        out = cls(
+            embv = embv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in real search spaces.
     """
@@ -630,7 +526,74 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(RealSelectionProblem,Expe
 
         return out
 
-class ExpectedMaximumBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,ExpectedMaximumBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nrep: Integral,
+            unique_parents: bool,
+            pgmat: PhasedGenotypeMatrix, 
+            gpmod: GenomicModel, 
+            mateprot: MatingProtocol,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "ExpectedMaximumBreedingValueRealSelectionProblem":
+        # check input types
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nrep, "nrep")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_MatingProtocol(mateprot, "mateprot")
+
+        # calculate estimated maximum breeding values
+        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+
+        # construct class
+        out = cls(
+            embv = embv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in integer search spaces.
     """
@@ -786,7 +749,74 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(IntegerSelectionProble
 
         return out
 
-class ExpectedMaximumBreedingValueBinarySelectionProblem(BinarySelectionProblem,ExpectedMaximumBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nrep: Integral,
+            unique_parents: bool,
+            pgmat: PhasedGenotypeMatrix, 
+            gpmod: GenomicModel, 
+            mateprot: MatingProtocol,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "ExpectedMaximumBreedingValueIntegerSelectionProblem":
+        # check input types
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nrep, "nrep")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_MatingProtocol(mateprot, "mateprot")
+
+        # calculate estimated maximum breeding values
+        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+
+        # construct class
+        out = cls(
+            embv = embv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class ExpectedMaximumBreedingValueBinarySelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in binary search spaces.
     """
@@ -939,5 +969,72 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(BinarySelectionProblem,
         # CGS calculation explanation
         # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
         out = -contrib.dot(self._embv)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral,
+            ncross: Integral,
+            nprogeny: Integral,
+            nrep: Integral,
+            unique_parents: bool,
+            pgmat: PhasedGenotypeMatrix, 
+            gpmod: GenomicModel, 
+            mateprot: MatingProtocol,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "ExpectedMaximumBreedingValueBinarySelectionProblem":
+        # check input types
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nrep, "nrep")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_MatingProtocol(mateprot, "mateprot")
+
+        # calculate estimated maximum breeding values
+        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+
+        # construct class
+        out = cls(
+            embv = embv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out

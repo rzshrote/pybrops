@@ -7,10 +7,10 @@ from numbers import Integral, Real
 from typing import Callable, Optional, Union
 import numpy
 import scipy.stats
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
+from pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem import IntegerMateSelectionProblem
+from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
@@ -297,6 +297,7 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -314,7 +315,7 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
 
         return out
 
-class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetSelectionProblem):
+class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
     """
@@ -327,6 +328,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -400,14 +402,14 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (SubsetMateSelectionProblem) constructor.
         """
         super(UsefulnessCriterionSubsetSelectionProblem, self).__init__(
-            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -477,7 +479,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
 
         return out
 
-class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealSelectionProblem):
+class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in real search spaces.
     """
@@ -490,6 +492,7 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -563,14 +566,14 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (RealMateSelectionProblem) constructor.
         """
         super(UsefulnessCriterionRealSelectionProblem, self).__init__(
-            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -633,7 +636,7 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
 
         return out
 
-class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionProblemMixin,IntegerSelectionProblem):
+class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionProblemMixin,IntegerMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in integer search spaces.
     """
@@ -646,6 +649,7 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -719,14 +723,14 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (IntegerMateSelectionProblem) constructor.
         """
         super(UsefulnessCriterionIntegerSelectionProblem, self).__init__(
-            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -789,7 +793,7 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
 
         return out
 
-class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinarySelectionProblem):
+class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinaryMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
     """
@@ -802,6 +806,7 @@ class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProb
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -875,14 +880,14 @@ class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProb
             Keyword arguments for the latent space to equality constraint violation space transformation function.
             If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
+            Additional keyword arguments passed to the parent class (BinaryMateSelectionProblem) constructor.
         """
         super(UsefulnessCriterionBinarySelectionProblem, self).__init__(
-            ucmat = ucmat,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,

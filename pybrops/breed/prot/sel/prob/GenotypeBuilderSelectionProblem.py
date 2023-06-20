@@ -6,14 +6,11 @@ __all__ = [
     "GenotypeBuilderSubsetSelectionProblem"
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
-# from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-# from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -24,111 +21,11 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenotypeBuilderSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class GenotypeBuilderSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class to implement properties common to GB."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            haplomat: numpy.ndarray,
-            nbestfndr: Integral,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for GenomicEstimatedBreedingValueSelectionProblem.
-        
-        Parameters
-        ----------
-        gebv : numpy.ndarray
-            An array of shape (n,t) containing genomic estimated breeding values.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(GenotypeBuilderSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # assignments
-        self.haplomat = haplomat
-        self.nbestfndr = nbestfndr
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
 
@@ -259,7 +156,7 @@ class GenotypeBuilderSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "GenotypeBuilderSelectionProblem":
+        ) -> "GenotypeBuilderSelectionProblemMixin":
         # calculate estimated breeding values and relationships
         haplomat = cls._calc_haplomat(pgmat, gpmod, nhaploblk)
 
@@ -288,7 +185,7 @@ class GenotypeBuilderSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
         return out
 
-class GenotypeBuilderSubsetSelectionProblem(SubsetSelectionProblem,GenotypeBuilderSelectionProblem):
+class GenotypeBuilderSubsetSelectionProblem(GenotypeBuilderSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing Genotype Builder (GB) Selection problems in subset search spaces.
     """
@@ -380,8 +277,6 @@ class GenotypeBuilderSubsetSelectionProblem(SubsetSelectionProblem,GenotypeBuild
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GenotypeBuilderSubsetSelectionProblem, self).__init__(
-            haplomat = haplomat,
-            nbestfndr = nbestfndr,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -455,24 +350,3 @@ class GenotypeBuilderSubsetSelectionProblem(SubsetSelectionProblem,GenotypeBuild
         out = -(self.ploidy / self.nbestfndr) * bestphase[st:sp,:,:].sum((0,1))
 
         return out
-
-# need better interpretation for the Real scenario
-# class GenotypeBuilderRealSelectionProblem(RealSelectionProblem,GBSProblemProperties):
-#     """
-#     Class representing Genotype Builder (GB) Selectionproblems in real search spaces.
-#     """
-#     pass
-
-# need better interpretation for the Integer scenario
-# class GenotypeBuilderIntegerSelectionProblem(IntegerSelectionProblem,GBSProblemProperties):
-#     """
-#     Class representing Genotype Builder (GB) Selectionproblems in integer search spaces.
-#     """
-#     pass
-
-# need better interpretation for the Binary scenario
-# class GenotypeBuilderBinarySelectionProblem(BinarySelectionProblem,GBSProblemProperties):
-#     """
-#     Class representing Genotype Builder (GB) Selectionproblems in binary search spaces.
-#     """
-#     pass

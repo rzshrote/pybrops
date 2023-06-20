@@ -17,7 +17,6 @@ import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_is_square, check_ndarray_is_triu, check_ndarray_ndim
@@ -26,129 +25,11 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class OptimalContributionSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for Optimal Contribution Selection Problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            ebv: numpy.ndarray,
-            C: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for OptimalContributionSelectionProblem.
-        
-        Parameters
-        ----------
-        ebv : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. 
-            If you are using a penalization transformation function, preferably
-            these breeding values are centered and scaled to make the penalies 
-            less extreme.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``t`` is the number of traits.
-        C : numpy.ndarray
-            An upper triangle matrix of shape ``(n,n)`` resulting from a Cholesky 
-            decomposition of a kinship matrix: K = C'C.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        # call SubsetSelectionProblem constructor
-        super(OptimalContributionSelectionProblem, self).__init__(
-            ebv = ebv,
-            C = C,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.ebv = ebv
-        self.C = C
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     @property
@@ -238,6 +119,7 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_bvmat_gmat(
             cls,
             bvmat: BreedingValueMatrix,
@@ -261,37 +143,10 @@ class OptimalContributionSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "OptimalContributionSelectionProblem":
-        # calculate estimated breeding values and relationships
-        ebv = cls._calc_ebv(bvmat, descale)
-        C = cls._calc_C(gmat, cmatfcty)
+        ) -> "OptimalContributionSelectionProblemMixin":
+        raise NotImplementedError("class method is abstract")
 
-        # construct class
-        out = cls(
-            ebv = ebv,
-            C = C,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalContributionSelectionProblem):
+class OptimalContributionSubsetSelectionProblem(OptimalContributionSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing an Optimal Contribution Selection Problem for subset
     search spaces.
@@ -393,8 +248,6 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionSubsetSelectionProblem, self).__init__(
-            ebv = ebv,
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -480,7 +333,62 @@ class OptimalContributionSubsetSelectionProblem(SubsetSelectionProblem,OptimalCo
         # return (1+t,)
         return out
 
-class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContributionSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat_gmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            gmat: GenotypeMatrix, 
+            cmatfcty: CoancestryMatrixFactory,
+            descale: bool,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "OptimalContributionSubsetSelectionProblem":
+        # calculate estimated breeding values and relationships
+        ebv = cls._calc_ebv(bvmat, descale)
+        C = cls._calc_C(gmat, cmatfcty)
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class OptimalContributionRealSelectionProblem(OptimalContributionSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing an Optimal Contribution Selection Problem for real
     search spaces.
@@ -582,8 +490,6 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionRealSelectionProblem, self).__init__(
-            ebv = ebv,
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -666,7 +572,62 @@ class OptimalContributionRealSelectionProblem(RealSelectionProblem,OptimalContri
         # return (1+t,)
         return out
 
-class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,OptimalContributionSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat_gmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            gmat: GenotypeMatrix, 
+            cmatfcty: CoancestryMatrixFactory,
+            descale: bool,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "OptimalContributionRealSelectionProblem":
+        # calculate estimated breeding values and relationships
+        ebv = cls._calc_ebv(bvmat, descale)
+        C = cls._calc_C(gmat, cmatfcty)
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class OptimalContributionIntegerSelectionProblem(OptimalContributionSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing an Optimal Contribution Selection Problem for integer
     search spaces.
@@ -768,8 +729,6 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionIntegerSelectionProblem, self).__init__(
-            ebv = ebv,
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -852,7 +811,62 @@ class OptimalContributionIntegerSelectionProblem(IntegerSelectionProblem,Optimal
         # return (1+t,)
         return out
 
-class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalContributionSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat_gmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            gmat: GenotypeMatrix, 
+            cmatfcty: CoancestryMatrixFactory,
+            descale: bool,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "OptimalContributionIntegerSelectionProblem":
+        # calculate estimated breeding values and relationships
+        ebv = cls._calc_ebv(bvmat, descale)
+        C = cls._calc_C(gmat, cmatfcty)
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class OptimalContributionBinarySelectionProblem(OptimalContributionSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing an Optimal Contribution Selection Problem for integer
     search spaces.
@@ -954,8 +968,6 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         """
         # call SubsetSelectionProblem constructor
         super(OptimalContributionBinarySelectionProblem, self).__init__(
-            ebv = ebv,
-            C = C,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -1036,4 +1048,59 @@ class OptimalContributionBinarySelectionProblem(BinarySelectionProblem,OptimalCo
         out = numpy.concatenate([mgc,gain])
 
         # return (1+t,)
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat_gmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            gmat: GenotypeMatrix, 
+            cmatfcty: CoancestryMatrixFactory,
+            descale: bool,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "OptimalContributionBinarySelectionProblem":
+        # calculate estimated breeding values and relationships
+        ebv = cls._calc_ebv(bvmat, descale)
+        C = cls._calc_C(gmat, cmatfcty)
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            C = C,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
         return out

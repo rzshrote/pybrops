@@ -23,154 +23,11 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class MultiObjectiveGenomicSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class to implement properties common to MOGS."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            geno: numpy.ndarray,
-            ploidy: Integral,
-            mkrwt: numpy.ndarray,
-            tfreq: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for MultiObjectiveSelectionProblem.
-        
-        Parameters
-        ----------
-        geno : numpy.ndarray
-            A genotype matrix of shape ``(n,p)`` representing only biallelic
-            loci. One of the two alleles at a locus is coded using a ``1``. The
-            other allele is coded as a ``0``. ``mat`` holds the counts of the
-            allele coded by ``1``.
-
-            Where:
-
-            - ``n`` is the number of individuals.
-            - ``p`` is the number of markers.
-
-            Example::
-
-                # matrix of shape (n = 3, p = 4)
-                geno = numpy.array([[0,2,1,0],
-                                    [2,2,1,1],
-                                    [0,1,0,2]])
-        ploidy : Integral
-            Number of phases that the genotype matrix ``mat`` represents.
-        tfreq : numpy.ndarray
-            A target allele frequency matrix of shape ``(p,t)``.
-
-            Where:
-
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
-
-            Example::
-
-                tfreq = numpy.array([0.2, 0.6, 0.7, 0.5])
-        mkrwt : numpy.ndarray
-            A marker weight coefficients matrix of shape ``(p,t)``.
-
-            Where:
-
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
-
-            Remarks:
-
-            - All values in ``mkrwt`` must be non-negative.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(MultiObjectiveGenomicSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # assignments
-        self.geno = geno
-        self.ploidy = ploidy
-        self.mkrwt = mkrwt
-        self.tfreq = tfreq
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     @property
@@ -277,6 +134,7 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
     
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_gmat_gpmod(
             cls,
             gmat: GenotypeMatrix,
@@ -300,41 +158,10 @@ class MultiObjectiveGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "MultiObjectiveGenomicSelectionProblem":
-        # extract genotype matrix
-        geno = gmat.mat_asformat("{0,1,2}")
-        ploidy = gmat.ploidy
-        mkrwt = cls._calc_mkrwt(weight, gpmod.u_a)
-        tfreq = cls._calc_tfreq(target, gpmod.u_a)
+        ) -> "MultiObjectiveGenomicSelectionProblemMixin":
+        raise NotImplementedError("class method is abstract")
 
-        # construct class
-        out = cls(
-            geno = geno,
-            ploidy = ploidy,
-            mkrwt = mkrwt,
-            tfreq = tfreq,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class MultiObjectiveGenomicSubsetSelectionProblem(SubsetSelectionProblem,MultiObjectiveGenomicSelectionProblem):
+class MultiObjectiveGenomicSubsetSelectionProblem(MultiObjectiveGenomicSelectionProblemMixin,SubsetSelectionProblem):
     """
     docstring for SubsetMultiObjectiveSelectionProblem.
     """
@@ -460,10 +287,6 @@ class MultiObjectiveGenomicSubsetSelectionProblem(SubsetSelectionProblem,MultiOb
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(MultiObjectiveGenomicSubsetSelectionProblem, self).__init__(
-            geno = geno,
-            ploidy = ploidy,
-            mkrwt = mkrwt,
-            tfreq = tfreq,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -598,23 +421,61 @@ class MultiObjectiveGenomicSubsetSelectionProblem(SubsetSelectionProblem,MultiOb
 
         return out
 
-# need better interpretation of the Real scenario
-# class MultiObjectiveGenomicRealSelectionProblem(RealSelectionProblem,MOGSSProblemProperties):
-#     """
-#     docstring for MultiObjectiveGenomicRealSelectionProblem.
-#     """
-#     pass
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_gmat_gpmod(
+            cls,
+            gmat: GenotypeMatrix,
+            weight: Union[numpy.ndarray,Callable],
+            target: Union[numpy.ndarray,Callable],
+            gpmod: AdditiveLinearGenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "MultiObjectiveGenomicSubsetSelectionProblem":
+        # extract genotype matrix
+        geno = gmat.mat_asformat("{0,1,2}")
+        ploidy = gmat.ploidy
+        mkrwt = cls._calc_mkrwt(weight, gpmod.u_a)
+        tfreq = cls._calc_tfreq(target, gpmod.u_a)
 
-# need better interpretation of the Integer scenario
-# class MultiObjectiveGenomicIntegerSelectionProblem(IntegerSelectionProblem,MOGSSProblemProperties):
-#     """
-#     docstring for MultiObjectiveGenomicIntegerSelectionProblem.
-#     """
-#     pass
+        # construct class
+        out = cls(
+            geno = geno,
+            ploidy = ploidy,
+            mkrwt = mkrwt,
+            tfreq = tfreq,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
-# need better interpretation of the Binary scenario
-# class MultiObjectiveGenomicBinarySelectionProblem(BinarySelectionProblem,MOGSSProblemProperties):
-#     """
-#     docstring for MultiObjectiveGenomicBinarySelectionProblem.
-#     """
-#     pass
+        return out

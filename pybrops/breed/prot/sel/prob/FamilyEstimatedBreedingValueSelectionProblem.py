@@ -17,122 +17,17 @@ import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
-from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class FamilyEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class FamilyEstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for EBV selection problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            ebv: numpy.ndarray,
-            familyid: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for FamilyEstimatedBreedingValueSelectionProblem.
-        
-        Parameters
-        ----------
-        ebv : numpy.ndarray
-            An array of shape (n,t) containing estimated breeding values.
-        familyid : numpy.ndarray
-            An array of shape (n,) containing family ID assignments to each individual in ``ebv``.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(FamilyEstimatedBreedingValueSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # assignments
-        self.ebv = ebv
-        self.familyid = familyid
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     
@@ -182,6 +77,7 @@ class FamilyEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
@@ -202,37 +98,10 @@ class FamilyEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=AB
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "FamilyEstimatedBreedingValueSelectionProblem":
-        # extract EBVs for all individuals
-        ebv = bvmat.mat
-        familyid = bvmat.taxa_grp
+        ) -> "FamilyEstimatedBreedingValueSelectionProblemMixin":
+        raise NotImplementedError("class method is abstract")
 
-        # construct class
-        out = cls(
-            ebv = ebv,
-            familyid = familyid,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,FamilyEstimatedBreedingValueSelectionProblem):
+class FamilyEstimatedBreedingValueSubsetSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
@@ -317,8 +186,6 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
-            ebv = ebv,
-            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -344,7 +211,7 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
     ############################ Object Properties #############################
     
     ##################### GEBV matrix ######################
-    @FamilyEstimatedBreedingValueSelectionProblem.ebv.setter
+    @FamilyEstimatedBreedingValueSelectionProblemMixin.ebv.setter
     def ebv(self, value: numpy.ndarray) -> None:
         """Set genomic estimated breeding values."""
         check_is_ndarray(value, "ebv")
@@ -353,7 +220,7 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
         check_ndarray_axis_len_gteq(value, "ebv", 0, self.ndecn)
         self._ebv = value
 
-    @FamilyEstimatedBreedingValueSelectionProblem.familyid.setter
+    @FamilyEstimatedBreedingValueSelectionProblemMixin.familyid.setter
     def familyid(self, value: numpy.ndarray) -> None:
         """Set familyid."""
         check_is_ndarray(value, "familyid")
@@ -414,7 +281,59 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,
 
         return out
 
-class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,FamilyEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "FamilyEstimatedBreedingValueSubsetSelectionProblem":
+        # extract EBVs for all individuals
+        ebv = bvmat.mat
+        familyid = bvmat.taxa_grp
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            familyid = familyid,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class FamilyEstimatedBreedingValueRealSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
@@ -499,8 +418,6 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Fami
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueRealSelectionProblem, self).__init__(
-            ebv = ebv,
-            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -574,7 +491,59 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,Fami
 
         return out
 
-class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,FamilyEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "FamilyEstimatedBreedingValueRealSelectionProblem":
+        # extract EBVs for all individuals
+        ebv = bvmat.mat
+        familyid = bvmat.taxa_grp
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            familyid = familyid,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class FamilyEstimatedBreedingValueIntegerSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
     """
@@ -659,8 +628,6 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProble
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
-            ebv = ebv,
-            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -734,7 +701,59 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProble
 
         return out
 
-class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,FamilyEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "FamilyEstimatedBreedingValueIntegerSelectionProblem":
+        # extract EBVs for all individuals
+        ebv = bvmat.mat
+        familyid = bvmat.taxa_grp
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            familyid = familyid,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class FamilyEstimatedBreedingValueBinarySelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
     """
@@ -819,8 +838,6 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(FamilyEstimatedBreedingValueBinarySelectionProblem, self).__init__(
-            ebv = ebv,
-            familyid = familyid,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -891,5 +908,57 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,
 
         # create output (t+f,)
         out = numpy.concatenate([mebv, famcontrib])
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_bvmat(
+            cls,
+            bvmat: BreedingValueMatrix,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "FamilyEstimatedBreedingValueBinarySelectionProblem":
+        # extract EBVs for all individuals
+        ebv = bvmat.mat
+        familyid = bvmat.taxa_grp
+
+        # construct class
+        out = cls(
+            ebv = ebv,
+            familyid = familyid,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out

@@ -9,75 +9,24 @@ __all__ = [
     "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem"
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for gwGEBV selection problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            gwgebv: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Number,None],
-            decn_space_upper: Union[numpy.ndarray,Number,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for SubsetGeneralizedWeightedGenomicSelectionProblem.
-        
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        super(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # make assignments
-        self.gwgebv = gwgebv
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     @property
@@ -97,112 +46,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem(Selection
         check_ndarray_ndim(value, "wgebv", 2)
         self._gwgebv = value
 
-    ############################## Class Methods ###############################
-    @classmethod
-    def from_numpy(
-            cls,
-            Z_a: numpy.ndarray,
-            u_a: numpy.ndarray,
-            fafreq: numpy.ndarray,
-            alpha: Real,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem":
-        # calculate wGEBVs
-        # (n,p) @ (p,t) -> (n,t)
-        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
-
-        # construct problem
-        out = cls(
-            gwgebv = gwgebv,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-    @classmethod
-    def from_gmat_algpmod(
-            cls,
-            gmat: GenotypeMatrix,
-            algpmod: AdditiveLinearGenomicModel,
-            alpha: Real,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem":
-        # construct class
-        out = cls.from_numpy(
-            Z_a = gmat.mat,
-            u_a = algpmod.u_a,
-            fafreq = algpmod.fafreq(gmat),
-            alpha = alpha,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(SubsetSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in subset search spaces.
     """
@@ -238,7 +82,6 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Sub
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
-            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -302,7 +145,112 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Sub
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            Z_a: numpy.ndarray,
+            u_a: numpy.ndarray,
+            fafreq: numpy.ndarray,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem":
+        # calculate wGEBVs
+        # (n,p) @ (p,t) -> (n,t)
+        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+
+        # construct problem
+        out = cls(
+            gwgebv = gwgebv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_gmat_algpmod(
+            cls,
+            gmat: GenotypeMatrix,
+            algpmod: AdditiveLinearGenomicModel,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem":
+        # construct class
+        out = cls.from_numpy(
+            Z_a = gmat.mat,
+            u_a = algpmod.u_a,
+            fafreq = algpmod.fafreq(gmat),
+            alpha = alpha,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in real search spaces.
     """
@@ -338,7 +286,6 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealS
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, self).__init__(
-            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -406,7 +353,112 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(RealS
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(IntegerSelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            Z_a: numpy.ndarray,
+            u_a: numpy.ndarray,
+            fafreq: numpy.ndarray,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem":
+        # calculate wGEBVs
+        # (n,p) @ (p,t) -> (n,t)
+        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+
+        # construct problem
+        out = cls(
+            gwgebv = gwgebv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_gmat_algpmod(
+            cls,
+            gmat: GenotypeMatrix,
+            algpmod: AdditiveLinearGenomicModel,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem":
+        # construct class
+        out = cls.from_numpy(
+            Z_a = gmat.mat,
+            u_a = algpmod.u_a,
+            fafreq = algpmod.fafreq(gmat),
+            alpha = alpha,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in integer search spaces.
     """
@@ -442,7 +494,6 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(In
             Additional keyword arguments used for cooperative inheritance.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
-            gwgebv = gwgebv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -510,7 +561,112 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(In
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(BinarySelectionProblem,GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            Z_a: numpy.ndarray,
+            u_a: numpy.ndarray,
+            fafreq: numpy.ndarray,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem":
+        # calculate wGEBVs
+        # (n,p) @ (p,t) -> (n,t)
+        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+
+        # construct problem
+        out = cls(
+            gwgebv = gwgebv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_gmat_algpmod(
+            cls,
+            gmat: GenotypeMatrix,
+            algpmod: AdditiveLinearGenomicModel,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem":
+        # construct class
+        out = cls.from_numpy(
+            Z_a = gmat.mat,
+            u_a = algpmod.u_a,
+            fafreq = algpmod.fafreq(gmat),
+            alpha = alpha,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in binary search spaces.
     """
@@ -611,5 +767,110 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(Bin
         # CGS calculation explanation
         # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
         out = -contrib.dot(self._gwgebv)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            Z_a: numpy.ndarray,
+            u_a: numpy.ndarray,
+            fafreq: numpy.ndarray,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem":
+        # calculate wGEBVs
+        # (n,p) @ (p,t) -> (n,t)
+        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+
+        # construct problem
+        out = cls(
+            gwgebv = gwgebv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_gmat_algpmod(
+            cls,
+            gmat: GenotypeMatrix,
+            algpmod: AdditiveLinearGenomicModel,
+            alpha: Real,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem":
+        # construct class
+        out = cls.from_numpy(
+            Z_a = gmat.mat,
+            u_a = algpmod.u_a,
+            fafreq = algpmod.fafreq(gmat),
+            alpha = alpha,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out

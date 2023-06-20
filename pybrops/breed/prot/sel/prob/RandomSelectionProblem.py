@@ -24,109 +24,11 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
 
 
-class RandomSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class RandomSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for random selection problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            rbv: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for RandomSubsetSelectionProblem.
-        
-        Parameters
-        ----------
-        rbv : numpy.ndarray
-            An array of shape (n,t) containing random breeding values.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(RandomSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # assignments
-        self.rbv = rbv
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     
@@ -153,6 +55,7 @@ class RandomSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_object(
             cls,
             ntaxa: Integral,
@@ -174,37 +77,10 @@ class RandomSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "RandomSelectionProblem":
-        # create random breeding values following the multi-variate normal distribution
-        rbv_mean = numpy.repeat(0.0, ntrait)
-        rbv_cov = numpy.identity(ntrait, dtype=float)
-        rbv = global_prng.multivariate_normal(rbv_mean, rbv_cov, (ntaxa,))
+        ) -> "RandomSelectionProblemMixin":
+        raise NotImplementedError("class method is abstract")
 
-        # construct object
-        out = cls(
-            rbv = rbv,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class RandomSubsetSelectionProblem(SubsetSelectionProblem,RandomSelectionProblem):
+class RandomSubsetSelectionProblem(RandomSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing selection on Random Breeding Values (RBVs) in subset search spaces.
     """
@@ -288,7 +164,6 @@ class RandomSubsetSelectionProblem(SubsetSelectionProblem,RandomSelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomSubsetSelectionProblem, self).__init__(
-            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -313,7 +188,7 @@ class RandomSubsetSelectionProblem(SubsetSelectionProblem,RandomSelectionProblem
     ############################ Object Properties #############################
     
     ##################### GEBV matrix ######################
-    @RandomSelectionProblem.rbv.setter
+    @RandomSelectionProblemMixin.rbv.setter
     def rbv(self, value: numpy.ndarray) -> None:
         """Set genomic estimated breeding values."""
         check_is_ndarray(value, "rbv")
@@ -361,7 +236,60 @@ class RandomSubsetSelectionProblem(SubsetSelectionProblem,RandomSelectionProblem
 
         return out
 
-class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_object(
+            cls,
+            ntaxa: Integral,
+            ntrait: Integral,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "RandomSubsetSelectionProblem":
+        # create random breeding values following the multi-variate normal distribution
+        rbv_mean = numpy.repeat(0.0, ntrait)
+        rbv_cov = numpy.identity(ntrait, dtype=float)
+        rbv = global_prng.multivariate_normal(rbv_mean, rbv_cov, (ntaxa,))
+
+        # construct object
+        out = cls(
+            rbv = rbv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class RandomRealSelectionProblem(RandomSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing selection on Random Breeding Values (RBVs) in real search spaces.
     """
@@ -445,7 +373,6 @@ class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomRealSelectionProblem, self).__init__(
-            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -511,7 +438,60 @@ class RandomRealSelectionProblem(RealSelectionProblem,RandomSelectionProblem):
 
         return out
 
-class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_object(
+            cls,
+            ntaxa: Integral,
+            ntrait: Integral,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "RandomRealSelectionProblem":
+        # create random breeding values following the multi-variate normal distribution
+        rbv_mean = numpy.repeat(0.0, ntrait)
+        rbv_cov = numpy.identity(ntrait, dtype=float)
+        rbv = global_prng.multivariate_normal(rbv_mean, rbv_cov, (ntaxa,))
+
+        # construct object
+        out = cls(
+            rbv = rbv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class RandomIntegerSelectionProblem(RandomSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing selection on Random Breeding Values (RBVs) in integer search spaces.
     """
@@ -595,7 +575,6 @@ class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProbl
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomIntegerSelectionProblem, self).__init__(
-            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -661,7 +640,60 @@ class RandomIntegerSelectionProblem(IntegerSelectionProblem,RandomSelectionProbl
 
         return out
 
-class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_object(
+            cls,
+            ntaxa: Integral,
+            ntrait: Integral,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "RandomIntegerSelectionProblem":
+        # create random breeding values following the multi-variate normal distribution
+        rbv_mean = numpy.repeat(0.0, ntrait)
+        rbv_cov = numpy.identity(ntrait, dtype=float)
+        rbv = global_prng.multivariate_normal(rbv_mean, rbv_cov, (ntaxa,))
+
+        # construct object
+        out = cls(
+            rbv = rbv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class RandomBinarySelectionProblem(RandomSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing selection on Random Breeding Values (RBVs) in binary search spaces.
     """
@@ -745,7 +777,6 @@ class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(RandomBinarySelectionProblem, self).__init__(
-            rbv = rbv,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -808,5 +839,58 @@ class RandomBinarySelectionProblem(BinarySelectionProblem,RandomSelectionProblem
         # CGS calculation explanation
         # Step 1: (n,) . (n,t) -> (t,)  # take dot product with contributions
         out = -contrib.dot(self._rbv)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_object(
+            cls,
+            ntaxa: Integral,
+            ntrait: Integral,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "RandomBinarySelectionProblem":
+        # create random breeding values following the multi-variate normal distribution
+        rbv_mean = numpy.repeat(0.0, ntrait)
+        rbv_cov = numpy.identity(ntrait, dtype=float)
+        rbv = global_prng.multivariate_normal(rbv_mean, rbv_cov, (ntaxa,))
+
+        # construct object
+        out = cls(
+            rbv = rbv,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out

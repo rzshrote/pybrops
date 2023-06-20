@@ -18,124 +18,15 @@ from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionPr
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class L1NormGenomicSelectionProblemMixin(metaclass=ABCMeta):
     """Helper class containing common properties for L1GS problems."""
 
     ########################## Special Object Methods ##########################
-    @abstractmethod
-    def __init__(
-            self,
-            V: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for L1NormGenomicSelectionProblem.
-        
-        Parameters
-        ----------
-        V : numpy.ndarray
-            A matrix of shape ``(t,p,n)`` containing distance values of individuals' 
-            alleles for each trait.
-
-            Where:
-
-            - ``t`` is the number of traits.
-            - ``p`` is the number of markers.
-            - ``n`` is the number of individuals.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
-        """
-        super(L1NormGenomicSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # assignments
-        self.V = V
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
 
@@ -221,6 +112,7 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_numpy(
             cls,
             mkrwt: numpy.ndarray,
@@ -243,7 +135,7 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "L1NormGenomicSelectionProblem":
+        ) -> "L1NormGenomicSelectionProblemMixin":
         """
         Parameters
         ----------
@@ -269,47 +161,9 @@ class L1NormGenomicSelectionProblem(SelectionProblem,metaclass=ABCMeta):
             - ``p`` is the number of markers.
             - ``t`` is the number of traits.
         """
-        # type checks
-        check_is_ndarray(mkrwt, "mkrwt")
-        check_is_ndarray(tafreq, "tafreq")
-        check_is_ndarray(tfreq, "tfreq")
-        
-        # check for dimension compatability
-        if mkrwt.shape[0] != tafreq.shape[1]:
-            raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
-        if mkrwt.shape[0] != tfreq.shape[0]:
-            raise ValueError("marker weight and target allele frequency arrays do not have the same number of markers")
-        if mkrwt.shape[1] != tfreq.shape[1]:
-            raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
+        raise NotImplementedError("class method is abstract")
 
-        # calculate distance tensor
-        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
-
-        # construct class
-        out = cls(
-            V = Vtensor,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class L1NormGenomicSubsetSelectionProblem(SubsetSelectionProblem,L1NormGenomicSelectionProblem):
+class L1NormGenomicSubsetSelectionProblem(L1NormGenomicSelectionProblemMixin,SubsetSelectionProblem):
     """
     Class representing L1-norm Genomic Selection (L1GS) in subset search spaces.
     """
@@ -400,7 +254,6 @@ class L1NormGenomicSubsetSelectionProblem(SubsetSelectionProblem,L1NormGenomicSe
             Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(L1NormGenomicSubsetSelectionProblem, self).__init__(
-            V = V,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -464,7 +317,97 @@ class L1NormGenomicSubsetSelectionProblem(SubsetSelectionProblem,L1NormGenomicSe
 
         return out
 
-class L1NormGenomicRealSelectionProblem(RealSelectionProblem,L1NormGenomicSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            mkrwt: numpy.ndarray,
+            tafreq: numpy.ndarray,
+            tfreq: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "L1NormGenomicSubsetSelectionProblem":
+        """
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        tafreq : numpy.ndarray
+            Taxa allele frequency array of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``p`` is the number of markers.
+        tfreq : numpy.ndarray
+            Target allele frequency array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        """
+        # type checks
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(tafreq, "tafreq")
+        check_is_ndarray(tfreq, "tfreq")
+        
+        # check for dimension compatability
+        if mkrwt.shape[0] != tafreq.shape[1]:
+            raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[0] != tfreq.shape[0]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[1] != tfreq.shape[1]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
+
+        # calculate distance tensor
+        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
+
+        # construct class
+        out = cls(
+            V = Vtensor,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class L1NormGenomicRealSelectionProblem(L1NormGenomicSelectionProblemMixin,RealSelectionProblem):
     """
     Class representing L1-norm Genomic Selection (L1GS) in real search spaces.
     """
@@ -555,7 +498,6 @@ class L1NormGenomicRealSelectionProblem(RealSelectionProblem,L1NormGenomicSelect
             Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(L1NormGenomicRealSelectionProblem, self).__init__(
-            V = V,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -622,7 +564,97 @@ class L1NormGenomicRealSelectionProblem(RealSelectionProblem,L1NormGenomicSelect
 
         return out
 
-class L1NormGenomicIntegerSelectionProblem(IntegerSelectionProblem,L1NormGenomicSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            mkrwt: numpy.ndarray,
+            tafreq: numpy.ndarray,
+            tfreq: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "L1NormGenomicRealSelectionProblem":
+        """
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        tafreq : numpy.ndarray
+            Taxa allele frequency array of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``p`` is the number of markers.
+        tfreq : numpy.ndarray
+            Target allele frequency array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        """
+        # type checks
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(tafreq, "tafreq")
+        check_is_ndarray(tfreq, "tfreq")
+        
+        # check for dimension compatability
+        if mkrwt.shape[0] != tafreq.shape[1]:
+            raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[0] != tfreq.shape[0]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[1] != tfreq.shape[1]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
+
+        # calculate distance tensor
+        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
+
+        # construct class
+        out = cls(
+            V = Vtensor,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class L1NormGenomicIntegerSelectionProblem(L1NormGenomicSelectionProblemMixin,IntegerSelectionProblem):
     """
     Class representing L1-norm Genomic Selection (L1GS) in integer search spaces.
     """
@@ -713,7 +745,6 @@ class L1NormGenomicIntegerSelectionProblem(IntegerSelectionProblem,L1NormGenomic
             Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(L1NormGenomicIntegerSelectionProblem, self).__init__(
-            V = V,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -780,7 +811,97 @@ class L1NormGenomicIntegerSelectionProblem(IntegerSelectionProblem,L1NormGenomic
 
         return out
 
-class L1NormGenomicBinarySelectionProblem(BinarySelectionProblem,L1NormGenomicSelectionProblem):
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            mkrwt: numpy.ndarray,
+            tafreq: numpy.ndarray,
+            tfreq: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "L1NormGenomicIntegerSelectionProblem":
+        """
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        tafreq : numpy.ndarray
+            Taxa allele frequency array of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``p`` is the number of markers.
+        tfreq : numpy.ndarray
+            Target allele frequency array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        """
+        # type checks
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(tafreq, "tafreq")
+        check_is_ndarray(tfreq, "tfreq")
+        
+        # check for dimension compatability
+        if mkrwt.shape[0] != tafreq.shape[1]:
+            raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[0] != tfreq.shape[0]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[1] != tfreq.shape[1]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
+
+        # calculate distance tensor
+        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
+
+        # construct class
+        out = cls(
+            V = Vtensor,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class L1NormGenomicBinarySelectionProblem(L1NormGenomicSelectionProblemMixin,BinarySelectionProblem):
     """
     Class representing L1-norm Genomic Selection (L1GS) in binary search spaces.
     """
@@ -871,7 +992,6 @@ class L1NormGenomicBinarySelectionProblem(BinarySelectionProblem,L1NormGenomicSe
             Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(L1NormGenomicBinarySelectionProblem, self).__init__(
-            V = V,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -935,5 +1055,95 @@ class L1NormGenomicBinarySelectionProblem(BinarySelectionProblem,L1NormGenomicSe
         # | (t,p) | -> (t,p)
         # (t,p).sum(1) -> (t,)
         out = numpy.absolute(self._V.dot(contrib)).sum(1)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_numpy(
+            cls,
+            mkrwt: numpy.ndarray,
+            tafreq: numpy.ndarray,
+            tfreq: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "L1NormGenomicBinarySelectionProblem":
+        """
+        Parameters
+        ----------
+        mkrwt : numpy.ndarray
+            A marker weight array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        tafreq : numpy.ndarray
+            Taxa allele frequency array of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``p`` is the number of markers.
+        tfreq : numpy.ndarray
+            Target allele frequency array of shape ``(p,t)``.
+
+            Where:
+
+            - ``p`` is the number of markers.
+            - ``t`` is the number of traits.
+        """
+        # type checks
+        check_is_ndarray(mkrwt, "mkrwt")
+        check_is_ndarray(tafreq, "tafreq")
+        check_is_ndarray(tfreq, "tfreq")
+        
+        # check for dimension compatability
+        if mkrwt.shape[0] != tafreq.shape[1]:
+            raise ValueError("marker weight and taxa allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[0] != tfreq.shape[0]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of markers")
+        if mkrwt.shape[1] != tfreq.shape[1]:
+            raise ValueError("marker weight and target allele frequency arrays do not have the same number of traits")
+
+        # calculate distance tensor
+        Vtensor = cls._calc_V(mkrwt, tafreq, tfreq)
+
+        # construct class
+        out = cls(
+            V = Vtensor,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out
