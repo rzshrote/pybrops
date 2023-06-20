@@ -139,7 +139,7 @@ class BinaryMateSelectionProtocol(BinarySelectionProtocol,MateSelectionProtocol,
         )
 
         # convert binary solution to binary selection solution
-        # add cross map metadata from problem specification to metadata from BinarySolution
+        # add cross map metadata from problem to metadata from BinarySolution
         out = BinaryMateSelectionSolution(
             ndecn = soln.ndecn,
             decn_space = soln.decn_space,
@@ -241,7 +241,7 @@ class BinaryMateSelectionProtocol(BinarySelectionProtocol,MateSelectionProtocol,
         )
 
         # convert binary solution to binary selection solution
-        # add cross map metadata from problem specification in addition to metadata from BinarySolution
+        # add cross map metadata from problem to metadata from BinarySolution
         out = BinaryMateSelectionSolution(
             ndecn = soln.ndecn,
             decn_space = soln.decn_space,
