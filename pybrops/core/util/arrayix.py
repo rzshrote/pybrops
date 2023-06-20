@@ -6,6 +6,7 @@ __all__ = [
     "sqarrayix", 
     "triuix", 
     "triuix",
+    "xmapix",
     "sliceaxisix"
 ]
 
