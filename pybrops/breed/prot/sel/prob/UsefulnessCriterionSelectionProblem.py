@@ -138,6 +138,7 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
 
     ############################## Class Methods ###############################
     @classmethod
+    @abstractmethod
     def from_pgmat_gpmod_xmap(
             cls,
             nparent: Integral, 
@@ -169,61 +170,10 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "UsefulnessCriterionSelectionProblemMixin":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        check_is_ndarray(xmap, "xmap")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
+        raise NotImplementedError("class method is abstract")
 
     @classmethod
+    @abstractmethod
     def from_pgmat_gpmod(
             cls,
             nparent: Integral, 
@@ -254,66 +204,7 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "UsefulnessCriterionSelectionProblemMixin":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate cross map
-        xmap = cls._calc_xmap(
-            pgmat.ntaxa, 
-            nparent, 
-            unique_parents
-        )
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
+        raise NotImplementedError("class method is abstract")
 
 class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetMateSelectionProblem):
     """
@@ -479,6 +370,186 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
 
         return out
 
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionSubsetSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionSubsetSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
 class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in real search spaces.
@@ -633,6 +704,186 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
         # CGS calculation explanation
         # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
         out = -contrib.dot(self._ucmat)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionRealSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionRealSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
 
         return out
 
@@ -793,6 +1044,186 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
 
         return out
 
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionIntegerSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionIntegerSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
 class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinaryMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
@@ -950,3 +1381,182 @@ class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProb
 
         return out
 
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionBinarySelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionBinarySelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
