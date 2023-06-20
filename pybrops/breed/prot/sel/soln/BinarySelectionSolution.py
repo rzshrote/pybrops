@@ -2,7 +2,7 @@ __all__ = [
     "BinarySelectionSolution"
 ]
 
-from pybrops.breed.prot.sel.soln import SelectionSolution
+from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution
 from pybrops.opt.soln.BinarySolution import BinarySolution
 
 class BinarySelectionSolution(BinarySolution,SelectionSolution):
