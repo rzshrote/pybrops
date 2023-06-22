@@ -17,7 +17,7 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist, trans_sum
-from pybrops.breed.prot.sel.UnconstrainedUsefulnessCriterionSelection import UsefulnessCriterionSelection
+from pybrops.breed.prot.sel.UsefulnessCriterionSelection import UsefulnessCriterionSelection
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
 ################################################################################
