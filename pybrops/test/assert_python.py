@@ -1,3 +1,4 @@
+from abc import ABCMeta
 import inspect
 import pytest
 from contextlib import contextmanager
@@ -120,7 +121,43 @@ def assert_abstract_class(obj: type) -> None:
     """
     Assert an object type is abstract. Must have several attributes:
 
-    1) Must inherit from ABCMeta and have abstract methods.
+    1) Must not have a defined ``__init__`` method within the class.
+    2) Must be an ABCMeta type.
+    3) Must have abstract methods.
+    4) Must have a docstring for the class.
+
+    Parameters
+    ----------
+    obj : type
+        A Python object type.
+    """
+    assert '__init__' not in vars(obj)
+    assert type(obj) == ABCMeta
+    assert inspect.isabstract(obj)
+    assert_docstring(obj)
+
+def assert_semiabstract_class(obj: type) -> None:
+    """
+    Assert an object type is abstract. Must have several attributes:
+
+    1) Must not have a defined ``__init__`` method within the class.
+    2) Must be an ABCMeta type.
+    3) Must have a docstring for the class.
+
+    Parameters
+    ----------
+    obj : type
+        A Python object type.
+    """
+    assert '__init__' not in vars(obj)
+    assert type(obj) == ABCMeta
+    assert_docstring(obj)
+
+def assert_mixin_class(obj: type) -> None:
+    """
+    Assert an object type is a mixin. Must have several attributes:
+
+    1) Must not have a defined ``__init__`` method within the class.
     2) Must have a docstring for the class.
 
     Parameters
@@ -128,7 +165,7 @@ def assert_abstract_class(obj: type) -> None:
     obj : type
         A Python object type.
     """
-    assert inspect.isabstract(obj)
+    assert '__init__' not in vars(obj)
     assert_docstring(obj)
 
 def assert_concrete_class(obj: type) -> None:
