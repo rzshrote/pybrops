@@ -109,6 +109,7 @@ class SelectionProtocol(metaclass=ABCMeta):
     @ncross.setter
     def ncross(self, value: Integral) -> None:
         """Set number of cross configurations."""
+        check_is_Integral(value, "ncross")
         self._ncross = value
     
     @property
@@ -118,6 +119,7 @@ class SelectionProtocol(metaclass=ABCMeta):
     @nparent.setter
     def nparent(self, value: Integral) -> None:
         """Set number of parents per cross configuration."""
+        check_is_Integral(value, "nparent")
         self._nparent = value
 
     @property

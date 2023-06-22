@@ -4,7 +4,7 @@ Module defining conventional genomic selection protocols.
 
 # list of all public objects in this module
 __all__ = [
-    "FamilyEstimatedBreedingValueBaseSelection",
+    "FamilyEstimatedBreedingValueSelectionMixin",
     "FamilyEstimatedBreedingValueSubsetSelection",
     "FamilyEstimatedBreedingValueRealSelection",
     "FamilyEstimatedBreedingValueIntegerSelection",
@@ -12,48 +12,68 @@ __all__ = [
 ]
 
 # imports
+from abc import ABCMeta
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
+from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
+from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
+from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueBinarySelectionProblem, FamilyEstimatedBreedingValueIntegerSelectionProblem, FamilyEstimatedBreedingValueRealSelectionProblem, FamilyEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
+class FamilyEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
     """
     Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
     """
     ########################## Special Object Methods ##########################
+    # __init__() CANNOT be defined to be classified as a Mixin class
+
+    ############################ Object Properties #############################
+    @property
+    def ntrait(self) -> Integral:
+        """Number of traits to expect from matrix inputs."""
+        return self._ntrait
+    @ntrait.setter
+    def ntrait(self, value: Integral) -> None:
+        """Set number of traits to expect."""
+        check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
+        self._ntrait = value
+
+class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
+    """
+    Conventional Genomic Selection in a subset search space.
+    """
+    ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral,
-            method: str,
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
             nobj: Integral,
-            obj_wt: Optional[numpy.ndarray] = None,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             obj_trans_kwargs: Optional[dict] = None,
             nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[numpy.ndarray] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             ineqcv_trans_kwargs: Optional[dict] = None,
             neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[numpy.ndarray] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             ndset_wt: Optional[Real] = None,
@@ -61,19 +81,26 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
+            moalgo: Optional[OptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for ConventionalGenomicSelection.
+        Constructor for the abstract class ConstrainedSelectionProtocol.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments.
         """
-        super(FamilyEstimatedBreedingValueBaseSelection, self).__init__(
-            method = method,
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        # make assignments from SubsetSelectionProtocol second
+        super(FamilyEstimatedBreedingValueSubsetSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -88,305 +115,12 @@ class FamilyEstimatedBreedingValueBaseSelection(SelectionProtocol):
             eqcv_trans_kwargs = eqcv_trans_kwargs,
             ndset_wt = ndset_wt,
             ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
             **kwargs
         )
-        # order dependent assignments
-        self.nparent = nparent
-        self.nmating = ncross
-        self.nprogeny = nprogeny
-        self.rng = rng
-        self.soalgo = soalgo
-        self.moalgo = moalgo
-
-    ############################ Object Properties #############################
-    @property
-    def nparent(self) -> int:
-        """Number of parents to select."""
-        return self._nparent
-    @nparent.setter
-    def nparent(self, value: int) -> None:
-        """Set number of parents to select."""
-        check_is_Integral(value, "nparent")      # must be int
-        check_is_gt(value, "nparent", 0)    # int must be >0
-        self._nparent = value
-
-    @property
-    def nmating(self) -> int:
-        """Number of crosses per configuration."""
-        return self._ncross
-    @nmating.setter
-    def nmating(self, value: int) -> None:
-        """Set number of crosses per configuration."""
-        check_is_Integral(value, "ncross")       # must be int
-        check_is_gt(value, "ncross", 0)     # int must be >0
-        self._ncross = value
-
-    @property
-    def nprogeny(self) -> int:
-        """Number of progeny to derive from each cross configuration."""
-        return self._nprogeny
-    @nprogeny.setter
-    def nprogeny(self, value: int) -> None:
-        """Set number of progeny to derive from each cross configuration."""
-        check_is_Integral(value, "nprogeny")     # must be int
-        check_is_gt(value, "nprogeny", 0)   # int must be >0
-        self._nprogeny = value
-
-    @property
-    def rng(self) -> Union[Generator,RandomState]:
-        """Random number generator source."""
-        return self._rng
-    @rng.setter
-    def rng(self, value: Union[Generator,RandomState,None]) -> None:
-        """Set random number generator source."""
-        if value is None:
-            value = global_prng
-        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
-        self._rng = value
-
-    @property
-    def soalgo(self) -> OptimizationAlgorithm:
-        """Single-objective optimization algorithm."""
-        return self._soalgo
-    @soalgo.setter
-    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set single-objective optimization algorithm."""
-        if value is None:
-            # construct default hillclimber
-            value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_OptimizationAlgorithm(value, "soalgo")
-        self._soalgo = value
-
-    @property
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective opimization algorithm."""
-        return self._moalgo
-    @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set multi-objective opimization algorithm."""
-        if value is None:
-            # construct default multi-objective algorithm
-            value = NSGA2SubsetGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                pop_size = 100, # number of parents in population
-                rng = self.rng  # PRNG source
-            )
-        check_is_OptimizationAlgorithm(value, "moalgo")
-        self._moalgo = value
-
-    ############################## Object Methods ##############################
-
-    ########## Optimization Problem Construction ###########
-    # leave abstract since it depends on the problem type
-
-    ############## Pareto Frontier Functions ###############
-    # implement since this is problem type agnostic
-    def mosolve(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            miscout: Optional[dict] = None, 
-            **kwargs: dict
-        ) -> tuple:
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
-        """
-        # construct the problem
-        prob = self.problem(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max
-        )
-
-        # optimize the problem
-        soln = self.moalgo.minimize(
-            prob = prob,
-            miscout = miscout
-        )
-
-        if miscout is not None:
-            miscout["soln"] = soln
-
-        frontier = soln.soln_obj
-        sel_config = soln.soln_decn
-
-        return frontier, sel_config
-
-    ################# Selection Functions ##################
-    # implement since this is problem type agnostic
-    def select(
-            self, 
-            pgmat: PhasedGenotypeMatrix, 
-            gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
-            bvmat: BreedingValueMatrix, 
-            gpmod: GenomicModel, 
-            t_cur: Integral, 
-            t_max: Integral, 
-            miscout: Optional[dict] = None, 
-            **kwargs: dict
-        ) -> tuple:
-        """
-        Select individuals for breeding.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
-        """
-        # single-objective method: objfn_trans returns a single value for each
-        # selection configuration
-        if self.method == "single":
-            # construct the problem
-            prob = self.problem(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max
-            )
-
-            # optimize the problem
-            soln = self.soalgo.minimize(
-                prob = prob,
-                miscout = miscout
-            )
-
-            if miscout is not None:
-                miscout["soln"] = soln
-
-            # extract decision variables
-            sel = soln.soln_decn[0]
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            return pgmat, sel, self.nmating, self.nprogeny
-
-        # multi-objective method: objfn_trans returns a multiple values for each
-        # selection configuration
-        elif self.method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config = self.mosolve(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                miscout = miscout,
-                **kwargs
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], self.nmating, self.nprogeny
-        else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueBaseSelection):
-    """
-    Conventional Genomic Selection in a subset search space.
-    """
-    ########################## Special Object Methods ##########################
-    # use old init
 
     ############################## Object Methods ##############################
 
@@ -460,18 +194,84 @@ class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueBa
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    ################ Single Objective Solve ################
+    # inherit sosolve() from SubsetSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from SubsetSelectionProtocol
 
     ################# Selection Functions ##################
-    # use super select() function
+    # inherit select() from SubsetSelectionProtocol
 
-class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueBaseSelection):
+class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
     """
     Conventional Genomic Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
-    # use old init
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        # make assignments from RealSelectionProtocol second
+        super(FamilyEstimatedBreedingValueRealSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################## Object Methods ##############################
 
@@ -545,18 +345,84 @@ class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueBase
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    ################ Single Objective Solve ################
+    # inherit sosolve() from RealSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from RealSelectionProtocol
 
     ################# Selection Functions ##################
-    # use super select() function
+    # inherit select() from RealSelectionProtocol
 
-class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueBaseSelection):
+class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
     """
     Conventional Genomic Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
-    # use old init
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        # make assignments from IntegerSelectionProtocol second
+        super(FamilyEstimatedBreedingValueIntegerSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################## Object Methods ##############################
 
@@ -630,18 +496,84 @@ class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueB
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # use super pareto() function
+    ################ Single Objective Solve ################
+    # inherit sosolve() from IntegerSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from IntegerSelectionProtocol
 
     ################# Selection Functions ##################
-    # use super select() function
+    # inherit select() from IntegerSelectionProtocol
 
-class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueBaseSelection):
+class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
     Conventional Genomic Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
-    # use BaseConventionalGenomicSelection __init__()
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        # make assignments from BinarySelectionProtocol second
+        super(FamilyEstimatedBreedingValueBinarySelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################## Object Methods ##############################
 
@@ -715,8 +647,11 @@ class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueBa
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # use BaseConventionalGenomicSelection pareto() function
+    ################ Single Objective Solve ################
+    # inherit sosolve() from BinarySelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from BinarySelectionProtocol
 
     ################# Selection Functions ##################
-    # use BaseConventionalGenomicSelection select() function
+    # inherit select() from BinarySelectionProtocol

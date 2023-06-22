@@ -3,162 +3,62 @@ Module implementing selection protocols for Usefulness Criterion (UC) selection.
 """
 
 __all__ = [
-    "UsefulnessCriterionBaseSelection",
+    "UsefulnessCriterionSelectionMixin",
     "UsefulnessCriterionBinarySelection",
     "UsefulnessCriterionIntegerSelection",
     "UsefulnessCriterionRealSelection",
     "UsefulnessCriterionSubsetSelection"
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from numbers import Integral, Real
 import numpy
 import scipy.stats
 from numpy.random import Generator, RandomState
 from typing import Optional, Union
 from typing import Callable
-from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionBinarySelectionProblem, UsefulnessCriterionIntegerSelectionProblem, UsefulnessCriterionRealSelectionProblem, UsefulnessCriterionSubsetSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import BinaryMateSelectionProtocol
+from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import IntegerMateSelectionProtocol
+from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionProtocol
+from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
+from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
+from pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem import IntegerMateSelectionProblem
+from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
+from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionRealSelectionProblem
+from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionSubsetSelectionProblem
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval, check_is_lt
-from pybrops.core.random.prng import global_prng
-from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
+class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     """
     Semi-abstract class for Optimal Haploid Value (OHV) Selection with constraints.
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            nconfig: Integral, 
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            method: str,
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            ndset_wt: Optional[Real] = None,
-            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
-            ndset_trans_kwargs: Optional[dict] = None, 
-            rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for ConventionalGenomicSelection.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(UsefulnessCriterionBaseSelection, self).__init__(
-            method = method,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            ndset_wt = ndset_wt,
-            ndset_trans = ndset_trans,
-            ndset_trans_kwargs = ndset_trans_kwargs
-            **kwargs
-        )
-        # order dependent assignments
-        self.nconfig = nconfig
-        self.nparent = nparent
-        self.nmating = ncross
-        self.nprogeny = nprogeny
-        self.nself = nself
-        self.upper_percentile = upper_percentile
-        self.vmatfcty = vmatfcty
-        self.gmapfn = gmapfn
-        self.unique_parents = unique_parents
-        self.rng = rng
-        self.soalgo = soalgo
-        self.moalgo = moalgo
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
     ############################ Object Properties #############################
     @property
-    def nconfig(self) -> Integral:
-        """Number of cross configurations to consider."""
-        return self._nconfig
-    @nconfig.setter
-    def nconfig(self, value: Integral) -> None:
-        """Set number of cross configurations to consider."""
-        check_is_Integral(value, "nconfig")      # must be int
-        check_is_gt(value, "nconfig", 0)    # int must be >0
-        self._nconfig = value
-
-    @property
-    def nparent(self) -> Integral:
-        """Number of parents to select."""
-        return self._nparent
-    @nparent.setter
-    def nparent(self, value: Integral) -> None:
-        """Set number of parents to select."""
-        check_is_Integral(value, "nparent")      # must be int
-        check_is_gt(value, "nparent", 0)    # int must be >0
-        self._nparent = value
-
-    @property
-    def nmating(self) -> Integral:
-        """Number of crosses per configuration."""
-        return self._ncross
-    @nmating.setter
-    def nmating(self, value: Integral) -> None:
-        """Set number of crosses per configuration."""
-        check_is_Integral(value, "ncross")       # must be int
-        check_is_gt(value, "ncross", 0)     # int must be >0
-        self._ncross = value
-
-    @property
-    def nprogeny(self) -> Integral:
-        """Number of progeny to derive from each cross configuration."""
-        return self._nprogeny
-    @nprogeny.setter
-    def nprogeny(self, value: Integral) -> None:
-        """Set number of progeny to derive from each cross configuration."""
-        check_is_Integral(value, "nprogeny")     # must be int
-        check_is_gt(value, "nprogeny", 0)   # int must be >0
-        self._nprogeny = value
+    def ntrait(self) -> Integral:
+        """Number of traits to expect from EBV matrix inputs."""
+        return self._ntrait
+    @ntrait.setter
+    def ntrait(self, value: Integral) -> None:
+        """Set number of traits to expect."""
+        check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
+        self._ntrait = value
 
     @property
     def nself(self) -> Integral:
@@ -179,20 +79,13 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
     def upper_percentile(self, value: Real) -> None:
         """Set data for property upper_percentile."""
         check_is_Real(value, "upper_percentile")  # must be a number
-        check_is_gt(value, "upper_percentile", 0.0)   # number must be >0
-        check_is_lt(value, "upper_percentile", 1.0)   # number must be <1
+        check_is_in_interval(value, "upper_percentile", 0.0, 1.0)
         self._upper_percentile = value
-        # set the selection intensity
-        self._selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - self._upper_percentile)) / self._upper_percentile
     
     @property
     def selection_intensity(self) -> Real:
-        """Description for property selection_intensity."""
-        return self._selection_intensity
-    @selection_intensity.setter
-    def selection_intensity(self, value: Real) -> None:
-        """Set data for property selection_intensity."""
-        error_readonly("selection_intensity")
+        """Get selection intensity."""
+        return scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - self._upper_percentile)) / self._upper_percentile
 
     @property
     def vmatfcty(self) -> GeneticVarianceMatrixFactory:
@@ -223,265 +116,88 @@ class UsefulnessCriterionBaseSelection(SelectionProtocol,metaclass=ABCMeta):
         check_is_bool(value, "unique_parents")
         self._unique_parents = value
 
-    @property
-    def rng(self) -> Union[Generator,RandomState]:
-        """Random number generator source."""
-        return self._rng
-    @rng.setter
-    def rng(self, value: Union[Generator,RandomState]) -> None:
-        """Set random number generator source."""
-        if value is None:
-            value = global_prng
-        check_is_Generator_or_RandomState(value, "rng") # check is numpy.Generator
-        self._rng = value
-
-    @property
-    @abstractmethod
-    def soalgo(self) -> OptimizationAlgorithm:
-        """Single-objective optimization algorithm."""
-        raise NotImplementedError("method is abstract")
-    @soalgo.setter
-    @abstractmethod
-    def soalgo(self, value: OptimizationAlgorithm) -> None:
-        """Set single-objective optimization algorithm."""
-        raise NotImplementedError("method is abstract")
-
-    @property
-    @abstractmethod
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective opimization algorithm."""
-        raise NotImplementedError("method is abstract")
-    @moalgo.setter
-    @abstractmethod
-    def moalgo(self, value: OptimizationAlgorithm) -> None:
-        """Set multi-objective opimization algorithm."""
-        raise NotImplementedError("method is abstract")
-
-    ######################### Private Object Methods ###########################
-
-    ############################## Object Methods ##############################
-
-    ########## Optimization Problem Construction ###########
-    # leave problem() abstract
-
-    ############## Pareto Frontier Functions ###############
-    def mosolve(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
-        """
-        # construct the optimization problem
-        prob = self.problem(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max
-        )
-
-        # optimize the problem
-        soln = self.moalgo.minimize(
-            prob = prob,
-            miscout = miscout
-        )
-
-        if miscout is not None:
-            miscout["soln"] = soln
-
-        frontier = soln.soln_obj
-        sel_config = soln.soln_decn
-
-        return frontier, sel_config
-
-    ################# Selection Functions ##################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Select parents individuals for breeding.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotype matrix from which to calculate genomic relationships.
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None, default = None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
-        """
-        # check inputs
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenotypeMatrix(gmat, "gmat")
-        check_is_BreedingValueMatrix(bvmat, "bvmat")
-        check_is_Real(t_cur, "t_cur")
-        check_is_Real(t_max, "t_max")
-
-        # Solve problem using a single objective method
-        if self.method == "single":
-            # create optimization problem
-            prob = self.problem(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max
-            )
-
-            # miscellaneous output
-            misc = {}
-
-            # use single-objective optimization to get a solution.
-            soln = self.soalgo.minimize(
-                prob = prob,
-                miscout = miscout
-            )
-
-            # get first and only solution
-            obj = soln.soln_obj[0]
-            sel = soln.soln_decn[0]
-
-            # add optimization details to miscellaneous output
-            if miscout is not None:
-                miscout["obj"] = obj
-                miscout["sel"] = sel
-                miscout.update(misc) # add dict to dict
-
-            return pgmat, sel, self.nmating, self.nprogeny
-
-        # estimate Pareto frontier, then choose from non-dominated points.
-        elif self.method == "pareto":
-            # raises error
-            frontier, sel_config = self.mosolve(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                miscout = miscout,
-                **kwargs
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = self.ndset_wt * self.ndset_trans(frontier, **self.ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], self.nmating, self.nprogeny
-
-class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
+class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,SubsetMateSelectionProtocol):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """
 
     ########################## Special Object Methods ##########################
-    # inherit __init__() implementation
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nself = nself
+        self.upper_percentile = upper_percentile
+        self.vmatfcty = vmatfcty
+        self.gmapfn = gmapfn
+        self.unique_parents = unique_parents
+        # make assignments from SubsetMateSelectionProtocol second
+        super(UsefulnessCriterionSubsetSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################ Object Properties #############################
-    @property
-    def soalgo(self) -> OptimizationAlgorithm:
-        """Single-objective optimization algorithm."""
-        return self._soalgo
-    @soalgo.setter
-    def soalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set single-objective optimization algorithm."""
-        if value is None:
-            # construct default hillclimber
-            value = SteepestDescentSubsetHillClimber(self.rng)
-        check_is_OptimizationAlgorithm(value, "soalgo")
-        self._soalgo = value
-
-    @property
-    def moalgo(self) -> OptimizationAlgorithm:
-        """Multi-objective opimization algorithm."""
-        return self._moalgo
-    @moalgo.setter
-    def moalgo(self, value: Union[OptimizationAlgorithm,None]) -> None:
-        """Set multi-objective opimization algorithm."""
-        if value is None:
-            # construct default multi-objective algorithm
-            value = NSGA2SubsetGeneticAlgorithm(
-                ngen = 250,     # number of generations to evolve
-                pop_size = 100, # number of parents in population
-                rng = self.rng  # PRNG source
-            )
-        check_is_OptimizationAlgorithm(value, "moalgo")
-        self._moalgo = value
 
     ############################## Object Methods ##############################
 
@@ -496,7 +212,7 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SubsetMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -524,7 +240,11 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get the cross map (inefficient)
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # get the cross map
         xmap = UsefulnessCriterionSubsetSelectionProblem._calc_xmap(
             pgmat.ntaxa,
             self.nparent,
@@ -533,14 +253,18 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
 
         # get decision space parameters
         decn_space = numpy.arange(len(xmap))
-        decn_space_lower = numpy.repeat(0, self.nconfig)
-        decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
+        decn_space_lower = numpy.repeat(0, self.ncross)
+        decn_space_upper = numpy.repeat(len(xmap)-1, self.ncross)
+
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
 
         # construct problem
-        prob = UsefulnessCriterionSubsetSelectionProblem.from_pgmat_gpmod(
+        prob = UsefulnessCriterionSubsetSelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
-            ncross = self.nmating, 
-            nprogeny = self.nprogeny, 
+            ncross = nmating_median,
+            nprogeny = nprogeny_median, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
             vmatfcty = self.vmatfcty,
@@ -548,7 +272,8 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
             unique_parents = self.unique_parents, 
             pgmat = pgmat,
             gpmod = gpmod,
-            ndecn = self.nconfig,
+            xmap = xmap,
+            ndecn = self.ncross,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -568,19 +293,95 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionBaseSelection):
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # inherit pareto() implementation
+    ################ Single Objective Solve ################
+    # inherit sosolve() from SubsetMateSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from SubsetMateSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() implementation
+    # inherit select() from SubsetMateSelectionProtocol
 
-class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
+class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMateSelectionProtocol):
     """
     Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
     """
 
     ########################## Special Object Methods ##########################
-    # inherit __init__() implementation
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nself = nself
+        self.upper_percentile = upper_percentile
+        self.vmatfcty = vmatfcty
+        self.gmapfn = gmapfn
+        self.unique_parents = unique_parents
+        # make assignments from RealMateSelectionProtocol second
+        super(UsefulnessCriterionRealSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################ Object Properties #############################
 
@@ -597,7 +398,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> RealMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -638,7 +439,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionRealSelectionProblem.from_pgmat_gpmod(
+        prob = UsefulnessCriterionRealSelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
             ncross = self.nmating, 
             nprogeny = self.nprogeny, 
@@ -649,6 +450,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
             unique_parents = self.unique_parents, 
             pgmat = pgmat,
             gpmod = gpmod,
+            xmap = xmap,
             ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -669,19 +471,95 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionBaseSelection):
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # inherit pareto() implementation
+    ################ Single Objective Solve ################
+    # inherit sosolve() from RealMateSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from RealMateSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() implementation
+    # inherit select() from RealMateSelectionProtocol
 
-class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
+class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,IntegerMateSelectionProtocol):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
     """
 
     ########################## Special Object Methods ##########################
-    # inherit __init__() implementation
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nself = nself
+        self.upper_percentile = upper_percentile
+        self.vmatfcty = vmatfcty
+        self.gmapfn = gmapfn
+        self.unique_parents = unique_parents
+        # make assignments from IntegerMateSelectionProtocol second
+        super(UsefulnessCriterionIntegerSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################ Object Properties #############################
 
@@ -698,7 +576,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> IntegerMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -735,11 +613,11 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
 
         # get decision space parameters
         decn_space_lower = numpy.repeat(0, len(xmap))
-        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.nmating, len(xmap))
+        decn_space_upper = numpy.repeat(self.ncross * self.nparent * self.nmating, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod(
+        prob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
             ncross = self.nmating, 
             nprogeny = self.nprogeny, 
@@ -750,6 +628,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
             unique_parents = self.unique_parents, 
             pgmat = pgmat,
             gpmod = gpmod,
+            xmap = xmap,
             ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -770,19 +649,95 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionBaseSelection):
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # inherit pareto() implementation
+    ################ Single Objective Solve ################
+    # inherit sosolve() from IntegerMateSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from IntegerMateSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() implementation
+    # inherit select() from IntegerMateSelectionProtocol
 
-class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
+class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,BinaryMateSelectionProtocol):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
     """
 
     ########################## Special Object Methods ##########################
-    # inherit __init__() implementation
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[OptimizationAlgorithm] = None,
+            moalgo: Optional[OptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the abstract class ConstrainedSelectionProtocol.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nself = nself
+        self.upper_percentile = upper_percentile
+        self.vmatfcty = vmatfcty
+        self.gmapfn = gmapfn
+        self.unique_parents = unique_parents
+        # make assignments from BinaryMateSelectionProtocol second
+        super(UsefulnessCriterionBinarySelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
     ############################ Object Properties #############################
 
@@ -799,7 +754,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> BinaryMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -840,7 +795,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = UsefulnessCriterionBinarySelectionProblem.from_pgmat_gpmod(
+        prob = UsefulnessCriterionBinarySelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
             ncross = self.nmating, 
             nprogeny = self.nprogeny, 
@@ -851,6 +806,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
             unique_parents = self.unique_parents, 
             pgmat = pgmat,
             gpmod = gpmod,
+            xmap = xmap,
             ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -871,8 +827,11 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionBaseSelection):
 
         return prob
 
-    ############## Pareto Frontier Functions ###############
-    # inherit pareto() implementation
+    ################ Single Objective Solve ################
+    # inherit sosolve() from BinaryMateSelectionProtocol
+
+    ################ Multi Objective Solve #################
+    # inherit mosolve() from BinaryMateSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() implementation
+    # inherit select() from BinaryMateSelectionProtocol

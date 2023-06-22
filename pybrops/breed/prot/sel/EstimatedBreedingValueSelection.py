@@ -24,7 +24,11 @@ from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueBinarySelectionProblem, EstimatedBreedingValueIntegerSelectionProblem, EstimatedBreedingValueRealSelectionProblem, EstimatedBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueRealSelectionProblem
+from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueSubsetSelectionProblem
+from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
@@ -49,6 +53,7 @@ class EstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
     def ntrait(self, value: Integral) -> None:
         """Set number of traits to expect."""
         check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
         self._ntrait = value
 
 class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
@@ -167,18 +172,15 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
         # get number of individuals
         ntaxa = bvmat.ntaxa
 
-        # get number of selected individuals
-        ndecn = self.ncross * self.nparent
-
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, ndecn)
-        decn_space_upper = numpy.repeat(ntaxa-1, ndecn)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
             bvmat = bvmat,
-            ndecn = ndecn,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -352,13 +354,13 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
         return prob
 
     ################ Single Objective Solve ################
-    # inherit sosolve() from SubsetSelectionProtocol
+    # inherit sosolve() from RealSelectionProtocol
 
     ################ Multi Objective Solve #################
-    # inherit mosolve() from SubsetSelectionProtocol
+    # inherit mosolve() from RealSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() from SubsetSelectionProtocol
+    # inherit select() from RealSelectionProtocol
 
 class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
     """
@@ -505,13 +507,13 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
         return prob
 
     ################ Single Objective Solve ################
-    # inherit sosolve() from SubsetSelectionProtocol
+    # inherit sosolve() from IntegerSelectionProtocol
 
     ################ Multi Objective Solve #################
-    # inherit mosolve() from SubsetSelectionProtocol
+    # inherit mosolve() from IntegerSelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() from SubsetSelectionProtocol
+    # inherit select() from IntegerSelectionProtocol
 
 class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
@@ -661,10 +663,10 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
         return prob
 
     ################ Single Objective Solve ################
-    # inherit sosolve() from SubsetSelectionProtocol
+    # inherit sosolve() from BinarySelectionProtocol
 
     ################ Multi Objective Solve #################
-    # inherit mosolve() from SubsetSelectionProtocol
+    # inherit mosolve() from BinarySelectionProtocol
 
     ################# Selection Functions ##################
-    # inherit select() from SubsetSelectionProtocol
+    # inherit select() from BinarySelectionProtocol
