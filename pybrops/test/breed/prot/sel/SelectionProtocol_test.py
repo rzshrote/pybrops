@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol, check_is_SelectionProtocol
 
-from pybrops.test.assert_python import assert_abstract_methods
+from pybrops.test.assert_python import assert_abstract_method
 
 @pytest.fixture
 def bedge():
@@ -12,7 +12,8 @@ def vmethods(bedge):
     yield [m for m in dir(bedge) if m.startswith('__') is False]
 
 def test_abstract_methods(bedge, vmethods):
-    assert_abstract_methods(bedge, vmethods)
+    for met in vmethods:
+        assert_abstract_method(bedge, met)
 
 def test_is_SelectionProtocol(bedge):
     assert isinstance(bedge, SelectionProtocol)

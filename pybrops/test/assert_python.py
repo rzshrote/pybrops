@@ -3,7 +3,7 @@ import pytest
 from contextlib import contextmanager
 
 @contextmanager
-def not_raises(*ForbiddenExceptions):
+def not_raises(*ForbiddenExceptions) -> None:
     """
     Ensure that method does not raise an ForbiddenException.
 
@@ -19,7 +19,7 @@ def not_raises(*ForbiddenExceptions):
     except Exception:
         pass
 
-def assert_docstring(obj):
+def assert_docstring(obj: object) -> None:
     """
     Test for the presence of a docstring in an object.
 
@@ -33,7 +33,7 @@ def assert_docstring(obj):
     assert isinstance(obj.__doc__, str) # make sure attribute is a string
     assert len(obj.__doc__) > 0         # make sure docstring is not empty
 
-def assert_raise_NotImplementedError(fn):
+def assert_raise_NotImplementedError(fn) -> None:
     """
     Test that a function raises NotImplementedError.
 
@@ -53,7 +53,7 @@ def assert_raise_NotImplementedError(fn):
         # test for raises NotImplementedError
         fn(**kwargs)
 
-def assert_not_raise_NotImplementedError(fn):
+def assert_not_raise_NotImplementedError(fn) -> None:
     """
     Test that a function does not raise NotImplementedError.
 
@@ -73,7 +73,7 @@ def assert_not_raise_NotImplementedError(fn):
         # test for not raise NotImplementedError
         fn(**kwargs)
 
-def assert_abstract_function(fn):
+def assert_abstract_function(fn) -> None:
     """
     Assert an abstract function for several attributes:
 
@@ -88,7 +88,7 @@ def assert_abstract_function(fn):
     assert_docstring(fn)                    # assert for having a docstring
     assert_raise_NotImplementedError(fn)    # assert that function is abstract
 
-def assert_concrete_function(fn):
+def assert_concrete_function(fn) -> None:
     """
     Assert a concrete function for several attributes:
 
@@ -103,7 +103,7 @@ def assert_concrete_function(fn):
     assert_docstring(fn)                        # assert for having a docstring
     assert_not_raise_NotImplementedError(fn)    # assert that function is abstract
 
-def assert_hasattr(obj, a):
+def assert_hasattr(obj: object, attr: str) -> None:
     """
     Assert an object has an attribute.
 
@@ -111,12 +111,42 @@ def assert_hasattr(obj, a):
     ----------
     obj : object
         Any Python object.
-    a : str
+    attr : str
         String of the attribute.
     """
-    assert hasattr(obj, a)  # assert the object has the attribute
+    assert hasattr(obj, attr)  # assert the object has the attribute
 
-def assert_abstract_method(obj, met):
+def assert_abstract_class(obj: type) -> None:
+    """
+    Assert an object type is abstract. Must have several attributes:
+
+    1) Must inherit from ABCMeta and have abstract methods.
+    2) Must have a docstring for the class.
+
+    Parameters
+    ----------
+    obj : type
+        A Python object type.
+    """
+    assert inspect.isabstract(obj)
+    assert_docstring(obj)
+
+def assert_concrete_class(obj: type) -> None:
+    """
+    Assert an object type is concrete. Must have several attributes:
+
+    1) May inherit from ABCMeta, but cannot have abstract methods.
+    2) Must have a docstring for the class.
+
+    Parameters
+    ----------
+    obj : type
+        A Python object type.
+    """
+    assert not inspect.isabstract(obj)
+    assert_docstring(obj)
+
+def assert_abstract_method(obj: object, met: str) -> None:
     """
     Assert an object has an abstract method. Must have several attributes:
 
@@ -135,7 +165,7 @@ def assert_abstract_method(obj, met):
     fn = getattr(obj, met)                  # get the method
     assert_abstract_function(fn)    # assert the method is abstract
 
-def assert_concrete_method(obj, met):
+def assert_concrete_method(obj: object, met: str) -> None:
     """
     Assert an object has a concrete method. Must have several attributes:
 
@@ -199,7 +229,7 @@ def assert_concrete_property_fget(obj: type, prop: str) -> None:
     assert_docstring(p)                 # assert the property has a docstring
     assert_concrete_method(p, "fget")   # assert fget is concrete
 
-def assert_concrete_property(obj: type, prop: str):
+def assert_concrete_property(obj: type, prop: str) -> None:
     """
     Assert an object has an concrete property. Must have several attributes:
 
@@ -223,48 +253,3 @@ def assert_concrete_property(obj: type, prop: str):
         assert_concrete_method(p, "fset")   # assert fset is concrete
     if hasattr(p, "fdel") and (getattr(p, "fdel") is not None):
         assert_concrete_method(p, "fdel")   # assert fdel is concrete
-
-def assert_abstract_methods(obj, mets):
-    """
-    Note: this is depricated.
-    Test all methods for raise NotImplementedError in an object.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test for method attributes.
-    mets : list
-        List of str for attributes to be tested.
-    """
-    for m in mets:
-        with pytest.raises(NotImplementedError):
-            # get function
-            fn = getattr(obj, m)
-
-            # get signature parameters
-            p = inspect.signature(fn).parameters
-
-            # get parameters as keyword arguments
-            kwargs = dict((m,None) for m,n in p.items() if str(n)[0] != '*')
-
-            # test for raises NotImplementedError
-            fn(**kwargs)
-
-def assert_concrete_methods(obj, met):
-    """
-    Test all methods for not raising NotImplementedError in an object.
-
-    Parameters
-    ----------
-    obj : object
-        Any Python object to test for method attributes.
-    met : list
-        List of str for attributes to be tested.
-    """
-    for m in met:
-        with not_raises(NotImplementedError):
-            fn = getattr(obj, m)
-            p = inspect.signature(fn).parameters
-            l = list(m for m,n in p.items() if str(n)[0] != '*')
-            kwargs = dict.fromkeys(l, [None] * len(l))
-            fn(**kwargs)
