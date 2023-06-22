@@ -115,9 +115,7 @@ class SortableMatrix(MutableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SortableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.

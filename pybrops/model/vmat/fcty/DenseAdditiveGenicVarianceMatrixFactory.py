@@ -120,9 +120,7 @@ class DenseAdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseAdditiveGenicVarianceMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGenicVarianceMatrixFactory``. Otherwise raise ``TypeError``.

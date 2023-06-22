@@ -109,9 +109,7 @@ class BreedingNode:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingNode(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingNode. Otherwise raise TypeError.

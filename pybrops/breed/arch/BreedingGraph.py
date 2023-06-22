@@ -59,9 +59,7 @@ class BreedingGraph:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingGraph(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingGraph. Otherwise raise TypeError.

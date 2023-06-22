@@ -88,9 +88,7 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_AdditiveDominanceLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.

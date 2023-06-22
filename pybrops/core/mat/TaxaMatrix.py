@@ -427,9 +427,7 @@ class TaxaMatrix(GroupableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_TaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaMatrix. Otherwise raise TypeError.

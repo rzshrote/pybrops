@@ -141,9 +141,7 @@ class RealProblem(Problem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_RealProblem(v: object, vname: str) -> None:
     """
     Check if object is of type RealProblem, otherwise raise TypeError.

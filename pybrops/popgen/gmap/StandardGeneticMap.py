@@ -103,9 +103,7 @@ class StandardGeneticMap(GeneticMap):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_StandardGeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type StandardGeneticMap. Otherwise raise TypeError.

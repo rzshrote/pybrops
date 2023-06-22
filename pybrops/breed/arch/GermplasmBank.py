@@ -45,9 +45,7 @@ class GermplasmBank(BreedingNode):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GermplasmBank(v: object, vname: str) -> None:
     """
     Check if object is of type GermplasmBank. Otherwise raise TypeError.

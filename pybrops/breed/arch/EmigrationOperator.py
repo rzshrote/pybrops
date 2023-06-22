@@ -57,9 +57,7 @@ class EmigrationOperator(BreedingEdge):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_EmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EmigrationOperator. Otherwise raise TypeError.

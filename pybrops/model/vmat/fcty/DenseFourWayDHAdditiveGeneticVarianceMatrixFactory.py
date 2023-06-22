@@ -132,9 +132,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVar
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseFourWayDHAdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.

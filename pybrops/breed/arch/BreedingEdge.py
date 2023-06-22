@@ -42,9 +42,7 @@ class BreedingEdge:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingEdge(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingEdge. Otherwise raise TypeError.

@@ -90,9 +90,7 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceEpistaticLinearGenomicModel. Otherwise raise TypeError.

@@ -38,9 +38,7 @@ class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SquareTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``SquareTaxaMatrix``. Otherwise raise ``TypeError``.

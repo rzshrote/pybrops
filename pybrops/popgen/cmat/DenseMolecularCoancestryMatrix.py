@@ -231,9 +231,7 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseMolecularCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise TypeError.

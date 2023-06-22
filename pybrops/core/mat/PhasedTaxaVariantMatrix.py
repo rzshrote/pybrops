@@ -39,9 +39,7 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PhasedTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PhasedTaxaVariantMatrix. Otherwise raise TypeError.

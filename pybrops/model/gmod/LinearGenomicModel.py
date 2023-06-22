@@ -82,9 +82,7 @@ class LinearGenomicModel(GenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_LinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type LinearGenomicModel. Otherwise raise TypeError.

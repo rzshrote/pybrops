@@ -499,9 +499,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_RecurrentSelectionBreedingProgram(v: object, vname: str) -> None:
     """
     Check if object is of type RecurrentSelectionBreedingProgram. Otherwise raise TypeError.

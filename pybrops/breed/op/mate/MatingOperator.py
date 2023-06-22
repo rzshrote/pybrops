@@ -77,9 +77,7 @@ class MatingOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_MatingOperator(v: object, vname: str) -> None:
     """
     Check if object is of type MatingOperator. Otherwise raise TypeError.

@@ -76,9 +76,7 @@ class CSVInputOutput:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_CSVInputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type CSVInputOutput. Otherwise raise TypeError.

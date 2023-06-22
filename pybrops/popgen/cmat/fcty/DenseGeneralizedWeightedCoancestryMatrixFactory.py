@@ -66,9 +66,7 @@ class DenseGeneralizedWeightedCoancestryMatrixFactory(DenseCoancestryMatrixFacto
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseGeneralizedWeightedCoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGeneralizedWeightedCoancestryMatrixFactory. Otherwise raise TypeError.

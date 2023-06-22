@@ -98,9 +98,7 @@ class SquareMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SquareMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``SquareMatrix``. Otherwise raise ``TypeError``.

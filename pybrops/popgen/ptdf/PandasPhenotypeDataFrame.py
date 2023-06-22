@@ -193,9 +193,7 @@ class PandasPhenotypeDataFrame(PandasDataFrame,PhenotypeDataFrame):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PandasPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PandasPhenotypeDataFrame. Otherwise raise TypeError.

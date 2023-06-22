@@ -702,9 +702,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DensePhasedMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.

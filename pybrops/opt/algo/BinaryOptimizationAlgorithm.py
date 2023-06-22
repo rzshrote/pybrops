@@ -52,9 +52,7 @@ class BinaryOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BinaryOptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type BinaryOptimizationAlgorithm. Otherwise raise TypeError.

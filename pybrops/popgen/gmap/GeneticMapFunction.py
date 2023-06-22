@@ -207,9 +207,7 @@ class GeneticMapFunction:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GeneticMapFunction(v: object, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):

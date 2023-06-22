@@ -261,9 +261,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingValueMatrix. Otherwise raise TypeError.

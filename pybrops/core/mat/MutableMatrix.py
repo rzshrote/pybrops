@@ -107,9 +107,7 @@ class MutableMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_MutableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.

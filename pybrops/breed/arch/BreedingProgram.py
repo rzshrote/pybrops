@@ -212,9 +212,7 @@ class BreedingProgram(BreedingNode):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingProgram(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingProgram. Otherwise raise TypeError.

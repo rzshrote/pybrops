@@ -144,9 +144,7 @@ class BinaryProblem(Problem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BinaryProblem(v: object, vname: str) -> None:
     """
     Check if object is of type BinaryProblem, otherwise raise TypeError.

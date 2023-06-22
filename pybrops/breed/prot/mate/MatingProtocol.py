@@ -84,9 +84,7 @@ class MatingProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_MatingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type MatingProtocol. Otherwise raise TypeError.

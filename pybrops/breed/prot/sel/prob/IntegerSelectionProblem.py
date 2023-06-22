@@ -164,9 +164,7 @@ class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_IntegerSelectionProblem(v: object, vname: str) -> None:
     """
     Check if object is of type IntegerSelectionProblem, otherwise raise TypeError.

@@ -35,9 +35,7 @@ class NonlinearGenomicModel(GenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_NonlinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type NonlinearGenomicModel. Otherwise raise TypeError.

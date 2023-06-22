@@ -75,9 +75,7 @@ class EvaluationOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_EvaluationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EvaluationOperator. Otherwise raise TypeError.

@@ -92,9 +92,7 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GenicVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenicVarianceMatrix``. Otherwise raise ``TypeError``.

@@ -69,9 +69,7 @@ class UnconstrainedOptimizationAlgorithm:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_OptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type OptimizationAlgorithm. Otherwise raise TypeError.

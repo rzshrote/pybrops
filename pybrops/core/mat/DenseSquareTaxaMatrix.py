@@ -1151,9 +1151,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseSquareTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseSquareTaxaMatrix. Otherwise raise TypeError.

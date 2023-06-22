@@ -260,9 +260,7 @@ class ThreeWayDHCross(MatingProtocol):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_ThreeWayDHCross(v: object, vname: str) -> None:
     """
     Check if object is of type ThreeWayDHCross. Otherwise raise TypeError.

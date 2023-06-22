@@ -332,9 +332,7 @@ class TraitMatrix(SortableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_TraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TraitMatrix. Otherwise raise TypeError.

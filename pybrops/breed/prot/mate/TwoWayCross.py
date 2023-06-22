@@ -243,9 +243,7 @@ class TwoWayCross(MatingProtocol):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_TwoWayCross(v: object, vname: str) -> None:
     """
     Check if object is of type TwoWayCross. Otherwise raise TypeError.

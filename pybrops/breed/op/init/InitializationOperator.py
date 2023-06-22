@@ -61,9 +61,7 @@ class InitializationOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_InitializationOperator(v: object, vname: str):
     """
     Check if object is of type InitializationOperator. Otherwise raise TypeError.

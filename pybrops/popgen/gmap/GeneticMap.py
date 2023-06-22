@@ -586,9 +586,7 @@ class GeneticMap:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMap. Otherwise raise TypeError.

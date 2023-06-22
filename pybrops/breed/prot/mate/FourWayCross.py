@@ -226,9 +226,7 @@ class FourWayCross(MatingProtocol):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_FourWayCross(v: object, vname: str) -> None:
     if not isinstance(v, FourWayCross):
         raise TypeError("'%s' must be a FourWayCross." % vname)

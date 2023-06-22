@@ -93,9 +93,7 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_AdditiveLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.

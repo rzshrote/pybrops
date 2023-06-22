@@ -164,9 +164,7 @@ class BinarySelectionProblem(BinaryProblem,SelectionProblem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BinarySelectionProblem(v: object, vname: str) -> None:
     """
     Check if object is of type BinarySelectionProblem, otherwise raise TypeError.

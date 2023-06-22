@@ -256,9 +256,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a HaplotypeMatrix"""
     if not isinstance(v, HaplotypeMatrix):

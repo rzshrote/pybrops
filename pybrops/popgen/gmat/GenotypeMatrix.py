@@ -294,9 +294,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenotypeMatrix``. Otherwise raise ``TypeError``.

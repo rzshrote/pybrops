@@ -109,9 +109,7 @@ class SubsetSolution(Solution):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SubsetSolution(v: object, vname: str) -> None:
     """
     Check if object is of type SubsetSolution, otherwise raise TypeError.

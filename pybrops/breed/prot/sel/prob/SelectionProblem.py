@@ -279,9 +279,7 @@ class SelectionProblem(Problem,metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SelectionProblem(v: object, vname: str) -> None:
     """
     Check if object is of type SelectionProblem, otherwise raise TypeError.

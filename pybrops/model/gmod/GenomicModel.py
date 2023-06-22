@@ -798,9 +798,7 @@ class GenomicModel(HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type GenomicModel. Otherwise raise TypeError.

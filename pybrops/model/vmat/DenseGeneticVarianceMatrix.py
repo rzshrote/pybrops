@@ -80,9 +80,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGeneticVarianceMatrix``. Otherwise raise ``TypeError``.

@@ -55,9 +55,7 @@ class CoancestryMatrixFactory:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_CoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryMatrixFactory. Otherwise raise TypeError.

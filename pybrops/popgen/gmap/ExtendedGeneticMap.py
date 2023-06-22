@@ -1308,9 +1308,7 @@ class ExtendedGeneticMap(GeneticMap):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_ExtendedGeneticMap(v: object, vname: str) -> None:
     if not isinstance(v, ExtendedGeneticMap):
         raise TypeError("'%s' must be an ExtendedGeneticMap." % vname)

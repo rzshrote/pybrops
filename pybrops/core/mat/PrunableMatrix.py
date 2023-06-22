@@ -64,9 +64,7 @@ class PrunableMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PrunableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PrunableMatrix. Otherwise raise TypeError.

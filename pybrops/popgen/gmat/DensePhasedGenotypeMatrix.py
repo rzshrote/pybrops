@@ -628,9 +628,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DensePhasedGenotypeMatrix(v: object, vname: str) -> None:
     if not isinstance(v, DensePhasedGenotypeMatrix):
         raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(vname))

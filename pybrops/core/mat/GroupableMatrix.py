@@ -84,9 +84,7 @@ class GroupableMatrix(SortableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GroupableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GroupableMatrix. Otherwise raise TypeError.

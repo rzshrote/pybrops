@@ -93,9 +93,7 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_CoancestryLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.

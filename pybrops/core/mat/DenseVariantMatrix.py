@@ -1930,9 +1930,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVariantMatrix. Otherwise raise TypeError.

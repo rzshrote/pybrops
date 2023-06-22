@@ -154,9 +154,7 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseGeneralizedWeightedCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGeneralizedWeightedCoancestryMatrix``. Otherwise raise ``TypeError``.

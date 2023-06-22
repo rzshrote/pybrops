@@ -53,9 +53,7 @@ class GenotypingProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GenotypingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type GenotypingProtocol. Otherwise raise TypeError.

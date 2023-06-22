@@ -997,9 +997,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.

@@ -262,9 +262,7 @@ class DictPhenotypeDataFrame(DictDataFrame,PhenotypeDataFrame):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DictPhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DictPhenotypeDataFrame. Otherwise raise TypeError.

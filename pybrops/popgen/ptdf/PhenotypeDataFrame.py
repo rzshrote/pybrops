@@ -46,9 +46,7 @@ class PhenotypeDataFrame(DataFrame):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PhenotypeDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type PhenotypeDataFrame. Otherwise raise TypeError.

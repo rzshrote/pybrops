@@ -37,9 +37,7 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_TaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaVariantMatrix. Otherwise raise TypeError.

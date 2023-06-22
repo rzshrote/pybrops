@@ -132,9 +132,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseDihybridDHAdditiveGeneticVarianceMatrixFactory``. Otherwise raise ``TypeError``.

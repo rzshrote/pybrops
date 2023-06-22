@@ -52,9 +52,7 @@ class SubsetOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SubsetOptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type SubsetOptimizationAlgorithm. Otherwise raise TypeError.

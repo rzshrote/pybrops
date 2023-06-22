@@ -829,9 +829,7 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DensePhasedTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedTaxaVariantMatrix. Otherwise raise TypeError.

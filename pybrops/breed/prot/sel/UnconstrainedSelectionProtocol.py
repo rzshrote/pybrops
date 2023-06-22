@@ -265,9 +265,7 @@ class UnconstrainedSelectionProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SelectionProtocol(v: object, vname: str) -> None:
     if not isinstance(v, UnconstrainedSelectionProtocol):
         raise TypeError("variable '{0}' must be a SelectionProtocol".format(vname))

@@ -65,9 +65,7 @@ class DenseYangCoancestryMatrixFactory(CoancestryMatrixFactory):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseYangCoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type DenseYangCoancestryMatrixFactory. Otherwise raise TypeError.

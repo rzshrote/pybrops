@@ -127,9 +127,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseGeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGeneticMappableMatrix. Otherwise raise TypeError.

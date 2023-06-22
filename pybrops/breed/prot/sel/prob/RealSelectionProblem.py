@@ -164,9 +164,7 @@ class RealSelectionProblem(RealProblem,SelectionProblem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_RealSelectionProblem(v: object, vname: str) -> None:
     """
     Check if object is of type RealSelectionProblem, otherwise raise TypeError.

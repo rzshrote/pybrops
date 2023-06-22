@@ -165,9 +165,7 @@ class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SubsetSelectionProblem(v: object, vname: str) -> None:
     """
     Check if object is of type SubsetSelectionProblem, otherwise raise TypeError.

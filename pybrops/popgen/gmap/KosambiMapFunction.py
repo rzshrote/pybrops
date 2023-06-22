@@ -216,9 +216,7 @@ class KosambiMapFunction(GeneticMapFunction):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_KosambiMapFunction(v: object, vname: str) -> None:
     """
     Check if object is of type KosambiMapFunction. Otherwise raise TypeError.

@@ -52,9 +52,7 @@ class IntegerOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_IntegerOptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type IntegerOptimizationAlgorithm. Otherwise raise TypeError.

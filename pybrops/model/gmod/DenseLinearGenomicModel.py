@@ -1318,9 +1318,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type DenseLinearGenomicModel. Otherwise raise TypeError.

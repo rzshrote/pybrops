@@ -265,9 +265,7 @@ class FourWayDHCross(MatingProtocol):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_FourWayDHCross(v: object, vname: str) -> None:
     """
     Check if object is of type FourWayDHCross. Otherwise raise TypeError.

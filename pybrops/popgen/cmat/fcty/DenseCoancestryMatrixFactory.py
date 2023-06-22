@@ -59,9 +59,7 @@ class DenseCoancestryMatrixFactory(CoancestryMatrixFactory):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseCoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type DenseCoancestryMatrixFactory. Otherwise raise TypeError.

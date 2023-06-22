@@ -37,9 +37,7 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_TaxaTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaTraitMatrix. Otherwise raise TypeError.

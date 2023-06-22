@@ -86,9 +86,7 @@ class HDF5InputOutput:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_HDF5InputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.

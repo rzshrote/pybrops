@@ -117,9 +117,7 @@ class RealSolution(Solution):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_RealSolution(v: object, vname: str) -> None:
     """
     Check if object is of type RealSolution, otherwise raise TypeError.

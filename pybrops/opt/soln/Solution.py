@@ -259,9 +259,7 @@ class Solution(metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_Solution(v: object, vname: str) -> None:
     """
     Check if object is of type Solution, otherwise raise TypeError.

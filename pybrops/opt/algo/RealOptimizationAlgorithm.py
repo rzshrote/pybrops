@@ -52,9 +52,7 @@ class RealOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_RealOptimizationAlgorithm(v: object, vname: str) -> None:
     """
     Check if object is of type RealOptimizationAlgorithm. Otherwise raise TypeError.

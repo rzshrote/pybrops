@@ -75,9 +75,7 @@ class SurvivorSelectionOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.

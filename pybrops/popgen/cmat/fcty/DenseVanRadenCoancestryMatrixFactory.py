@@ -64,9 +64,7 @@ class DenseVanRadenCoancestryMatrixFactory(CoancestryMatrixFactory):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseVanRadenCoancestryMatrixFactory(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVanRadenCoancestryMatrixFactory. Otherwise raise TypeError.

@@ -140,9 +140,7 @@ class IntegerProblem(Problem):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_IntegerProblem(v: object, vname: str) -> None:
     """
     Check if object is of type IntegerProblem, otherwise raise TypeError.

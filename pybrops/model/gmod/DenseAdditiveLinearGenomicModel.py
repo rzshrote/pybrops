@@ -1643,9 +1643,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseAdditiveLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type DenseAdditiveLinearGenomicModel. Otherwise raise TypeError.

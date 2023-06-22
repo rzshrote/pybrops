@@ -623,9 +623,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.

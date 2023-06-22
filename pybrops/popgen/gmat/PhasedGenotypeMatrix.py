@@ -40,9 +40,7 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PhasedGenotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedGenotypeMatrix"""
     if not isinstance(v, PhasedGenotypeMatrix):

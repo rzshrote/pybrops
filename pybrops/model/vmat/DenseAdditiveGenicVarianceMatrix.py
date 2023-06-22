@@ -55,9 +55,7 @@ class DenseAdditiveGenicVarianceMatrix(DenseGenicVarianceMatrix,AdditiveGenicVar
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseAdditiveGenicVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGenicVarianceMatrix``. Otherwise raise ``TypeError``.

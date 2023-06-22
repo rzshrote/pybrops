@@ -219,9 +219,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseVanRadenCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVanRadenCoancestryMatrix. Otherwise raise TypeError.

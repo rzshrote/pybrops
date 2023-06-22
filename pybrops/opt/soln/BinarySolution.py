@@ -124,9 +124,7 @@ class BinarySolution(Solution):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BinarySolution(v: object, vname: str) -> None:
     """
     Check if object is of type BinarySolution, otherwise raise TypeError.

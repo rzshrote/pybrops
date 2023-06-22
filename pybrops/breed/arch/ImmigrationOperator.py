@@ -60,9 +60,7 @@ class ImmigrationOperator(BreedingEdge):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_ImmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ImmigrationOperator. Otherwise raise TypeError.

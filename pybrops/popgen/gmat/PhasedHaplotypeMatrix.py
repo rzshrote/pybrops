@@ -38,9 +38,7 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PhasedHaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a PhasedHaplotypeMatrix"""
     if not isinstance(v, PhasedHaplotypeMatrix):

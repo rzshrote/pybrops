@@ -333,9 +333,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_CoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryMatrix. Otherwise raise TypeError.

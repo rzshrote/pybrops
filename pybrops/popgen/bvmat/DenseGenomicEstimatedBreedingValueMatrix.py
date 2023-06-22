@@ -84,9 +84,7 @@ class DenseGenomicEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
             **kwargs
         )
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseGenomicEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGenomicEstimatedBreedingValueMatrix. Otherwise raise TypeError.

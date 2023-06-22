@@ -230,9 +230,7 @@ class PandasDataFrame(DataFrame):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_PandasDataFrame(v: object, vname: str) -> None:
     if not isinstance(v, PandasDataFrame):
         raise TypeError("variable '{0}' must be a PandasDataFrame".format(vname))

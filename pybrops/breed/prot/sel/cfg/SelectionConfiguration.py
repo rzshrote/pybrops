@@ -103,3 +103,19 @@ class SelectionConfiguration(metaclass=ABCMeta):
     ############################## Class Methods ###############################
 
     ############################## Static Methods ##############################
+
+
+################################## Utilities ###################################
+def check_is_SelectionConfiguration(v: object, vname: str) -> None:
+    """
+    Check if object is of type SelectionConfiguration, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, SelectionConfiguration):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,SelectionConfiguration.__name__,type(v).__name__))

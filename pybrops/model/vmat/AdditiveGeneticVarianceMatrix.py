@@ -93,9 +93,7 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_AdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.

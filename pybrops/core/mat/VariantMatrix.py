@@ -604,9 +604,7 @@ class VariantMatrix(GroupableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_VariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type VariantMatrix. Otherwise raise TypeError.

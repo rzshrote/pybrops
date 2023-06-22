@@ -56,9 +56,7 @@ class BreedingValueProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_BreedingValueProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingValueProtocol. Otherwise raise TypeError.

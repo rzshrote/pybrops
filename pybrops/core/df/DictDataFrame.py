@@ -365,9 +365,7 @@ class DictDataFrame(DataFrame):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DictDataFrame(v: object, vname: str) -> None:
     """
     Check if object is of type DictDataFrame. Otherwise raise TypeError.

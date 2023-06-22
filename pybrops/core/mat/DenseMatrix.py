@@ -638,9 +638,7 @@ class DenseMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMatrix. Otherwise raise TypeError.

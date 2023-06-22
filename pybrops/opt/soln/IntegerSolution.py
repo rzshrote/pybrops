@@ -116,9 +116,7 @@ class IntegerSolution(Solution):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_IntegerSolution(v: object, vname: str) -> None:
     """
     Check if object is of type IntegerSolution, otherwise raise TypeError.

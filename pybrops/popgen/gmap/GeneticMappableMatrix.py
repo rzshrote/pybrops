@@ -80,9 +80,7 @@ class GeneticMappableMatrix(VariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_GeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMappableMatrix. Otherwise raise TypeError.

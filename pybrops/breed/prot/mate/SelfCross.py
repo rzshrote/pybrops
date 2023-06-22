@@ -231,9 +231,7 @@ class SelfCross(MatingProtocol):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_SelfCross(v: object, vname: str) -> None:
     """
     Check if object is of type SelfCross. Otherwise raise TypeError.

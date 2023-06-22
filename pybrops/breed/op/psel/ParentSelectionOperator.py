@@ -76,9 +76,7 @@ class ParentSelectionOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_ParentSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ParentSelectionOperator. Otherwise raise TypeError.

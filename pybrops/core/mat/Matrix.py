@@ -598,9 +598,7 @@ class Matrix(HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_Matrix(v: object, vname: str) -> None:
     """
     Check if object is of type Matrix. Otherwise raise TypeError.

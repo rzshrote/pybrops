@@ -1055,9 +1055,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
 def check_is_DenseTaxaTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTaxaTraitMatrix. Otherwise raise TypeError.
