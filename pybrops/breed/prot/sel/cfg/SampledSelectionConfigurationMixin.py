@@ -18,6 +18,7 @@ class SampledSelectionConfigurationMixin(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
+    # __init__ cannot be defined since this is a mixin class
 
     ############################ Object Properties #############################
     @property
@@ -44,7 +45,7 @@ class SampledSelectionConfigurationMixin(metaclass=ABCMeta):
 
     ############################## Object Methods ##############################
     @abstractmethod
-    def sample_xconfig(self, return_xconfig: bool):
+    def sample_xconfig(self, return_xconfig: bool) -> Union[numpy.ndarray,None]:
         """
         Sample a cross configuration from the decision vector and set it as the
         ``xconfig`` value.

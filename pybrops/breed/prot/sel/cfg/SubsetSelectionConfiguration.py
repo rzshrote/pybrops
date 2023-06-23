@@ -76,7 +76,7 @@ class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionC
     ############################## Object Methods ##############################
     def sample_xconfig(
             self, 
-            return_xconfig: bool = True
+            return_xconfig: bool = False
         ) -> Union[numpy.ndarray,None]:
         """
         Sample a cross configuration from the decision vector and set it as the

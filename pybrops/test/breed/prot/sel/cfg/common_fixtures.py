@@ -3,6 +3,7 @@ import numpy
 import pytest
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.random.prng import global_prng
 
 @pytest.fixture
 def common_ncross():
@@ -24,6 +25,10 @@ def common_nprogeny():
 @pytest.fixture
 def common_ntaxa():
     yield 200 # must be divisible by 4
+
+@pytest.fixture
+def common_nconfig(common_ntaxa):
+    yield (common_ntaxa * (common_ntaxa - 1)) // 2
 
 @pytest.fixture
 def common_nvrnt():
@@ -164,4 +169,44 @@ def common_pgmat(
 @pytest.fixture
 def common_xconfig(common_ncross, common_nparent, common_ntaxa):
     out = numpy.random.randint(0, common_ntaxa, (common_ncross, common_nparent))
+    yield out
+
+@pytest.fixture
+def common_xconfig_xmap(common_nconfig, common_nparent, common_ntaxa):
+    out = numpy.random.randint(0, common_ntaxa, (common_nconfig, common_nparent))
+    yield out
+
+################# SampledSelectionConfigurationMixin fixtures ##################
+@pytest.fixture
+def common_xconfig_decn_generic(common_ntaxa):
+    out = numpy.random.random(common_ntaxa)
+    yield out
+
+@pytest.fixture
+def common_rng():
+    yield global_prng
+
+@pytest.fixture
+def common_xconfig_decn_subset(common_ntaxa):
+    out = numpy.random.choice(common_ntaxa, common_ntaxa // 4, replace = False)
+    yield out
+
+@pytest.fixture
+def common_xconfig_decn_bool(common_nconfig):
+    out = numpy.random.binomial(1, 0.5, common_nconfig).astype(bool)
+    yield out
+
+@pytest.fixture
+def common_xconfig_decn_binary(common_nconfig):
+    out = numpy.random.binomial(1, 0.5, common_nconfig)
+    yield out
+
+@pytest.fixture
+def common_xconfig_decn_integer(common_ntaxa, common_nconfig):
+    out = numpy.random.randint(0, common_ntaxa, common_nconfig)
+    yield out
+
+@pytest.fixture
+def common_xconfig_decn_real(common_nconfig):
+    out = numpy.random.random(common_nconfig)
     yield out

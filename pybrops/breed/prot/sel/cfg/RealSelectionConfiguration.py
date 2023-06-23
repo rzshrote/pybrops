@@ -117,23 +117,3 @@ class RealSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionCon
     ############################## Class Methods ###############################
 
     ############################## Static Methods ##############################
-
-
-# get quotient and remainder
-nsample = 17
-ndecn = 5
-xconfig_decn = numpy.arange(5)
-
-# create output vector
-out = numpy.empty(nsample, dtype = int)
-
-qu, re = divmod(nsample, ndecn)
-
-# fill the decisions
-for i in range(qu):
-    out[(i*ndecn):((i+1)*ndecn)] = xconfig_decn
-
-out[(qu*ndecn):] = numpy.random.choice(xconfig_decn, re, replace = False)
-
-# shuffle the decisions
-numpy.random.shuffle(out)

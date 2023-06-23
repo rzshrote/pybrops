@@ -10,7 +10,7 @@ import numpy
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
@@ -54,11 +54,16 @@ class SelectionConfiguration(metaclass=ABCMeta):
     def nmating(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of times an individual cross configuration is executed."""
         if isinstance(value, Integral):
+            check_is_gt(value, "nmating", 0)
             value = numpy.repeat(value, self.ncross)
         elif isinstance(value, numpy.ndarray):
-            check_ndarray_dtype_is_integer(value, "nmating")
+            pass
         else:
-            raise TypeError("variable 'nmating' must be of type '{0}' but received type '{1}'".format(Integral.__name__,type(value).__name__))
+            raise TypeError("variable 'nmating' must be of type '{0}' or '{1}' but received type '{2}'".format(Integral.__name__,numpy.ndarray.__name__,type(value).__name__))
+        check_ndarray_ndim(value, "nmating", 1)
+        check_ndarray_len_eq(value, "nmating", self.ncross)
+        check_ndarray_dtype_is_integer(value, "nmating")
+        check_ndarray_all_gt(value, "nmating", 0)
         self._nmating = value
     
     @property
@@ -69,11 +74,16 @@ class SelectionConfiguration(metaclass=ABCMeta):
     def nprogeny(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of progeny to derive from a mating event."""
         if isinstance(value, Integral):
+            check_is_gt(value, "nprogeny", 0)
             value = numpy.repeat(value, self.ncross)
         elif isinstance(value, numpy.ndarray):
-            check_ndarray_dtype_is_integer(value, "nprogeny")
+            pass
         else:
-            raise TypeError("variable 'nprogeny' must be of type '{0}' but received type '{1}'".format(Integral.__name__,type(value).__name__))
+            raise TypeError("variable 'nprogeny' must be of type '{0}' or '{1}' but received type '{2}'".format(Integral.__name__,numpy.ndarray.__name__,type(value).__name__))
+        check_ndarray_ndim(value, "nprogeny", 1)
+        check_ndarray_len_eq(value, "nprogeny", self.ncross)
+        check_ndarray_dtype_is_integer(value, "nprogeny")
+        check_ndarray_all_gt(value, "nprogeny", 0)
         self._nprogeny = value
 
     @property
@@ -103,6 +113,7 @@ class SelectionConfiguration(metaclass=ABCMeta):
     ############################## Class Methods ###############################
 
     ############################## Static Methods ##############################
+
 
 
 ################################## Utilities ###################################
