@@ -30,3 +30,20 @@ class MateSelectionSolution(SelectionSolution,metaclass=ABCMeta):
         check_ndarray_ndim(value, "decn_space_xmap", 2)
         check_ndarray_dtype_is_integer(value, "decn_space_xmap")
         self._decn_space_xmap = value
+
+
+
+################################## Utilities ###################################
+def check_is_MateSelectionSolution(v: object, vname: str) -> None:
+    """
+    Check if object is of type MateSelectionSolution, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, MateSelectionSolution):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,MateSelectionSolution.__name__,type(v).__name__))

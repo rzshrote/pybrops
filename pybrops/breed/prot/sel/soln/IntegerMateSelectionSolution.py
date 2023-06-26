@@ -63,3 +63,20 @@ class IntegerMateSelectionSolution(IntegerSelectionSolution,MateSelectionSolutio
         )
         # order dependent assignments
         self.decn_space_xmap = decn_space_xmap
+
+
+
+################################## Utilities ###################################
+def check_is_IntegerMateSelectionSolution(v: object, vname: str) -> None:
+    """
+    Check if object is of type IntegerMateSelectionSolution, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, IntegerMateSelectionSolution):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,IntegerMateSelectionSolution.__name__,type(v).__name__))

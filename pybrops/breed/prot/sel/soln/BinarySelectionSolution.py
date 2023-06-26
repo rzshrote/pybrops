@@ -11,3 +11,20 @@ class BinarySelectionSolution(BinarySolution,SelectionSolution):
     """
     # use implementation from BinarySolution
     pass
+
+
+
+################################## Utilities ###################################
+def check_is_BinarySelectionSolution(v: object, vname: str) -> None:
+    """
+    Check if object is of type BinarySelectionSolution, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, BinarySelectionSolution):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,BinarySelectionSolution.__name__,type(v).__name__))

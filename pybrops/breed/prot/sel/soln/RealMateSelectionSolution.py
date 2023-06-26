@@ -63,3 +63,20 @@ class RealMateSelectionSolution(RealSelectionSolution,MateSelectionSolution):
         )
         # order dependent assignments
         self.decn_space_xmap = decn_space_xmap
+
+
+
+################################## Utilities ###################################
+def check_is_RealMateSelectionSolution(v: object, vname: str) -> None:
+    """
+    Check if object is of type RealMateSelectionSolution, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, RealMateSelectionSolution):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,RealMateSelectionSolution.__name__,type(v).__name__))
