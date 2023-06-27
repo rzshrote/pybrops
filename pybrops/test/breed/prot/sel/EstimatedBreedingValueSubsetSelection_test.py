@@ -1,243 +1,131 @@
-import numpy
 import pytest
-from numpy.random import Generator
-from numpy.random import PCG64
 from matplotlib import pyplot
 from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueSubsetSelection
+from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
-
-from pybrops.test.assert_python import not_raises
+from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
+from pybrops.test.breed.prot.sel.common_fixtures_large import *
 from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
 
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
-from pybrops.breed.prot.sel.prob.trans import trans_ndpt_to_vec_dist
-from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueSubsetSelectionProblem
 
-numpy.random.seed(20230608)
-
-################################################################################
 ################################ Test fixtures #################################
-################################################################################
-@pytest.fixture
-def ntaxa():
-    yield 4*50
 
 @pytest.fixture
-def nvrnt():
-    yield 1000
-
-@pytest.fixture
-def ntrait():
-    yield 2
-
-############################################################
-######################## Genotypes #########################
-############################################################
-@pytest.fixture
-def pgmat(ntaxa, nvrnt):
-    mat = numpy.random.binomial(1, 0.1, (2,ntaxa,nvrnt)).astype('int8')
-    vrnt_chrgrp = numpy.repeat([1,2], nvrnt // 2)
-    vrnt_phypos = numpy.arange(1,nvrnt+1)
-    vrnt_genpos = numpy.random.random(nvrnt)
-    taxa = numpy.array(["Taxa"+str(i).zfill(3) for i in range(1,ntaxa+1)], dtype=object)
-    taxa_grp = numpy.repeat([1,2,3,4], ntaxa // 4)
-    out = DensePhasedGenotypeMatrix(
-        mat = mat,
-        vrnt_chrgrp = vrnt_chrgrp,
-        vrnt_phypos = vrnt_phypos,
-        vrnt_genpos = vrnt_genpos,
-        taxa = taxa,
-        taxa_grp = taxa_grp
+def selprot_single(
+        common_ntrait,
+        common_ncross,
+        common_nparent,
+        common_nmating,
+        common_nprogeny,
+        common_nobj_single,
+        common_obj_wt_single,
+        common_obj_trans_single,
+        common_obj_trans_kwargs_single,
+        common_nineqcv_single,
+        common_ineqcv_wt_single,
+        common_ineqcv_trans_single,
+        common_ineqcv_trans_kwargs_single,
+        common_neqcv_single,
+        common_eqcv_wt_single,
+        common_eqcv_trans_single,
+        common_eqcv_trans_kwargs_single,
+        common_ndset_wt_single,
+        common_ndset_trans_single,
+        common_ndset_trans_kwargs_single,
+        common_rng,
+        common_soalgo,
+        common_moalgo
+    ):
+    out = EstimatedBreedingValueSubsetSelection(
+        ntrait = common_ntrait,
+        ncross = common_ncross,
+        nparent = common_nparent,
+        nmating = common_nmating,
+        nprogeny = common_nprogeny,
+        nobj = common_nobj_single,
+        obj_wt = common_obj_wt_single,
+        obj_trans = common_obj_trans_single,
+        obj_trans_kwargs = common_obj_trans_kwargs_single,
+        nineqcv = common_nineqcv_single,
+        ineqcv_wt = common_ineqcv_wt_single,
+        ineqcv_trans = common_ineqcv_trans_single,
+        ineqcv_trans_kwargs = common_ineqcv_trans_kwargs_single,
+        neqcv = common_neqcv_single,
+        eqcv_wt = common_eqcv_wt_single,
+        eqcv_trans = common_eqcv_trans_single,
+        eqcv_trans_kwargs = common_eqcv_trans_kwargs_single,
+        ndset_wt = common_ndset_wt_single,
+        ndset_trans = common_ndset_trans_single,
+        ndset_trans_kwargs = common_ndset_trans_kwargs_single,
+        rng = common_rng,
+        soalgo = common_soalgo,
+        moalgo = common_moalgo
     )
-    out.group()
     yield out
 
 @pytest.fixture
-def gmat(pgmat):
-    dugt = DenseUnphasedGenotyping()
-    out = dugt.genotype(pgmat)
+def selprot_multi(
+        common_ntrait,
+        common_ncross,
+        common_nparent,
+        common_nmating,
+        common_nprogeny,
+        common_nobj_multi,
+        common_obj_wt_multi,
+        common_obj_trans_multi,
+        common_obj_trans_kwargs_multi,
+        common_nineqcv_multi,
+        common_ineqcv_wt_multi,
+        common_ineqcv_trans_multi,
+        common_ineqcv_trans_kwargs_multi,
+        common_neqcv_multi,
+        common_eqcv_wt_multi,
+        common_eqcv_trans_multi,
+        common_eqcv_trans_kwargs_multi,
+        common_ndset_wt_multi,
+        common_ndset_trans_multi,
+        common_ndset_trans_kwargs_multi,
+        common_rng,
+        common_soalgo,
+        common_moalgo
+    ):
+    out = EstimatedBreedingValueSubsetSelection(
+        ntrait = common_ntrait,
+        ncross = common_ncross,
+        nparent = common_nparent,
+        nmating = common_nmating,
+        nprogeny = common_nprogeny,
+        nobj = common_nobj_multi,
+        obj_wt = common_obj_wt_multi,
+        obj_trans = common_obj_trans_multi,
+        obj_trans_kwargs = common_obj_trans_kwargs_multi,
+        nineqcv = common_nineqcv_multi,
+        ineqcv_wt = common_ineqcv_wt_multi,
+        ineqcv_trans = common_ineqcv_trans_multi,
+        ineqcv_trans_kwargs = common_ineqcv_trans_kwargs_multi,
+        neqcv = common_neqcv_multi,
+        eqcv_wt = common_eqcv_wt_multi,
+        eqcv_trans = common_eqcv_trans_multi,
+        eqcv_trans_kwargs = common_eqcv_trans_kwargs_multi,
+        ndset_wt = common_ndset_wt_multi,
+        ndset_trans = common_ndset_trans_multi,
+        ndset_trans_kwargs = common_ndset_trans_kwargs_multi,
+        rng = common_rng,
+        soalgo = common_soalgo,
+        moalgo = common_moalgo
+    )
     yield out
 
-############################################################
-###################### Genomic model #######################
-############################################################
-@pytest.fixture
-def algmod(nvrnt, ntrait):
-    beta = numpy.random.uniform(10, 30, (1,ntrait))
-    u_misc = None
-    u_a = numpy.random.normal(0, 1, (nvrnt,ntrait))
-    trait = numpy.array(["Trait"+str(i).zfill(2) for i in range(1,ntrait+1)], dtype=object)
-    model_name = "test_dalgmod"
-    params = {"a" : 0, "b" : 1}
-    yield DenseAdditiveLinearGenomicModel(
-        beta = beta,
-        u_misc = u_misc,
-        u_a = u_a,
-        trait = trait,
-        model_name = model_name,
-        params = params
-    )
-
-############################################################
-################## Breeding values model ###################
-############################################################
-@pytest.fixture
-def bvmat(algmod, gmat):
-    yield algmod.gebv(gmat)
-
-############################################################
-######### EstimatedBreedingValueSubsetSelection ##########
-############################################################
-@pytest.fixture
-def ncross():
-    yield 5
-
-@pytest.fixture
-def nparent():
-    yield 2
-
-@pytest.fixture
-def nmating():
-    yield 1
-
-@pytest.fixture
-def nprogeny():
-    yield 10
-
-@pytest.fixture
-def nobj():
-    yield 2
-
-@pytest.fixture
-def obj_wt():
-    yield numpy.array([1,-1], dtype=float)
-
-@pytest.fixture
-def obj_trans():
-    yield None
-
-@pytest.fixture
-def obj_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def nineqcv():
-    yield 0
-
-@pytest.fixture
-def ineqcv_wt():
-    yield numpy.array([], dtype=float)
-
-@pytest.fixture
-def ineqcv_trans():
-    yield None
-
-@pytest.fixture
-def ineqcv_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def neqcv():
-    yield 0
-
-@pytest.fixture
-def eqcv_wt():
-    yield numpy.array([], dtype=float)
-
-@pytest.fixture
-def eqcv_trans():
-    yield None
-
-@pytest.fixture
-def eqcv_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def ndset_wt():
-    yield -1.0
-
-@pytest.fixture
-def ndset_trans():
-    yield trans_ndpt_to_vec_dist
-
-@pytest.fixture
-def ndset_trans_kwargs(obj_wt):
-    yield {"obj_wt": obj_wt, "vec_wt": numpy.array([0.5,0.5])}
-
-@pytest.fixture
-def method():
-    yield "single"
-
-@pytest.fixture
-def rng():
-    yield Generator(PCG64(192837465))
-
-@pytest.fixture
-def soalgo():
-    yield None
-
-@pytest.fixture
-def moalgo():
-    yield None
-
-@pytest.fixture
-def selprot(
-    ntrait, ncross, nparent, nmating, nprogeny,
-    nobj, obj_wt, obj_trans, obj_trans_kwargs, 
-    nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
-    neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs, 
-    ndset_wt, ndset_trans,  ndset_trans_kwargs, 
-    rng, soalgo, moalgo
-):
-    yield EstimatedBreedingValueSubsetSelection(
-        ntrait = ntrait,
-        ncross = ncross,
-        nparent = nparent,
-        nmating = nmating,
-        nprogeny = nprogeny,
-        nobj = nobj,
-        obj_wt = obj_wt,
-        obj_trans = obj_trans,
-        obj_trans_kwargs = obj_trans_kwargs,
-        nineqcv = nineqcv,
-        ineqcv_wt = ineqcv_wt,
-        ineqcv_trans = ineqcv_trans,
-        ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-        neqcv = neqcv,
-        eqcv_wt = eqcv_wt,
-        eqcv_trans = eqcv_trans,
-        eqcv_trans_kwargs = eqcv_trans_kwargs,
-        ndset_wt = ndset_wt,
-        ndset_trans = ndset_trans, 
-        ndset_trans_kwargs = ndset_trans_kwargs, 
-        rng = rng, 
-        soalgo = soalgo,
-        moalgo = moalgo
-    )
-
-################################################################################
 ############################## Test class docstring ############################
-################################################################################
 def test_class_docstring():
     assert_docstring(EstimatedBreedingValueSubsetSelection)
 
-################################################################################
 ############################# Test concrete methods ############################
-################################################################################
 def test_init_is_concrete():
     assert_concrete_method(EstimatedBreedingValueSubsetSelection, "__init__")
 
-def test_objfn_is_concrete():
+def test_problem_is_concrete():
     assert_concrete_method(EstimatedBreedingValueSubsetSelection, "problem")
 
 def test_sosolve_is_concrete():
@@ -249,95 +137,166 @@ def test_mosolve_is_concrete():
 def test_select_is_concrete():
     assert_concrete_method(EstimatedBreedingValueSubsetSelection, "select")
 
-################################################################################
-########################## Test Class Special Methods ##########################
-################################################################################
-
-################################################################################
-############################ Test Class Properties #############################
-################################################################################
-
-################################################################################
 ###################### Test concrete method functionality ######################
-################################################################################
-
-def test_problem(selprot, pgmat, gmat, bvmat, algmod):
-    prob = selprot.problem(
-        pgmat = pgmat,
-        gmat = gmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = algmod,
-        t_cur = None,
-        t_max = None
+def test_problem(
+        selprot_single,
+        selprot_multi,
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    ):
+    # create selection problem
+    prob = selprot_single.problem(
+        pgmat = common_pgmat,
+        gmat = common_gmat,
+        ptdf = common_ptdf,
+        bvmat = common_bvmat,
+        gpmod = common_gpmod,
+        t_cur = common_t_cur,
+        t_max = common_t_max
     )
 
-    assert isinstance(prob, SelectionProblem)
+    # check that it is the right type
     assert isinstance(prob, SubsetSelectionProblem)
-    assert isinstance(prob, EstimatedBreedingValueSubsetSelectionProblem)
 
-def test_mosolve(selprot, pgmat, gmat, bvmat, algmod):
-    selprot.moalgo = NSGA2SubsetGeneticAlgorithm(
-        ngen = 250,     # number of generations to evolve
-        pop_size = 100  # number of parents in population
+    # create selection problem
+    prob = selprot_multi.problem(
+        pgmat = common_pgmat,
+        gmat = common_gmat,
+        ptdf = common_ptdf,
+        bvmat = common_bvmat,
+        gpmod = common_gpmod,
+        t_cur = common_t_cur,
+        t_max = common_t_max
     )
 
-    mosoln = selprot.mosolve(
-        pgmat = pgmat,
-        gmat = gmat,
-        ptdf = None,
-        bvmat = bvmat,
-        gpmod = algmod,
-        t_cur = 0,
-        t_max = 20
+    # check that it is the right type
+    assert isinstance(prob, SubsetSelectionProblem)
+
+def test_sosolve(
+        selprot_single,
+        selprot_multi,
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    ):
+    # solve single objective problem
+    soln = selprot_single.sosolve(
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
     )
 
-    xdata = mosoln.soln_obj[:,0]
-    ydata = mosoln.soln_obj[:,1]
-    # zdata = frontier[:,2]
+    # test for right type
+    assert isinstance(soln, SubsetSelectionSolution)
 
-    xlabel = algmod.trait[0]
-    ylabel = algmod.trait[1]
+    # make sure multi objective problem raises error
+    with pytest.raises(RuntimeError):
+        soln = selprot_multi.sosolve(
+            common_pgmat,
+            common_gmat,
+            common_ptdf,
+            common_bvmat,
+            common_gpmod,
+            common_t_cur,
+            common_t_max
+        )
 
+def test_mosolve(
+        selprot_single,
+        selprot_multi,
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    ):
+    # solve single objective problem
+    soln = selprot_multi.mosolve(
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    )
+
+    # test for right type
+    assert isinstance(soln, SubsetSelectionSolution)
+
+    # plot data
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.scatter(xdata, ydata)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
-    ax.set_title("EBV Subset Selection Test Pareto Frontier")
-    # ax = pyplot.axes(projection='3d')
-    # ax.scatter3D(xdata, ydata, zdata)
-    pyplot.savefig("EBV_Subset_2d_frontier.png", dpi = 250)
+    ax.scatter(
+        soln.soln_obj[:,0], 
+        soln.soln_obj[:,1]
+    )
+    ax.set_xlabel("Trait 1")
+    ax.set_ylabel("Trait 2")
+    ax.set_title("Random Subset Selection Test Pareto Frontier")
+    pyplot.savefig("EstimatedBreedingValueSubsetSelection_2d_frontier.png", dpi = 250)
+    pyplot.close()
 
-# def test_select_single(selprot, pgmat, gmat, bvmat, algmod):
-#     selprot.method = "single"
+    # make sure multi objective problem raises error
+    with pytest.raises(RuntimeError):
+        soln = selprot_single.mosolve(
+            common_pgmat,
+            common_gmat,
+            common_ptdf,
+            common_bvmat,
+            common_gpmod,
+            common_t_cur,
+            common_t_max
+        )
 
-#     pgmat, sel, ncross, nprogeny = selprot.select(
-#         pgmat = pgmat,
-#         gmat = gmat,
-#         ptdf = None,
-#         bvmat = bvmat,
-#         gpmod = algmod,
-#         t_cur = 0,
-#         t_max = 20,
-#         miscout = None
-#     )
+def test_select(
+        selprot_single,
+        selprot_multi,
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    ):
+    # make single-objective selections
+    selcfg_single = selprot_single.select(
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    )
 
-#     assert sel.ndim == 1
+    assert isinstance(selcfg_single, SubsetSelectionConfiguration)
 
-# def test_select_mosolve(selprot, pgmat, gmat, bvmat, algmod):
-#     selprot.method = "mosolve"
+    # make multi-objective selections
+    selcfg_multi = selprot_multi.select(
+        common_pgmat,
+        common_gmat,
+        common_ptdf,
+        common_bvmat,
+        common_gpmod,
+        common_t_cur,
+        common_t_max
+    )
 
-#     pgmat, sel, ncross, nprogeny = selprot.select(
-#         pgmat = pgmat,
-#         gmat = gmat,
-#         ptdf = None,
-#         bvmat = bvmat,
-#         gpmod = algmod,
-#         t_cur = 0,
-#         t_max = 20,
-#         miscout = None
-#     )
-
-#     assert sel.ndim == 1
-
+    assert isinstance(selcfg_multi, SubsetSelectionConfiguration)

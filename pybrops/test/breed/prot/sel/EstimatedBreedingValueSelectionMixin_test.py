@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.breed.prot.sel.RandomSelection import RandomSelectionMixin
+from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueSelectionMixin
 from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
 
 ################################ Test fixtures #################################
@@ -11,23 +11,23 @@ def ntrait():
 
 @pytest.fixture
 def selmix(ntrait):
-    out = RandomSelectionMixin()
+    out = EstimatedBreedingValueSelectionMixin()
     out.ntrait = ntrait
     yield out
 
 ################### Test class abstract/concrete properties ####################
-def test_RandomSelectionMixin_is_mixin():
-    assert_mixin_class(RandomSelectionMixin)
+def test_EstimatedBreedingValueSelectionMixin_is_mixin():
+    assert_mixin_class(EstimatedBreedingValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(RandomSelectionMixin)
+    assert_docstring(EstimatedBreedingValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
-def test_RandomSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(RandomSelectionMixin, "ntrait")
+def test_EstimatedBreedingValueSelectionMixin_ntrait_is_concrete():
+    assert_concrete_property(EstimatedBreedingValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, ntrait):
     assert selmix.ntrait == ntrait

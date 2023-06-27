@@ -1,9 +1,9 @@
 import pytest
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueBinarySelection
-from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
+from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueRealSelection
+from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionConfiguration
+from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from pybrops.test.breed.prot.sel.common_fixtures_large import *
 from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
@@ -37,7 +37,7 @@ def selprot_single(
         common_soalgo,
         common_moalgo
     ):
-    out = EstimatedBreedingValueBinarySelection(
+    out = EstimatedBreedingValueRealSelection(
         ntrait = common_ntrait,
         ncross = common_ncross,
         nparent = common_nparent,
@@ -90,7 +90,7 @@ def selprot_multi(
         common_soalgo,
         common_moalgo
     ):
-    out = EstimatedBreedingValueBinarySelection(
+    out = EstimatedBreedingValueRealSelection(
         ntrait = common_ntrait,
         ncross = common_ncross,
         nparent = common_nparent,
@@ -119,23 +119,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(EstimatedBreedingValueBinarySelection)
+    assert_docstring(EstimatedBreedingValueRealSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "__init__")
+    assert_concrete_method(EstimatedBreedingValueRealSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "problem")
+    assert_concrete_method(EstimatedBreedingValueRealSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "sosolve")
+    assert_concrete_method(EstimatedBreedingValueRealSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "mosolve")
+    assert_concrete_method(EstimatedBreedingValueRealSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "select")
+    assert_concrete_method(EstimatedBreedingValueRealSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(
@@ -161,7 +161,7 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, BinarySelectionProblem)
+    assert isinstance(prob, RealSelectionProblem)
 
     # create selection problem
     prob = selprot_multi.problem(
@@ -175,7 +175,7 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, BinarySelectionProblem)
+    assert isinstance(prob, RealSelectionProblem)
 
 def test_sosolve(
         selprot_single,
@@ -200,7 +200,7 @@ def test_sosolve(
     )
 
     # test for right type
-    assert isinstance(soln, BinarySelectionSolution)
+    assert isinstance(soln, RealSelectionSolution)
 
     # make sure multi objective problem raises error
     with pytest.raises(RuntimeError):
@@ -237,7 +237,7 @@ def test_mosolve(
     )
 
     # test for right type
-    assert isinstance(soln, BinarySelectionSolution)
+    assert isinstance(soln, RealSelectionSolution)
 
     # plot data
     fig = pyplot.figure()
@@ -248,8 +248,8 @@ def test_mosolve(
     )
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
-    ax.set_title("Random Binary Selection Test Pareto Frontier")
-    pyplot.savefig("EstimatedBreedingValueBinarySelection_2d_frontier.png", dpi = 250)
+    ax.set_title("Random Real Selection Test Pareto Frontier")
+    pyplot.savefig("EstimatedBreedingValueRealSelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error
@@ -286,7 +286,7 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_single, BinarySelectionConfiguration)
+    assert isinstance(selcfg_single, RealSelectionConfiguration)
 
     # make multi-objective selections
     selcfg_multi = selprot_multi.select(
@@ -299,4 +299,4 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_multi, BinarySelectionConfiguration)
+    assert isinstance(selcfg_multi, RealSelectionConfiguration)
