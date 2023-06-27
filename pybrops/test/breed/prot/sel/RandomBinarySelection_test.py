@@ -249,7 +249,7 @@ def test_mosolve(
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
     ax.set_title("Random Binary Selection Test Pareto Frontier")
-    pyplot.savefig("RS_Binary_2d_frontier.png", dpi = 250)
+    pyplot.savefig("RandomBinarySelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error
