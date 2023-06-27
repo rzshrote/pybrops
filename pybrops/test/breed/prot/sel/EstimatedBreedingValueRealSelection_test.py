@@ -1,3 +1,4 @@
+import os
 import pytest
 from matplotlib import pyplot
 from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueRealSelection
@@ -239,6 +240,10 @@ def test_mosolve(
     # test for right type
     assert isinstance(soln, RealSelectionSolution)
 
+    # make a directory if needed
+    if not os.path.isdir("frontier_plots"):
+        os.makedirs("frontier_plots")
+    
     # plot data
     fig = pyplot.figure()
     ax = pyplot.axes()
@@ -249,7 +254,7 @@ def test_mosolve(
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
     ax.set_title("Random Real Selection Test Pareto Frontier")
-    pyplot.savefig("EstimatedBreedingValueRealSelection_2d_frontier.png", dpi = 250)
+    pyplot.savefig("frontier_plots/EstimatedBreedingValueRealSelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error

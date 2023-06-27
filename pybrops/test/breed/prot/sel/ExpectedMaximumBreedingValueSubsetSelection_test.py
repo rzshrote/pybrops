@@ -1,7 +1,7 @@
 import os
 import pytest
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.RandomSelection import RandomSubsetSelection
+from pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection import ExpectedMaximumBreedingValueSubsetSelection
 from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
@@ -9,12 +9,14 @@ from pybrops.test.breed.prot.sel.common_fixtures_large import *
 from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
 
-
 ################################ Test fixtures #################################
 
 @pytest.fixture
 def selprot_single(
         common_ntrait,
+        common_nrep,
+        common_mateprot,
+        common_unique_parents,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -38,8 +40,11 @@ def selprot_single(
         common_soalgo,
         common_moalgo
     ):
-    out = RandomSubsetSelection(
+    out = ExpectedMaximumBreedingValueSubsetSelection(
         ntrait = common_ntrait,
+        nrep = common_nrep,
+        mateprot = common_mateprot,
+        unique_parents = common_unique_parents,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -68,6 +73,9 @@ def selprot_single(
 @pytest.fixture
 def selprot_multi(
         common_ntrait,
+        common_nrep,
+        common_mateprot,
+        common_unique_parents,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -91,8 +99,11 @@ def selprot_multi(
         common_soalgo,
         common_moalgo
     ):
-    out = RandomSubsetSelection(
+    out = ExpectedMaximumBreedingValueSubsetSelection(
         ntrait = common_ntrait,
+        nrep = common_nrep,
+        mateprot = common_mateprot,
+        unique_parents = common_unique_parents,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -120,23 +131,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(RandomSubsetSelection)
+    assert_docstring(ExpectedMaximumBreedingValueSubsetSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "__init__")
+    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "problem")
+    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "sosolve")
+    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "mosolve")
+    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "select")
+    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(
@@ -254,7 +265,7 @@ def test_mosolve(
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
     ax.set_title("Random Subset Selection Test Pareto Frontier")
-    pyplot.savefig("frontier_plots/RandomSubsetSelection_2d_frontier.png", dpi = 250)
+    pyplot.savefig("frontier_plots/ExpectedMaximumBreedingValueSubsetSelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error

@@ -3,6 +3,7 @@ import numpy
 import pytest
 from numpy.random import Generator, PCG64
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
+from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
@@ -26,6 +27,10 @@ def common_ntrait():
     yield 2
 
 @pytest.fixture
+def common_nrep():
+    yield 2
+
+@pytest.fixture
 def common_nself():
     yield 0
 
@@ -44,6 +49,11 @@ def common_ngrp():
 @pytest.fixture
 def common_upper_percentile():
     yield 0.1
+
+@pytest.fixture
+def common_mateprot():
+    out = TwoWayDHCross()
+    yield out
 
 ####################### Phased genotype matrix fixtures ########################
 

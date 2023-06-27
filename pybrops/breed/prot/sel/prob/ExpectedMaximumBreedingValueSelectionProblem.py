@@ -85,7 +85,7 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
     @staticmethod
     def _calc_embv(
             nparent: int,
-            ncross: int,
+            nmating: int,
             nprogeny: int,
             nrep: int,
             unique_parents: bool,
@@ -118,7 +118,7 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
                 progeny = mateprot.mate(
                     pgmat = pgmat,
                     xconfig = xconfig,
-                    ncross = ncross,
+                    nmating = nmating,
                     nprogeny = nprogeny,
                     miscout = None
                 )
@@ -308,7 +308,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreeding
     def from_pgmat_gpmod(
             cls,
             nparent: Integral,
-            ncross: Integral,
+            nmating: Integral,
             nprogeny: Integral,
             nrep: Integral,
             unique_parents: bool,
@@ -335,7 +335,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreeding
         ) -> "ExpectedMaximumBreedingValueSubsetSelectionProblem":
         # check input types
         check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nrep, "nrep")
         check_is_bool(unique_parents, "unique_parents")
@@ -344,7 +344,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreeding
         check_is_MatingProtocol(mateprot, "mateprot")
 
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -531,7 +531,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingVa
     def from_pgmat_gpmod(
             cls,
             nparent: Integral,
-            ncross: Integral,
+            nmating: Integral,
             nprogeny: Integral,
             nrep: Integral,
             unique_parents: bool,
@@ -558,7 +558,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingVa
         ) -> "ExpectedMaximumBreedingValueRealSelectionProblem":
         # check input types
         check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nrep, "nrep")
         check_is_bool(unique_parents, "unique_parents")
@@ -567,7 +567,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingVa
         check_is_MatingProtocol(mateprot, "mateprot")
 
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -754,7 +754,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedin
     def from_pgmat_gpmod(
             cls,
             nparent: Integral,
-            ncross: Integral,
+            nmating: Integral,
             nprogeny: Integral,
             nrep: Integral,
             unique_parents: bool,
@@ -781,7 +781,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedin
         ) -> "ExpectedMaximumBreedingValueIntegerSelectionProblem":
         # check input types
         check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nrep, "nrep")
         check_is_bool(unique_parents, "unique_parents")
@@ -790,7 +790,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedin
         check_is_MatingProtocol(mateprot, "mateprot")
 
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -977,7 +977,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(ExpectedMaximumBreeding
     def from_pgmat_gpmod(
             cls,
             nparent: Integral,
-            ncross: Integral,
+            nmating: Integral,
             nprogeny: Integral,
             nrep: Integral,
             unique_parents: bool,
@@ -1004,7 +1004,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(ExpectedMaximumBreeding
         ) -> "ExpectedMaximumBreedingValueBinarySelectionProblem":
         # check input types
         check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nrep, "nrep")
         check_is_bool(unique_parents, "unique_parents")
@@ -1013,7 +1013,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(ExpectedMaximumBreeding
         check_is_MatingProtocol(mateprot, "mateprot")
 
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, ncross, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(

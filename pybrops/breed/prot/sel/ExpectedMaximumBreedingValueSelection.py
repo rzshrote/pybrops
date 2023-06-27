@@ -50,6 +50,7 @@ class ExpectedMaximumBreedingValueSelectionMixin(metaclass=ABCMeta):
     def ntrait(self, value: Integral) -> None:
         """Set number of traits to expect."""
         check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
         self._ntrait = value
 
     @property
@@ -212,20 +213,24 @@ class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueSe
 
         # get decision space parameters
         decn_space = numpy.arange(len(xmap))
-        decn_space_lower = numpy.repeat(0, self.nconfig)
-        decn_space_upper = numpy.repeat(len(xmap)-1, self.nconfig)
+        decn_space_lower = numpy.repeat(0, self.ncross)
+        decn_space_upper = numpy.repeat(len(xmap)-1, self.ncross)
+
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
 
         # construct problem
         prob = ExpectedMaximumBreedingValueSubsetSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.nmating,
-            nprogeny = self.nprogeny,
+            nmating = nmating_median,
+            nprogeny = nprogeny_median,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
             pgmat = pgmat, 
             gpmod = gpmod, 
             mateprot = self.mateprot,
-            ndecn = self.nparent,
+            ndecn = self.ncross,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -374,25 +379,33 @@ class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueSele
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = pgmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = ExpectedMaximumBreedingValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, ntaxa)
-        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space_lower = numpy.repeat(0.0, len(xmap))
+        decn_space_upper = numpy.repeat(1.0, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
 
         # construct problem
         prob = ExpectedMaximumBreedingValueRealSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.nmating,
-            nprogeny = self.nprogeny,
+            nmating = nmating_median,
+            nprogeny = nprogeny_median,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
             pgmat = pgmat, 
             gpmod = gpmod, 
             mateprot = self.mateprot,
-            ndecn = self.nparent,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -541,25 +554,33 @@ class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueS
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = pgmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = ExpectedMaximumBreedingValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, ntaxa)
-        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space_lower = numpy.repeat(0.0, len(xmap))
+        decn_space_upper = numpy.repeat(1.0, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
 
         # construct problem
         prob = ExpectedMaximumBreedingValueIntegerSelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.nmating,
-            nprogeny = self.nprogeny,
+            nmating = nmating_median,
+            nprogeny = nprogeny_median,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
             pgmat = pgmat, 
             gpmod = gpmod, 
             mateprot = self.mateprot,
-            ndecn = self.nparent,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -708,25 +729,33 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueSe
         out : SelectionProblem
             An optimization problem definition.
         """
-        # get number of individuals
-        ntaxa = pgmat.ntaxa
+        # get the cross map (inefficient)
+        xmap = ExpectedMaximumBreedingValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, ntaxa)
-        decn_space_upper = numpy.repeat(1.0, ntaxa)
+        decn_space_lower = numpy.repeat(0.0, len(xmap))
+        decn_space_upper = numpy.repeat(1.0, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
 
         # construct problem
         prob = ExpectedMaximumBreedingValueBinarySelectionProblem.from_pgmat_gpmod(
             nparent = self.nparent,
-            ncross = self.nmating,
-            nprogeny = self.nprogeny,
+            nmating = nmating_median,
+            nprogeny = nprogeny_median,
             nrep = self.nrep,
             unique_parents = self.unique_parents,
             pgmat = pgmat, 
             gpmod = gpmod, 
             mateprot = self.mateprot,
-            ndecn = self.nparent,
+            ndecn = len(xmap),
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
