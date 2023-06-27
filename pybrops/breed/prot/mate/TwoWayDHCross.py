@@ -100,7 +100,7 @@ class TwoWayDHCross(MatingProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[int,numpy.ndarray], 
+            nmating: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: int = 0, 
@@ -175,8 +175,8 @@ class TwoWayDHCross(MatingProtocol):
         ########################################################################
         ########################## Progeny generation ##########################
         # get female and male selections; repeat by ncross
-        fsel = numpy.repeat(xconfig[0::2], ncross)
-        msel = numpy.repeat(xconfig[1::2], ncross)
+        fsel = numpy.repeat(xconfig[0::2], nmating)
+        msel = numpy.repeat(xconfig[1::2], nmating)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -221,7 +221,7 @@ class TwoWayDHCross(MatingProtocol):
                     self.family_counter + nfam, # stop family number (exclusive)
                     dtype = 'int64'
                 ), 
-                ncross
+                nmating
             ), 
             nprogeny
         )

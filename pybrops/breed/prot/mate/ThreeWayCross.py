@@ -93,7 +93,7 @@ class ThreeWayCross(MatingProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[int,numpy.ndarray], 
+            nmating: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: int = 0, 
@@ -148,9 +148,9 @@ class ThreeWayCross(MatingProtocol):
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
 
         # get recurrent, female, and male selections; repeat by ncross
-        rsel = numpy.repeat(xconfig[0::3], ncross)  # recurrent parent
-        fsel = numpy.repeat(xconfig[1::3], ncross)  # female parent
-        msel = numpy.repeat(xconfig[2::3], ncross)  # male parent
+        rsel = numpy.repeat(xconfig[0::3], nmating)  # recurrent parent
+        fsel = numpy.repeat(xconfig[1::3], nmating)  # female parent
+        msel = numpy.repeat(xconfig[2::3], nmating)  # male parent
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.geno
@@ -191,7 +191,7 @@ class ThreeWayCross(MatingProtocol):
                     self.family_counter + nfam, # stop family number (exclusive)
                     dtype = 'int64'
                 ),
-                ncross
+                nmating
             ), 
             nprogeny
         )

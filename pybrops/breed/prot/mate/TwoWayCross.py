@@ -95,7 +95,7 @@ class TwoWayCross(MatingProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[Integral,numpy.ndarray], 
+            nmating: Union[Integral,numpy.ndarray], 
             nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: Integral = 0, 
@@ -164,15 +164,15 @@ class TwoWayCross(MatingProtocol):
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
         check_is_ndarray(xconfig, "sel")
         check_ndarray_len_is_multiple_of(xconfig, "sel", 2)
-        check_is_Integral_or_ndarray(ncross, "ncross")
+        check_is_Integral_or_ndarray(nmating, "ncross")
         check_is_Integral_or_ndarray(nprogeny, "nprogeny")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         check_is_Integral(nself, "nself")
 
         # get female and male selections; repeat by ncross
-        fsel = numpy.repeat(xconfig[0::2], ncross * nprogeny)
-        msel = numpy.repeat(xconfig[1::2], ncross * nprogeny)
+        fsel = numpy.repeat(xconfig[0::2], nmating * nprogeny)
+        msel = numpy.repeat(xconfig[1::2], nmating * nprogeny)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -209,7 +209,7 @@ class TwoWayCross(MatingProtocol):
                 self.family_counter + nfam,     # stop family number (exclusive)
                 dtype = 'int64'
             ),
-            ncross * nprogeny
+            nmating * nprogeny
         )
         self.family_counter += nfam             # increment counter
         

@@ -49,7 +49,7 @@ class MatingProtocol:
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[int,numpy.ndarray], 
+            nmating: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict], 
             **kwargs: dict
@@ -64,10 +64,11 @@ class MatingProtocol:
         xconfig : numpy.ndarray
             Array of indices specifying a cross configuration. Each index corresponds
             to an individual in ``pgmat``.
-        ncross : numpy.ndarray
-            Number of crosses to perform per cross pattern.
+        nmating : numpy.ndarray
+            Number of matings of the cross configuration per cross pattern.
+            Relevant in situations with heterozygous parents.
         nprogeny : numpy.ndarray
-            Number of progeny to generate per cross.
+            Number of progeny to generate per mating.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).

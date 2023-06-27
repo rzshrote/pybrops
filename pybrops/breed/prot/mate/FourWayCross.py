@@ -88,7 +88,7 @@ class FourWayCross(MatingProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[int,numpy.ndarray], 
+            nmating: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: int = 0, 
@@ -145,10 +145,10 @@ class FourWayCross(MatingProtocol):
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
 
         # get female2, male2, female1, and male1 selections; repeat by ncross
-        f2sel = numpy.repeat(xconfig[0::4], ncross)
-        m2sel = numpy.repeat(xconfig[1::4], ncross)
-        f1sel = numpy.repeat(xconfig[2::4], ncross)
-        m1sel = numpy.repeat(xconfig[3::4], ncross)
+        f2sel = numpy.repeat(xconfig[0::4], nmating)
+        m2sel = numpy.repeat(xconfig[1::4], nmating)
+        f1sel = numpy.repeat(xconfig[2::4], nmating)
+        m1sel = numpy.repeat(xconfig[3::4], nmating)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -190,7 +190,7 @@ class FourWayCross(MatingProtocol):
                     self.family_counter + nfam, # stop family number (exclusive)
                     dtype = 'int64'
                 ),
-                ncross
+                nmating
             ), 
             nprogeny
         )

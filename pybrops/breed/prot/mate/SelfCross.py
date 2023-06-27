@@ -92,7 +92,7 @@ class SelfCross(MatingProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            ncross: Union[int,numpy.ndarray], 
+            nmating: Union[int,numpy.ndarray], 
             nprogeny: Union[int,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: int = 0, 
@@ -162,7 +162,7 @@ class SelfCross(MatingProtocol):
         xoprob = pgmat.vrnt_xoprob
 
         # get female selections; repeat by ncross
-        fsel = numpy.repeat(xconfig, ncross*nprogeny)
+        fsel = numpy.repeat(xconfig, nmating*nprogeny)
 
         # self genotypes
         sgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
@@ -195,7 +195,7 @@ class SelfCross(MatingProtocol):
                     self.family_counter + nfam, # stop family number (exclusive)
                     dtype = 'int64'
                 ),
-                ncross
+                nmating
             ), 
             nprogeny
         )
