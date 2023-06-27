@@ -55,6 +55,10 @@ def common_mateprot():
     out = TwoWayDHCross()
     yield out
 
+@pytest.fixture
+def common_alpha():
+    yield 0.612
+
 ####################### Phased genotype matrix fixtures ########################
 
 @pytest.fixture

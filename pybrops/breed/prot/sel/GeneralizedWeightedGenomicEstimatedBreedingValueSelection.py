@@ -23,7 +23,7 @@ from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProt
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
-from pybrops.core.error.error_value_python import check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
@@ -52,6 +52,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(metaclass=A
     def ntrait(self, value: Integral) -> None:
         """Set number of traits to expect."""
         check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
         self._ntrait = value
 
     @property
@@ -185,15 +186,15 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(Generalize
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_algpmod(
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -348,7 +349,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -503,7 +504,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -658,7 +659,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(Generalize
             gmat = gmat,
             algpmod = gpmod,
             alpha = self.alpha,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
