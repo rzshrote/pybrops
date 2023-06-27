@@ -37,6 +37,67 @@ def trans_identity(
     """
     return latentvec
 
+def trans_sum(
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    Take the sum of all elements in a latent vector.
+
+    Parameters
+    ----------
+    decnvec : numpy.ndarray
+        An array of shape ``(ndecn,)`` containing decision variables 
+        corresponding the ``latentvec`` values.
+    latentvec : numpy.ndarray
+        An array of shape ``(l,)`` to be transformed.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
+    
+    Returns
+    -------
+    out : numpy.ndarray
+        An array of shape ``(1,)`` containing the latent vector sum.
+    """
+    # (l,) -> (1,)
+    out = latentvec.sum(0, keepdims=True)
+    return out
+
+def trans_dot(
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
+        latentvec_wt: numpy.ndarray,
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    Take the dot product of all elements in a latent vector.
+
+    Parameters
+    ----------
+    decnvec : numpy.ndarray
+        An array of shape ``(ndecn,)`` containing decision variables 
+        corresponding the ``latentvec`` values.
+    latentvec : numpy.ndarray
+        An array of shape ``(l,)`` to be transformed.
+    kwargs : dict
+        Additional keyword arguments. Not used by this function.
+    
+    Returns
+    -------
+    out : numpy.ndarray
+        An array of shape ``(1,)`` containing the latent vector sum.
+    """
+    # multiply vectors together
+    # (l,) * (l,) -> (l,)
+    prod = latentvec_wt * latentvec
+
+    # take summation while preserving dimensions
+    # (l,) -> (1,)
+    out = prod.sum(0, keepdims=True)
+    
+    return out
+
 def trans_empty(
         decnvec: numpy.ndarray,
         latentvec: numpy.ndarray, 
@@ -60,7 +121,8 @@ def trans_empty(
     out : numpy.ndarray
         An array of shape (0,) with the same dtype as the input.
     """
-    return numpy.empty((0,), dtype = latentvec.dtype)
+    out = numpy.empty((0,), dtype = latentvec.dtype)
+    return out
 
 def trans_decnvec_sum_eq(
         decnvec: numpy.ndarray,

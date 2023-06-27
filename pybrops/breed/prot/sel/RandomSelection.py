@@ -470,7 +470,7 @@ class RandomIntegerSelection(RandomSelectionMixin,IntegerSelectionProtocol):
         # get decision space parameters
         ntaxa = pgmat.ntaxa
         decn_space_lower = numpy.repeat(0, ntaxa)
-        decn_space_upper = numpy.repeat(self.nconfig * self.nparent * self.nmating, ntaxa)
+        decn_space_upper = numpy.repeat(self.nmating.sum(), ntaxa)
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
@@ -548,7 +548,7 @@ class RandomBinarySelection(RandomSelectionMixin,BinarySelectionProtocol):
         # make assignments from Mixin class first
         self.ntrait = ntrait
         # make assignments from IntegerSelectionProtocol second
-        super(RandomIntegerSelection, self).__init__(
+        super(RandomBinarySelection, self).__init__(
             ncross = ncross,
             nparent = nparent,
             nmating = nmating,

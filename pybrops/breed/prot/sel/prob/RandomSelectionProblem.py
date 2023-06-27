@@ -427,9 +427,15 @@ class RandomRealSelectionProblem(RandomSelectionProblemMixin,RealSelectionProble
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation
@@ -629,9 +635,15 @@ class RandomIntegerSelectionProblem(RandomSelectionProblemMixin,IntegerSelection
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation
@@ -831,9 +843,15 @@ class RandomBinarySelectionProblem(RandomSelectionProblemMixin,BinarySelectionPr
 
             - ``t`` is the number of traits.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation

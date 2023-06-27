@@ -430,7 +430,7 @@ class EstimatedBreedingValueRealSelectionProblem(EstimatedBreedingValueSelection
 
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation
@@ -635,7 +635,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(EstimatedBreedingValueSelect
 
         # scale x to have a sum of 1 (contribution)
         # (n,) -> (n,)
-        contrib = (1.0 / x.sum()) * x
+        contrib = (1.0 / xsum) * x
 
         # select individuals and take the sum of their GEBVs
         # CGS calculation explanation

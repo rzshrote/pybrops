@@ -3,11 +3,12 @@ import numpy
 import pytest
 from numpy.random import Generator, PCG64
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
+from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.breed.prot.sel.prob.trans import trans_ndpt_to_vec_dist
+from pybrops.breed.prot.sel.prob.trans import trans_identity, trans_ndpt_to_vec_dist, trans_sum
 
 
 ################################ Shape fixtures ################################
@@ -256,66 +257,6 @@ def common_nprogeny():
     yield 10
 
 @pytest.fixture
-def common_nobj():
-    yield 2
-
-@pytest.fixture
-def common_obj_wt():
-    yield numpy.array([1,-1], dtype=float)
-
-@pytest.fixture
-def common_obj_trans():
-    yield None
-
-@pytest.fixture
-def common_obj_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def common_nineqcv():
-    yield 0
-
-@pytest.fixture
-def common_ineqcv_wt():
-    yield numpy.array([], dtype=float)
-
-@pytest.fixture
-def common_ineqcv_trans():
-    yield None
-
-@pytest.fixture
-def common_ineqcv_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def common_neqcv():
-    yield 0
-
-@pytest.fixture
-def common_eqcv_wt():
-    yield numpy.array([], dtype=float)
-
-@pytest.fixture
-def common_eqcv_trans():
-    yield None
-
-@pytest.fixture
-def common_eqcv_trans_kwargs():
-    yield None
-
-@pytest.fixture
-def common_ndset_wt():
-    yield -1.0
-
-@pytest.fixture
-def common_ndset_trans():
-    yield trans_ndpt_to_vec_dist
-
-@pytest.fixture
-def common_ndset_trans_kwargs(common_obj_wt):
-    yield {"obj_wt": common_obj_wt, "vec_wt": numpy.array([0.5,0.5])}
-
-@pytest.fixture
 def common_rng():
     yield Generator(PCG64(192837465))
 
@@ -326,3 +267,131 @@ def common_soalgo():
 @pytest.fixture
 def common_moalgo():
     yield None
+
+# single objcetive items
+
+@pytest.fixture
+def common_nobj_single():
+    yield 1
+
+@pytest.fixture
+def common_obj_wt_single():
+    yield numpy.array([1], dtype=float)
+
+@pytest.fixture
+def common_obj_trans_single():
+    yield trans_sum
+
+@pytest.fixture
+def common_obj_trans_kwargs_single():
+    yield None
+
+@pytest.fixture
+def common_nineqcv_single():
+    yield 0
+
+@pytest.fixture
+def common_ineqcv_wt_single():
+    yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def common_ineqcv_trans_single():
+    yield None
+
+@pytest.fixture
+def common_ineqcv_trans_kwargs_single():
+    yield None
+
+@pytest.fixture
+def common_neqcv_single():
+    yield 0
+
+@pytest.fixture
+def common_eqcv_wt_single():
+    yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def common_eqcv_trans_single():
+    yield None
+
+@pytest.fixture
+def common_eqcv_trans_kwargs_single():
+    yield None
+
+@pytest.fixture
+def common_ndset_wt_single():
+    yield -1.0
+
+@pytest.fixture
+def common_ndset_trans_single():
+    yield None
+
+@pytest.fixture
+def common_ndset_trans_kwargs_single():
+    yield None
+
+# multi objective items
+
+@pytest.fixture
+def common_nobj_multi():
+    yield 2
+
+@pytest.fixture
+def common_obj_wt_multi():
+    yield numpy.array([1,-1], dtype=float)
+
+@pytest.fixture
+def common_obj_trans_multi():
+    yield trans_identity
+
+@pytest.fixture
+def common_obj_trans_kwargs_multi():
+    yield None
+
+@pytest.fixture
+def common_nineqcv_multi():
+    yield 0
+
+@pytest.fixture
+def common_ineqcv_wt_multi():
+    yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def common_ineqcv_trans_multi():
+    yield None
+
+@pytest.fixture
+def common_ineqcv_trans_kwargs_multi():
+    yield None
+
+@pytest.fixture
+def common_neqcv_multi():
+    yield 0
+
+@pytest.fixture
+def common_eqcv_wt_multi():
+    yield numpy.array([], dtype=float)
+
+@pytest.fixture
+def common_eqcv_trans_multi():
+    yield None
+
+@pytest.fixture
+def common_eqcv_trans_kwargs_multi():
+    yield None
+
+@pytest.fixture
+def common_ndset_wt_multi():
+    yield -1.0
+
+@pytest.fixture
+def common_ndset_trans_multi():
+    yield trans_ndpt_to_vec_dist
+
+@pytest.fixture
+def common_ndset_trans_kwargs_multi(common_obj_wt_multi):
+    yield {
+        "obj_wt": common_obj_wt_multi, 
+        "vec_wt": numpy.array([0.5,0.5])
+    }
+

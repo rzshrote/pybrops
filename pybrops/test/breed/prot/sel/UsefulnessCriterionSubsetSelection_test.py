@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.UsefulnessCriterionSelection import UsefulnessCriterionSubsetSelection
 from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
-from pybrops.test.fixtures.breed.prot.sel.common_SelectionProtocol_large import *
+from pybrops.test.breed.prot.sel.common_fixtures_large import *
 from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
 
