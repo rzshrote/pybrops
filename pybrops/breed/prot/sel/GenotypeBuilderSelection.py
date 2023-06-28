@@ -54,6 +54,8 @@ class GenotypeBuilderSelectionMixin(metaclass=ABCMeta):
     @nhaploblk.setter
     def nhaploblk(self, value: Integral) -> None:
         """Set number of haplotype blocks to consider."""
+        check_is_Integral(value, "nhaploblk")
+        check_is_gt(value, "nhaploblk", 0)
         self._nhaploblk = value
     
     @property
@@ -64,7 +66,7 @@ class GenotypeBuilderSelectionMixin(metaclass=ABCMeta):
     def nbestfndr(self, value: Integral) -> None:
         """Set number of best founders to consider."""
         check_is_Integral(value, "nbestfndr")           # must be int
-        check_is_in_interval(value, "nbestfndr", 0, self.nparent) # must be in [0,nparent]
+        check_is_gt(value, "nbestfndr", 0)
         self._nbestfndr = value
 
 class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelectionProtocol):
@@ -111,10 +113,9 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelecti
             Additional keyword arguments.
         """
         # order dependent assignments
-        # make assignments from Mixin class first
+        # make assignments from unmodified Mixin class first
         self.ntrait = ntrait
         self.nhaploblk = nhaploblk
-        self.nbestfndr = nbestfndr
         # make assignments from SubsetSelectionProtocol second
         super(GenotypeBuilderSubsetSelection, self).__init__(
             ncross = ncross,
@@ -141,8 +142,16 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelecti
             moalgo = moalgo,
             **kwargs
         )
+        # make assignments from modified Mixin class properties third
+        self.nbestfndr = nbestfndr
 
     ############################ Object Properties #############################
+    @GenotypeBuilderSelectionMixin.nbestfndr.setter
+    def nbestfndr(self, value: Integral) -> None:
+        """Set number of best founders to consider."""
+        check_is_Integral(value, "nbestfndr")           # must be int
+        check_is_in_interval(value, "nbestfndr", 0, self.nselindiv) # must be in [0,nparent]
+        self._nbestfndr = value
 
     ############################## Object Methods ##############################
 

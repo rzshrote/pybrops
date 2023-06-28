@@ -59,6 +59,14 @@ def common_mateprot():
 def common_alpha():
     yield 0.612
 
+@pytest.fixture
+def common_nhaploblk():
+    yield 20
+
+@pytest.fixture
+def common_nbestfndr():
+    yield 2
+
 ####################### Phased genotype matrix fixtures ########################
 
 @pytest.fixture
