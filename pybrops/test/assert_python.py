@@ -140,8 +140,8 @@ def assert_semiabstract_class(obj: type) -> None:
     """
     Assert an object type is abstract. Must have several attributes:
 
-    1) Must not have a defined ``__init__`` method within the class.
-    2) Must be an ABCMeta type.
+    1) Must be an ABCMeta type.
+    2) Must have abstract methods.
     3) Must have a docstring for the class.
 
     Parameters
@@ -149,8 +149,8 @@ def assert_semiabstract_class(obj: type) -> None:
     obj : type
         A Python object type.
     """
-    assert '__init__' not in vars(obj)
     assert type(obj) == ABCMeta
+    assert inspect.isabstract(obj)
     assert_docstring(obj)
 
 def assert_mixin_class(obj: type) -> None:

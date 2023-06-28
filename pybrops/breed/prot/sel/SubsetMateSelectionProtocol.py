@@ -374,3 +374,20 @@ class SubsetMateSelectionProtocol(SubsetSelectionProtocol,MateSelectionProtocol,
         # else raise an error as the number of objectives is an illegal value
         else:
             raise ValueError("number of objectives must be greater than zero")
+
+
+
+################################## Utilities ###################################
+def check_is_SubsetMateSelectionProtocol(v: object, vname: str) -> None:
+    """
+    Check if object is of type SubsetMateSelectionProtocol, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, SubsetMateSelectionProtocol):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,SubsetMateSelectionProtocol.__name__,type(v).__name__))

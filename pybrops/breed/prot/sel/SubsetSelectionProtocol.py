@@ -477,3 +477,20 @@ class SubsetSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
         # else raise an error as the number of objectives is an illegal value
         else:
             raise ValueError("number of objectives must be greater than zero")
+
+
+
+################################## Utilities ###################################
+def check_is_SubsetSelectionProtocol(v: object, vname: str) -> None:
+    """
+    Check if object is of type SubsetSelectionProtocol, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, SubsetSelectionProtocol):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,SubsetSelectionProtocol.__name__,type(v).__name__))
