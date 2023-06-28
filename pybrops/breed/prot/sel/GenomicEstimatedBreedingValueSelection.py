@@ -25,6 +25,7 @@ from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtoc
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem, GenomicEstimatedBreedingValueIntegerSelectionProblem, GenomicEstimatedBreedingValueRealSelectionProblem, GenomicEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
@@ -49,6 +50,7 @@ class GenomicEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
     def ntrait(self, value: Integral) -> None:
         """Set number of traits to expect."""
         check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
         self._ntrait = value
 
 class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
@@ -167,8 +169,8 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         # get number of individuals
         ntaxa = gmat.ntaxa
 
-        # get number of selected individuals
-        ndecn = self.ncross * self.nparent
+        # get number of selected individuals as number of decision variables
+        ndecn = self.nselindiv
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
@@ -331,7 +333,7 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
         prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -483,7 +485,7 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -635,7 +637,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
