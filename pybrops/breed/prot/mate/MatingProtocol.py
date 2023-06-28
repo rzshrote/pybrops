@@ -3,6 +3,7 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
+from abc import ABCMeta, abstractmethod
 from numbers import Integral
 from typing import Optional, Union
 import numpy
@@ -10,7 +11,7 @@ import numpy
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class MatingProtocol:
+class MatingProtocol(metaclass=ABCMeta):
     """
     Abstract class for mating protocols.
 
@@ -19,32 +20,21 @@ class MatingProtocol:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for abstract class MatingProtocol.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(MatingProtocol, self).__init__()
 
     ############################ Object Properties #############################
     @property
+    @abstractmethod
     def nparent(self) -> Integral:
         """Number of parents the mating protocol requires."""
         raise NotImplementedError("property is abstract")
     @nparent.setter
+    @abstractmethod
     def nparent(self, value: Integral) -> None:
         """Set number of parents the mating protocol requires."""
         raise NotImplementedError("property is abstract")
-    
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def mate(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -62,8 +52,8 @@ class MatingProtocol:
         pgmat : PhasedGenotypeMatrix
             A PhasedGenotypeMatrix of parental candidates.
         xconfig : numpy.ndarray
-            Array of indices specifying a cross configuration. Each index corresponds
-            to an individual in ``pgmat``.
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
         nmating : numpy.ndarray
             Number of matings of the cross configuration per cross pattern.
             Relevant in situations with heterozygous parents.

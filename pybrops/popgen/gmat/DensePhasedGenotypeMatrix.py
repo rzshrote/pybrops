@@ -632,3 +632,10 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 def check_is_DensePhasedGenotypeMatrix(v: object, vname: str) -> None:
     if not isinstance(v, DensePhasedGenotypeMatrix):
         raise TypeError("'{0}' must be a DensePhasedGenotypeMatrix.".format(vname))
+
+def check_DensePhasedGenotypeMatrix_has_vrnt_xoprob(v: DensePhasedGenotypeMatrix, vname: str) -> None:
+    """
+    Check whether 
+    """
+    if v.vrnt_xoprob is None:
+        raise TypeError("DensePhasedGenotypeMatrix '{0}' must have 'vrnt_xoprob' (crossover probabilities) assigned".format(vname))

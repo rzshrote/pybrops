@@ -3,19 +3,18 @@ Module implementing mating protocols for three-way DH crosses.
 """
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
-
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_numpy import check_ndarray_len_is_multiple_of
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix, check_DensePhasedGenotypeMatrix_has_vrnt_xoprob, check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class ThreeWayDHCross(MatingProtocol):
     """
@@ -29,7 +28,7 @@ class ThreeWayDHCross(MatingProtocol):
             self, 
             progeny_counter: int = 0, 
             family_counter: int = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -42,8 +41,6 @@ class ThreeWayDHCross(MatingProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(ThreeWayDHCross, self).__init__(**kwargs)
-
         # make assignments
         self.progeny_counter = progeny_counter
         self.family_counter = family_counter
@@ -82,11 +79,11 @@ class ThreeWayDHCross(MatingProtocol):
         self._family_counter = value
 
     @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+    def rng(self) -> Union[Generator,RandomState]:
         """Random number generator."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator."""
         if value is None:
             value = global_prng
@@ -98,24 +95,24 @@ class ThreeWayDHCross(MatingProtocol):
     ############################################################################
     def mate(
             self, 
-            pgmat: PhasedGenotypeMatrix, 
+            pgmat: DensePhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            nmating: Union[int,numpy.ndarray], 
-            nprogeny: Union[int,numpy.ndarray], 
+            nmating: Union[Integral,numpy.ndarray], 
+            nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
-            nself: int = 0, 
+            nself: Integral = 0, 
             **kwargs: dict
-        ) -> PhasedGenotypeMatrix:
+        ) -> DensePhasedGenotypeMatrix:
         """
         Mate individuals according to a 3-way mate selection scheme.
 
         Example crossing diagram::
 
-            sel = [R,F,M,...], ncross = 2, nprogeny = 2, nself = 2
+            sel = [R,F,M,...], nmating = 2, nprogeny = 2, nself = 2
                                         pgmat
                                           │                                 sel = [R,F,M,...]
                                        Rx(FxM)
-                          ┌───────────────┴───────────────┐                 ncross = 2
+                          ┌───────────────┴───────────────┐                 nmating = 2
                        Rx(FxM)                         Rx(FxM)              duplicate cross 2x
                           │                               │                 nself = 2
                       S0(Rx(FxM))                     S0(Rx(FxM))           first self
@@ -129,11 +126,13 @@ class ThreeWayDHCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         xconfig : numpy.ndarray
-            A 1D array of indices of selected individuals of shape ``(k,)``.
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
 
             Where:
 
-            - ``k`` is the number of selected individuals.
+            - ``ncross`` is the number of crosses to perform.
+            - ``nparent`` is the number of parents required for a cross.
 
             Indices are paired as follows:
 
@@ -143,11 +142,14 @@ class ThreeWayDHCross(MatingProtocol):
 
             Example::
 
-                xconfig = [1,5,3,8,2,7,...,R,F,M]
-                recurrent = 1,8
-                female = 5,2
-                male = 3,7
-        ncross : numpy.ndarray
+                xconfig = [[ 1, 5, 3 ],
+                           [ 8, 2, 7 ],
+                           ...,
+                           [ R, F, M ]]
+                recurrent = [1, 8, ..., R]
+                female = [5, 2, ..., F]
+                male = [3, 7, ..., M]
+        nmating : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
@@ -155,7 +157,7 @@ class ThreeWayDHCross(MatingProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If dict, write to dict (may overwrite previously defined fields).
             If None, user defined output is not calculated or stored.
-        s : int, default = 0
+        nself : int, default = 0
             Number of selfing generations post-cross before double haploids are
             generated.
         kwargs : dict
@@ -164,17 +166,43 @@ class ThreeWayDHCross(MatingProtocol):
 
         Returns
         -------
-        out : PhasedGenotypeMatrix
-            A PhasedGenotypeMatrix of progeny.
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
-        # check data type
+        # check pgmat
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
-        check_ndarray_len_is_multiple_of(xconfig, "sel", 3)
+        check_DensePhasedGenotypeMatrix_has_vrnt_xoprob(pgmat, "pgmat")
 
+        # check xconfig
+        check_is_ndarray(xconfig, "xconfig")
+        check_ndarray_ndim(xconfig, "xconfig", 2)
+        check_ndarray_axis_len(xconfig, "xconfig", 1, self.nparent)
+
+        # check nmating
+        if isinstance(nmating, Integral):
+            nmating = numpy.repeat(nmating, len(xconfig))
+        check_is_ndarray(nmating, "nmating")
+        check_ndarray_shape_eq(nmating, "nmating", (len(xconfig),))
+
+        # check nprogeny
+        if isinstance(nprogeny, Integral):
+            nprogeny = numpy.repeat(nprogeny, len(xconfig))
+        check_is_ndarray(nprogeny, "nprogeny")
+        check_ndarray_shape_eq(nprogeny, "nprogeny", (len(xconfig),))
+
+        # check miscout
+        if miscout is not None:
+            check_is_dict(miscout, "miscout")
+        
+        # check nself
+        check_is_Integral(nself, "nself")
+
+        ########################################################################
+        ########################## Progeny generation ##########################
         # get recurrent, female, and male selections; repeat by ncross
-        rsel = numpy.repeat(xconfig[0::3], nmating)  # recurrent parent
-        fsel = numpy.repeat(xconfig[1::3], nmating)  # female parent
-        msel = numpy.repeat(xconfig[2::3], nmating)  # male parent
+        rsel = numpy.repeat(xconfig[:,0], nmating)  # recurrent parent
+        fsel = numpy.repeat(xconfig[:,1], nmating)  # female parent
+        msel = numpy.repeat(xconfig[:,2], nmating)  # male parent
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -198,7 +226,10 @@ class ThreeWayDHCross(MatingProtocol):
             bcgeno = mat_mate(bcgeno, bcgeno, bcsel, bcsel, xoprob, self.rng)
 
         # generate selection array for progeny
-        psel = numpy.repeat(bcsel, nprogeny)
+        psel = numpy.repeat(
+            numpy.arange(bcgeno.shape[1]), 
+            numpy.repeat(nprogeny, nmating)
+        )
 
         # generate doubled haploids
         dhgeno = mat_dh(bcgeno, psel, xoprob, self.rng)
@@ -216,7 +247,7 @@ class ThreeWayDHCross(MatingProtocol):
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(xconfig) // 3                    # calculate number of families
+        nfam = len(xconfig)                     # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp
             numpy.repeat(                       # repeat for progeny
                 numpy.arange(                   # repeat for crosses
@@ -226,14 +257,14 @@ class ThreeWayDHCross(MatingProtocol):
                 ),
                 nmating
             ), 
-            nprogeny
+            numpy.repeat(nprogeny, nmating)
         )
         self.family_counter += nfam             # increment counter
 
         ########################################################################
         ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
-        progeny = pgmat.__class__(
+        progeny = DensePhasedGenotypeMatrix(
             mat = dhgeno,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -273,4 +304,4 @@ def check_is_ThreeWayDHCross(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ThreeWayDHCross):
-        raise TypeError("'%s' must be a ThreeWayDHCross." % vname)
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,ThreeWayDHCross.__name__,type(v).__name__))

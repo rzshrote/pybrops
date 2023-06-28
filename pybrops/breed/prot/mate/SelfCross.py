@@ -3,17 +3,17 @@ Module implementing mating protocols for self-fertilization.
 """
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
-
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix, check_DensePhasedGenotypeMatrix_has_vrnt_xoprob, check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class SelfCross(MatingProtocol):
     """
@@ -25,7 +25,7 @@ class SelfCross(MatingProtocol):
             self, 
             progeny_counter: Integral = 0, 
             family_counter: Integral = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -38,8 +38,6 @@ class SelfCross(MatingProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(SelfCross, self).__init__(**kwargs)
-
         # make assignments
         self.progeny_counter = progeny_counter
         self.family_counter = family_counter
@@ -76,11 +74,11 @@ class SelfCross(MatingProtocol):
         self._family_counter = value
 
     @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+    def rng(self) -> Union[Generator,RandomState]:
         """Random number generator."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator."""
         if value is None:
             value = global_prng
@@ -90,14 +88,14 @@ class SelfCross(MatingProtocol):
     ############################## Object Methods ##############################
     def mate(
             self, 
-            pgmat: PhasedGenotypeMatrix, 
+            pgmat: DensePhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            nmating: Union[int,numpy.ndarray], 
-            nprogeny: Union[int,numpy.ndarray], 
+            nmating: Union[Integral,numpy.ndarray], 
+            nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
-            nself: int = 0, 
+            nself: Integral = 0, 
             **kwargs: dict
-        ) -> PhasedGenotypeMatrix:
+        ) -> DensePhasedGenotypeMatrix:
         """
         Self-fertilize individuals.
 
@@ -106,7 +104,7 @@ class SelfCross(MatingProtocol):
                      pgmat
                        │                sel = [A,...]
                        A
-                 ┌─────┴─────┐          ncross = 2
+                 ┌─────┴─────┐          nmating = 2
                  A           A
               ┌──┴──┐     ┌──┴──┐       initial self, nprogeny = 2
             S0(A) S0(A) S0(A) S0(A)     cross pattern finished.
@@ -151,26 +149,54 @@ class SelfCross(MatingProtocol):
 
         Returns
         -------
-        out : PhasedGenotypeMatrix
-            A PhasedGenotypeMatrix of progeny.
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
-        # check data type
+        # check pgmat
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_DensePhasedGenotypeMatrix_has_vrnt_xoprob(pgmat, "pgmat")
 
+        # check xconfig
+        check_is_ndarray(xconfig, "xconfig")
+        check_ndarray_ndim(xconfig, "xconfig", 2)
+        check_ndarray_axis_len(xconfig, "xconfig", 1, self.nparent)
+
+        # check nmating
+        if isinstance(nmating, Integral):
+            nmating = numpy.repeat(nmating, len(xconfig))
+        check_is_ndarray(nmating, "nmating")
+        check_ndarray_shape_eq(nmating, "nmating", (len(xconfig),))
+
+        # check nprogeny
+        if isinstance(nprogeny, Integral):
+            nprogeny = numpy.repeat(nprogeny, len(xconfig))
+        check_is_ndarray(nprogeny, "nprogeny")
+        check_ndarray_shape_eq(nprogeny, "nprogeny", (len(xconfig),))
+
+        # check miscout
+        if miscout is not None:
+            check_is_dict(miscout, "miscout")
+        
+        # check nself
+        check_is_Integral(nself, "nself")
+
+        ########################################################################
+        ########################## Progeny generation ##########################
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
         xoprob = pgmat.vrnt_xoprob
 
         # get female selections; repeat by ncross
-        fsel = numpy.repeat(xconfig, nmating*nprogeny)
+        fsel = numpy.repeat(xconfig[:,0], nmating * nprogeny)
 
         # self genotypes
         sgeno = mat_mate(geno, geno, fsel, fsel, xoprob, self.rng)
 
+        # generate selection array for all selfed lines
+        ssel = numpy.arange(sgeno.shape[1])
+
         # perform single seed descent
         for i in range(nself):
-            # generate selection array for all selfed lines
-            ssel = numpy.arange(sgeno.shape[1])
             # self lines
             sgeno = mat_mate(sgeno, sgeno, ssel, ssel, xoprob, self.rng)
 
@@ -183,28 +209,25 @@ class SelfCross(MatingProtocol):
             self.progeny_counter + progcnt      # stop progeny number (exclusive)
         )
         # create taxa names
-        taxa = numpy.array(["3w"+str(i).zfill(7) for i in riter], dtype = "object")
+        taxa = numpy.array(["sx"+str(i).zfill(7) for i in riter], dtype = "object")
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(xconfig)                         # calculate number of families
-        taxa_grp = numpy.repeat(                # construct taxa_grp
-            numpy.repeat(                       # repeat for progeny
-                numpy.arange(                   # repeat for crosses
-                    self.family_counter,        # start family number (inclusive)
-                    self.family_counter + nfam, # stop family number (exclusive)
-                    dtype = 'int64'
-                ),
-                nmating
-            ), 
-            nprogeny
+        nfam = len(xconfig)                     # calculate number of families
+        taxa_grp = numpy.repeat(                # repeat for mating * progeny
+            numpy.arange(                       # repeat for crosses
+                self.family_counter,            # start family number (inclusive)
+                self.family_counter + nfam,     # stop family number (exclusive)
+                dtype = 'int64'
+            ),
+            nmating * nprogeny
         )
         self.family_counter += nfam             # increment counter
 
         ########################################################################
         ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
-        progeny = pgmat.__class__(
+        progeny = DensePhasedGenotypeMatrix(
             mat = sgeno,
             taxa = taxa,
             taxa_grp = taxa_grp,

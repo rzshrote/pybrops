@@ -1,20 +1,35 @@
+import numpy
 import pytest
-
 from pybrops.test.assert_python import not_raises
 from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_abstract_method
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
-
+from pybrops.test.breed.prot.mate.common_fixtures import *
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
+
+class DummyMatingProtocol(MatingProtocol):
+    def __init__(self):
+        pass
+    def mate(self, pgmat, xconfig, nmating, nprogeny, miscout, **kwargs):
+        pass
+    @property
+    def nparent(self) -> int:
+        """nparent."""
+        return 0
+    @nparent.setter
+    def nparent(self, value: int) -> None:
+        """Set nparent."""
+        self._nparent = value
+    
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mprot():
-    yield MatingProtocol()
+    yield DummyMatingProtocol()
 
 ################################################################################
 ############################## Test class docstring ############################

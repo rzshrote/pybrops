@@ -6,27 +6,27 @@ from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 from pybrops.test.breed.prot.mate.common_fixtures import *
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.breed.prot.mate.ThreeWayDHCross import ThreeWayDHCross
-from pybrops.breed.prot.mate.ThreeWayDHCross import check_is_ThreeWayDHCross
+from pybrops.breed.prot.mate.ThreeWayCross import ThreeWayCross
+from pybrops.breed.prot.mate.ThreeWayCross import check_is_ThreeWayCross
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mprot(common_rng):
-    yield ThreeWayDHCross(rng = common_rng)
+    yield ThreeWayCross(rng = common_rng)
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(ThreeWayDHCross)
+    assert_docstring(ThreeWayCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(ThreeWayDHCross, "__init__")
+    assert_concrete_method(ThreeWayCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -165,11 +165,14 @@ def test_mate_nmating_nprogeny_nself(mprot, common_dpgmat, common_xconfig_threew
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_ThreeWayDHCross_is_concrete():
-    assert_concrete_function(check_is_ThreeWayDHCross)
 
-def test_check_is_ThreeWayDHCross(mprot):
+def test_check_is_ThreeWayCross_is_concrete():
+    assert_concrete_function(check_is_ThreeWayCross)
+
+def test_check_is_ThreeWayCross(mprot):
     with not_raises(TypeError):
-        check_is_ThreeWayDHCross(mprot, "mprot")
+        check_is_ThreeWayCross(mprot, "mprot")
     with pytest.raises(TypeError):
-        check_is_ThreeWayDHCross(None, "mprot")
+        check_is_ThreeWayCross(object(), "mprot")
+    with pytest.raises(TypeError):
+        check_is_ThreeWayCross(None, "mprot")

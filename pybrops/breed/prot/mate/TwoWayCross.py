@@ -3,20 +3,19 @@ Module implementing mating protocols for two-way crosses.
 """
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
-
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_numpy import check_is_Integral_or_ndarray, check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict, check_is_int
-from pybrops.core.error.error_value_numpy import check_ndarray_len_is_multiple_of
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_DensePhasedGenotypeMatrix_has_vrnt_xoprob, check_is_DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class TwoWayCross(MatingProtocol):
     """
@@ -28,7 +27,7 @@ class TwoWayCross(MatingProtocol):
             self, 
             progeny_counter: Integral = 0, 
             family_counter: Integral = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -41,8 +40,6 @@ class TwoWayCross(MatingProtocol):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(TwoWayCross, self).__init__(**kwargs)
-
         # make assignments
         self.progeny_counter = progeny_counter
         self.family_counter = family_counter
@@ -79,11 +76,11 @@ class TwoWayCross(MatingProtocol):
         self._family_counter = value
 
     @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+    def rng(self) -> Union[Generator,RandomState]:
         """Random number generator."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator."""
         if value is None:
             value = global_prng
@@ -93,14 +90,14 @@ class TwoWayCross(MatingProtocol):
     ############################## Object Methods ##############################
     def mate(
             self, 
-            pgmat: PhasedGenotypeMatrix, 
+            pgmat: DensePhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
             nmating: Union[Integral,numpy.ndarray], 
             nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
             nself: Integral = 0, 
             **kwargs: dict
-        ) -> PhasedGenotypeMatrix:
+        ) -> DensePhasedGenotypeMatrix:
         """
         Mate individuals according to a 2-way mate selection scheme.
 
@@ -109,8 +106,8 @@ class TwoWayCross(MatingProtocol):
                                 pgmat
                                 │                       sel = [A,B,...]
                                AxB
-                    ┌───────────┴───────────┐           ncross * nprogeny = 2
-                   AxB                     AxB          duplicate cross (ncross * nprogeny) times
+                    ┌───────────┴───────────┐           nmating * nprogeny = 2
+                   AxB                     AxB          duplicate cross (nmating * nprogeny) times
                     │                       │           nself = 2
                 S0(AxB)                 S0(AxB)         first self
                     │                       │
@@ -124,11 +121,13 @@ class TwoWayCross(MatingProtocol):
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
         xconfig : numpy.ndarray
-            A 1D array of indices of selected individuals of shape ``(k,)``.
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
 
             Where:
 
-            - ``k`` is the number of selected individuals.
+            - ``ncross`` is the number of crosses to perform.
+            - ``nparent`` is the number of parents required for a cross.
 
             Indices are paired as follows:
 
@@ -137,9 +136,13 @@ class TwoWayCross(MatingProtocol):
 
             Example::
 
-                xconfig = [1,5,3,8,2,7]
-                female = 1,3,2
-                male = 5,8,7
+                xconfig = [[ 1, 5 ],
+                           [ 3, 8 ],
+                           [ 2, 7 ],
+                           ...,
+                           [ F, M ]]
+                female = [1, 3, 2, ..., F]
+                male = [5, 8, 7, ..., M]
         ncross : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
@@ -148,8 +151,8 @@ class TwoWayCross(MatingProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).
             If ``None``, user defined output is not calculated or stored.
-        s : int, default = 0
-            Number of selfing generations post-cross before double haploids are
+        nself : int, default = 0
+            Number of selfing generations post-cross before progeny lines are
             generated.
         kwargs : dict
             Additional keyword arguments to be passed to constructor for the
@@ -157,22 +160,42 @@ class TwoWayCross(MatingProtocol):
 
         Returns
         -------
-        out : PhasedGenotypeMatrix
-            A PhasedGenotypeMatrix of progeny.
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
-        # check data types
+        # check pgmat
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_ndarray(xconfig, "sel")
-        check_ndarray_len_is_multiple_of(xconfig, "sel", 2)
-        check_is_Integral_or_ndarray(nmating, "ncross")
-        check_is_Integral_or_ndarray(nprogeny, "nprogeny")
+        check_DensePhasedGenotypeMatrix_has_vrnt_xoprob(pgmat, "pgmat")
+
+        # check xconfig
+        check_is_ndarray(xconfig, "xconfig")
+        check_ndarray_ndim(xconfig, "xconfig", 2)
+        check_ndarray_axis_len(xconfig, "xconfig", 1, self.nparent)
+
+        # check nmating
+        if isinstance(nmating, Integral):
+            nmating = numpy.repeat(nmating, len(xconfig))
+        check_is_ndarray(nmating, "nmating")
+        check_ndarray_shape_eq(nmating, "nmating", (len(xconfig),))
+
+        # check nprogeny
+        if isinstance(nprogeny, Integral):
+            nprogeny = numpy.repeat(nprogeny, len(xconfig))
+        check_is_ndarray(nprogeny, "nprogeny")
+        check_ndarray_shape_eq(nprogeny, "nprogeny", (len(xconfig),))
+
+        # check miscout
         if miscout is not None:
             check_is_dict(miscout, "miscout")
+        
+        # check nself
         check_is_Integral(nself, "nself")
 
-        # get female and male selections; repeat by ncross
-        fsel = numpy.repeat(xconfig[0::2], nmating * nprogeny)
-        msel = numpy.repeat(xconfig[1::2], nmating * nprogeny)
+        ########################################################################
+        ########################## Progeny generation ##########################
+        # get female and male selections; repeat by nmating
+        fsel = numpy.repeat(xconfig[:,0], nmating * nprogeny)
+        msel = numpy.repeat(xconfig[:,1], nmating * nprogeny)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -182,7 +205,7 @@ class TwoWayCross(MatingProtocol):
         hgeno = mat_mate(geno, geno, fsel, msel, xoprob, self.rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(hgeno.shape[1]), nprogeny)
+        asel = numpy.arange(hgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(nself):
@@ -202,7 +225,7 @@ class TwoWayCross(MatingProtocol):
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(xconfig) // 2                    # calculate number of families
+        nfam = len(xconfig)                     # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp vector
             numpy.arange(                       # repeat for crosses * progeny
                 self.family_counter,            # start family number (inclusive)
@@ -216,7 +239,7 @@ class TwoWayCross(MatingProtocol):
         ########################################################################
         ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
-        progeny = pgmat.__class__(
+        progeny = DensePhasedGenotypeMatrix(
             mat = hgeno,
             taxa = taxa,
             taxa_grp = taxa_grp,

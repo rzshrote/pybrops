@@ -8,16 +8,16 @@ __all__ = [
 ]
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
-
+from numpy.random import Generator, RandomState
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_int
-from pybrops.popgen.gmat import PhasedGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix, check_DensePhasedGenotypeMatrix_has_vrnt_xoprob
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 
@@ -29,11 +29,21 @@ class FourWayCross(MatingProtocol):
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            progeny_counter: int = 0, 
-            family_counter: int = 0, 
-            rng: Union[numpy.random.Generator,numpy.random.RandomState,None] = global_prng, 
+            progeny_counter: Integral = 0, 
+            family_counter: Integral = 0, 
+            rng: Union[Generator,RandomState,None] = global_prng, 
             **kwargs: dict
         ) -> None:
+        """
+        Constructor for the concrete class FourWayCross.
+
+        Parameters
+        ----------
+        rng : numpy.random.Generator, numpy.random.RandomState
+            Random number source.
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(FourWayCross, self).__init__(**kwargs)
 
         # make assignments
@@ -52,31 +62,31 @@ class FourWayCross(MatingProtocol):
         error_readonly("nparent")
 
     @property
-    def progeny_counter(self) -> int:
+    def progeny_counter(self) -> Integral:
         """Description for property progeny_counter."""
         return self._progeny_counter
     @progeny_counter.setter
-    def progeny_counter(self, value: int) -> None:
+    def progeny_counter(self, value: Integral) -> None:
         """Set data for property progeny_counter."""
-        check_is_int(value, "progeny_counter")
+        check_is_Integral(value, "progeny_counter")
         self._progeny_counter = value
 
     @property
-    def family_counter(self) -> int:
+    def family_counter(self) -> Integral:
         """Description for property family_counter."""
         return self._family_counter
     @family_counter.setter
-    def family_counter(self, value: int) -> None:
+    def family_counter(self, value: Integral) -> None:
         """Set data for property family_counter."""
-        check_is_int(value, "family_counter")
+        check_is_Integral(value, "family_counter")
         self._family_counter = value
 
     @property
-    def rng(self) -> Union[numpy.random.Generator,numpy.random.RandomState]:
+    def rng(self) -> Union[Generator,RandomState]:
         """Random number generator."""
         return self._rng
     @rng.setter
-    def rng(self, value: Union[numpy.random.Generator,numpy.random.RandomState,None]) -> None:
+    def rng(self, value: Union[Generator,RandomState,None]) -> None:
         """Set random number generator."""
         if value is None:
             value = global_prng
@@ -86,14 +96,14 @@ class FourWayCross(MatingProtocol):
     ############################## Object Methods ##############################
     def mate(
             self, 
-            pgmat: PhasedGenotypeMatrix, 
+            pgmat: DensePhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            nmating: Union[int,numpy.ndarray], 
-            nprogeny: Union[int,numpy.ndarray], 
+            nmating: Union[Integral,numpy.ndarray], 
+            nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict] = None, 
-            nself: int = 0, 
+            nself: Integral = 0, 
             **kwargs: dict
-        ) -> PhasedGenotypeMatrix:
+        ) -> DensePhasedGenotypeMatrix:
         """
         Mate individuals according to a 4-way mate selection scheme.
 
@@ -102,11 +112,13 @@ class FourWayCross(MatingProtocol):
         pgmat : DensePhasedGenotypeMatrix
             A GenotypeMatrix containing candidate breeding individuals.
         xconfig : numpy.ndarray
-            A 1D array of indices of selected individuals of shape ``(k,)``.
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
 
             Where:
 
-            - ``k`` is the number of selected individuals.
+            - ``ncross`` is the number of crosses to perform.
+            - ``nparent`` is the number of parents required for a cross.
 
             Indices are paired as follows:
 
@@ -117,12 +129,15 @@ class FourWayCross(MatingProtocol):
 
             Example::
 
-                xconfig = [1,5,3,8]
-                female2 = 1
-                male2 = 5
-                female1 = 3
-                male1 = 8
-        ncross : numpy.ndarray
+                xconfig = [[ 1, 5, 3, 8 ],
+                           [ 2, 7, 0, 4 ],
+                           ...,
+                           [ F2, M2, F1, M1 ]]
+                female2 = [1, 2, ..., F2]
+                male2 = [5, 7, ..., M2]
+                female1 = [3, 0, ..., F1]
+                male1 = [8, 4, ..., M1]
+        nmating : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray
             Number of doubled haploid progeny to generate per cross.
@@ -130,7 +145,7 @@ class FourWayCross(MatingProtocol):
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).
             If ``None``, user defined output is not calculated or stored.
-        s : int, default = 0
+        nself : int, default = 0
             Number of selfing generations post-cross.
         kwargs : dict
             Additional keyword arguments to be passed to constructor for the
@@ -138,17 +153,44 @@ class FourWayCross(MatingProtocol):
 
         Returns
         -------
-        out : PhasedGenotypeMatrix
-            A PhasedGenotypeMatrix of progeny.
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix of progeny.
         """
-        # check data type
+        # check pgmat
         check_is_DensePhasedGenotypeMatrix(pgmat, "pgmat")
+        check_DensePhasedGenotypeMatrix_has_vrnt_xoprob(pgmat, "pgmat")
 
+        # check xconfig
+        check_is_ndarray(xconfig, "xconfig")
+        check_ndarray_ndim(xconfig, "xconfig", 2)
+        check_ndarray_axis_len(xconfig, "xconfig", 1, self.nparent)
+
+        # check nmating
+        if isinstance(nmating, Integral):
+            nmating = numpy.repeat(nmating, len(xconfig))
+        check_is_ndarray(nmating, "nmating")
+        check_ndarray_shape_eq(nmating, "nmating", (len(xconfig),))
+
+        # check nprogeny
+        if isinstance(nprogeny, Integral):
+            nprogeny = numpy.repeat(nprogeny, len(xconfig))
+        check_is_ndarray(nprogeny, "nprogeny")
+        check_ndarray_shape_eq(nprogeny, "nprogeny", (len(xconfig),))
+
+        # check miscout
+        if miscout is not None:
+            check_is_dict(miscout, "miscout")
+        
+        # check nself
+        check_is_Integral(nself, "nself")
+
+        ########################################################################
+        ########################## Progeny generation ##########################
         # get female2, male2, female1, and male1 selections; repeat by ncross
-        f2sel = numpy.repeat(xconfig[0::4], nmating)
-        m2sel = numpy.repeat(xconfig[1::4], nmating)
-        f1sel = numpy.repeat(xconfig[2::4], nmating)
-        m1sel = numpy.repeat(xconfig[3::4], nmating)
+        f2sel = numpy.repeat(xconfig[:,0], nmating)
+        m2sel = numpy.repeat(xconfig[:,1], nmating)
+        f1sel = numpy.repeat(xconfig[:,2], nmating)
+        m1sel = numpy.repeat(xconfig[:,3], nmating)
 
         # get pointers to genotypes and crossover probabilities, respectively
         geno = pgmat.mat
@@ -159,10 +201,20 @@ class FourWayCross(MatingProtocol):
         cdgeno = mat_mate(geno, geno, f2sel, m2sel, xoprob, self.rng)
 
         # generate selection array for all hybrid lines
-        asel = numpy.repeat(numpy.arange(abgeno.shape[1]), nprogeny)
+        absel = numpy.repeat(
+            numpy.arange(abgeno.shape[1]),
+            numpy.repeat(nprogeny, nmating)
+        )
+        cdsel = numpy.repeat(
+            numpy.arange(cdgeno.shape[1]),
+            numpy.repeat(nprogeny, nmating)
+        )
 
         # generate dihybrid cross
-        hgeno = mat_mate(abgeno, cdgeno, asel, asel, xoprob, self.rng)
+        hgeno = mat_mate(abgeno, cdgeno, absel, cdsel, xoprob, self.rng)
+
+        # get selection array for all 4-way hybrids
+        asel = numpy.arange(hgeno.shape[1])
 
         # self down hybrids if needed
         for i in range(nself):
@@ -178,11 +230,11 @@ class FourWayCross(MatingProtocol):
             self.progeny_counter + progcnt      # stop progeny number (exclusive)
         )
         # create taxa names
-        taxa = numpy.array(["3w"+str(i).zfill(7) for i in riter], dtype = "object")
+        taxa = numpy.array(["4w"+str(i).zfill(7) for i in riter], dtype = "object")
         self.progeny_counter += progcnt         # increment counter
 
         # calculate taxa family groupings
-        nfam = len(xconfig) // 4                    # calculate number of families
+        nfam = len(xconfig)                     # calculate number of families
         taxa_grp = numpy.repeat(                # construct taxa_grp
             numpy.repeat(                       # repeat for progeny
                 numpy.arange(                   # repeat for crosses
@@ -192,14 +244,14 @@ class FourWayCross(MatingProtocol):
                 ),
                 nmating
             ), 
-            nprogeny
+            numpy.repeat(nprogeny, nmating)
         )
         self.family_counter += nfam             # increment counter
 
         ########################################################################
         ########################## Output generation ###########################
         # create new DensePhasedGenotypeMatrix
-        progeny = pgmat.__class__(
+        progeny = DensePhasedGenotypeMatrix(
             mat = hgeno,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -228,5 +280,15 @@ class FourWayCross(MatingProtocol):
 
 ################################## Utilities ###################################
 def check_is_FourWayCross(v: object, vname: str) -> None:
+    """
+    Check if object is of type FourWayCross. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, FourWayCross):
-        raise TypeError("'%s' must be a FourWayCross." % vname)
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,FourWayCross.__name__,type(v).__name__))
