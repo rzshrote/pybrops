@@ -19,10 +19,10 @@ from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfigura
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq, check_ndarray_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_neq
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
@@ -110,6 +110,7 @@ class SelectionProtocol(metaclass=ABCMeta):
     def ncross(self, value: Integral) -> None:
         """Set number of cross configurations."""
         check_is_Integral(value, "ncross")
+        check_is_gt(value, "ncross", 0)
         self._ncross = value
     
     @property
@@ -120,6 +121,7 @@ class SelectionProtocol(metaclass=ABCMeta):
     def nparent(self, value: Integral) -> None:
         """Set number of parents per cross configuration."""
         check_is_Integral(value, "nparent")
+        check_is_gt(value, "nparent", 0)
         self._nparent = value
 
     @property
@@ -130,8 +132,10 @@ class SelectionProtocol(metaclass=ABCMeta):
     def nmating(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of matings per configuration."""
         if isinstance(value, Integral):
+            check_is_gteq(value, "nmating", 0)
             value = numpy.repeat(value, self.ncross)
         check_is_ndarray(value, "nmating")
+        check_ndarray_dtype_is_integer(value, "nmating")
         check_ndarray_all_gteq(value, "nmating", 0)
         self._nmating = value
 
@@ -143,8 +147,10 @@ class SelectionProtocol(metaclass=ABCMeta):
     def nprogeny(self, value: Union[Integral,numpy.ndarray]) -> None:
         """Set number of progeny to derive from each mating event."""
         if isinstance(value, Integral):
+            check_is_gteq(value, "nprogeny", 0)
             value = numpy.repeat(value, self.ncross)
         check_is_ndarray(value, "nprogeny")
+        check_ndarray_dtype_is_integer(value, "nprogeny")
         check_ndarray_all_gteq(value, "nprogeny", 0)
         self._nprogeny = value
 
@@ -321,6 +327,7 @@ class SelectionProtocol(metaclass=ABCMeta):
         if value is None:
             value = 1.0
         check_is_Real(value, "ndset_wt")
+        check_is_neq(value, "ndset_wt", 0.0)
         self._ndset_wt = value
 
     @property

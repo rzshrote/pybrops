@@ -127,6 +127,22 @@ def check_is_eq(v: object, vname: str, value: object) -> None:
     if v != value:
         raise ValueError("variable '{0}' is not equal to {1}".format(vname, value))
 
+def check_is_neq(v: object, vname: str, value: object) -> None:
+    """
+    Check if a Python object is not equal to another Python object.
+
+    Parameters
+    ----------
+    v : object
+        A Python object.
+    vname : str
+        Name of the Python object for use in the error message.
+    value : object
+        Expected value of the input Python object.
+    """
+    if v == value:
+        raise ValueError("variable '{0}' is equal to {1}".format(vname, value))
+
 def check_is_gt(v: object, vname: str, value: object) -> None:
     """
     Check if a Python object is greater than another Python object.
