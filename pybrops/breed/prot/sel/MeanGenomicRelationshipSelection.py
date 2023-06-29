@@ -28,7 +28,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
@@ -164,19 +164,22 @@ class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipSelectionMix
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
-        prob = MeanGenomicRelationshipSubsetSelectionProblem.from_object(
+        prob = MeanGenomicRelationshipSubsetSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -316,6 +319,9 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -325,10 +331,10 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanGenomicRelationshipRealSelectionProblem.from_object(
+        prob = MeanGenomicRelationshipRealSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -468,6 +474,9 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMi
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -477,10 +486,10 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMi
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanGenomicRelationshipIntegerSelectionProblem.from_object(
+        prob = MeanGenomicRelationshipIntegerSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -620,6 +629,9 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMix
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -629,10 +641,10 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMix
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
-        prob = MeanGenomicRelationshipBinarySelectionProblem.from_object(
+        prob = MeanGenomicRelationshipBinarySelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

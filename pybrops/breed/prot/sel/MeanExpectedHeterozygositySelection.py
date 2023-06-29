@@ -164,8 +164,8 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = MeanExpectedHeterozygositySubsetSelectionProblem.from_gmat(

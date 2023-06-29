@@ -7,6 +7,7 @@ from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+from pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory import DenseVanRadenCoancestryMatrixFactory
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.breed.prot.sel.prob.trans import trans_identity, trans_ndpt_to_vec_dist, trans_sum
@@ -53,6 +54,11 @@ def common_upper_percentile():
 @pytest.fixture
 def common_mateprot():
     out = TwoWayDHCross()
+    yield out
+
+@pytest.fixture
+def common_cmatfcty():
+    out = DenseVanRadenCoancestryMatrixFactory()
     yield out
 
 @pytest.fixture
