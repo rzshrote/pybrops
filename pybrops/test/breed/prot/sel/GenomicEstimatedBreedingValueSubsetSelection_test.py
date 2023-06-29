@@ -14,9 +14,6 @@ from pybrops.test.assert_python import assert_concrete_method
 @pytest.fixture
 def selprot_single(
         common_ntrait,
-        common_nrep,
-        common_mateprot,
-        common_unique_parents,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -42,9 +39,6 @@ def selprot_single(
     ):
     out = GenomicEstimatedBreedingValueSubsetSelection(
         ntrait = common_ntrait,
-        nrep = common_nrep,
-        mateprot = common_mateprot,
-        unique_parents = common_unique_parents,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -73,9 +67,6 @@ def selprot_single(
 @pytest.fixture
 def selprot_multi(
         common_ntrait,
-        common_nrep,
-        common_mateprot,
-        common_unique_parents,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -101,9 +92,6 @@ def selprot_multi(
     ):
     out = GenomicEstimatedBreedingValueSubsetSelection(
         ntrait = common_ntrait,
-        nrep = common_nrep,
-        mateprot = common_mateprot,
-        unique_parents = common_unique_parents,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,

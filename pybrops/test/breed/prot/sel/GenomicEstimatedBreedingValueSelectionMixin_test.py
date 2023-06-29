@@ -8,12 +8,10 @@ from pybrops.test.breed.prot.sel.common_fixtures_large import *
 
 @pytest.fixture
 def selmix(
-        common_ntrait,
-        common_alpha
+        common_ntrait
     ):
     out = GenomicEstimatedBreedingValueSelectionMixin()
     out.ntrait = common_ntrait
-    out.alpha = common_alpha
     yield out
 
 ################### Test class abstract/concrete properties ####################

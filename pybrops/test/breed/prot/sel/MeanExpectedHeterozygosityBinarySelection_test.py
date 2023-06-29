@@ -1,19 +1,18 @@
 import os
 import pytest
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection import GenomicEstimatedBreedingValueRealSelection
-from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionConfiguration
-from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
+from pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection import MeanExpectedHeterozygosityBinarySelection
+from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
+from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
+from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from pybrops.test.breed.prot.sel.common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_class, assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
 
 ################################ Test fixtures #################################
 
 @pytest.fixture
 def selprot_single(
-        common_ntrait,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -37,8 +36,7 @@ def selprot_single(
         common_soalgo,
         common_moalgo
     ):
-    out = GenomicEstimatedBreedingValueRealSelection(
-        ntrait = common_ntrait,
+    out = MeanExpectedHeterozygosityBinarySelection(
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -66,7 +64,6 @@ def selprot_single(
 
 @pytest.fixture
 def selprot_multi(
-        common_ntrait,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -90,8 +87,7 @@ def selprot_multi(
         common_soalgo,
         common_moalgo
     ):
-    out = GenomicEstimatedBreedingValueRealSelection(
-        ntrait = common_ntrait,
+    out = MeanExpectedHeterozygosityBinarySelection(
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -117,27 +113,28 @@ def selprot_multi(
     )
     yield out
 
+################### Test class abstract/concrete properties ####################
+def test_MeanExpectedHeterozygosityBinarySelection_is_concrete():
+    assert_concrete_class(MeanExpectedHeterozygosityBinarySelection)
+
 ############################## Test class docstring ############################
-def test_class_docstring():
-    assert_docstring(GenomicEstimatedBreedingValueRealSelection)
+def test_MeanExpectedHeterozygosityBinarySelection_docstring():
+    assert_docstring(MeanExpectedHeterozygosityBinarySelection)
 
 ############################# Test concrete methods ############################
+
+### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueRealSelection, "__init__")
+    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "__init__")
 
+def test_init(selprot_single, selprot_multi):
+    assert selprot_single is not None
+    assert selprot_multi is not None
+
+### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueRealSelection, "problem")
+    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "problem")
 
-def test_sosolve_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueRealSelection, "sosolve")
-
-def test_mosolve_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueRealSelection, "mosolve")
-
-def test_select_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueRealSelection, "select")
-
-###################### Test concrete method functionality ######################
 def test_problem(
         selprot_single,
         selprot_multi,
@@ -161,7 +158,7 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, RealSelectionProblem)
+    assert isinstance(prob, BinarySelectionProblem)
 
     # create selection problem
     prob = selprot_multi.problem(
@@ -175,7 +172,39 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, RealSelectionProblem)
+    assert isinstance(prob, BinarySelectionProblem)
+
+def test_problem_TypeError(
+        selprot_single,
+        selprot_multi,
+    ):
+    # test selection problem input sanitizing
+    with pytest.raises(TypeError):
+        prob = selprot_single.problem(
+            pgmat = object(),
+            gmat = object(),
+            ptdf = object(),
+            bvmat = object(),
+            gpmod = object(),
+            t_cur = object(),
+            t_max = object()
+        )
+
+    # test selection problem input sanitizing
+    with pytest.raises(TypeError):
+        prob = selprot_multi.problem(
+            pgmat = object(),
+            gmat = object(),
+            ptdf = object(),
+            bvmat = object(),
+            gpmod = object(),
+            t_cur = object(),
+            t_max = object()
+        )
+
+### sosolve ###
+def test_sosolve_is_concrete():
+    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -200,7 +229,7 @@ def test_sosolve(
     )
 
     # test for right type
-    assert isinstance(soln, RealSelectionSolution)
+    assert isinstance(soln, BinarySelectionSolution)
 
     # make sure multi objective problem raises error
     with pytest.raises(RuntimeError):
@@ -213,6 +242,10 @@ def test_sosolve(
             common_t_cur,
             common_t_max
         )
+
+### mosolve ###
+def test_mosolve_is_concrete():
+    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -237,7 +270,7 @@ def test_mosolve(
     )
 
     # test for right type
-    assert isinstance(soln, RealSelectionSolution)
+    assert isinstance(soln, BinarySelectionSolution)
 
     # make a directory if needed
     if not os.path.isdir("frontier_plots"):
@@ -252,8 +285,8 @@ def test_mosolve(
     )
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
-    ax.set_title("Random Real Selection Test Pareto Frontier")
-    pyplot.savefig("frontier_plots/GenomicEstimatedBreedingValueRealSelection_2d_frontier.png", dpi = 250)
+    ax.set_title("Random Binary Selection Test Pareto Frontier")
+    pyplot.savefig("frontier_plots/MeanExpectedHeterozygosityBinarySelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error
@@ -267,6 +300,10 @@ def test_mosolve(
             common_t_cur,
             common_t_max
         )
+
+### select ###
+def test_select_is_concrete():
+    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "select")
 
 def test_select(
         selprot_single,
@@ -290,7 +327,7 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_single, RealSelectionConfiguration)
+    assert isinstance(selcfg_single, BinarySelectionConfiguration)
 
     # make multi-objective selections
     selcfg_multi = selprot_multi.select(
@@ -303,4 +340,4 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_multi, RealSelectionConfiguration)
+    assert isinstance(selcfg_multi, BinarySelectionConfiguration)

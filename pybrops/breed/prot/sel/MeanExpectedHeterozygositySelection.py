@@ -29,11 +29,11 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class MeanExpectedHeterozygositySelectionMixin(SelectionProtocol,metaclass=ABCMeta):
+class MeanExpectedHeterozygositySelectionMixin(metaclass=ABCMeta):
     """
     Semi-abstract class for Conventional Genomic Selection (CGS) with constraints.
     """
@@ -156,6 +156,9 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -168,7 +171,7 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
         prob = MeanExpectedHeterozygositySubsetSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -307,6 +310,9 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -319,7 +325,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
         prob = MeanExpectedHeterozygosityRealSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -458,6 +464,9 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -470,7 +479,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
         prob = MeanExpectedHeterozygosityIntegerSelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -609,6 +618,9 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -621,7 +633,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
         prob = MeanExpectedHeterozygosityBinarySelectionProblem.from_gmat(
             gmat = gmat,
             cmatfcty = DenseMolecularCoancestryMatrixFactory(),
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
