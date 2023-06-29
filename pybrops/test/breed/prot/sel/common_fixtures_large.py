@@ -73,6 +73,10 @@ def common_nhaploblk():
 def common_nbestfndr():
     yield 2
 
+@pytest.fixture
+def common_descale():
+    yield True
+
 ####################### Phased genotype matrix fixtures ########################
 
 @pytest.fixture
@@ -365,8 +369,16 @@ def common_nobj_multi():
     yield 2
 
 @pytest.fixture
+def common_nobj_multi3():
+    yield 3
+
+@pytest.fixture
 def common_obj_wt_multi():
     yield numpy.array([1,-1], dtype=float)
+
+@pytest.fixture
+def common_obj_wt_multi3():
+    yield numpy.array([1,1,1], dtype=float)
 
 @pytest.fixture
 def common_obj_trans_multi():
@@ -421,5 +433,12 @@ def common_ndset_trans_kwargs_multi(common_obj_wt_multi):
     yield {
         "obj_wt": common_obj_wt_multi, 
         "vec_wt": numpy.array([0.5,0.5])
+    }
+
+@pytest.fixture
+def common_ndset_trans_kwargs_multi3(common_obj_wt_multi3):
+    yield {
+        "obj_wt": common_obj_wt_multi3, 
+        "vec_wt": numpy.array([0.333,0.333,0.333])
     }
 

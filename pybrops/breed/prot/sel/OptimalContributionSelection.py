@@ -23,11 +23,11 @@ from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtoc
 from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionBinarySelectionProblem, OptimalContributionIntegerSelectionProblem, OptimalContributionRealSelectionProblem, OptimalContributionSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
@@ -69,6 +69,7 @@ class OptimalContributionSelectionMixin(metaclass=ABCMeta):
     @descale.setter
     def descale(self, value: bool) -> None:
         """Set descale."""
+        check_is_bool(value, "descale")
         self._descale = value
 
     ######################### Private Object Methods ###########################
@@ -242,13 +243,17 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = OptimalContributionSubsetSelectionProblem.from_bvmat_gmat(
@@ -256,7 +261,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -403,6 +408,10 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -417,7 +426,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -564,6 +573,10 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -578,7 +591,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
@@ -725,6 +738,10 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_GenotypeMatrix(gmat, "gmat")
+        check_is_BreedingValueMatrix(bvmat, "bvmat")
+
         # get number of individuals
         ntaxa = gmat.ntaxa
 
@@ -739,7 +756,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             gmat = gmat,
             cmatfcty = self.cmatfcty,
             descale = self.descale,
-            ndecn = self.nparent,
+            ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

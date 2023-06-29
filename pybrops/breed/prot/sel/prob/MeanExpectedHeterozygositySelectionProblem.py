@@ -432,9 +432,15 @@ class MeanExpectedHeterozygosityRealSelectionProblem(MeanExpectedHeterozygosityS
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate negated MEH
         # (n,n) . (n,) -> (n,)
@@ -644,9 +650,15 @@ class MeanExpectedHeterozygosityIntegerSelectionProblem(MeanExpectedHeterozygosi
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate negated MEH
         # (n,n) . (n,) -> (n,)
@@ -856,9 +868,15 @@ class MeanExpectedHeterozygosityBinarySelectionProblem(MeanExpectedHeterozygosit
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate negated MEH
         # (n,n) . (n,) -> (n,)

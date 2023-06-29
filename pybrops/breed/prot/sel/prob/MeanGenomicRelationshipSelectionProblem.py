@@ -426,9 +426,15 @@ class MeanGenomicRelationshipRealSelectionProblem(MeanGenomicRelationshipSelecti
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate MGR
         # (n,n) . (n,) -> (n,)
@@ -637,9 +643,15 @@ class MeanGenomicRelationshipIntegerSelectionProblem(MeanGenomicRelationshipSele
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate MGR
         # (n,n) . (n,) -> (n,)
@@ -848,9 +860,15 @@ class MeanGenomicRelationshipBinarySelectionProblem(MeanGenomicRelationshipSelec
         out : numpy.ndarray
             A matrix of shape ``(1,)`` containing MEH values.
         """
+        # calculate sum(x)
+        xsum = x.sum()
+
+        # if sum(x) ~== 0, then set to 1
+        xsum = xsum if abs(xsum) >= 1e-10 else 1.0
+
         # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
+        # (n,) -> (n,)
+        contrib = (1.0 / xsum) * x
 
         # calculate MGR
         # (n,n) . (n,) -> (n,)
