@@ -15,7 +15,7 @@ from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionPr
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
 from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
@@ -63,7 +63,7 @@ class GenotypeBuilderSelectionProblemMixin(metaclass=ABCMeta):
     def nbestfndr(self, value: Integral) -> None:
         """Set nbestfndr."""
         check_is_Integral(value, "nbestfndr")   # must be int
-        check_is_in_interval(value, "nbestfndr", 0, self._haplomat.shape[1])
+        check_is_in_interval_inclusive(value, "nbestfndr", 0, self._haplomat.shape[1])
         self._nbestfndr = value
     
     ######################### Private Object Methods ###########################

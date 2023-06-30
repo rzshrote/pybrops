@@ -14,7 +14,7 @@ from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSel
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
 from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
@@ -409,7 +409,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -495,7 +495,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -746,7 +746,7 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -832,7 +832,7 @@ class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProble
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -1083,7 +1083,7 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -1169,7 +1169,7 @@ class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionPro
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -1420,7 +1420,7 @@ class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProb
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")
@@ -1506,7 +1506,7 @@ class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProb
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral(nself, "nself")
         check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
         check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         check_is_bool(unique_parents, "unique_parents")

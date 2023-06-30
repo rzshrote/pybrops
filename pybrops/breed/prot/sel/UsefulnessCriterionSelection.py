@@ -32,10 +32,10 @@ from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import Usef
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval_exclusive, check_is_in_interval_inclusive
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
@@ -79,7 +79,7 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     def upper_percentile(self, value: Real) -> None:
         """Set data for property upper_percentile."""
         check_is_Real(value, "upper_percentile")  # must be a number
-        check_is_in_interval(value, "upper_percentile", 0.0, 1.0)
+        check_is_in_interval_exclusive(value, "upper_percentile", 0.0, 1.0)
         self._upper_percentile = value
     
     @property
@@ -104,6 +104,7 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     @gmapfn.setter
     def gmapfn(self, value: GeneticMapFunction) -> None:
         """Set data for property gmapfn."""
+        check_is_GeneticMapFunction(value, "gmapfn")
         self._gmapfn = value
 
     @property
@@ -426,6 +427,10 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = UsefulnessCriterionRealSelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -438,11 +443,15 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
         decn_space_upper = numpy.repeat(1.0, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
+
         # construct problem
         prob = UsefulnessCriterionRealSelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
-            ncross = self.nmating, 
-            nprogeny = self.nprogeny, 
+            ncross = nmating_median, 
+            nprogeny = nprogeny_median, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
             vmatfcty = self.vmatfcty,
@@ -604,6 +613,10 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = UsefulnessCriterionIntegerSelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -616,11 +629,15 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
         decn_space_upper = numpy.repeat(self.ncross * self.nparent * self.nmating, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
+
         # construct problem
         prob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
-            ncross = self.nmating, 
-            nprogeny = self.nprogeny, 
+            ncross = nmating_median, 
+            nprogeny = nprogeny_median, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
             vmatfcty = self.vmatfcty,
@@ -782,6 +799,10 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = UsefulnessCriterionBinarySelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -794,11 +815,15 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
         decn_space_upper = numpy.repeat(1, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
+        # get the median number of mating from the mating property
+        nmating_median = round(numpy.median(self.nmating))
+        nprogeny_median = round(numpy.median(self.nprogeny))
+
         # construct problem
         prob = UsefulnessCriterionBinarySelectionProblem.from_pgmat_gpmod_xmap(
             nparent = self.nparent, 
-            ncross = self.nmating, 
-            nprogeny = self.nprogeny, 
+            ncross = nmating_median, 
+            nprogeny = nprogeny_median, 
             nself = self.nself,
             upper_percentile = self.upper_percentile,
             vmatfcty = self.vmatfcty,

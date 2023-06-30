@@ -23,7 +23,7 @@ from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProt
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
-from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval_inclusive
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem import GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
@@ -63,7 +63,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(metaclass=A
     def alpha(self, value: Real) -> None:
         """Set exponent with which to adjust allele values. Must be in range [0,1]."""
         check_is_Real(value, "alpha")
-        check_is_in_interval(value, "alpha", 0.0, 1.0)
+        check_is_in_interval_inclusive(value, "alpha", 0.0, 1.0)
         self._alpha = value
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):

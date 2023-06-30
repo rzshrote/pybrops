@@ -118,7 +118,7 @@ class RealMateSelectionProtocol(RealSelectionProtocol,MateSelectionProtocol,meta
         """
         # check the number of objectives and raise error if needed
         if self.nobj != 1:
-            raise TypeError("{0} instance is not single-objective in nature: expected nobj == 1 but received nobj == {1}".format(type(self).__name__,self.nobj))
+            raise RuntimeError("{0} instance is not single-objective in nature: expected nobj == 1 but received nobj == {1}".format(type(self).__name__,self.nobj))
 
         # construct the problem
         prob = self.problem(
@@ -221,7 +221,7 @@ class RealMateSelectionProtocol(RealSelectionProtocol,MateSelectionProtocol,meta
         """
         # check the number of objectives and raise error if needed
         if self.nobj <= 1:
-            raise TypeError("{0} instance is not multi-objective in nature: expected nobj > 1 but received nobj == {1}".format(type(self).__name__,self.nobj))
+            raise RuntimeError("{0} instance is not multi-objective in nature: expected nobj > 1 but received nobj == {1}".format(type(self).__name__,self.nobj))
 
         # construct the problem
         prob = self.problem(

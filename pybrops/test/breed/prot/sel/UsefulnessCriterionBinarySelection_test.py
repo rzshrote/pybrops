@@ -1,11 +1,11 @@
 import os
 from matplotlib import pyplot
 import pytest
-from pybrops.breed.prot.sel.UsefulnessCriterionSelection import UsefulnessCriterionSubsetSelection
-from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
-from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
+from pybrops.breed.prot.sel.UsefulnessCriterionSelection import UsefulnessCriterionBinarySelection
+from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
+from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
+from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
+from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from pybrops.test.breed.prot.sel.common_fixtures_large import *
 from pybrops.test.assert_python import assert_concrete_class, assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
@@ -44,7 +44,7 @@ def selprot_single(
         common_soalgo,
         common_moalgo
     ):
-    out = UsefulnessCriterionSubsetSelection(
+    out = UsefulnessCriterionBinarySelection(
         ntrait = common_ntrait,
         nself = common_nself,
         upper_percentile = common_upper_percentile,
@@ -107,7 +107,7 @@ def selprot_multi(
         common_soalgo,
         common_moalgo
     ):
-    out = UsefulnessCriterionSubsetSelection(
+    out = UsefulnessCriterionBinarySelection(
         ntrait = common_ntrait,
         nself = common_nself,
         upper_percentile = common_upper_percentile,
@@ -140,22 +140,22 @@ def selprot_multi(
     yield out
 
 ################### Test class abstract/concrete properties ####################
-def test_UsefulnessCriterionSubsetSelection_is_concrete():
-    assert_concrete_class(UsefulnessCriterionSubsetSelection)
+def test_UsefulnessCriterionBinarySelection_is_concrete():
+    assert_concrete_class(UsefulnessCriterionBinarySelection)
 
 ############################## Test class docstring ############################
-def test_UsefulnessCriterionSubsetSelection_docstring():
-    assert_docstring(UsefulnessCriterionSubsetSelection)
+def test_UsefulnessCriterionBinarySelection_docstring():
+    assert_docstring(UsefulnessCriterionBinarySelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "__init__")
+    assert_concrete_method(UsefulnessCriterionBinarySelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "problem")
+    assert_concrete_method(UsefulnessCriterionBinarySelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -180,7 +180,7 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, SubsetSelectionProblem)
+    assert isinstance(prob, BinarySelectionProblem)
 
     # create selection problem
     prob = selprot_multi.problem(
@@ -194,7 +194,7 @@ def test_problem(
     )
 
     # check that it is the right type
-    assert isinstance(prob, SubsetSelectionProblem)
+    assert isinstance(prob, BinarySelectionProblem)
 
 def test_problem_TypeError(
         selprot_single,
@@ -226,7 +226,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "sosolve")
+    assert_concrete_method(UsefulnessCriterionBinarySelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -251,7 +251,7 @@ def test_sosolve(
     )
 
     # test for right type
-    assert isinstance(soln, SubsetSelectionSolution)
+    assert isinstance(soln, BinarySelectionSolution)
 
     # make sure multi objective problem raises error
     with pytest.raises(RuntimeError):
@@ -267,7 +267,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "mosolve")
+    assert_concrete_method(UsefulnessCriterionBinarySelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -292,7 +292,7 @@ def test_mosolve(
     )
 
     # test for right type
-    assert isinstance(soln, SubsetSelectionSolution)
+    assert isinstance(soln, BinarySelectionSolution)
 
     # make a directory if needed
     if not os.path.isdir("frontier_plots"):
@@ -307,8 +307,8 @@ def test_mosolve(
     )
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
-    ax.set_title("Random Subset Selection Test Pareto Frontier")
-    pyplot.savefig("frontier_plots/UsefulnessCriterionSubsetSelection_2d_frontier.png", dpi = 250)
+    ax.set_title("Random Binary Selection Test Pareto Frontier")
+    pyplot.savefig("frontier_plots/UsefulnessCriterionBinarySelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error
@@ -325,7 +325,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "select")
+    assert_concrete_method(UsefulnessCriterionBinarySelection, "select")
 
 def test_select(
         selprot_single,
@@ -349,7 +349,7 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_single, SubsetSelectionConfiguration)
+    assert isinstance(selcfg_single, BinarySelectionConfiguration)
 
     # make multi-objective selections
     selcfg_multi = selprot_multi.select(
@@ -362,4 +362,4 @@ def test_select(
         common_t_max
     )
 
-    assert isinstance(selcfg_multi, SubsetSelectionConfiguration)
+    assert isinstance(selcfg_multi, BinarySelectionConfiguration)

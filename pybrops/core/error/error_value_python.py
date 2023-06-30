@@ -13,7 +13,7 @@ __all__ = [
     "check_is_gteq",
     "check_is_lt",
     "check_is_lteq",
-    "check_is_in_interval",
+    "check_is_in_interval_inclusive",
     "check_str_value",
     "check_keys_in_dict",
     "check_keys_in_dict_all_type",
@@ -207,9 +207,9 @@ def check_is_lteq(v: object, vname: str, value: object) -> None:
     if v > value:
         raise ValueError("variable '{0}' is not less than or equal to {1}".format(vname, value))
 
-def check_is_in_interval(v: object, vname: str, vmin: object, vmax: object) -> None:
+def check_is_in_interval_inclusive(v: object, vname: str, vmin: object, vmax: object) -> None:
     """
-    Check if a value is in a specified interval.
+    Check if a value is in a specified interval (inclusive).
     
     Parameters
     ----------
@@ -229,6 +229,29 @@ def check_is_in_interval(v: object, vname: str, vmin: object, vmax: object) -> N
     """
     if (v < vmin) or (v > vmax):
         raise ValueError("variable '{0}' is not in interval [{1}, {2}]".format(vname, vmin, vmax))
+
+def check_is_in_interval_exclusive(v: object, vname: str, vmin: object, vmax: object) -> None:
+    """
+    Check if a value is in a specified interval (exclusive).
+    
+    Parameters
+    ----------
+    v : object
+        Input numerical value.
+    vname : str
+        Name of the variable of which to test.
+    vmin : object
+        Minimum value for the input value.
+    vmax : object
+        Maximum value for the input value.
+    
+    Returns
+    -------
+    out : outtype
+        outdesc
+    """
+    if (v <= vmin) or (v >= vmax):
+        raise ValueError("variable '{0}' is not in interval ({1}, {2})".format(vname, vmin, vmax))
 
 def check_str_value(v: str, vname: str, *args: tuple) -> None:
     """

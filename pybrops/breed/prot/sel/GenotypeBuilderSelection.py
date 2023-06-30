@@ -18,7 +18,7 @@ from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtoc
 from pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem import GenotypeBuilderSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval_inclusive
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
@@ -151,7 +151,7 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelecti
     def nbestfndr(self, value: Integral) -> None:
         """Set number of best founders to consider."""
         check_is_Integral(value, "nbestfndr")           # must be int
-        check_is_in_interval(value, "nbestfndr", 0, self.nselindiv) # must be in [0,nparent]
+        check_is_in_interval_inclusive(value, "nbestfndr", 0, self.nselindiv) # must be in [0,nparent]
         self._nbestfndr = value
 
     ############################## Object Methods ##############################

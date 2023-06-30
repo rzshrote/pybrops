@@ -15,7 +15,7 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_in_interval
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
-from pybrops.core.error.error_value_python import check_is_in_interval
+from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
@@ -89,7 +89,7 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_ndim(mkrwt, "mkrwt", 1)
             check_ndarray_axis_len(mkrwt, "mkrwt", 0, gmat.nvrnt)
         elif isinstance(mkrwt, Real):
-            check_is_in_interval(mkrwt, "mkrwt", 0.0, math.inf)
+            check_is_in_interval_inclusive(mkrwt, "mkrwt", 0.0, math.inf)
             mkrwt = numpy.full((gmat.nvrnt,), mkrwt, dtype = "float64")
         else:
             raise TypeError("variable 'mkrwt' must be of type 'numpy.ndarray', 'Real', or None")
@@ -102,7 +102,7 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_axis_len(afreq, "afreq", 0, gmat.nvrnt)
             check_ndarray_in_interval(afreq, "afreq", 0.0, 1.0)
         elif isinstance(afreq, Real):
-            check_is_in_interval(afreq, "afreq", 0.0, 1.0)
+            check_is_in_interval_inclusive(afreq, "afreq", 0.0, 1.0)
             afreq = numpy.full((gmat.nvrnt,), afreq, dtype = "float64")
         else:
             raise TypeError("variable 'afreq' must be of type 'numpy.ndarray', 'Real', or None")
