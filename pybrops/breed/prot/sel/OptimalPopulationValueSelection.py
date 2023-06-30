@@ -19,14 +19,14 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class OptimalPopulationValueSelectionMixin(SelectionProtocol,metaclass=ABCMeta):
+class OptimalPopulationValueSelectionMixin(metaclass=ABCMeta):
     """
     Semi-abstract class for Optimal Population Value (OPV) Selection with constraints.
     """
@@ -172,6 +172,10 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelectionMixin
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_AdditiveLinearGenomicModel(gpmod, "gpmod")
+        
         # get decision space parameters
         ntaxa = pgmat.ntaxa
         decn_space = numpy.arange(ntaxa)

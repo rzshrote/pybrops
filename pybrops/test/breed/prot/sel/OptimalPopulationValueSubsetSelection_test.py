@@ -1,7 +1,7 @@
 import os
 import pytest
 from matplotlib import pyplot
-from pybrops.breed.prot.sel.GenotypeBuilderSelection import GenotypeBuilderSubsetSelection
+from pybrops.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopulationValueSubsetSelection
 from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
@@ -15,7 +15,6 @@ from pybrops.test.assert_python import assert_concrete_method
 def selprot_single(
         common_ntrait,
         common_nhaploblk,
-        common_nbestfndr,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -39,10 +38,9 @@ def selprot_single(
         common_soalgo,
         common_moalgo
     ):
-    out = GenotypeBuilderSubsetSelection(
+    out = OptimalPopulationValueSubsetSelection(
         ntrait = common_ntrait,
         nhaploblk = common_nhaploblk,
-        nbestfndr = common_nbestfndr,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -72,7 +70,6 @@ def selprot_single(
 def selprot_multi(
         common_ntrait,
         common_nhaploblk,
-        common_nbestfndr,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -96,10 +93,9 @@ def selprot_multi(
         common_soalgo,
         common_moalgo
     ):
-    out = GenotypeBuilderSubsetSelection(
+    out = OptimalPopulationValueSubsetSelection(
         ntrait = common_ntrait,
         nhaploblk = common_nhaploblk,
-        nbestfndr = common_nbestfndr,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -127,17 +123,17 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GenotypeBuilderSubsetSelection)
+    assert_docstring(OptimalPopulationValueSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "__init__")
+    assert_concrete_method(OptimalPopulationValueSubsetSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "problem")
+    assert_concrete_method(OptimalPopulationValueSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -208,7 +204,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "sosolve")
+    assert_concrete_method(OptimalPopulationValueSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -249,7 +245,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "mosolve")
+    assert_concrete_method(OptimalPopulationValueSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -290,7 +286,7 @@ def test_mosolve(
     ax.set_xlabel("Trait 1")
     ax.set_ylabel("Trait 2")
     ax.set_title("Random Subset Selection Test Pareto Frontier")
-    pyplot.savefig("frontier_plots/GenotypeBuilderSubsetSelection_2d_frontier.png", dpi = 250)
+    pyplot.savefig("frontier_plots/OptimalPopulationValueSubsetSelection_2d_frontier.png", dpi = 250)
     pyplot.close()
 
     # make sure multi objective problem raises error
@@ -307,7 +303,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "select")
+    assert_concrete_method(OptimalPopulationValueSubsetSelection, "select")
 
 def test_select(
         selprot_single,
