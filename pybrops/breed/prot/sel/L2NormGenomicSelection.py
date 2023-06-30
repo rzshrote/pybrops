@@ -22,8 +22,6 @@ from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtoc
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
-from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem import L2NormGenomicBinarySelectionProblem, L2NormGenomicIntegerSelectionProblem, L2NormGenomicRealSelectionProblem, L2NormGenomicSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
@@ -44,17 +42,6 @@ class L2NormGenomicSelectionMixin(metaclass=ABCMeta):
 
     ############################ Object Properties #############################
     @property
-    def ntrait(self) -> Integral:
-        """Number of traits to expect from matrix inputs."""
-        return self._ntrait
-    @ntrait.setter
-    def ntrait(self, value: Integral) -> None:
-        """Set number of traits to expect."""
-        check_is_Integral(value, "ntrait")
-        check_is_gt(value, "ntrait", 0)
-        self._ntrait = value
-
-    @property
     def cmatfcty(self) -> CoancestryMatrixFactory:
         """Coancestry matrix factory."""
         return self._cmatfcty
@@ -71,7 +58,6 @@ class L2NormGenomicSubsetSelection(L2NormGenomicSelectionMixin,SubsetSelectionPr
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
             ncross: Integral,
             nparent: Integral,
@@ -107,7 +93,6 @@ class L2NormGenomicSubsetSelection(L2NormGenomicSelectionMixin,SubsetSelectionPr
         """
         # order dependent assignments
         # make assignments from Mixin class first
-        self.ntrait = ntrait
         self.cmatfcty = cmatfcty
         # make assignments from SubsetSelectionProtocol second
         super(L2NormGenomicSubsetSelection, self).__init__(
@@ -227,7 +212,6 @@ class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtoc
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
             ncross: Integral,
             nparent: Integral,
@@ -263,7 +247,6 @@ class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtoc
         """
         # order dependent assignments
         # make assignments from Mixin class first
-        self.ntrait = ntrait
         self.cmatfcty = cmatfcty
         # make assignments from RealSelectionProtocol second
         super(L2NormGenomicRealSelection, self).__init__(
@@ -381,7 +364,6 @@ class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelection
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
             ncross: Integral,
             nparent: Integral,
@@ -417,7 +399,6 @@ class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelection
         """
         # order dependent assignments
         # make assignments from Mixin class first
-        self.ntrait = ntrait
         self.cmatfcty = cmatfcty
         # make assignments from IntegerSelectionProtocol second
         super(L2NormGenomicIntegerSelection, self).__init__(
@@ -535,7 +516,6 @@ class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionPr
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
             ncross: Integral,
             nparent: Integral,
@@ -571,7 +551,6 @@ class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionPr
         """
         # order dependent assignments
         # make assignments from Mixin class first
-        self.ntrait = ntrait
         self.cmatfcty = cmatfcty
         # make assignments from BinarySelectionProtocol second
         super(L2NormGenomicBinarySelection, self).__init__(
