@@ -26,13 +26,13 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class OptimalHaploidValueSelectionMixin(SelectionProtocol,metaclass=ABCMeta):
+class OptimalHaploidValueSelectionMixin(metaclass=ABCMeta):
     """
     Semi-abstract class for Optimal Haploid Value (OHV) Selection with constraints.
     """
@@ -59,6 +59,8 @@ class OptimalHaploidValueSelectionMixin(SelectionProtocol,metaclass=ABCMeta):
     @nhaploblk.setter
     def nhaploblk(self, value: Integral) -> None:
         """Set number of haplotype blocks to consider."""
+        check_is_Integral(value, "nhaploblk")
+        check_is_gt(value, "nhaploblk", 0)
         self._nhaploblk = value
     
     @property
@@ -189,6 +191,10 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,Subse
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = OptimalHaploidValueSubsetSelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -352,6 +358,10 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSel
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = OptimalHaploidValueRealSelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -515,6 +525,10 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = OptimalHaploidValueIntegerSelectionProblem._calc_xmap(
             pgmat.ntaxa,
@@ -524,7 +538,7 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
 
         # get decision space parameters
         decn_space_lower = numpy.repeat(0, len(xmap))
-        decn_space_upper = numpy.repeat(self.ncross * self.nparent * self.nmating, len(xmap))
+        decn_space_upper = numpy.repeat(numpy.sum(self.nmating * self.nprogeny), len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # construct problem
@@ -678,6 +692,10 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,Binar
         out : SelectionProblem
             An optimization problem definition.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
         # get the cross map (inefficient)
         xmap = OptimalHaploidValueBinarySelectionProblem._calc_xmap(
             pgmat.ntaxa,
