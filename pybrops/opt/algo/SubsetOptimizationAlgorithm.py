@@ -64,5 +64,5 @@ def check_is_SubsetOptimizationAlgorithm(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, OptimizationAlgorithm):
-        raise TypeError("variable '{0}' must be a SubsetOptimizationAlgorithm".format(vname))
+    if not isinstance(v, SubsetOptimizationAlgorithm):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,SubsetOptimizationAlgorithm.__name__,type(v).__name__))

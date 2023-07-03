@@ -64,5 +64,5 @@ def check_is_BinaryOptimizationAlgorithm(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, OptimizationAlgorithm):
-        raise TypeError("variable '{0}' must be a BinaryOptimizationAlgorithm".format(vname))
+    if not isinstance(v, BinaryOptimizationAlgorithm):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,BinaryOptimizationAlgorithm.__name__,type(v).__name__))
