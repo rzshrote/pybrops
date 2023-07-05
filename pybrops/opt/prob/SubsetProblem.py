@@ -144,5 +144,5 @@ def check_SubsetProblem_is_multi_objective(v: SubsetProblem, vname: str) -> None
     vname : str
         Name of variable to print in TypeError message.
     """
-    if v.nobj != 1:
+    if v.nobj <= 1:
         raise TypeError("{0} '{1}' must be multi objective in nature but received {1}.nobj == {2}".format(SubsetProblem.__name__,vname,v.nobj))

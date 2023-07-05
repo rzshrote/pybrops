@@ -19,7 +19,7 @@ from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
 from pybrops.opt.algo.pymoo_addon import IntegerPolynomialMutation, IntegerSimulatedBinaryCrossover
-from pybrops.opt.prob.IntegerProblem import IntegerProblem, check_is_IntegerProblem
+from pybrops.opt.prob.IntegerProblem import IntegerProblem, check_IntegerProblem_is_multi_objective, check_is_IntegerProblem
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 from pymoo.algorithms.moo.nsga2 import NSGA2
@@ -59,7 +59,6 @@ class NSGA2IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA2IntegerGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
         self.rng = rng
@@ -125,6 +124,7 @@ class NSGA2IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
         """
         # type checks
         check_is_IntegerProblem(prob, "prob")
+        check_IntegerProblem_is_multi_objective(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         

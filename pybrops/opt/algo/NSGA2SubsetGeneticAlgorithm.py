@@ -10,13 +10,16 @@ __all__ = [
 
 # imports
 from numbers import Integral
-from typing import Optional
+from typing import Optional, Union
 import numpy
+from numpy.random import Generator, RandomState
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
 from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_multi_objective, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pymoo.algorithms.moo.nsga2 import NSGA2
@@ -34,6 +37,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
             self, 
             ngen: Integral = 250, 
             pop_size: Integral = 100, 
+            rng: Union[Generator,RandomState] = global_prng, 
             **kwargs: dict
         ) -> None:
         """
@@ -54,9 +58,9 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(NSGA2SubsetGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
+        self.rng = rng
 
     ############################ Object Properties #############################
     @property
@@ -80,6 +84,18 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         check_is_Integral(value, "mu")      # must be int
         check_is_gt(value, "mu", 0)         # int must be >0
         self._pop_size = value
+
+    @property
+    def rng(self) -> Union[Generator,RandomState]:
+        """Random number generator source."""
+        return self._rng
+    @rng.setter
+    def rng(self, value: Union[Generator,RandomState]) -> None:
+        """Set random number generator source."""
+        if value is None:
+            value = global_prng
+        check_is_Generator_or_RandomState(value, "rng")
+        self._rng = value
 
     ############################## Object Methods ##############################
     def minimize(
@@ -107,6 +123,7 @@ class NSGA2SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
         """
         # type checks
         check_is_SubsetProblem(prob, "prob")
+        check_SubsetProblem_is_multi_objective(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         
