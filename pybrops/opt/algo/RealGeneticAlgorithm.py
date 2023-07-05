@@ -18,7 +18,7 @@ from pybrops.core.error.error_type_python import check_is_Integral, check_is_dic
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
-from pybrops.opt.prob.RealProblem import RealProblem, check_is_RealProblem
+from pybrops.opt.prob.RealProblem import RealProblem, check_RealProblem_is_single_objective, check_is_RealProblem
 from pybrops.opt.soln.RealSolution import RealSolution
 from pybrops.opt.soln.RealSolution import RealSolution
 from pymoo.algorithms.soo.nonconvex.ga import GA
@@ -60,7 +60,6 @@ class RealGeneticAlgorithm(RealOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(RealGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
         self.rng = rng
@@ -126,6 +125,7 @@ class RealGeneticAlgorithm(RealOptimizationAlgorithm):
         """
         # type checks
         check_is_RealProblem(prob, "prob")
+        check_RealProblem_is_single_objective(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         

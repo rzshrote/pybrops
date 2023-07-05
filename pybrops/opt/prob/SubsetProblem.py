@@ -117,4 +117,32 @@ def check_is_SubsetProblem(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SubsetProblem):
-        raise TypeError("'{0}' must be of type SubsetProblem.".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'.".format(vname,SubsetProblem.__name__,type(v).__name__))
+
+def check_SubsetProblem_is_single_objective(v: SubsetProblem, vname: str) -> None:
+    """
+    Check if a SubsetProblem is single objective in nature, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : SubsetProblem
+        A SubsetProblem for which to check the number of objectives.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if v.nobj != 1:
+        raise TypeError("{0} '{1}' must be single objective in nature but received {1}.nobj == {2}".format(SubsetProblem.__name__,vname,v.nobj))
+
+def check_SubsetProblem_is_multi_objective(v: SubsetProblem, vname: str) -> None:
+    """
+    Check if a SubsetProblem is multi objective in nature, otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : SubsetProblem
+        A SubsetProblem for which to check the number of objectives.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if v.nobj != 1:
+        raise TypeError("{0} '{1}' must be multi objective in nature but received {1}.nobj == {2}".format(SubsetProblem.__name__,vname,v.nobj))

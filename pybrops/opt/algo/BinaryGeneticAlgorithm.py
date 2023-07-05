@@ -18,7 +18,7 @@ from pybrops.core.error.error_type_python import check_is_Integral, check_is_dic
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
-from pybrops.opt.prob.BinaryProblem import BinaryProblem, check_is_BinaryProblem
+from pybrops.opt.prob.BinaryProblem import BinaryProblem, check_BinaryProblem_is_single_objective, check_is_BinaryProblem
 from pybrops.opt.soln.BinarySolution import BinarySolution
 from pybrops.opt.soln.BinarySolution import BinarySolution
 from pymoo.algorithms.soo.nonconvex.ga import GA
@@ -60,7 +60,6 @@ class BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(BinaryGeneticAlgorithm, self).__init__(**kwargs)
         self.ngen = ngen
         self.pop_size = pop_size
         self.rng = rng
@@ -126,6 +125,7 @@ class BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
         """
         # type checks
         check_is_BinaryProblem(prob, "prob")
+        check_BinaryProblem_is_single_objective(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
         

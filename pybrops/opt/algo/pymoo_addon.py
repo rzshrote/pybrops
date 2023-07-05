@@ -190,7 +190,7 @@ class ReducedExchangeCrossover(Crossover):
             Xp[0,i,mab] = ap                    # copy over exchanges to indiv 1
             Xp[1,i,mba] = bp                    # copy over exchanges to indiv 2
 
-        return X
+        return Xp
 
 class ReducedExchangeMutation(Mutation):
     """
