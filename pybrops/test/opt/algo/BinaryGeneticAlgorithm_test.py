@@ -151,7 +151,7 @@ def test_minimize_single(algo, common_sum_prob_binary_single):
 
     # save solutions
     numpy.savetxt(
-        "optsoln/BinaryGeneticAlgorithm_sum_prob_single_soln_decn.txt",
+        "optsoln/BinaryGeneticAlgorithm_sum_prob_single_soln_decn.test.txt",
         soln.soln_decn,
         fmt="%i"
     )
