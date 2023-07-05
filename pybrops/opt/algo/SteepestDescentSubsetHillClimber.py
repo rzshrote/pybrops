@@ -13,7 +13,7 @@ from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomStat
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_is_SubsetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_single_objective, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
 class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
@@ -37,7 +37,6 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(SteepestDescentSubsetHillClimber, self).__init__(**kwargs)
         self.rng = rng
 
     ############################ Object Properties #############################
@@ -79,6 +78,7 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         """
         # check inputs
         check_is_SubsetProblem(prob, "prob")
+        check_SubsetProblem_is_single_objective(prob, "prob")
         if miscout is not None:
             check_is_dict(miscout, "miscout")
 
