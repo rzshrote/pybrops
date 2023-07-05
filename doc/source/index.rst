@@ -14,6 +14,9 @@ This is the project homepage.
 
     Homepage <self>
     Installation <installation>
+    Prerequisites <prerequisites>
+    Standard Usage <standard_usage>
+    Advanced Usage <advanced_usage>
     API reference <_autosummary/pybrops>
     Examples <examples>
 
