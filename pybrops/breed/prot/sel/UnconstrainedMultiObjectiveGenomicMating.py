@@ -2,10 +2,9 @@
 Module implementing selection protocols for multi-objective genomic mating.
 """
 
-import numbers
+from numbers import Real
 from typing import Callable, Union
 import numpy
-import math
 import types
 from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm, check_is_OptimizationAlgorithm
 from pybrops.breed.prot.sel.targetfn import target_negative, target_positive, target_stabilizing
@@ -355,15 +354,15 @@ class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
         self._vmatfcty = value
 
     @property
-    def nself(self) -> Union[int,numbers.Number]:
+    def nself(self) -> Union[int,Real]:
         """Description for property nself."""
         return self._nself
     @nself.getter
-    def nself(self) -> Union[int,numbers.Number]:
+    def nself(self) -> Union[int,Real]:
         """Get data for property nself."""
         return self._nself
     @nself.setter
-    def nself(self, value: Union[int,numbers.Number]) -> None:
+    def nself(self, value: Union[int,Real]) -> None:
         """Set data for property nself."""
         check_is_int_or_inf(value, "nself") # must be int or inf
         check_is_gteq(value, "nself", 0)    # must be >= 0; cannot be negative

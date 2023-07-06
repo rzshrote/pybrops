@@ -321,6 +321,34 @@ def check_is_Integral(v: object, vname: str) -> None:
     if not isinstance(v, Integral):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
 
+def check_is_Integral_or_inf(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``numbers.Integral`` or infinite. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v != math.inf) and (not isinstance(v, Integral)):
+        raise TypeError("variable '{0}' must be of type '{1}' or the value 'math.inf' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
+
+def check_is_Integral_or_None(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``numbers.Integral`` or ``None``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v is not None) and (not isinstance(v, Integral)):
+        raise TypeError("variable '{0}' must be of type '{1}' or the value 'None' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
+
 def check_is_Number(v: object, vname: str) -> None:
     """
     Check if a Python object is a ``numbers.Number``. Raise error if not.

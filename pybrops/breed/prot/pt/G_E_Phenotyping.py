@@ -3,13 +3,13 @@ Module implementing phenotyping protocols for simulating phenotyping with no GxE
 interaction.
 """
 
+from numbers import Integral, Real
 from typing import Union
 import numpy
-import numbers
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
-import pybrops.core.random
+from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.core.error.error_value_python import check_is_positive
 from pybrops.core.error.error_value_numpy import check_ndarray_is_positive
@@ -83,7 +83,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         self.var_env = var_env  # order 3
         self.var_rep = var_rep  # order 4
         self.var_err = var_err  # order 5
-        self.rng = pybrops.core.random if rng is None else rng
+        self.rng = global_prng if rng is None else rng
 
 
     ############################ Object Properties #############################
@@ -105,9 +105,9 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Variance across environments."""
         return self._var_env
     @var_env.setter
-    def var_env(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+    def var_env(self, value: Union[Real,numpy.ndarray]) -> None:
         """Set variance across environments"""
-        if isinstance(value, numbers.Number):
+        if isinstance(value, Real):
             check_is_positive(value, "var_env") # make sure >= 0 variance
             self._var_env = numpy.full(         # allocate empty array
                 self.gpmod.ntrait,              # ntrait length
@@ -134,9 +134,9 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Variance across replicates."""
         return self._var_rep
     @var_rep.setter
-    def var_rep(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+    def var_rep(self, value: Union[Real,numpy.ndarray]) -> None:
         """Set replicate variance"""
-        if isinstance(value, numbers.Number):
+        if isinstance(value, Real):
             check_is_positive(value, "var_rep") # make sure >= 0 variance
             self._var_rep = numpy.full(         # allocate empty array
                 self.gpmod.ntrait,              # ntrait length
@@ -163,9 +163,9 @@ class G_E_Phenotyping(PhenotypingProtocol):
         """Error variance for each trait."""
         return self._var_err
     @var_err.setter
-    def var_err(self, value: Union[numbers.Number,numpy.ndarray]) -> None:
+    def var_err(self, value: Union[Real,numpy.ndarray]) -> None:
         """Set error variance"""
-        if isinstance(value, numbers.Number):
+        if isinstance(value, Real):
             check_is_positive(value, "var_err") # make sure >= 0 variance
             self._var_err = numpy.full(         # allocate empty array
                 self.gpmod.ntrait,              # ntrait length
@@ -189,11 +189,11 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
     ################ Replication Parameters ################
     @property
-    def nenv(self) -> numbers.Integral:
+    def nenv(self) -> Integral:
         """Number of environments."""
         return self._nenv
     @nenv.setter
-    def nenv(self, value: numbers.Integral) -> None:
+    def nenv(self, value: Integral) -> None:
         """Set number of environments"""
         check_is_Integral(value, "nenv")
         self._nenv = value
@@ -205,7 +205,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
     @nrep.setter
     def nrep(self, value: numpy.ndarray) -> None:
         """Set number of replications per environment."""
-        if isinstance(value, numbers.Integral):
+        if isinstance(value, Integral):
             check_is_positive(value, "nrep")
             self._nrep = numpy.repeat(value, self.nenv)
         elif isinstance(value, numpy.ndarray):
@@ -278,7 +278,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # set default nrep
         if nrep is None:
             nrep = self.nrep
-        elif isinstance(nrep, numbers.Integral):
+        elif isinstance(nrep, Integral):
             check_is_positive(nrep, "nrep")
             nrep = numpy.repeat(nrep, nenv)
         elif isinstance(nrep, numpy.ndarray):
@@ -292,7 +292,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # set default var_env
         if var_env is None:
             var_env = self.var_env
-        elif isinstance(var_env, numbers.Number):   # if var_env is a number
+        elif isinstance(var_env, Real):   # if var_env is a number
             check_is_positive(var_env, "var_env")   # make sure >= 0 variance
             var_env = numpy.full(                   # allocate empty array
                 gpmod.ntrait,                       # ntrait length
@@ -311,7 +311,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # set default var_rep
         if var_rep is None:
             var_rep = self.var_rep
-        elif isinstance(var_rep, numbers.Number):   # if var_rep is a number
+        elif isinstance(var_rep, Real):   # if var_rep is a number
             check_is_positive(var_rep, "var_rep")   # make sure >= 0 variance
             var_rep = numpy.full(                   # allocate empty array
                 gpmod.ntrait,                       # ntrait length
@@ -330,7 +330,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # set default var_err
         if var_err is None:
             var_err = self.var_err
-        elif isinstance(var_err, numbers.Number):   # if var_err is a number
+        elif isinstance(var_err, Real):   # if var_err is a number
             check_is_positive(var_err, "var_err")   # make sure >= 0 variance
             var_err = numpy.full(                   # allocate empty array
                 gpmod.ntrait,                       # ntrait length

@@ -4,7 +4,7 @@ associated error checking routines.
 """
 
 import copy
-import numbers
+from numbers import Real
 from typing import Optional
 import cyvcf2
 import numpy
@@ -459,7 +459,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     def meh(
             self, 
             dtype: Optional[DTypeLike] = None
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -470,7 +470,7 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
         Returns
         -------
-        out : numpy.float64, other
+        out : Real
             A number representing the mean expected heterozygous.
             If ``dtype`` is ``None``, then a native 64-bit floating point is
             returned. Otherwise, of type specified by ``dtype``.

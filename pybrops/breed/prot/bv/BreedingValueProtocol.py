@@ -3,8 +3,9 @@ Module defining interfaces and associated error checking methods for breeding
 value calculation protocols.
 """
 
-from typing import Any
-
+from typing import Optional
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class BreedingValueProtocol:
     """
@@ -30,7 +31,13 @@ class BreedingValueProtocol:
         super(BreedingValueProtocol, self).__init__()
 
     ############################## Object Methods ##############################
-    def estimate(self, ptobj, gtobj, miscout, **kwargs: dict):
+    def estimate(
+            self, 
+            ptobj, 
+            gtobj: GenotypeMatrix, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Estimate breeding values.
 

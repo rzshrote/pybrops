@@ -9,7 +9,7 @@ __all__ = [
 ]
 
 import copy
-import numbers
+from numbers import Real
 from typing import Optional, Sequence, Union
 import cyvcf2
 import h5py
@@ -883,7 +883,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def meh(
             self, 
             dtype: Optional[DTypeLike] = None
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -894,7 +894,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : numbers.Number
+        out : Real
             A number representing the mean expected heterozygous.
             If ``dtype`` is ``None``, then a native 64-bit floating point is
             returned. Otherwise, of type specified by ``dtype``.

@@ -3,8 +3,8 @@ Module implementing a Dictionary DataFrame and associated error checking routine
 """
 
 import copy
-import numbers
-from typing import Any, Union
+from numbers import Integral
+from typing import Union
 import numpy
 import pandas
 
@@ -127,7 +127,7 @@ class DictDataFrame(DataFrame):
         if isinstance(value, dict):
             names = self.col_name
             for k in value.keys():
-                if isinstance(k, numbers.Integral):     # if key is an integer
+                if isinstance(k, Integral):             # if key is an integer
                     if (k >= 0) and (k < len(names)):   # if integer range is acceptable
                         new_key = names[k]              # get new key
                         value[new_key] = value.pop(k)   # rename old key
@@ -160,7 +160,7 @@ class DictDataFrame(DataFrame):
         if isinstance(value, dict):
             names = self.col_name
             for k in value.keys():
-                if isinstance(k, numbers.Integral):     # if key is an integer
+                if isinstance(k, Integral):             # if key is an integer
                     if (k >= 0) and (k < len(names)):   # if integer range is acceptable
                         new_key = names[k]              # get new key
                         value[new_key] = value.pop(k)   # rename old key

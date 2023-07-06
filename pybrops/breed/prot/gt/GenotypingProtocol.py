@@ -2,7 +2,10 @@
 Module containing the abstract class GenotypingProtocol and its service functions.
 """
 
-from typing import Any
+from typing import Any, Optional
+
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
 class GenotypingProtocol:
@@ -29,7 +32,12 @@ class GenotypingProtocol:
         super(GenotypingProtocol, self).__init__()
 
     ############################## Object Methods ##############################
-    def genotype(self, pgmat, miscout, **kwargs: dict):
+    def genotype(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> GenotypeMatrix:
         """
         Genotype a genome.
 

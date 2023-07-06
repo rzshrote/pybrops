@@ -4,12 +4,12 @@ storing dense additive genetic variance estimates calculated using dihybrid DH
 formulae.
 """
 
-import numbers
+from numbers import Integral, Real
 from typing import Optional, Union
 import numpy
 import pandas
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_int, check_is_int_or_None
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Integral_or_None, check_is_Integral_or_inf
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.subroutines import srange
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
@@ -136,9 +136,9 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             cls, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
-            nprogeny: int, 
-            nself: Union[int,numbers.Number],
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Union[Integral,Real],
             gmapfn: GeneticMapFunction,
             **kwargs: dict
         ) -> 'DenseDihybridDHAdditiveGeneticVarianceMatrix':
@@ -152,13 +152,13 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             Genomic Model with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        ncross : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
-        nprogeny : int
+        nprogeny : Integral
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        nself : int, numbers.Number
+        nself : Integral, Real
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
@@ -189,9 +189,9 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         # type checks
         check_is_GenomicModel(gmod, "gmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        check_is_int(nself, "nself")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
         
         # if genomic model is an additive linear genomic model, then use specialized routine
@@ -214,11 +214,11 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             cls, 
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
-            nprogeny: int, 
-            nself: int, 
-            gmapfn: int, 
-            mem: Union[int,None] = 1024
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Union[Integral,Real], 
+            gmapfn: Integral, 
+            mem: Union[Integral,None] = 1024
         ) -> 'DenseDihybridDHAdditiveGeneticVarianceMatrix':
         """
         Calculate a symmetrical matrix of DH progeny variances for each possible
@@ -231,13 +231,13 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        ncross : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
-        nprogeny : int
+        nprogeny : Integral
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        nself : int
+        nself : Integral, Real
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
@@ -257,7 +257,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
-        mem : int, default = 1024
+        mem : Integral, default = 1024
             Memory chunk size to use during matrix operations. If ``None``,
             then memory chunk size is not limited.
 
@@ -274,11 +274,11 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         # type checks
         check_is_AdditiveLinearGenomicModel(algmod, "algmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_int(ncross, "ncross")
-        check_is_int(nprogeny, "nprogeny")
-        check_is_int(nself, "nself")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_int_or_None(mem, "mem")
+        check_is_Integral_or_None(mem, "mem")
 
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():

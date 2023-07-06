@@ -8,6 +8,7 @@ __all__ = [
     "check_is_DenseVanRadenCoancestryMatrix"
 ]
 
+from numbers import Real
 import numpy
 from typing import Union
 
@@ -136,7 +137,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
     def from_gmat(
             cls, 
             gmat: GenotypeMatrix, 
-            p_anc: Union[numpy.ndarray,float,None] = None, 
+            p_anc: Union[numpy.ndarray,Real,None] = None, 
             **kwargs: dict
         ) -> 'DenseVanRadenCoancestryMatrix':
         """
@@ -146,10 +147,10 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
         ----------
         gmat : GenotypeMatrix
             Input genotype matrix from which to calculate the genomic relationship matrix.
-        p_anc : numpy.ndarray, float, None, default = None
+        p_anc : numpy.ndarray, Real, None, default = None
             Ancestral allele frequencies.
             If numpy.ndarray, the array must be of shape (p,) where ``p`` is the number of marker loci.
-            If float, ancestral allele frequencies are assumed constant ``p_anc`` across all marker loci. 
+            If Real, ancestral allele frequencies are assumed constant ``p_anc`` across all marker loci. 
             If None, ancestral allele frequencies are estimated from ``gmat``.
 
         Returns
@@ -171,15 +172,15 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_axis_len(p_anc, "p_anc", 0, gmat.nvrnt)
             check_ndarray_in_interval(p_anc, "p_anc", 0.0, 1.0)
         
-        # if p_anc is float, check for correct value range
-        elif isinstance(p_anc, float):
+        # if p_anc is Real, check for correct value range
+        elif isinstance(p_anc, Real):
             # check values
             check_is_in_interval_inclusive(p_anc, "p_anc", 0.0, 1.0)
             p_anc = numpy.repeat(p_anc, gmat.nvrnt) # scalar -> (p,)
         
         # raise error for incorrect types
         else:
-            raise TypeError("p_anc must be of type 'numpy.ndarray', 'numbers.Number', or None")
+            raise TypeError("p_anc must be of type 'numpy.ndarray', 'numbers.Real', or None")
         
         # multiply p_anc by ploidy level to get mean number of alleles we expect
         # (p,) -> (1,p)

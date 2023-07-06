@@ -2,9 +2,11 @@
 Module implementing unphased genotyping for dense genotype matrices.
 """
 
+from typing import Optional
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 class DenseUnphasedGenotyping(GenotypingProtocol):
     """
@@ -31,7 +33,12 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
         super(DenseUnphasedGenotyping, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
-    def genotype(self, pgmat, miscout = None, **kwargs: dict):
+    def genotype(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            miscout: Optional[dict] = None, 
+            **kwargs: dict
+        ) -> GenotypeMatrix:
         """
         Genotype a genome. Returned matrix is in {0,1,2} format.
 

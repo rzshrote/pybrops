@@ -3,7 +3,7 @@ Module defining basal matrix interfaces and associated error checking routines
 for genotype matrices.
 """
 
-import numbers
+from numbers import Real
 import numpy
 from numpy.typing import DTypeLike
 from typing import Optional
@@ -216,7 +216,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     def meh(
             self, 
             dtype: Optional[DTypeLike]
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -227,7 +227,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
 
         Returns
         -------
-        out : numbers.Number
+        out : Real
             A number representing the mean expected heterozygous.
             If ``dtype`` is ``None``, then a native 64-bit floating point is
             returned. Otherwise, of type specified by ``dtype``.

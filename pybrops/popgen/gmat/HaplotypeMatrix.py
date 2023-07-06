@@ -8,7 +8,7 @@ __all__ = [
     "check_is_HaplotypeMatrix"
 ]
 
-import numbers
+from numbers import Real
 from typing import Optional
 import numpy
 from numpy.typing import DTypeLike
@@ -183,7 +183,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
     def meh(
             self, 
             dtype: Optional[DTypeLike]
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 

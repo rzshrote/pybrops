@@ -2,7 +2,7 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
-import numbers
+from numbers import Real
 from typing import Any, Union
 
 import numpy
@@ -89,7 +89,7 @@ class PhenotypingProtocol:
 
     def set_h2(
             self, 
-            h2: Union[numbers.Number,numpy.ndarray], 
+            h2: Union[Real,numpy.ndarray], 
             pgmat: PhasedGenotypeMatrix, 
             **kwargs: dict
         ) -> None:
@@ -98,7 +98,7 @@ class PhenotypingProtocol:
 
         Parameters
         ----------
-        h2 : float, numpy.ndarray
+        h2 : Real, numpy.ndarray
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
@@ -109,7 +109,7 @@ class PhenotypingProtocol:
 
     def set_H2(
             self, 
-            H2: Union[numbers.Number,numpy.ndarray], 
+            H2: Union[Real,numpy.ndarray], 
             pgmat: PhasedGenotypeMatrix, 
             **kwargs: dict
         ) -> None:
@@ -118,7 +118,7 @@ class PhenotypingProtocol:
 
         Parameters
         ----------
-        H2 : float, numpy.ndarray
+        H2 : Real, numpy.ndarray
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
