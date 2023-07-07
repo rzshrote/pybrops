@@ -1,13 +1,16 @@
-from typing import Any
+"""
+Module containing code for creating dense additive genetic 
+variance matrices using a factory class.
+"""
+
+from numbers import Integral
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.fcty.AdditiveGeneticVarianceMatrixFactory import AdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.fcty.DenseGeneticVarianceMatrixFactory import DenseGeneticVarianceMatrixFactory
-from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-
 
 class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactory,AdditiveGeneticVarianceMatrixFactory):
     """
@@ -31,9 +34,9 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             self, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
-            nprogeny: int, 
-            nself: int, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral, 
             gmapfn: GeneticMapFunction, 
             **kwargs: dict
         ) -> DenseAdditiveGeneticVarianceMatrix:
@@ -46,13 +49,13 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             GenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        ncross : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
-        nprogeny : int
+        nprogeny : Integral
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        nself : int
+        nself : Integral
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
@@ -79,11 +82,11 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             self, 
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
-            nprogeny: int, 
-            nself: int, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral, 
             gmapfn: GeneticMapFunction, 
-            mem: int = 1024,
+            mem: Integral = 1024,
             **kwargs: dict
         ) -> DenseAdditiveGeneticVarianceMatrix:
         """
@@ -95,19 +98,19 @@ class DenseAdditiveGeneticVarianceMatrixFactory(DenseGeneticVarianceMatrixFactor
             AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        ncross : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
-        nprogeny : int
+        nprogeny : Integral
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        nself : int
+        nself : Integral
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
-        mem : int
+        mem : Integral
             Memory chunk size to use during matrix operations.
         kwargs : dict
             Additional keyword arguments.

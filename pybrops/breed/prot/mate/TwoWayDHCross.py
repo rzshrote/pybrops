@@ -3,7 +3,7 @@ Module implementing mating protocols for three-way DH crosses.
 """
 
 from numbers import Integral
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
 from numpy.random import Generator, RandomState
 from pybrops.breed.prot.mate.util import mat_dh
@@ -15,7 +15,6 @@ from pybrops.core.error.error_type_python import check_is_Integral, check_is_dic
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix, check_DensePhasedGenotypeMatrix_has_vrnt_xoprob, check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class TwoWayDHCross(MatingProtocol):
     """

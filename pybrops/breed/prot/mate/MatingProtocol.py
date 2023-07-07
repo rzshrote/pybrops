@@ -10,7 +10,6 @@ import numpy
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-
 class MatingProtocol(metaclass=ABCMeta):
     """
     Abstract class for mating protocols.
@@ -39,8 +38,8 @@ class MatingProtocol(metaclass=ABCMeta):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             xconfig: numpy.ndarray, 
-            nmating: Union[int,numpy.ndarray], 
-            nprogeny: Union[int,numpy.ndarray], 
+            nmating: Union[Integral,numpy.ndarray], 
+            nprogeny: Union[Integral,numpy.ndarray], 
             miscout: Optional[dict], 
             **kwargs: dict
         ) -> PhasedGenotypeMatrix:
@@ -54,10 +53,10 @@ class MatingProtocol(metaclass=ABCMeta):
         xconfig : numpy.ndarray
             Array of shape ``(ncross,nparent)`` containing indices specifying a cross
             configuration. Each index corresponds to an individual in ``pgmat``.
-        nmating : numpy.ndarray
+        nmating : Integral, numpy.ndarray
             Number of matings of the cross configuration per cross pattern.
             Relevant in situations with heterozygous parents.
-        nprogeny : numpy.ndarray
+        nprogeny : Integral, numpy.ndarray
             Number of progeny to generate per mating.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
