@@ -42,10 +42,10 @@ Below are the commands for installing Python developmental headers:
    :header-rows: 1
 
    * - Linux Distro
-     - Fedora
-     - Ubuntu
-   * - Command
+     - Command
+   * - Fedora
      - `sudo dnf install python3-devel`
+   * - Ubuntu
      - `sudo apt install python3-dev`
 
 Release version installation
