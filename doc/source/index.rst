@@ -24,16 +24,15 @@ This guide is an overview and explains the important features PyBrOpS offers.
 
 .. toctree::
     :maxdepth: 1
-    :numbered:
     :caption: Contents:
 
-    Installation <installation/installation>
-    Prerequisites <prerequisites/prerequisites>
-    Fundamentals <fundamentals/fundamentals>
-    Standard Usage <standard_usage/standard_usage>
-    Advanced Usage <advanced_usage/advanced_usage>
-    Contributing <contributing/contributing>
-    Frequently Asked Questions <faq/faq>
+    Installation <01_installation/installation>
+    Prerequisites <02_prerequisites/prerequisites>
+    Fundamentals <03_fundamentals/fundamentals>
+    Standard Usage <04_standard_usage/standard_usage>
+    Advanced Usage <05_advanced_usage/advanced_usage>
+    Contributing <06_contributing/contributing>
+    Frequently Asked Questions <07_faq/faq>
     .. API reference <_autosummary/pybrops>
     .. Examples <examples>
 
