@@ -39,7 +39,8 @@ class CSVInputOutput:
     ####################### File I/O #######################
     def to_csv(
             self, 
-            filename: str
+            filename: str,
+            **kwargs: dict
         ) -> None:
         """
         Write an object to a CSV file.
@@ -48,6 +49,8 @@ class CSVInputOutput:
         ----------
         filename : str
             CSV file name to which to write.
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
         """
         raise NotImplementedError("method is abstract")
 
@@ -57,7 +60,8 @@ class CSVInputOutput:
     @classmethod
     def from_csv(
             cls, 
-            filename: str
+            filename: str,
+            **kwargs: dict
         ) -> 'CSVInputOutput':
         """
         Read an object from a CSV file.
@@ -71,6 +75,8 @@ class CSVInputOutput:
         -------
         out : CSVInputOutput
             An object read from a CSV file.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
         """
         raise NotImplementedError("method is abstract")
 

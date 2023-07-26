@@ -147,7 +147,7 @@ def spawn(
     Parameters
     ----------
     n : None, int
-        Number of streams to spawn using entropy from the random module.
+        Number of streams to spawn using entropy from the ``random`` module.
         If ``None``, generate one stream. Integer must be positive or zero.
     BitGenerator : numpy.random.BitGenerator
         A constructor for a ``numpy.random.BitGenerator`` object.

@@ -983,12 +983,12 @@ class ExtendedGeneticMap(GeneticMap):
         """
         # create a dictionary of our values
         df_dict = {
-            "chr_grp" : numpy.char.decode(self._chr_grp, 'utf-8'),
-            "chr_start" : self._chr_start,
-            "chr_stop" : self._chr_stop,
-            "map_pos" : self._map_pos,
-            "mkr_name" : numpy.char.decode(self._mkr_name, 'utf-8'),
-            "map_fncode" : numpy.char.decode(self._map_fncode, 'utf-8')
+            "chr_grp" : self.vrnt_chrgrp,
+            "chr_start" : self.vrnt_phypos,
+            "chr_stop" : self.vrnt_stop,
+            "map_pos" : self.vrnt_genpos,
+            "mkr_name" : self.vrnt_name,
+            "map_fncode" : self.vrnt_fncode
         }
 
         # make the DataFrame
@@ -1043,7 +1043,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix: int = 2, 
             vrnt_genpos_ix: int = 3, 
             vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None
+            vrnt_fncode_ix: Optional[int] = None,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Read genetic map data from a Pandas DataFrame.
@@ -1064,6 +1066,13 @@ class ExtendedGeneticMap(GeneticMap):
             Column index to specify 'vrnt_name' (marker name) field.
         vrnt_fncode_ix : int, default=None
             Column index to specify 'vrnt_fncode' (mapping function code) field.
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups after 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1149,6 +1158,14 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_fncode = vrnt_fncode
         )
 
+        # auto group genetic map on object construction
+        if auto_group:
+            genetic_map.group()
+
+        # auto build interpolation spline on object construction
+        if auto_build_spline:
+            genetic_map.build_spline()
+
         return genetic_map
 
     @classmethod
@@ -1162,7 +1179,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix: int = 2, 
             vrnt_genpos_ix: int = 3, 
             vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None
+            vrnt_fncode_ix: Optional[int] = None,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Create an ExtendedGeneticMap object from a csv or delimited file.
@@ -1188,6 +1207,13 @@ class ExtendedGeneticMap(GeneticMap):
             Column index to specify 'vrnt_name' (marker name) field.
         vrnt_fncode_ix : int, default=None
             Column index to specify 'vrnt_fncode' (mapping function code) field.
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups on 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1210,7 +1236,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix = vrnt_stop_ix,
             vrnt_genpos_ix = vrnt_genpos_ix,
             vrnt_name_ix = vrnt_name_ix,
-            vrnt_fncode_ix = vrnt_fncode_ix
+            vrnt_fncode_ix = vrnt_fncode_ix,
+            auto_group = auto_group,
+            auto_build_spline = auto_build_spline
         )
 
         return genetic_map
@@ -1218,7 +1246,9 @@ class ExtendedGeneticMap(GeneticMap):
     @classmethod
     def from_egmap(
             cls, 
-            fpath: str
+            fpath: str,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Read an extended genetic map file (.egmap).
@@ -1228,6 +1258,13 @@ class ExtendedGeneticMap(GeneticMap):
         fpath : str, path object, or file-like object
             Any valid string path, including URLs. Valid URL schemes include http,
             ftp, s3, and file. For file URLs, a host is expected. (see pandas docs)
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups on 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1301,7 +1338,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix = 2,
             vrnt_genpos_ix = 3,
             vrnt_name_ix = 4 if "mkr_name" in df.columns else None,
-            vrnt_fncode_ix = 5 if "map_fncode" in df.columns else None
+            vrnt_fncode_ix = 5 if "map_fncode" in df.columns else None,
+            auto_group = auto_group,
+            auto_build_spline = auto_build_spline
         )
 
         return genetic_map

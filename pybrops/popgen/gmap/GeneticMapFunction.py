@@ -8,10 +8,11 @@ __all__ = [
     "check_is_GeneticMapFunction"
 ]
 
+from abc import ABCMeta, abstractmethod
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
-class GeneticMapFunction:
+class GeneticMapFunction(metaclass=ABCMeta):
     """
     An abstract class for genetic map function objects.
 
@@ -48,6 +49,7 @@ class GeneticMapFunction:
     ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
+    @abstractmethod
     def mapfn(
             self, 
             d: numpy.ndarray
@@ -68,6 +70,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def invmapfn(
             self, 
             r: numpy.ndarray
@@ -88,6 +91,7 @@ class GeneticMapFunction:
         raise NotImplementedError("method is abstract")
 
     ########## Recombination Probability Methods ###########
+    @abstractmethod
     def rprob1g(
             self, 
             gmap: GeneticMap, 
@@ -123,6 +127,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob2g(
             self, 
             gmap: GeneticMap, 
@@ -151,6 +156,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob1p(
             self, 
             gmap: GeneticMap, 
@@ -178,6 +184,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob2p(
             self, 
             gmap: GeneticMap, 
