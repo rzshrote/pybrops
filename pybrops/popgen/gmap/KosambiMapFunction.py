@@ -93,7 +93,7 @@ class KosambiMapFunction(GeneticMapFunction):
             function. The shape of the array is the same shape as that of ``r``.
         """
         # convert r to d
-        d = numpy.log(1.0 + (2.0 * r)) / (4.0 - (8.0 * r))
+        d = 0.5 * numpy.arctanh(2.0 * r)
         return d
 
     ########## Recombination Probability Methods ###########
