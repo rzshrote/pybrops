@@ -85,7 +85,7 @@ gmat_vrnt_phypos = gmat.vrnt_phypos
 # get the genetic position of a marker variant
 gmat_vrnt_genpos = gmat.vrnt_genpos
 
-# get the crossover probability between the 
+# get the crossover probability between the previous marker
 gmat_vrnt_xoprob = gmat.vrnt_xoprob
 
 # get the reference haplotype for the marker variant
@@ -130,45 +130,242 @@ gmat_deepcopy = gmat.deepcopy()
 ### Genotype Matrix Element Copy-On-Manipulation
 ###
 
+##
+## adjoin examples
+##
+
+# create a new genotype matrix to demonstrate
+new = gmat.deepcopy()
+
+# adjoin genotype matrices along the taxa axis
+tmp = gmat.adjoin(new, axis = gmat.taxa_axis)
+tmp = gmat.adjoin_taxa(new)
+
+# adjoin genotype matrices along the variant axis
+tmp = gmat.adjoin(new, axis = gmat.vrnt_axis)
+tmp = gmat.adjoin_vrnt(new)
+
+##
+## delete examples
+##
+
+#
+# delete taxa examples
+#
+
+# delete first taxon using an integer
+tmp = gmat.delete(0, axis = gmat.taxa_axis)
+tmp = gmat.delete_taxa(0)
+
+# delete first five taxa using a slice
+tmp = gmat.delete(slice(0,5), axis = gmat.taxa_axis)
+tmp = gmat.delete_taxa(slice(0,5))
+
+# delete first five taxa using a Sequence
+tmp = gmat.delete([0,1,2,3,4], axis = gmat.taxa_axis)
+tmp = gmat.delete_taxa([0,1,2,3,4])
+
+#
+# delete marker variants examples
+#
+
+# delete first marker variant using an integer
+tmp = gmat.delete(0, axis = gmat.vrnt_axis)
+tmp = gmat.delete_vrnt(0)
+
+# delete first five marker variants using a slice
+tmp = gmat.delete(slice(0,5), axis = gmat.vrnt_axis)
+tmp = gmat.delete_vrnt(slice(0,5))
+
+# delete first five marker variants using a Sequence
+tmp = gmat.delete([0,1,2,3,4], axis = gmat.vrnt_axis)
+tmp = gmat.delete_vrnt([0,1,2,3,4])
+
+##
+## insert examples
+##
+
+# create a new genotype matrix to demonstrate
+new = gmat.deepcopy()
+
+# insert genotype matrix along the taxa axis before index 0
+tmp = gmat.insert(0, new, axis = gmat.taxa_axis)
+tmp = gmat.insert_taxa(0, new)
+
+# insert genotype matrix along the variant axis before index 0
+# tmp = gmat.insert(0, new, axis = gmat.vrnt_axis)
+# tmp = gmat.insert_vrnt(0, new)
+
+##
+## select examples
+##
+
+# select first five taxa using a Sequence
+tmp = gmat.select([0,1,2,3,4], axis = gmat.taxa_axis)
+tmp = gmat.select_taxa([0,1,2,3,4])
+
+# select first five marker variants using a Sequence
+tmp = gmat.select([0,1,2,3,4], axis = gmat.vrnt_axis)
+tmp = gmat.select_vrnt([0,1,2,3,4])
+
+###
+### Genotype Matrix Element In-Place-Manipulation
+###
+
+##
+## append examples
+##
+
+# append genotype matrices along the taxa axis
+tmp = gmat.deepcopy()                   # copy original
+tmp.append(gmat, axis = tmp.taxa_axis)  # append original to copy
+
+tmp = gmat.deepcopy()                   # copy original
+tmp.append_taxa(gmat)                   # append original to copy
+
+# append genotype matrices along the variant axis
+tmp = gmat.deepcopy()                   # copy original
+tmp.append(gmat, axis = tmp.vrnt_axis)  # append original to copy
+
+tmp = gmat.deepcopy()                   # copy original
+tmp.append_vrnt(gmat)                   # append original to copy
+
+##
+## remove examples
+##
+
+#
+# remove taxa examples
+#
+
+# remove first taxon using an integer
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove(0, axis = gmat.taxa_axis)            # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_taxa(0)                              # remove from copy
+
+# remove first five taxa using a slice
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove(slice(0,5), axis = gmat.taxa_axis)   # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_taxa(slice(0,5))                     # remove from copy
+
+# remove first five taxa using a Sequence
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove([0,1,2,3,4], axis = gmat.taxa_axis)  # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_taxa([0,1,2,3,4])                    # remove from copy
+
+#
+# remove marker variants examples
+#
+
+# remove first marker variant using an integer
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove(0, axis = gmat.vrnt_axis)            # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_vrnt(0)                              # remove from copy
+
+# remove first five marker variants using a slice
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove(slice(0,5), axis = gmat.vrnt_axis)   # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_vrnt(slice(0,5))                     # remove from copy
+
+# remove first five marker variants using a Sequence
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove([0,1,2,3,4], axis = gmat.vrnt_axis)  # remove from copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.remove_vrnt([0,1,2,3,4])                    # remove from copy
+
+##
+## incorp examples
+##
+
+# incorp genotype matrix along the taxa axis before index 0
+tmp = gmat.deepcopy()                           # copy original
+tmp.incorp(0, gmat, axis = gmat.taxa_axis)      # incorporate into copy
+
+tmp = gmat.deepcopy()                           # copy original
+tmp.incorp_taxa(0, gmat)                        # incorporate into copy
+
+# incorp genotype matrix along the variant axis before index 0
+# tmp = gmat.deepcopy()                           # copy original
+# tmp.incorp(0, gmat, axis = gmat.vrnt_axis)      # incorporate into copy
+
+# tmp = gmat.deepcopy()                           # copy original
+# tmp.incorp_vrnt(0, gmat)                        # incorporate into copy
+
+##
+## concat examples
+##
+
+# concatenate along the taxa axis
+tmp = gmat.concat([gmat, gmat], axis = gmat.taxa_axis)
+tmp = gmat.concat_taxa([gmat, gmat])
+
+# concatenate along the variant axis
+tmp = gmat.concat([gmat, gmat], axis = gmat.vrnt_axis)
+tmp = gmat.concat_vrnt([gmat, gmat])
+
 ###
 ### Summary Statistics
 ###
 
+#
+#
+#
+
 # count the number of major alleles across all taxa
-gmat.acount()
+out = gmat.acount()
+out = gmat.acount(out = "int32")
+
+# calculate the allele frequency across all taxa
+out = gmat.afreq()
+out = gmat.afreq(dtype = "float32")
+
+# calculate whether a locus is polymorphic across all taxa 
+out = gmat.apoly()
+out = gmat.apoly(dtype = int)
+
+# count the number of genotypes across all taxa
+out = gmat.gtcount()
+out = gmat.gtcount(dtype = "int32")
+
+# calculate the genotype frequency across all taxa
+out = gmat.gtfreq()
+out = gmat.gtfreq(dtype = "float32")
+
+# calculate the minor allele frequency across all taxa
+out = gmat.maf()
+out = gmat.maf(dtype = "float32")
+
+# calculate the mean expected heterozygosity for the population
+out = gmat.meh()
+out = gmat.meh(dtype = "float32")
+
+# count the number of major alleles individually within taxa
+out = gmat.tacount()
+out = gmat.tacount(dtype = "int32")
+
+# calculate the allele frequency individually within taxa
+out = gmat.tafreq()
+out = gmat.tafreq(dtype = "float32")
 
 
 
-
-gmat.acount
-gmat.adjoin
-gmat.adjoin_taxa
-gmat.adjoin_vrnt
-gmat.afreq
-gmat.apoly
-gmat.append
-gmat.append_taxa
-gmat.append_vrnt
 gmat.assign_hapgrp
-gmat.concat
-gmat.concat_taxa
-gmat.concat_vrnt
-gmat.delete
-gmat.delete_taxa
-gmat.delete_vrnt
 gmat.from_hdf5
 gmat.from_vcf
 gmat.group
 gmat.group_taxa
 gmat.group_vrnt
-gmat.gtcount
-gmat.gtfreq
-gmat.incorp
-gmat.incorp_taxa
-gmat.incorp_vrnt
-gmat.insert
-gmat.insert_taxa
-gmat.insert_vrnt
 gmat.interp_genpos
 gmat.interp_xoprob
 gmat.is_grouped
@@ -177,21 +374,11 @@ gmat.is_grouped_vrnt
 gmat.lexsort
 gmat.lexsort_taxa
 gmat.lexsort_vrnt
-gmat.maf
 gmat.mat_asformat
-gmat.meh
-gmat.remove
-gmat.remove_taxa
-gmat.remove_vrnt
 gmat.reorder
 gmat.reorder_taxa
 gmat.reorder_vrnt
-gmat.select
-gmat.select_taxa
-gmat.select_vrnt
 gmat.sort
 gmat.sort_taxa
 gmat.sort_vrnt
-gmat.tacount
-gmat.tafreq
 gmat.to_hdf5
