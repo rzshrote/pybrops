@@ -1189,7 +1189,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         axis = get_axis(axis, self.mat_ndim)
 
         if axis == self.taxa_axis:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -1197,7 +1197,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 **kwargs
             )
         elif axis == self.vrnt_axis:
-            self.incorp(
+            self.incorp_vrnt(
                 obj = obj,
                 values = values,
                 vrnt_chrgrp = vrnt_chrgrp,
