@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # import the GenotypeMatrix class (an abstract interface class)
+import copy
+import numpy
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 # import the DenseGenotypeMatrix class (a concrete implemented class)
@@ -10,121 +12,130 @@ from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 ### Genotype Matrix Object Creation
 ###
 
-# read a genotype matrix from file
+#
+# construct from NumPy
+#
+
+# shape parameters for random genotypes
+ntaxa = 100
+nvrnt = 1000
+ngroup = 20
+nchrom = 10
+ploidy = 2
+
+# create random genotypes
+mat = numpy.random.randint(0, ploidy+1, size = (ntaxa,nvrnt)).astype("int8")
+
+# create taxa names
+taxa = numpy.array(
+    ["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], 
+    dtype = object
+)
+
+# create taxa groups
+taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+taxa_grp.sort()
+
+# create marker variant chromsome assignments
+vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
+vrnt_chrgrp.sort()
+
+# create marker physical positions
+vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
+vrnt_phypos.sort()
+
+# create marker variant names
+vrnt_name = numpy.array(
+    ["SNP"+str(i+1).zfill(4) for i in range(nvrnt)],
+    dtype = object
+)
+
+# create a genotype matrix from scratch using NumPy arrays
+gmat = DenseGenotypeMatrix(
+    mat = mat,
+    taxa = taxa,
+    taxa_grp = taxa_grp, 
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos, 
+    vrnt_name = vrnt_name, 
+    vrnt_genpos = None,
+    vrnt_xoprob = None, 
+    vrnt_hapgrp = None, 
+    vrnt_hapalt = None,
+    vrnt_hapref = None, 
+    vrnt_mask = None,
+    ploidy = ploidy
+)
+
+#
+# read from VCF
+#
+
+# read a genotype matrix from VCF file
 gmat = DenseGenotypeMatrix.from_vcf("widiv_2000SNPs.vcf.gz")
+
+#
+# read from HDF5
+#
+
+# read a genotype matrix from HDF5 file
+gmat = DenseGenotypeMatrix.from_hdf5("widiv_2000SNPs.h5")
 
 ###
 ### Genotype matrix general properties
 ###
 
-# gain access to raw genotype matrix pointer
-gmat_mat_ptr = gmat.mat
-
-# get the number of dimensions for the genotype matrix
-gmat_ndim = gmat.mat_ndim
-
-# get genotype matrix shape
-gmat_shape = gmat.mat_shape
-
-# get genotype matrix format
-gmat_format = gmat.mat_format
-
-# get the ploidy of the taxa represented by the genotype matrix
-gmat_ploidy = gmat.ploidy
-
-# get the number of chromosome phases represented by the genotype matrix
-gmat_nphase = gmat.nphase
-
-# get the number of taxa represented by the genotype matrix
-gmat_ntaxa = gmat.ntaxa
-
-# get the number of genotype variants represented by the genotype matrix
-gmat_nvrnt = gmat.nvrnt
+tmp = gmat.mat          # gain access to raw genotype matrix pointer
+tmp = gmat.mat_ndim     # get the number of dimensions for the genotype matrix
+tmp = gmat.mat_shape    # get genotype matrix shape
+tmp = gmat.mat_format   # get genotype matrix format
+tmp = gmat.ploidy       # get the ploidy of the taxa represented by the genotype matrix
+tmp = gmat.nphase       # get the number of chromosome phases represented by the genotype matrix
+tmp = gmat.ntaxa        # get the number of taxa represented by the genotype matrix
+tmp = gmat.nvrnt        # get the number of genotype variants represented by the genotype matrix
 
 ###
 ### Genotype matrix taxa properties
 ###
 
-# get the names of the taxa
-gmat_taxa = gmat.taxa
-
-# get the matrix axis along which taxa are stored
-gmat_taxa_axis = gmat.taxa_axis
-
-# get an optional taxa group label
-gmat_taxa_grp = gmat.taxa_grp
-
-# if taxa are sorted by group: get the names of the groups
-gmat_taxa_grp_name = gmat.taxa_grp_name
-
-# if taxa are sorted by group: get the start indices (inclusive) for each group
-gmat_taxa_grp_stix = gmat.taxa_grp_stix
-
-# if taxa are sorted by group: get the stop indices (exclusive) for each group
-gmat_taxa_grp_spix = gmat.taxa_grp_spix
-
-# if taxa are sorted by group: get the length of each group
-gmat_taxa_grp_len = gmat.taxa_grp_len
+tmp = gmat.taxa             # get the names of the taxa
+tmp = gmat.taxa_axis        # get the matrix axis along which taxa are stored
+tmp = gmat.taxa_grp         # get an optional taxa group label
+tmp = gmat.taxa_grp_name    # if taxa are sorted by group: get the names of the groups
+tmp = gmat.taxa_grp_stix    # if taxa are sorted by group: get the start indices (inclusive) for each group
+tmp = gmat.taxa_grp_spix    # if taxa are sorted by group: get the stop indices (exclusive) for each group
+tmp = gmat.taxa_grp_len     # if taxa are sorted by group: get the length of each group
 
 ###
 ### Genotype matrix marker variant properties
 ###
 
-# get the names of the marker variants
-gmat_vrnt_name = gmat.vrnt_name
-
-# get the axis along which marker variants are stored
-gmat_vrnt_axis = gmat.vrnt_axis
-
-# get the chromosome to which a marker variant belongs
-gmat_vrnt_chrgrp = gmat.vrnt_chrgrp
-
-# get the physical position of a marker variant
-gmat_vrnt_phypos = gmat.vrnt_phypos
-
-# get the genetic position of a marker variant
-gmat_vrnt_genpos = gmat.vrnt_genpos
-
-# get the crossover probability between the previous marker
-gmat_vrnt_xoprob = gmat.vrnt_xoprob
-
-# get the reference haplotype for the marker variant
-gmat_vrnt_hapref = gmat.vrnt_hapref
-
-# get the alternative haplotype for the marker variant
-gmat_vrnt_hapalt = gmat.vrnt_hapalt
-
-# get the haplotype grouping for the marker variant
-gmat_vrnt_hapgrp = gmat.vrnt_hapgrp
-
-# get a mask associated with the marker variants
-gmat_vrnt_mask = gmat.vrnt_mask
-
-# if marker variants are sorted by chromosome: 
-# get the names of the chromosomes
-gmat_vrnt_chrgrp_name = gmat.vrnt_chrgrp_name
-
-# if marker variants are sorted by chromosome: 
-# get the start indices (inclusive) for each chromosome
-gmat_vrnt_chrgrp_stix = gmat.vrnt_chrgrp_stix
-
-# if marker variants are sorted by chromosome: 
-# get the stop indices (exclusive) for each chromosome
-gmat_vrnt_chrgrp_spix = gmat.vrnt_chrgrp_spix
-
-# if marker variants are sorted by chromosome: 
-# get the length of each chromosome
-gmat_vrnt_chrgrp_len = gmat.vrnt_chrgrp_len
+tmp = gmat.vrnt_name        # get the names of the marker variants
+tmp = gmat.vrnt_axis        # get the axis along which marker variants are stored
+tmp = gmat.vrnt_chrgrp      # get the chromosome to which a marker variant belongs
+tmp = gmat.vrnt_phypos      # get the physical position of a marker variant
+tmp = gmat.vrnt_genpos      # get the genetic position of a marker variant
+tmp = gmat.vrnt_xoprob      # get the crossover probability between the previous marker
+tmp = gmat.vrnt_hapref      # get the reference haplotype for the marker variant
+tmp = gmat.vrnt_hapalt      # get the alternative haplotype for the marker variant
+tmp = gmat.vrnt_hapgrp      # get the haplotype grouping for the marker variant
+tmp = gmat.vrnt_mask        # get a mask associated with the marker variants
+tmp = gmat.vrnt_chrgrp_name # get the names of the chromosomes if sorted
+tmp = gmat.vrnt_chrgrp_stix # get the start indices (inclusive) for each chromosome if sorted
+tmp = gmat.vrnt_chrgrp_spix # get the stop indices (exclusive) for each chromosome if sorted
+tmp = gmat.vrnt_chrgrp_len  # get the length of each chromosome if sorted
 
 ###
 ### Copying
 ###
 
 # copy a genotype matrix
-gmat_copy = gmat.copy()
+tmp = copy.copy(gmat)
+tmp = gmat.copy()
 
 # deep copy a genotype matrix
-gmat_deepcopy = gmat.deepcopy()
+tmp = copy.deepcopy(gmat)
+tmp = gmat.deepcopy()
 
 ###
 ### Genotype Matrix Element Copy-On-Manipulation
@@ -318,13 +329,9 @@ tmp = gmat.concat_vrnt([gmat, gmat])
 ### Summary Statistics
 ###
 
-#
-#
-#
-
 # count the number of major alleles across all taxa
 out = gmat.acount()
-out = gmat.acount(out = "int32")
+out = gmat.acount(dtype = "int32")
 
 # calculate the allele frequency across all taxa
 out = gmat.afreq()
@@ -361,8 +368,6 @@ out = gmat.tafreq(dtype = "float32")
 
 
 gmat.assign_hapgrp
-gmat.from_hdf5
-gmat.from_vcf
 gmat.group
 gmat.group_taxa
 gmat.group_vrnt

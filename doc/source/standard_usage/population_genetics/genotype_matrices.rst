@@ -14,8 +14,64 @@ Genotype matrix support in PyBrOpS is found in the ``pybrops.popgen.gmat`` submo
     # import the DenseGenotypeMatrix class (a concrete implemented class)
     from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
-Loading Genotype Matrices from VCF Files
-========================================
+Creating Genotype Matrices
+==========================
+
+Creating genotype matrices from NumPy arrays
+--------------------------------------------
+
+Genotype matrices can be created from raw ``numpy.ndarray``'s. The example below illustrates creating a ``DenseGenotypeMatrix``. The only requirement to construct a ``DenseGenotypeMatrix`` is a ``(n,p)`` numerical matrix containing genotypic codings. Here, ``n`` is the number of taxa and ``p`` is the number of marker variants. The matrix must be coded in the ``{0,1,2}`` (number of alternative alleles) format and must have an ``int8`` data type.
+
+Additional optional metadata may be stored along with a ``DenseGenotypeMatrix`` including taxa names (``taxa``), taxa groups (``taxa_grp``), marker variant chromosome assignments (``vrnt_chrgrp``), marker variant chromosme physical positions (``vrnt_phypos``), marker variant names (``vrnt_name``), marker variant genetic map positions (``vrnt_genpos``), sequential recombination probabilities between markers (``vrnt_xoprob``), marker variant haplotype group assignments (``vrnt_hapgrp``), reference haplotype (``vrnt_hapref``), alternative haplotype (``vrnt_hapalt``), a variant mask (``vrnt_mask``), and finally the ploidy of the genotypes (``ploid``).
+
+.. code-block:: python
+
+    # create random genotypes
+    mat = numpy.random.randint(0, ploidy+1, size = (ntaxa,nvrnt)).astype("int8")
+
+    # create taxa names
+    taxa = numpy.array(
+        ["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], 
+        dtype = object
+    )
+
+    # create taxa groups
+    taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+    taxa_grp.sort()
+
+    # create marker variant chromsome assignments
+    vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
+    vrnt_chrgrp.sort()
+
+    # create marker physical positions
+    vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
+    vrnt_phypos.sort()
+
+    # create marker variant names
+    vrnt_name = numpy.array(
+        ["SNP"+str(i+1).zfill(4) for i in range(nvrnt)],
+        dtype = object
+    )
+
+    # create a genotype matrix from scratch using NumPy arrays
+    gmat = DenseGenotypeMatrix(
+        mat = mat,
+        taxa = taxa,
+        taxa_grp = taxa_grp, 
+        vrnt_chrgrp = vrnt_chrgrp,
+        vrnt_phypos = vrnt_phypos, 
+        vrnt_name = vrnt_name, 
+        vrnt_genpos = None,
+        vrnt_xoprob = None, 
+        vrnt_hapgrp = None, 
+        vrnt_hapalt = None,
+        vrnt_hapref = None, 
+        vrnt_mask = None,
+        ploidy = ploidy
+    )
+
+Loading genotype matrices from VCF files
+----------------------------------------
 
 VCF files can be loaded into the Python environment as genotype matrices using the ``from_vcf`` method.
 
@@ -24,251 +80,103 @@ VCF files can be loaded into the Python environment as genotype matrices using t
     # read a genotype matrix from file
     gmat = DenseGenotypeMatrix.from_vcf("widiv_2000SNPs.vcf.gz")
 
+Loading genotype matrices from HDF5 files
+-----------------------------------------
+
+Genotype matrices in PyBrOpS can be exported to HDF5 files via the ``to_hdf5`` method. These files can later be read into PyBrOpS via the ``from_hdf5`` method. The example below illustrates loading a ``GenotypeMatrix`` into memory from an HDF5 file:
+
+.. code-block:: python
+
+    # read a genotype matrix from HDF5 file
+    gmat = DenseGenotypeMatrix.from_hdf5("widiv_2000SNPs.h5")
+
 Genotype Matrix General Properties
 ==================================
 
-Access to raw matrix pointer
-----------------------------
+.. list-table:: Summary of ``GenotypeMatrix`` general properties
+    :widths: 25 50
+    :header-rows: 1
 
-.. code-block:: python
-
-    # gain access to raw genotype matrix pointer
-    gmat_mat_ptr = gmat.mat
-
-Number of genotype matrix dimensions
-------------------------------------
-
-.. code-block:: python
-
-    # get the number of dimensions for the genotype matrix
-    gmat_ndim = gmat.mat_ndim
-
-Shape of the genotype matrix
-----------------------------
-
-.. code-block:: python
-
-    # get genotype matrix shape
-    gmat_shape = gmat.mat_shape
-
-Format of the genotype matrix
------------------------------
-
-.. code-block:: python
-
-    # get genotype matrix format
-    gmat_format = gmat.mat_format
-
-Ploidy of taxa represented in a genotype matrix
------------------------------------------------
-
-.. code-block:: python
-
-    # get the ploidy of the taxa represented by the genotype matrix
-    gmat_ploidy = gmat.ploidy
-
-
-Number of chromosome phases in a genotype matrix
-------------------------------------------------
-
-.. code-block:: python
-
-    # get the number of chromosome phases represented by the genotype matrix
-    gmat_nphase = gmat.nphase
-
-Number of taxa in a genotype matrix
------------------------------------
-
-.. code-block:: python
-
-    # get the number of taxa represented by the genotype matrix
-    gmat_ntaxa = gmat.ntaxa
-
-Number of genetic markers in a genotype matrix
-----------------------------------------------
-
-.. code-block:: python
-
-    # get the number of genotype variants represented by the genotype matrix
-    gmat_nvrnt = gmat.nvrnt
+    * - Property
+      - Description
+    * - ``mat``
+      - Pointer to the raw genotype matrix pointer
+    * - ``mat_ndim``
+      - The number of dimensions for the genotype matrix
+    * - ``mat_shape``
+      - Genotype matrix shape
+    * - ``mat_format``
+      - Genotype matrix format
+    * - ``ploidy``
+      - The ploidy of the taxa represented by the genotype matrix
+    * - ``nphase``
+      - The number of chromosome phases represented by the genotype matrix
+    * - ``ntaxa``
+      - The number of taxa represented by the genotype matrix
+    * - ``nvrnt``
+      - The number of genotype variants represented by the genotype matrix
 
 Genotype Matrix Taxa Properties
 ===============================
 
-Taxa names
-----------
+.. list-table:: Summary of ``GenotypeMatrix`` taxa properties
+    :widths: 25 50
+    :header-rows: 1
 
-.. code-block:: python
-
-    # get the names of the taxa
-    gmat_taxa = gmat.taxa
-
-Axis along which taxa are stored
---------------------------------
-
-.. code-block:: python
-
-    # get the matrix axis along which taxa are stored
-    gmat_taxa_axis = gmat.taxa_axis
-
-Taxa group labels
------------------
-
-.. code-block:: python
-
-    # get an optional taxa group label
-    gmat_taxa_grp = gmat.taxa_grp
-
-Unique taxa group label names
------------------------------
-
-.. code-block:: python
-
-    # if taxa are sorted by group: get the names of the groups
-    gmat_taxa_grp_name = gmat.taxa_grp_name
-
-Taxa group start indices
-------------------------
-
-.. code-block:: python
-
-    # if taxa are sorted by group: get the start indices (inclusive) for each group
-    gmat_taxa_grp_stix = gmat.taxa_grp_stix
-
-Taxa group stop indices
------------------------
-
-.. code-block:: python
-
-    # if taxa are sorted by group: get the stop indices (exclusive) for each group
-    gmat_taxa_grp_spix = gmat.taxa_grp_spix
-
-Taxa group length
------------------
-
-.. code-block:: python
-
-    # if taxa are sorted by group: get the length of each group
-    gmat_taxa_grp_len = gmat.taxa_grp_len
+    * - Property
+      - Description
+    * - ``taxa``
+      - The names of the taxa
+    * - ``taxa_axis``
+      - The matrix axis along which taxa are stored
+    * - ``taxa_grp``
+      - Taxa group label
+    * - ``taxa_grp_name``
+      - The names of the taxa groups
+    * - ``taxa_grp_stix``
+      - The start indices (inclusive) for each taxa group, post sorting and grouping
+    * - ``taxa_grp_spix``
+      - The stop indices (exclusive) for each taxa group, post sorting and grouping
+    * - ``taxa_grp_len``
+      - The length of each taxa group, post sorting and grouping
 
 Genotype Matrix Marker Variant Properties
 =========================================
 
-Marker variant names
---------------------
+.. list-table:: Summary of ``GenotypeMatrix`` marker variant properties
+    :widths: 25 50
+    :header-rows: 1
 
-.. code-block:: python
-
-    # get the names of the marker variants
-    gmat_vrnt_name = gmat.vrnt_name
-
-Axis along which marker variants are stored
--------------------------------------------
-
-.. code-block:: python
-
-    # get the axis along which marker variants are stored
-    gmat_vrnt_axis = gmat.vrnt_axis
-
-Marker variant chromosome group designations
---------------------------------------------
-
-.. code-block:: python
-
-    # get the chromosome to which a marker variant belongs
-    gmat_vrnt_chrgrp = gmat.vrnt_chrgrp
-
-Marker variant chromosome physical positions
---------------------------------------------
-
-.. code-block:: python
-
-    # get the physical position of a marker variant
-    gmat_vrnt_phypos = gmat.vrnt_phypos
-
-Marker variant chromosome genetic map positions
------------------------------------------------
-
-.. code-block:: python
-
-    # get the genetic position of a marker variant
-    gmat_vrnt_genpos = gmat.vrnt_genpos
-
-Marker variant sequential crossover probabilities
--------------------------------------------------
-
-.. code-block:: python
-
-    # get the crossover probability between the previous marker
-    gmat_vrnt_xoprob = gmat.vrnt_xoprob
-
-Marker variant reference haplotype alleles
-------------------------------------------
-
-.. code-block:: python
-
-    # get the reference haplotype for the marker variant
-    gmat_vrnt_hapref = gmat.vrnt_hapref
-
-Marker variant alternative haplotype alleles
---------------------------------------------
-
-.. code-block:: python
-
-    # get the alternative haplotype for the marker variant
-    gmat_vrnt_hapalt = gmat.vrnt_hapalt
-
-Marker variant haplotype group designations
--------------------------------------------
-
-.. code-block:: python
-
-    # get the haplotype grouping for the marker variant
-    gmat_vrnt_hapgrp = gmat.vrnt_hapgrp
-
-Marker variant mask
--------------------
-
-.. code-block:: python
-
-    # get a mask associated with the marker variants
-    gmat_vrnt_mask = gmat.vrnt_mask
-
-Unique marker variant group label names
----------------------------------------
-
-.. code-block:: python
-
-    # if marker variants are sorted by chromosome: 
-    # get the names of the chromosomes
-    gmat_vrnt_chrgrp_name = gmat.vrnt_chrgrp_name
-
-Marker variant group start indices
-----------------------------------
-
-.. code-block:: python
-
-    # if marker variants are sorted by chromosome: 
-    # get the start indices (inclusive) for each chromosome
-    gmat_vrnt_chrgrp_stix = gmat.vrnt_chrgrp_stix
-
-Marker variant group stop indices
----------------------------------
-
-.. code-block:: python
-
-    # if marker variants are sorted by chromosome: 
-    # get the stop indices (exclusive) for each chromosome
-    gmat_vrnt_chrgrp_spix = gmat.vrnt_chrgrp_spix
-
-Marker variant group length
----------------------------
-
-.. code-block:: python
-
-    # if marker variants are sorted by chromosome: 
-    # get the length of each chromosome
-    gmat_vrnt_chrgrp_len = gmat.vrnt_chrgrp_len
+    * - Property
+      - Description
+    * - ``vrnt_name``
+      - The names of the marker variants
+    * - ``vrnt_axis``
+      - The axis along which marker variants are stored
+    * - ``vrnt_chrgrp``
+      - The chromosome to which a marker variant belongs
+    * - ``vrnt_phypos``
+      - The physical position of a marker variant
+    * - ``vrnt_genpos``
+      - The genetic position of a marker variant
+    * - ``vrnt_xoprob``
+      - The crossover probability between the previous marker
+    * - ``vrnt_hapref``
+      - The reference haplotype for the marker variant
+    * - ``vrnt_hapalt``
+      - The alternative haplotype for the marker variant
+    * - ``vrnt_hapgrp``
+      - The haplotype grouping for the marker variant
+    * - ``vrnt_mask``
+      - A mask associated with the marker variants
+    * - ``vrnt_chrgrp_name``
+      - The names of the chromosomes
+    * - ``vrnt_chrgrp_stix``
+      - The start indices (inclusive) for each chromosome, post sorting and grouping
+    * - ``vrnt_chrgrp_spix``
+      - The stop indices (exclusive) for each chromosome, post sorting and grouping
+    * - ``vrnt_chrgrp_len``
+      - The length of each chromosome, post sorting and grouping
 
 
 Copying Genotype Matrices
@@ -280,7 +188,8 @@ Shallow copying
 .. code-block:: python
 
     # copy a genotype matrix
-    gmat_copy = gmat.copy()
+    tmp = copy.copy(gmat)
+    tmp = gmat.copy()
 
 Deep copying
 ------------
@@ -288,7 +197,8 @@ Deep copying
 .. code-block:: python
 
     # deep copy a genotype matrix
-    gmat_deepcopy = gmat.deepcopy()
+    tmp = copy.deepcopy(gmat)
+    tmp = gmat.deepcopy()
 
 Genotype Matrix Element Copy-On-Manipulation
 ============================================
@@ -495,7 +405,7 @@ Population allele counts
 
     # count the number of major alleles across all taxa
     out = gmat.acount()
-    out = gmat.acount(out = "int32")
+    out = gmat.acount(dtype = "int32")
 
 Population allele frequencies
 -----------------------------
