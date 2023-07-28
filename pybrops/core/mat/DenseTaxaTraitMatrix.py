@@ -897,7 +897,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         if axis == self.taxa_axis:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -905,7 +905,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 **kwargs
             )
         elif axis == self.trait_axis:
-            self.incorp(
+            self.incorp_trait(
                 obj = obj,
                 values = values,
                 trait = trait,
