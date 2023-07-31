@@ -978,7 +978,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Optional[Union[tuple,numpy.ndarray]] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:

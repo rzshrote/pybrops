@@ -3,7 +3,7 @@ Module providing a dense coancestry matrix implementation for identity by state
 and associated error checking routines.
 """
 
-from typing import Any, Optional
+from typing import Optional
 import numpy
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix

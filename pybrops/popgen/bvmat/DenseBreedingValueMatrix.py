@@ -105,7 +105,9 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         self.scale = scale
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseBreedingValueMatrix':
         """
         Make a shallow copy of the the matrix.
 
@@ -131,7 +133,10 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DenseBreedingValueMatrix':
         """
         Make a deep copy of the matrix.
 
@@ -211,6 +216,39 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############################################################################
     ############################## Object Methods ##############################
     ############################################################################
+
+    #################### Matrix copying ####################
+    def copy(
+            self
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Make a shallow copy of the Matrix.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A shallow copy of the original DenseMatrix.
+        """
+        return copy.copy(self)
+
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Make a deep copy of the Matrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A deep copy of the original DenseMatrix.
+        """
+        return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
     # FIXME: super adjoin, delete, insert, select, ... for location, scale bug

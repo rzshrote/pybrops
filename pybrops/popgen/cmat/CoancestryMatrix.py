@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 from numbers import Real
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
 from numpy.typing import DTypeLike
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
