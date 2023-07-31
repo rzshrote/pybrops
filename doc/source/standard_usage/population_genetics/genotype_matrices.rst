@@ -6,8 +6,8 @@ Class Family Overview
 
 Perhaps the most important family of classes in PyBrOpS is the ``GenotypeMatrix`` object family. The purpose of this family of classes is to store and represent genotypic data. ``GenotypeMatrix`` classes can be used in the estimation of genomic prediction models, the estimation of breeding values, the calculation of genomic relationship matrices, and to make selection decisions. Within PyBrOpS it is possible to read genotypic data from VCF files to create ``GenotypeMatrix`` objects, allowing for real-world data to be used in breeding program simulations.
 
-Loading Genotype Matrix Modules
-===============================
+Loading Class Modules
+=====================
 
 Genotype matrix support in PyBrOpS is found in the ``pybrops.popgen.gmat`` submodule. The ``GenotypeMatrix`` abstract class is the basal interface for all genotype matrices. Classes can be imported as follows:
 
@@ -95,8 +95,11 @@ Genotype matrices in PyBrOpS can be exported to HDF5 files via the ``to_hdf5`` m
     # read a genotype matrix from HDF5 file
     gmat = DenseGenotypeMatrix.from_hdf5("widiv_2000SNPs.h5")
 
-Genotype Matrix General Properties
-==================================
+Genotype Matrix Properties
+==========================
+
+General properties
+------------------
 
 .. list-table:: Summary of ``GenotypeMatrix`` general properties
     :widths: 25 50
@@ -121,8 +124,8 @@ Genotype Matrix General Properties
     * - ``nvrnt``
       - The number of genotype variants represented by the genotype matrix
 
-Genotype Matrix Taxa Properties
-===============================
+Taxa properties
+---------------
 
 .. list-table:: Summary of ``GenotypeMatrix`` taxa properties
     :widths: 25 50
@@ -145,8 +148,8 @@ Genotype Matrix Taxa Properties
     * - ``taxa_grp_len``
       - The length of each taxa group, post sorting and grouping
 
-Genotype Matrix Marker Variant Properties
-=========================================
+Marker variant properties
+-------------------------
 
 .. list-table:: Summary of ``GenotypeMatrix`` marker variant properties
     :widths: 25 50
@@ -183,7 +186,6 @@ Genotype Matrix Marker Variant Properties
     * - ``vrnt_chrgrp_len``
       - The length of each chromosome, post sorting and grouping
 
-
 Copying Genotype Matrices
 =========================
 
@@ -205,8 +207,8 @@ Deep copying
     tmp = copy.deepcopy(gmat)
     tmp = gmat.deepcopy()
 
-Genotype Matrix Element Copy-On-Manipulation
-============================================
+Copy-On Element Manipulation
+============================
 
 Adjoin elements
 ---------------
@@ -290,8 +292,8 @@ Select elements
     tmp = gmat.select([0,1,2,3,4], axis = gmat.vrnt_axis)
     tmp = gmat.select_vrnt([0,1,2,3,4])
 
-Genotype Matrix Element In-Place-Manipulation
-=============================================
+In-Place Element Manipulation
+=============================
 
 Append elements
 ---------------
@@ -399,6 +401,127 @@ Concatenate elements
     tmp = gmat.concat([gmat, gmat], axis = gmat.vrnt_axis)
     tmp = gmat.concat_vrnt([gmat, gmat])
 
+Grouping and Sorting
+====================
+
+Reordering elements
+-------------------
+
+.. code-block:: python
+
+    #
+    # taxa reordering example
+    #
+
+    # create reordering indices
+    indices = numpy.arange(gmat.ntaxa)
+    numpy.random.shuffle(indices)
+    tmp = gmat.deepcopy()
+
+    # reorder values along the taxa axis
+    tmp.reorder(indices, axis = tmp.taxa_axis)
+    tmp.reorder_taxa(indices)
+
+    #
+    # marker variant reordering example
+    #
+
+    # create reordering indices
+    indices = numpy.arange(gmat.nvrnt)
+    numpy.random.shuffle(indices)
+    tmp = gmat.deepcopy()
+
+    # reorder values along the marker variant axis
+    tmp = gmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.vrnt_axis)
+    tmp.reorder_vrnt(indices)
+
+Lexsorting elements
+-------------------
+
+.. code-block:: python
+
+    #
+    # taxa lexsort example
+    #
+
+    # create lexsort keys for taxa
+    key1 = numpy.random.randint(0, 10, gmat.ntaxa)
+    key2 = numpy.arange(gmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the taxa axis
+    gmat.lexsort((key2,key1), axis = gmat.taxa_axis)
+    gmat.lexsort_taxa((key2,key1))
+
+    #
+    # marker variant lexsort example
+    #
+
+    # create lexsort keys for marker variants
+    key1 = numpy.random.randint(0, 10, gmat.ntaxa)
+    key2 = numpy.arange(gmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the marker variant axis
+    gmat.lexsort((key2,key1), axis = gmat.taxa_axis)
+    gmat.lexsort_taxa((key2,key1))
+
+Sorting elements
+----------------
+
+.. code-block:: python
+
+    # make copy
+    tmp = gmat.deepcopy()
+
+    #
+    # taxa sorting example
+    #
+
+    # sort along taxa axis
+    tmp.sort(axis = tmp.taxa_axis)
+    tmp.sort_taxa()
+
+    #
+    # marker variant sorting example
+    #
+
+    # sort along marker variant axis
+    tmp.sort(axis = tmp.vrnt_axis)
+    tmp.sort_vrnt()
+
+Grouping elements
+-----------------
+
+.. code-block:: python
+
+    # make copy
+    tmp = gmat.deepcopy()
+
+    #
+    # taxa grouping example
+    #
+
+    # sort along taxa axis
+    tmp.group(axis = tmp.taxa_axis)
+    tmp.group_taxa()
+
+    # determine whether grouping has occurred along the taxa axis
+    tmp.is_grouped(axis = tmp.taxa_axis)
+    tmp.is_grouped_taxa()
+
+    #
+    # marker variant grouping example
+    #
+
+    # sort along vrnt axis
+    tmp.group(axis = tmp.vrnt_axis)
+    tmp.group_vrnt()
+
+    # determine whether grouping has occurred along the vrnt axis
+    tmp.is_grouped(axis = tmp.vrnt_axis)
+    tmp.is_grouped_vrnt()
 
 Summary Statistics
 ==================
@@ -483,3 +606,15 @@ Taxa allele frequencies
     # calculate the allele frequency individually within taxa
     out = gmat.tafreq()
     out = gmat.tafreq(dtype = "float32")
+
+Saving Genotype Matrices
+========================
+
+Exporting to HDF5
+-----------------
+
+.. code-block:: python
+
+    # write a breeding value matrix to an HDF5 file
+    gmat.to_hdf5("saved_genotypes.h5")
+

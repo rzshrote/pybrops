@@ -194,8 +194,8 @@ Deep copying
     tmp = bvmat.deepcopy()
 
 
-Breeding Value Matrix Element Copy-On-Manipulation
-==================================================
+Copy-On Element Manipulation
+============================
 
 Adjoin elements
 ---------------
@@ -279,8 +279,8 @@ Select elements
     tmp = bvmat.select([0,1], axis = bvmat.trait_axis)
     tmp = bvmat.select_trait([0,1])
 
-Breeding Value Matrix Element In-Place-Manipulation
-===================================================
+In-Place Element Manipulation
+=============================
 
 Append elements
 ---------------
@@ -389,7 +389,7 @@ Concatenate elements
     tmp = bvmat.concat_trait([bvmat, bvmat])
 
 
-Grouping and sorting
+Grouping and Sorting
 ====================
 
 Reordering elements

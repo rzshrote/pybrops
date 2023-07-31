@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-# import the GenotypeMatrix class (an abstract interface class)
+import os
 import copy
 import numpy
+
+# import the GenotypeMatrix class (an abstract interface class)
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 # import the DenseGenotypeMatrix class (a concrete implemented class)
@@ -326,6 +328,125 @@ tmp = gmat.concat([gmat, gmat], axis = gmat.vrnt_axis)
 tmp = gmat.concat_vrnt([gmat, gmat])
 
 ###
+### Grouping and sorting
+###
+
+##
+## Reordering
+##
+
+#
+# taxa reordering example
+#
+
+# create reordering indices
+indices = numpy.arange(gmat.ntaxa)
+numpy.random.shuffle(indices)
+tmp = gmat.deepcopy()
+
+# reorder values along the taxa axis
+tmp.reorder(indices, axis = tmp.taxa_axis)
+tmp.reorder_taxa(indices)
+
+#
+# marker variant reordering example
+#
+
+# create reordering indices
+indices = numpy.arange(gmat.nvrnt)
+numpy.random.shuffle(indices)
+tmp = gmat.deepcopy()
+
+# reorder values along the marker variant axis
+tmp = gmat.deepcopy()
+tmp.reorder(indices, axis = tmp.vrnt_axis)
+tmp.reorder_vrnt(indices)
+
+##
+## Lexsorting
+##
+
+#
+# taxa lexsort example
+#
+
+# create lexsort keys for taxa
+key1 = numpy.random.randint(0, 10, gmat.ntaxa)
+key2 = numpy.arange(gmat.ntaxa)
+numpy.random.shuffle(key2)
+
+# lexsort along the taxa axis
+gmat.lexsort((key2,key1), axis = gmat.taxa_axis)
+gmat.lexsort_taxa((key2,key1))
+
+#
+# marker variant lexsort example
+#
+
+# create lexsort keys for marker variants
+key1 = numpy.random.randint(0, 10, gmat.ntaxa)
+key2 = numpy.arange(gmat.ntaxa)
+numpy.random.shuffle(key2)
+
+# lexsort along the marker variant axis
+gmat.lexsort((key2,key1), axis = gmat.taxa_axis)
+gmat.lexsort_taxa((key2,key1))
+
+##
+## Sorting
+##
+
+# make copy
+tmp = gmat.deepcopy()
+
+#
+# taxa sorting example
+#
+
+# sort along taxa axis
+tmp.sort(axis = tmp.taxa_axis)
+tmp.sort_taxa()
+
+#
+# marker variant sorting example
+#
+
+# sort along marker variant axis
+tmp.sort(axis = tmp.vrnt_axis)
+tmp.sort_vrnt()
+
+##
+## Grouping
+##
+
+# make copy
+tmp = gmat.deepcopy()
+
+#
+# taxa grouping example
+#
+
+# sort along taxa axis
+tmp.group(axis = tmp.taxa_axis)
+tmp.group_taxa()
+
+# determine whether grouping has occurred along the taxa axis
+tmp.is_grouped(axis = tmp.taxa_axis)
+tmp.is_grouped_taxa()
+
+#
+# marker variant grouping example
+#
+
+# sort along vrnt axis
+tmp.group(axis = tmp.vrnt_axis)
+tmp.group_vrnt()
+
+# determine whether grouping has occurred along the vrnt axis
+tmp.is_grouped(axis = tmp.vrnt_axis)
+tmp.is_grouped_vrnt()
+
+###
 ### Summary Statistics
 ###
 
@@ -365,25 +486,23 @@ out = gmat.tacount(dtype = "int32")
 out = gmat.tafreq()
 out = gmat.tafreq(dtype = "float32")
 
+###
+### Saving Genotype Matrices
+###
+
+#
+# write to HDF5
+#
+
+# remove exported file if it exists
+if os.path.exists("saved_genotypes.h5"):
+    os.remove("saved_genotypes.h5")
+
+# write a breeding value matrix to an HDF5 file
+gmat.to_hdf5("saved_genotypes.h5")
 
 
 gmat.assign_hapgrp
-gmat.group
-gmat.group_taxa
-gmat.group_vrnt
 gmat.interp_genpos
 gmat.interp_xoprob
-gmat.is_grouped
-gmat.is_grouped_taxa
-gmat.is_grouped_vrnt
-gmat.lexsort
-gmat.lexsort_taxa
-gmat.lexsort_vrnt
 gmat.mat_asformat
-gmat.reorder
-gmat.reorder_taxa
-gmat.reorder_vrnt
-gmat.sort
-gmat.sort_taxa
-gmat.sort_vrnt
-gmat.to_hdf5
