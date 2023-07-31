@@ -1,6 +1,11 @@
 Genetic Maps
 ############
 
+Class Family Overview
+=====================
+
+Genetic maps are used to estimate marker-wise genetic map positions in mating simulations. PyBrOpS provides functionality for the reading and writing of genetic maps and the interpolation of genetic map positions via ``GeneticMap`` classes. The ability to read a genetic map from a file allows for real genetic recombination data to be used in a breeding simulation, adding realism.
+
 Loading ``GeneticMap`` modules
 ==============================
 

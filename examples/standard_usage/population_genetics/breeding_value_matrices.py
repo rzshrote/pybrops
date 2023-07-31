@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import copy
 import numpy
 
@@ -58,6 +59,41 @@ bvmat = DenseBreedingValueMatrix(
 # read a breeding value matrix from an HDF5 file
 bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
 
+#
+# construct from a NumPy array
+#
+
+# shape parameters
+ntaxa = 100
+ntrait = 3
+ngroup = 20
+
+# create random breeding values
+mat = numpy.random.normal(size = (ntaxa,ntrait))
+
+# create taxa names
+taxa = numpy.array(
+    ["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], 
+    dtype = object
+)
+
+# create taxa groups
+taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+taxa_grp.sort()
+
+# create trait names
+trait = numpy.array(
+    ["trait"+str(i+1).zfill(2) for i in range(ntrait)],
+    dtype = object
+)
+
+bvmat = DenseBreedingValueMatrix.from_numpy(
+    a = mat,
+    taxa = taxa,
+    taxa_grp = taxa_grp,
+    trait = trait
+)
+
 ###
 ### Breeding value matrix general properties
 ###
@@ -65,8 +101,6 @@ bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
 tmp = bvmat.mat         # get the raw breeding value matrix pointer
 tmp = bvmat.mat_ndim    # get the number of dimensions for the breeding value matrix
 tmp = bvmat.mat_shape   # get the breeding value matrix shape
-tmp = bvmat.ntaxa       # get the number of taxa represented by the breeding value matrix
-tmp = bvmat.ntrait      # get the number of traits represented by the breeding value matrix
 tmp = bvmat.location    # get the location of the breeding value matrix if it has been transformed
 tmp = bvmat.scale       # get the scale of the breeding value matrix if it has been transformed
 
@@ -74,6 +108,7 @@ tmp = bvmat.scale       # get the scale of the breeding value matrix if it has b
 ### Breeding value matrix taxa properties
 ###
 
+tmp = bvmat.ntaxa           # get the number of taxa represented by the breeding value matrix
 tmp = bvmat.taxa            # get the names of the taxa
 tmp = bvmat.taxa_axis       # get the matrix axis along which taxa are stored
 tmp = bvmat.taxa_grp        # get an optional taxa group label
@@ -86,6 +121,7 @@ tmp = bvmat.taxa_grp_len    # if taxa are sorted by group: get the length of eac
 ### Breeding value matrix trait properties
 ###
 
+tmp = bvmat.ntrait      # get the number of traits represented by the breeding value matrix
 tmp = bvmat.trait       # get the names of the traits
 tmp = bvmat.trait_axis  # get the matrix axis along which traits are stored
 
@@ -290,6 +326,113 @@ tmp = bvmat.concat([bvmat, bvmat], axis = bvmat.trait_axis)
 tmp = bvmat.concat_trait([bvmat, bvmat])
 
 ###
+### Grouping and sorting
+###
+
+##
+## Reordering
+##
+
+#
+# taxa reordering example
+#
+
+# create reordering indices
+indices = numpy.arange(bvmat.ntaxa)
+numpy.random.shuffle(indices)
+tmp = bvmat.deepcopy()
+
+# reorder values along the taxa axis
+tmp.reorder(indices, axis = tmp.taxa_axis)
+tmp.reorder_taxa(indices)
+
+#
+# trait reordering example
+#
+
+# create reordering indices
+indices = numpy.arange(bvmat.ntrait)
+numpy.random.shuffle(indices)
+tmp = bvmat.deepcopy()
+
+# reorder values along the trait axis
+tmp = bvmat.deepcopy()
+tmp.reorder(indices, axis = tmp.trait_axis)
+tmp.reorder_trait(indices)
+
+##
+## Lexsorting
+##
+
+#
+# taxa lexsort example
+#
+
+# create lexsort keys for taxa
+key1 = numpy.random.randint(0, 10, bvmat.ntaxa)
+key2 = numpy.arange(bvmat.ntaxa)
+numpy.random.shuffle(key2)
+
+# lexsort along the taxa axis
+bvmat.lexsort((key2,key1), axis = bvmat.taxa_axis)
+bvmat.lexsort_taxa((key2,key1))
+
+#
+# trait lexsort example
+#
+
+# create lexsort keys for trait
+key1 = numpy.random.randint(0, 10, bvmat.ntaxa)
+key2 = numpy.arange(bvmat.ntaxa)
+numpy.random.shuffle(key2)
+
+# lexsort along the trait axis
+bvmat.lexsort((key2,key1), axis = bvmat.taxa_axis)
+bvmat.lexsort_taxa((key2,key1))
+
+##
+## Sorting
+##
+
+# make copy
+tmp = bvmat.deepcopy()
+
+#
+# taxa sorting example
+#
+
+# sort along taxa axis
+tmp.sort(axis = tmp.taxa_axis)
+tmp.sort_taxa()
+
+#
+# trait sorting example
+#
+
+# sort along trait axis
+tmp.sort(axis = tmp.trait_axis)
+tmp.sort_trait()
+
+##
+## Grouping
+##
+
+# make copy
+tmp = bvmat.deepcopy()
+
+#
+# taxa grouping example
+#
+
+# sort along taxa axis
+tmp.group(axis = tmp.taxa_axis)
+tmp.group_taxa()
+
+# determine whether grouping has occurred along the taxa axis
+tmp.is_grouped(axis = tmp.taxa_axis)
+tmp.is_grouped_taxa()
+
+###
 ### Summary Statistics
 ###
 
@@ -320,21 +463,17 @@ out = bvmat.tvar()
 # de-transform a breeding value matrix 
 out = bvmat.descale()
 
+###
+### Saving Breeding Value Matrices
+###
 
+#
+# write to HDF5
+#
 
-bvmat.from_hdf5
-bvmat.from_numpy
-bvmat.group
-bvmat.group_taxa
-bvmat.is_grouped
-bvmat.is_grouped_taxa
-bvmat.lexsort
-bvmat.lexsort_taxa
-bvmat.lexsort_trait
-bvmat.reorder
-bvmat.reorder_taxa
-bvmat.reorder_trait
-bvmat.sort
-bvmat.sort_taxa
-bvmat.sort_trait
-bvmat.to_hdf5
+# remove exported file if it exists
+if os.path.exists("saved_breeding_values.h5"):
+    os.remove("saved_breeding_values.h5")
+
+# write a breeding value matrix to an HDF5 file
+bvmat.to_hdf5("saved_breeding_values.h5")

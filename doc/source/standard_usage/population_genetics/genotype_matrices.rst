@@ -1,6 +1,11 @@
 Genotype Matrices
 #################
 
+Class Family Overview
+=====================
+
+Perhaps the most important family of classes in PyBrOpS is the ``GenotypeMatrix`` object family. The purpose of this family of classes is to store and represent genotypic data. ``GenotypeMatrix`` classes can be used in the estimation of genomic prediction models, the estimation of breeding values, the calculation of genomic relationship matrices, and to make selection decisions. Within PyBrOpS it is possible to read genotypic data from VCF files to create ``GenotypeMatrix`` objects, allowing for real-world data to be used in breeding program simulations.
+
 Loading Genotype Matrix Modules
 ===============================
 

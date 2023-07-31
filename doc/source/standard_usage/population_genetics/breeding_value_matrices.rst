@@ -1,6 +1,11 @@
 Breeding Value Matrices
 #######################
 
+Class Family Overview
+=====================
+
+The ``BreedingValueMatrix`` family of classes is used to represent breeding values as its name implies. ``BreedingValueMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions.
+
 Loading Breeding Value Matrix Modules
 =====================================
 
@@ -17,6 +22,8 @@ Creating Breeding Value Matrices
 
 Creating breeding value matrices from NumPy arrays
 --------------------------------------------------
+
+Using the ``DenseBreedingValueMatrix`` constructor, one can create a breeding value matrix from NumPy arrays.
 
 .. code-block:: python
 
@@ -54,6 +61,42 @@ Creating breeding value matrices from NumPy arrays
         trait = trait
     )
 
+Using the ``from_numpy`` class method, one can also create a breeding value matrix from NumPy arrays. The difference between using this method and using the constructor is that this class method will automatically scale the input matrix to have zero mean and unit variance. Location and scale information will be stored in the ``location`` and ``scale`` properties of the created breeding value matrix.
+
+.. code-block:: python
+
+    # shape parameters
+    ntaxa = 100
+    ntrait = 3
+    ngroup = 20
+
+    # create random breeding values
+    mat = numpy.random.normal(size = (ntaxa,ntrait))
+
+    # create taxa names
+    taxa = numpy.array(
+        ["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], 
+        dtype = object
+    )
+
+    # create taxa groups
+    taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+    taxa_grp.sort()
+
+    # create trait names
+    trait = numpy.array(
+        ["trait"+str(i+1).zfill(2) for i in range(ntrait)],
+        dtype = object
+    )
+
+    bvmat = DenseBreedingValueMatrix.from_numpy(
+        a = mat,
+        taxa = taxa,
+        taxa_grp = taxa_grp,
+        trait = trait
+    )
+
+
 Loading breeding value matrices from HDF5 files
 -----------------------------------------------
 
@@ -80,10 +123,6 @@ Breeding value matrix general properties
       - The number of dimensions for the breeding value matrix
     * - ``mat_shape``
       - The breeding value matrix shape
-    * - ``ntaxa``
-      - The number of taxa represented by the breeding value matrix
-    * - ``ntrait``
-      - The number of traits represented by the breeding value matrix
     * - ``location``
       - The location of the breeding value matrix if it has been transformed
     * - ``scale``
@@ -98,6 +137,8 @@ Breeding value matrix taxa properties
 
     * - Property
       - Description
+    * - ``ntaxa``
+      - The number of taxa represented by the breeding value matrix
     * - ``taxa``
       - The names of the taxa
     * - ``taxa_axis``
@@ -117,12 +158,14 @@ Breeding value matrix taxa properties
 Breeding value matrix trait properties
 --------------------------------------
 
-.. list-table:: Summary of ``BreedingValueMatrix`` taxa properties
+.. list-table:: Summary of ``BreedingValueMatrix`` trait properties
     :widths: 25 50
     :header-rows: 1
 
     * - Property
       - Description
+    * - ``ntrait``
+      - The number of traits represented by the breeding value matrix
     * - ``trait``
       - The names of the traits
     * - ``trait_axis``
@@ -131,7 +174,6 @@ Breeding value matrix trait properties
 
 Copying Breeding Value Matrices
 ===============================
-
 
 Shallow copying
 ---------------
@@ -152,8 +194,8 @@ Deep copying
     tmp = bvmat.deepcopy()
 
 
-Genotype Matrix Element Copy-On-Manipulation
-============================================
+Breeding Value Matrix Element Copy-On-Manipulation
+==================================================
 
 Adjoin elements
 ---------------
@@ -237,8 +279,8 @@ Select elements
     tmp = bvmat.select([0,1], axis = bvmat.trait_axis)
     tmp = bvmat.select_trait([0,1])
 
-Genotype Matrix Element In-Place-Manipulation
-=============================================
+Breeding Value Matrix Element In-Place-Manipulation
+===================================================
 
 Append elements
 ---------------
@@ -346,8 +388,123 @@ Concatenate elements
     tmp = bvmat.concat([bvmat, bvmat], axis = bvmat.trait_axis)
     tmp = bvmat.concat_trait([bvmat, bvmat])
 
+
+Grouping and sorting
+====================
+
+Reordering elements
+-------------------
+
+.. code-block:: python
+
+    #
+    # taxa reordering example
+    #
+
+    # create reordering indices
+    indices = numpy.arange(bvmat.ntaxa)
+    numpy.random.shuffle(indices)
+    tmp = bvmat.deepcopy()
+
+    # reorder values along the taxa axis
+    tmp.reorder(indices, axis = tmp.taxa_axis)
+    tmp.reorder_taxa(indices)
+
+    #
+    # trait reordering example
+    #
+
+    # create reordering indices
+    indices = numpy.arange(bvmat.ntrait)
+    numpy.random.shuffle(indices)
+    tmp = bvmat.deepcopy()
+
+    # reorder values along the trait axis
+    tmp = bvmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.trait_axis)
+    tmp.reorder_trait(indices)
+
+Lexsorting elements
+-------------------
+
+.. code-block:: python
+
+    #
+    # taxa lexsort example
+    #
+
+    # create lexsort keys for taxa
+    key1 = numpy.random.randint(0, 10, bvmat.ntaxa)
+    key2 = numpy.arange(bvmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the taxa axis
+    bvmat.lexsort((key2,key1), axis = bvmat.taxa_axis)
+    bvmat.lexsort_taxa((key2,key1))
+
+    #
+    # trait lexsort example
+    #
+
+    # create lexsort keys for trait
+    key1 = numpy.random.randint(0, 10, bvmat.ntaxa)
+    key2 = numpy.arange(bvmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the trait axis
+    bvmat.lexsort((key2,key1), axis = bvmat.taxa_axis)
+    bvmat.lexsort_taxa((key2,key1))
+
+Sorting elements
+----------------
+
+.. code-block:: python
+
+    # make copy
+    tmp = bvmat.deepcopy()
+
+    #
+    # taxa sorting example
+    #
+
+    # sort along taxa axis
+    tmp.sort(axis = tmp.taxa_axis)
+    tmp.sort_taxa()
+
+    #
+    # trait sorting example
+    #
+
+    # sort along trait axis
+    tmp.sort(axis = tmp.trait_axis)
+    tmp.sort_trait()
+
+Grouping elements
+-----------------
+
+.. code-block:: python
+
+    # make copy
+    tmp = bvmat.deepcopy()
+
+    #
+    # taxa grouping example
+    #
+
+    # sort along taxa axis
+    tmp.group(axis = tmp.taxa_axis)
+    tmp.group_taxa()
+
+    # determine whether grouping has occurred along the taxa axis
+    tmp.is_grouped(axis = tmp.taxa_axis)
+    tmp.is_grouped_taxa()
+
+
 Summary Statistics
 ==================
+
+Maximum breeding values for each trait
+--------------------------------------
 
 .. code-block:: python
 
@@ -356,41 +513,69 @@ Summary Statistics
 
 .. code-block:: python
 
-    # get the indices of the taxa having the minimum values for each trait
-    out = bvmat.targmin()
-
-.. code-block:: python
-
     # get the maximum breeding values for each trait
     out = bvmat.tmax()
 
+Minimum breeding values for each trait
+--------------------------------------
+
 .. code-block:: python
 
-    # get the mean breeding values for each trait
-    out = bvmat.tmean()
+    # get the indices of the taxa having the minimum values for each trait
+    out = bvmat.targmin()
 
 .. code-block:: python
 
     # get the minimum breeding values for each trait
     out = bvmat.tmin()
 
+Mean breeding values for each trait
+-----------------------------------
+
+.. code-block:: python
+
+    # get the mean breeding values for each trait
+    out = bvmat.tmean()
+
+Breeding value ranges for each trait
+------------------------------------
+
 .. code-block:: python
 
     # get the breeding value ranges for each trait
     out = bvmat.trange()
+
+Breeding value standard deviations for each trait
+-------------------------------------------------
 
 .. code-block:: python
 
     # get the breeding value standard deviations for each trait
     out = bvmat.tstd()
 
+Breeding value variances for each trait
+---------------------------------------
+
 .. code-block:: python
 
     # get the breeding value variances for each trait
     out = bvmat.tvar()
+
+De-scaling and de-centering breeding values
+-------------------------------------------
 
 .. code-block:: python
 
     # de-transform a breeding value matrix 
     out = bvmat.descale()
 
+Saving Breeding Value Matrices
+==============================
+
+Exporting to HDF5
+-----------------
+
+.. code-block:: python
+
+    # write a breeding value matrix to an HDF5 file
+    bvmat.to_hdf5("saved_breeding_values.h5")
