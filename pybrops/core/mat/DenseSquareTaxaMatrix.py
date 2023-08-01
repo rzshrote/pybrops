@@ -866,7 +866,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         if axis in self.square_axes:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -1076,7 +1076,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Optional[Union[tuple,numpy.ndarray]] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:

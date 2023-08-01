@@ -11,7 +11,10 @@ from numbers import Real
 from typing import Optional, Union
 import numpy
 import warnings
+import h5py
 from numpy.typing import DTypeLike
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_python import check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -22,6 +25,7 @@ from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
+from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
@@ -270,7 +274,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 
     def max_inbreeding(
             self,
-            format: str
+            format: str = "coancestry"
         ) -> Real:
         """
         Calculate the maximum attainable inbreeding after one generation for 
@@ -310,7 +314,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 
     def min_inbreeding(
             self,
-            format: str
+            format: str = "coancestry"
         ) -> Real:
         """
         Calculate the minimum attainable inbreeding after one generation for 
@@ -351,7 +355,6 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         
         return out
 
-    ############## Matrix summary statistics ###############
     def inverse(
             self,
             format: str = "coancestry"
@@ -383,6 +386,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         
         return out
 
+    ############## Matrix summary statistics ###############
     def max(
             self,
             format: str = "coancestry",
@@ -492,6 +496,99 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             out *= 0.5
         
         return out
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat,
+            "taxa" : self.taxa,
+            "taxa_grp" : self.taxa_grp
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseCoancestryMatrix':
+        """
+        Read DenseMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which DenseMatrix data is stored.
+            If None, DenseMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A dense matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None,
+            "taxa" : None,
+            "taxa_grp" : None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
 
 
