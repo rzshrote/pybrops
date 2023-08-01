@@ -384,13 +384,13 @@ gmat.lexsort_taxa((key2,key1))
 #
 
 # create lexsort keys for marker variants
-key1 = numpy.random.randint(0, 10, gmat.ntaxa)
-key2 = numpy.arange(gmat.ntaxa)
+key1 = numpy.random.randint(0, 10, gmat.nvrnt)
+key2 = numpy.arange(gmat.nvrnt)
 numpy.random.shuffle(key2)
 
 # lexsort along the marker variant axis
-gmat.lexsort((key2,key1), axis = gmat.taxa_axis)
-gmat.lexsort_taxa((key2,key1))
+gmat.lexsort((key2,key1), axis = gmat.vrnt_axis)
+gmat.lexsort_vrnt((key2,key1))
 
 ##
 ## Sorting

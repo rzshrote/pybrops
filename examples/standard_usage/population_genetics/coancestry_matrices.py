@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import copy
 import numpy
 
@@ -17,6 +18,7 @@ from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoanc
 
 # import the DenseYangCoancestryMatrix class (a concrete implemented class)
 from pybrops.popgen.cmat.DenseYangCoancestryMatrix import DenseYangCoancestryMatrix
+from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 ###
 ### Coancestry Matrix Object Creation
@@ -30,7 +32,7 @@ from pybrops.popgen.cmat.DenseYangCoancestryMatrix import DenseYangCoancestryMat
 ntaxa = 100
 ngroup = 20
 
-# create random breeding values
+# create random coancestries
 mat = numpy.random.uniform(0.0, 1.0, size = (ntaxa,ntaxa))
 
 # create taxa names
@@ -43,12 +45,81 @@ taxa = numpy.array(
 taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
 taxa_grp.sort()
 
-# create a breeding value matrix from NumPy arrays
+# create a coancestry matrix from NumPy arrays
 cmat = DenseMolecularCoancestryMatrix(
     mat = mat,
     taxa = taxa,
     taxa_grp = taxa_grp
 )
+
+#
+# construct from a genotype matrix
+#
+
+# shape parameters for random genotypes
+ntaxa = 100
+nvrnt = 1000
+ngroup = 20
+nchrom = 10
+ploidy = 2
+
+# create random genotypes
+mat = numpy.random.randint(0, ploidy+1, size = (ntaxa,nvrnt)).astype("int8")
+
+# create taxa names
+taxa = numpy.array(
+    ["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], 
+    dtype = object
+)
+
+# create taxa groups
+taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+taxa_grp.sort()
+
+# create marker variant chromsome assignments
+vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
+vrnt_chrgrp.sort()
+
+# create marker physical positions
+vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
+vrnt_phypos.sort()
+
+# create marker variant names
+vrnt_name = numpy.array(
+    ["SNP"+str(i+1).zfill(4) for i in range(nvrnt)],
+    dtype = object
+)
+
+# create a genotype matrix from scratch using NumPy arrays
+gmat = DenseGenotypeMatrix(
+    mat = mat,
+    taxa = taxa,
+    taxa_grp = taxa_grp, 
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos, 
+    vrnt_name = vrnt_name, 
+    vrnt_genpos = None,
+    vrnt_xoprob = None, 
+    vrnt_hapgrp = None, 
+    vrnt_hapalt = None,
+    vrnt_hapref = None, 
+    vrnt_mask = None,
+    ploidy = ploidy
+)
+
+# group taxa and variants
+gmat.group_taxa()
+gmat.group_vrnt()
+
+# construct Coancestry Matrix from a Genotype Matrix
+cmat = DenseMolecularCoancestryMatrix.from_gmat(gmat = gmat)
+
+#
+# read from HDF5
+#
+
+# read from file
+cmat = DenseMolecularCoancestryMatrix.from_hdf5("sample_coancestry_matrix.h5")
 
 ###
 ### Coancestry matrix general properties
@@ -62,7 +133,7 @@ tmp = cmat.mat_shape        # get the shape of the coancestry matrix
 ### Coancestry matrix taxa properties
 ###
 
-tmp = cmat.ntaxa           # get the number of taxa represented by the breeding value matrix
+tmp = cmat.ntaxa           # get the number of taxa represented by the coancestry matrix
 tmp = cmat.taxa            # get the names of the taxa
 tmp = cmat.taxa_axis       # get the matrix axis along which taxa are stored
 tmp = cmat.taxa_grp        # get an optional taxa group label
@@ -83,11 +154,11 @@ tmp = cmat.square_axes_len  # get the lengths of the square axes for the coances
 ### Copying
 ###
 
-# copy a breeding value matrix
+# copy a coancestry matrix
 tmp = copy.copy(cmat)
 tmp = cmat.copy()
 
-# deep copy a breeding value matrix
+# deep copy a coancestry matrix
 tmp = copy.deepcopy(cmat)
 tmp = cmat.deepcopy()
 
@@ -130,12 +201,12 @@ tmp = cmat.delete_taxa([0,1,2,3,4])
 ## insert examples
 ##
 
-# create a new coancestry matrix to demonstrate
-new = cmat.deepcopy()
+# # create a new coancestry matrix to demonstrate
+# new = cmat.deepcopy()
 
-# insert coancestry matrix along the taxa axis before index 0
-tmp = cmat.insert(0, new, axis = cmat.taxa_axis)
-tmp = cmat.insert_taxa(0, new)
+# # insert coancestry matrix along the taxa axis before index 0
+# tmp = cmat.insert(0, new, axis = cmat.taxa_axis)
+# tmp = cmat.insert_taxa(0, new)
 
 # insert coancestry matrix along the trait axis before index 0
 # tmp = cmat.insert(0, new, axis = cmat.trait_axis)
@@ -208,41 +279,165 @@ tmp.incorp_taxa(0, cmat)                        # incorporate into copy
 ## concat examples
 ##
 
-# concatenate along the taxa axis
-tmp = cmat.concat([cmat, cmat], axis = cmat.taxa_axis)
-tmp = cmat.concat_taxa([cmat, cmat])
+# # concatenate along the taxa axis
+# tmp = cmat.concat([cmat, cmat], axis = cmat.taxa_axis)
+# tmp = cmat.concat_taxa([cmat, cmat])
+
+###
+### Grouping and sorting
+###
+
+##
+## Reordering
+##
+
+#
+# taxa reordering example
+#
+
+# create reordering indices
+indices = numpy.arange(cmat.ntaxa)
+numpy.random.shuffle(indices)
+tmp = cmat.deepcopy()
+
+# reorder values along the taxa axis
+tmp.reorder(indices, axis = tmp.taxa_axis)
+tmp.reorder_taxa(indices)
+
+##
+## Lexsorting
+##
+
+#
+# taxa lexsort example
+#
+
+# create lexsort keys for taxa
+key1 = numpy.random.randint(0, 10, cmat.ntaxa)
+key2 = numpy.arange(cmat.ntaxa)
+numpy.random.shuffle(key2)
+
+# lexsort along the taxa axis
+cmat.lexsort((key2,key1), axis = cmat.taxa_axis)
+cmat.lexsort_taxa((key2,key1))
+
+##
+## Sorting
+##
+
+# make copy
+tmp = cmat.deepcopy()
+
+#
+# taxa sorting example
+#
+
+# sort along taxa axis
+tmp.sort(axis = tmp.taxa_axis)
+tmp.sort_taxa()
+
+##
+## Grouping
+##
+
+# make copy
+tmp = cmat.deepcopy()
+
+#
+# taxa grouping example
+#
+
+# sort along taxa axis
+tmp.group(axis = tmp.taxa_axis)
+tmp.group_taxa()
+
+# determine whether grouping has occurred along the taxa axis
+out = tmp.is_grouped(axis = tmp.taxa_axis)
+out = tmp.is_grouped_taxa()
+
+###
+### Coancestry/kinship Methods
+###
+
+#
+# Get the coancestry at a specific matrix coordinate
+#
+
+out = cmat.coancestry(0,0)
+
+#
+# Get the kinship at a specific matrix coordinate
+#
+
+out = cmat.kinship(0,0)
+
+#
+# Get the coancestry matrix as a specific format
+#
+
+cmat.mat_asformat(format = "kinship")
+
+#
+# Determine if the coancestry matrix is positive semidefinite (convex)
+#
+
+out = cmat.is_positive_semidefinite()
+
+#
+# Apply a jitter along the diagonal to try to make the matrix positive semidefinite
+#
+
+out = cmat.apply_jitter()
+
+#
+# Calculate the maximum attainable inbreeding after 1 generation
+#
+
+out = cmat.max_inbreeding()
+out = cmat.min_inbreeding(format = "kinship")
+
+#
+# Calculate the minimum attainable inbreeding after 1 generation
+#
+
+out = cmat.min_inbreeding()
+out = cmat.min_inbreeding(format = "kinship")
+
+#
+# Calculate the inverse of the coancestry matrix
+#
+
+out = cmat.inverse()
+out = cmat.inverse(format = "kinship")
 
 ###
 ### Summary Statistics
 ###
 
+# get the max for the whole coancestry matrix
+out = cmat.max()
 
-cmat.apply_jitter
-cmat.coancestry
-cmat.copy
-cmat.deepcopy
-cmat.from_gmat
-cmat.from_hdf5
-cmat.group
-cmat.group_taxa
-cmat.inverse
-cmat.is_grouped
-cmat.is_grouped_taxa
-cmat.is_positive_semidefinite
+# get the mean for the whole coancestry matrix
+out = cmat.mean()
+
+# get the min for the whole coancestry matrix
+out = cmat.min()
+
+###
+### Saving Breeding Value Matrices
+###
+
+#
+# write to HDF5
+#
+
+# remove exported file if it exists
+if os.path.exists("saved_coancestry_matrix.h5"):
+    os.remove("saved_coancestry_matrix.h5")
+
+# write a coancestry matrix to an HDF5 file
+cmat.to_hdf5("saved_coancestry_matrix.h5")
+
+
+
 cmat.is_square
-cmat.kinship
-cmat.lexsort
-cmat.lexsort_taxa
-cmat.mat_asformat
-cmat.max
-cmat.max_inbreeding
-cmat.mean
-cmat.min
-cmat.min_inbreeding
-cmat.reorder
-cmat.reorder_taxa
-cmat.select
-cmat.select_taxa
-cmat.sort
-cmat.sort_taxa
-cmat.to_hdf5
