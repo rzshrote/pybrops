@@ -3,12 +3,25 @@ Standard PyBrOpS Usage
 
 .. toctree::
     :maxdepth: 1
-    :caption: Typical Usage Examples:
+    :caption: Core Infrastructure Usage:
 
     Random Number Generation <core_infrastructure/random_number_generation>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Population Genetics Modules Usage:
+    
     Genetic Maps <population_genetics/genetic_maps>
     Genetic Map Functions <population_genetics/genetic_map_functions>
     Genotype Matrices <population_genetics/genotype_matrices>
     Phased Genotype Matrices <population_genetics/phased_genotype_matrices>
     Breeding Value Matrices <population_genetics/breeding_value_matrices>
     Coancestry Matrices <population_genetics/coancestry_matrices>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Optimization Modules Usage:
+
+    Optimization Problems <optimization/optimization_problems>
+    Optimization Solutions <optimization/optimization_solutions>
+    Optimization Algorithms <optimization/optimization_algorithms>

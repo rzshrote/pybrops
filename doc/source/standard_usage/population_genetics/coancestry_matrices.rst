@@ -6,8 +6,36 @@ Class Family Overview
 
 The ``CoancestryMatrix`` family of classes is used to represent coancestry relationships between individuals. ``CoancestryMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions.
 
+Summary of Coancestry Matrix Modules
+====================================
+
+.. list-table:: Summary of ``pybrops.popgen.cmat`` modules
+    :widths: 25 20 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``CoancestryMatrix``
+      - Abstract
+      - Interface for all coancestry matrix child classes.
+    * - ``DenseCoancestryMatrix``
+      - Semi-Abstract
+      - Semi-implemented class for deriving new dense coancestry matrix child classes.
+    * - ``DenseMolecularCoancestryMatrix``
+      - Concrete
+      - Class representing dense molecular coancestry matrices.
+    * - ``DenseVanRadenCoancestryMatrix``
+      - Concrete
+      - Class representing a genomic relationship matrix defined by VanRaden (2008).
+    * - ``DenseYangCoancestryMatrix``
+      - Concrete
+      - Class representing a genomic relationship matrix defined by Yang.
+
 Loading Coancestry Matrix Modules
 =================================
+
+Importing coancestry matrix classes can be accomplished using the following import statements:
 
 .. code-block:: python
 
