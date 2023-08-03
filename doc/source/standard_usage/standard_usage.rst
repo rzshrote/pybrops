@@ -25,3 +25,20 @@ Standard PyBrOpS Usage
     Optimization Problems <optimization/optimization_problems>
     Optimization Solutions <optimization/optimization_solutions>
     Optimization Algorithms <optimization/optimization_algorithms>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Genomic Modeling Modules Usage:
+
+    Genomic Models <genomic_modeling/genomic_models>
+    Variance Matrices <genomic_modeling/variance_matrices>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Breeding Simulation Construction:
+
+    Genotyping Protocols <breeding_simulation/genotyping_protocols>
+    Phenotyping Protocols <breeding_simulation/phenotyping_protocols>
+    Breeding Value Estimation Protocols <breeding_simulation/breeding_value_protocols>
+    Mating Protocols <breeding_simulation/mating_protocols>
+    Selection Protocols <breeding_simulation/selection_protocols>
