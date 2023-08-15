@@ -39,7 +39,7 @@ class IntegerProblem(Problem):
             eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
             vtype: Optional[type] = None,
             vars: Optional[Sequence] = None,
-            elementwise: bool = False,
+            elementwise: bool = True,
             elementwise_func: type = ElementwiseEvaluationFunction,
             elementwise_runner: Callable = LoopedElementwiseEvaluation(),
             replace_nan_values_by: Optional[Real] = None,
