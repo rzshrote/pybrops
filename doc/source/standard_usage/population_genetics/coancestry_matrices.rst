@@ -6,10 +6,10 @@ Class Family Overview
 
 The ``CoancestryMatrix`` family of classes is used to represent coancestry relationships between individuals. ``CoancestryMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions.
 
-Summary of Coancestry Matrix Modules
+Summary of Coancestry Matrix Classes
 ====================================
 
-.. list-table:: Summary of ``pybrops.popgen.cmat`` modules
+.. list-table:: Summary of classes in the ``pybrops.popgen.cmat`` module
     :widths: 25 20 50
     :header-rows: 1
 

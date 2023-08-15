@@ -6,10 +6,10 @@ Class Family Overview
 
 All optimization solutions in ``PyBrOpS`` are represented using classes derived from the ``Solution`` interface in the ``pybrops.opt.soln`` submodule. All classes derived from the ``Solution`` interface contain metadata pertaining to the decision space, the objective space, inequality and equality constraints, and the identified solution(s) for the optimization. The purpose of the ``Solution`` family of classes is essentially to store the results of an optimization.
 
-Summary of Optimization Solution Modules
+Summary of Optimization Solution Classes
 ========================================
 
-.. list-table:: Summary of ``pybrops.opt.soln`` modules
+.. list-table:: Summary of classes in the ``pybrops.opt.soln`` module
     :widths: 25 20 50
     :header-rows: 1
 

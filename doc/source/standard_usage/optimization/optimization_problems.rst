@@ -6,10 +6,10 @@ Class Family Overview
 
 All optimization problems in ``PyBrOpS`` are represented using classes derived from the ``Problem`` interface in the ``pybrops.opt.prob`` submodule. All classes derived from the ``Problem`` interface contain metadata pertaining to the decision space, the objective space, and inequality and equality constraints for the optimization. Derivatives of this interface must also implement an evaluation function which is used to evaluate candidate solutions in the decision space. All optimization problems are expressed as minimization problems.
 
-Summary of Optimization Problem Modules
+Summary of Optimization Problem Classes
 =======================================
 
-.. list-table:: Summary of ``pybrops.opt.prob`` modules
+.. list-table:: Summary of classes in the ``pybrops.opt.prob`` module
     :widths: 25 20 50
     :header-rows: 1
 
@@ -373,6 +373,8 @@ Construct a multi-objective problem
 Evaluating candidate solutions
 ==============================
 
+Single, candidate solutions can be evaluated using the ``evalfn`` method. In ``PyBrOpS``, candidate solution vectors must be evaluated individually, as is defined by the ``Problem`` interface.  
+
 .. code-block:: python
 
     # create a random vector in the decision space
@@ -381,3 +383,19 @@ Evaluating candidate solutions
     # evaluate the candidate solution
     obj1, ineqcv1, eqcv1 = soprob.evalfn(cand)  # obj1 is length 1
     obj2, ineqcv2, eqcv2 = moprob.evalfn(cand)  # obj2 is length 2
+
+    # create 5 random vectors in the decision space
+    cands = numpy.random.uniform(-1.0, 1.0, (5,ndecn))
+
+    # evaluate the candidate solutions and unpack into components
+    evaluations = [soprob.evalfn(cand) for cand in cands]
+    obj1, ineqcv1, eqcv1 = zip(*evaluations)
+    obj1 = numpy.stack(obj1)        # convert list to 2d array
+    ineqcv1 = numpy.stack(ineqcv1)  # convert list to 2d array
+    eqcv1 = numpy.stack(eqcv1)      # convert list to 2d array
+
+    evaluations = [moprob.evalfn(cand) for cand in cands]
+    obj2, ineqcv2, eqcv2 = zip(*evaluations)
+    obj2 = numpy.stack(obj2)        # convert list to 2d array
+    ineqcv2 = numpy.stack(ineqcv2)  # convert list to 2d array
+    eqcv2 = numpy.stack(eqcv2)      # convert list to 2d array

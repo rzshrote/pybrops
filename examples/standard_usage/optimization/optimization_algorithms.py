@@ -3,31 +3,34 @@
 from numbers import Integral, Real
 from typing import Optional, Tuple, Union
 import numpy
-
-# import the Problem class (a semi-abstract interface class)
-from pybrops.opt.prob.Problem import Problem
-
-# import the BinaryProblem class (a semi-abstract interface class)
-from pybrops.opt.prob.BinaryProblem import BinaryProblem
-
-# import the IntegerProblem class (a semi-abstract interface class)
-from pybrops.opt.prob.IntegerProblem import IntegerProblem
-
-# import the RealProblem class (a semi-abstract interface class)
 from pybrops.opt.prob.RealProblem import RealProblem
 
-# import the SubsetProblem class (a semi-abstract interface class)
-from pybrops.opt.prob.SubsetProblem import SubsetProblem
+# import OptimizationAlgorithm classes (abstract interface classes)
+from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
+from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 
-###
-### Deriving a Problem class
-###
+# import Genetic Algorithm classes (concrete implementation classes)
+from pybrops.opt.algo.BinaryGeneticAlgorithm import BinaryGeneticAlgorithm
+from pybrops.opt.algo.IntegerGeneticAlgorithm import IntegerGeneticAlgorithm
+from pybrops.opt.algo.RealGeneticAlgorithm import RealGeneticAlgorithm
+from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
+
+# import NSGA-II Genetic Algorithm classes (concrete implementation classes)
+from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
+from pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm import NSGA2IntegerGeneticAlgorithm
+from pybrops.opt.algo.NSGA2RealGeneticAlgorithm import NSGA2RealGeneticAlgorithm
+from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
+
+# import steepest descent hill climber algorithm (concrete implementation class)
+from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 
 #
-# Single objective problem specification
+# Create dummy single- and multi-objective problem specifications
 #
 
-# inherit from RealProblem semi-abstract interface
 class DummySingleObjectiveRealProblem(RealProblem):
     def __init__(
             self, 
@@ -159,10 +162,6 @@ class DummySingleObjectiveRealProblem(RealProblem):
             # update output dictionary
             out.update(tmp)
 
-#
-# Multi-objective problem specification
-#
-
 class DummyMultiObjectiveRealProblem(RealProblem):
     def __init__(
             self, 
@@ -290,14 +289,11 @@ class DummyMultiObjectiveRealProblem(RealProblem):
             # update output dictionary
             out.update(tmp)
 
-###
-### Constructing a Problem
-###
-
 #
+# Constructing test problems
+#
+
 # Construct a single-objective problem
-#
-
 # problem parameters
 ndecn = 10
 decn_space_lower = numpy.repeat(-1.0, ndecn)
@@ -313,10 +309,7 @@ soprob = DummySingleObjectiveRealProblem(
     nobj = nobj
 )
 
-#
 # Construct a multi-objective problem
-#
-
 # problem parameters
 ndecn = 10
 decn_space_lower = numpy.repeat(-1.0, ndecn)
@@ -333,28 +326,37 @@ moprob = DummyMultiObjectiveRealProblem(
 )
 
 ###
-### Evaluate candidate solutions
+### Constructing an optimization algorithm
 ###
 
-# create a random vector in the decision space
-cand = numpy.random.uniform(-1.0, 1.0, ndecn)
+#
+# Single-objective optimization algorithm construction
+#
 
-# evaluate the candidate solution
-obj1, ineqcv1, eqcv1 = soprob.evalfn(cand)  # obj1 is length 1
-obj2, ineqcv2, eqcv2 = moprob.evalfn(cand)  # obj2 is length 2
+# create a real-valued single-objective genetic algorithm
+soalgo = RealGeneticAlgorithm(ngen = 100, pop_size = 100)
 
-# create 5 random vectors in the decision space
-cands = numpy.random.uniform(-1.0, 1.0, (5,ndecn))
+#
+# Multi-objective optimization algorithm construction
+#
 
-# evaluate the candidate solutions and unpack into components
-evaluations = [soprob.evalfn(cand) for cand in cands]
-obj1, ineqcv1, eqcv1 = zip(*evaluations)
-obj1 = numpy.stack(obj1)        # convert list to 2d array
-ineqcv1 = numpy.stack(ineqcv1)  # convert list to 2d array
-eqcv1 = numpy.stack(eqcv1)      # convert list to 2d array
+# create a real-valued multi-objective genetic algorithm
+moalgo = NSGA2RealGeneticAlgorithm(ngen = 100, pop_size = 100)
 
-evaluations = [moprob.evalfn(cand) for cand in cands]
-obj2, ineqcv2, eqcv2 = zip(*evaluations)
-obj2 = numpy.stack(obj2)        # convert list to 2d array
-ineqcv2 = numpy.stack(ineqcv2)  # convert list to 2d array
-eqcv2 = numpy.stack(eqcv2)      # convert list to 2d array
+###
+### Optimizating Problems
+###
+
+#
+# Single-objective optimization
+#
+
+# minimize single-objective problem and get solution
+sosoln = soalgo.minimize(prob = soprob)
+
+#
+# Multi-objective optimzation
+#
+
+# minimize multi-objective problem and get solution
+mosoln = moalgo.minimize(prob = moprob)

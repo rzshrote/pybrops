@@ -6,8 +6,25 @@ Class Family Overview
 
 Genetic maps are used to estimate marker-wise genetic map positions in mating simulations. PyBrOpS provides functionality for the reading and writing of genetic maps and the interpolation of genetic map positions via ``GeneticMap`` classes. The ability to read a genetic map from a file allows for real genetic recombination data to be used in a breeding simulation, adding realism.
 
-Loading ``GeneticMap`` modules
+Summary of Genetic Map Classes
 ==============================
+
+.. list-table:: Summary of classes in the ``pybrops.popgen.gmap`` module
+    :widths: 25 20 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``GeneticMap``
+      - Abstract
+      - Interface for all genetic map child classes.
+    * - ``ExtendedGeneticMap``
+      - Concrete
+      - Class representing genetic maps with extra genetic data.
+
+Loading Genetic Map Modules
+===========================
 
 Genetic map support for PyBrOpS is found in the ``pybrops.popgen.gmap`` submodule. Example imports from this submodule are:
 

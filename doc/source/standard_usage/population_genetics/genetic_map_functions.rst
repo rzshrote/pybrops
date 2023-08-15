@@ -6,6 +6,26 @@ Class Family Overview
 
 The ``GeneticMapFunction`` family of classes allows for the representation of genetic map functions within PyBrOpS. Genetic map functions are used to convert genetic map positions into recombination probabilities, which are useful in the simulation of genetic recombination and the estimation of expected progeny variance. Popular genetic map functions like the Haldane and Kosambi map functions are provided by PyBrOpS out-of-box.
 
+Summary of Genetic Map Function Classes
+=======================================
+
+.. list-table:: Summary of classes in the ``pybrops.popgen.gmap`` module
+    :widths: 25 20 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``GeneticMapFunction``
+      - Abstract
+      - Interface for all genetic map function child classes.
+    * - ``HaldaneMapFunction``
+      - Concrete
+      - Class representing the Haldane genetic map function.
+    * - ``KosambiMapFunction``
+      - Concrete
+      - Class representing the Kosambi genetic map function.
+
 Loading Genetic Map Function Modules
 ====================================
 
