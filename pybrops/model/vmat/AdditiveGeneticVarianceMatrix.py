@@ -3,12 +3,13 @@ Module defining interfaces and associated error checking routines for matrices
 storing additive genetic variance estimates.
 """
 
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
+class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix,metaclass=ABCMeta):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -18,29 +19,14 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveGeneticVarianceMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
-        """
-        super(AdditiveGeneticVarianceMatrix, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     ############################## Object Methods ##############################
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
+    @abstractmethod
     def from_algmod(
             cls, 
             algmod: AdditiveLinearGenomicModel, 

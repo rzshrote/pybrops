@@ -3,9 +3,10 @@ Module defining interfaces and error checking routines for genomic models that
 are linear in nature.
 """
 
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
-class LinearGenomicModel(GenomicModel):
+class LinearGenomicModel(GenomicModel,metaclass=ABCMeta):
     """
     The LinearGenomicModel class represents a Multivariate Multiple Linear
     Regression model.
@@ -35,38 +36,28 @@ class LinearGenomicModel(GenomicModel):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for LinearGenomicModel class.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(LinearGenomicModel, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     ############## Linear Genomic Model Data ###############
     @property
+    @abstractmethod
     def beta(self) -> object:
         """Fixed effect regression coefficients."""
         raise NotImplementedError("property is abstract")
     @beta.setter
+    @abstractmethod
     def beta(self, value: object) -> None:
         """Set fixed effect regression coefficients"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def u(self) -> object:
         """Random effect regression coefficients."""
         raise NotImplementedError("property is abstract")
     @u.setter
+    @abstractmethod
     def u(self, value: object) -> None:
         """Set random effect regression coefficients"""
         raise NotImplementedError("property is abstract")

@@ -23,20 +23,6 @@ class GeneticMapFunction(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GeneticMapFunction.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GeneticMapFunction, self).__init__()
 
     ############################ Object Properties #############################
 

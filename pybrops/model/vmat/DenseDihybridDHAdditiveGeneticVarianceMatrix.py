@@ -121,9 +121,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         # write DataFrame to file
         out_df.to_csv(fname, index = False)
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     # TODO: implement me
     @classmethod
     def from_gmod(

@@ -3,9 +3,10 @@ Module defining interfaces and error checking routines for genomic models that
 are non-linear in nature.
 """
 
+from abc import ABCMeta
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
-class NonlinearGenomicModel(GenomicModel):
+class NonlinearGenomicModel(GenomicModel,metaclass=ABCMeta):
     """
     An abstract class for non-linear genomic models.
 
@@ -15,20 +16,6 @@ class NonlinearGenomicModel(GenomicModel):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for NonlinearGenomicModel class.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(NonlinearGenomicModel, self).__init__(**kwargs)
 
 
 

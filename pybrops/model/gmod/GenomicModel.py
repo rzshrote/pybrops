@@ -10,7 +10,7 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class GenomicModel(HDF5InputOutput, metaclass=ABCMeta):
+class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
     """
     An abstract class for genomic models.
 
@@ -24,7 +24,10 @@ class GenomicModel(HDF5InputOutput, metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    def __copy__(self):
+    @abstractmethod
+    def __copy__(
+            self
+        ) -> 'GenomicModel':
         """
         Make a shallow copy of the GenomicModel.
 
@@ -34,10 +37,11 @@ class GenomicModel(HDF5InputOutput, metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def __deepcopy__(
             self, 
             memo: dict
-        ) -> "GenomicModel":
+        ) -> 'GenomicModel':
         """
         Make a deep copy of the GenomicModel.
 

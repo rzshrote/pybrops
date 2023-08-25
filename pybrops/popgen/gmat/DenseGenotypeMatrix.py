@@ -1038,9 +1038,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ######################################################### write conclusion
         h5file.close()                                          # close the file
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
     @classmethod

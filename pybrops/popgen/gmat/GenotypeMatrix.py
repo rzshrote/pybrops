@@ -3,6 +3,7 @@ Module defining basal matrix interfaces and associated error checking routines
 for genotype matrices.
 """
 
+from abc import ABCMeta, abstractmethod
 from numbers import Real
 import numpy
 from numpy.typing import DTypeLike
@@ -11,7 +12,7 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 
-class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
+class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,metaclass=ABCMeta):
     """
     An abstract class for genoypte matrix objects.
 
@@ -23,47 +24,39 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for abstract class GenotypeMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GenotypeMatrix, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     ############## Matrix Metadata Properites ##############
     @property
+    @abstractmethod
     def ploidy(self) -> int:
         """The ploidy level represented by the genotype matrix."""
         raise NotImplementedError("property is abstract")
     @ploidy.setter
+    @abstractmethod
     def ploidy(self, value: int) -> None:
         """Set ploidy level"""
         raise NotImplementedError("property is abstract")
     
     @property
+    @abstractmethod
     def nphase(self) -> int:
         """The number of phases represented by the genotype matrix."""
         raise NotImplementedError("property is abstract")
     @nphase.setter
+    @abstractmethod
     def nphase(self, value: int) -> None:
         """Set number of phases represented by the genotype matrix"""
         raise NotImplementedError("property is abstract")
     
     @property
+    @abstractmethod
     def mat_format(self) -> str:
         """Matrix representation format."""
         raise NotImplementedError("property is abstract")
     @mat_format.setter
+    @abstractmethod
     def mat_format(self, value: str) -> None:
         """Set matrix representation format"""
         raise NotImplementedError("property is abstract")
@@ -71,6 +64,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
     ############################## Object Methods ##############################
 
     ################## Matrix conversion ###################
+    @abstractmethod
     def mat_asformat(
             self, 
             format: str
@@ -91,6 +85,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ############## Matrix summary statistics ###############
+    @abstractmethod
     def tacount(
             self, 
             dtype: Optional[DTypeLike]
@@ -112,6 +107,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tafreq(
             self, 
             dtype: Optional[DTypeLike]
@@ -133,6 +129,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def acount(
             self, 
             dtype: Optional[DTypeLike]
@@ -153,6 +150,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def afreq(
             self, 
             dtype: Optional[DTypeLike]
@@ -173,6 +171,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def apoly(
             self, 
             dtype: Optional[DTypeLike]
@@ -193,6 +192,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def maf(
             self, 
             dtype: Optional[DTypeLike]
@@ -213,6 +213,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def meh(
             self, 
             dtype: Optional[DTypeLike]
@@ -234,6 +235,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def gtcount(
             self, 
             dtype: Optional[DTypeLike]
@@ -263,6 +265,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def gtfreq(
             self, 
             dtype: Optional[DTypeLike]

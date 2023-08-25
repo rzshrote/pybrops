@@ -8,11 +8,12 @@ __all__ = [
     "check_is_BreedingValueMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
+class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput,metaclass=ABCMeta):
     """
     The BreedingValueMatrix class represents a Multivariate Breeding Value.
 
@@ -38,36 +39,26 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class BreedingValueMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(BreedingValueMatrix, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
     @property
+    @abstractmethod
     def location(self) -> object:
         """Mean of the phenotype values used to calculate breeding values."""
         raise NotImplementedError("property is abstract")
     @location.setter
+    @abstractmethod
     def location(self, value: object) -> None:
         """Set the mean of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
     
     @property
+    @abstractmethod
     def scale(self) -> object:
         """Standard deviation of the phenotype values used to calculate breeding values."""
         raise NotImplementedError("property is abstract")
     @scale.setter
+    @abstractmethod
     def scale(self, value: object) -> None:
         """Set the standard deviation of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
@@ -75,6 +66,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
     ############################## Object Methods ##############################
 
     ############## Matrix summary statistics ###############
+    @abstractmethod
     def targmax(self) -> numpy.ndarray:
         """
         Return indices of the maximum values along the trait axis.
@@ -91,6 +83,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def targmin(self) -> numpy.ndarray:
         """
         Return indices of the minimum values along the trait axis.
@@ -107,6 +100,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tmax(self, descale: bool) -> numpy.ndarray:
         """
         Return the maximum along the trait axis.
@@ -128,6 +122,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tmean(self, descale: bool) -> numpy.ndarray:
         """
         Return the mean along the trait axis.
@@ -149,6 +144,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tmin(self, descale: bool) -> numpy.ndarray:
         """
         Return the minimum along the trait axis.
@@ -170,6 +166,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def trange(self, descale: bool) -> numpy.ndarray:
         """
         Return the range along the trait axis.
@@ -191,6 +188,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tstd(self, descale: bool) -> numpy.ndarray:
         """
         Return the standard deviation along the trait axis.
@@ -212,6 +210,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def tvar(self, descale: bool) -> numpy.ndarray:
         """
         Return the variance along the trait axis.
@@ -233,6 +232,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def descale(self) -> numpy.ndarray:
         """
         Transform values within the BreedingValueMatrix back to their de-scaled

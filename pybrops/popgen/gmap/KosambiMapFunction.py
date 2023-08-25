@@ -34,7 +34,7 @@ class KosambiMapFunction(GeneticMapFunction):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(KosambiMapFunction, self).__init__(**kwargs)
+        super(KosambiMapFunction, self).__init__()
 
     ############################ Object Properties #############################
 

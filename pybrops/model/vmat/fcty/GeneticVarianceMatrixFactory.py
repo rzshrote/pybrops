@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 from numbers import Integral
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
@@ -5,7 +6,7 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GeneticVarianceMatrixFactory:
+class GeneticVarianceMatrixFactory(metaclass=ABCMeta):
     """
     Abstract class for GeneticVarianceMatrix factory classes.
 
@@ -14,21 +15,9 @@ class GeneticVarianceMatrixFactory:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for GeneticVarianceMatrixFactory.
-        
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        super(GeneticVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def from_gmod(
             self, 
             gmod: GenomicModel, 

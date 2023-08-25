@@ -3,13 +3,14 @@ Module defining interfaces and associated error checking routines for matrices
 storing genetic variance estimates.
 """
 
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
+class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -18,39 +19,26 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GeneticVarianceMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
-        """
-        super(GeneticVarianceMatrix, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     ######## Expected parental genome contributions ########
     @property
+    @abstractmethod
     def epgc(self) -> tuple:
         """Expected parental genome contribution to the offspring."""
         raise NotImplementedError("property is abstract")
     @epgc.setter
+    @abstractmethod
     def epgc(self, value: tuple) -> None:
         """Set a tuple of the expected parental genome contributions."""
         raise NotImplementedError("property is abstract")    
 
     ############################## Object Methods ##############################
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
+    @abstractmethod
     def from_gmod(
             cls, 
             gmod: GenomicModel, 

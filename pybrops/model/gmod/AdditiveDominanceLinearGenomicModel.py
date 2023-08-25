@@ -3,9 +3,10 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive and dominance effects.
 """
 
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
-class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
+class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel,metaclass=ABCMeta):
     """
     The AdditiveDominanceLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
@@ -60,27 +61,16 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveDominanceLinearGenomicModel.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(AdditiveDominanceLinearGenomicModel, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     @property
+    @abstractmethod
     def u_d(self) -> object:
         """Dominance genomic marker effects."""
         raise NotImplementedError("property is abstract")
     @u_d.setter
+    @abstractmethod
     def u_d(self, value: object) -> None:
         """Set dominance genomic marker effects"""
         raise NotImplementedError("property is abstract")

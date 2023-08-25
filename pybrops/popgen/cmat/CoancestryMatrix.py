@@ -7,6 +7,7 @@ __all__ = [
     "check_is_CoancestryMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 from numbers import Real
 from typing import Optional, Union
 import numpy
@@ -14,7 +15,7 @@ from numpy.typing import DTypeLike
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class CoancestryMatrix(SquareTaxaMatrix):
+class CoancestryMatrix(SquareTaxaMatrix,metaclass=ABCMeta):
     """
     An abstract class for coancestry matrices. Coancestry matrices are square.
     Coancestry matrices are related to kinship matrices in the following manner:
@@ -28,19 +29,6 @@ class CoancestryMatrix(SquareTaxaMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for CoancestryMatrix class.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments for dependency injection.
-        """
-        super(CoancestryMatrix, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
@@ -53,7 +41,11 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############################## Object Methods ##############################
 
     ################## Matrix conversion ###################
-    def mat_asformat(self, format: str) -> numpy.ndarray:
+    @abstractmethod
+    def mat_asformat(
+            self, 
+            format: str
+        ) -> numpy.ndarray:
         """
         Get matrix in a specific format.
         
@@ -70,7 +62,12 @@ class CoancestryMatrix(SquareTaxaMatrix):
         raise NotImplementedError("method is abstract")
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args: tuple, **kwargs: dict):
+    @abstractmethod
+    def coancestry(
+            self, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Real:
         """
         Retrieve the coancestry between individuals.
 
@@ -83,7 +80,12 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    def kinship(self, *args: tuple, **kwargs: dict):
+    @abstractmethod
+    def kinship(
+            self, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Real:
         """
         Retrieve the kinship between individuals.
 
@@ -96,6 +98,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
     
+    @abstractmethod
     def is_positive_semidefinite(
             self, 
             eigvaltol: float
@@ -115,6 +118,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def apply_jitter(
             self, 
             eigvaltol: float, 
@@ -146,6 +150,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def max_inbreeding(
             self,
             format: str
@@ -174,6 +179,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def min_inbreeding(
             self,
             format: str
@@ -203,6 +209,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         raise NotImplementedError("method is abstract")
 
     ############## Matrix summary statistics ###############
+    @abstractmethod
     def inverse(
             self,
             format: str
@@ -223,6 +230,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
     
+    @abstractmethod
     def max(
             self,
             format: str,
@@ -247,6 +255,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
     
+    @abstractmethod
     def mean(
             self,
             format: str,
@@ -275,6 +284,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def min(
             self,
             format: str,
@@ -299,10 +309,9 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
+    @abstractmethod
     def from_gmat(
             cls, 
             gmat: GenotypeMatrix, 

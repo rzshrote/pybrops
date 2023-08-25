@@ -26,20 +26,7 @@ class GeneticMap(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GeneticMap.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        pass
-
+    @abstractmethod
     def __len__(self):
         """Get the number of markers in the genetic map."""
         raise NotImplementedError("method is abstract")

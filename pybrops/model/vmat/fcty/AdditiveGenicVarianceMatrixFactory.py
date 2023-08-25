@@ -1,31 +1,19 @@
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.fcty.GenicVarianceMatrixFactory import GenicVarianceMatrixFactory
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class AdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory):
+class AdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory,metaclass=ABCMeta):
     """
     Abstract factory class for producing AdditiveGenicVarianceMatrix objects.
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for AdditiveGenicVarianceMatrixFactory.
-        
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        super(AdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def from_algmod(
             self, 
             algmod: AdditiveLinearGenomicModel, 

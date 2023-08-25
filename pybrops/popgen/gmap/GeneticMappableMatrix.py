@@ -8,35 +8,23 @@ __all__ = [
     "check_is_GeneticMappableMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
-class GeneticMappableMatrix(VariantMatrix):
+class GeneticMappableMatrix(VariantMatrix,metaclass=ABCMeta):
     """
     Abstract class for variant matrices that can be interpolated using a
     GeneticMap.
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GeneticMappableMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GeneticMappableMatrix, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
 
     ################# Interpolation Methods ################
+    @abstractmethod
     def interp_genpos(
             self, 
             gmap: GeneticMap, 
@@ -55,6 +43,7 @@ class GeneticMappableMatrix(VariantMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def interp_xoprob(
             self, 
             gmap: GeneticMap, 

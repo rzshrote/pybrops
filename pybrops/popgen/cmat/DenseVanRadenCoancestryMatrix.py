@@ -126,9 +126,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_ndim(value, "taxa_grp_len", 1)
         self._taxa_grp_len = value
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
     def from_gmat(
             cls, 

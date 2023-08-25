@@ -7,30 +7,19 @@ __all__ = [
     "check_is_CoancestryMatrixFactory"
 ]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class CoancestryMatrixFactory:
+class CoancestryMatrixFactory(metaclass=ABCMeta):
     """
     Factory class for producing CoancestryMatrix objects.
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for CoancestryMatrixFactory.
-        
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
-        """
-        super(CoancestryMatrixFactory, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def from_gmat(
             cls, 
             gmat: GenotypeMatrix, 
