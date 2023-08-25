@@ -3,7 +3,6 @@ Module defining interfaces and error checking routines for genomic models that
 are non-linear in nature.
 """
 
-from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class NonlinearGenomicModel(GenomicModel):
@@ -15,9 +14,7 @@ class NonlinearGenomicModel(GenomicModel):
     PyBrOpS.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict

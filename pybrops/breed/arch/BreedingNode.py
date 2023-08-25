@@ -4,9 +4,11 @@ breeding nodes. Breeding nodes compose complex breeding programs in a graph-like
 structure. They are points were germplasm and information are located.
 """
 
-from typing import Any
 
-class BreedingNode:
+from abc import ABCMeta, abstractmethod
+
+
+class BreedingNode(metaclass=ABCMeta):
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
     breeding programs in a graph-like structure. They are points were germplasm
@@ -17,95 +19,90 @@ class BreedingNode:
         2) Time related information.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class BreedingNode.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(BreedingNode, self).__init__()
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############ Program information containers ############
     @property
-    def genome(self) -> Any:
+    @abstractmethod
+    def genome(self) -> object:
         """Genomes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @genome.setter
-    def genome(self, value: Any) -> None:
+    @abstractmethod
+    def genome(self, value: object) -> None:
         """Set genomes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def geno(self) -> Any:
+    @abstractmethod
+    def geno(self) -> object:
         """Genotypes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @geno.setter
-    def geno(self, value: Any) -> None:
+    @abstractmethod
+    def geno(self, value: object) -> None:
         """Set genotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def pheno(self) -> Any:
+    @abstractmethod
+    def pheno(self) -> object:
         """Phenotypes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @pheno.setter
-    def pheno(self, value: Any) -> None:
+    @abstractmethod
+    def pheno(self, value: object) -> None:
         """Set phenotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def bval(self) -> Any:
+    @abstractmethod
+    def bval(self) -> object:
         """Breeding values for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @bval.setter
-    def bval(self, value: Any) -> None:
+    @abstractmethod
+    def bval(self, value: object) -> None:
         """Set breeding values for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def gmod(self) -> Any:
+    @abstractmethod
+    def gmod(self) -> object:
         """Genomic models for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @gmod.setter
-    def gmod(self, value: Any) -> None:
+    @abstractmethod
+    def gmod(self, value: object) -> None:
         """Set genomic models for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     ############# Generation number properties #############
     @property
+    @abstractmethod
     def t_cur(self) -> int:
         """Current time of the BreedingNode."""
         raise NotImplementedError("property is abstract")
     @t_cur.setter
+    @abstractmethod
     def t_cur(self, value: int) -> None:
         """Set the current time for the BreedingNode"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def t_max(self) -> int:
         """Maximum time of the BreedingNode."""
         raise NotImplementedError("property is abstract")
     @t_max.setter
+    @abstractmethod
     def t_max(self, value: int) -> None:
         """Set the maximum time for the BreedingNode"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
 
 

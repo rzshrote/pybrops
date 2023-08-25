@@ -8,12 +8,13 @@ __all__ = [
     "check_is_SortableMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class SortableMatrix(MutableMatrix):
+class SortableMatrix(MutableMatrix,metaclass=ABCMeta):
     """
     An abstract class for sortable matrix wrapper objects.
 
@@ -21,29 +22,12 @@ class SortableMatrix(MutableMatrix):
         1) Matrix in-place matrix sorting routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        SortableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(SortableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -70,6 +54,7 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -91,6 +76,7 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort(
             self, 
             keys: Union[tuple,numpy.ndarray], 

@@ -6,6 +6,7 @@ __all__ = [
     "GenomicModel",
     "NonlinearGenomicModel",
     "LinearGenomicModel",
+    "CoancestryLinearGenomicModel",
     "AdditiveLinearGenomicModel",
     "AdditiveDominanceLinearGenomicModel",
     "AdditiveDominanceEpistaticLinearGenomicModel",
@@ -21,6 +22,7 @@ __all__ = [
 from pybrops.model.gmod import GenomicModel
 from pybrops.model.gmod import NonlinearGenomicModel
 from pybrops.model.gmod import LinearGenomicModel
+from pybrops.model.gmod import CoancestryLinearGenomicModel
 from pybrops.model.gmod import AdditiveLinearGenomicModel
 from pybrops.model.gmod import AdditiveDominanceLinearGenomicModel
 from pybrops.model.gmod import AdditiveDominanceEpistaticLinearGenomicModel

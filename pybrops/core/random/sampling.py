@@ -44,7 +44,7 @@ def stochastic_universal_sampling(
         - Sum of values in vector must be :math:`>0.0`.
     size : Integral, Tuple[Integral,...]
         Target output size.
-    rng: Any
+    rng: Generator, RandomState, None
         Random number source. If None, use default rng.
     
     Returns

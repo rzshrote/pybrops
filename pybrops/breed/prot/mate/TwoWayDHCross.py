@@ -21,9 +21,7 @@ class TwoWayDHCross(MatingProtocol):
     Class implementing mating protocols for two-way DH crosses.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             progeny_counter: Integral = 0, 
@@ -46,9 +44,7 @@ class TwoWayDHCross(MatingProtocol):
         self.family_counter = family_counter
         self.rng = rng
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def nparent(self) -> Integral:
         """Number of parents the mating protocol requires."""
@@ -90,9 +86,7 @@ class TwoWayDHCross(MatingProtocol):
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def mate(
             self, 
             pgmat: DensePhasedGenotypeMatrix, 

@@ -34,9 +34,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
         2) Dense coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -65,9 +63,7 @@ class DenseVanRadenCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Coancestry Data Properites ##############
     @DenseCoancestryMatrix.mat.setter

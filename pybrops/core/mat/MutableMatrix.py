@@ -7,12 +7,13 @@ __all__ = [
     "check_is_MutableMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 
-class MutableMatrix(Matrix):
+class MutableMatrix(Matrix,metaclass=ABCMeta):
     """
     An abstract class for mutable matrix wrapper objects.
 
@@ -23,24 +24,11 @@ class MutableMatrix(Matrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        MutableMatrix constructor
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(MutableMatrix, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -61,6 +49,7 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -81,6 +70,7 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp(
             self, 
             obj: Union[int,slice,Sequence], 

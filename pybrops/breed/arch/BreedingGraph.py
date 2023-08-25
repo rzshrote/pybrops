@@ -10,9 +10,10 @@ __all__ = [
     "check_is_BreedingGraph"
 ]
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 
-class BreedingGraph:
+
+class BreedingGraph(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for breeding graphs. Breeding graphs
     represent breeding programs with multiple subpopulations. Germplasm and
@@ -22,40 +23,23 @@ class BreedingGraph:
         1) Graph representation of the entire breeding graph.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class BreedingGraph.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(BreedingGraph, self).__init__()
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################### Graph properties ###################
     @property
-    def graph(self) -> Any:
+    @abstractmethod
+    def graph(self) -> object:
         """Graph data structure."""
         raise NotImplementedError("property is abstract")
     @graph.setter
-    def graph(self, value: Any) -> None:
+    @abstractmethod
+    def graph(self, value: object) -> None:
         """Set graph data structure."""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
 
 

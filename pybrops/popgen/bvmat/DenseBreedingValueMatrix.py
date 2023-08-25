@@ -50,9 +50,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -169,9 +167,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################# Breeding Value Data ##################
     @DenseTaxaTraitMatrix.mat.setter
@@ -213,9 +209,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             raise TypeError("variable 'scale' must be of type 'numpy.ndarray' or 'Real'")
         self._scale = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Matrix copying ####################
     def copy(

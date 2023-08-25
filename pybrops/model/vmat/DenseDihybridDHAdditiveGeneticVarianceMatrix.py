@@ -30,9 +30,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         2) I/O for dihybrid DH progeny variance matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -61,9 +59,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @DenseAdditiveGeneticVarianceMatrix.mat.setter
@@ -85,9 +81,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         """Get a tuple of the expected parental genome contributions."""
         return (0.5, 0.5)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def to_csv(
             self, 
             fname: str

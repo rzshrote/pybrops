@@ -8,8 +8,7 @@ __all__ = [
 ]
 
 import copy
-from typing import Any, Union
-import numpy
+from typing import Union
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
@@ -28,7 +27,21 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(self, initop, pselop, mateop, evalop, sselop, t_max, start_genome = None, start_geno = None, start_pheno = None, start_bval = None, start_gmod = None, **kwargs: dict):
+    def __init__(
+            self, 
+            initop, 
+            pselop, 
+            mateop, 
+            evalop, 
+            sselop, 
+            t_max, 
+            start_genome = None, 
+            start_geno = None, 
+            start_pheno = None, 
+            start_bval = None, 
+            start_gmod = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
@@ -124,102 +137,102 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
     ############ Program information containers ############
     @property
-    def genome(self) -> Any:
+    def genome(self) -> object:
         """Genomes for individuals in the breeding program."""
         return self._genome
     @genome.setter
-    def genome(self, value: Any) -> None:
+    def genome(self, value: object) -> None:
         """Set genomes for individuals in the breeding program"""
         check_is_dict(value, "genome")
         self._genome = value
 
     @property
-    def geno(self) -> Any:
+    def geno(self) -> object:
         """Genotypes for individuals in the breeding program."""
         return self._geno
     @geno.setter
-    def geno(self, value: Any) -> None:
+    def geno(self, value: object) -> None:
         """Set genotypes for individuals in the breeding program"""
         check_is_dict(value, "geno")
         self._geno = value
 
     @property
-    def pheno(self) -> Any:
+    def pheno(self) -> object:
         """Phenotypes for individuals in the breeding program."""
         return self._pheno
     @pheno.setter
-    def pheno(self, value: Any) -> None:
+    def pheno(self, value: object) -> None:
         """Set phenotypes for individuals in the breeding program"""
         check_is_dict(value, "pheno")
         self._pheno = value
 
     @property
-    def bval(self) -> Any:
+    def bval(self) -> object:
         """Breeding values for individuals in the breeding program."""
         return self._bval
     @bval.setter
-    def bval(self, value: Any) -> None:
+    def bval(self, value: object) -> None:
         """Set breeding values for individuals in the breeding program"""
         check_is_dict(value, "bval")
         self._bval = value
 
     @property
-    def gmod(self) -> Any:
+    def gmod(self) -> object:
         """Genomic models for individuals in the breeding program."""
         return self._gmod
     @gmod.setter
-    def gmod(self, value: Any) -> None:
+    def gmod(self, value: object) -> None:
         """Set genomic models for individuals in the breeding program"""
         check_is_dict(value, "gmod")
         self._gmod = value
 
     ######### Breeding program operator properties #########
     @property
-    def initop(self) -> Any:
+    def initop(self) -> object:
         """Initialization operator."""
         return self._initop
     @initop.setter
-    def initop(self, value: Any) -> None:
+    def initop(self, value: object) -> None:
         """Set the initialization operator"""
         check_is_InitializationOperator(value, "initop")
         self._initop = value
 
     @property
-    def pselop(self) -> Any:
+    def pselop(self) -> object:
         """Parent selection operator."""
         return self._pselop
     @pselop.setter
-    def pselop(self, value: Any) -> None:
+    def pselop(self, value: object) -> None:
         """Set the parent selection operator"""
         check_is_ParentSelectionOperator(value, "pselop")
         self._pselop = value
 
     @property
-    def mateop(self) -> Any:
+    def mateop(self) -> object:
         """Mating operator."""
         return self._mateop
     @mateop.setter
-    def mateop(self, value: Any) -> None:
+    def mateop(self, value: object) -> None:
         """Set the mating operator"""
         check_is_MatingOperator(value, "mateop")
         self._mateop = value
 
     @property
-    def evalop(self) -> Any:
+    def evalop(self) -> object:
         """Evaluation operator."""
         return self._evalop
     @evalop.setter
-    def evalop(self, value: Any) -> None:
+    def evalop(self, value: object) -> None:
         """Set the evaluation operator"""
         check_is_EvaluationOperator(value, "evalop")
         self._evalop = value
 
     @property
-    def sselop(self) -> Any:
+    def sselop(self) -> object:
         """Survivor selection operator."""
         return self._sselop
     @sselop.setter
-    def sselop(self, value: Any) -> None:
+    def sselop(self, value: object) -> None:
         """Set the survivor selection operator"""
         check_is_SurvivorSelectionOperator(value, "sselop")
         self._sselop = value

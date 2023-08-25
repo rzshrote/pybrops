@@ -8,7 +8,10 @@ __all__ = [
     "check_is_CSVInputOutput"
 ]
 
-class CSVInputOutput:
+from abc import ABCMeta, abstractmethod
+
+
+class CSVInputOutput(metaclass=ABCMeta):
     """
     Abstract class for defining CSV input/output functionality.
 
@@ -19,24 +22,11 @@ class CSVInputOutput:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class CSVInputOutput.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(CSVInputOutput, self).__init__()
 
     ############################## Object Methods ##############################
 
     ####################### File I/O #######################
+    @abstractmethod
     def to_csv(
             self, 
             filename: str,
@@ -58,6 +48,7 @@ class CSVInputOutput:
 
     ####################### File I/O #######################
     @classmethod
+    @abstractmethod
     def from_csv(
             cls, 
             filename: str,
@@ -78,7 +69,7 @@ class CSVInputOutput:
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.
         """
-        raise NotImplementedError("method is abstract")
+        raise NotImplementedError("class method is abstract")
 
 
 

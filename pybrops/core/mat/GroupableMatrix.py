@@ -8,9 +8,10 @@ __all__ = [
     "check_is_GroupableMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
-class GroupableMatrix(SortableMatrix):
+class GroupableMatrix(SortableMatrix,metaclass=ABCMeta):
     """
     An abstract class for groupable matrix wrapper objects.
 
@@ -18,29 +19,12 @@ class GroupableMatrix(SortableMatrix):
         1) Matrix in-place matrix axis grouping routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        GroupableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GroupableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Grouping Methods ###################
+    @abstractmethod
     def group(
             self, 
             axis: int, 
@@ -58,6 +42,7 @@ class GroupableMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def is_grouped(
             self, 
             axis: int, 

@@ -3,7 +3,6 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive effects.
 """
 
-from typing import Any
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class AdditiveLinearGenomicModel(LinearGenomicModel):
@@ -74,20 +73,20 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
 
     ############################ Object Properties #############################
     @property
-    def u_misc(self) -> Any:
+    def u_misc(self) -> object:
         """Miscellaneous random effects."""
         raise NotImplementedError("property is abstract")
     @u_misc.setter
-    def u_misc(self, value: Any) -> None:
+    def u_misc(self, value: object) -> None:
         """Set miscellaneous random effects"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def u_a(self) -> Any:
+    def u_a(self) -> object:
         """Additive genomic marker effects."""
         raise NotImplementedError("property is abstract")
     @u_a.setter
-    def u_a(self, value: Any) -> None:
+    def u_a(self, value: object) -> None:
         """Set additive genomic marker effects"""
         raise NotImplementedError("property is abstract")
 

@@ -2,9 +2,6 @@
 Module defining DataFrame interfaces and associated error checking routines.
 """
 
-from typing import Any
-
-
 class DataFrame:
     """
     An abstract class for data frame wrapper objects.
@@ -56,21 +53,21 @@ class DataFrame:
 
     ############################ Object Properties #############################
     @property
-    def data(self) -> Any:
+    def data(self) -> object:
         """Access to raw data frame object."""
         raise NotImplementedError("property is abstract")
     @data.setter
-    def data(self, value: Any) -> None:
+    def data(self, value: object) -> None:
         """Set dataframe"""
         raise NotImplementedError("property is abstract")
 
     ################## Column attributes ###################
     @property
-    def ncol(self) -> Any:
+    def ncol(self) -> object:
         """Number of columns."""
         raise NotImplementedError("property is abstract")
     @ncol.setter
-    def ncol(self, value: Any) -> None:
+    def ncol(self, value: object) -> None:
         """Set number of columns"""
         raise NotImplementedError("property is abstract")
 
@@ -84,29 +81,29 @@ class DataFrame:
         raise NotImplementedError("property is abstract")
 
     @property
-    def col_dtype(self) -> Any:
+    def col_dtype(self) -> object:
         """Column data types."""
         raise NotImplementedError("property is abstract")
     @col_dtype.setter
-    def col_dtype(self, value: Any) -> None:
+    def col_dtype(self, value: object) -> None:
         """Set column data types"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def col_name(self) -> Any:
+    def col_name(self) -> object:
         """Column names."""
         raise NotImplementedError("property is abstract")
     @col_name.setter
-    def col_name(self, value: Any) -> None:
+    def col_name(self, value: object) -> None:
         """Set column names"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def col_grp(self) -> Any:
+    def col_grp(self) -> object:
         """Column groups used for classifying variables."""
         raise NotImplementedError("property is abstract")
     @col_grp.setter
-    def col_grp(self, value: Any) -> None:
+    def col_grp(self, value: object) -> None:
         """Set column groups"""
         raise NotImplementedError("property is abstract")
 
@@ -130,11 +127,11 @@ class DataFrame:
         raise NotImplementedError("property is abstract")
 
     @property
-    def row_name(self) -> Any:
+    def row_name(self) -> object:
         """Row names."""
         raise NotImplementedError("property is abstract")
     @row_name.setter
-    def row_name(self, value: Any) -> None:
+    def row_name(self, value: object) -> None:
         """Set row names"""
         raise NotImplementedError("property is abstract")
 

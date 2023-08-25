@@ -8,7 +8,7 @@ __all__ = [
     "check_is_ExtendedGeneticMap"
 ]
 
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 import numpy
 import math
 import pandas
@@ -38,9 +38,7 @@ class ExtendedGeneticMap(GeneticMap):
         6) Import and export of extended genetic maps.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
@@ -81,9 +79,7 @@ class ExtendedGeneticMap(GeneticMap):
         """Get the number of markers in the genetic map."""
         return len(self._vrnt_genpos)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################### Data Properites ####################
     @property
@@ -238,17 +234,15 @@ class ExtendedGeneticMap(GeneticMap):
         self._spline_kind = value
 
     @property
-    def spline_fill_value(self) -> Any:
+    def spline_fill_value(self) -> object:
         """Description for property spline_fill_value."""
         return self._spline_fill_value
     @spline_fill_value.setter
-    def spline_fill_value(self, value: Any) -> None:
+    def spline_fill_value(self, value: object) -> None:
         """Set data for property spline_fill_value."""
         self._spline_fill_value = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
     def lexsort(

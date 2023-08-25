@@ -27,9 +27,7 @@ class StandardGeneticMap(GeneticMap):
         6) Import and export of genetic maps.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
@@ -58,9 +56,7 @@ class StandardGeneticMap(GeneticMap):
         """Get the number of markers in the genetic map."""
         return len(self._vrnt_genpos)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
     def vrnt_chrgrp(self) -> numpy.ndarray:
         """Description for property vrnt_chrgrp."""

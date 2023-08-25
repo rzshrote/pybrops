@@ -8,10 +8,11 @@ __all__ = [
     "check_is_SquareTaxaMatrix"
 ]
 
+from abc import ABCMeta
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 
-class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
+class SquareTaxaMatrix(SquareMatrix,TaxaMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with taxa and trait metadata.
 
@@ -21,20 +22,6 @@ class SquareTaxaMatrix(SquareMatrix,TaxaMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the SquareTaxaMatrix abstract class.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
-        """
-        super(SquareTaxaMatrix, self).__init__(**kwargs)
 
 
 

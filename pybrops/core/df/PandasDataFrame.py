@@ -2,8 +2,6 @@
 Module implementing a Pandas DataFrame and associated error checking routines.
 """
 
-from typing import Any
-
 import numpy
 import pandas
 from pybrops.core.df.DataFrame import DataFrame

@@ -1,4 +1,3 @@
-from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix

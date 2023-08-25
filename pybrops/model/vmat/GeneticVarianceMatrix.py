@@ -3,7 +3,6 @@ Module defining interfaces and associated error checking routines for matrices
 storing genetic variance estimates.
 """
 
-from typing import Any
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
@@ -18,9 +17,7 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         1) Estimation of genetic variance from a genomic model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -36,9 +33,7 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         """
         super(GeneticVarianceMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ######## Expected parental genome contributions ########
     @property
@@ -50,9 +45,7 @@ class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         """Set a tuple of the expected parental genome contributions."""
         raise NotImplementedError("property is abstract")    
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############################################################################
     ############################## Class Methods ###############################

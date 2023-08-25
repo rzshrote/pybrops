@@ -2,7 +2,6 @@
 Module defining phenotype dataframe interfaces and associated error checking routines.
 """
 
-from typing import Any
 from pybrops.core.df.DataFrame import DataFrame
 
 class PhenotypeDataFrame(DataFrame):
@@ -26,21 +25,21 @@ class PhenotypeDataFrame(DataFrame):
     ############################ Object Properties #############################
     # TODO: maybe eliminate these. it seems like this information should go in other modules
     @property
-    def col_analysis_type(self) -> Any:
+    def col_analysis_type(self) -> object:
         """Analysis variable type array."""
         raise NotImplementedError("property is abstract")
     @col_analysis_type.setter
-    def col_analysis_type(self, value: Any) -> None:
+    def col_analysis_type(self, value: object) -> None:
         """Set analysis variable type array"""
         raise NotImplementedError("property is abstract")
 
     # TODO: maybe eliminate these. it seems like this information should go in other modules
     @property
-    def col_analysis_effect(self) -> Any:
+    def col_analysis_effect(self) -> object:
         """Analysis variable effect type {'response','fixed','random',None} array."""
         raise NotImplementedError("property is abstract")
     @col_analysis_effect.setter
-    def col_analysis_effect(self, value: Any) -> None:
+    def col_analysis_effect(self, value: object) -> None:
         """Set analysis variable effect type array"""
         raise NotImplementedError("property is abstract")
 

@@ -3,7 +3,6 @@ Module defining basal matrix interfaces and associated error checking routines
 for phased genotype matrices.
 """
 
-from typing import Any
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 

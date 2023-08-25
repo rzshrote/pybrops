@@ -27,9 +27,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         2) Coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -44,9 +42,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
         """
         super(CoancestryMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genotype Data Properites ###############
     # gmat should be implemented in a sparse version of this matrix.
@@ -54,9 +50,7 @@ class CoancestryMatrix(SquareTaxaMatrix):
     ############## Coancestry Data Properites ##############
     # access using mat (inherited from Matrix)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################## Matrix conversion ###################
     def mat_asformat(self, format: str) -> numpy.ndarray:

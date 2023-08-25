@@ -502,7 +502,6 @@ if os.path.exists("saved_genotypes.h5"):
 gmat.to_hdf5("saved_genotypes.h5")
 
 
-gmat.assign_hapgrp
 gmat.interp_genpos
 gmat.interp_xoprob
 gmat.mat_asformat

@@ -37,9 +37,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         2) Dense coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -71,9 +69,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Coancestry Data Properites ##############
     @DenseSquareTaxaMatrix.mat.setter
@@ -141,9 +137,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             check_ndarray_ndim(value, "taxa_grp_len", 1)
         self._taxa_grp_len = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################## Matrix conversion ###################
     def mat_asformat(self, format: str) -> numpy.ndarray:

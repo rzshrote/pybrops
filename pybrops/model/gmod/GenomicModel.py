@@ -2,6 +2,7 @@
 Module defining basal interfaces and error checking routines for genomic models.
 """
 
+from abc import ABCMeta, abstractmethod
 from typing import Optional, Union
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
@@ -9,7 +10,7 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class GenomicModel(HDF5InputOutput):
+class GenomicModel(HDF5InputOutput, metaclass=ABCMeta):
     """
     An abstract class for genomic models.
 
@@ -22,24 +23,7 @@ class GenomicModel(HDF5InputOutput):
         6) Estimation of upper and lower selection limits using the model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the GenomicModel class.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GenomicModel, self).__init__(**kwargs)
-
     def __copy__(self):
         """
         Make a shallow copy of the GenomicModel.
@@ -67,52 +51,57 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################## Genomic Model Data ##################
     @property
+    @abstractmethod
     def model_name(self) -> str:
         """Name of the model."""
         raise NotImplementedError("property is abstract")
     @model_name.setter
+    @abstractmethod
     def model_name(self, value: str) -> None:
         """Set the name of the model"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def params(self) -> dict:
         """Model parameters."""
         raise NotImplementedError("property is abstract")
     @params.setter
+    @abstractmethod
     def params(self, value: dict) -> None:
         """Set the model parameters"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def trait(self) -> numpy.ndarray:
         """Names of the traits predicted by the model."""
         raise NotImplementedError("property is abstract")
     @trait.setter
+    @abstractmethod
     def trait(self, value: numpy.ndarray) -> None:
         """Set the names of the traits predicted by the model"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def ntrait(self) -> int:
         """Number of traits predicted by the model."""
         raise NotImplementedError("property is abstract")
     @ntrait.setter
+    @abstractmethod
     def ntrait(self, value: int) -> None:
         """Set the number of traits predicted by the model"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ####### methods for model fitting and prediction #######
+    @abstractmethod
     def fit_numpy(
             self, 
             Y: numpy.ndarray, 
@@ -136,6 +125,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def fit(
             self, 
             ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame,numpy.ndarray], 
@@ -161,6 +151,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def predict_numpy(
             self, 
             X: numpy.ndarray, 
@@ -190,6 +181,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def predict(
             self, 
             cvobj: numpy.ndarray, 
@@ -220,6 +212,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def score_numpy(
             self, 
             Y: numpy.ndarray, 
@@ -252,6 +245,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def score(
             self, 
             ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame], 
@@ -287,6 +281,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ######## methods for estimated breeding values #########
+    @abstractmethod
     def gebv_numpy(
             self, 
             Z: numpy.ndarray, 
@@ -313,6 +308,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def gebv(
             self, 
             gtobj: GenotypeMatrix, 
@@ -341,6 +337,7 @@ class GenomicModel(HDF5InputOutput):
         raise NotImplementedError("method is abstract")
 
     ###### methods for population variance prediction ######
+    @abstractmethod
     def var_G_numpy(
             self, 
             Z: numpy.ndarray, 
@@ -363,6 +360,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def var_G(
             self, 
             gtobj: GenotypeMatrix, 
@@ -386,6 +384,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def var_A_numpy(
             self, 
             Z: numpy.ndarray, 
@@ -408,6 +407,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def var_A(
             self, 
             gtobj: GenotypeMatrix, 
@@ -431,6 +431,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def var_a_numpy(
             self, 
             p: numpy.ndarray, 
@@ -456,6 +457,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def var_a(
             self, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
@@ -482,6 +484,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def bulmer_numpy(
             self, 
             Z: numpy.ndarray, 
@@ -511,6 +514,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def bulmer(
             self, 
             gtobj: GenotypeMatrix, 
@@ -538,158 +542,8 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
-    ############ methods for allele attributes #############
-    def facount(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.dtype], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Favorable allele count across all taxa.
-
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to count favorable alleles.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-            
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele counts of the favorable allele.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def fafreq(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Favorable allele frequency across all taxa.
-        
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to determine favorable allele frequencies.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
-        """
-        raise NotImplementedError("method is abstract")
-    
-    def fafixed(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Determine whether a favorable allele is fixed across all taxa.
-        
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to determine favorable allele frequencies.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing whether a favorable allele is fixed.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def dacount(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Deleterious allele count across all taxa.
-
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to count deleterious alleles.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-            
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
-        """
-        raise NotImplementedError("method is abstract")
-
-    def dafreq(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Deleterious allele frequency across all taxa.
-        
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to determine deleterious allele frequencies.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
-        """
-        raise NotImplementedError("method is abstract")
-    
-    def dafixed(
-            self, 
-            gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Determine whether a deleterious allele is fixed across all taxa.
-        
-        Parameters
-        ----------
-        gmat : GenotypeMatrix
-            Genotype matrix for which to determine deleterious allele frequencies.
-        dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native type.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
-        """
-        raise NotImplementedError("method is abstract")
-
     ############# methods for selection limits #############
+    @abstractmethod
     def usl_numpy(
             self, 
             p: numpy.ndarray, 
@@ -716,6 +570,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def usl(
             self, 
             gtobj: GenotypeMatrix, 
@@ -743,6 +598,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def lsl_numpy(
             self, 
             p: numpy.ndarray, 
@@ -769,6 +625,7 @@ class GenomicModel(HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def lsl(
             self, 
             gtobj: GenotypeMatrix, 
@@ -793,6 +650,219 @@ class GenomicModel(HDF5InputOutput):
         -------
         out : numpy.ndarray
             An array of shape (t,) containing lower selection limits for each of ``t`` traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ############ methods for allele attributes #############
+    @abstractmethod
+    def facount(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Favorable allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count favorable alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the favorable allele.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def fafreq(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Favorable allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
+        """
+        raise NotImplementedError("method is abstract")
+    
+    @abstractmethod
+    def faavail(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is available.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def fafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing whether a favorable allele is fixed.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def dacount(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Deleterious allele count across all taxa.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to count deleterious alleles.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+            
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def dafreq(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Deleterious allele frequency across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+        """
+        raise NotImplementedError("method is abstract")
+    
+    @abstractmethod
+    def daavail(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is available in the present taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele 
+            frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native boolean 
+            type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious 
+            allele is available.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def dafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is fixed across all taxa.
+        
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
         """
         raise NotImplementedError("method is abstract")
 

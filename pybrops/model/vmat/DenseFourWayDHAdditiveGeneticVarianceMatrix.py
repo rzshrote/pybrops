@@ -30,9 +30,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
         2) I/O for four-way DH progeny variance matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -61,9 +59,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     @DenseAdditiveGeneticVarianceMatrix.mat.setter
@@ -85,9 +81,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
         """Get a tuple of the expected parental genome contributions."""
         return (0.25, 0.25, 0.25, 0.25)
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     def to_csv(
             self, 
             fname: str

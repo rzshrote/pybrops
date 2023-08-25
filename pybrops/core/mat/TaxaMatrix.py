@@ -8,14 +8,15 @@ __all__ = [
     "check_is_TaxaMatrix"
 ]
 
-from typing import Any, Sequence, Union
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.Matrix import Matrix
 
-class TaxaMatrix(GroupableMatrix):
+class TaxaMatrix(GroupableMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with taxa metadata.
 
@@ -24,107 +25,104 @@ class TaxaMatrix(GroupableMatrix):
         2) Matrix taxa routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        TaxaMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(TaxaMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################# Taxa Data Properites #################
     @property
-    def taxa(self) -> Any:
+    @abstractmethod
+    def taxa(self) -> object:
         """Taxa label."""
         raise NotImplementedError("property is abstract")
     @taxa.setter
-    def taxa(self, value: Any) -> None:
+    @abstractmethod
+    def taxa(self, value: object) -> None:
         """Set taxa label array"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def taxa_grp(self) -> Any:
+    @abstractmethod
+    def taxa_grp(self) -> object:
         """Taxa group label."""
         raise NotImplementedError("property is abstract")
     @taxa_grp.setter
-    def taxa_grp(self, value: Any) -> None:
+    @abstractmethod
+    def taxa_grp(self, value: object) -> None:
         """Set taxa group label array"""
         raise NotImplementedError("property is abstract")
     
     ############### Taxa Metadata Properites ###############
     @property
+    @abstractmethod
     def ntaxa(self) -> int:
         """Number of taxa."""
         raise NotImplementedError("property is abstract")
     @ntaxa.setter
+    @abstractmethod
     def ntaxa(self, value: int) -> None:
         """Set number of taxa"""
         raise NotImplementedError("property is abstract")
     
     @property
+    @abstractmethod
     def taxa_axis(self) -> int:
         """Axis along which taxa are stored."""
         raise NotImplementedError("property is abstract")
     @taxa_axis.setter
+    @abstractmethod
     def taxa_axis(self, value: int) -> None:
         """Set taxa axis number"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def taxa_grp_name(self) -> Any:
+    @abstractmethod
+    def taxa_grp_name(self) -> object:
         """Taxa group name."""
         raise NotImplementedError("property is abstract")
     @taxa_grp_name.setter
-    def taxa_grp_name(self, value: Any) -> None:
+    @abstractmethod
+    def taxa_grp_name(self, value: object) -> None:
         """Set taxa group name array"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def taxa_grp_stix(self) -> Any:
+    @abstractmethod
+    def taxa_grp_stix(self) -> object:
         """Taxa group start index."""
         raise NotImplementedError("property is abstract")
     @taxa_grp_stix.setter
-    def taxa_grp_stix(self, value: Any) -> None:
+    @abstractmethod
+    def taxa_grp_stix(self, value: object) -> None:
         """Set taxa group start indices array"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def taxa_grp_spix(self) -> Any:
+    @abstractmethod
+    def taxa_grp_spix(self) -> object:
         """Taxa group stop index."""
         raise NotImplementedError("property is abstract")
     @taxa_grp_spix.setter
-    def taxa_grp_spix(self, value: Any) -> None:
+    @abstractmethod
+    def taxa_grp_spix(self, value: object) -> None:
         """Set taxa group stop indices array"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def taxa_grp_len(self) -> Any:
+    @abstractmethod
+    def taxa_grp_len(self) -> object:
         """Taxa group length."""
         raise NotImplementedError("property is abstract")
     @taxa_grp_len.setter
-    def taxa_grp_len(self, value: Any) -> None:
+    @abstractmethod
+    def taxa_grp_len(self, value: object) -> None:
         """Set taxa group length array"""
         raise NotImplementedError("property is abstract")
     
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
+    @abstractmethod
     def adjoin_taxa(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -154,6 +152,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def delete_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -177,6 +176,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def insert_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -210,6 +210,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def select_taxa(
             self, 
             indices: ArrayLike, 
@@ -234,6 +235,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
+    @abstractmethod
     def concat_taxa(
             cls, 
             mats: Sequence, 
@@ -259,6 +261,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("class method is abstract")
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append_taxa(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -282,6 +285,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -299,6 +303,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -327,6 +332,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort_taxa(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -351,6 +357,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder_taxa(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -369,6 +376,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort_taxa(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -389,6 +397,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
+    @abstractmethod
     def group_taxa(
             self, 
             **kwargs: dict
@@ -404,6 +413,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def is_grouped_taxa(
             self, 
             **kwargs: dict

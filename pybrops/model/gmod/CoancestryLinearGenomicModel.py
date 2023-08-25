@@ -3,7 +3,6 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic coancestry effects.
 """
 
-from typing import Any
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class CoancestryLinearGenomicModel(LinearGenomicModel):
@@ -74,20 +73,20 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
 
     ############################ Object Properties #############################
     @property
-    def u_misc(self) -> Any:
+    def u_misc(self) -> object:
         """Miscellaneous random effects."""
         raise NotImplementedError("property is abstract")
     @u_misc.setter
-    def u_misc(self, value: Any) -> None:
+    def u_misc(self, value: object) -> None:
         """Set miscellaneous random effects"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def u_c(self) -> Any:
+    def u_c(self) -> object:
         """Genomic coancestry effects."""
         raise NotImplementedError("property is abstract")
     @u_c.setter
-    def u_c(self, value: Any) -> None:
+    def u_c(self, value: object) -> None:
         """Set genomic coancestry effects"""
         raise NotImplementedError("property is abstract")
 

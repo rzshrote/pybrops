@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-from typing import Any, Optional, Union
+from typing import Optional, Union
 import numpy
 import pandas
 
@@ -25,9 +25,7 @@ class GeneticMap(metaclass=ABCMeta):
         6) Import and export of genetic maps.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -46,127 +44,123 @@ class GeneticMap(metaclass=ABCMeta):
         """Get the number of markers in the genetic map."""
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################### Data Properites ####################
     @property
     @abstractmethod
-    def vrnt_chrgrp(self) -> Any:
+    def vrnt_chrgrp(self) -> object:
         """Variant chromosome group label."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp.setter
     @abstractmethod
-    def vrnt_chrgrp(self, value: Any) -> None:
+    def vrnt_chrgrp(self, value: object) -> None:
         """Set variant chromosome group label array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_phypos(self) -> Any:
+    def vrnt_phypos(self) -> object:
         """Variant physical position."""
         raise NotImplementedError("property is abstract")
     @vrnt_phypos.setter
     @abstractmethod
-    def vrnt_phypos(self, value: Any) -> None:
+    def vrnt_phypos(self, value: object) -> None:
         """Set variant physical position array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_genpos(self) -> Any:
+    def vrnt_genpos(self) -> object:
         """Variant genetic position."""
         raise NotImplementedError("property is abstract")
     @vrnt_genpos.setter
     @abstractmethod
-    def vrnt_genpos(self, value: Any) -> None:
+    def vrnt_genpos(self, value: object) -> None:
         """Set variant genetic position array"""
         raise NotImplementedError("property is abstract")
     
     ################# Metadata Properites ##################
     @property
     @abstractmethod
-    def vrnt_chrgrp_name(self) -> Any:
+    def vrnt_chrgrp_name(self) -> object:
         """Variant chromosome group names."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_name.setter
     @abstractmethod
-    def vrnt_chrgrp_name(self, value: Any) -> None:
+    def vrnt_chrgrp_name(self, value: object) -> None:
         """Set variant chromosome group name array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_stix(self) -> Any:
+    def vrnt_chrgrp_stix(self) -> object:
         """Variant chromosome group start indices."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_stix.setter
     @abstractmethod
-    def vrnt_chrgrp_stix(self, value: Any) -> None:
+    def vrnt_chrgrp_stix(self, value: object) -> None:
         """Set variant chromosome group start indices array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_spix(self) -> Any:
+    def vrnt_chrgrp_spix(self) -> object:
         """Variant chromosome group stop indices."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_spix.setter
     @abstractmethod
-    def vrnt_chrgrp_spix(self, value: Any) -> None:
+    def vrnt_chrgrp_spix(self, value: object) -> None:
         """Set variant chromosome group stop indices array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_len(self) -> Any:
+    def vrnt_chrgrp_len(self) -> object:
         """Variant chromosome group length."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_len.setter
     @abstractmethod
-    def vrnt_chrgrp_len(self, value: Any) -> None:
+    def vrnt_chrgrp_len(self, value: object) -> None:
         """Set variant chromosome group length array"""
         raise NotImplementedError("property is abstract")
 
     ################## Spline Properites ###################
     @property
     @abstractmethod
-    def spline(self) -> Any:
+    def spline(self) -> object:
         """Interpolation spline(s)."""
         raise NotImplementedError("property is abstract")
     @spline.setter
     @abstractmethod
-    def spline(self, value: Any) -> None:
+    def spline(self, value: object) -> None:
         """Set interpolation spline(s)"""
         raise NotImplementedError("property is abstract")
 
     ############# Spline Metadata Properites ###############
     @property
     @abstractmethod
-    def spline_kind(self) -> Any:
+    def spline_kind(self) -> object:
         """Spline kind."""
         raise NotImplementedError("property is abstract")
     @spline_kind.setter
     @abstractmethod
-    def spline_kind(self, value: Any) -> None:
+    def spline_kind(self, value: object) -> None:
         """Set the spline kind"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def spline_fill_value(self) -> Any:
+    def spline_fill_value(self) -> object:
         """Default spline fill value."""
         raise NotImplementedError("property is abstract")
     @spline_fill_value.setter
     @abstractmethod
-    def spline_fill_value(self, value: Any) -> None:
+    def spline_fill_value(self, value: object) -> None:
         """Set the default spline fill value"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
     @abstractmethod
@@ -395,7 +389,7 @@ class GeneticMap(metaclass=ABCMeta):
     def build_spline(
             self, 
             kind: str, 
-            fill_value: Any, 
+            fill_value: object, 
             **kwargs: dict
         ) -> None:
         """

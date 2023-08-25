@@ -2,7 +2,7 @@
 Module defining interfaces and error checking routines for selection protocols.
 """
 
-from typing import Any, Optional
+from typing import Optional
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix

@@ -8,8 +8,6 @@ __all__ = [
     "check_is_BreedingValueMatrix"
 ]
 
-from typing import Any
-
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
@@ -39,9 +37,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         X = \\sigma BV + \\mu
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -57,30 +53,26 @@ class BreedingValueMatrix(TaxaTraitMatrix,HDF5InputOutput):
         """
         super(BreedingValueMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
     @property
-    def location(self) -> Any:
+    def location(self) -> object:
         """Mean of the phenotype values used to calculate breeding values."""
         raise NotImplementedError("property is abstract")
     @location.setter
-    def location(self, value: Any) -> None:
+    def location(self, value: object) -> None:
         """Set the mean of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
     
     @property
-    def scale(self) -> Any:
+    def scale(self) -> object:
         """Standard deviation of the phenotype values used to calculate breeding values."""
         raise NotImplementedError("property is abstract")
     @scale.setter
-    def scale(self, value: Any) -> None:
+    def scale(self, value: object) -> None:
         """Set the standard deviation of the phenotype values used to calculate breeding values"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############## Matrix summary statistics ###############
     def targmax(self) -> numpy.ndarray:

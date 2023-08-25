@@ -24,9 +24,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         1) Dense matrix in-place matrix shape changing routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -47,9 +45,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element in-place-manipulation #########
     def append(

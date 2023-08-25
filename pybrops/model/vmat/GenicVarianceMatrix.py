@@ -21,9 +21,7 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         1) Estimation of genic variance from a genomic model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -39,9 +37,7 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         """
         super(GenicVarianceMatrix, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ######## Expected parental genome contributions ########
     @property
@@ -57,9 +53,7 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix):
         """Set a tuple of the expected parental genome contributions."""
         raise NotImplementedError("property is abstract")    
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     @classmethod
     def from_gmod(
             cls, 

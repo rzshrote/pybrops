@@ -8,8 +8,6 @@ __all__ = [
     "check_is_iterable"
 ]
 
-from typing import Any
-
 ### read/write ###
 def error_readonly(vname: str):
     """

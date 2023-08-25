@@ -8,10 +8,11 @@ __all__ = [
     "check_is_TaxaTraitMatrix"
 ]
 
+from abc import ABCMeta
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 
-class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
+class TaxaTraitMatrix(TaxaMatrix,TraitMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with taxa and trait metadata.
 
@@ -21,19 +22,6 @@ class TaxaTraitMatrix(TaxaMatrix,TraitMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class TaxaTraitMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for dependency injection.
-        """
-        super(TaxaTraitMatrix, self).__init__(**kwargs)
 
 
 

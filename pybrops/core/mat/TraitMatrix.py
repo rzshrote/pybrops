@@ -8,14 +8,15 @@ __all__ = [
     "check_is_TraitMatrix"
 ]
 
-from typing import Any, Sequence, Union
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
-class TraitMatrix(SortableMatrix):
+class TraitMatrix(SortableMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with trait metadata.
 
@@ -24,62 +25,49 @@ class TraitMatrix(SortableMatrix):
         2) trait manipulation routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        TraitMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(TraitMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ###################### Trait data ######################
     @property
-    def trait(self) -> Any:
+    @abstractmethod
+    def trait(self) -> object:
         """Trait label."""
         raise NotImplementedError("property is abstract")
     @trait.setter
-    def trait(self, value: Any) -> None:
+    @abstractmethod
+    def trait(self, value: object) -> None:
         """Set trait label array"""
         raise NotImplementedError("property is abstract")
     
     #################### Trait metadata ####################
     @property
+    @abstractmethod
     def ntrait(self) -> int:
         """Number of traits."""
         raise NotImplementedError("property is abstract")
     @ntrait.setter
+    @abstractmethod
     def ntrait(self, value: int) -> None:
         """Set number of traits"""
         raise NotImplementedError("property is abstract")
     
     @property
+    @abstractmethod
     def trait_axis(self) -> int:
         """Axis along which traits are stored."""
         raise NotImplementedError("property is abstract")
     @trait_axis.setter
+    @abstractmethod
     def trait_axis(self, value: int) -> None:
         """Set trait axis number"""
         raise NotImplementedError("property is abstract")
     
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
+    @abstractmethod
     def adjoin_trait(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -106,6 +94,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def delete_trait(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -129,6 +118,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def insert_trait(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -159,6 +149,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def select_trait(
             self, 
             indices: ArrayLike, 
@@ -182,8 +173,10 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    @staticmethod
+    @classmethod
+    @abstractmethod
     def concat_trait(
+            cls,
             mats: Sequence, 
             **kwargs: dict
         ) -> 'TraitMatrix':
@@ -207,6 +200,7 @@ class TraitMatrix(SortableMatrix):
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append_trait(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -227,6 +221,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove_trait(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -244,6 +239,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp_trait(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -269,6 +265,7 @@ class TraitMatrix(SortableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort_trait(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -293,6 +290,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder_trait(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -311,6 +309,7 @@ class TraitMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort_trait(
             self, 
             keys: Union[tuple,numpy.ndarray], 

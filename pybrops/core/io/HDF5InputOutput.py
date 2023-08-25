@@ -7,10 +7,11 @@ __all__ = [
     "check_is_HDF5InputOutput"
 ]
 
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class HDF5InputOutput:
+class HDF5InputOutput(metaclass=ABCMeta):
     """
     Abstract class for defining HDF5 input/output functionality.
 
@@ -21,24 +22,11 @@ class HDF5InputOutput:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class HDF5InputOutput.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(HDF5InputOutput, self).__init__()
 
     ############################## Object Methods ##############################
 
     ################### Matrix File I/O ####################
+    @abstractmethod
     def to_hdf5(
             self, 
             filename: str, 
@@ -61,6 +49,7 @@ class HDF5InputOutput:
 
     ################### Matrix File I/O ####################
     @classmethod
+    @abstractmethod
     def from_hdf5(
             cls, 
             filename: str, 
@@ -82,7 +71,7 @@ class HDF5InputOutput:
         obj : HDF5InputOutput
             An object read from an HDF5 file.
         """
-        raise NotImplementedError("method is abstract")
+        raise NotImplementedError("class method is abstract")
 
 
 

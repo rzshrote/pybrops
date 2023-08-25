@@ -2,8 +2,9 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
+from abc import ABCMeta, abstractmethod
 from numbers import Real
-from typing import Any, Union
+from typing import Union
 
 import numpy
 
@@ -12,7 +13,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
-class PhenotypingProtocol:
+class PhenotypingProtocol(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for phenotyping protocols.
 
@@ -23,43 +24,35 @@ class PhenotypingProtocol:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class PhenotypingProtocol.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(PhenotypingProtocol, self).__init__()
 
     ############################ Object Properties #############################
 
     ############### Genomic Model Properties ###############
     @property
+    @abstractmethod
     def gpmod(self) -> GenomicModel:
         """Genomic prediction model."""
         raise NotImplementedError("property is abstract")
     @gpmod.setter
+    @abstractmethod
     def gpmod(self, value: GenomicModel) -> None:
         """Set genomic prediction model"""
         raise NotImplementedError("property is abstract")
 
     ################ Stochastic Parameters #################
     @property
-    def var_err(self) -> Any:
+    @abstractmethod
+    def var_err(self) -> object:
         """Error variance for each trait."""
         raise NotImplementedError("property is abstract")
     @var_err.setter
-    def var_err(self, value: Any) -> None:
+    @abstractmethod
+    def var_err(self, value: object) -> None:
         """Set error variance"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def phenotype(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -87,6 +80,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def set_h2(
             self, 
             h2: Union[Real,numpy.ndarray], 
@@ -107,6 +101,7 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def set_H2(
             self, 
             H2: Union[Real,numpy.ndarray], 

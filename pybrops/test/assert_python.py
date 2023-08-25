@@ -26,7 +26,7 @@ def assert_docstring(obj: object) -> None:
 
     Parameters
     ----------
-    obj : Any object
+    obj : object
         Any Python object to test for a docstring.
     """
     # test for having a docstring

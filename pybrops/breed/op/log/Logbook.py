@@ -8,9 +8,11 @@ __all__ = [
     "check_is_Logbook"
 ]
 
-from typing import Any
 
-class Logbook:
+from abc import ABCMeta, abstractmethod
+
+
+class Logbook(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for logging statistics about an entire
     breeding program.
@@ -20,40 +22,32 @@ class Logbook:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class Logbook.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(Logbook, self).__init__()
 
     ############################ Object Properties #############################
     @property
-    def data(self) -> Any:
+    @abstractmethod
+    def data(self) -> object:
         """Logbook data."""
         raise NotImplementedError("property is abstract")
     @data.setter
-    def data(self, value: Any) -> None:
+    @abstractmethod
+    def data(self, value: object) -> None:
         """Set logbook data."""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def rep(self) -> int:
         """Replicate number."""
         raise NotImplementedError("property is abstract")
     @rep.setter
+    @abstractmethod
     def rep(self, value: int) -> None:
         """Set replicate number."""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def log_initialize(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'InitializationOperator.initialize'
@@ -80,6 +74,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'ParentSelectionOperator.pselect'
@@ -108,6 +103,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def log_mate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'MatingOperator.mate' is called.
@@ -133,6 +129,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def log_evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'EvaluationOperator.evaluate' is
@@ -159,6 +156,7 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def log_sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs: dict):
         """
         Record information directly after 'SurvivorSelectionOperator.sselect'
@@ -185,12 +183,14 @@ class Logbook:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reset(self):
         """
         Reset Logbook internals.
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def write(self, fname):
         """
         Write Logbook to file

@@ -8,11 +8,12 @@ __all__ = [
     "check_is_PrunableMatrix"
 ]
 
+from abc import ABCMeta, abstractmethod
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 # TODO: is this class even necessary?
-class PrunableMatrix(Matrix):
+class PrunableMatrix(Matrix,metaclass=ABCMeta):
     """
     An abstract class for prunable matrix wrapper objects.
 
@@ -24,22 +25,9 @@ class PrunableMatrix(Matrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        PrunableMatrix constructor
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(PrunableMatrix, self).__init__(**kwargs)
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def prune(
             self, 
             axis: int, 

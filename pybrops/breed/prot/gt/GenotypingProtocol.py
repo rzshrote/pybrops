@@ -2,7 +2,7 @@
 Module containing the abstract class GenotypingProtocol and its service functions.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

@@ -3,7 +3,7 @@ Module implementing classes and associated error checking routines for matrices
 storing dense genetic variance estimates.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 import numpy
 from pybrops.core.error.error_attr_python import error_readonly

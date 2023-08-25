@@ -8,10 +8,11 @@ __all__ = [
     "check_is_PhasedTaxaVariantMatrix"
 ]
 
+from abc import ABCMeta
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
-class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
+class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with phase, variant, and taxa
     metadata.
@@ -22,20 +23,6 @@ class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class PhasedTaxaVariantMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(PhasedTaxaVariantMatrix, self).__init__(**kwargs)
 
 
 

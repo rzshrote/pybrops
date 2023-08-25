@@ -8,10 +8,11 @@ __all__ = [
     "check_is_TaxaVariantMatrix"
 ]
 
+from abc import ABCMeta
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 
-class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
+class TaxaVariantMatrix(TaxaMatrix,VariantMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with taxa and variant metadata.
 
@@ -21,19 +22,6 @@ class TaxaVariantMatrix(TaxaMatrix,VariantMatrix):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class TaxaVariantMatrix.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments used for dependency injection.
-        """
-        super(TaxaVariantMatrix, self).__init__(**kwargs)
 
 
 

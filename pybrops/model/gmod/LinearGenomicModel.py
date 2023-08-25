@@ -3,7 +3,6 @@ Module defining interfaces and error checking routines for genomic models that
 are linear in nature.
 """
 
-from typing import Any
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class LinearGenomicModel(GenomicModel):
@@ -35,9 +34,7 @@ class LinearGenomicModel(GenomicModel):
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -53,32 +50,28 @@ class LinearGenomicModel(GenomicModel):
         """
         super(LinearGenomicModel, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Linear Genomic Model Data ###############
     @property
-    def beta(self) -> Any:
+    def beta(self) -> object:
         """Fixed effect regression coefficients."""
         raise NotImplementedError("property is abstract")
     @beta.setter
-    def beta(self, value: Any) -> None:
+    def beta(self, value: object) -> None:
         """Set fixed effect regression coefficients"""
         raise NotImplementedError("property is abstract")
 
     @property
-    def u(self) -> Any:
+    def u(self) -> object:
         """Random effect regression coefficients."""
         raise NotImplementedError("property is abstract")
     @u.setter
-    def u(self, value: Any) -> None:
+    def u(self, value: object) -> None:
         """Set random effect regression coefficients"""
         raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
 
 
