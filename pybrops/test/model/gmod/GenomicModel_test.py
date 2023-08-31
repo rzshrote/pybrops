@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.test.model.gmod.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def gmod():
-    yield GenomicModel()
+    yield DummyGenomicModel()
 
 ################################################################################
 ############################## Test class docstring ############################

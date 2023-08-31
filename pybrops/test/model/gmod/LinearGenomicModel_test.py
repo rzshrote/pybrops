@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.model.gmod.LinearGenomicModel import check_is_LinearGenomicModel
+from pybrops.test.model.gmod.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def gmod():
-    yield LinearGenomicModel()
+    yield DummyLinearGenomicModel()
 
 ################################################################################
 ############################## Test class docstring ############################

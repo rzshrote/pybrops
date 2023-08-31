@@ -63,7 +63,6 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel,metaclass=A
     ########################## Special Object Methods ##########################
 
     ############################ Object Properties #############################
-
     @property
     @abstractmethod
     def u_d(self) -> object:
