@@ -48,7 +48,7 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
-    # inherit __init__() from pymoo.Problem to keep this class semi-abstrac/mixin type
+    # inherit __init__() from pymoo.Problem to keep this class semi-abstract/mixin type
 
     ############################ Object Properties #############################
 

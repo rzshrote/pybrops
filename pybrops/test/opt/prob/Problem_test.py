@@ -10,28 +10,55 @@ from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_property
 
 from pybrops.opt.prob.Problem import Problem, check_is_Problem
+from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
-class ProblemTestClass(Problem):
+class DummyProblem(Problem):
     def __init__(
             self, ndecn, decn_space, decn_space_lower, decn_space_upper, 
             nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
         ):
         """NA"""
-        super(ProblemTestClass, self).__init__(
-            ndecn, decn_space, decn_space_lower, decn_space_upper, 
-            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, **kwargs
+        # order dependent assignments (for PyBrOpS interface)
+        self.ndecn = ndecn
+        self.decn_space = decn_space
+        self.decn_space_lower = decn_space_lower
+        self.decn_space_upper = decn_space_upper
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+        # call PyMOO constructor to set things its way (for PyMOO interface)
+        super(Problem, self).__init__(
+            n_var = ndecn,
+            n_obj = nobj,
+            n_ieq_constr = nineqcv,
+            n_eq_constr = neqcv,
+            xl = decn_space_lower,
+            xu = decn_space_upper,
+            vtype = None,
+            vars = None,
+            elementwise = True,
+            elementwise_func = ElementwiseEvaluationFunction,
+            elementwise_runner = LoopedElementwiseEvaluation(),
+            replace_nan_values_by = None,
+            exclude_from_serialization = None,
+            callback = None,
+            strict = True,
+            **kwargs
         )
     ### method required by PyBrOpS interface ###
     def evalfn(self, x, *args, **kwargs):
         """NA"""
-        super(ProblemTestClass, self).evalfn(x, *args, **kwargs)
+        super(DummyProblem, self).evalfn(x, *args, **kwargs)
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
-        super(ProblemTestClass, self)._evaluate(x, out, *args, **kwargs)
+        super(DummyProblem, self)._evaluate(x, out, *args, **kwargs)
 
 @pytest.fixture
 def ndecn():
@@ -78,7 +105,7 @@ def prob(
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt
     ):
-    yield ProblemTestClass(
+    yield DummyProblem(
         ndecn,
         decn_space,
         decn_space_lower,

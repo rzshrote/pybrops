@@ -14,18 +14,28 @@ from pybrops.opt.soln.Solution import Solution, check_is_Solution
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
-class SolutionTestClass(Solution):
+class DummySolution(Solution):
     def __init__(
             self, ndecn, decn_space, decn_space_lower, decn_space_upper, 
             nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, 
             nsoln, soln_decn, soln_obj, soln_ineqcv, soln_eqcv, **kwargs
         ):
         """NA"""
-        super(SolutionTestClass, self).__init__(
-            ndecn, decn_space, decn_space_lower, decn_space_upper, 
-            nobj, obj_wt, nineqcv, ineqcv_wt, neqcv, eqcv_wt, 
-            nsoln, soln_decn, soln_obj, soln_ineqcv, soln_eqcv, **kwargs
-        )
+        self.ndecn = ndecn
+        self.decn_space = decn_space
+        self.decn_space_lower = decn_space_lower
+        self.decn_space_upper = decn_space_upper
+        self.nobj = nobj
+        self.obj_wt = obj_wt
+        self.nineqcv = nineqcv
+        self.ineqcv_wt = ineqcv_wt
+        self.neqcv = neqcv
+        self.eqcv_wt = eqcv_wt
+        self.nsoln = nsoln
+        self.soln_decn = soln_decn
+        self.soln_obj = soln_obj
+        self.soln_ineqcv = soln_ineqcv
+        self.soln_eqcv = soln_eqcv
 
 @pytest.fixture
 def ndecn():
@@ -88,7 +98,7 @@ def soln_eqcv(nsoln, neqcv):
     yield numpy.random.random((nsoln,neqcv))
 
 @pytest.fixture
-def prob(
+def soln(
     ndecn,
     decn_space,
     decn_space_lower,
@@ -105,7 +115,7 @@ def prob(
     soln_ineqcv,
     soln_eqcv
 ):
-    yield SolutionTestClass(
+    yield DummySolution(
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -139,34 +149,34 @@ def test_Solution_docstring():
 def test_ndecn_is_concrete():
     assert_concrete_property(Solution, "ndecn")
 
-def test_ndecn_fget(prob):
-    assert isinstance(prob.ndecn, Integral)
+def test_ndecn_fget(soln):
+    assert isinstance(soln.ndecn, Integral)
 
-def test_ndecn_fset(prob):
+def test_ndecn_fset(soln):
     with not_raises(TypeError):
-        prob.ndecn = numpy.int8(1)
+        soln.ndecn = numpy.int8(1)
     with not_raises(TypeError):
-        prob.ndecn = numpy.int16(1)
+        soln.ndecn = numpy.int16(1)
     with not_raises(TypeError):
-        prob.ndecn = numpy.int32(1)
+        soln.ndecn = numpy.int32(1)
     with not_raises(TypeError):
-        prob.ndecn = numpy.int64(1)
+        soln.ndecn = numpy.int64(1)
     with not_raises(TypeError):
-        prob.ndecn = int(1)
+        soln.ndecn = int(1)
 
-def test_ndecn_fset_TypeError(prob):
+def test_ndecn_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.ndecn = None
+        soln.ndecn = None
     with pytest.raises(TypeError):
-        prob.ndecn = "string"
+        soln.ndecn = "string"
     with pytest.raises(TypeError):
-        prob.ndecn = float(1.0)
+        soln.ndecn = float(1.0)
 
-def test_ndecn_fset_ValueError(prob):
+def test_ndecn_fset_ValueError(soln):
     with pytest.raises(ValueError):
-        prob.ndecn = int(0)
+        soln.ndecn = int(0)
     with pytest.raises(ValueError):
-        prob.ndecn = int(-1)
+        soln.ndecn = int(-1)
 
 ##################
 ### decn_space ###
@@ -174,39 +184,39 @@ def test_ndecn_fset_ValueError(prob):
 def test_decn_space_is_concrete():
     assert_concrete_property(Solution, "decn_space")
 
-def test_decn_space_fget(prob, ndecn):
-    assert isinstance(prob.decn_space, numpy.ndarray) or (prob.decn_space is None)
-    if prob.decn_space is not None:
-        assert prob.decn_space.shape == (2,ndecn)
+def test_decn_space_fget(soln, ndecn):
+    assert isinstance(soln.decn_space, numpy.ndarray) or (soln.decn_space is None)
+    if soln.decn_space is not None:
+        assert soln.decn_space.shape == (2,ndecn)
 
-def test_decn_space_fset(prob, decn_space_lower, decn_space_upper):
+def test_decn_space_fset(soln, decn_space_lower, decn_space_upper):
     with not_raises(TypeError):
-        prob.decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+        soln.decn_space = numpy.stack([decn_space_lower,decn_space_upper])
     with not_raises(TypeError):
-        prob.decn_space = None
+        soln.decn_space = None
 
-def test_decn_space_fset_TypeError(prob, ndecn):
+def test_decn_space_fset_TypeError(soln, ndecn):
     with pytest.raises(TypeError):
-        prob.decn_space = "string"
+        soln.decn_space = "string"
     with pytest.raises(TypeError):
-        prob.decn_space = int(1)
+        soln.decn_space = int(1)
     with pytest.raises(TypeError):
-        prob.decn_space = ndecn * [1]
+        soln.decn_space = ndecn * [1]
 
-def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
+def test_decn_space_fset_ValueError(soln, decn_space_lower, decn_space_upper):
     with pytest.raises(ValueError):
-        prob.decn_space = numpy.array([1])
+        soln.decn_space = numpy.array([1])
     with pytest.raises(ValueError):
-        prob.decn_space = decn_space_lower
+        soln.decn_space = decn_space_lower
     with pytest.raises(ValueError):
-        prob.decn_space = numpy.concatenate([decn_space_lower,decn_space_upper])
+        soln.decn_space = numpy.concatenate([decn_space_lower,decn_space_upper])
     with pytest.raises(ValueError):
-        prob.decn_space = numpy.stack([
+        soln.decn_space = numpy.stack([
             decn_space_lower,decn_space_lower,
             decn_space_upper,decn_space_upper
         ])
     with pytest.raises(ValueError):
-        prob.decn_space = numpy.stack([
+        soln.decn_space = numpy.stack([
             numpy.concatenate([decn_space_lower,decn_space_lower]),
             numpy.concatenate([decn_space_upper,decn_space_upper])
         ])
@@ -217,25 +227,25 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
 def test_decn_space_lower_is_concrete():
     assert_concrete_property(Solution, "decn_space_lower")
 
-def test_decn_space_lower_fget(prob):
-    assert isinstance(prob.decn_space_lower, numpy.ndarray) or (prob.decn_space_lower is None)
-    assert len(prob.decn_space_lower) == prob.ndecn
+def test_decn_space_lower_fget(soln):
+    assert isinstance(soln.decn_space_lower, numpy.ndarray) or (soln.decn_space_lower is None)
+    assert len(soln.decn_space_lower) == soln.ndecn
 
-def test_decn_space_lower_fset(prob, decn_space_lower):
+def test_decn_space_lower_fset(soln, decn_space_lower):
     with not_raises(TypeError):
-        prob.decn_space_lower = decn_space_lower
+        soln.decn_space_lower = decn_space_lower
     with not_raises(TypeError):
-        prob.decn_space_lower = decn_space_lower[0]
+        soln.decn_space_lower = decn_space_lower[0]
     with not_raises(TypeError):
-        prob.decn_space_lower = None
+        soln.decn_space_lower = None
 
-def test_decn_space_lower_fset_TypeError(prob):
+def test_decn_space_lower_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.decn_space_lower = "string"
+        soln.decn_space_lower = "string"
 
-def test_decn_space_lower_fset_ValueError(prob, decn_space_lower):
+def test_decn_space_lower_fset_ValueError(soln, decn_space_lower):
     with pytest.raises(ValueError):
-        prob.decn_space_lower = numpy.concatenate([decn_space_lower, decn_space_lower])
+        soln.decn_space_lower = numpy.concatenate([decn_space_lower, decn_space_lower])
 
 ########################
 ### decn_space_upper ###
@@ -243,25 +253,25 @@ def test_decn_space_lower_fset_ValueError(prob, decn_space_lower):
 def test_decn_space_upper_is_concrete():
     assert_concrete_property(Solution, "decn_space_upper")
 
-def test_decn_space_upper_fget(prob):
-    assert isinstance(prob.decn_space_upper, numpy.ndarray) or (prob.decn_space_upper is None)
-    assert len(prob.decn_space_upper) == prob.ndecn
+def test_decn_space_upper_fget(soln):
+    assert isinstance(soln.decn_space_upper, numpy.ndarray) or (soln.decn_space_upper is None)
+    assert len(soln.decn_space_upper) == soln.ndecn
 
-def test_decn_space_upper_fset(prob, decn_space_upper):
+def test_decn_space_upper_fset(soln, decn_space_upper):
     with not_raises(TypeError):
-        prob.decn_space_upper = decn_space_upper
+        soln.decn_space_upper = decn_space_upper
     with not_raises(TypeError):
-        prob.decn_space_upper = decn_space_upper[0]
+        soln.decn_space_upper = decn_space_upper[0]
     with not_raises(TypeError):
-        prob.decn_space_upper = None
+        soln.decn_space_upper = None
 
-def test_decn_space_upper_fset_TypeError(prob):
+def test_decn_space_upper_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.decn_space_upper = "string"
+        soln.decn_space_upper = "string"
 
-def test_decn_space_upper_fset_ValueError(prob, decn_space_upper):
+def test_decn_space_upper_fset_ValueError(soln, decn_space_upper):
     with pytest.raises(ValueError):
-        prob.decn_space_upper = numpy.concatenate([decn_space_upper, decn_space_upper])
+        soln.decn_space_upper = numpy.concatenate([decn_space_upper, decn_space_upper])
 
 ############
 ### nobj ###
@@ -269,36 +279,36 @@ def test_decn_space_upper_fset_ValueError(prob, decn_space_upper):
 def test_nobj_is_concrete():
     assert_concrete_property(Solution, "nobj")
 
-def test_nobj_fget(prob):
-    assert isinstance(prob.nobj, Integral)
+def test_nobj_fget(soln):
+    assert isinstance(soln.nobj, Integral)
 
-def test_nobj_fset(prob):
+def test_nobj_fset(soln):
     with not_raises(TypeError):
-        prob.nobj = numpy.int8(1)
+        soln.nobj = numpy.int8(1)
     with not_raises(TypeError):
-        prob.nobj = numpy.int16(1)
+        soln.nobj = numpy.int16(1)
     with not_raises(TypeError):
-        prob.nobj = numpy.int32(1)
+        soln.nobj = numpy.int32(1)
     with not_raises(TypeError):
-        prob.nobj = numpy.int64(1)
+        soln.nobj = numpy.int64(1)
     with not_raises(TypeError):
-        prob.nobj = int(1)
+        soln.nobj = int(1)
 
-def test_nobj_fset_TypeError(prob):
+def test_nobj_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.nobj = None
+        soln.nobj = None
     with pytest.raises(TypeError):
-        prob.nobj = "string"
+        soln.nobj = "string"
     with pytest.raises(TypeError):
-        prob.nobj = float(1.0)
+        soln.nobj = float(1.0)
 
-def test_nobj_fset_ValueError(prob):
+def test_nobj_fset_ValueError(soln):
     with not_raises(ValueError):
-        prob.nobj = int(1)
+        soln.nobj = int(1)
     with pytest.raises(ValueError):
-        prob.nobj = int(0)
+        soln.nobj = int(0)
     with pytest.raises(ValueError):
-        prob.nobj = int(-1)
+        soln.nobj = int(-1)
 
 ##############
 ### obj_wt ###
@@ -306,26 +316,26 @@ def test_nobj_fset_ValueError(prob):
 def test_obj_wt_is_concrete():
     assert_concrete_property(Solution, "obj_wt")
 
-def test_obj_wt_fget(prob):
-    assert isinstance(prob.obj_wt, numpy.ndarray)
+def test_obj_wt_fget(soln):
+    assert isinstance(soln.obj_wt, numpy.ndarray)
 
-def test_obj_wt_fset(prob, obj_wt):
+def test_obj_wt_fset(soln, obj_wt):
     with not_raises(TypeError):
-        prob.obj_wt = obj_wt
+        soln.obj_wt = obj_wt
     with not_raises(TypeError):
-        prob.obj_wt = float(1.0)
+        soln.obj_wt = float(1.0)
     with not_raises(TypeError):
-        prob.obj_wt = None
+        soln.obj_wt = None
 
-def test_obj_wt_fset_TypeError(prob):
+def test_obj_wt_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.obj_wt = object()
+        soln.obj_wt = object()
     with pytest.raises(TypeError):
-        prob.obj_wt = "string"
+        soln.obj_wt = "string"
 
-def test_obj_wt_fset_ValueError(prob, obj_wt):
+def test_obj_wt_fset_ValueError(soln, obj_wt):
     with pytest.raises(ValueError):
-        prob.obj_wt = numpy.zeros(len(obj_wt)+1, dtype=obj_wt.dtype)
+        soln.obj_wt = numpy.zeros(len(obj_wt)+1, dtype=obj_wt.dtype)
 
 ###############
 ### nineqcv ###
@@ -333,38 +343,38 @@ def test_obj_wt_fset_ValueError(prob, obj_wt):
 def test_nineqcv_is_concrete():
     assert_concrete_property(Solution, "nineqcv")
 
-def test_nineqcv_fget(prob):
-    assert isinstance(prob.nineqcv, Integral)
+def test_nineqcv_fget(soln):
+    assert isinstance(soln.nineqcv, Integral)
 
-def test_nineqcv_fset(prob):
+def test_nineqcv_fset(soln):
     with not_raises(TypeError):
-        prob.nineqcv = numpy.int8(1)
+        soln.nineqcv = numpy.int8(1)
     with not_raises(TypeError):
-        prob.nineqcv = numpy.int16(1)
+        soln.nineqcv = numpy.int16(1)
     with not_raises(TypeError):
-        prob.nineqcv = numpy.int32(1)
+        soln.nineqcv = numpy.int32(1)
     with not_raises(TypeError):
-        prob.nineqcv = numpy.int64(1)
+        soln.nineqcv = numpy.int64(1)
     with not_raises(TypeError):
-        prob.nineqcv = int(1)
+        soln.nineqcv = int(1)
     with not_raises(TypeError):
-        prob.nineqcv = None
+        soln.nineqcv = None
 
-def test_nineqcv_fset_TypeError(prob):
+def test_nineqcv_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.nineqcv = object()
+        soln.nineqcv = object()
     with pytest.raises(TypeError):
-        prob.nineqcv = "string"
+        soln.nineqcv = "string"
     with pytest.raises(TypeError):
-        prob.nineqcv = float(1.0)
+        soln.nineqcv = float(1.0)
 
-def test_nineqcv_fset_ValueError(prob):
+def test_nineqcv_fset_ValueError(soln):
     with not_raises(ValueError):
-        prob.nineqcv = int(1)
+        soln.nineqcv = int(1)
     with not_raises(ValueError):
-        prob.nineqcv = int(0)
+        soln.nineqcv = int(0)
     with pytest.raises(ValueError):
-        prob.nineqcv = int(-1)
+        soln.nineqcv = int(-1)
 
 #################
 ### ineqcv_wt ###
@@ -372,24 +382,24 @@ def test_nineqcv_fset_ValueError(prob):
 def test_ineqcv_wt_is_concrete():
     assert_concrete_property(Solution, "ineqcv_wt")
 
-def test_ineqcv_wt_fget(prob):
-    assert isinstance(prob.ineqcv_wt, numpy.ndarray)
+def test_ineqcv_wt_fget(soln):
+    assert isinstance(soln.ineqcv_wt, numpy.ndarray)
 
-def test_ineqcv_wt_fset(prob, ineqcv_wt):
+def test_ineqcv_wt_fset(soln, ineqcv_wt):
     with not_raises(TypeError):
-        prob.ineqcv_wt = ineqcv_wt
+        soln.ineqcv_wt = ineqcv_wt
     with not_raises(TypeError):
-        prob.ineqcv_wt = float(1.0)
+        soln.ineqcv_wt = float(1.0)
     with not_raises(TypeError):
-        prob.ineqcv_wt = None
+        soln.ineqcv_wt = None
 
-def test_ineqcv_wt_fset_TypeError(prob):
+def test_ineqcv_wt_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.ineqcv_wt = "string"
+        soln.ineqcv_wt = "string"
 
-def test_ineqcv_wt_fset_ValueError(prob, ineqcv_wt):
+def test_ineqcv_wt_fset_ValueError(soln, ineqcv_wt):
     with pytest.raises(ValueError):
-        prob.ineqcv_wt = numpy.zeros(len(ineqcv_wt)+1, dtype=ineqcv_wt.dtype)
+        soln.ineqcv_wt = numpy.zeros(len(ineqcv_wt)+1, dtype=ineqcv_wt.dtype)
 
 #############
 ### neqcv ###
@@ -397,36 +407,36 @@ def test_ineqcv_wt_fset_ValueError(prob, ineqcv_wt):
 def test_neqcv_is_concrete():
     assert_concrete_property(Solution, "neqcv")
 
-def test_neqcv_fget(prob):
-    assert isinstance(prob.neqcv, Integral)
+def test_neqcv_fget(soln):
+    assert isinstance(soln.neqcv, Integral)
 
-def test_neqcv_fset(prob):
+def test_neqcv_fset(soln):
     with not_raises(TypeError):
-        prob.neqcv = numpy.int8(1)
+        soln.neqcv = numpy.int8(1)
     with not_raises(TypeError):
-        prob.neqcv = numpy.int16(1)
+        soln.neqcv = numpy.int16(1)
     with not_raises(TypeError):
-        prob.neqcv = numpy.int32(1)
+        soln.neqcv = numpy.int32(1)
     with not_raises(TypeError):
-        prob.neqcv = numpy.int64(1)
+        soln.neqcv = numpy.int64(1)
     with not_raises(TypeError):
-        prob.neqcv = int(1)
+        soln.neqcv = int(1)
     with not_raises(TypeError):
-        prob.neqcv = None
+        soln.neqcv = None
 
-def test_neqcv_fset_TypeError(prob):
+def test_neqcv_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.neqcv = "string"
+        soln.neqcv = "string"
     with pytest.raises(TypeError):
-        prob.neqcv = float(1.0)
+        soln.neqcv = float(1.0)
 
-def test_neqcv_fset_ValueError(prob):
+def test_neqcv_fset_ValueError(soln):
     with not_raises(ValueError):
-        prob.neqcv = int(1)
+        soln.neqcv = int(1)
     with not_raises(ValueError):
-        prob.neqcv = int(0)
+        soln.neqcv = int(0)
     with pytest.raises(ValueError):
-        prob.neqcv = int(-1)
+        soln.neqcv = int(-1)
 
 ###############
 ### eqcv_wt ###
@@ -434,26 +444,26 @@ def test_neqcv_fset_ValueError(prob):
 def test_eqcv_wt_is_concrete():
     assert_concrete_property(Solution, "eqcv_wt")
 
-def test_eqcv_wt_fget(prob):
-    assert isinstance(prob.eqcv_wt, numpy.ndarray)
+def test_eqcv_wt_fget(soln):
+    assert isinstance(soln.eqcv_wt, numpy.ndarray)
 
-def test_eqcv_wt_fset(prob, eqcv_wt):
+def test_eqcv_wt_fset(soln, eqcv_wt):
     with not_raises(TypeError):
-        prob.eqcv_wt = eqcv_wt
+        soln.eqcv_wt = eqcv_wt
     with not_raises(TypeError):
-        prob.eqcv_wt = float(1.0)
+        soln.eqcv_wt = float(1.0)
     with not_raises(TypeError):
-        prob.eqcv_wt = None
+        soln.eqcv_wt = None
 
-def test_eqcv_wt_fset_TypeError(prob):
+def test_eqcv_wt_fset_TypeError(soln):
     with pytest.raises(TypeError):
-        prob.eqcv_wt = object()
+        soln.eqcv_wt = object()
     with pytest.raises(TypeError):
-        prob.eqcv_wt = "string"
+        soln.eqcv_wt = "string"
 
-def test_eqcv_wt_fset_ValueError(prob, eqcv_wt):
+def test_eqcv_wt_fset_ValueError(soln, eqcv_wt):
     with pytest.raises(ValueError):
-        prob.eqcv_wt = numpy.zeros(len(eqcv_wt)+1, dtype=eqcv_wt.dtype)
+        soln.eqcv_wt = numpy.zeros(len(eqcv_wt)+1, dtype=eqcv_wt.dtype)
 
 ###############
 ### nsoln #####
@@ -461,36 +471,36 @@ def test_eqcv_wt_fset_ValueError(prob, eqcv_wt):
 def test_nsoln_is_concrete():
     assert_concrete_property(Solution, "nsoln")
 
-def test_nsoln_fget(prob):
-    assert isinstance(prob.nsoln, Integral)
+def test_nsoln_fget(soln):
+    assert isinstance(soln.nsoln, Integral)
 
-def test_nsoln_fset(prob, nsoln):
+def test_nsoln_fset(soln, nsoln):
     with not_raises(TypeError):
-        prob.nsoln = numpy.int8(nsoln)
+        soln.nsoln = numpy.int8(nsoln)
     with not_raises(TypeError):
-        prob.nsoln = numpy.int16(nsoln)
+        soln.nsoln = numpy.int16(nsoln)
     with not_raises(TypeError):
-        prob.nsoln = numpy.int32(nsoln)
+        soln.nsoln = numpy.int32(nsoln)
     with not_raises(TypeError):
-        prob.nsoln = numpy.int64(nsoln)
+        soln.nsoln = numpy.int64(nsoln)
     with not_raises(TypeError):
-        prob.nsoln = int(nsoln)
+        soln.nsoln = int(nsoln)
 
-def test_nsoln_fset_TypeError(prob, nsoln):
+def test_nsoln_fset_TypeError(soln, nsoln):
     with pytest.raises(TypeError):
-        prob.nsoln = None
+        soln.nsoln = None
     with pytest.raises(TypeError):
-        prob.nsoln = "string"
+        soln.nsoln = "string"
     with pytest.raises(TypeError):
-        prob.nsoln = float(nsoln)
+        soln.nsoln = float(nsoln)
 
-def test_nsoln_fset_ValueError(prob, nsoln):
+def test_nsoln_fset_ValueError(soln, nsoln):
     with not_raises(ValueError):
-        prob.nsoln = int(nsoln)
+        soln.nsoln = int(nsoln)
     with not_raises(ValueError):
-        prob.nsoln = int(0)
+        soln.nsoln = int(0)
     with pytest.raises(ValueError):
-        prob.nsoln = int(-nsoln)
+        soln.nsoln = int(-nsoln)
 
 #################
 ### soln_decn ###
@@ -498,38 +508,38 @@ def test_nsoln_fset_ValueError(prob, nsoln):
 def test_soln_decn_is_concrete():
     assert_concrete_property(Solution, "soln_decn")
 
-def test_soln_decn_fget(prob, nsoln, ndecn):
-    assert isinstance(prob.soln_decn, numpy.ndarray)
-    assert prob.soln_decn.shape == (nsoln,ndecn)
+def test_soln_decn_fget(soln, nsoln, ndecn):
+    assert isinstance(soln.soln_decn, numpy.ndarray)
+    assert soln.soln_decn.shape == (nsoln,ndecn)
 
-def test_soln_decn_fset(prob, nsoln, nobj, decn_space_lower, decn_space_upper):
+def test_soln_decn_fset(soln, nsoln, nobj, decn_space_lower, decn_space_upper):
     with not_raises(TypeError):
-        prob.soln_decn = numpy.random.randint(decn_space_lower, decn_space_upper, (nsoln,nobj))
+        soln.soln_decn = numpy.random.randint(decn_space_lower, decn_space_upper, (nsoln,nobj))
 
-def test_soln_decn_fset_TypeError(prob, ndecn):
+def test_soln_decn_fset_TypeError(soln, ndecn):
     with pytest.raises(TypeError):
-        prob.soln_decn = None
+        soln.soln_decn = None
     with pytest.raises(TypeError):
-        prob.soln_decn = "string"
+        soln.soln_decn = "string"
     with pytest.raises(TypeError):
-        prob.soln_decn = int(1)
+        soln.soln_decn = int(1)
     with pytest.raises(TypeError):
-        prob.soln_decn = ndecn * [1]
+        soln.soln_decn = ndecn * [1]
 
-def test_soln_decn_fset_ValueError(prob, decn_space_lower):
+def test_soln_decn_fset_ValueError(soln, decn_space_lower):
     with pytest.raises(ValueError):
-        prob.soln_decn = numpy.array([1])
+        soln.soln_decn = numpy.array([1])
     with pytest.raises(ValueError):
-        prob.soln_decn = decn_space_lower
+        soln.soln_decn = decn_space_lower
     with pytest.raises(ValueError):
-        prob.soln_decn = numpy.concatenate([decn_space_lower,decn_space_lower])
+        soln.soln_decn = numpy.concatenate([decn_space_lower,decn_space_lower])
     with pytest.raises(ValueError):
-        prob.soln_decn = numpy.stack([
+        soln.soln_decn = numpy.stack([
             decn_space_lower,decn_space_lower,
             decn_space_lower,decn_space_lower
         ])
     with pytest.raises(ValueError):
-        prob.soln_decn = numpy.stack([
+        soln.soln_decn = numpy.stack([
             numpy.concatenate([decn_space_lower,decn_space_lower]),
             numpy.concatenate([decn_space_lower,decn_space_lower])
         ])
@@ -540,29 +550,29 @@ def test_soln_decn_fset_ValueError(prob, decn_space_lower):
 def test_soln_obj_is_concrete():
     assert_concrete_property(Solution, "soln_obj")
 
-def test_soln_obj_fget(prob, nsoln, nobj):
-    assert isinstance(prob.soln_obj, numpy.ndarray)
-    assert prob.soln_obj.shape == (nsoln,nobj)
+def test_soln_obj_fget(soln, nsoln, nobj):
+    assert isinstance(soln.soln_obj, numpy.ndarray)
+    assert soln.soln_obj.shape == (nsoln,nobj)
 
-def test_soln_obj_fset(prob, nsoln, nobj):
+def test_soln_obj_fset(soln, nsoln, nobj):
     with not_raises(TypeError):
-        prob.soln_obj = numpy.random.random((nsoln,nobj))
+        soln.soln_obj = numpy.random.random((nsoln,nobj))
 
-def test_soln_obj_fset_TypeError(prob, nobj):
+def test_soln_obj_fset_TypeError(soln, nobj):
     with pytest.raises(TypeError):
-        prob.soln_obj = None
+        soln.soln_obj = None
     with pytest.raises(TypeError):
-        prob.soln_obj = "string"
+        soln.soln_obj = "string"
     with pytest.raises(TypeError):
-        prob.soln_obj = int(1)
+        soln.soln_obj = int(1)
     with pytest.raises(TypeError):
-        prob.soln_obj = nobj * [1]
+        soln.soln_obj = nobj * [1]
 
-def test_soln_obj_fset_ValueError(prob, nsoln, nobj):
+def test_soln_obj_fset_ValueError(soln, nsoln, nobj):
     with pytest.raises(ValueError):
-        prob.soln_obj = numpy.random.random(nsoln)
+        soln.soln_obj = numpy.random.random(nsoln)
     with pytest.raises(ValueError):
-        prob.soln_obj = numpy.random.random((nsoln+1,nobj+1))
+        soln.soln_obj = numpy.random.random((nsoln+1,nobj+1))
 
 ###################
 ### soln_ineqcv ###
@@ -570,31 +580,31 @@ def test_soln_obj_fset_ValueError(prob, nsoln, nobj):
 def test_soln_ineqcv_is_concrete():
     assert_concrete_property(Solution, "soln_ineqcv")
 
-def test_soln_ineqcv_fget(prob, nsoln, nineqcv):
-    assert isinstance(prob.soln_ineqcv, numpy.ndarray)
-    assert prob.soln_ineqcv.shape == (nsoln,nineqcv)
+def test_soln_ineqcv_fget(soln, nsoln, nineqcv):
+    assert isinstance(soln.soln_ineqcv, numpy.ndarray)
+    assert soln.soln_ineqcv.shape == (nsoln,nineqcv)
 
-def test_soln_ineqcv_fset(prob, nsoln, nineqcv):
+def test_soln_ineqcv_fset(soln, nsoln, nineqcv):
     with not_raises(TypeError):
-        prob.soln_ineqcv = numpy.random.random((nsoln,nineqcv))
+        soln.soln_ineqcv = numpy.random.random((nsoln,nineqcv))
     with not_raises(TypeError):
-        prob.soln_ineqcv = None
+        soln.soln_ineqcv = None
 
-def test_soln_ineqcv_fset_TypeError(prob, nineqcv):
+def test_soln_ineqcv_fset_TypeError(soln, nineqcv):
     with pytest.raises(TypeError):
-        prob.soln_ineqcv = object()
+        soln.soln_ineqcv = object()
     with pytest.raises(TypeError):
-        prob.soln_ineqcv = "string"
+        soln.soln_ineqcv = "string"
     with pytest.raises(TypeError):
-        prob.soln_ineqcv = int(1)
+        soln.soln_ineqcv = int(1)
     with pytest.raises(TypeError):
-        prob.soln_ineqcv = nineqcv * [1]
+        soln.soln_ineqcv = nineqcv * [1]
 
-def test_soln_ineqcv_fset_ValueError(prob, nsoln, nineqcv):
+def test_soln_ineqcv_fset_ValueError(soln, nsoln, nineqcv):
     with pytest.raises(ValueError):
-        prob.soln_ineqcv = numpy.random.random(nsoln)
+        soln.soln_ineqcv = numpy.random.random(nsoln)
     with pytest.raises(ValueError):
-        prob.soln_ineqcv = numpy.random.random((nsoln+1,nineqcv+1))
+        soln.soln_ineqcv = numpy.random.random((nsoln+1,nineqcv+1))
 
 #################
 ### soln_eqcv ###
@@ -602,31 +612,31 @@ def test_soln_ineqcv_fset_ValueError(prob, nsoln, nineqcv):
 def test_soln_eqcv_is_concrete():
     assert_concrete_property(Solution, "soln_eqcv")
 
-def test_soln_eqcv_fget(prob, nsoln, neqcv):
-    assert isinstance(prob.soln_eqcv, numpy.ndarray)
-    assert prob.soln_eqcv.shape == (nsoln,neqcv)
+def test_soln_eqcv_fget(soln, nsoln, neqcv):
+    assert isinstance(soln.soln_eqcv, numpy.ndarray)
+    assert soln.soln_eqcv.shape == (nsoln,neqcv)
 
-def test_soln_eqcv_fset(prob, nsoln, neqcv):
+def test_soln_eqcv_fset(soln, nsoln, neqcv):
     with not_raises(TypeError):
-        prob.soln_eqcv = numpy.random.random((nsoln,neqcv))
+        soln.soln_eqcv = numpy.random.random((nsoln,neqcv))
     with not_raises(TypeError):
-        prob.soln_eqcv = None
+        soln.soln_eqcv = None
 
-def test_soln_eqcv_fset_TypeError(prob, neqcv):
+def test_soln_eqcv_fset_TypeError(soln, neqcv):
     with pytest.raises(TypeError):
-        prob.soln_eqcv = object()
+        soln.soln_eqcv = object()
     with pytest.raises(TypeError):
-        prob.soln_eqcv = "string"
+        soln.soln_eqcv = "string"
     with pytest.raises(TypeError):
-        prob.soln_eqcv = int(1)
+        soln.soln_eqcv = int(1)
     with pytest.raises(TypeError):
-        prob.soln_eqcv = neqcv * [1]
+        soln.soln_eqcv = neqcv * [1]
 
-def test_soln_eqcv_fset_ValueError(prob, nsoln, neqcv):
+def test_soln_eqcv_fset_ValueError(soln, nsoln, neqcv):
     with pytest.raises(ValueError):
-        prob.soln_eqcv = numpy.random.random(nsoln)
+        soln.soln_eqcv = numpy.random.random(nsoln)
     with pytest.raises(ValueError):
-        prob.soln_eqcv = numpy.random.random((nsoln+1,neqcv+1))
+        soln.soln_eqcv = numpy.random.random((nsoln+1,neqcv+1))
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -648,8 +658,8 @@ def test_init_is_concrete():
 def test_check_is_Solution_is_concrete():
     assert_concrete_function(check_is_Solution)
 
-def test_check_is_Solution(prob):
+def test_check_is_Solution(soln):
     with not_raises(TypeError):
-        check_is_Solution(prob, "prob")
+        check_is_Solution(soln, "soln")
     with pytest.raises(TypeError):
-        check_is_Solution(None, "prob")
+        check_is_Solution(None, "soln")
