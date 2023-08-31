@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.core.mat.TraitMatrix import check_is_TraitMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield TraitMatrix()
+    yield DummyTraitMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -43,38 +44,38 @@ def test_ntrait_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_adjoin_trait_is_abstract(mat):
-    assert_abstract_method(mat, "adjoin_trait")
+def test_adjoin_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "adjoin_trait")
 
-def test_delete_trait_is_abstract(mat):
-    assert_abstract_method(mat, "delete_trait")
+def test_delete_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "delete_trait")
 
-def test_insert_trait_is_abstract(mat):
-    assert_abstract_method(mat, "insert_trait")
+def test_insert_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "insert_trait")
 
-def test_select_trait_is_abstract(mat):
-    assert_abstract_method(mat, "select_trait")
+def test_select_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "select_trait")
 
-def test_concat_trait_is_abstract(mat):
-    assert_abstract_method(mat, "concat_trait")
+def test_concat_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "concat_trait")
 
-def test_append_trait_is_abstract(mat):
-    assert_abstract_method(mat, "append_trait")
+def test_append_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "append_trait")
 
-def test_remove_trait_is_abstract(mat):
-    assert_abstract_method(mat, "remove_trait")
+def test_remove_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "remove_trait")
 
-def test_incorp_trait_is_abstract(mat):
-    assert_abstract_method(mat, "incorp_trait")
+def test_incorp_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "incorp_trait")
 
-def test_lexsort_trait_is_abstract(mat):
-    assert_abstract_method(mat, "lexsort_trait")
+def test_lexsort_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "lexsort_trait")
 
-def test_reorder_trait_is_abstract(mat):
-    assert_abstract_method(mat, "reorder_trait")
+def test_reorder_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "reorder_trait")
 
-def test_sort_trait_is_abstract(mat):
-    assert_abstract_method(mat, "sort_trait")
+def test_sort_trait_is_abstract():
+    assert_abstract_method(TraitMatrix, "sort_trait")
 
 ################################################################################
 ######################### Test class utility functions #########################

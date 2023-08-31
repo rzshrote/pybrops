@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import check_is_TaxaTraitMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield TaxaTraitMatrix()
+    yield DummyTaxaTraitMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

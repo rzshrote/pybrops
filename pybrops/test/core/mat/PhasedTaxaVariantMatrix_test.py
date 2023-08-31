@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.PhasedTaxaVariantMatrix import check_is_PhasedTaxaVariantMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield PhasedTaxaVariantMatrix()
+    yield DummyPhasedTaxaVariantMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

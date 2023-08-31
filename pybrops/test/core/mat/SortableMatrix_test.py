@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 from pybrops.core.mat.SortableMatrix import check_is_SortableMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield SortableMatrix()
+    yield DummySortableMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -34,14 +35,14 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_lexsort_is_abstract(mat):
-    assert_abstract_method(mat, "lexsort")
+def test_lexsort_is_abstract():
+    assert_abstract_method(SortableMatrix, "lexsort")
 
-def test_reorder_is_abstract(mat):
-    assert_abstract_method(mat, "reorder")
+def test_reorder_is_abstract():
+    assert_abstract_method(SortableMatrix, "reorder")
 
-def test_sort_is_abstract(mat):
-    assert_abstract_method(mat, "sort")
+def test_sort_is_abstract():
+    assert_abstract_method(SortableMatrix, "sort")
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.SquareMatrix import check_is_SquareMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield SquareMatrix()
+    yield DummySquareMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -46,8 +47,8 @@ def test_mat_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_append_is_abstract(mat):
-    assert_abstract_method(mat, "is_square")
+def test_append_is_abstract():
+    assert_abstract_method(SquareMatrix, "is_square")
 
 ################################################################################
 ######################### Test class utility functions #########################

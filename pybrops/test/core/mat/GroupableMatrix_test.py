@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.GroupableMatrix import check_is_GroupableMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield GroupableMatrix()
+    yield DummyGroupableMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -34,11 +35,11 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_group_is_abstract(mat):
-    assert_abstract_method(mat, "group")
+def test_group_is_abstract():
+    assert_abstract_method(GroupableMatrix, "group")
 
-def test_is_grouped_is_abstract(mat):
-    assert_abstract_method(mat, "is_grouped")
+def test_is_grouped_is_abstract():
+    assert_abstract_method(GroupableMatrix, "is_grouped")
 
 ################################################################################
 ######################### Test class utility functions #########################

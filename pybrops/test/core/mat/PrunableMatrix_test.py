@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PrunableMatrix import PrunableMatrix
 from pybrops.core.mat.PrunableMatrix import check_is_PrunableMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield PrunableMatrix()
+    yield DummyPrunableMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -36,8 +37,8 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_prune_is_abstract(mat):
-    assert_abstract_method(mat, "prune")
+def test_prune_is_abstract():
+    assert_abstract_method(PrunableMatrix, "prune")
 
 ################################################################################
 ######################### Test class utility functions #########################

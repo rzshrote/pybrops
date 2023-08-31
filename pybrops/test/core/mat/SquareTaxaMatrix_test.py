@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import check_is_SquareTaxaMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield SquareTaxaMatrix()
+    yield DummySquareTaxaMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

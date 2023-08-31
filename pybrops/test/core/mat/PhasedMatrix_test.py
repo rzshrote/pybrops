@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 from pybrops.core.mat.PhasedMatrix import check_is_PhasedMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield PhasedMatrix()
+    yield DummyPhasedMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -40,29 +41,29 @@ def test_nphase_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_adjoin_phase_is_abstract(mat):
-    assert_abstract_method(mat, "adjoin_phase")
+def test_adjoin_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "adjoin_phase")
 
-def test_delete_phase_is_abstract(mat):
-    assert_abstract_method(mat, "delete_phase")
+def test_delete_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "delete_phase")
 
-def test_insert_phase_is_abstract(mat):
-    assert_abstract_method(mat, "insert_phase")
+def test_insert_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "insert_phase")
 
-def test_select_phase_is_abstract(mat):
-    assert_abstract_method(mat, "select_phase")
+def test_select_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "select_phase")
 
-def test_concat_phase_is_abstract(mat):
-    assert_abstract_method(mat, "concat_phase")
+def test_concat_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "concat_phase")
 
-def test_append_phase_is_abstract(mat):
-    assert_abstract_method(mat, "append_phase")
+def test_append_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "append_phase")
 
-def test_remove_phase_is_abstract(mat):
-    assert_abstract_method(mat, "remove_phase")
+def test_remove_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "remove_phase")
 
-def test_incorp_phase_is_abstract(mat):
-    assert_abstract_method(mat, "incorp_phase")
+def test_incorp_phase_is_abstract():
+    assert_abstract_method(PhasedMatrix, "incorp_phase")
 
 ################################################################################
 ######################### Test class utility functions #########################

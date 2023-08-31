@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.core.mat.VariantMatrix import check_is_VariantMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield VariantMatrix()
+    yield DummyVariantMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -70,53 +71,44 @@ def test_vrnt_chrgrp_len_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_adjoin_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "adjoin_vrnt")
+def test_adjoin_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "adjoin_vrnt")
 
-def test_delete_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "delete_vrnt")
+def test_delete_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "delete_vrnt")
 
-def test_insert_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "insert_vrnt")
+def test_insert_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "insert_vrnt")
 
-def test_select_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "select_vrnt")
+def test_select_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "select_vrnt")
 
-def test_concat_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "concat_vrnt")
+def test_concat_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "concat_vrnt")
 
-def test_append_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "append_vrnt")
+def test_append_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "append_vrnt")
 
-def test_remove_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "remove_vrnt")
+def test_remove_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "remove_vrnt")
 
-def test_incorp_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "incorp_vrnt")
+def test_incorp_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "incorp_vrnt")
 
-def test_lexsort_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "lexsort_vrnt")
+def test_lexsort_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "lexsort_vrnt")
 
-def test_reorder_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "reorder_vrnt")
+def test_reorder_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "reorder_vrnt")
 
-def test_sort_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "sort_vrnt")
+def test_sort_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "sort_vrnt")
 
-def test_group_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "group_vrnt")
+def test_group_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "group_vrnt")
 
-def test_is_grouped_vrnt_is_abstract(mat):
-    assert_abstract_method(mat, "is_grouped_vrnt")
-
-def test_interp_genpos_is_abstract(mat):
-    assert_abstract_method(mat, "interp_genpos")
-
-def test_interp_xoprob_is_abstract(mat):
-    assert_abstract_method(mat, "interp_xoprob")
-
-def test_assign_hapgrp_is_abstract(mat):
-    assert_abstract_method(mat, "assign_hapgrp")
+def test_is_grouped_vrnt_is_abstract():
+    assert_abstract_method(VariantMatrix, "is_grouped_vrnt")
 
 ################################################################################
 ######################### Test class utility functions #########################

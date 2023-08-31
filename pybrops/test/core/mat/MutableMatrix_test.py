@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 from pybrops.core.mat.MutableMatrix import check_is_MutableMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield MutableMatrix()
+    yield DummyMutableMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -34,14 +35,14 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_append_is_abstract(mat):
-    assert_abstract_method(mat, "append")
+def test_append_is_abstract():
+    assert_abstract_method(MutableMatrix, "append")
 
-def test_remove_is_abstract(mat):
-    assert_abstract_method(mat, "remove")
+def test_remove_is_abstract():
+    assert_abstract_method(MutableMatrix, "remove")
 
-def test_incorp_is_abstract(mat):
-    assert_abstract_method(mat, "incorp")
+def test_incorp_is_abstract():
+    assert_abstract_method(MutableMatrix, "incorp")
 
 ################################################################################
 ######################### Test class utility functions #########################

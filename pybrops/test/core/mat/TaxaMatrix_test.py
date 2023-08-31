@@ -11,13 +11,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TaxaMatrix import check_is_TaxaMatrix
+from pybrops.test.core.mat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield TaxaMatrix()
+    yield DummyTaxaMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -58,47 +59,47 @@ def test_taxa_grp_len_is_abstract():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_lexsort_is_abstract(mat):
-    assert_abstract_method(mat, "lexsort")
+def test_lexsort_is_abstract():
+    assert_abstract_method(TaxaMatrix, "lexsort")
 
-def test_adjoin_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "adjoin_taxa")
+def test_adjoin_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "adjoin_taxa")
 
-def test_delete_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "delete_taxa")
+def test_delete_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "delete_taxa")
 
-def test_insert_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "insert_taxa")
+def test_insert_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "insert_taxa")
 
-def test_select_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "select_taxa")
+def test_select_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "select_taxa")
 
-def test_concat_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "concat_taxa")
+def test_concat_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "concat_taxa")
 
-def test_append_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "append_taxa")
+def test_append_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "append_taxa")
 
-def test_remove_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "remove_taxa")
+def test_remove_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "remove_taxa")
 
-def test_incorp_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "incorp_taxa")
+def test_incorp_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "incorp_taxa")
 
-def test_lexsort_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "lexsort_taxa")
+def test_lexsort_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "lexsort_taxa")
 
-def test_reorder_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "reorder_taxa")
+def test_reorder_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "reorder_taxa")
 
-def test_sort_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "sort_taxa")
+def test_sort_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "sort_taxa")
 
-def test_group_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "group_taxa")
+def test_group_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "group_taxa")
 
-def test_is_grouped_taxa_is_abstract(mat):
-    assert_abstract_method(mat, "is_grouped_taxa")
+def test_is_grouped_taxa_is_abstract():
+    assert_abstract_method(TaxaMatrix, "is_grouped_taxa")
 
 ################################################################################
 ######################### Test class utility functions #########################
