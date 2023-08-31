@@ -3,14 +3,12 @@ import numpy
 
 from pybrops.test.assert_python import not_raises
 from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import check_is_DenseGeneticVarianceMatrix
+from pybrops.test.model.vmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -40,7 +38,7 @@ def mat_taxa_grp():
 
 @pytest.fixture
 def mat(mat_float64, mat_taxa, mat_taxa_grp):
-    yield DenseGeneticVarianceMatrix(
+    yield DummyDenseGeneticVarianceMatrix(
         mat = mat_float64,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp

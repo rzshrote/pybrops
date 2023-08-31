@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import check_is_GeneticVarianceMatrixFactory
+from pybrops.test.model.vmat.fcty.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def fcty():
-    yield GeneticVarianceMatrixFactory()
+    yield DummyGeneticVarianceMatrixFactory()
 
 ################################################################################
 ############################## Test class docstring ############################

@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import check_is_AdditiveGenicVarianceMatrix
+from pybrops.test.model.vmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield AdditiveGenicVarianceMatrix()
+    yield DummyAdditiveGenicVarianceMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -35,8 +36,8 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_from_algmod_is_abstract(mat):
-    assert_abstract_method(mat, "from_algmod")
+def test_from_algmod_is_abstract():
+    assert_abstract_method(AdditiveGenicVarianceMatrix, "from_algmod")
 
 ################################################################################
 ######################### Test class utility functions #########################

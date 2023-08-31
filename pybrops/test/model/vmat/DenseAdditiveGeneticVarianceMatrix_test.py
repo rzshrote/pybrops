@@ -8,6 +8,7 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import check_is_DenseAdditiveGeneticVarianceMatrix
+from pybrops.test.model.vmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -37,7 +38,7 @@ def mat_taxa_grp():
 
 @pytest.fixture
 def mat(mat_float64, mat_taxa, mat_taxa_grp):
-    yield DenseAdditiveGeneticVarianceMatrix(
+    yield DummyDenseAdditiveGeneticVarianceMatrix(
         mat = mat_float64,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
