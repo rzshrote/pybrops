@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.breed.prot.bv.BreedingValueProtocol import check_is_BreedingValueProtocol
+from pybrops.test.breed.prot.bv.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def bvprot():
-    yield BreedingValueProtocol()
+    yield DummyBreedingValueProtocol()
 
 ################################################################################
 ############################## Test class docstring ############################

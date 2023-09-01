@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.breed.prot.pt.PhenotypingProtocol import check_is_PhenotypingProtocol
+from pybrops.test.breed.prot.pt.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def ptprot():
-    yield PhenotypingProtocol()
+    yield DummyPhenotypingProtocol()
 
 ################################################################################
 ############################## Test class docstring ############################

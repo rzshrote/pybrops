@@ -7,9 +7,10 @@ import numpy
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_type_python import check_is_str
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import check_is_PhenotypeDataFrame
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame, check_is_PhenotypeDataFrame
 
 class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """
@@ -18,7 +19,12 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(self, taxa_col, trait_col, **kwargs: dict):
+    def __init__(
+            self, 
+            taxa_col: str, 
+            trait_col: str, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class Mean MeanPhenotypicBreedingValue.
 
@@ -46,7 +52,13 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     ############################ Object Properties #############################
 
     ############################## Object Methods ##############################
-    def estimate(self, ptobj, gtobj, miscout = None, **kwargs: dict):
+    def estimate(
+            self, 
+            ptobj: PhenotypeDataFrame, 
+            gtobj: GenotypeMatrix, 
+            miscout: dict = None, 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Estimate breeding values by taking the mean performance.
 

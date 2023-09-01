@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.breed.prot.gt.GenotypingProtocol import check_is_GenotypingProtocol
+from pybrops.test.breed.prot.gt.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def bvprot():
-    yield GenotypingProtocol()
+    yield DummyGenotypingProtocol()
 
 ################################################################################
 ############################## Test class docstring ############################

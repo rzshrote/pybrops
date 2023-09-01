@@ -2,13 +2,14 @@
 Module containing the abstract class GenotypingProtocol and its service functions.
 """
 
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenotypingProtocol:
+class GenotypingProtocol(metaclass=ABCMeta):
     """
     Abstract class defining genotyping protocols.
 
@@ -17,21 +18,9 @@ class GenotypingProtocol:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GenotypingProtocol.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(GenotypingProtocol, self).__init__()
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def genotype(
             self, 
             pgmat: PhasedGenotypeMatrix, 

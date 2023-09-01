@@ -3,11 +3,13 @@ Module defining interfaces and associated error checking methods for breeding
 value calculation protocols.
 """
 
+from abc import ABCMeta, abstractmethod
 from typing import Optional
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
-class BreedingValueProtocol:
+class BreedingValueProtocol(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for breeding value calculation protocols.
 
@@ -16,24 +18,12 @@ class BreedingValueProtocol:
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class BreedingValueProtocol.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(BreedingValueProtocol, self).__init__()
 
     ############################## Object Methods ##############################
+    @abstractmethod
     def estimate(
             self, 
-            ptobj, 
+            ptobj: PhenotypeDataFrame, 
             gtobj: GenotypeMatrix, 
             miscout: Optional[dict], 
             **kwargs: dict

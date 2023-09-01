@@ -2,9 +2,14 @@
 Module implementing the extraction of true breeding value.
 """
 
+from typing import Union
+import numpy
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class TrueBreedingValue(BreedingValueProtocol):
     """
@@ -12,7 +17,11 @@ class TrueBreedingValue(BreedingValueProtocol):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(self, gpmod, **kwargs: dict):
+    def __init__(
+            self, 
+            gpmod: GenomicModel, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class TrueBreedingValue.
 
@@ -39,7 +48,13 @@ class TrueBreedingValue(BreedingValueProtocol):
         self._gpmod = value
 
     ############################## Object Methods ##############################
-    def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs: dict):
+    def estimate(
+            self, 
+            ptobj: Union[PhenotypeDataFrame,BreedingValueMatrix,numpy.ndarray], 
+            gtobj: Union[GenotypeMatrix,numpy.ndarray], 
+            miscout: dict = None, 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Estimate breeding values.
 
@@ -65,16 +80,7 @@ class TrueBreedingValue(BreedingValueProtocol):
         out : BreedingValueMatrix
             A matrix of breeding values.
         """
-        # check inputs
-        check_is_PhasedGenotypeMatrix(gtobj, "gmat")
-
-        # get default parameters
-        if gpmod is None:
-            gpmod = self.gpmod
-        else:
-            check_is_GenomicModel(gpmod, "gpmod")
-
         # calculate true breeding values
-        bvmat = gpmod.gebv(gtobj)
+        bvmat = self.gpmod.gebv(gtobj)
 
         return bvmat
