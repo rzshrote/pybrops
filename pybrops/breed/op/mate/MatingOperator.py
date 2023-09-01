@@ -8,7 +8,10 @@ __all__ = [
     "check_is_MatingOperator"
 ]
 
-class MatingOperator:
+from abc import ABCMeta, abstractmethod
+
+
+class MatingOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for the mating of an entire breeding
     program.
@@ -17,21 +20,23 @@ class MatingOperator:
         1) Mating of an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def mate(
             self, 
+            mcfg: dict, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class MatingOperator
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(MatingOperator, self).__init__()
-
-    def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Mate individuals selected as parents in a breeding program.
 

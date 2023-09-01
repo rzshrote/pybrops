@@ -11,11 +11,11 @@ import copy
 from typing import Union
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
-from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
-from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
-from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
-from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
-from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
+from pybrops.breed.op.init.InitializationOperator import InitializationOperator, check_is_InitializationOperator
+from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator, check_is_EvaluationOperator
+from pybrops.breed.op.mate.MatingOperator import MatingOperator, check_is_MatingOperator
+from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator, check_is_ParentSelectionOperator
+from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator, check_is_SurvivorSelectionOperator
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_value_python import check_keys_in_dict
@@ -29,11 +29,11 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
-            initop, 
-            pselop, 
-            mateop, 
-            evalop, 
-            sselop, 
+            initop: InitializationOperator, 
+            pselop: ParentSelectionOperator, 
+            mateop: MatingOperator, 
+            evalop: EvaluationOperator, 
+            sselop: SurvivorSelectionOperator, 
             t_max, 
             start_genome = None, 
             start_geno = None, 
@@ -41,7 +41,7 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
             start_bval = None, 
             start_gmod = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class RecurrentSelectionBreedingProgram.
 
@@ -188,51 +188,51 @@ class RecurrentSelectionBreedingProgram(BreedingProgram):
 
     ######### Breeding program operator properties #########
     @property
-    def initop(self) -> object:
+    def initop(self) -> InitializationOperator:
         """Initialization operator."""
         return self._initop
     @initop.setter
-    def initop(self, value: object) -> None:
+    def initop(self, value: InitializationOperator) -> None:
         """Set the initialization operator"""
         check_is_InitializationOperator(value, "initop")
         self._initop = value
 
     @property
-    def pselop(self) -> object:
+    def pselop(self) -> ParentSelectionOperator:
         """Parent selection operator."""
         return self._pselop
     @pselop.setter
-    def pselop(self, value: object) -> None:
+    def pselop(self, value: ParentSelectionOperator) -> None:
         """Set the parent selection operator"""
         check_is_ParentSelectionOperator(value, "pselop")
         self._pselop = value
 
     @property
-    def mateop(self) -> object:
+    def mateop(self) -> MatingOperator:
         """Mating operator."""
         return self._mateop
     @mateop.setter
-    def mateop(self, value: object) -> None:
+    def mateop(self, value: MatingOperator) -> None:
         """Set the mating operator"""
         check_is_MatingOperator(value, "mateop")
         self._mateop = value
 
     @property
-    def evalop(self) -> object:
+    def evalop(self) -> EvaluationOperator:
         """Evaluation operator."""
         return self._evalop
     @evalop.setter
-    def evalop(self, value: object) -> None:
+    def evalop(self, value: EvaluationOperator) -> None:
         """Set the evaluation operator"""
         check_is_EvaluationOperator(value, "evalop")
         self._evalop = value
 
     @property
-    def sselop(self) -> object:
+    def sselop(self) -> SurvivorSelectionOperator:
         """Survivor selection operator."""
         return self._sselop
     @sselop.setter
-    def sselop(self, value: object) -> None:
+    def sselop(self, value: SurvivorSelectionOperator) -> None:
         """Set the survivor selection operator"""
         check_is_SurvivorSelectionOperator(value, "sselop")
         self._sselop = value

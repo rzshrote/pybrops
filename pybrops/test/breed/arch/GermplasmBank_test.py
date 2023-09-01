@@ -7,13 +7,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.GermplasmBank import GermplasmBank
 from pybrops.breed.arch.GermplasmBank import check_is_GermplasmBank
+from pybrops.test.breed.arch.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def arch():
-    yield GermplasmBank()
+    yield DummyGermplasmBank()
 
 ################################################################################
 ############################## Test class docstring ############################

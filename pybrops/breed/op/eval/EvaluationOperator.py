@@ -8,7 +8,10 @@ __all__ = [
     "check_is_EvaluationOperator"
 ]
 
-class EvaluationOperator:
+from abc import ABCMeta, abstractmethod
+
+
+class EvaluationOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
     program.
@@ -17,21 +20,22 @@ class EvaluationOperator:
         1) Evaluation of an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def evaluate(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class EvaluationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(EvaluationOperator, self).__init__()
-
-    def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Evaluate individuals in a breeding program.
 

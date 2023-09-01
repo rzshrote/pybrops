@@ -8,7 +8,10 @@ __all__ = [
     "check_is_ParentSelectionOperator"
 ]
 
-class ParentSelectionOperator:
+from abc import ABCMeta, abstractmethod
+
+
+class ParentSelectionOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for parental selection within an entire
     breeding program.
@@ -17,21 +20,22 @@ class ParentSelectionOperator:
         1) Parental selection for an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def pselect(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class ParentSelectionOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(ParentSelectionOperator, self).__init__()
-
-    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Select individuals to serve as parents in a breeding program.
 

@@ -13,29 +13,30 @@ from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOpe
 
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import RecurrentSelectionBreedingProgram
 from pybrops.breed.arch.RecurrentSelectionBreedingProgram import check_is_RecurrentSelectionBreedingProgram
+from pybrops.test.breed.arch.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def initop():
-    yield InitializationOperator()
+    yield DummyInitializationOperator()
 
 @pytest.fixture
 def pselop():
-    yield ParentSelectionOperator()
+    yield DummyParentSelectionOperator()
 
 @pytest.fixture
 def mateop():
-    yield MatingOperator()
+    yield DummyMatingOperator()
 
 @pytest.fixture
 def evalop():
-    yield EvaluationOperator()
+    yield DummyEvaluationOperator()
 
 @pytest.fixture
 def sselop():
-    yield SurvivorSelectionOperator()
+    yield DummySurvivorSelectionOperator()
 
 @pytest.fixture
 def t_max():

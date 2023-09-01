@@ -8,7 +8,11 @@ __all__ = [
     "check_is_InitializationOperator"
 ]
 
-class InitializationOperator:
+from abc import ABCMeta, abstractmethod
+from typing import Optional
+
+
+class InitializationOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
     program.
@@ -17,21 +21,15 @@ class InitializationOperator:
         1) Initialization of an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def initialize(
             self, 
+            miscout: Optional[dict], 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class InitializationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(InitializationOperator, self).__init__()
-
-    def initialize(self, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Initialize a breeding program.
 

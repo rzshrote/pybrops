@@ -8,9 +8,11 @@ __all__ = [
     "check_is_BreedingProgram"
 ]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.breed.arch.BreedingNode import BreedingNode
+from pybrops.breed.op.log.Logbook import Logbook
 
-class BreedingProgram(BreedingNode):
+class BreedingProgram(BreedingNode,metaclass=ABCMeta):
     """
     Abstract class defining a breeding program.
 
@@ -40,92 +42,112 @@ class BreedingProgram(BreedingNode):
 
     ############ Starting condition containers #############
     @property
+    @abstractmethod
     def start_genome(self) -> object:
         """Starting genomes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @start_genome.setter
+    @abstractmethod
     def start_genome(self, value: object) -> None:
         """Set starting genomes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def start_geno(self) -> object:
         """Starting genotypes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @start_geno.setter
+    @abstractmethod
     def start_geno(self, value: object) -> None:
         """Set starting genotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def start_pheno(self) -> object:
         """Starting phenotypes for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @start_pheno.setter
+    @abstractmethod
     def start_pheno(self, value: object) -> None:
         """Set starting phenotypes for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def start_bval(self) -> object:
         """Starting breeding values for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @start_bval.setter
+    @abstractmethod
     def start_bval(self, value: object) -> None:
         """Set starting breeding values for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def start_gmod(self) -> object:
         """Starting genomic models for individuals in the breeding program."""
         raise NotImplementedError("property is abstract")
     @start_gmod.setter
+    @abstractmethod
     def start_gmod(self, value: object) -> None:
         """Set starting genomic models for individuals in the breeding program"""
         raise NotImplementedError("property is abstract")
 
     ######### Breeding program operator properties #########
     @property
+    @abstractmethod
     def initop(self) -> object:
         """Initialization operator."""
         raise NotImplementedError("property is abstract")
     @initop.setter
+    @abstractmethod
     def initop(self, value: object) -> None:
         """Set the initialization operator"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def pselop(self) -> object:
         """Parent selection operator."""
         raise NotImplementedError("property is abstract")
     @pselop.setter
+    @abstractmethod
     def pselop(self, value: object) -> None:
         """Set the parent selection operator"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def mateop(self) -> object:
         """Mating operator."""
         raise NotImplementedError("property is abstract")
     @mateop.setter
+    @abstractmethod
     def mateop(self, value: object) -> None:
         """Set the mating operator"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def evalop(self) -> object:
         """Evaluation operator."""
         raise NotImplementedError("property is abstract")
     @evalop.setter
+    @abstractmethod
     def evalop(self, value: object) -> None:
         """Set the evaluation operator"""
         raise NotImplementedError("property is abstract")
 
     @property
+    @abstractmethod
     def sselop(self) -> object:
         """Survivor selection operator."""
         raise NotImplementedError("property is abstract")
     @sselop.setter
+    @abstractmethod
     def sselop(self, value: object) -> None:
         """Set the survivor selection operator"""
         raise NotImplementedError("property is abstract")
@@ -133,14 +155,22 @@ class BreedingProgram(BreedingNode):
     ############################## Object Methods ##############################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs: dict):
+    @abstractmethod
+    def initialize(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         raise NotImplementedError("method is abstract")
 
-    def is_initialized(self, **kwargs: dict):
+    @abstractmethod
+    def is_initialized(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -159,7 +189,11 @@ class BreedingProgram(BreedingNode):
         raise NotImplementedError("method is abstract")
 
     ############# Population evolution methods #############
-    def reset(self, **kwargs: dict):
+    @abstractmethod
+    def reset(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -170,7 +204,13 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def advance(self, ngen, lbook, **kwargs: dict):
+    @abstractmethod
+    def advance(
+            self, 
+            ngen: int, 
+            lbook: Logbook, 
+            **kwargs: dict
+        ) -> None:
         """
         Advance the breeding program by a specified number of generations.
 
@@ -185,7 +225,14 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def evolve(self, nrep, ngen, lbook, **kwargs: dict):
+    @abstractmethod
+    def evolve(
+            self, 
+            nrep: int, 
+            ngen: int, 
+            lbook: Logbook, 
+            **kwargs: dict
+        ) -> None:
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,

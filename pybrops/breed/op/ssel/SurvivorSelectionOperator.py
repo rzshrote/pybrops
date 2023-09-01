@@ -8,7 +8,10 @@ __all__ = [
     "check_is_SurvivorSelectionOperator"
 ]
 
-class SurvivorSelectionOperator:
+from abc import ABCMeta, abstractmethod
+
+
+class SurvivorSelectionOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for survivor selection within an entire
     breeding program.
@@ -17,21 +20,22 @@ class SurvivorSelectionOperator:
         1) Survivor selection for an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def sselect(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class SurvivorSelectionOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(SurvivorSelectionOperator, self).__init__()
-
-    def sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Select progeny survivors in a breeding program.
 

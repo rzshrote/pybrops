@@ -7,13 +7,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.EmigrationOperator import EmigrationOperator
 from pybrops.breed.arch.EmigrationOperator import check_is_EmigrationOperator
+from pybrops.test.breed.arch.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def arch():
-    yield EmigrationOperator()
+    yield DummyEmigrationOperator()
 
 ################################################################################
 ############################## Test class docstring ############################

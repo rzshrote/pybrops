@@ -7,13 +7,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 from pybrops.breed.arch.BreedingEdge import check_is_BreedingEdge
+from pybrops.test.breed.arch.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def arch():
-    yield BreedingEdge()
+    yield DummyBreedingEdge()
 
 ################################################################################
 ############################## Test class docstring ############################

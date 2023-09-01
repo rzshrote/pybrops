@@ -8,9 +8,10 @@ __all__ = [
     "check_is_GermplasmBank"
 ]
 
+from abc import ABCMeta
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
-class GermplasmBank(BreedingNode):
+class GermplasmBank(BreedingNode,metaclass=ABCMeta):
     """
     Abstract class defining a germplasm bank.
 
@@ -19,19 +20,6 @@ class GermplasmBank(BreedingNode):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GermplasmBank.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(GermplasmBank, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 

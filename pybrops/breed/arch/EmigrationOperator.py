@@ -8,9 +8,11 @@ __all__ = [
     "check_is_EmigrationOperator"
 ]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
+from pybrops.breed.arch.BreedingNode import BreedingNode
 
-class EmigrationOperator(BreedingEdge):
+class EmigrationOperator(BreedingEdge,metaclass=ABCMeta):
     """
     Abstract class defining immigration operators.
 
@@ -19,24 +21,16 @@ class EmigrationOperator(BreedingEdge):
     """
 
     ########################## Special Object Methods ##########################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class EmigrationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(EmigrationOperator, self).__init__(**kwargs)
 
     ############################ Object Properties #############################
 
     ############################## Object Methods ##############################
-    def emigrate(self, bnode, **kwargs: dict):
+    @abstractmethod
+    def emigrate(
+            self, 
+            bnode: BreedingNode, 
+            **kwargs: dict
+        ) -> None:
         """
         Emigrate individuals to a BreedingNode.
 

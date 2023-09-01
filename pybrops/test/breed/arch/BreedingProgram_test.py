@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.arch.BreedingProgram import BreedingProgram
 from pybrops.breed.arch.BreedingProgram import check_is_BreedingProgram
+from pybrops.test.breed.arch.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def arch():
-    yield BreedingProgram()
+    yield DummyBreedingProgram()
 
 ################################################################################
 ############################## Test class docstring ############################
