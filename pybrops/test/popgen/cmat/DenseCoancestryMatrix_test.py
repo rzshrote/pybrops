@@ -9,6 +9,7 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import check_is_DenseCoancestryMatrix
+from pybrops.test.popgen.cmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -35,7 +36,7 @@ def A_mat_float64(X_mat_int8):
 
 @pytest.fixture
 def cmat(A_mat_float64):
-    yield DenseCoancestryMatrix(A_mat_float64)
+    yield DummyDenseCoancestryMatrix(A_mat_float64)
 
 ################################################################################
 ############################## Test class docstring ############################

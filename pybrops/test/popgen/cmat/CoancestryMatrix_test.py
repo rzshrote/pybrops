@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.cmat.CoancestryMatrix import check_is_CoancestryMatrix
+from pybrops.test.popgen.cmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def cmat():
-    yield CoancestryMatrix()
+    yield DummyCoancestryMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

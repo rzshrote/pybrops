@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
+from pybrops.test.popgen.gmap.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def gmap():
-    yield GeneticMap()
+    yield DummyGeneticMap()
 
 ################################################################################
 ############################## Test class docstring ############################

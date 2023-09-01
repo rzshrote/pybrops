@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import check_is_BreedingValueMatrix
+from pybrops.test.popgen.bvmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield BreedingValueMatrix()
+    yield DummyBreedingValueMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
