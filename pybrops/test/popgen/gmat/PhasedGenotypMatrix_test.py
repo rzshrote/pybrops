@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.test.popgen.gmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield PhasedGenotypeMatrix()
+    yield DummyPhasedGenotypeMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

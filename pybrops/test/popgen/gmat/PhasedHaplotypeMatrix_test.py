@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.PhasedHaplotypeMatrix import PhasedHaplotypeMatrix
 from pybrops.popgen.gmat.PhasedHaplotypeMatrix import check_is_PhasedHaplotypeMatrix
+from pybrops.test.popgen.gmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield PhasedHaplotypeMatrix()
+    yield DummyPhasedHaplotypeMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
+from pybrops.test.popgen.gmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield GenotypeMatrix()
+    yield DummyGenotypeMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################

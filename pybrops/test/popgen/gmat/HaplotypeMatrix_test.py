@@ -1,4 +1,3 @@
-import inspect
 import pytest
 
 from pybrops.test.assert_python import not_raises
@@ -10,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import check_is_HaplotypeMatrix
+from pybrops.test.popgen.gmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mat():
-    yield HaplotypeMatrix()
+    yield DummyHaplotypeMatrix()
 
 ################################################################################
 ############################## Test class docstring ############################
