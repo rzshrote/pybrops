@@ -9,13 +9,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.log.Logbook import Logbook
 from pybrops.breed.op.log.Logbook import check_is_Logbook
+from pybrops.test.breed.op.log.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def logbook():
-    yield Logbook()
+    yield DummyLogbook()
 
 ################################################################################
 ############################## Test class docstring ############################

@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
 from pybrops.breed.op.psel.ParentSelectionOperator import check_is_ParentSelectionOperator
+from pybrops.test.breed.op.psel.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def operator():
-    yield ParentSelectionOperator()
+    yield DummyParentSelectionOperator()
 
 ################################################################################
 ############################## Test class docstring ############################

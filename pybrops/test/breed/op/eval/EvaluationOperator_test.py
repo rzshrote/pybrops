@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
 from pybrops.breed.op.eval.EvaluationOperator import check_is_EvaluationOperator
+from pybrops.test.breed.op.eval.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def operator():
-    yield EvaluationOperator()
+    yield DummyEvaluationOperator()
 
 ################################################################################
 ############################## Test class docstring ############################

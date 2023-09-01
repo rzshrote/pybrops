@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
+from pybrops.test.breed.op.init.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def operator():
-    yield InitializationOperator()
+    yield DummyInitializationOperator()
 
 ################################################################################
 ############################## Test class docstring ############################

@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.mate.MatingOperator import MatingOperator
 from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
+from pybrops.test.breed.op.mate.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def operator():
-    yield MatingOperator()
+    yield DummyMatingOperator()
 
 ################################################################################
 ############################## Test class docstring ############################

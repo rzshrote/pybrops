@@ -8,13 +8,14 @@ from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSelectionOperator
+from pybrops.test.breed.op.ssel.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def operator():
-    yield SurvivorSelectionOperator()
+    yield DummySurvivorSelectionOperator()
 
 ################################################################################
 ############################## Test class docstring ############################
