@@ -201,6 +201,39 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
     ############################ Object Properties #############################
 
+    #################### Model copying #####################
+    def copy(
+            self
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Make a shallow copy of the GenomicModel.
+
+        Returns
+        -------
+        out : GenomicModel
+            A shallow copy of the original GenomicModel
+        """
+        return copy.copy(self)
+
+    def deepcopy(
+            self,
+            memo: Optional[dict] = None
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Make a deep copy of the GenomicModel.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : GenomicModel
+            A deep copy of the original GenomicModel
+        """
+        return copy.deepcopy(self, memo)
+
     ############## Linear Genomic Model Data ###############
     @property
     def beta(self) -> numpy.ndarray:
@@ -812,7 +845,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     def var_a_numpy(
             self, 
             p: numpy.ndarray, 
-            ploidy: Integral, 
+            ploidy: Integral = 2, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -902,7 +935,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             self, 
             Z: numpy.ndarray, 
             p: numpy.ndarray, 
-            ploidy: Integral, 
+            ploidy: Integral = 2, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1579,15 +1612,15 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             groupname: Optional[str] = None
         ) -> None:
         """
-        Write GenotypeMatrix to an HDF5 file.
+        Write GenomicModel to an HDF5 file.
 
         Parameters
         ----------
         filename : str
             HDF5 file name to which to write.
         groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If ``None``, GenotypeMatrix is written to the base HDF5 group.
+            HDF5 group name under which GenomicModel data is stored.
+            If ``None``, GenomicModel is written to the base HDF5 group.
         """
         h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
         ######################################################### process groupname argument

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import copy
 import numpy
 
 # import GenomicModel classes (abstract interface classes)
@@ -104,22 +105,48 @@ gmat = DenseGenotypeMatrix(
     ploidy = ploidy
 )
 
+###
+### Constuct 
+###
+
 
 # general properties
-algmod.model_name
-algmod.params
+tmp = algmod.model_name
+tmp = algmod.params
 
 # model properties
-algmod.beta
-algmod.u
-algmod.u_a
-algmod.u_misc
+tmp = algmod.beta
+tmp = algmod.u
+tmp = algmod.u_a
+tmp = algmod.u_misc
 
 # trait properties
-algmod.ntrait
-algmod.trait
+tmp = algmod.ntrait
+tmp = algmod.trait
 
-# methods
+############################################################
+################## Method Demonstrations ###################
+############################################################
+
+###
+### Copying models
+###
+
+#
+# Shallow copying
+#
+
+# copy a genomic model
+tmp = copy.copy(algmod)
+tmp = algmod.copy()
+
+#
+# Deep copying
+#
+
+# deep copy a genomic model
+tmp = copy.deepcopy(algmod)
+tmp = algmod.deepcopy()
 
 ###
 ### Model fitting methods
@@ -128,44 +155,168 @@ algmod.trait
 algmod.fit_numpy()
 algmod.fit()
 
-algmod.predict_numpy()
-algmod.predict()
+###
+### Model prediction methods
+###
 
-algmod.score_numpy()
-algmod.score()
+# create random genotypes to test
+X = numpy.ones((ntaxa,1))
+Z = numpy.random.randint(0, ploidy+1, size = (ntaxa,nvrnt)).astype("int8")
 
-algmod.gebv_numpy()
-algmod.gebv()
+# predict genotypic values using numpy arrays
+out = algmod.predict_numpy(X, Z)
 
-algmod.var_G_numpy()
-algmod.var_G()
-algmod.var_A_numpy()
-algmod.var_A()
-algmod.var_a_numpy()
-algmod.var_a()
-algmod.bulmer_numpy()
-algmod.bulmer()
+# predict genotypic values using objects
+out = algmod.predict(cvobj = X, gtobj = gmat)
 
-algmod.usl_numpy()
-algmod.usl()
-algmod.lsl_numpy()
-algmod.lsl()
+###
+### Score model prediction accuracy
+###
 
-algmod.facount()
-algmod.fafreq()
-algmod.faavail()
-algmod.faavailval(gmat)
-algmod.fafixed()
-algmod.fafixedval()
+# create some dummy matrices for input
+X = numpy.ones((ntaxa,1))
+B = algmod.beta
+Z = gmat.mat
+U = algmod.u_a
+Y = X@B + Z@U
+e = numpy.random.normal(size = Y.shape)
+Y += e
 
-algmod.dacount()
-algmod.dafreq()
-algmod.daavail()
-algmod.daavailval()
-algmod.dafixed()
-algmod.dafixedval()
+# score predictions using numpy arrays
+out = algmod.score_numpy(Y, X, Z)
 
-algmod.polyval()
+# score predictions using objects
+out = algmod.score(ptobj = Y, cvobj = X, gtobj = gmat)
 
-algmod.to_hdf5()
-algmod.from_hdf5()
+###
+### Predicting genomic estimated breeding values
+###
+
+# predict GEBVs using numpy arrays
+out = algmod.gebv_numpy(Z)
+
+# predict GEBVs using objects
+out = algmod.gebv(gmat)
+
+###
+### Calculating population genetic variance terms
+###
+
+#
+# Predicting genetic variance
+#
+
+# predict Var(G) using numpy arrays
+out = algmod.var_G_numpy(Z)
+
+# predict Var(G) using objects
+out = algmod.var_G(gmat)
+
+#
+# Predicting additive genetic variance
+#
+
+# predict Var(A) using numpy arrays
+out = algmod.var_A_numpy(Z)
+
+# predict Var(A) using objects
+out = algmod.var_A(gmat)
+
+#
+# Predicting additive genic variance
+#
+
+# predict Var(a) using numpy arrays
+out = algmod.var_a_numpy(
+    p = gmat.afreq(),
+    ploidy = gmat.ploidy
+)
+
+# predict Var(a) using objects
+out = algmod.var_a(gmat)
+
+#
+# Predicting the Bulmer effect
+#
+
+# predict Bulmer effect using numpy arrays
+out = algmod.bulmer_numpy(
+    Z,
+    p = gmat.afreq(),
+    ploidy = gmat.ploidy
+)
+
+# predict Bulmer effect using objects
+out = algmod.bulmer(gmat)
+
+###
+### Calculating population selection limits
+###
+
+#
+# Upper selection limit
+#
+
+# upper selection limit using numpy arrays
+out = algmod.usl_numpy(
+    p = gmat.afreq(),
+    ploidy = gmat.ploidy
+)
+
+# upper selection limit using objects
+out = algmod.usl(gtobj = gmat)
+
+#
+# Lower selection limit
+#
+
+# lower selection limit using numpy arrays
+out = algmod.lsl_numpy(
+    p = gmat.afreq(),
+    ploidy = gmat.ploidy
+)
+
+# lower selection limit using objects
+out = algmod.lsl(gtobj = gmat)
+
+###
+### Calculating favorable allele metrics
+###
+
+# calculate favorable allele counts
+out = algmod.facount(gmat)
+
+# calculate favorable allele frequencies
+out = algmod.fafreq(gmat)
+
+# calculate favorable allele availability at loci in a population
+out = algmod.faavail(gmat)
+
+# calculate favorable allele fixation at loci in a population
+out = algmod.fafixed(gmat)
+
+###
+### Calculating deleterious allele metrics
+###
+
+# calculate deleterious allele counts
+out = algmod.dacount(gmat)
+
+# calculate deleterious allele frequencies
+out = algmod.dafreq(gmat)
+
+# calculate deleterious allele availability at loci in a population
+out = algmod.daavail(gmat)
+
+# calculate deleterious allele fixation at loci in a population
+out = algmod.dafixed(gmat)
+
+###
+### Reading and writing a genomic model
+###
+
+# writing a genomic model to a file
+algmod.to_hdf5("saved_algmod.h5")
+
+# reading a genomic model from a file
+out = DenseAdditiveLinearGenomicModel.from_hdf5("saved_algmod.h5")

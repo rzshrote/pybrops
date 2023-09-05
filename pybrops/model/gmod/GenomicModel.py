@@ -3,6 +3,7 @@ Module defining basal interfaces and error checking routines for genomic models.
 """
 
 from abc import ABCMeta, abstractmethod
+import copy
 from typing import Optional, Union
 import numpy
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
@@ -103,6 +104,41 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
+
+    #################### Model copying #####################
+    @abstractmethod
+    def copy(
+            self
+        ) -> 'GenomicModel':
+        """
+        Make a shallow copy of the GenomicModel.
+
+        Returns
+        -------
+        out : GenomicModel
+            A shallow copy of the original GenomicModel
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def deepcopy(
+            self,
+            memo: Optional[dict]
+        ) -> 'GenomicModel':
+        """
+        Make a deep copy of the GenomicModel.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : GenomicModel
+            A deep copy of the original GenomicModel
+        """
+        raise NotImplementedError("method is abstract")
 
     ####### methods for model fitting and prediction #######
     @abstractmethod
