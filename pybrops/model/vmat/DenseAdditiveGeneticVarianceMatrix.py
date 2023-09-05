@@ -27,6 +27,7 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ):
         """
@@ -40,6 +41,8 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -47,6 +50,7 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 

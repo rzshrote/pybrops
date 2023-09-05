@@ -29,12 +29,30 @@ class DenseAdditiveGenicVarianceMatrix(DenseGenicVarianceMatrix,AdditiveGenicVar
             mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ):
+        """
+        Constructor for the concrete class DenseAdditiveGenicVarianceMatrix.
+
+        Parameters
+        ----------
+        mat : numpy.ndarray
+            Array used to construct the object.
+        taxa : numpy.ndarray
+            Taxa names.
+        taxa_grp : numpy.ndarray
+            Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
+        kwargs : dict
+            Additional keyword arguments.
+        """
         super(DenseAdditiveGenicVarianceMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 

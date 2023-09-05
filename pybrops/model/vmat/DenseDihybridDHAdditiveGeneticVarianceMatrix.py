@@ -36,6 +36,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -56,6 +57,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
@@ -74,6 +76,11 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     def square_axes(self) -> tuple:
         """Get axis indices for axes that are square"""
         return (0,1) # (female, male)
+
+    #################### Trait metadata ####################
+    @DenseAdditiveGeneticVarianceMatrix.trait_axis.getter
+    def trait_axis(self) -> int:
+        return 2
 
     ######## Expected parental genome contributions ########
     @DenseAdditiveGeneticVarianceMatrix.epgc.getter

@@ -15,7 +15,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
+class DenseDihybridDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
     """
     A concrete class for dense additive genic variance matrices calculated
     for two-way DH progenies.
@@ -34,7 +34,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             **kwargs: dict
         ):
         """
-        Constructor for the concrete class DenseTwoWayDHAdditiveGenicVarianceMatrix.
+        Constructor for the concrete class DenseDihybridDHAdditiveGenicVarianceMatrix.
 
         Parameters
         ----------
@@ -47,7 +47,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseTwoWayDHAdditiveGenicVarianceMatrix, self).__init__(
+        super(DenseDihybridDHAdditiveGenicVarianceMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -130,7 +130,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int,
             **kwargs: dict
-        ) -> 'DenseTwoWayDHAdditiveGenicVarianceMatrix':
+        ) -> 'DenseDihybridDHAdditiveGenicVarianceMatrix':
         """
         Estimate genic variances from a GenomicModel.
 
@@ -175,7 +175,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int, 
             mem: int
-        ) -> 'DenseTwoWayDHAdditiveGenicVarianceMatrix':
+        ) -> 'DenseDihybridDHAdditiveGenicVarianceMatrix':
         """
         Estimate genic variances from a GenomicModel.
 

@@ -15,7 +15,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
+class DenseThreeWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
     """
     A concrete class for dense additive genic variance matrices calculated
     for two-way DH progenies.
@@ -34,7 +34,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             **kwargs: dict
         ):
         """
-        Constructor for the concrete class DenseTwoWayDHAdditiveGenicVarianceMatrix.
+        Constructor for the concrete class DenseThreeWayDHAdditiveGenicVarianceMatrix.
 
         Parameters
         ----------
@@ -47,7 +47,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseTwoWayDHAdditiveGenicVarianceMatrix, self).__init__(
+        super(DenseThreeWayDHAdditiveGenicVarianceMatrix, self).__init__(
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
@@ -62,25 +62,25 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
     def mat(self, value: numpy.ndarray) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_ndim(value, "mat", 3) # (ntaxa,ntaxa,ntrait)
+        check_ndarray_ndim(value, "mat", 4) # (ntaxa,ntaxa,ntaxa,ntrait)
         self._mat = value
 
     ############## Square Metadata Properties ##############
     @DenseAdditiveGenicVarianceMatrix.square_axes.getter
     def square_axes(self) -> tuple:
         """Get axis indices for axes that are square"""
-        return (0,1) # (female, male)
+        return (0,1,2) # (recurrent, female, male)
 
     #################### Trait metadata ####################
     @DenseAdditiveGenicVarianceMatrix.trait_axis.getter
     def trait_axis(self) -> int:
-        return 2
+        return 3
 
     ######## Expected parental genome contributions ########
     @DenseAdditiveGenicVarianceMatrix.epgc.getter
     def epgc(self) -> tuple:
         """Get a tuple of the expected parental genome contributions."""
-        return (0.5, 0.5)
+        return (0.5, 0.25, 0.25)
 
     ############################## Object Methods ##############################
     def to_csv(
@@ -88,7 +88,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             fname: str
         ) -> None:
         """
-        Write a dense two-way additive genic variance matrix to a csv.
+        Write a dense three-way additive genic variance matrix to a csv.
 
         Parameters
         ----------
@@ -96,11 +96,12 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             Filename to which to write.
         """
         # get names for taxa and traits
-        taxa = [str(e) for e in range(self.mat_shape[0])] if self.taxa is None else self.taxa
-        trait = [str(e) for e in range(self.mat_shape[2])]
+        taxa = [str(e) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
+        trait = [str(e) for e in range(self.mat_shape[3])]
 
         # make dictionary to store output columns
         out_dict = {
+            "Recurrent": [],
             "Female": [],
             "Male": [],
             "Trait": [],
@@ -108,13 +109,15 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         }
 
         # construct columns element by element
-        for femaleix in range(self.mat_shape[0]):
-            for maleix in range(femaleix,self.mat_shape[1]):
-                for traitix in range(self.mat_shape[2]):
-                    out_dict["Female"].append(taxa[femaleix])
-                    out_dict["Male"].append(taxa[maleix])
-                    out_dict["Trait"].append(trait[traitix])
-                    out_dict["Variance"].append(self[femaleix,maleix,traitix])
+        for recurrix in range(self.mat_shape[0]):
+            for femaleix in range(self.mat_shape[1]):
+                for maleix in range(self.mat_shape[2]):
+                    for traitix in range(self.mat_shape[3]):
+                        out_dict["Recurrent"].append(taxa[recurrix])
+                        out_dict["Female"].append(taxa[femaleix])
+                        out_dict["Male"].append(taxa[maleix])
+                        out_dict["Trait"].append(trait[traitix])
+                        out_dict["Variance"].append(self[recurrix,femaleix,maleix,traitix])
 
         # create a pandas DataFrame from the data
         out_df = pandas.DataFrame(out_dict)
@@ -130,7 +133,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int,
             **kwargs: dict
-        ) -> 'DenseTwoWayDHAdditiveGenicVarianceMatrix':
+        ) -> 'DenseThreeWayDHAdditiveGenicVarianceMatrix':
         """
         Estimate genic variances from a GenomicModel.
 
@@ -175,7 +178,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int, 
             mem: int
-        ) -> 'DenseTwoWayDHAdditiveGenicVarianceMatrix':
+        ) -> 'DenseThreeWayDHAdditiveGenicVarianceMatrix':
         """
         Estimate genic variances from a GenomicModel.
 
@@ -204,7 +207,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         ntrait = algmod.ntrait                  # number of traits (t)
         ntaxa = pgmat.ntaxa                     # number of individuals (n)
         ploidy = pgmat.ploidy                   # ploidy level (scalar)
-        epgc = (0.5,0.5)                        # parental contributions
+        epgc = (0.5,0.25,0.25)                  # parental contributions
 
         # gather allele frequencies within each taxon
         tafreq = pgmat.tafreq()                 # (n,p) allele frequencies within taxon
@@ -221,22 +224,23 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
         )
 
         # for each mate pair (including selfs)
-        for female in range(0,ntaxa):
-            for male in range(0,female):
-                # calculate the cross allele frequency
-                # (n,p)[(2,),:] -> (2,p)
-                # (2,) . (2,p) -> (p,)
-                p = numpy.dot(epgc, tafreq[(female,male),:])
+        for recurr in range(0,ntaxa):
+            for female in range(0,ntaxa):
+                for male in range(0,female):
+                    # calculate the cross allele frequency
+                    # (n,p)[(3,),:] -> (3,p)
+                    # (3,) . (3,p) -> (p,)
+                    p = numpy.dot(epgc, tafreq[(recurr,female,male),:])
 
-                # calculate the variance
-                # scalar - (p,1) -> (p,1)
-                # (p,t) * (p,1) * (p,1) -> (p,t)
-                # (p,t).sum(0) -> (t,)
-                v = (varcoef * p[:,None] * (1.0 - p[:,None])).sum(0)
+                    # calculate the variance
+                    # scalar - (p,1) -> (p,1)
+                    # (p,t) * (p,1) * (p,1) -> (p,t)
+                    # (p,t).sum(0) -> (t,)
+                    v = (varcoef * p[:,None] * (1.0 - p[:,None])).sum(0)
 
-                # store in matrix and copy to lower since matrix is symmetrical
-                var_a[female,male,:] = v
-                var_a[male,female,:] = v
+                    # store in matrix and copy to lower since matrix is symmetrical
+                    var_a[recurr,female,male,:] = v
+                    var_a[recurr,male,female,:] = v
 
         # construct output
         out = cls(

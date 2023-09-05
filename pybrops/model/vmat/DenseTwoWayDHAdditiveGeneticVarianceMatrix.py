@@ -35,6 +35,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ):
         """
@@ -55,6 +56,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
@@ -73,6 +75,11 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
     def square_axes(self) -> tuple:
         """Get axis indices for axes that are square"""
         return (0,1) # (female, male)
+
+    #################### Trait metadata ####################
+    @DenseAdditiveGeneticVarianceMatrix.trait_axis.getter
+    def trait_axis(self) -> int:
+        return 2
 
     ######## Expected parental genome contributions ########
     @DenseAdditiveGeneticVarianceMatrix.epgc.getter
@@ -335,7 +342,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
                             ceffect = cdgeno * cu # (cb,)*(t,cb) -> (t,cb)
 
                             # compute dot product for each trait to get partial variance sum
-                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,rb)@(rb,cb) -> (t,cb)
                             # (t,cb)*(t,cb) -> (t,cb)
                             # (t,cb)[1] -> (t,)
                             var_A_partial = (reffect @ D1 * ceffect).sum(1)
@@ -352,7 +359,8 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         out = cls(
             mat = var_A,
             taxa = pgmat.taxa,
-            taxa_grp = pgmat.taxa_grp
+            taxa_grp = pgmat.taxa_grp,
+            trait = algmod.trait
         )
 
         return out

@@ -30,7 +30,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseGeneticVarianceMatrix.
 
@@ -42,6 +42,8 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,GeneticV
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
