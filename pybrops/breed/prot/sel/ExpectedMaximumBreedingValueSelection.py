@@ -737,8 +737,8 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueSe
         )
 
         # get decision space parameters
-        decn_space_lower = numpy.repeat(0.0, len(xmap))
-        decn_space_upper = numpy.repeat(1.0, len(xmap))
+        decn_space_lower = numpy.repeat(0, len(xmap))
+        decn_space_upper = numpy.repeat(1, len(xmap))
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
         # get the median number of mating from the mating property

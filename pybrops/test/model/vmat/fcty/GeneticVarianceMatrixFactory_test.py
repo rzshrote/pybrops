@@ -36,8 +36,8 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-def test_from_algmod_is_abstract(fcty):
-    assert_abstract_method(fcty, "from_gmod")
+def test_from_gmod_is_abstract():
+    assert_abstract_method(GeneticVarianceMatrixFactory, "from_gmod")
 
 ################################################################################
 ######################### Test class utility functions #########################

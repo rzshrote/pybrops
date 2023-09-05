@@ -1,13 +1,12 @@
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.vmat.fcty.DenseAdditiveGeneticVarianceMatrixFactory import DenseAdditiveGeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.AdditiveGeneticVarianceMatrixFactory import AdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.DenseThreeWayDHAdditiveGeneticVarianceMatrix import DenseThreeWayDHAdditiveGeneticVarianceMatrix
-from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVarianceMatrixFactory):
+class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(AdditiveGeneticVarianceMatrixFactory):
     """
     docstring for DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory.
     """
@@ -25,7 +24,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory, self).__init__(**kwargs)
+        pass
 
     ############################## Object Methods ##############################
     def from_gmod(
@@ -37,7 +36,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
             nself: int, 
             gmapfn: GeneticMapFunction, 
             **kwargs: dict
-        ) -> GeneticVarianceMatrix:
+        ) -> DenseThreeWayDHAdditiveGeneticVarianceMatrix:
         """
         Estimate genetic variances from a GenomicModel and PhasedGenotypeMatrix.
 
@@ -63,7 +62,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 
         Returns
         -------
-        out : GeneticVarianceMatrix
+        out : DenseThreeWayDHAdditiveGeneticVarianceMatrix
             A matrix of genetic variance estimations.
         """
         return DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_gmod(
@@ -86,7 +85,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
             gmapfn: GeneticMapFunction, 
             mem: int = 1024,
             **kwargs: dict
-        ):
+        ) -> DenseThreeWayDHAdditiveGeneticVarianceMatrix:
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -115,7 +114,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory(DenseAdditiveGeneticVa
 
         Returns
         -------
-        out : GeneticVarianceMatrix
+        out : DenseThreeWayDHAdditiveGeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
         return DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_algmod(

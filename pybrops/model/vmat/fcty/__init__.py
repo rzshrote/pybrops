@@ -7,14 +7,10 @@ __all__ = [
     "AdditiveGeneticVarianceMatrixFactory",
     "GenicVarianceMatrixFactory",
     "AdditiveGenicVarianceMatrixFactory",
-    "DenseGeneticVarianceMatrixFactory",
-    "DenseAdditiveGeneticVarianceMatrixFactory",
     "DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory",
     "DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory",
     "DenseFourWayDHAdditiveGeneticVarianceMatrixFactory",
     "DenseDihybridDHAdditiveGeneticVarianceMatrixFactory",
-    "DenseGenicVarianceMatrixFactory",
-    "DenseAdditiveGenicVarianceMatrixFactory",
     "DenseTwoWayDHAdditiveGenicVarianceMatrixFactory"
 ]
 
@@ -30,14 +26,10 @@ from pybrops.model.vmat.fcty import AdditiveGenicVarianceMatrixFactory
 ##### concrete classes #####
 
 # genetic variance matrix factories
-from pybrops.model.vmat.fcty import DenseGeneticVarianceMatrixFactory
-from pybrops.model.vmat.fcty import DenseAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty import DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty import DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.model.vmat.fcty import DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
 
 # genic variance matrix factories
-from pybrops.model.vmat.fcty import DenseGenicVarianceMatrixFactory
-from pybrops.model.vmat.fcty import DenseAdditiveGenicVarianceMatrixFactory
 from pybrops.model.vmat.fcty import DenseTwoWayDHAdditiveGenicVarianceMatrixFactory

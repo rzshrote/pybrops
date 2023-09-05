@@ -1,12 +1,11 @@
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.DenseTwoWayDHAdditiveGenicVarianceMatrix import DenseTwoWayDHAdditiveGenicVarianceMatrix
-from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
-from pybrops.model.vmat.fcty.DenseAdditiveGenicVarianceMatrixFactory import DenseAdditiveGenicVarianceMatrixFactory
+from pybrops.model.vmat.fcty.AdditiveGenicVarianceMatrixFactory import AdditiveGenicVarianceMatrixFactory
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVarianceMatrixFactory):
+class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(AdditiveGenicVarianceMatrixFactory):
     """
     docstring for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
     """
@@ -24,7 +23,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        super(DenseTwoWayDHAdditiveGenicVarianceMatrixFactory, self).__init__(**kwargs)
+        pass
 
     ############################## Object Methods ##############################
     def from_gmod(
@@ -33,7 +32,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int, 
             **kwargs: dict
-        ) -> GenicVarianceMatrix:
+        ) -> DenseTwoWayDHAdditiveGenicVarianceMatrix:
         """
         Estimate genic variances from a GenomicModel and PhasedGenotypeMatrix.
 
@@ -59,7 +58,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
 
         Returns
         -------
-        out : GenicVarianceMatrix
+        out : DenseTwoWayDHAdditiveGenicVarianceMatrix
             A matrix of genic variance estimations.
         """
         return DenseTwoWayDHAdditiveGenicVarianceMatrix.from_gmod(
@@ -76,7 +75,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
             nprogeny: int, 
             mem: int = 1024,
             **kwargs: dict
-        ):
+        ) -> DenseTwoWayDHAdditiveGenicVarianceMatrix:
         """
         Estimate genic variances from a GenomicModel.
 
@@ -105,7 +104,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(DenseAdditiveGenicVariance
 
         Returns
         -------
-        out : GenicVarianceMatrix
+        out : DenseTwoWayDHAdditiveGenicVarianceMatrix
             A matrix of additive genic variance estimations.
         """
         return DenseTwoWayDHAdditiveGenicVarianceMatrix.from_algmod(

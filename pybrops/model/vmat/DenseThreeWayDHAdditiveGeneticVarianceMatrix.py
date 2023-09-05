@@ -66,7 +66,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
     def mat(self, value: numpy.ndarray) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_ndim(value, "mat", 5) # (ntaxa,ntaxa,ntaxa,ntrait)
+        check_ndarray_ndim(value, "mat", 4) # (ntaxa,ntaxa,ntaxa,ntrait)
         self._mat = value
 
     ############## Square Metadata Properties ##############
