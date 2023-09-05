@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.soln.MateSelectionSolution import MateSelectionSolution
 from pybrops.breed.prot.sel.soln.MateSelectionSolution import check_is_MateSelectionSolution
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_concrete_class, not_raises
 
 from pybrops.test.breed.prot.sel.soln.common_fixtures import *
 
@@ -21,8 +21,8 @@ def selsoln(
 
 
 ################### Test class abstract/concrete properties ####################
-def test_MateSelectionSolution_is_semiabstract():
-    assert_semiabstract_class(MateSelectionSolution)
+def test_MateSelectionSolution_is_concrete():
+    assert_concrete_class(MateSelectionSolution)
 
 ############################## Test class docstring ############################
 def test_MateSelectionSolution_docstring():

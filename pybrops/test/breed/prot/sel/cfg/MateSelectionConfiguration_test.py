@@ -1,5 +1,5 @@
 import pytest
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_concrete_class, assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
 from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import MateSelectionConfiguration
 from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import check_is_MateSelectionConfiguration
 
@@ -37,8 +37,8 @@ def selcfg(
     yield out
 
 ################### Test class abstract/concrete properties ####################
-def test_MateSelectionConfiguration_is_semiabstract():
-    assert_semiabstract_class(MateSelectionConfiguration)
+def test_MateSelectionConfiguration_is_concrete():
+    assert_concrete_class(MateSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_MateSelectionConfiguration_docstring():

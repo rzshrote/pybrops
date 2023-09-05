@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution
 from pybrops.breed.prot.sel.soln.SelectionSolution import check_is_SelectionSolution
-from pybrops.test.assert_python import assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_docstring, assert_concrete_class, not_raises
 
 
 class DummySelectionSolution(SelectionSolution):
@@ -16,8 +16,8 @@ def selsoln():
 
 
 ################### Test class abstract/concrete properties ####################
-def test_SelectionSolution_is_semiabstract():
-    assert_semiabstract_class(SelectionSolution)
+def test_SelectionSolution_is_concrete():
+    assert_concrete_class(SelectionSolution)
 
 ############################## Test class docstring ############################
 def test_SelectionSolution_docstring():

@@ -111,13 +111,13 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
             # variable for tracking the average
             # (t,)
             avg = 0
-
+            
             # run progeny simulations
             for i in range(nrep):
                 # create progeny
                 progeny = mateprot.mate(
                     pgmat = pgmat,
-                    xconfig = xconfig,
+                    xconfig = xconfig[None,:], # (t,) -> (1,t)
                     nmating = nmating,
                     nprogeny = nprogeny,
                     miscout = None

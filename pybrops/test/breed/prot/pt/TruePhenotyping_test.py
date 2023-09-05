@@ -242,7 +242,7 @@ def test_gpmod_fdel(ptprot):
         del ptprot.gpmod
 
 def test_var_err_fget(ptprot):
-    assert numpy.all(ptprot.var_err == 1.0)
+    assert numpy.all(ptprot.var_err == 0.0)
 
 def test_var_err_fset(ptprot):
     with pytest.raises(AttributeError):
