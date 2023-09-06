@@ -568,6 +568,33 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
     ################### Matrix File I/O ####################
     @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Read a DensePhasedGenotypeMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which GenotypeMatrix data is stored.
+            If None, GenotypeMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : DensePhasedGenotypeMatrix
+            A genotype matrix read from file.
+        """
+        return super(DensePhasedGenotypeMatrix, cls).from_hdf5(
+            filename = filename,
+            groupname = groupname
+        )
+
+    @classmethod
     def from_vcf(
             cls, 
             fname: str,

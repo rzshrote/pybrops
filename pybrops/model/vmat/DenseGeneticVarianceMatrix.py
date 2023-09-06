@@ -141,7 +141,10 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaTraitMatrix,GeneticVarianceMatri
         out : DenseGeneticVarianceMatrix
             A dense matrix read from file.
         """
-        return super().from_hdf5(filename, groupname)
+        return super(DenseGeneticVarianceMatrix, cls).from_hdf5(
+            filename, 
+            groupname
+        )
 
     # from_gmod
     # this method should remain abstract; it depends on the cross structure
