@@ -1660,7 +1660,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         # dispatch to correct function
         if axis == self.vrnt_axis:
-            self.lexsort_vrnt(keys = keys, **kwargs)
+            indices = self.lexsort_vrnt(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 

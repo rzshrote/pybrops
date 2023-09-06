@@ -4,6 +4,7 @@ storing dense additive genic variance estimates calculated using four-way DH
 formulae.
 """
 
+import math
 from typing import Optional
 import numpy
 import pandas
@@ -95,9 +96,13 @@ class DenseFourWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix
         fname : str
             Filename to which to write.
         """
+        # calculate how much zero fill we need
+        taxazfill = math.ceil(math.log10(self.ntaxa))+1
+        traitzfill = math.ceil(math.log10(self.ntrait))+1
+
         # get names for taxa and traits
-        taxa = [str(e) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
-        trait = [str(e) for e in range(self.mat_shape[4])]
+        taxa = ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
+        trait = ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)] if self.trait is None else self.trait
 
         # make dictionary to store output columns
         out_dict = {

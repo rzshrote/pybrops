@@ -1243,9 +1243,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         # dispatch to correct function
         if axis == self.taxa_axis:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         elif axis == self.vrnt_axis:
-            self.lexsort_vrnt(keys = keys, **kwargs)
+            indices = self.lexsort_vrnt(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 

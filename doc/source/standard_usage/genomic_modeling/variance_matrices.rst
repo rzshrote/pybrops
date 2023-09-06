@@ -379,3 +379,429 @@ Copying
     # deep copy a genic variance matrix
     tmp = copy.deepcopy(gvmat)
     tmp = gvmat.deepcopy()
+
+Variance Matrix Element Copy-On-Manipulation
+============================================
+
+Adjoining elements
+------------------
+
+.. code-block:: python
+
+    # create a new variance matrices to demonstrate
+    newvmat = vmat.deepcopy()
+    newgvmat = gvmat.deepcopy()
+
+    # adjoin variance matrices along the taxa axis
+    tmp = vmat.adjoin(newvmat, axis = vmat.taxa_axis)
+    tmp = vmat.adjoin_taxa(newvmat)
+    tmp = gvmat.adjoin(newgvmat, axis = gvmat.taxa_axis)
+    tmp = gvmat.adjoin_taxa(newgvmat)
+
+    # adjoin variance matrices along the trait axis
+    tmp = vmat.adjoin(newvmat, axis = vmat.trait_axis)
+    tmp = vmat.adjoin_trait(newvmat)
+    tmp = gvmat.adjoin(newgvmat, axis = gvmat.trait_axis)
+    tmp = gvmat.adjoin_trait(newgvmat)
+
+Deleting elements
+-----------------
+
+.. code-block:: python
+
+    #
+    # ``delete`` taxa examples
+    # ++++++++++++++++++++++++
+
+    # delete first taxon using an integer
+    tmp = vmat.delete(0, axis = vmat.taxa_axis)
+    tmp = vmat.delete_taxa(0)
+    tmp = gvmat.delete(0, axis = gvmat.taxa_axis)
+    tmp = gvmat.delete_taxa(0)
+
+    # delete first five taxa using a slice
+    tmp = vmat.delete(slice(0,5), axis = vmat.taxa_axis)
+    tmp = vmat.delete_taxa(slice(0,5))
+    tmp = gvmat.delete(slice(0,5), axis = gvmat.taxa_axis)
+    tmp = gvmat.delete_taxa(slice(0,5))
+
+    # delete first five taxa using a Sequence
+    tmp = vmat.delete([0,1,2,3,4], axis = vmat.taxa_axis)
+    tmp = vmat.delete_taxa([0,1,2,3,4])
+    tmp = gvmat.delete([0,1,2,3,4], axis = gvmat.taxa_axis)
+    tmp = gvmat.delete_taxa([0,1,2,3,4])
+
+    #
+    # ``delete`` traits examples
+    # ++++++++++++++++++++++++++
+
+    # delete first trait using an integer
+    tmp = vmat.delete(0, axis = vmat.trait_axis)
+    tmp = vmat.delete_trait(0)
+    tmp = gvmat.delete(0, axis = gvmat.trait_axis)
+    tmp = gvmat.delete_trait(0)
+
+    # delete first two traits using a slice
+    tmp = vmat.delete(slice(0,2), axis = vmat.trait_axis)
+    tmp = vmat.delete_trait(slice(0,2))
+    tmp = gvmat.delete(slice(0,2), axis = gvmat.trait_axis)
+    tmp = gvmat.delete_trait(slice(0,2))
+
+    # delete first two traits using a Sequence
+    tmp = vmat.delete([0,1], axis = vmat.trait_axis)
+    tmp = vmat.delete_trait([0,1])
+    tmp = gvmat.delete([0,1], axis = gvmat.trait_axis)
+    tmp = gvmat.delete_trait([0,1])
+
+Inserting elements
+------------------
+
+.. code-block:: python
+
+    # create a new variance matrix to demonstrate
+    newvmat = vmat.deepcopy()
+    newgvmat = gvmat.deepcopy()
+
+    # insert variance matrix along the taxa axis before index 0
+    tmp = vmat.insert(0, newvmat, axis = vmat.taxa_axis)
+    tmp = vmat.insert_taxa(0, newvmat)
+    tmp = gvmat.insert(0, newgvmat, axis = gvmat.taxa_axis)
+    tmp = gvmat.insert_taxa(0, newgvmat)
+
+    # insert variance matrix along the trait axis before index 0
+    tmp = vmat.insert(0, newvmat, axis = vmat.trait_axis)
+    tmp = vmat.insert_trait(0, newvmat)
+    tmp = gvmat.insert(0, newgvmat, axis = gvmat.trait_axis)
+    tmp = gvmat.insert_trait(0, newgvmat)
+
+Selecting elements
+------------------
+
+.. code-block:: python
+
+    # select first five taxa using a Sequence
+    tmp = vmat.select([0,1,2,3,4], axis = vmat.taxa_axis)
+    tmp = vmat.select_taxa([0,1,2,3,4])
+    tmp = gvmat.select([0,1,2,3,4], axis = gvmat.taxa_axis)
+    tmp = gvmat.select_taxa([0,1,2,3,4])
+
+    # select first two traits using a Sequence
+    tmp = vmat.select([0,1], axis = vmat.trait_axis)
+    tmp = vmat.select_trait([0,1])
+    tmp = gvmat.select([0,1], axis = gvmat.trait_axis)
+    tmp = gvmat.select_trait([0,1])
+
+Variance Matrix Element In-Place-Manipulation
+=============================================
+
+Appending elements
+------------------
+
+.. code-block:: python
+
+    # append variance matrices along the taxa axis
+    tmp = vmat.deepcopy()                   # copy original
+    tmp.append(vmat, axis = tmp.taxa_axis)  # append original to copy
+    tmp = gvmat.deepcopy()                  # copy original
+    tmp.append(gvmat, axis = tmp.taxa_axis) # append original to copy
+
+    tmp = vmat.deepcopy()                   # copy original
+    tmp.append_taxa(vmat)                   # append original to copy
+    tmp = gvmat.deepcopy()                  # copy original
+    tmp.append_taxa(gvmat)                  # append original to copy
+
+    # append variance matrices along the trait axis
+    tmp = vmat.deepcopy()                   # copy original
+    tmp.append(vmat, axis = tmp.trait_axis) # append original to copy
+    tmp = gvmat.deepcopy()                  # copy original
+    tmp.append(gvmat, axis = tmp.trait_axis)# append original to copy
+
+    tmp = vmat.deepcopy()                   # copy original
+    tmp.append_trait(vmat)                  # append original to copy
+    tmp = gvmat.deepcopy()                  # copy original
+    tmp.append_trait(gvmat)                 # append original to copy
+
+Removing elements
+-----------------
+
+``remove`` taxa
++++++++++++++++
+
+.. code-block:: python
+
+    # remove first taxon using an integer
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove(0, axis = vmat.taxa_axis)            # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove(0, axis = gvmat.taxa_axis)           # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_taxa(0)                              # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_taxa(0)                              # remove from copy
+
+    # remove first five taxa using a slice
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove(slice(0,5), axis = vmat.taxa_axis)   # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove(slice(0,5), axis = gvmat.taxa_axis)  # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_taxa(slice(0,5))                     # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_taxa(slice(0,5))                     # remove from copy
+
+    # remove first five taxa using a Sequence
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove([0,1,2,3,4], axis = vmat.taxa_axis)  # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove([0,1,2,3,4], axis = gvmat.taxa_axis) # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_taxa([0,1,2,3,4])                    # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_taxa([0,1,2,3,4])                    # remove from copy
+
+``remove`` traits
++++++++++++++++++
+
+.. code-block:: python
+
+    # remove first trait using an integer
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove(0, axis = vmat.trait_axis)           # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove(0, axis = gvmat.trait_axis)          # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_trait(0)                             # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_trait(0)                             # remove from copy
+
+    # remove first trait using a slice
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove(slice(0,1), axis = vmat.trait_axis)  # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove(slice(0,1), axis = gvmat.trait_axis) # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_trait(slice(0,1))                    # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_trait(slice(0,1))                    # remove from copy
+
+    # remove first trait using a Sequence
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove([0], axis = vmat.trait_axis)         # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove([0], axis = gvmat.trait_axis)        # remove from copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.remove_trait([0])                           # remove from copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.remove_trait([0])                           # remove from copy
+
+Incorporating elements
+----------------------
+
+.. code-block:: python
+
+    # incorp variance matrix along the taxa axis before index 0
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.incorp(0, vmat, axis = vmat.taxa_axis)      # incorporate into copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.incorp(0, gvmat, axis = gvmat.taxa_axis)    # incorporate into copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.incorp_taxa(0, vmat)                        # incorporate into copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.incorp_taxa(0, gvmat)                       # incorporate into copy
+
+    # incorp variance matrix along the trait axis before index 0
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.incorp(0, vmat, axis = vmat.trait_axis)     # incorporate into copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.incorp(0, gvmat, axis = gvmat.trait_axis)   # incorporate into copy
+
+    tmp = vmat.deepcopy()                           # copy original
+    tmp.incorp_trait(0, vmat)                       # incorporate into copy
+    tmp = gvmat.deepcopy()                          # copy original
+    tmp.incorp_trait(0, gvmat)                      # incorporate into copy
+
+Concatenating matrices
+----------------------
+
+.. code-block:: python
+
+    # concatenate along the taxa axis
+    tmp = vmat.concat([vmat, vmat], axis = vmat.taxa_axis)
+    tmp = vmat.concat_taxa([vmat, vmat])
+    tmp = gvmat.concat([gvmat, gvmat], axis = gvmat.taxa_axis)
+    tmp = gvmat.concat_taxa([gvmat, gvmat])
+
+    # concatenate along the trait axis
+    tmp = vmat.concat([vmat, vmat], axis = vmat.trait_axis)
+    tmp = vmat.concat_trait([vmat, vmat])
+    tmp = gvmat.concat([gvmat, gvmat], axis = gvmat.trait_axis)
+    tmp = gvmat.concat_trait([gvmat, gvmat])
+
+Grouping and sorting
+====================
+
+Reordering
+----------
+
+``reorder`` taxa
+++++++++++++++++
+
+.. code-block:: python
+
+    # create reordering indices
+    indices = numpy.arange(vmat.ntaxa)
+    numpy.random.shuffle(indices)
+
+    # reorder values along the taxa axis
+    tmp = vmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.taxa_axis)
+    tmp.reorder_taxa(indices)
+    tmp = gvmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.taxa_axis)
+    tmp.reorder_taxa(indices)
+
+``reorder`` traits
+++++++++++++++++++
+
+.. code-block:: python
+
+    # create reordering indices
+    indices = numpy.arange(vmat.ntrait)
+    numpy.random.shuffle(indices)
+
+    # reorder values along the trait axis
+    tmp = vmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.trait_axis)
+    tmp.reorder_trait(indices)
+    tmp = gvmat.deepcopy()
+    tmp.reorder(indices, axis = tmp.trait_axis)
+    tmp.reorder_trait(indices)
+
+Lexsorting
+----------
+
+``lexsort`` taxa
+++++++++++++++++
+
+.. code-block:: python
+
+    # create lexsort keys for taxa
+    key1 = numpy.random.randint(0, 10, vmat.ntaxa)
+    key2 = numpy.arange(vmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the taxa axis
+    vmat.lexsort((key2,key1), axis = vmat.taxa_axis)
+    vmat.lexsort_taxa((key2,key1))
+    gvmat.lexsort((key2,key1), axis = gvmat.taxa_axis)
+    gvmat.lexsort_taxa((key2,key1))
+
+``lexsort`` traits
+++++++++++++++++++
+
+.. code-block:: python
+
+    # create lexsort keys for trait
+    key1 = numpy.random.randint(0, 10, vmat.ntaxa)
+    key2 = numpy.arange(vmat.ntaxa)
+    numpy.random.shuffle(key2)
+
+    # lexsort along the trait axis
+    tmp = vmat.lexsort((key2,key1), axis = vmat.taxa_axis)
+    tmp = vmat.lexsort_taxa((key2,key1))
+    tmp = gvmat.lexsort((key2,key1), axis = gvmat.taxa_axis)
+    tmp = gvmat.lexsort_taxa((key2,key1))
+
+Sorting
+-------
+
+``sort`` taxa
++++++++++++++
+
+.. code-block:: python
+
+    # sort along taxa axis
+    tmp = vmat.deepcopy()
+    tmp.sort(axis = tmp.taxa_axis)
+    tmp.sort_taxa()
+    tmp = gvmat.deepcopy()
+    tmp.sort(axis = tmp.taxa_axis)
+    tmp.sort_taxa()
+
+``sort`` traits
++++++++++++++++
+
+.. code-block:: python
+
+    # sort along trait axis
+    tmp = vmat.deepcopy()
+    tmp.sort(axis = tmp.trait_axis)
+    tmp.sort_trait()
+    tmp = gvmat.deepcopy()
+    tmp.sort(axis = tmp.trait_axis)
+    tmp.sort_trait()
+
+Grouping
+--------
+
+.. code-block:: python
+
+    #
+    # group taxa
+    # ++++++++++
+
+    # sort genetic along taxa axis
+    tmp = vmat.deepcopy()
+    tmp.group(axis = tmp.taxa_axis)
+    tmp.group_taxa()
+    # determine whether grouping has occurred along the taxa axis
+    out = tmp.is_grouped(axis = tmp.taxa_axis)
+    out = tmp.is_grouped_taxa()
+
+    # sort genic variance matrix along taxa axis
+    tmp = gvmat.deepcopy()
+    tmp.group(axis = tmp.taxa_axis)
+    tmp.group_taxa()
+    # determine whether grouping has occurred along the taxa axis
+    out = tmp.is_grouped(axis = tmp.taxa_axis)
+    out = tmp.is_grouped_taxa()
+
+Square matrix functions
+=======================
+
+Determine whether all square axes are of equal length
+-----------------------------------------------------
+
+.. code-block:: python
+
+    # boolean value
+    out = vmat.is_square()
+    out = gvmat.is_square()
+
+Saving Breeding Value Matrices
+==============================
+
+Write to HDF5 file
+------------------
+
+.. code-block:: python
+
+    # write variance matrices to an HDF5 file
+    vmat.to_hdf5("saved_vmat.h5")
+    gvmat.to_hdf5("saved_gvmat.h5")
+
+Write to CSV file
+-----------------
+
+.. code-block:: python
+
+    # write variance matrices to a CSV file
+    vmat.to_csv("saved_vmat.csv")
+    gvmat.to_csv("saved_gvmat.csv")

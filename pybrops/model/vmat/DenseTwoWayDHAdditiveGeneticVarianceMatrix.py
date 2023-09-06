@@ -4,6 +4,7 @@ storing dense additive genetic variance estimates calculated using two-way DH
 formulae.
 """
 
+import math
 from numbers import Integral, Real
 from typing import Optional, Union
 import numpy
@@ -100,9 +101,13 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         fname : str
             Filename to which to write.
         """
+        # calculate how much zero fill we need
+        taxazfill = math.ceil(math.log10(self.ntaxa))+1
+        traitzfill = math.ceil(math.log10(self.ntrait))+1
+
         # get names for taxa and traits
-        taxa = [str(e) for e in range(self.mat_shape[0])] if self.taxa is None else self.taxa
-        trait = [str(e) for e in range(self.mat_shape[2])]
+        taxa = ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
+        trait = ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)] if self.trait is None else self.trait
 
         # make dictionary to store output columns
         out_dict = {

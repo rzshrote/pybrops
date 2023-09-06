@@ -1040,7 +1040,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         # dispatch to correct function
         if axis == self.taxa_axis:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 

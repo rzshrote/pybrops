@@ -646,10 +646,10 @@ key2 = numpy.arange(vmat.ntaxa)
 numpy.random.shuffle(key2)
 
 # lexsort along the trait axis
-vmat.lexsort((key2,key1), axis = vmat.taxa_axis)
-vmat.lexsort_taxa((key2,key1))
-gvmat.lexsort((key2,key1), axis = gvmat.taxa_axis)
-gvmat.lexsort_taxa((key2,key1))
+tmp = vmat.lexsort((key2,key1), axis = vmat.taxa_axis)
+tmp = vmat.lexsort_taxa((key2,key1))
+tmp = gvmat.lexsort((key2,key1), axis = gvmat.taxa_axis)
+tmp = gvmat.lexsort_taxa((key2,key1))
 
 ##
 ## Sorting
@@ -692,34 +692,59 @@ tmp = vmat.deepcopy()
 tmp.group(axis = tmp.taxa_axis)
 tmp.group_taxa()
 # determine whether grouping has occurred along the taxa axis
-tmp.is_grouped(axis = tmp.taxa_axis)
-tmp.is_grouped_taxa()
+out = tmp.is_grouped(axis = tmp.taxa_axis)
+out = tmp.is_grouped_taxa()
 
 # sort genic variance matrix along taxa axis
 tmp = gvmat.deepcopy()
 tmp.group(axis = tmp.taxa_axis)
 tmp.group_taxa()
 # determine whether grouping has occurred along the taxa axis
-tmp.is_grouped(axis = tmp.taxa_axis)
-tmp.is_grouped_taxa()
+out = tmp.is_grouped(axis = tmp.taxa_axis)
+out = tmp.is_grouped_taxa()
+
+###
+### Square matrix functions
+### =======================
+
+#
+# Determine whether all square axes are of equal length
+# -----------------------------------------------------
+
+# boolean value
+out = vmat.is_square()
+out = gvmat.is_square()
 
 ###
 ### Saving Breeding Value Matrices
 ### ==============================
 
 #
-# write to HDF5
-# -------------
+# Write to HDF5 file
+# ------------------
 
 # remove exported file if it exists
 if os.path.exists("saved_vmat.h5"):
     os.remove("saved_vmat.h5")
 
-# write a breeding value matrix to an HDF5 file
+if os.path.exists("saved_gvmat.h5"):
+    os.remove("saved_gvmat.h5")
+
+# write variance matrices to an HDF5 file
 vmat.to_hdf5("saved_vmat.h5")
+gvmat.to_hdf5("saved_gvmat.h5")
 
+#
+# Write to CSV file
+# -----------------
 
+# remove exported file if it exists
+if os.path.exists("saved_vmat.csv"):
+    os.remove("saved_vmat.csv")
 
-vmat.is_square()
-vmat.to_csv()
-vmat.to_hdf5()
+if os.path.exists("saved_gvmat.csv"):
+    os.remove("saved_gvmat.csv")
+
+# write variance matrices to a CSV file
+vmat.to_csv("saved_vmat.csv")
+gvmat.to_csv("saved_gvmat.csv")

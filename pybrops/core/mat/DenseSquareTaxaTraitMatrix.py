@@ -543,9 +543,9 @@ class DenseSquareTaxaTraitMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,SquareTa
 
         # dispatch to correct function
         if axis in self.square_axes:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         elif axis == self.trait_axis:
-            self.lexsort_trait(keys = keys, **kwargs)
+            indices = self.lexsort_trait(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -742,6 +742,15 @@ class DenseSquareTaxaTraitMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,SquareTa
                 data_dict[field] = h5file[fieldname][()]        # read array
         ######################################################### read conclusion
         h5file.close()                                          # close file
+        ######################################################### convert data types
+        str_fields = ["taxa","trait"]                           # string array fields
+        for field in str_fields:                                # for each field
+            if data_dict[field] is not None:                    # if the field is not None
+                arr = data_dict[field]                          # extract pointer to field
+                for i in range(len(arr)):                       # for each element in field
+                    if isinstance(arr[i], bytes):               # if element is bytes
+                        arr[i] = arr[i].decode("utf-8")         # convert bytes element to str
+                data_dict[field] = arr                          # store pointer
         ######################################################### create object
         mat = cls(**data_dict)                                  # create object from read data
         return mat

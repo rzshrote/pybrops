@@ -843,7 +843,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         # dispatch to correct function
         if axis == self.trait_axis:
-            self.lexsort_trait(keys = keys, **kwargs)
+            indices = self.lexsort_trait(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
