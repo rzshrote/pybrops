@@ -1129,7 +1129,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     @classmethod
     def from_vcf(
             cls, 
-            fname: str
+            fname: str,
+            auto_group_vrnt: bool = True
         ) -> 'DenseGenotypeMatrix':
         """
         Create a DenseGenotypeMatrix from a VCF file.
@@ -1138,6 +1139,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         fname : str
             Path to VCF file.
+        auto_group_vrnt : bool
+            Whether to group variants in returned genotype matrix.
 
         Returns
         -------
@@ -1193,7 +1196,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
         vrnt_name = numpy.object_(vrnt_name)    # convert to object array
 
-        pvm = cls(
+        out = cls(
             mat = mat,
             taxa = taxa,
             vrnt_chrgrp = vrnt_chrgrp,
@@ -1202,7 +1205,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             ploidy = ploidy
         )
 
-        return pvm
+        if auto_group_vrnt:
+            out.group_vrnt()
+
+        return out
 
 
 

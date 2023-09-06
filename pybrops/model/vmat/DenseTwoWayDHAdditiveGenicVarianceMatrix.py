@@ -174,7 +174,7 @@ class DenseTwoWayDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix)
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int, 
-            mem: int
+            mem: int = 1000
         ) -> 'DenseTwoWayDHAdditiveGenicVarianceMatrix':
         """
         Estimate genic variances from a GenomicModel.

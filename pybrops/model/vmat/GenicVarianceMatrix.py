@@ -39,6 +39,22 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
         raise NotImplementedError("property is abstract")    
 
     ############################## Object Methods ##############################
+    @abstractmethod
+    def to_csv(
+            self, 
+            fname: str
+        ) -> None:
+        """
+        Write a genic variance matrix to a CSV file.
+
+        Parameters
+        ----------
+        fname : str
+            Filename to which to write.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ############################## Object Methods ##############################
     @classmethod
     @abstractmethod
     def from_gmod(

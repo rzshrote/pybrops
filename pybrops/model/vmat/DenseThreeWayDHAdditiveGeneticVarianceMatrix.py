@@ -276,11 +276,11 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():
-            raise RuntimeError("pgmat must be grouped along the vrnt axis")
+            raise ValueError("pgmat must be grouped along the vrnt axis")
 
         # check for genetic positions
         if pgmat.vrnt_genpos is None:
-            raise RuntimeError("pgmat must have genetic positions")
+            raise ValueError("pgmat must have genetic positions")
 
         # gather shapes of data input
         ntrait = algmod.ntrait                  # number ot traits (t)

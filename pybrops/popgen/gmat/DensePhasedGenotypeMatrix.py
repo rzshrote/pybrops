@@ -570,7 +570,8 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     @classmethod
     def from_vcf(
             cls, 
-            fname: str
+            fname: str,
+            auto_group_vrnt: bool = True
         ) -> 'DensePhasedGenotypeMatrix':
         """
         Does not ensure that data is phased, just reads it as phased.
@@ -623,6 +624,9 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             vrnt_name = vrnt_name,
             taxa = taxa
         )
+
+        if auto_group_vrnt:
+            out.group_vrnt()
 
         return out
 
