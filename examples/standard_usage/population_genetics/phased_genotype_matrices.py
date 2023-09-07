@@ -27,10 +27,10 @@ ntaxa = 100
 nvrnt = 1000
 ngroup = 20
 nchrom = 10
-ploidy = 2
+nphase = 2
 
 # create random genotypes
-mat = numpy.random.randint(0, ploidy+1, size = (ntaxa,nvrnt)).astype("int8")
+mat = numpy.random.randint(0, 2, size = (nphase,ntaxa,nvrnt)).astype("int8")
 
 # create taxa names
 taxa = numpy.array(["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], dtype = object)
@@ -58,13 +58,7 @@ pgmat = DensePhasedGenotypeMatrix(
     vrnt_chrgrp = vrnt_chrgrp,
     vrnt_phypos = vrnt_phypos, 
     vrnt_name = vrnt_name, 
-    vrnt_genpos = None,
-    vrnt_xoprob = None, 
-    vrnt_hapgrp = None, 
-    vrnt_hapalt = None,
-    vrnt_hapref = None, 
-    vrnt_mask = None,
-    ploidy = ploidy
+    ploidy = nphase
 )
 
 #
