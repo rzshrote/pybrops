@@ -3,7 +3,6 @@ Module containing core, generalized utilities for ``PyBrOpS``.
 
 These utilities are:
 
-- ``df`` - Provides general dataframe support.
 - ``error`` - Provides error checking routines.
 - ``io`` - Provides input/output interfaces.
 - ``mat`` - Provides general matrix interfaces and implementations.
