@@ -414,6 +414,22 @@ class TaxaMatrix(GroupableMatrix,metaclass=ABCMeta):
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
+    def ungroup_taxa(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the TaxaMatrix along the taxa axis by removing taxa group 
+        metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
     def is_grouped_taxa(
             self, 
             **kwargs: dict

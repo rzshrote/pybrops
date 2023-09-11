@@ -612,7 +612,15 @@ class DenseSquareTaxaTraitMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,SquareTa
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
+        Sort the DenseSquareTaxaTraitMatrix along an axis, then populate 
+        grouping indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -624,6 +632,34 @@ class DenseSquareTaxaTraitMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,SquareTa
             raise ValueError("cannot group along trait axis {0}".format(axis))
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
+
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseSquareTaxaMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis in self.square_axes:
+            self.ungroup_taxa(**kwargs)
+        elif axis == self.trait_axis:
+            raise ValueError("cannot ungroup along trait axis {0}".format(axis))
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
 
     def is_grouped(
             self, 
@@ -755,3 +791,19 @@ class DenseSquareTaxaTraitMatrix(DenseSquareTaxaMatrix,DenseTraitMatrix,SquareTa
         mat = cls(**data_dict)                                  # create object from read data
         return mat
 
+
+
+################################## Utilities ###################################
+def check_is_DenseSquareTaxaTraitMatrix(v: object, vname: str) -> None:
+    """
+    Check if object is of type DenseSquareTaxaTraitMatrix. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if not isinstance(v, DenseSquareTaxaTraitMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseSquareTaxaTraitMatrix.__name__,type(v).__name__))

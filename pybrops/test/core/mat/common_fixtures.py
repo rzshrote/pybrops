@@ -185,6 +185,8 @@ class DummySortableMatrix(DummyMutableMatrix,SortableMatrix):
 class DummyGroupableMatrix(DummySortableMatrix,GroupableMatrix):
     def group(self, axis: int, **kwargs: dict) -> None:
         return super().group(axis, **kwargs)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
     def is_grouped(self, axis: int, **kwargs: dict) -> bool:
         return super().is_grouped(axis, **kwargs)
 
@@ -362,6 +364,8 @@ class DummyTaxaMatrix(DummyGroupableMatrix,TaxaMatrix):
         return super().sort_taxa(keys, **kwargs)
     def group_taxa(self, **kwargs: dict) -> None:
         return super().group_taxa(**kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
     def is_grouped_taxa(self, **kwargs: dict) -> bool:
         return super().is_grouped_taxa(**kwargs)
 
@@ -481,6 +485,8 @@ class DummyVariantMatrix(DummyGroupableMatrix,VariantMatrix):
         return super().sort_vrnt(keys, **kwargs)
     def group_vrnt(self, **kwargs: dict) -> None:
         return super().group_vrnt(**kwargs)
+    def ungroup_vrnt(self, **kwargs: dict) -> None:
+        return super().ungroup_vrnt(**kwargs)
     def is_grouped_vrnt(self, **kwargs: dict) -> bool:
         return super().is_grouped_vrnt(**kwargs)
 

@@ -1123,6 +1123,33 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     # group_taxa is unaltered
 
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseSquareTaxaMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis in self.square_axes:
+            self.ungroup_taxa(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    # ungroup_taxa is unaltered
+
     def is_grouped(
             self, 
             axis: int = -1, 

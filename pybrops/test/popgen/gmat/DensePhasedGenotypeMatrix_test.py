@@ -666,7 +666,9 @@ def test_interp_genpos(dpgmat, egmap, mat_genpos):
     assert numpy.all(dpgmat.vrnt_genpos == mat_genpos)
 
 def test_interp_xoprob_ungrouped(dpgmat, egmap, gmapfn):
-    with pytest.raises(RuntimeError):
+    with pytest.raises(ValueError):
+        dpgmat.vrnt_chrgrp_stix = None
+        dpgmat.vrnt_chrgrp_spix = None
         dpgmat.interp_xoprob(egmap, gmapfn)
 
 def test_interp_xoprob_grouped(dpgmat, egmap, gmapfn, mat_xoprob):

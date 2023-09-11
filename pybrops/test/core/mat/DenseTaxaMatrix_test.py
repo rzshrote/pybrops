@@ -107,15 +107,17 @@ def test_incorp_taxa_is_concrete():
 def test_lexsort_taxa_is_concrete():
     assert_concrete_method(DenseTaxaMatrix, "lexsort_taxa")
 
-# TODO: # FIXME: not_raises fails for an edge case
-# def test_sort_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "sort_taxa")
-#
-# def test_group_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "group_taxa")
-#
-# def test_is_grouped_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "is_grouped_taxa")
+def test_sort_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "sort_taxa")
+
+def test_group_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "group_taxa")
+
+def test_ungroup_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "ungroup_taxa")
+
+def test_is_grouped_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "is_grouped_taxa")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -405,6 +407,11 @@ def test_group_taxa(mat, taxa_grp_name_int64, taxa_grp_stix_int64, taxa_grp_spix
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
+    assert mat.is_grouped_taxa()
+
+def test_ungroup_taxa(mat):
+    mat.ungroup_taxa()
+    assert not mat.is_grouped_taxa()
 
 def test_is_grouped_taxa(mat):
     mat.group_taxa()

@@ -31,12 +31,30 @@ class GroupableMatrix(SortableMatrix,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Sort the Matrix, then populate grouping indices.
+        Sort the GroupableMatrix along an axis, then populate grouping indices.
 
         Parameters
         ----------
         axis : int
             The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def ungroup(
+            self,
+            axis: int,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the GroupableMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
         kwargs : dict
             Additional keyword arguments.
         """

@@ -1208,7 +1208,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
+        Sort the DenseTaxaMatrix along an axis, then populate grouping indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1242,6 +1249,49 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             self._taxa_grp_name, self._taxa_grp_stix, self._taxa_grp_len = uniq
             # calculate stop indices
             self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
+
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    def ungroup_taxa(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaMatrix along the taxa axis by removing taxa group 
+        metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set taxa metadata to None
+        self.taxa_grp_name = None
+        self.taxa_grp_stix = None
+        self.taxa_grp_spix = None
+        self.taxa_grp_len = None
 
     def is_grouped(
             self, 

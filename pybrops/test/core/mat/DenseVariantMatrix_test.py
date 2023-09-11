@@ -153,15 +153,17 @@ def test_incorp_vrnt_is_concrete():
 def test_lexsort_vrnt_is_concrete():
     assert_concrete_method(DenseVariantMatrix, "lexsort_vrnt")
 
-# TODO: # FIXME: not_raises fails for an edge case
-# def test_sort_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseVariantMatrix, "sort_vrnt")
-#
-# def test_group_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseVariantMatrix, "group_vrnt")
-#
-# def test_is_grouped_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseVariantMatrix, "is_grouped_vrnt")
+def test_sort_vrnt_is_concrete():
+    assert_concrete_method(DenseVariantMatrix, "sort_vrnt")
+
+def test_group_vrnt_is_concrete():
+    assert_concrete_method(DenseVariantMatrix, "group_vrnt")
+
+def test_ungroup_vrnt_is_concrete():
+    assert_concrete_method(DenseVariantMatrix, "ungroup_vrnt")
+
+def test_is_grouped_vrnt_is_concrete():
+    assert_concrete_method(DenseVariantMatrix, "is_grouped_vrnt")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

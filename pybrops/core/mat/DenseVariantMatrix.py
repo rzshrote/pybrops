@@ -1842,8 +1842,15 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the DenseVariantMatrix along an axis, then populate grouping 
+        indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1877,6 +1884,49 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             self._vrnt_chrgrp_name, self._vrnt_chrgrp_stix, self._vrnt_chrgrp_len = uniq
             # calculate stop indices
             self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
+
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseVariantMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.vrnt_axis:
+            self.ungroup_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    def ungroup_vrnt(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseVariantMatrix along the variant axis by removing 
+        variant group metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set variant metadata to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len = None
 
     def is_grouped(
             self, 

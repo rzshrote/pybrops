@@ -38,6 +38,9 @@ def test_init_is_concrete():
 def test_group_is_abstract():
     assert_abstract_method(GroupableMatrix, "group")
 
+def test_ungroup_is_abstract():
+    assert_abstract_method(GroupableMatrix, "ungroup")
+
 def test_is_grouped_is_abstract():
     assert_abstract_method(GroupableMatrix, "is_grouped")
 

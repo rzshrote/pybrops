@@ -1313,8 +1313,15 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the DenseTaxaVariantMatrix along an axis, then populate grouping 
+        indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1326,6 +1333,33 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             self.group_vrnt(**kwargs)
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
+
+    def ungroup(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaVariantMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            self.ungroup_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
 
     def is_grouped(
             self, 

@@ -7,8 +7,8 @@ from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
-from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
-from pybrops.core.mat.DenseSquareTaxaMatrix import check_is_DenseSquareTaxaMatrix
+from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
+from pybrops.core.mat.DenseSquareTaxaTraitMatrix import check_is_DenseSquareTaxaTraitMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -16,11 +16,15 @@ from pybrops.core.mat.DenseSquareTaxaMatrix import check_is_DenseSquareTaxaMatri
 @pytest.fixture
 def mat_float64():
     a = numpy.float64([
-        [3.3, 9.2, 5.6, 2.5],
-        [8.7, 3.7, 4.1, 6.2],
-        [9.0, 4.7, 3.8, 1.5],
-        [0.6, 5.2, 8.3, 1.8]
-    ])
+        [[3.3, 9.2, 5.6, 2.5],
+         [8.7, 3.7, 4.1, 6.2],
+         [9.0, 4.7, 3.8, 1.5],
+         [0.6, 5.2, 8.3, 1.8]],
+        [[2.2, 3.2, 5.2, 7.2],
+         [2.3, 3.3, 5.3, 7.3],
+         [2.5, 3.5, 5.5, 7.5],
+         [2.7, 3.7, 5.7, 7.7]], 
+    ]).transpose(1,2,0)
     yield a
 
 @pytest.fixture
@@ -60,7 +64,7 @@ def taxa_lexsort_indices(taxa_object, taxa_grp_int64):
 
 @pytest.fixture
 def mat(mat_float64, taxa_object, taxa_grp_int64):
-    out = DenseSquareTaxaMatrix(
+    out = DenseSquareTaxaTraitMatrix(
         mat = mat_float64,
         taxa = taxa_object,
         taxa_grp = taxa_grp_int64
@@ -72,85 +76,63 @@ def mat(mat_float64, taxa_object, taxa_grp_int64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseSquareTaxaMatrix)
+    assert_docstring(DenseSquareTaxaTraitMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "__init__")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "__init__")
+
+def test_copy_is_concrete():
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "__copy__")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "copy")
+
+def test_deepcopy_is_concrete():
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "__deepcopy__")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "deepcopy")
 
 def test_adjoin_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "adjoin")
-
-def test_adjoin_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "adjoin_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "adjoin")
 
 def test_delete_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "delete")
-
-def test_delete_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "delete_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "delete")
 
 def test_insert_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "insert")
-
-def test_insert_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "insert_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "insert")
 
 def test_select_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "select")
-
-def test_select_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "select_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "select")
 
 def test_concat_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "concat")
-
-def test_concat_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "concat_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "concat")
 
 def test_append_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "append")
-
-def test_append_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "append_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "append")
 
 def test_remove_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "remove")
-
-def test_remove_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "remove_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "remove")
 
 def test_incorp_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "incorp")
-
-def test_incorp_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "incorp_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "incorp")
 
 def test_lexsort_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "lexsort")
-
-def test_lexsort_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "lexsort_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "lexsort")
 
 def test_reorder_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "reorder")
-
-def test_reorder_taxa_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "reorder_taxa")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "reorder")
 
 def test_sort_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "sort")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "sort")
 
 def test_group_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "group")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "group")
 
 def test_ungroup_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "ungroup")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "ungroup")
 
 def test_is_grouped_is_concrete():
-    assert_concrete_method(DenseSquareTaxaMatrix, "is_grouped")
+    assert_concrete_method(DenseSquareTaxaTraitMatrix, "is_grouped")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -170,7 +152,9 @@ def test_adjoin_taxa_cls(mat, mat_float64, taxa_object, taxa_grp_int64):
     a = mat_float64.copy()
     b = mat_float64.copy()
     b.fill(numpy.nan)
-    mtrue = numpy.block([[a,b],[b,a]])
+    upper = numpy.concatenate([a,b], axis = 1)
+    lower = numpy.concatenate([b,a], axis = 1)
+    mtrue = numpy.concatenate([upper,lower], axis = 0)
     assert numpy.array_equal(m.mat, mtrue, equal_nan = True)
     assert numpy.all(m.taxa == numpy.append(taxa_object, taxa_object, axis = 0))
     assert numpy.all(m.taxa_grp == numpy.append(taxa_grp_int64, taxa_grp_int64, axis = 0))
@@ -180,7 +164,9 @@ def test_adjoin_taxa_ndarray(mat, mat_float64, taxa_object, taxa_grp_int64):
     a = mat_float64.copy()
     b = mat_float64.copy()
     b.fill(numpy.nan)
-    mtrue = numpy.block([[a,b],[b,a]])
+    upper = numpy.concatenate([a,b], axis = 1)
+    lower = numpy.concatenate([b,a], axis = 1)
+    mtrue = numpy.concatenate([upper,lower], axis = 0)
     assert numpy.array_equal(m.mat, mtrue, equal_nan = True)
     assert numpy.all(m.taxa == numpy.append(taxa_object, taxa_object, axis = 0))
     assert numpy.all(m.taxa_grp == numpy.append(taxa_grp_int64, taxa_grp_int64, axis = 0))
@@ -259,7 +245,9 @@ def test_append_taxa_cls(mat, mat_float64, taxa_object, taxa_grp_int64):
     a = mat_float64.copy()
     b = mat_float64.copy()
     b.fill(numpy.nan)
-    mtrue = numpy.block([[a,b],[b,a]])
+    upper = numpy.concatenate([a,b], axis = 1)
+    lower = numpy.concatenate([b,a], axis = 1)
+    mtrue = numpy.concatenate([upper,lower], axis = 0)
     assert numpy.array_equal(mat.mat, mtrue, equal_nan = True)
     assert numpy.all(mat.taxa == numpy.append(taxa_object, taxa_object, axis = 0))
     assert numpy.all(mat.taxa_grp == numpy.append(taxa_grp_int64, taxa_grp_int64, axis = 0))
@@ -269,7 +257,9 @@ def test_append_taxa_ndarray(mat, mat_float64, taxa_object, taxa_grp_int64):
     a = mat_float64.copy()
     b = mat_float64.copy()
     b.fill(numpy.nan)
-    mtrue = numpy.block([[a,b],[b,a]])
+    upper = numpy.concatenate([a,b], axis = 1)
+    lower = numpy.concatenate([b,a], axis = 1)
+    mtrue = numpy.concatenate([upper,lower], axis = 0)
     assert numpy.array_equal(mat.mat, mtrue, equal_nan = True)
     assert numpy.all(mat.taxa == numpy.append(taxa_object, taxa_object, axis = 0))
     assert numpy.all(mat.taxa_grp == numpy.append(taxa_grp_int64, taxa_grp_int64, axis = 0))
@@ -371,11 +361,11 @@ def test_is_grouped_taxa(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_check_is_DenseSquareTaxaMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseSquareTaxaMatrix)
+def test_check_is_DenseSquareTaxaTraitMatrix_is_concrete():
+    assert_concrete_function(check_is_DenseSquareTaxaTraitMatrix)
 
-def test_check_is_DenseSquareTaxaMatrix(mat):
+def test_check_is_DenseSquareTaxaTraitMatrix(mat):
     with not_raises(TypeError):
-        check_is_DenseSquareTaxaMatrix(mat, "mat")
+        check_is_DenseSquareTaxaTraitMatrix(mat, "mat")
     with pytest.raises(TypeError):
-        check_is_DenseSquareTaxaMatrix(None, "mat")
+        check_is_DenseSquareTaxaTraitMatrix(None, "mat")

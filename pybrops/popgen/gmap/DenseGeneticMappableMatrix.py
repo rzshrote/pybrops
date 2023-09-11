@@ -117,7 +117,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 
         # check if self has been sorted and grouped
         if not self.is_grouped_vrnt():
-            raise RuntimeError("must be grouped first before interpolation of crossover probabilities")
+            raise ValueError("must be grouped first before interpolation of crossover probabilities")
 
         # interpolate genetic positions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)

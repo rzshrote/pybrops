@@ -540,8 +540,24 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Sort the Matrix along the variant axis, then populate grouping indices
-        for the variant axis.
+        Sort the VariantMatrix along the variant axis, then populate grouping 
+        indices for the variant axis.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def ungroup_vrnt(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the VariantMatrix along the variant axis by removing variant 
+        group metadata.
 
         Parameters
         ----------

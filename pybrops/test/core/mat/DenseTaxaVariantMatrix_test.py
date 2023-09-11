@@ -221,24 +221,29 @@ def test_lexsort_taxa_is_concrete():
 def test_lexsort_vrnt_is_concrete():
     assert_concrete_method(DenseTaxaVariantMatrix, "lexsort_vrnt")
 
-# TODO: # FIXME: not_raises fails for an edge case
-# def test_sort_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "sort_taxa")
-#
-# def test_sort_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "sort_vrnt")
-#
-# def test_group_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "group_taxa")
-#
-# def test_group_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "group_vrnt")
-#
-# def test_is_grouped_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "is_grouped_taxa")
-#
-# def test_is_grouped_vrnt_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaVariantMatrix, "is_grouped_vrnt")
+def test_sort_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "sort_taxa")
+
+def test_sort_vrnt_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "sort_vrnt")
+
+def test_group_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "group_taxa")
+
+def test_group_vrnt_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "group_vrnt")
+
+def test_ungroup_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "ungroup_taxa")
+
+def test_ungroup_vrnt_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "ungroup_vrnt")
+
+def test_is_grouped_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "is_grouped_taxa")
+
+def test_is_grouped_vrnt_is_concrete():
+    assert_concrete_method(DenseTaxaVariantMatrix, "is_grouped_vrnt")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
