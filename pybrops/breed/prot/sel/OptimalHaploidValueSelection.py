@@ -12,10 +12,12 @@ __all__ = [
 
 from abc import ABCMeta
 from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
 import numpy
 from numpy.random import Generator, RandomState
-from typing import Optional, Union
-from typing import Callable
+import pandas
+
 from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem, OptimalHaploidValueIntegerSelectionProblem, OptimalHaploidValueRealSelectionProblem, OptimalHaploidValueSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
@@ -23,14 +25,12 @@ from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class OptimalHaploidValueSelectionMixin(metaclass=ABCMeta):
     """
@@ -157,7 +157,7 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,Subse
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -173,7 +173,7 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,Subse
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -324,7 +324,7 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSel
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -340,7 +340,7 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSel
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -491,7 +491,7 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -507,7 +507,7 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -658,7 +658,7 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,Binar
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -674,7 +674,7 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,Binar
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

@@ -1,5 +1,6 @@
 from numbers import Integral, Real
 from typing import Callable
+import pandas
 import pytest
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.SelectionProtocol import check_is_SelectionProtocol
@@ -10,7 +11,6 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
 from pybrops.test.breed.prot.sel.common_fixtures_large import *
 
@@ -31,13 +31,13 @@ class DummySelectionProtocol(SelectionProtocol):
     def moalgo(self, value: object) -> None:
         """Set moalgo."""
         self._moalgo = value
-    def problem(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: PhenotypeDataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, **kwargs: dict) -> SelectionProblem:
+    def problem(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: pandas.DataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, **kwargs: dict) -> SelectionProblem:
         return super().problem(pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs)
-    def sosolve(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: PhenotypeDataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionSolution:
+    def sosolve(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: pandas.DataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionSolution:
         return super().sosolve(pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs)
-    def mosolve(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: PhenotypeDataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionSolution:
+    def mosolve(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: pandas.DataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionSolution:
         return super().mosolve(pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs)
-    def select(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: PhenotypeDataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionConfiguration:
+    def select(self, pgmat: PhasedGenotypeMatrix, gmat: GenotypeMatrix, ptdf: pandas.DataFrame, bvmat: BreedingValueMatrix, gpmod: GenomicModel, t_cur: Integral, t_max: Integral, miscout: dict | None, **kwargs: dict) -> SelectionConfiguration:
         return super().select(pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout, **kwargs)
 
 @pytest.fixture

@@ -12,10 +12,12 @@ __all__ = [
 
 from abc import ABCMeta
 from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
 import numpy
 from numpy.random import Generator, RandomState
-from typing import Optional, Union
-from typing import Callable
+import pandas
+
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
@@ -29,7 +31,6 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class RandomSelectionMixin(metaclass=ABCMeta):
     """
@@ -133,7 +134,7 @@ class RandomSubsetSelection(RandomSelectionMixin,SubsetSelectionProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -149,7 +150,7 @@ class RandomSubsetSelection(RandomSelectionMixin,SubsetSelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -283,7 +284,7 @@ class RandomRealSelection(RandomSelectionMixin,RealSelectionProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -299,7 +300,7 @@ class RandomRealSelection(RandomSelectionMixin,RealSelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -433,7 +434,7 @@ class RandomIntegerSelection(RandomSelectionMixin,IntegerSelectionProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -449,7 +450,7 @@ class RandomIntegerSelection(RandomSelectionMixin,IntegerSelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -583,7 +584,7 @@ class RandomBinarySelection(RandomSelectionMixin,BinarySelectionProtocol):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -599,7 +600,7 @@ class RandomBinarySelection(RandomSelectionMixin,BinarySelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

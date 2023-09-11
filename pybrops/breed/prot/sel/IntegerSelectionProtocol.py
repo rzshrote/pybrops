@@ -8,6 +8,8 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator,RandomState
+import pandas
+
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSelectionConfiguration
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
@@ -20,7 +22,6 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
 class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
@@ -129,7 +130,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -145,7 +146,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -170,7 +171,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -187,7 +188,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -258,7 +259,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -275,7 +276,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -359,7 +360,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -376,7 +377,7 @@ class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

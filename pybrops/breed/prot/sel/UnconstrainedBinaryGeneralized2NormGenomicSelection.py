@@ -344,7 +344,7 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -447,7 +447,7 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
             Input phased genotype matrix containing genomes.
         gmat : GenotypeMatrix
             Input genotype matrix.
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Input breeding value matrix.
@@ -509,7 +509,7 @@ class BinaryGeneralized2NormGenomicSelection(UnconstrainedSelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

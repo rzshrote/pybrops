@@ -8,7 +8,7 @@ from numbers import Integral
 from typing import Optional, Union
 import numpy
 import h5py
-
+import pandas
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_type_python import check_is_dict
@@ -23,7 +23,6 @@ from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class DenseLinearGenomicModel(LinearGenomicModel):
     """
@@ -261,7 +260,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
     def fit(
             self, 
-            ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame,numpy.ndarray], 
+            ptobj: Union[BreedingValueMatrix,pandas.DataFrame,numpy.ndarray], 
             cvobj: numpy.ndarray, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
             **kwargs: dict
@@ -271,7 +270,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : numpy.ndarray
@@ -451,7 +450,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : numpy.ndarray
@@ -474,12 +473,12 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         # process ptobj
         if isinstance(ptobj, BreedingValueMatrix):
             Y = ptobj.descale()
-        elif isinstance(ptobj, PhenotypeDataFrame):
+        elif isinstance(ptobj, pandas.DataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):
             Y = ptobj
         else:
-            raise TypeError("must be BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray")
+            raise TypeError("must be BreedingValueMatrix, pandas.DataFrame, numpy.ndarray")
 
         # process cvobj
         if isinstance(cvobj, numpy.ndarray):

@@ -18,10 +18,11 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
+import pandas
+
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityBinarySelectionProblem, MeanExpectedHeterozygosityIntegerSelectionProblem, MeanExpectedHeterozygosityRealSelectionProblem, MeanExpectedHeterozygositySubsetSelectionProblem
@@ -31,7 +32,6 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class MeanExpectedHeterozygositySelectionMixin(metaclass=ABCMeta):
     """
@@ -122,7 +122,7 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -138,7 +138,7 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -276,7 +276,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -292,7 +292,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -430,7 +430,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -446,7 +446,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -584,7 +584,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -600,7 +600,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

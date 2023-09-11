@@ -6,8 +6,7 @@ __all__ = [
     "gmap",
     "gmat",
     "bvmat",
-    "cmat",
-    "ptdf"
+    "cmat"
 ]
 
 # order dependent
@@ -22,6 +21,3 @@ from pybrops.popgen import bvmat
 # other matrix components
 # from pybrops.popgen import ldmat
 from pybrops.popgen import cmat
-
-# data frame components
-from pybrops.popgen import ptdf

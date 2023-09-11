@@ -13,6 +13,8 @@ from typing import Callable, Optional, Union
 
 import numpy
 from numpy.random import Generator, RandomState
+import pandas
+
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem import MultiObjectiveGenomicSubsetSelectionProblem
@@ -24,7 +26,6 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class MultiObjectiveGenomicSelectionMixin(metaclass=ABCMeta):
     """
@@ -158,7 +159,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: AdditiveLinearGenomicModel, 
             t_cur: Integral, 
@@ -174,7 +175,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

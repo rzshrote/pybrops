@@ -1,5 +1,6 @@
 from typing import Optional, Union
 from numpy import ndarray, dtype
+import pandas
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.model.gmod.AdditiveDominanceEpistaticLinearGenomicModel import AdditiveDominanceEpistaticLinearGenomicModel
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
@@ -9,7 +10,6 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.gmod.NonlinearGenomicModel import NonlinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class DummyGenomicModel(GenomicModel):
@@ -45,7 +45,7 @@ class DummyGenomicModel(GenomicModel):
         super().ntrait = value
     def fit_numpy(self, Y: ndarray, X: ndarray, Z: ndarray, **kwargs: dict) -> None:
         return super().fit_numpy(Y, X, Z, **kwargs)
-    def fit(self, ptobj: BreedingValueMatrix | PhenotypeDataFrame | ndarray, cvobj: ndarray, gtobj: GenotypeMatrix | ndarray, **kwargs: dict) -> None:
+    def fit(self, ptobj: BreedingValueMatrix | pandas.DataFrame | ndarray, cvobj: ndarray, gtobj: GenotypeMatrix | ndarray, **kwargs: dict) -> None:
         return super().fit(ptobj, cvobj, gtobj, **kwargs)
     def predict_numpy(self, X: ndarray, Z: ndarray, **kwargs: dict) -> ndarray:
         return super().predict_numpy(X, Z, **kwargs)
@@ -53,7 +53,7 @@ class DummyGenomicModel(GenomicModel):
         return super().predict(cvobj, gtobj, **kwargs)
     def score_numpy(self, Y: ndarray, X: ndarray, Z: ndarray, **kwargs: dict) -> ndarray:
         return super().score_numpy(Y, X, Z, **kwargs)
-    def score(self, ptobj: BreedingValueMatrix | PhenotypeDataFrame, cvobj: object, gtobj: GenotypeMatrix, **kwargs: dict) -> ndarray:
+    def score(self, ptobj: BreedingValueMatrix | pandas.DataFrame, cvobj: object, gtobj: GenotypeMatrix, **kwargs: dict) -> ndarray:
         return super().score(ptobj, cvobj, gtobj, **kwargs)
     def gebv_numpy(self, Z: ndarray, **kwargs: dict) -> ndarray:
         return super().gebv_numpy(Z, **kwargs)

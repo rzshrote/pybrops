@@ -4,12 +4,11 @@ Module implementing the extraction of true breeding value.
 
 from typing import Union
 import numpy
+import pandas
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class TrueBreedingValue(BreedingValueProtocol):
     """
@@ -50,7 +49,7 @@ class TrueBreedingValue(BreedingValueProtocol):
     ############################## Object Methods ##############################
     def estimate(
             self, 
-            ptobj: Union[PhenotypeDataFrame,BreedingValueMatrix,numpy.ndarray], 
+            ptobj: Union[pandas.DataFrame,BreedingValueMatrix,numpy.ndarray], 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
             miscout: dict = None, 
             **kwargs: dict
@@ -60,7 +59,7 @@ class TrueBreedingValue(BreedingValueProtocol):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         gtobj : GenotypeMatrix, numpy.ndarray

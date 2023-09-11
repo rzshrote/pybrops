@@ -5,9 +5,11 @@ value calculation protocols.
 
 from abc import ABCMeta, abstractmethod
 from typing import Optional
+
+import pandas
+
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class BreedingValueProtocol(metaclass=ABCMeta):
     """
@@ -23,7 +25,7 @@ class BreedingValueProtocol(metaclass=ABCMeta):
     @abstractmethod
     def estimate(
             self, 
-            ptobj: PhenotypeDataFrame, 
+            ptobj: pandas.DataFrame, 
             gtobj: GenotypeMatrix, 
             miscout: Optional[dict], 
             **kwargs: dict
@@ -33,7 +35,7 @@ class BreedingValueProtocol(metaclass=ABCMeta):
 
         Parameters
         ----------
-        ptobj : PhenotypeDataFrame
+        ptobj : pandas.DataFrame
             An object containing phenotype data. Must be a phenotype data frame.
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a genotype matrix.

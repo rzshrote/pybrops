@@ -1,9 +1,9 @@
 from numbers import Real
 from typing import Union
 from numpy import ndarray
+import pandas
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 
 class DummyPhenotypingProtocol(PhenotypingProtocol):
@@ -23,7 +23,7 @@ class DummyPhenotypingProtocol(PhenotypingProtocol):
     def var_err(self, value: object) -> None:
         """Set var_err."""
         self._var_err = value
-    def phenotype(self, pgmat: PhasedGenotypeMatrix, miscout: dict, **kwargs: dict) -> PhenotypeDataFrame:
+    def phenotype(self, pgmat: PhasedGenotypeMatrix, miscout: dict, **kwargs: dict) -> pandas.DataFrame:
         return super().phenotype(pgmat, miscout, **kwargs)
     def set_H2(self, H2: Real | ndarray, pgmat: PhasedGenotypeMatrix, **kwargs: dict) -> None:
         return super().set_H2(H2, pgmat, **kwargs)

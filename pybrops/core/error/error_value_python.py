@@ -7,7 +7,6 @@ __all__ = [
     "check_len",
     "check_len_eq",
     "check_all_equal",
-    "check_is_positive",
     "check_is_eq",
     "check_is_gt",
     "check_is_gteq",
@@ -96,20 +95,6 @@ def check_all_equal(v: object, vname: str) -> None:
         return # length is 1, therefore all elements are equivalent
     if any(e0 != e for e in viter):
         raise ValueError("not all elements in {0} are equal to {1}".format(vname, e0))
-
-def check_is_positive(v: object, vname: str) -> None:
-    """
-    Check if a Python object is positive. Raise error if it is not.
-
-    Parameters
-    ----------
-    v : object
-        A Python object.
-    vname : str
-        Name of the Python object for use in the error message.
-    """
-    if v < 0:
-        raise ValueError("variable '{0}' must be positive".format(vname))
 
 def check_is_eq(v: object, vname: str, value: object) -> None:
     """

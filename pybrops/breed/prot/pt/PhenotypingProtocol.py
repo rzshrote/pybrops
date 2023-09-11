@@ -5,13 +5,10 @@ Module defining interfaces and associated protocols for phenotyping protocols.
 from abc import ABCMeta, abstractmethod
 from numbers import Real
 from typing import Union
-
 import numpy
-
+import pandas
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
-
 
 class PhenotypingProtocol(metaclass=ABCMeta):
     """
@@ -58,7 +55,7 @@ class PhenotypingProtocol(metaclass=ABCMeta):
             pgmat: PhasedGenotypeMatrix, 
             miscout: dict, 
             **kwargs: dict
-        ) -> PhenotypeDataFrame:
+        ) -> pandas.DataFrame:
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -75,8 +72,8 @@ class PhenotypingProtocol(metaclass=ABCMeta):
 
         Returns
         -------
-        out : PhenotypeDataFrame
-            A PhenotypeDataFrame containing phenotypes for individuals.
+        out : pandas.DataFrame
+            A pandas.DataFrame containing phenotypes for individuals.
         """
         raise NotImplementedError("method is abstract")
 

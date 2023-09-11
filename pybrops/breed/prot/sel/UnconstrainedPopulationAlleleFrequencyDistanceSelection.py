@@ -435,7 +435,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
             Genomes
         gmat : GenotypeMatrix
             Genotypes (unphased most likely)
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -559,7 +559,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
             Not used by this function.
         gmat : GenotypeMatrix
             Input genotype matrix.
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
@@ -603,7 +603,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
             Not used by this function.
         gmat : GenotypeMatrix
             Input genotype matrix.
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Not used by this function.
         bvmat : BreedingValueMatrix
             Not used by this function.
@@ -650,7 +650,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

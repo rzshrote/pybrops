@@ -12,10 +12,12 @@ __all__ = [
 
 from abc import ABCMeta
 from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
 import numpy
 from numpy.random import Generator, RandomState
-from typing import Optional, Union
-from typing import Callable
+import pandas
+
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
@@ -30,7 +32,6 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class OptimalContributionSelectionMixin(metaclass=ABCMeta):
     """
@@ -209,7 +210,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -225,7 +226,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -374,7 +375,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -390,7 +391,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -539,7 +540,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -555,7 +556,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -704,7 +705,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -720,7 +721,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix

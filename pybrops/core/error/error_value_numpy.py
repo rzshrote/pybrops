@@ -8,7 +8,6 @@ __all__ = [
     "check_ndarray_all_gteq",
     "check_ndarray_eq",
     "check_ndarray_is_binary",
-    "check_ndarray_is_positive",
     "check_ndarray_ndim",
     "check_ndarray_ndim_gteq",
     "check_ndarray_size",
@@ -122,20 +121,6 @@ def check_ndarray_is_binary(v: numpy.ndarray, vname: str) -> None:
     """
     if not numpy.all((v == 0) | (v == 1)):
         raise ValueError("ndarray '{0}' must have values equal to 0 or 1".format(vname))
-
-def check_ndarray_is_positive(v: numpy.ndarray, vname: str) -> None:
-    """
-    Check if all elements in a ``numpy.ndarray`` are positive.
-    
-    Parameters
-    ----------
-    v : numpy.ndarray
-        Input array.
-    vname : str
-        Name assigned to input array.
-    """
-    if numpy.any(v < 0):
-        raise ValueError("ndarray '{0}' must have all positive values".format(vname))
 
 ################ check_ndarray_ndim ################
 def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:

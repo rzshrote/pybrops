@@ -8,7 +8,7 @@ from numbers import Integral
 from typing import Optional, Union
 import h5py
 import numpy
-
+import pandas
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -23,7 +23,6 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     """
@@ -376,7 +375,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : numpy.ndarray
@@ -556,7 +555,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : numpy.ndarray
@@ -579,12 +578,12 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         # process ptobj
         if isinstance(ptobj, BreedingValueMatrix):
             Y = ptobj.descale()
-        elif isinstance(ptobj, PhenotypeDataFrame):
+        elif isinstance(ptobj, pandas.DataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):
             Y = ptobj
         else:
-            raise TypeError("must be BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray")
+            raise TypeError("must be BreedingValueMatrix, pandas.DataFrame, numpy.ndarray")
 
         # process cvobj
         if isinstance(cvobj, numpy.ndarray):
@@ -698,6 +697,51 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         )
 
         return out
+
+    ######## methods for estimated genotypic value #########
+    def gegv_numpy(
+            self,
+            Z: numpy.ndarray,
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Calculate genomic estimated genotypic values.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotypic markers.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A matrix of genomic estimated genotypic values.
+        """
+        return self.gebv_numpy(Z = Z, **kwargs)
+    
+    def gegv(
+            self,
+            gtobj: GenotypeMatrix,
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
+        """
+        Calculate genomic estimated genotypic values.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotypic markers.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A matrix of genomic estimated genotypic values.
+        """
+        return self.gebv(gtobj = gtobj, **kwargs)
 
     ###### methods for population variance prediction ######
     def var_G_numpy(

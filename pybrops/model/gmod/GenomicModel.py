@@ -6,10 +6,10 @@ from abc import ABCMeta, abstractmethod
 import copy
 from typing import Optional, Union
 import numpy
+import pandas
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
     """
@@ -168,7 +168,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
     @abstractmethod
     def fit(
             self, 
-            ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame,numpy.ndarray], 
+            ptobj: Union[BreedingValueMatrix,pandas.DataFrame,numpy.ndarray], 
             cvobj: numpy.ndarray, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
             **kwargs: dict
@@ -178,7 +178,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : numpy.ndarray
@@ -288,7 +288,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
     @abstractmethod
     def score(
             self, 
-            ptobj: Union[BreedingValueMatrix,PhenotypeDataFrame], 
+            ptobj: Union[BreedingValueMatrix,pandas.DataFrame], 
             cvobj: object, 
             gtobj: GenotypeMatrix, 
             **kwargs: dict
@@ -298,7 +298,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix or PhenotypeDataFrame
+        ptobj : BreedingValueMatrix or pandas.DataFrame
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         cvobj : object
@@ -373,6 +373,53 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         -------
         gebvmat_hat : BreedingValueMatrix
             Genomic estimated breeding values.
+        """
+        raise NotImplementedError("method is abstract")
+
+    ######## methods for estimated genotypic value #########
+    @abstractmethod
+    def gegv_numpy(
+            self,
+            Z: numpy.ndarray,
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Calculate genomic estimated genotypic values.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotypic markers.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A matrix of genomic estimated genotypic values.
+        """
+        raise NotImplementedError("method is abstract")
+    
+    @abstractmethod
+    def gegv(
+            self,
+            gtobj: GenotypeMatrix,
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
+        """
+        Calculate genomic estimated genotypic values.
+
+        Parameters
+        ----------
+        Z : numpy.ndarray
+            A matrix of genotypic markers.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A matrix of genomic estimated genotypic values.
         """
         raise NotImplementedError("method is abstract")
 

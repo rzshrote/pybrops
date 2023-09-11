@@ -3,14 +3,15 @@ Module for estimating breeding values using the mean across all environments.
 """
 
 import numpy
+import pandas
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame, check_is_PhenotypeDataFrame
 
 class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """
@@ -54,7 +55,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     ############################## Object Methods ##############################
     def estimate(
             self, 
-            ptobj: PhenotypeDataFrame, 
+            ptobj: pandas.DataFrame, 
             gtobj: GenotypeMatrix, 
             miscout: dict = None, 
             **kwargs: dict
@@ -64,7 +65,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
 
         Parameters
         ----------
-        ptobj : PhenotypeDataFrame
+        ptobj : pandas.DataFrame
             An object containing phenotype data. Must be a phenotype data frame.
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a genotype matrix.
@@ -83,7 +84,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
             A matrix of breeding values.
         """
         # check arguments
-        check_is_PhenotypeDataFrame(ptobj, "ptobj")
+        check_is_pandas_DataFrame(ptobj, "ptobj")
         check_is_GenotypeMatrix(gtobj, "gtobj")
 
         # get taxa vector

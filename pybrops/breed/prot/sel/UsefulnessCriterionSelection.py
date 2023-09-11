@@ -12,11 +12,14 @@ __all__ = [
 
 from abc import ABCMeta
 from numbers import Integral, Real
-import numpy
-import scipy.stats
-from numpy.random import Generator, RandomState
 from typing import Optional, Union
 from typing import Callable
+
+import numpy
+from numpy.random import Generator, RandomState
+import pandas
+import scipy.stats
+
 from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import BinaryMateSelectionProtocol
 from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import IntegerMateSelectionProtocol
 from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionProtocol
@@ -32,13 +35,12 @@ from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import Usef
 from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval_exclusive, check_is_in_interval_inclusive
+from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval_exclusive
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import PhenotypeDataFrame
 
 class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     """
@@ -207,7 +209,7 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,Subse
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -223,7 +225,7 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,Subse
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -393,7 +395,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -409,7 +411,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -579,7 +581,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -595,7 +597,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -765,7 +767,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
             self, 
             pgmat: PhasedGenotypeMatrix, 
             gmat: GenotypeMatrix, 
-            ptdf: PhenotypeDataFrame, 
+            ptdf: pandas.DataFrame, 
             bvmat: BreedingValueMatrix, 
             gpmod: GenomicModel, 
             t_cur: Integral, 
@@ -781,7 +783,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
