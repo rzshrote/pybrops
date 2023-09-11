@@ -16,7 +16,7 @@ Summary of Genotyping Protocol Classes
       - Class Description
     * - ``GenotypingProtocol``
       - Abstract
-      - Interface for all coancestry matrix child classes.
+      - Interface for all genotyping protocol classes.
     * - ``DenseUnphasedGenotyping``
       - Concrete
       - Class representing whole-genome genotyping which produces a dense unphased genotype matrix.

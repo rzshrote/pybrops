@@ -249,18 +249,18 @@ def test_var_err_fdel(ptprot):
 ###################### Test concrete method functionality ######################
 ################################################################################
 def test_phenotype(ptprot, dpgmat, gpmod):
-    df = ptprot.phenotype(dpgmat, gpmod)
+    # conduct true phenotyping
+    df = ptprot.phenotype(dpgmat)
+
+    # check if output is a pandas dataframe
     assert isinstance(df, pandas.DataFrame)
 
-    expected_ncol = gpmod.ntrait
-    if dpgmat.taxa is not None:
-        expected_ncol += 1
-    if dpgmat.taxa_grp is not None:
-        expected_ncol += 1
-    assert df.ncol == expected_ncol
+    # check that the number of rows == number of individuals
+    assert len(df) == dpgmat.ntaxa
 
-    expected_nrow = dpgmat.ntaxa
-    assert df.nrow == expected_nrow
+    # check that the number of columns == 2 + number of traits
+    # two other columns are taxa and taxa_grp
+    assert len(df.columns) == (2 + gpmod.ntrait)
 
 def test_set_h2(ptprot, dpgmat):
     with pytest.raises(AttributeError):

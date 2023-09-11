@@ -4,8 +4,8 @@ Phenotyping Protocols
 Class Family Overview
 =====================
 
-Summary of Genotyping Protocol Classes
-======================================
+Summary of Phenotyping Protocol Classes
+=======================================
 
 .. list-table:: Summary of classes in the ``pybrops.breed.prot.pt`` module
     :widths: 25 20 50
@@ -14,10 +14,143 @@ Summary of Genotyping Protocol Classes
     * - Class Name
       - Class Type
       - Class Description
-    * - ``GenotypingProtocol``
+    * - ``PhenotypingProtocol``
       - Abstract
-      - Interface for all coancestry matrix child classes.
-    * - ``DenseUnphasedGenotyping``
+      - Interface for all phenotyping protocol child classes.
+    * - ``TruePhenotyping``
       - Concrete
-      - Class representing whole-genome genotyping which produces a dense unphased genotype matrix.
+      - Class representing phenotyping done without error.
+    * - ``G_E_Phenotyping``
+      - Concrete
+      - Class representing phenotyping with environmental effects.
 
+Loading Class Modules
+=====================
+
+.. code-block:: python
+
+    # import the PhenotypingProtocol class (an abstract interface class)
+    from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
+
+    # import the TruePhenotyping class (a concrete implemented class)
+    from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
+
+    # import the G_E_Phenotyping class (a concrete implemented class)
+    from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
+
+Creating Phenotyping Protocols
+==============================
+
+.. code-block:: python
+
+    #
+    # Creating a true genomic model
+    #
+
+    # model parameters
+    nfixed = 1      # number of fixed effects
+    ntrait = 2      # number of traits
+    nmisc = 0       # number of miscellaneous random effects
+    nadditive = 50  # number of additive marker effects
+
+    # create dummy values
+    beta = numpy.random.random((nfixed,ntrait))
+    u_misc = numpy.random.random((nmisc,ntrait))
+    u_a = numpy.random.random((nadditive,ntrait))
+    trait = numpy.array(["Trait"+str(i+1).zfill(2) for i in range(ntrait)], dtype = object)
+
+    # create additive linear genomic model
+    algmod = DenseAdditiveLinearGenomicModel(
+        beta = beta,
+        u_misc = u_misc,
+        u_a = u_a,
+        trait = trait,
+        model_name = "example",
+        params = None
+    )
+
+    #
+    # Creating a phenotyping object
+    #
+
+    # phenotyping parameters
+    nenv = 3    # number of environments
+    nrep = 2    # number of replicates within each environment
+
+    # construct phenotyping object
+    ptprot = G_E_Phenotyping(
+        gpmod = algmod,
+        nenv = nenv,
+        nrep = nrep
+    )
+
+Setting Trait Heritabilities
+============================
+
+.. code-block:: python
+
+    #
+    # Construct random genomes
+    #
+
+    # shape parameters for random genomes
+    ntaxa = 100
+    nvrnt = nadditive
+    ngroup = 20
+    nchrom = 10
+    nphase = 2
+
+    # create random genotypes
+    mat = numpy.random.randint(0, 2, size = (nphase,ntaxa,nvrnt)).astype("int8")
+
+    # create taxa names
+    taxa = numpy.array(["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], dtype = object)
+
+    # create taxa groups
+    taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+    taxa_grp.sort()
+
+    # create marker variant chromsome assignments
+    vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
+    vrnt_chrgrp.sort()
+
+    # create marker physical positions
+    vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
+    vrnt_phypos.sort()
+
+    # create marker variant names
+    vrnt_name = numpy.array(["SNP"+str(i+1).zfill(4) for i in range(nvrnt)], dtype = object)
+
+    # create a phased genotype matrix from scratch using NumPy arrays
+    pgmat = DensePhasedGenotypeMatrix(
+        mat = mat,
+        taxa = taxa,
+        taxa_grp = taxa_grp, 
+        vrnt_chrgrp = vrnt_chrgrp,
+        vrnt_phypos = vrnt_phypos, 
+        vrnt_name = vrnt_name, 
+        ploidy = nphase
+    )
+
+    # set the heritabilities from 
+    heritability = numpy.array([0.4, 0.7])
+
+    # set the narrow sense heritability
+    ptprot.set_h2(
+        h2 = heritability,
+        pgmat = pgmat
+    )
+
+    # set the broad sense heritability
+    ptprot.set_H2(
+        H2 = heritability,
+        pgmat = pgmat
+    )
+
+Phenotyping Individuals
+=======================
+
+.. code-block:: python
+
+    # phenotype individuals
+    pheno_df = ptprot.phenotype(pgmat)

@@ -100,6 +100,38 @@ class G_E_Phenotyping(PhenotypingProtocol):
         check_is_GenomicModel(value, "gpmod")
         self._gpmod = value
 
+    ################ Replication Parameters ################
+    @property
+    def nenv(self) -> Integral:
+        """Number of environments."""
+        return self._nenv
+    @nenv.setter
+    def nenv(self, value: Integral) -> None:
+        """Set number of environments"""
+        check_is_Integral(value, "nenv")
+        check_is_gt(value, "nenv", 0)
+        self._nenv = value
+
+    @property
+    def nrep(self) -> numpy.ndarray:
+        """Number of replications per environment."""
+        return self._nrep
+    @nrep.setter
+    def nrep(self, value: Union[Integral,numpy.ndarray]) -> None:
+        """Set number of replications per environment."""
+        if isinstance(value, Integral):
+            check_is_gt(value, "nrep", 0)
+            value = numpy.full(self.nenv, value, int)
+        elif isinstance(value, numpy.ndarray):
+            check_ndarray_dtype_is_integer(value, "nrep")
+            check_ndarray_ndim(value, "nrep", 1)
+            check_ndarray_size(value, "nrep", self.nenv)
+            check_ndarray_all_gt(value, "nrep", 0)
+            self._nrep = value
+        else:
+            raise TypeError("'nrep' must be an integer type or numpy.ndarray")
+        self._nrep = value
+
     ################ Stochastic Parameters #################
     @property
     def var_env(self) -> numpy.ndarray:
@@ -182,38 +214,6 @@ class G_E_Phenotyping(PhenotypingProtocol):
         check_is_Generator_or_RandomState(value, "rng")
         self._rng = value
 
-    ################ Replication Parameters ################
-    @property
-    def nenv(self) -> Integral:
-        """Number of environments."""
-        return self._nenv
-    @nenv.setter
-    def nenv(self, value: Integral) -> None:
-        """Set number of environments"""
-        check_is_Integral(value, "nenv")
-        check_is_gt(value, "nenv", 0)
-        self._nenv = value
-
-    @property
-    def nrep(self) -> numpy.ndarray:
-        """Number of replications per environment."""
-        return self._nrep
-    @nrep.setter
-    def nrep(self, value: Union[Integral,numpy.ndarray]) -> None:
-        """Set number of replications per environment."""
-        if isinstance(value, Integral):
-            check_is_gt(value, "nrep", 0)
-            value = numpy.full(self.nenv, value, int)
-        elif isinstance(value, numpy.ndarray):
-            check_ndarray_dtype_is_integer(value, "nrep")
-            check_ndarray_ndim(value, "nrep", 1)
-            check_ndarray_size(value, "nrep", self.nenv)
-            check_ndarray_all_gt(value, "nrep", 0)
-            self._nrep = value
-        else:
-            raise TypeError("'nrep' must be an integer type or numpy.ndarray")
-        self._nrep = value
-
     ############################## Object Methods ##############################
     def phenotype(
             self, 
@@ -287,34 +287,31 @@ class G_E_Phenotyping(PhenotypingProtocol):
         err_cov = numpy.diag(self.var_err)
 
         # for each environment
-        for env in range(self.nenv):
+        for env,env_nrep in zip(range(self.nenv),self.nrep):
 
             # (t,) : calculate the environmental effect
             env_effect = self.rng.multivariate_normal(env_mean, env_cov)
 
-            # for each environment, get number of replicates in that environment
-            for env_nrep in self.nrep:
+            # for each replicate in each environment
+            for rep in range(env_nrep):
 
-                # for each replicate in each environment
-                for rep in range(env_nrep):
+                # (t,) : calculate the replication effect
+                rep_effect = self.rng.multivariate_normal(rep_mean, rep_cov)
 
-                    # (t,) : calculate the replication effect
-                    rep_effect = self.rng.multivariate_normal(rep_mean, rep_cov)
+                # (n,t) : calculate the error effect for each taxon
+                err_effect = self.rng.multivariate_normal(err_mean, err_cov, ntaxa)
 
-                    # (n,t) : calculate the error effect for each taxon
-                    err_effect = self.rng.multivariate_normal(err_mean, err_cov, ntaxa)
+                # (n,t) : calculate phenotypic values for the rep within the env
+                # (n,t) = (n,t) + (1,t) + (1,t) + (n,t)
+                value = mat + env_effect[None,:] + rep_effect[None,:] + err_effect
 
-                    # (n,t) : calculate phenotypic values for the rep within the env
-                    # (n,t) = (n,t) + (1,t) + (1,t) + (n,t)
-                    value = mat + env_effect[None,:] + rep_effect[None,:] + err_effect
-
-                    # append values
-                    taxa_ls.append(taxa)
-                    if taxa_grp_ls is not None:
-                        taxa_grp_ls.append(taxa_grp)
-                    env_ls.append(numpy.repeat(env, ntaxa))
-                    rep_ls.append(numpy.repeat(rep, ntaxa))
-                    values_ls.append(value)
+                # append values
+                taxa_ls.append(taxa)
+                if taxa_grp_ls is not None:
+                    taxa_grp_ls.append(taxa_grp)
+                env_ls.append(numpy.repeat(env+1, ntaxa))
+                rep_ls.append(numpy.repeat(rep+1, ntaxa))
+                values_ls.append(value)
         
         # concatenate values
         # (nobs,)
@@ -367,6 +364,9 @@ class G_E_Phenotyping(PhenotypingProtocol):
         kwargs : dict
             Additional keyword arguments
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+
         # get the additive variance of the founder population
         var_A = self.gpmod.var_A(pgmat)
 
@@ -396,6 +396,9 @@ class G_E_Phenotyping(PhenotypingProtocol):
         kwargs : dict
             Additional keyword arguments
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+
         # get the additive variance of the founder population
         var_G = self.gpmod.var_G(pgmat)
 
