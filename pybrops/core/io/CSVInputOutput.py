@@ -61,13 +61,13 @@ class CSVInputOutput(metaclass=ABCMeta):
         ----------
         filename : str
             CSV file name from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
 
         Returns
         -------
         out : CSVInputOutput
             An object read from a CSV file.
-        kwargs : dict
-            Additional keyword arguments to use for dictating importing from a CSV.
         """
         raise NotImplementedError("class method is abstract")
 
