@@ -21,7 +21,6 @@ from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
 ### Creating Phenotyping Protocols
 ### ==============================
 
-
 #
 # Creating a true genomic model
 #

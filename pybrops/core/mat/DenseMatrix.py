@@ -286,6 +286,20 @@ class DenseMatrix(Matrix):
             mat = copy.deepcopy(self.mat, memo)
         )
 
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<" + type(self).__name__ + " object at " + hex(id(self)) + " of shape " + str(self.mat_shape) + ">"
+
     ############################ Object Properties #############################
 
     ##################### Matrix Data ######################

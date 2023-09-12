@@ -119,20 +119,26 @@ class SelfCross(MatingProtocol):
             A DensePhasedGenotypeMatrix containing candidate breeding
             individuals.
         xconfig : numpy.ndarray
-            A 1D array of indices of selected individuals of shape ``(k,)``.
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
 
             Where:
 
-            - ``k`` is the number of selected individuals.
+            - ``ncross`` is the number of crosses to perform.
+            - ``nparent`` is the number of parents required for a cross.
 
-            Indices are as follows:
+            Indices are organized as follows:
 
-            - All indices are female.
+            - All indices are self parents.
 
             Example::
 
-                xconfig = [1,5,3,8,2,7]
-                female = 1,5,3,8,2,7
+                xconfig = [[ 1 ],
+                           [ 3 ],
+                           [ 2 ],
+                           ...,
+                           [ S ]]
+                self = [1, 3, 2, ..., S]
         ncross : numpy.ndarray
             Number of cross patterns to perform.
         nprogeny : numpy.ndarray

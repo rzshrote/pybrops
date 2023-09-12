@@ -425,6 +425,12 @@ class Matrix(HDF5InputOutput,metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
+    ########### Miscellaneous special functions ############
+    # @abstractmethod
+    # def __repr__(self) -> str:
+    #     """Return repr(self)."""
+    #     raise NotImplementedError("method is abstract")
+
     ############################ Object Properties #############################
     @property
     @abstractmethod
