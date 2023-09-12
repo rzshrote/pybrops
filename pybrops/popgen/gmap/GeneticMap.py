@@ -31,6 +31,23 @@ class GeneticMap(metaclass=ABCMeta):
         """Get the number of markers in the genetic map."""
         raise NotImplementedError("method is abstract")
 
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of length {1} at {2}>".format(
+            type(self).__name__,
+            len(self),
+            hex(id(self))
+        )
+
     ############################ Object Properties #############################
 
     ################### Data Properites ####################

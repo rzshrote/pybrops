@@ -149,6 +149,25 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         self.model_name = model_name
         self.params = params
 
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape [B = {1}, U_misc = {2}, U_a = {3}] at {4}>".format(
+            type(self).__name__,
+            self.beta.shape,
+            self.u_misc.shape,
+            self.u_a.shape,
+            hex(id(self))
+        )
+
     def __copy__(
             self
         ) -> 'DenseAdditiveLinearGenomicModel':

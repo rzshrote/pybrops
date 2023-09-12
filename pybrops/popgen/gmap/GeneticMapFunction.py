@@ -23,6 +23,21 @@ class GeneticMapFunction(metaclass=ABCMeta):
     """
 
     ########################## Special Object Methods ##########################
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} at {1}>".format(
+            type(self).__name__,
+            hex(id(self))
+        )
 
     ############################ Object Properties #############################
 

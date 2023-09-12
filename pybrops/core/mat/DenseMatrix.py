@@ -298,7 +298,11 @@ class DenseMatrix(Matrix):
         out : str
             A representation of the object.
         """
-        return "<" + type(self).__name__ + " object at " + hex(id(self)) + " of shape " + str(self.mat_shape) + ">"
+        return "<{0} of shape {1} at {2}>".format(
+            type(self).__name__,
+            str(self.mat_shape),
+            hex(id(self))
+        )
 
     ############################ Object Properties #############################
 
