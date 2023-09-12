@@ -369,7 +369,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         # create output breeding value matrix
         out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
-            a = Y_hat,
+            mat = Y_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait
@@ -585,7 +585,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
 
         # create output breeding value matrix
         out = DenseGenomicEstimatedBreedingValueMatrix.from_numpy(
-            a = gebv_hat,
+            mat = gebv_hat,
             taxa = taxa,
             taxa_grp = taxa_grp,
             trait = self.trait

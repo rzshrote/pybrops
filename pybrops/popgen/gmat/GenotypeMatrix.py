@@ -311,3 +311,17 @@ def check_is_GenotypeMatrix(v: object, vname: str) -> None:
     """
     if not isinstance(v, GenotypeMatrix):
         raise TypeError("'%s' must be a GenotypeMatrix." % vname)
+
+def check_GenotypeMatrix_has_taxa(v: GenotypeMatrix, vname: str) -> None:
+    """
+    Check if a GenotypeMatrix has taxa labels. Otherwise raise ValueError.
+
+    Parameters
+    ----------
+    v : GenotypeMatrix
+        A GenotypeMatrix object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
+    if v.taxa is None:
+        raise ValueError("GenotypeMatrix '{0}' must have a non-None 'taxa' field")

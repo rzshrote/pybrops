@@ -88,7 +88,7 @@ trait = numpy.array(
 )
 
 bvmat = DenseBreedingValueMatrix.from_numpy(
-    a = mat,
+    mat = mat,
     taxa = taxa,
     taxa_grp = taxa_grp,
     trait = trait

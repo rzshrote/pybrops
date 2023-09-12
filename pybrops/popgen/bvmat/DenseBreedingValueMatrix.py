@@ -600,7 +600,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     @classmethod
     def from_numpy(
             cls, 
-            a: numpy.ndarray, 
+            mat: numpy.ndarray, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
@@ -632,14 +632,25 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             Output breeding value matrix.
         """
         # check inputs
-        check_ndarray_ndim(a, "a", 2)
+        check_ndarray_ndim(mat, "mat", 2)
 
-        # calculate location and scale parameters
-        location = a.mean(0)
-        scale = a.std(0)
+        # calculate location parameters
+        # (n,t) -> (t,)
+        location = numpy.nanmean(mat, axis = 0)
+
+        # calculate scale parameters
+        # (n,t) -> (t,)
+        scale = numpy.nanstd(mat, axis = 0)
+
+        # if scale < tolerance, set to 1.0 (do not scale)
+        mask = (scale == 0.0)
+        scale[mask] = 1.0
 
         # mean center and scale values
-        mat = (a - location) / scale
+        # scalar / (t,) -> (t,)
+        # (t,) * ( (n,t) - (t,) ) -> (n,t)
+        # multiply since multiplication is faster than division for floating points
+        mat = (1.0 / scale) * (mat - location) 
 
         # construct output
         out = cls(
