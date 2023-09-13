@@ -56,8 +56,8 @@ coverage.xml
 *.pot
 
 # Sphinx documentation
-doc/build/
-doc/source/_autosummary/
+docsrc/build/
+docsrc/source/_autosummary/
 
 # PyBuilder
 target/
