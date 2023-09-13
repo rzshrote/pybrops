@@ -32,7 +32,7 @@ dist:
 doc-html:
 	cd docsrc/ && $(MAKE) html
 	if [ ! -d docs ]; then mkdir docs; fi
-	cp docsrc/build/html/* docs/
+	cp -r docsrc/build/html/* docs/
 
 # instructions for building the package documentation in pdf format (requires LaTeX)
 doc-pdf:
