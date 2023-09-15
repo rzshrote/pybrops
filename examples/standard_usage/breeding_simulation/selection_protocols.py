@@ -103,12 +103,12 @@ from pybrops.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicSubse
 
 # create standard GEBV selection protocol in subset decision space
 selprot = GenomicEstimatedBreedingValueSubsetSelection(
-    ntrait=None,
-    ncross=None,
-    nparent=None,
-    nmating=None,
-    nprogeny=None,
-    nobj=None
+    ntrait = 2,
+    ncross = 10,
+    nparent = 2,
+    nmating = 1,
+    nprogeny = 40,
+    nobj = 2,
 )
 
 #
@@ -149,7 +149,7 @@ nchrom = 10
 nphase = 2
 
 # create random genotypes
-mat = numpy.random.randint(0, nphase+1, size = (ntaxa,nvrnt)).astype("int8")
+mat = numpy.random.randint(0, 2, size = (nphase,ntaxa,nvrnt)).astype("int8")
 
 # create taxa names
 taxa = numpy.array(["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], dtype = object)
@@ -170,7 +170,7 @@ vrnt_phypos.sort()
 vrnt_name = numpy.array(["SNP"+str(i+1).zfill(4) for i in range(nvrnt)], dtype = object)
 
 # create a phased genotype matrix from scratch using NumPy arrays
-pgmat = DenseGenotypeMatrix(
+pgmat = DensePhasedGenotypeMatrix(
     mat = mat,
     taxa = taxa,
     taxa_grp = taxa_grp, 
@@ -180,8 +180,232 @@ pgmat = DenseGenotypeMatrix(
     ploidy = nphase
 )
 
+# create a genotype matrix from scratch using NumPy arrays
+gmat = DenseGenotypeMatrix(
+    mat = mat.sum(0, dtype="int8"),
+    taxa = taxa,
+    taxa_grp = taxa_grp, 
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos, 
+    vrnt_name = vrnt_name, 
+    ploidy = nphase
+)
 
-selprot.problem()
-selprot.sosolve()
-selprot.mosolve()
-selprot.select()
+###
+### Generating Selection Problems for Optimization
+### ==============================================
+
+##
+## Setup for unconstrained optimization
+## ------------------------------------
+
+# nothing special to do!!!
+
+# create the selection protocol for 10 two-way crosses
+selprot_unconstrained = GenomicEstimatedBreedingValueSubsetSelection(
+    ntrait = 2,
+    ncross = 10, # ten crosses total
+    nparent = 2, # two-way
+    nmating = 1,
+    nprogeny = 40,
+    nobj = 2,
+)
+
+##
+## Setup for constrained optimization
+## ----------------------------------
+
+# suppose we desire to minimize the negated GEBV of our first trait, 
+# using our second trait as a constraint
+
+# define an objective transformation function
+def obj_trans(
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
+        maskvec: numpy.ndarray,
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    A custom objective transformation function.
+
+    Parameters
+    ----------
+    decnvec : numpy.ndarray
+        A decision space vector of shape (ndecn,)
+    latentvec : numpy.ndarray
+        A latent space function vector of shape (ntrait,)
+    maskvec : numpy.ndarray
+        A mask vector of shape (ntrait,)
+    
+    Returns
+    -------
+    out : numpy.ndarray
+        A vector of shape (sum(maskvec),).
+    """
+    # extract trait(s) as objective(s)
+    return latentvec[maskvec]
+
+# define an inequality constraint violation function
+def ineqcv_trans(
+        decnvec: numpy.ndarray,
+        latentvec: numpy.ndarray, 
+        minvec: numpy.ndarray,
+        **kwargs: dict
+    ) -> numpy.ndarray:
+    """
+    A custom inequality constraint violation function.
+
+    Parameters
+    ----------
+    Parameters
+    ----------
+    decnvec : numpy.ndarray
+        A decision space vector of shape (ndecn,)
+    latentvec : numpy.ndarray
+        A latent space function vector of shape (ntrait,)
+    minvec : numpy.ndarray
+        Vector of minimum values for which the latent vector can take.
+    
+    Returns
+    -------
+    out : numpy.ndarray
+        An inequality constraint violation vector of shape (ntrait,).
+    """
+    # calculate constraint violations
+    out = minvec - latentvec
+    # where constraint violation is negative (no constraint violation), set to zero
+    out[out < 0] = 0
+    # return inequality constraint violation array
+    return out
+
+# for constrained selection, make keyword arguments for our custom 
+# transformation functions
+obj_trans_kwargs = {
+    # we want to select the first trait
+    "maskvec": numpy.array([True, False], dtype=bool)
+}
+ineqcv_trans_kwargs = {
+    # we don't care about the first trait's minimum value (negated maximum), so set to -Inf
+    # we do care about the second trait's minimum value (negated maximum), so set to -1.0
+    "minvec": numpy.array([-numpy.inf, -1.0], dtype=float)
+}
+
+# create the constrained selection protocol for 10 two-way crosses
+selprot_constrained = GenomicEstimatedBreedingValueSubsetSelection(
+    ntrait = 2,
+    ncross = 10, # ten crosses total
+    nparent = 2, # two-way
+    nmating = 1,
+    nprogeny = 40,
+    nobj = 1, # one since sum(maskvec) == 1
+    obj_trans = obj_trans,
+    obj_trans_kwargs = obj_trans_kwargs,
+    nineqcv = 2,
+    ineqcv_trans = ineqcv_trans,
+    ineqcv_trans_kwargs = ineqcv_trans_kwargs
+)
+
+##
+## Generating the selection problem
+## --------------------------------
+
+# generate an unconstrained GEBV subset selection problem
+# for this selection protocol type, we only need the genotype matrix and a genomic prediction model
+prob_unconstrained = selprot_unconstrained.problem(
+    pgmat = None,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)
+
+# generate a constrained GEBV subset selection problem
+# for this selection protocol type, we only need the genotype matrix and a genomic prediction model
+prob_constrained = selprot_constrained.problem(
+    pgmat = None,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)
+
+# generate a random solution to test
+soln = numpy.random.choice(prob_constrained.decn_space, prob_constrained.ndecn)
+
+# evaluate the solution in the unconstrained problem
+eval_unconstrained = prob_unconstrained.evalfn(soln)
+
+# evaluate the solution in the constrained problem
+eval_constrained = prob_constrained.evalfn(soln)
+
+###
+### Single-Objective Optimization
+### =============================
+
+# perform single-objective optimization using 
+soln_constrained = selprot_constrained.sosolve(
+    pgmat = None,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)
+
+# examine the solution decision vector(s)
+soln_constrained.soln_decn
+
+# examine the solution objective function vector(s)
+soln_constrained.soln_obj
+
+# examine the solution inequality constraint violation vector(s)
+soln_constrained.soln_ineqcv
+
+# examine the soltuion equality constraint violation vector(s)
+soln_constrained.soln_eqcv
+
+###
+### Multi-Objective Optimization
+### ============================
+
+# perform single-objective optimization using 
+soln_unconstrained = selprot_unconstrained.mosolve(
+    pgmat = None,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)
+
+# examine the solution decision vector(s)
+soln_unconstrained.soln_decn
+
+# examine the solution objective function vector(s)
+soln_unconstrained.soln_obj
+
+# examine the solution inequality constraint violation vector(s)
+soln_unconstrained.soln_ineqcv
+
+# examine the soltuion equality constraint violation vector(s)
+soln_unconstrained.soln_eqcv
+
+###
+### Selection
+### =========
+
+selcfg_constrained = selprot_constrained.select(
+    pgmat = pgmat,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)

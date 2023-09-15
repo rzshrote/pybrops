@@ -25,7 +25,7 @@ from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
 class SubsetSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
@@ -652,6 +652,9 @@ class SubsetSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
         out : SubsetSelectionConfiguration
             A selection configuration object, requiring all necessary information to mate individuals.
         """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+
         # if the number of objectives is 1, then we use a single objective algorithm
         if self.nobj == 1:
             # solve the single-objective problem
