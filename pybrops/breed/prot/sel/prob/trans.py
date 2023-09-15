@@ -148,28 +148,28 @@ def trans_ndpt_to_vec_dist(
     Parameters
     ----------
     mat : numpy.ndarray
-        A point coordinate array of shape (npt, nobj) where 'npt' is the number
-        of points and 'nobj' is the number of objectives (dimensions).
+        A point coordinate array of shape ``(npt, nobj)`` where ``npt`` is the number
+        of points and ``nobj`` is the number of objectives (dimensions).
         This array contains input points for calculating the distance between a
-        point to the vector 'wt'.
+        point to the vector ``vec_wt``.
     obj_wt : numpy.ndarray
-        An objective function weight array of shape (nobj,) where 'nobj' is the
+        An objective function weight array of shape ``(nobj,)`` where ``nobj`` is the
         number of objectives (dimensions).
         This array is used to weight the objectives as increasing (1.0) or
         decreasing (-1.0). Objective function weights outside these values have
         undefined behavior.
     vec_wt : numpy.ndarray
-        A vector array of shape (nobj,) where 'nobj' is the number of objectives
+        A vector array of shape ``(nobj,)`` where ``nobj`` is the number of objectives
         (dimensions).
         This array is used as the vector to calculate the distance between each
-        point in 'mat'
+        point in ``mat``.
     kwargs : dict
         Additional keyword arguments. Not used by this function.
 
     Returns
     -------
     out : numpy.ndarray
-        An array of shape (npt,) containing the distance between each point
+        An array of shape ``(npt,)`` containing the distance between each point
         to the vector.
 
     Notes

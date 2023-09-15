@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionIntegerMateSelectionProblem
 from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
@@ -165,7 +165,7 @@ def prob(
     nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
     neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
 ):
-    yield UsefulnessCriterionIntegerSelectionProblem(
+    yield UsefulnessCriterionIntegerMateSelectionProblem(
         ucmat = ucmat,
         ndecn = ndecn,
         decn_space = decn_space,
@@ -223,7 +223,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_IntegerConventionalSelectionProblem_docstring():
-    assert_docstring(UsefulnessCriterionIntegerSelectionProblem)
+    assert_docstring(UsefulnessCriterionIntegerMateSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -233,7 +233,7 @@ def test_IntegerConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(UsefulnessCriterionIntegerSelectionProblem, "nlatent")
+    assert_concrete_property_fget(UsefulnessCriterionIntegerMateSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -242,7 +242,7 @@ def test_nlatent_fget(prob, ntrait):
 ### ucmat ###
 ############
 def test_ucmat_is_concrete():
-    assert_concrete_property(UsefulnessCriterionIntegerSelectionProblem, "ucmat")
+    assert_concrete_property(UsefulnessCriterionIntegerMateSelectionProblem, "ucmat")
 
 def test_ucmat_fget(prob, ntrait, ndecn):
     assert isinstance(prob.ucmat, numpy.ndarray)
@@ -282,7 +282,7 @@ def test_ucmat_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionIntegerSelectionProblem, "__init__")
+    assert_concrete_method(UsefulnessCriterionIntegerMateSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
@@ -308,7 +308,7 @@ def test_from_pgmat_gpmod(
         neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
     ):
     # construct problem
-    ohvprob = UsefulnessCriterionIntegerSelectionProblem.from_pgmat_gpmod(
+    ohvprob = UsefulnessCriterionIntegerMateSelectionProblem.from_pgmat_gpmod(
         nparent, ncross, nprogeny, nself, upper_percentile, vmatfcty, gmapfn, unique_parents, pgmat, gpmod,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 

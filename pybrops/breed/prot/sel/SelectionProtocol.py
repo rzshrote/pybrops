@@ -839,7 +839,7 @@ class SelectionProtocol(metaclass=ABCMeta):
 ################################## Utilities ###################################
 def check_is_SelectionProtocol(v: object, vname: str) -> None:
     """
-    Check if object is of type ConstrainedSelectionProtocol, otherwise raise TypeError.
+    Check if object is of type SelectionProtocol, otherwise raise TypeError.
 
     Parameters
     ----------
@@ -849,4 +849,4 @@ def check_is_SelectionProtocol(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SelectionProtocol):
-        raise TypeError("'{0}' must be of type ConstrainedSelectionProtocol.".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,SelectionProtocol.__name__,type(v).__name__))

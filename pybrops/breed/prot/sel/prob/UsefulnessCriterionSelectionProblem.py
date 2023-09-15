@@ -206,7 +206,1018 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
         ) -> "UsefulnessCriterionSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetMateSelectionProblem):
+class UsefulnessCriterionBinaryMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinaryMateSelectionProblem):
+    """
+    Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self,
+            ucmat: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for UsefulnessCriterionBinarySelectionProblem
+
+        Parameters
+        ----------
+        ucmat : numpy.ndarray
+            An usefulness criterion matrix of shape ``(s,t)``.
+
+            Where:
+
+            - ``s`` is the number of cross candidates.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        kwargs : dict
+            Additional keyword arguments passed to the parent class (BinaryMateSelectionProblem) constructor.
+        """
+        super(UsefulnessCriterionBinaryMateSelectionProblem, self).__init__(
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+        # order dependent assignments
+        self.ucmat = ucmat
+
+    ############################## Object Methods ##############################
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Score a subset of individuals based on Usefulness Criterion (UC) 
+        selection. 
+        
+        Scoring for UC selection is defined as the negative mean of UC values 
+        for a selected subset. A smaller value indicates a better UC score.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
+            On entry, this vector is scaled to have a unit sum, such that
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An EMBV selection matrix of shape ``(t,)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+        """
+        # scale x to have a sum of 1 (contribution)
+        # (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
+
+        # select individuals and take the negative mean of their EMBVs
+        # CGS calculation explanation
+        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
+        out = -contrib.dot(self._ucmat)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionBinaryMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionBinaryMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class UsefulnessCriterionIntegerMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,IntegerMateSelectionProblem):
+    """
+    Class representing Usefulness Criterion (UC) selection problems in integer search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self,
+            ucmat: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for UsefulnessCriterionIntegerSelectionProblem
+
+        Parameters
+        ----------
+        ucmat : numpy.ndarray
+            An usefulness criterion matrix of shape ``(s,t)``.
+
+            Where:
+
+            - ``s`` is the number of cross candidates.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        kwargs : dict
+            Additional keyword arguments passed to the parent class (IntegerMateSelectionProblem) constructor.
+        """
+        super(UsefulnessCriterionIntegerMateSelectionProblem, self).__init__(
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+        # order dependent assignments
+        self.ucmat = ucmat
+
+    ############################## Object Methods ##############################
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Score a subset of individuals based on Usefulness Criterion (UC) 
+        selection. 
+        
+        Scoring for UC selection is defined as the negative mean of UC values 
+        for a selected subset. A smaller value indicates a better UC score.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
+            On entry, this vector is scaled to have a unit sum, such that
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An EMBV selection matrix of shape ``(t,)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+        """
+        # scale x to have a sum of 1 (contribution)
+        # (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
+
+        # select individuals and take the negative mean of their EMBVs
+        # CGS calculation explanation
+        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
+        out = -contrib.dot(self._ucmat)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionIntegerMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionIntegerMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class UsefulnessCriterionRealMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealMateSelectionProblem):
+    """
+    Class representing Usefulness Criterion (UC) selection problems in real search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self,
+            ucmat: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for UsefulnessCriterionRealSelectionProblem
+
+        Parameters
+        ----------
+        ucmat : numpy.ndarray
+            An usefulness criterion matrix of shape ``(s,t)``.
+
+            Where:
+
+            - ``s`` is the number of cross candidates.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        kwargs : dict
+            Additional keyword arguments passed to the parent class (RealMateSelectionProblem) constructor.
+        """
+        super(UsefulnessCriterionRealMateSelectionProblem, self).__init__(
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+        # order dependent assignments
+        self.ucmat = ucmat
+
+    ############################## Object Methods ##############################
+    def latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Score a subset of individuals based on Usefulness Criterion (UC) 
+        selection. 
+        
+        Scoring for UC selection is defined as the negative mean of UC values 
+        for a selected subset. A smaller value indicates a better UC score.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
+            On entry, this vector is scaled to have a unit sum, such that
+            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
+        args : tuple
+            Additional non-keyword arguments.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An EMBV selection matrix of shape ``(t,)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+        """
+        # scale x to have a sum of 1 (contribution)
+        # (s,) -> (s,)
+        contrib = (1.0 / x.sum()) * x
+
+        # select individuals and take the negative mean of their EMBVs
+        # CGS calculation explanation
+        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
+        out = -contrib.dot(self._ucmat)
+
+        return out
+
+    ############################## Class Methods ###############################
+    @classmethod
+    def from_pgmat_gpmod_xmap(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            xmap: numpy.ndarray,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionRealMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        check_is_ndarray(xmap, "xmap")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_pgmat_gpmod(
+            cls,
+            nparent: Integral, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Integral,
+            upper_percentile: Real,
+            vmatfcty: GeneticVarianceMatrixFactory,
+            gmapfn: GeneticMapFunction,
+            unique_parents: bool, 
+            pgmat: PhasedGenotypeMatrix,
+            gpmod: GenomicModel,
+            ndecn: Integral,
+            decn_space: Union[numpy.ndarray,None],
+            decn_space_lower: Union[numpy.ndarray,Real,None],
+            decn_space_upper: Union[numpy.ndarray,Real,None],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            **kwargs: dict
+        ) -> "UsefulnessCriterionRealMateSelectionProblem":
+        # type checks
+        check_is_Integral(nparent, "nparent")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral(nself, "nself")
+        check_is_Real(upper_percentile, "upper_percentile")
+        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
+        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_bool(unique_parents, "unique_parents")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # convert percentile to selection intensity
+        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
+        
+        # calculate cross map
+        xmap = cls._calc_xmap(
+            pgmat.ntaxa, 
+            nparent, 
+            unique_parents
+        )
+        
+        # calculate usefulness criterion
+        ucmat = cls._calc_uc(
+            vmatfcty, 
+            ncross, 
+            nprogeny, 
+            nself, 
+            gmapfn, 
+            selection_intensity, 
+            pgmat, 
+            gpmod, 
+            xmap
+        )
+
+        # construct object
+        out = cls(
+            ucmat = ucmat,
+            ndecn = ndecn,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            **kwargs
+        )
+
+        return out
+
+class UsefulnessCriterionSubsetMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetMateSelectionProblem):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
     """
@@ -295,7 +1306,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetMateSelectionProblem) constructor.
         """
-        super(UsefulnessCriterionSubsetSelectionProblem, self).__init__(
+        super(UsefulnessCriterionSubsetMateSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -402,7 +1413,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "UsefulnessCriterionSubsetSelectionProblem":
+        ) -> "UsefulnessCriterionSubsetMateSelectionProblem":
         # type checks
         check_is_Integral(nparent, "nparent")
         check_is_Integral(ncross, "ncross")
@@ -488,7 +1499,7 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "UsefulnessCriterionSubsetSelectionProblem":
+        ) -> "UsefulnessCriterionSubsetMateSelectionProblem":
         # type checks
         check_is_Integral(nparent, "nparent")
         check_is_Integral(ncross, "ncross")
@@ -550,1013 +1561,3 @@ class UsefulnessCriterionSubsetSelectionProblem(UsefulnessCriterionSelectionProb
 
         return out
 
-class UsefulnessCriterionRealSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealMateSelectionProblem):
-    """
-    Class representing Usefulness Criterion (UC) selection problems in real search spaces.
-    """
-
-    ########################## Special Object Methods ##########################
-    def __init__(
-            self,
-            ucmat: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            decn_space_xmap: numpy.ndarray,
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for UsefulnessCriterionRealSelectionProblem
-
-        Parameters
-        ----------
-        ucmat : numpy.ndarray
-            An usefulness criterion matrix of shape ``(s,t)``.
-
-            Where:
-
-            - ``s`` is the number of cross candidates.
-            - ``t`` is the number of traits.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (RealMateSelectionProblem) constructor.
-        """
-        super(UsefulnessCriterionRealSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = decn_space_xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.ucmat = ucmat
-
-    ############################## Object Methods ##############################
-    def latentfn(
-            self, 
-            x: numpy.ndarray, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Score a subset of individuals based on Usefulness Criterion (UC) 
-        selection. 
-        
-        Scoring for UC selection is defined as the negative mean of UC values 
-        for a selected subset. A smaller value indicates a better UC score.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
-            On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
-        args : tuple
-            Additional non-keyword arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            An EMBV selection matrix of shape ``(t,)``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-        """
-        # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
-
-        # select individuals and take the negative mean of their EMBVs
-        # CGS calculation explanation
-        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
-        out = -contrib.dot(self._ucmat)
-
-        return out
-
-    ############################## Class Methods ###############################
-    @classmethod
-    def from_pgmat_gpmod_xmap(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            xmap: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionRealSelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        check_is_ndarray(xmap, "xmap")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-    @classmethod
-    def from_pgmat_gpmod(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionRealSelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate cross map
-        xmap = cls._calc_xmap(
-            pgmat.ntaxa, 
-            nparent, 
-            unique_parents
-        )
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class UsefulnessCriterionIntegerSelectionProblem(UsefulnessCriterionSelectionProblemMixin,IntegerMateSelectionProblem):
-    """
-    Class representing Usefulness Criterion (UC) selection problems in integer search spaces.
-    """
-
-    ########################## Special Object Methods ##########################
-    def __init__(
-            self,
-            ucmat: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            decn_space_xmap: numpy.ndarray,
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for UsefulnessCriterionIntegerSelectionProblem
-
-        Parameters
-        ----------
-        ucmat : numpy.ndarray
-            An usefulness criterion matrix of shape ``(s,t)``.
-
-            Where:
-
-            - ``s`` is the number of cross candidates.
-            - ``t`` is the number of traits.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (IntegerMateSelectionProblem) constructor.
-        """
-        super(UsefulnessCriterionIntegerSelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = decn_space_xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.ucmat = ucmat
-
-    ############################## Object Methods ##############################
-    def latentfn(
-            self, 
-            x: numpy.ndarray, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Score a subset of individuals based on Usefulness Criterion (UC) 
-        selection. 
-        
-        Scoring for UC selection is defined as the negative mean of UC values 
-        for a selected subset. A smaller value indicates a better UC score.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
-            On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
-        args : tuple
-            Additional non-keyword arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            An EMBV selection matrix of shape ``(t,)``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-        """
-        # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
-
-        # select individuals and take the negative mean of their EMBVs
-        # CGS calculation explanation
-        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
-        out = -contrib.dot(self._ucmat)
-
-        return out
-
-    ############################## Class Methods ###############################
-    @classmethod
-    def from_pgmat_gpmod_xmap(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            xmap: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionIntegerSelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        check_is_ndarray(xmap, "xmap")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-    @classmethod
-    def from_pgmat_gpmod(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionIntegerSelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate cross map
-        xmap = cls._calc_xmap(
-            pgmat.ntaxa, 
-            nparent, 
-            unique_parents
-        )
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-class UsefulnessCriterionBinarySelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinaryMateSelectionProblem):
-    """
-    Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
-    """
-
-    ########################## Special Object Methods ##########################
-    def __init__(
-            self,
-            ucmat: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            decn_space_xmap: numpy.ndarray,
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for UsefulnessCriterionBinarySelectionProblem
-
-        Parameters
-        ----------
-        ucmat : numpy.ndarray
-            An usefulness criterion matrix of shape ``(s,t)``.
-
-            Where:
-
-            - ``s`` is the number of cross candidates.
-            - ``t`` is the number of traits.
-        ndecn : Integral
-            Number of decision variables.
-        decn_space: numpy.ndarray, None
-            An array of shape ``(2,ndecn)`` defining the decision space.
-            If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
-            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
-            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
-            If None, do not set a upper limit for the decision variables.
-        nobj: Integral
-            Number of objectives.
-        obj_wt: numpy.ndarray
-            Objective function weights.
-        obj_trans: Callable, None
-            A transformation function transforming a latent space vector to an objective space vector.
-            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
-            Keyword arguments for the latent space to objective space transformation function.
-            If None, an empty dictionary is used.
-        nineqcv: Integral,
-            Number of inequality constraints.
-        ineqcv_wt: numpy.ndarray,
-            Inequality constraint violation weights.
-        ineqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an inequality constraint violation vector.
-            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        ineqcv_trans_kwargs: Optional[dict],
-            Keyword arguments for the latent space to inequality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        neqcv: Integral
-            Number of equality constraints.
-        eqcv_wt: numpy.ndarray
-            Equality constraint violation weights.
-        eqcv_trans: Callable, None
-            A transformation function transforming a latent space vector to an equality constraint violation vector.
-            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
-            If None, use the empty set transformation function: return an empty vector of length zero.
-        eqcv_trans_kwargs: dict, None
-            Keyword arguments for the latent space to equality constraint violation space transformation function.
-            If None, an empty dictionary is used.
-        kwargs : dict
-            Additional keyword arguments passed to the parent class (BinaryMateSelectionProblem) constructor.
-        """
-        super(UsefulnessCriterionBinarySelectionProblem, self).__init__(
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = decn_space_xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-        # order dependent assignments
-        self.ucmat = ucmat
-
-    ############################## Object Methods ##############################
-    def latentfn(
-            self, 
-            x: numpy.ndarray, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> numpy.ndarray:
-        """
-        Score a subset of individuals based on Usefulness Criterion (UC) 
-        selection. 
-        
-        Scoring for UC selection is defined as the negative mean of UC values 
-        for a selected subset. A smaller value indicates a better UC score.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.
-            On entry, this vector is scaled to have a unit sum, such that
-            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.
-        args : tuple
-            Additional non-keyword arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        
-        Returns
-        -------
-        out : numpy.ndarray
-            An EMBV selection matrix of shape ``(t,)``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-        """
-        # scale x to have a sum of 1 (contribution)
-        # (s,) -> (s,)
-        contrib = (1.0 / x.sum()) * x
-
-        # select individuals and take the negative mean of their EMBVs
-        # CGS calculation explanation
-        # Step 1: (s,) . (s,t) -> (t,)  # take dot product with contributions
-        out = -contrib.dot(self._ucmat)
-
-        return out
-
-    ############################## Class Methods ###############################
-    @classmethod
-    def from_pgmat_gpmod_xmap(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            xmap: numpy.ndarray,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionBinarySelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        check_is_ndarray(xmap, "xmap")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
-
-    @classmethod
-    def from_pgmat_gpmod(
-            cls,
-            nparent: Integral, 
-            ncross: Integral, 
-            nprogeny: Integral, 
-            nself: Integral,
-            upper_percentile: Real,
-            vmatfcty: GeneticVarianceMatrixFactory,
-            gmapfn: GeneticMapFunction,
-            unique_parents: bool, 
-            pgmat: PhasedGenotypeMatrix,
-            gpmod: GenomicModel,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "UsefulnessCriterionBinarySelectionProblem":
-        # type checks
-        check_is_Integral(nparent, "nparent")
-        check_is_Integral(ncross, "ncross")
-        check_is_Integral(nprogeny, "nprogeny")
-        check_is_Integral(nself, "nself")
-        check_is_Real(upper_percentile, "upper_percentile")
-        check_is_in_interval_inclusive(upper_percentile, "upper_percentile", 0.0, 1.0)
-        check_is_GeneticVarianceMatrixFactory(vmatfcty, "vmatfcty")
-        check_is_GeneticMapFunction(gmapfn, "gmapfn")
-        check_is_bool(unique_parents, "unique_parents")
-        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_GenomicModel(gpmod, "gpmod")
-        
-        # convert percentile to selection intensity
-        selection_intensity = scipy.stats.norm.pdf(scipy.stats.norm.ppf(1.0 - upper_percentile)) / upper_percentile
-        
-        # calculate cross map
-        xmap = cls._calc_xmap(
-            pgmat.ntaxa, 
-            nparent, 
-            unique_parents
-        )
-        
-        # calculate usefulness criterion
-        ucmat = cls._calc_uc(
-            vmatfcty, 
-            ncross, 
-            nprogeny, 
-            nself, 
-            gmapfn, 
-            selection_intensity, 
-            pgmat, 
-            gpmod, 
-            xmap
-        )
-
-        # construct object
-        out = cls(
-            ucmat = ucmat,
-            ndecn = ndecn,
-            decn_space = decn_space,
-            decn_space_lower = decn_space_lower,
-            decn_space_upper = decn_space_upper,
-            decn_space_xmap = xmap,
-            nobj = nobj,
-            obj_wt = obj_wt,
-            obj_trans = obj_trans,
-            obj_trans_kwargs = obj_trans_kwargs,
-            nineqcv = nineqcv,
-            ineqcv_wt = ineqcv_wt,
-            ineqcv_trans = ineqcv_trans,
-            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
-            neqcv = neqcv,
-            eqcv_wt = eqcv_wt,
-            eqcv_trans = eqcv_trans,
-            eqcv_trans_kwargs = eqcv_trans_kwargs,
-            **kwargs
-        )
-
-        return out
