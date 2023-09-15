@@ -5,7 +5,7 @@ associated error checking routines.
 
 __all__ = [
     "DenseTaxaTraitMatrix",
-    "check_is_DenseTaxaTraitMatrix"
+    "check_is_DenseTaxaTraitMatrix",
 ]
 
 import numpy

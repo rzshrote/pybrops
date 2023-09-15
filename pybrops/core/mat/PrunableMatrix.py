@@ -5,7 +5,7 @@ that can be pruned along an axis.
 
 __all__ = [
     "PrunableMatrix",
-    "check_is_PrunableMatrix"
+    "check_is_PrunableMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

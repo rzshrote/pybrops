@@ -4,7 +4,7 @@ Module defining basal coancestry matrix factory interfaces and associated error 
 
 __all__ = [
     "CoancestryMatrixFactory",
-    "check_is_CoancestryMatrixFactory"
+    "check_is_CoancestryMatrixFactory",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "DenseVariantMatrix",
-    "check_is_DenseVariantMatrix"
+    "check_is_DenseVariantMatrix",
 ]
 
 import copy

@@ -5,7 +5,7 @@ Partial implementation of the BinaryProblem interface.
 # list of public objects in this module
 __all__ = [
     "BinaryProblem",
-    "check_is_BinaryProblem"
+    "check_is_BinaryProblem",
 ]
 
 # imports

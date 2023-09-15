@@ -11,7 +11,7 @@ __all__ = [
     "HaldaneMapFunction",
     "KosambiMapFunction",
     "GeneticMappableMatrix",
-    "DenseGeneticMappableMatrix"
+    "DenseGeneticMappableMatrix",
 ]
 
 # order dependent

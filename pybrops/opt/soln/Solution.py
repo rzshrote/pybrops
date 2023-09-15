@@ -5,7 +5,7 @@ Implementation of the Solution interface.
 # list of all public objects in this module
 __all__ = [
     "Solution",
-    "check_is_Solution"
+    "check_is_Solution",
 ]
 
 from abc import ABCMeta

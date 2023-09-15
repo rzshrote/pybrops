@@ -3,7 +3,7 @@ Module containing selection solution interfaces
 """
 
 __all__ = [
-    "SelectionSolution"
+    "SelectionSolution",
 ]
 
 from abc import ABCMeta

@@ -5,7 +5,7 @@ for phased haplotype matrices.
 
 __all__ = [
     "PhasedHaplotypeMatrix",
-    "check_is_PhasedHaplotypeMatrix"
+    "check_is_PhasedHaplotypeMatrix",
 ]
 
 from abc import ABCMeta

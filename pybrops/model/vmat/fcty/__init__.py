@@ -11,7 +11,7 @@ __all__ = [
     "DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory",
     "DenseFourWayDHAdditiveGeneticVarianceMatrixFactory",
     "DenseDihybridDHAdditiveGeneticVarianceMatrixFactory",
-    "DenseTwoWayDHAdditiveGenicVarianceMatrixFactory"
+    "DenseTwoWayDHAdditiveGenicVarianceMatrixFactory",
 ]
 
 ##### abstract interfaces #####

@@ -37,7 +37,7 @@ __all__ = [
     "OptimalPopulationValueSelection",
     "RandomSelection",
     "UsefulnessCriterionSelection",
-    "WeightedGenomicSelection"
+    "WeightedGenomicSelection",
 ]
 
 # order dependent imports

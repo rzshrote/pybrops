@@ -5,7 +5,7 @@ breeding program initialization operators.
 
 __all__ = [
     "InitializationOperator",
-    "check_is_InitializationOperator"
+    "check_is_InitializationOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

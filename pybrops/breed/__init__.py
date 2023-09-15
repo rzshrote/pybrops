@@ -5,7 +5,7 @@ Module containing breeding program components.
 __all__ = [
     "prot",
     "op",
-    "arch"
+    "arch",
 ]
 
 # order dependent imports!

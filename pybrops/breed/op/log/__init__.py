@@ -3,7 +3,7 @@ Module containing logbook operators.
 """
 
 __all__ = [
-    "Logbook"
+    "Logbook",
 ]
 
 # order dependent import

@@ -9,7 +9,7 @@ __all__ = [
     "generic_check_ndarray_size",
     "generic_check_ndarray_sum",
     "generic_check_ndarray_shape",
-    "generic_check_ndarray_is_square"
+    "generic_check_ndarray_is_square",
 ]
 
 from numbers import Real

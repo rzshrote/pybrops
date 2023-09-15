@@ -5,7 +5,7 @@ with variant metadata.
 
 __all__ = [
     "VariantMatrix",
-    "check_is_VariantMatrix"
+    "check_is_VariantMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

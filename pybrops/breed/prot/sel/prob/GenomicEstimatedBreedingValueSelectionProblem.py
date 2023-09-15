@@ -6,7 +6,7 @@ __all__ = [
     "GenomicEstimatedBreedingValueBinarySelectionProblem",
     "GenomicEstimatedBreedingValueIntegerSelectionProblem",
     "GenomicEstimatedBreedingValueRealSelectionProblem",
-    "GenomicEstimatedBreedingValueSubsetSelectionProblem"
+    "GenomicEstimatedBreedingValueSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta

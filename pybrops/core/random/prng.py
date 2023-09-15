@@ -54,7 +54,7 @@ __all__ = [
     # "sample",
     # "ranf",
     "seed",
-    "spawn"
+    "spawn",
 ]
 
 from typing import Optional, Union

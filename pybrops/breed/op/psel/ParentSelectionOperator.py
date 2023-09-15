@@ -5,7 +5,7 @@ breeding program parental selection operators.
 
 __all__ = [
     "ParentSelectionOperator",
-    "check_is_ParentSelectionOperator"
+    "check_is_ParentSelectionOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

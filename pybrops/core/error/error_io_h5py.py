@@ -3,7 +3,7 @@ Module containing error subroutines related to HDF5 files.
 """
 
 __all__ = [
-    "check_group_in_hdf5"
+    "check_group_in_hdf5",
 ]
 
 from io import FileIO

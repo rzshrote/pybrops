@@ -8,7 +8,7 @@ import numpy
 __all__ = [
     "mat_meiosis", 
     "mat_dh", 
-    "mat_mate"
+    "mat_mate",
 ]
 
 def mat_meiosis(

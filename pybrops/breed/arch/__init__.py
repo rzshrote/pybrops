@@ -10,7 +10,7 @@ __all__ = [
     "ImmigrationOperator",
     "EmigrationOperator",
     "BreedingGraph",
-    "RecurrentSelectionBreedingProgram"
+    "RecurrentSelectionBreedingProgram",
 ]
 
 # order dependent import libraries

@@ -5,7 +5,7 @@ for dense breeding value matrices.
 
 __all__ = [
     "DenseBreedingValueMatrix",
-    "check_is_DenseBreedingValueMatrix"
+    "check_is_DenseBreedingValueMatrix",
 ]
 
 import copy

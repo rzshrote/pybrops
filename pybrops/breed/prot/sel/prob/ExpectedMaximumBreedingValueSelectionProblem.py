@@ -6,7 +6,7 @@ __all__ = [
     "ExpectedMaximumBreedingValueSubsetSelectionProblem",
     "ExpectedMaximumBreedingValueRealSelectionProblem",
     "ExpectedMaximumBreedingValueIntegerSelectionProblem",
-    "ExpectedMaximumBreedingValueBinarySelectionProblem"
+    "ExpectedMaximumBreedingValueBinarySelectionProblem",
 ]
 
 from abc import ABCMeta

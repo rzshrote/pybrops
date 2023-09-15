@@ -12,7 +12,7 @@ __all__ = [
     "BinaryMateSelectionSolution",
     "IntegerMateSelectionSolution",
     "RealMateSelectionSolution",
-    "SubsetMateSelectionSolution"
+    "SubsetMateSelectionSolution",
 ]
 
 # semi-abstract classes

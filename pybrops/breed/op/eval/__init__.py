@@ -3,7 +3,7 @@ Module containing evaluation operators.
 """
 
 __all__ = [
-    "EvaluationOperator"
+    "EvaluationOperator",
 ]
 
 # order dependent import

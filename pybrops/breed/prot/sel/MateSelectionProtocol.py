@@ -5,7 +5,7 @@ Module defining a general class for selection protocols.
 # list of all public objects in this module
 __all__ = [
     "MateSelectionProtocol",
-    "check_is_MateSelectionProtocol"
+    "check_is_MateSelectionProtocol",
 ]
 
 # imports

@@ -4,7 +4,7 @@ Module defining interfaces and error checking routines for binary optimization a
 
 __all__ = [
     "BinaryOptimizationAlgorithm",
-    "check_is_BinaryOptimizationAlgorithm"
+    "check_is_BinaryOptimizationAlgorithm",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -2,6 +2,11 @@
 Module defining a general class for integer selection protocols.
 """
 
+__all__ = [
+    "IntegerMateSelectionProtocol",
+    "check_is_IntegerMateSelectionProtocol",
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Integral
 from typing import Optional

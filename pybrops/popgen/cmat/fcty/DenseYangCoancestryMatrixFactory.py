@@ -4,7 +4,7 @@ Module defining basal coancestry matrix factory interfaces and associated error 
 
 __all__ = [
     "DenseYangCoancestryMatrixFactory",
-    "check_is_DenseYangCoancestryMatrixFactory"
+    "check_is_DenseYangCoancestryMatrixFactory",
 ]
 
 from typing import Union

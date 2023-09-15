@@ -5,7 +5,7 @@ Partial implementation of the SetSolution interface.
 # list of all public imports in the module
 __all__ = [
     "RealSolution",
-    "check_is_RealSolution"
+    "check_is_RealSolution",
 ]
 
 # imports

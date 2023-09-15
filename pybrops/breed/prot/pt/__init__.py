@@ -5,7 +5,7 @@ Module containing phenotyping protocols.
 __all__ = [
     "PhenotypingProtocol",
     "TruePhenotyping",
-    "G_E_Phenotyping"
+    "G_E_Phenotyping",
 ]
 
 # order dependent imports

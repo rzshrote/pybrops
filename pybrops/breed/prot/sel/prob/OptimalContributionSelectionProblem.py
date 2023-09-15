@@ -6,7 +6,7 @@ __all__ = [
     "OptimalContributionSubsetSelectionProblem",
     "OptimalContributionRealSelectionProblem",
     "OptimalContributionIntegerSelectionProblem",
-    "OptimalContributionBinarySelectionProblem"
+    "OptimalContributionBinarySelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

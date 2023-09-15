@@ -4,7 +4,7 @@ Module implementing the Kosambi genetic map function and associated error checki
 
 __all__ = [
     "KosambiMapFunction",
-    "check_is_KosambiMapFunction"
+    "check_is_KosambiMapFunction",
 ]
 
 import numpy

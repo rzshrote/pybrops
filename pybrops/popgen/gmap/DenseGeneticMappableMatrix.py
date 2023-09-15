@@ -5,7 +5,7 @@ genetic map and associated error checking routines.
 
 __all__ = [
     "DenseGeneticMappableMatrix",
-    "check_is_DenseGeneticMappableMatrix"
+    "check_is_DenseGeneticMappableMatrix",
 ]
 
 from typing import Optional

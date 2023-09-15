@@ -8,7 +8,7 @@ __all__ = [
     "DenseGeneralizedWeightedCoancestryMatrix",
     "DenseMolecularCoancestryMatrix",
     "DenseVanRadenCoancestryMatrix",
-    "DenseYangCoancestryMatrix"
+    "DenseYangCoancestryMatrix",
 ]
 
 # abstract interfaces

@@ -5,10 +5,10 @@ Module defining conventional genomic selection protocols.
 # list of all public objects in this module
 __all__ = [
     "FamilyEstimatedBreedingValueSelectionMixin",
-    "FamilyEstimatedBreedingValueSubsetSelection",
-    "FamilyEstimatedBreedingValueRealSelection",
+    "FamilyEstimatedBreedingValueBinarySelection",
     "FamilyEstimatedBreedingValueIntegerSelection",
-    "FamilyEstimatedBreedingValueBinarySelection"
+    "FamilyEstimatedBreedingValueRealSelection",
+    "FamilyEstimatedBreedingValueSubsetSelection",
 ]
 
 # imports
@@ -30,7 +30,10 @@ from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProble
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueBinarySelectionProblem, FamilyEstimatedBreedingValueIntegerSelectionProblem, FamilyEstimatedBreedingValueRealSelectionProblem, FamilyEstimatedBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueRealSelectionProblem
+from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueSubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
 from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
@@ -42,7 +45,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class FamilyEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
     """
-    Semiabstract class for Conventional Genomic Selection (CGS) with constraints.
+    Semiabstract class for Within-family Estimated Breeding Value Selection with constraints.
     """
     ########################## Special Object Methods ##########################
     # __init__() CANNOT be defined to be classified as a Mixin class
@@ -50,7 +53,7 @@ class FamilyEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def ntrait(self) -> Integral:
-        """Number of traits to expect from matrix inputs."""
+        """Number of traits to expect from estimated breeding value matrix inputs."""
         return self._ntrait
     @ntrait.setter
     def ntrait(self, value: Integral) -> None:
@@ -61,7 +64,7 @@ class FamilyEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
 
 class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Within-family Estimated Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -96,6 +99,9 @@ class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSe
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -459,7 +465,7 @@ class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSe
 
 class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    Within-family Estimated Breeding Value Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -494,6 +500,9 @@ class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueS
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -857,7 +866,7 @@ class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueS
 
 class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    Within-family Estimated Breeding Value Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -892,6 +901,9 @@ class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSele
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1255,7 +1267,7 @@ class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSele
 
 class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Within-family Estimated Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1290,6 +1302,9 @@ class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueSe
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         

@@ -4,7 +4,7 @@ Module providing dense coancestry matrix implementations and associated error ch
 
 __all__ = [
     "DenseCoancestryMatrix",
-    "check_is_DenseCoancestryMatrix"
+    "check_is_DenseCoancestryMatrix",
 ]
 
 from numbers import Real

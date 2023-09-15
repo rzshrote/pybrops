@@ -5,7 +5,7 @@ and associated error checking routines.
 
 __all__ = [
     "DenseSquareTaxaMatrix",
-    "check_is_DenseSquareTaxaMatrix"
+    "check_is_DenseSquareTaxaMatrix",
 ]
 
 from typing import Optional, Sequence, Union

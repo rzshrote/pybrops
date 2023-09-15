@@ -5,7 +5,7 @@ routines.
 
 __all__ = [
     "StandardGeneticMap",
-    "check_is_StandardGeneticMap"
+    "check_is_StandardGeneticMap",
 ]
 
 import numpy

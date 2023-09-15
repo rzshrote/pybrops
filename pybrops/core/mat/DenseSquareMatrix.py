@@ -5,7 +5,7 @@ error checking routines.
 
 __all__ = [
     "DenseSquareMatrix",
-    "check_is_DenseSquareMatrix"
+    "check_is_DenseSquareMatrix",
 ]
 
 import numpy

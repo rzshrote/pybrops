@@ -5,7 +5,7 @@ for haplotype matrices.
 
 __all__ = [
     "HaplotypeMatrix",
-    "check_is_HaplotypeMatrix"
+    "check_is_HaplotypeMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

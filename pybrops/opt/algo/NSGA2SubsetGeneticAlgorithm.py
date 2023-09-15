@@ -5,7 +5,7 @@ optimization.
 
 # all public classes and functions available in this module
 __all__ = [
-    "NSGA2SubsetGeneticAlgorithm"
+    "NSGA2SubsetGeneticAlgorithm",
 ]
 
 # imports

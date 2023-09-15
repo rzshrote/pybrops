@@ -7,7 +7,7 @@ __all__ = [
     "OptimalContributionBinarySelection",
     "OptimalContributionIntegerSelection",
     "OptimalContributionRealSelection",
-    "OptimalContributionSubsetSelection"
+    "OptimalContributionSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -24,7 +24,10 @@ from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionBinarySelectionProblem, OptimalContributionIntegerSelectionProblem, OptimalContributionRealSelectionProblem, OptimalContributionSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionRealSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
@@ -168,10 +171,19 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalContributionBinarySelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+        
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
+        descale : bool
+            Whether to use descaled and decentered breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -580,10 +592,19 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalContributionIntegerSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+        
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
+        descale : bool
+            Whether to use descaled and decentered breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -992,10 +1013,19 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalContributionRealSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+        
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
+        descale : bool
+            Whether to use descaled and decentered breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1404,10 +1434,19 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalContributionSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+        
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
+        descale : bool
+            Whether to use descaled and decentered breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         

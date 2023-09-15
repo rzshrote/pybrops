@@ -6,7 +6,7 @@ between breeding nodes.
 
 __all__ = [
     "BreedingEdge",
-    "check_is_BreedingEdge"
+    "check_is_BreedingEdge",
 ]
 
 from abc import ABCMeta

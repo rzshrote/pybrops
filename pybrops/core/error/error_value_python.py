@@ -18,7 +18,7 @@ __all__ = [
     "check_keys_in_dict_all_type",
     "check_values_in_dict_all_type",
     "check_values_in_dict_equal_len",
-    "check_values_in_dict_len"
+    "check_values_in_dict_len",
 ]
 
 from typing import Tuple

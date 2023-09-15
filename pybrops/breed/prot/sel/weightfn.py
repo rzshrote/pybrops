@@ -6,7 +6,7 @@ import numpy
 
 __all__ = [
     "weight_absolute",
-    "weight_one"
+    "weight_one",
 ]
 
 def weight_absolute(u_a: numpy.ndarray) -> numpy.ndarray:

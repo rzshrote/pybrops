@@ -5,7 +5,7 @@ Partial implementation of the IntegerProblem interface.
 # list of public objects in this module
 __all__ = [
     "IntegerProblem",
-    "check_is_IntegerProblem"
+    "check_is_IntegerProblem",
 ]
 
 # imports

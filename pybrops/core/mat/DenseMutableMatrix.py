@@ -6,7 +6,7 @@ Mutable refers to the ability of adding/removing rows and columns from the matri
 
 __all__ = [
     "DenseMutableMatrix",
-    "check_is_DenseMutableMatrix"
+    "check_is_DenseMutableMatrix",
 ]
 
 from typing import Sequence, Union

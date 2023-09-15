@@ -4,7 +4,7 @@ Module implementing selection protocols for Optimal Population Value selection.
 
 __all__ = [
     "OptimalPopulationValueBaseSelection",
-    "OptimalPopulationValueSubsetSelection"
+    "OptimalPopulationValueSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -36,7 +36,7 @@ class OptimalPopulationValueSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def ntrait(self) -> Integral:
-        """Number of traits to expect from EBV matrix inputs."""
+        """Number of traits to expect from matrix inputs."""
         return self._ntrait
     @ntrait.setter
     def ntrait(self, value: Integral) -> None:
@@ -91,10 +91,16 @@ class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelectionMixin
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalPopulationValueSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+        
         ncross : Integral
             Number of cross configurations to consider.
         

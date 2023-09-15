@@ -5,7 +5,7 @@ Module defining a general class for selection protocols.
 # list of all public objects in this module
 __all__ = [
     "SelectionProtocol",
-    "check_is_SelectionProtocol"
+    "check_is_SelectionProtocol",
 ]
 
 # imports

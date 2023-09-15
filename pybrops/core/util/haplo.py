@@ -9,7 +9,7 @@ __all__ = [
     "nhaploblk_chrom", 
     "haplobin", 
     "haplobin_bounds",
-    "haplomat"
+    "haplomat",
 ]
 
 def nhaploblk_chrom(

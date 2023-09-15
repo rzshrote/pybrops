@@ -1,14 +1,14 @@
 """
-Module defining conventional genomic selection protocols.
+Module defining selection protocols based on estimated breeding values.
 """
 
 # list of all public objects in this module
 __all__ = [
     "EstimatedBreedingValueSelectionMixin",
-    "EstimatedBreedingValueSubsetSelection",
-    "EstimatedBreedingValueRealSelection",
+    "EstimatedBreedingValueBinarySelection",
     "EstimatedBreedingValueIntegerSelection",
-    "EstimatedBreedingValueBinarySelection"
+    "EstimatedBreedingValueRealSelection",
+    "EstimatedBreedingValueSubsetSelection",
 ]
 
 # imports
@@ -65,7 +65,7 @@ class EstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
 
 class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Estimated Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -96,10 +96,13 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class EstimatedBreedingValueBinarySelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -468,7 +471,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
 
 class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    Estimated Breeding Value Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -499,10 +502,13 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class EstimatedBreedingValueIntegerSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -868,7 +874,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
 
 class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    Estimated Breeding Value Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -899,10 +905,13 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class EstimatedBreedingValueRealSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1268,7 +1277,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
 
 class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Estimated Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1299,10 +1308,13 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class EstimatedBreedingValueSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from estimated breeding value matrix inputs.
+        
         ncross : Integral
             Number of cross configurations to consider.
         

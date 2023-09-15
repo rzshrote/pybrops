@@ -4,7 +4,7 @@ STILL UNDER CONSTRUCTION.
 """
 
 __all__ = [
-    "MultiObjectiveGenomicSubsetMatingProblem"
+    "MultiObjectiveGenomicSubsetMatingProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

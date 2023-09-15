@@ -5,7 +5,7 @@ with taxa metadata.
 
 __all__ = [
     "TaxaMatrix",
-    "check_is_TaxaMatrix"
+    "check_is_TaxaMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

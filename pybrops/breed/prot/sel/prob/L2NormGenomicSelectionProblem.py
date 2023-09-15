@@ -6,7 +6,7 @@ __all__ = [
     "L2NormGenomicBinarySelectionProblem",
     "L2NormGenomicIntegerSelectionProblem",
     "L2NormGenomicRealSelectionProblem",
-    "L2NormGenomicSubsetSelectionProblem"
+    "L2NormGenomicSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -5,18 +5,17 @@ Module partially implementing the SelectionProblem class.
 # list of public objects in this module
 __all__ = [
     "SelectionProblem",
-    "check_is_SelectionProblem"
+    "check_is_SelectionProblem",
 ]
 
 # imports
 from abc import ABCMeta, abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Iterable, Optional, Sequence, Tuple, Union
+from numbers import Integral
+from typing import Callable, Tuple, Union
 import numpy
 from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
 from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict
 from pybrops.opt.prob.Problem import Problem
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
 
 # inheritance order is important for method resolution order
 class SelectionProblem(Problem,metaclass=ABCMeta):

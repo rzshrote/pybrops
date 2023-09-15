@@ -6,7 +6,7 @@ Module containing utility functions for determining Pareto efficiency
 import numpy
 
 __all__ = [
-    "is_pareto_efficient"
+    "is_pareto_efficient",
 ]
 
 # based on:

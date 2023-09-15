@@ -3,7 +3,7 @@ Module implementing a steepest ascent hill climber capable of handling constrain
 """
 
 __all__ = [
-    "SteepestDescentSubsetHillClimber"
+    "SteepestDescentSubsetHillClimber",
 ]
 
 from typing import Optional, Union

@@ -7,7 +7,7 @@ __all__ = [
     "ReducedExchangeCrossover",
     "ReducedExchangeMutation",
     "IntegerPolynomialMutation",
-    "IntegerSimulatedBinaryCrossover"
+    "IntegerSimulatedBinaryCrossover",
 ]
 
 import numpy as np

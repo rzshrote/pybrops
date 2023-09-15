@@ -27,7 +27,7 @@ __all__ = [
     "check_is_Sequence",
     "check_is_array_like",
     "check_is_str_or_iterable",
-    "check_is_list_or_tuple"
+    "check_is_list_or_tuple",
 ]
 
 import math

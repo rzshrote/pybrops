@@ -5,7 +5,7 @@ axis which is not square, and associated error checking routines.
 
 __all__ = [
     "DenseSquareTaxaTraitMatrix",
-    "check_is_DenseSquareTaxaTraitMatrix"
+    "check_is_DenseSquareTaxaTraitMatrix",
 ]
 
 

@@ -9,7 +9,7 @@ __all__ = [
     "popgen",
     "model",
     "breed",
-    "test"
+    "test",
 ]
 
 # order dependent import of submodules

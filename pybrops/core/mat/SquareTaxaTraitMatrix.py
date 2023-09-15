@@ -5,7 +5,7 @@ with taxa axes that are square and a trait axis which is not square.
 
 __all__ = [
     "SquareTaxaTraitMatrix",
-    "check_is_SquareTaxaTraitMatrix"
+    "check_is_SquareTaxaTraitMatrix",
 ]
 
 from abc import ABCMeta

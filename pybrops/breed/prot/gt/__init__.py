@@ -4,7 +4,7 @@ Module containing genotyping protocols.
 
 __all__ = [
     "GenotypingProtocol",
-    "DenseUnphasedGenotyping"
+    "DenseUnphasedGenotyping",
 ]
 
 # order dependent imports

@@ -4,7 +4,7 @@ Module implementing a dense matrix and associated error checking routines.
 
 __all__ = [
     "DenseMatrix",
-    "check_is_DenseMatrix"
+    "check_is_DenseMatrix",
 ]
 
 import copy

@@ -7,7 +7,7 @@ __all__ = [
     "UsefulnessCriterionBinarySelection",
     "UsefulnessCriterionIntegerSelection",
     "UsefulnessCriterionRealSelection",
-    "UsefulnessCriterionSubsetSelection"
+    "UsefulnessCriterionSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -47,7 +47,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check
 
 class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     """
-    Semi-abstract class for Optimal Haploid Value (OHV) Selection with constraints.
+    Semi-abstract class for Usefulness Criterion (UC) Selection with constraints.
     """
 
     ########################## Special Object Methods ##########################
@@ -56,7 +56,7 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def ntrait(self) -> Integral:
-        """Number of traits to expect from EBV matrix inputs."""
+        """Number of traits to expect from breeding value matrix inputs."""
         return self._ntrait
     @ntrait.setter
     def ntrait(self, value: Integral) -> None:
@@ -67,22 +67,22 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
 
     @property
     def nself(self) -> Integral:
-        """Description for property nself."""
+        """Number of selfing generations post-cross before progenies are derived. Used in variance calculations."""
         return self._nself
     @nself.setter
     def nself(self, value: Integral) -> None:
-        """Set data for property nself."""
+        """Set the number of selfing generations post-cross before progenies are derived."""
         check_is_Integral(value, "nself")     # must be int
         check_is_gteq(value, "nself", 0)   # int must be >=0
         self._nself = value
 
     @property
     def upper_percentile(self) -> Real:
-        """Description for property upper_percentile."""
+        """Upper percentile of progenies to select."""
         return self._upper_percentile
     @upper_percentile.setter
     def upper_percentile(self, value: Real) -> None:
-        """Set data for property upper_percentile."""
+        """Set upper percentile of progenies to select."""
         check_is_Real(value, "upper_percentile")  # must be a number
         check_is_in_interval_exclusive(value, "upper_percentile", 0.0, 1.0)
         self._upper_percentile = value
@@ -94,21 +94,21 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
 
     @property
     def vmatfcty(self) -> GeneticVarianceMatrixFactory:
-        """Description for property vmatfcty."""
+        """Variance matrix factory to calculate progeny genetic variances."""
         return self._vmatfcty
     @vmatfcty.setter
     def vmatfcty(self, value: GeneticVarianceMatrixFactory) -> None:
-        """Set data for property vmatfcty."""
+        """Set variance matrix factory to calculate progeny genetic variances."""
         check_is_GeneticVarianceMatrixFactory(value, "vmatfcty")
         self._vmatfcty = value
     
     @property
     def gmapfn(self) -> GeneticMapFunction:
-        """Description for property gmapfn."""
+        """Genetic map function used in the calculation of progeny genetic variance matrices."""
         return self._gmapfn
     @gmapfn.setter
     def gmapfn(self, value: GeneticMapFunction) -> None:
-        """Set data for property gmapfn."""
+        """Set genetic map function used in the calculation of progeny genetic variance matrices."""
         check_is_GeneticMapFunction(value, "gmapfn")
         self._gmapfn = value
 
@@ -124,7 +124,7 @@ class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
 
 class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,BinaryMateSelectionProtocol):
     """
-    Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
+    Class defining Usefulness Criterion (UC) Selection for a binary search spaces.
     """
 
     ########################## Special Object Methods ##########################
@@ -165,6 +165,25 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from breeding value matrix inputs.
+
+        nself : Integral
+            Number of selfing generations post-cross before progenies are derived. 
+            Used in variance calculations.
+        
+        upper_percentile : Real
+            Upper percentile of progenies to select.
+        
+        vmatfcty : GeneticVarianceMatrixFactory
+            Variance matrix factory to calculate progeny genetic variances.
+        
+        gmapfn : GeneticMapFunction
+            Genetic map function used in the calculation of progeny genetic variance matrices.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -557,7 +576,7 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
 
 class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,IntegerMateSelectionProtocol):
     """
-    Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
+    Class defining Usefulness Criterion (UC) Selection for a integer search spaces.
     """
 
     ########################## Special Object Methods ##########################
@@ -598,6 +617,25 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from breeding value matrix inputs.
+
+        nself : Integral
+            Number of selfing generations post-cross before progenies are derived. 
+            Used in variance calculations.
+        
+        upper_percentile : Real
+            Upper percentile of progenies to select.
+        
+        vmatfcty : GeneticVarianceMatrixFactory
+            Variance matrix factory to calculate progeny genetic variances.
+        
+        gmapfn : GeneticMapFunction
+            Genetic map function used in the calculation of progeny genetic variance matrices.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -990,7 +1028,7 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
 
 class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMateSelectionProtocol):
     """
-    Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
+    Class defining Usefulness Criterion (UC) Selection for real search spaces.
     """
 
     ########################## Special Object Methods ##########################
@@ -1031,6 +1069,25 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from breeding value matrix inputs.
+
+        nself : Integral
+            Number of selfing generations post-cross before progenies are derived. 
+            Used in variance calculations.
+        
+        upper_percentile : Real
+            Upper percentile of progenies to select.
+        
+        vmatfcty : GeneticVarianceMatrixFactory
+            Variance matrix factory to calculate progeny genetic variances.
+        
+        gmapfn : GeneticMapFunction
+            Genetic map function used in the calculation of progeny genetic variance matrices.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1423,7 +1480,7 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
 
 class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,SubsetMateSelectionProtocol):
     """
-    Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
+    Class defining Usefulness Criterion (UC) Selection for subset search spaces.
     """
 
     ########################## Special Object Methods ##########################
@@ -1464,6 +1521,25 @@ class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,Subse
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from breeding value matrix inputs.
+
+        nself : Integral
+            Number of selfing generations post-cross before progenies are derived. 
+            Used in variance calculations.
+        
+        upper_percentile : Real
+            Upper percentile of progenies to select.
+        
+        vmatfcty : GeneticVarianceMatrixFactory
+            Variance matrix factory to calculate progeny genetic variances.
+        
+        gmapfn : GeneticMapFunction
+            Genetic map function used in the calculation of progeny genetic variance matrices.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         

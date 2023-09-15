@@ -6,7 +6,7 @@ __all__ = [
     "subroutines",
     "arrayix",
     "pareto",
-    "h5py"
+    "h5py",
 ]
 
 # order dependent imports

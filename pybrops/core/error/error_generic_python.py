@@ -3,7 +3,7 @@ Module containing generic subroutines for other Python error subroutines.
 """
 
 __all__ = [
-    "generic_check_isinstance"
+    "generic_check_isinstance",
 ]
 
 ################################################################################

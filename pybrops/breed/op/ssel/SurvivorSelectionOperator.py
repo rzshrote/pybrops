@@ -5,7 +5,7 @@ breeding program survivor selection operators.
 
 __all__ = [
     "SurvivorSelectionOperator",
-    "check_is_SurvivorSelectionOperator"
+    "check_is_SurvivorSelectionOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

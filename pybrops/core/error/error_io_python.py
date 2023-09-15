@@ -5,7 +5,7 @@ Module containing error subroutines related to generic file and paths.
 __all__ = [
     "check_path_exists",
     "check_file_exists",
-    "check_directory_exists"
+    "check_directory_exists",
 ]
 
 from os.path import exists, isfile

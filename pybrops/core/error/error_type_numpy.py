@@ -29,7 +29,7 @@ __all__ = [
     "check_ndarray_dtype_is_bool_or_integer",
     "check_ndarray_dtype_is_bool_or_number",
     "check_ndarray_dtype_is_integer_or_floating",
-    "check_ndarray_dtype_is_object_or_string"
+    "check_ndarray_dtype_is_object_or_string",
 ]
 
 from numbers import Integral, Number, Real

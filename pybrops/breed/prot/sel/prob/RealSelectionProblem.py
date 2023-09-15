@@ -5,7 +5,7 @@ Module partially implementing the SetSelectionProblem interface.
 # list of public objects in this module
 __all__ = [
     "RealSelectionProblem",
-    "check_is_RealSelectionProblem"
+    "check_is_RealSelectionProblem",
 ]
 
 # imports

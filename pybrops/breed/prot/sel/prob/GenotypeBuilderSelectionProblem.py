@@ -3,7 +3,7 @@ Module implementing Genotype Builder (GB) Selection optimization problems.
 """
 
 __all__ = [
-    "GenotypeBuilderSubsetSelectionProblem"
+    "GenotypeBuilderSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta

@@ -5,7 +5,7 @@ breeding program evaluation operators.
 
 __all__ = [
     "EvaluationOperator",
-    "check_is_EvaluationOperator"
+    "check_is_EvaluationOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

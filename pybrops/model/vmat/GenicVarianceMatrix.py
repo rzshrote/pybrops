@@ -5,7 +5,7 @@ storing genic variance estimates.
 
 __all__ = [
     "GenicVarianceMatrix",
-    "check_is_GenicVarianceMatrix"
+    "check_is_GenicVarianceMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

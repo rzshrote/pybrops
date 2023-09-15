@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "NumPyInputOutput",
-    "check_is_NumPyInputOutput"
+    "check_is_NumPyInputOutput",
 ]
 
 from abc import ABCMeta, abstractmethod

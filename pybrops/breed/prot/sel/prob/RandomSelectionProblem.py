@@ -6,7 +6,7 @@ __all__ = [
     "RandomSubsetSelectionProblem",
     "RandomRealSelectionProblem",
     "RandomIntegerSelectionProblem",
-    "RandomBinarySelectionProblem"
+    "RandomBinarySelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

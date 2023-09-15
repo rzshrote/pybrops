@@ -1,5 +1,5 @@
 __all__ = [
-    "IntegerSelectionSolution"
+    "IntegerSelectionSolution",
 ]
 
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution

@@ -5,7 +5,7 @@ Partial implementation of the SubsetProblem interface.
 # list of public objects in this module
 __all__ = [
     "SubsetProblem",
-    "check_is_SubsetProblem"
+    "check_is_SubsetProblem",
 ]
 
 # imports

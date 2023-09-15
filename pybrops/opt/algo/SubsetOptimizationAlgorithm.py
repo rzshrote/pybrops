@@ -4,7 +4,7 @@ Module defining interfaces and error checking routines for subset optimization a
 
 __all__ = [
     "SubsetOptimizationAlgorithm",
-    "check_is_SubsetOptimizationAlgorithm"
+    "check_is_SubsetOptimizationAlgorithm",
 ]
 
 from abc import ABCMeta, abstractmethod

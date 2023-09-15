@@ -5,7 +5,7 @@ Module containing optimization algorithm infrastructure.
 __all__ = [
     "prob",
     "soln",
-    "algo"
+    "algo",
 ]
 
 # order dependent

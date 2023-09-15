@@ -7,7 +7,7 @@ breeding edges.
 
 __all__ = [
     "BreedingGraph",
-    "check_is_BreedingGraph"
+    "check_is_BreedingGraph",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -2,6 +2,11 @@
 Module defining a general class for real selection protocols.
 """
 
+__all__ = [
+    "RealSelectionProtocol",
+    "check_is_RealSelectionProtocol",
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union

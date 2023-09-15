@@ -6,7 +6,7 @@ __all__ = [
     "MeanGenomicRelationshipBinarySelectionProblem",
     "MeanGenomicRelationshipIntegerSelectionProblem",
     "MeanGenomicRelationshipRealSelectionProblem",
-    "MeanGenomicRelationshipSubsetSelectionProblem"
+    "MeanGenomicRelationshipSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

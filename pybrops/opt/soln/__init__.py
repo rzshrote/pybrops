@@ -5,7 +5,7 @@ __all__ = [
     "BinarySolution",
     "IntegerSolution",
     "RealSolution",
-    "SubsetSolution"
+    "SubsetSolution",
 ]
 
 # base interface

@@ -6,7 +6,7 @@ __all__ = [
     "gmap",
     "gmat",
     "bvmat",
-    "cmat"
+    "cmat",
 ]
 
 # order dependent

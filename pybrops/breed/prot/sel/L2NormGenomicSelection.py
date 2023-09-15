@@ -5,10 +5,10 @@ Module defining mean expected heterozygosity selection protocols.
 # list of all public objects in this module
 __all__ = [
     "L2NormGenomicSelectionMixin",
-    "L2NormGenomicSubsetSelection",
-    "L2NormGenomicRealSelection",
+    "L2NormGenomicBinarySelection",
     "L2NormGenomicIntegerSelection",
-    "L2NormGenomicBinarySelection"
+    "L2NormGenomicRealSelection",
+    "L2NormGenomicSubsetSelection",
 ]
 
 # imports
@@ -50,7 +50,7 @@ class L2NormGenomicSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def cmatfcty(self) -> CoancestryMatrixFactory:
-        """Coancestry matrix factory."""
+        """Coancestry matrix factory used to create coancestry matrices."""
         return self._cmatfcty
     @cmatfcty.setter
     def cmatfcty(self, value: CoancestryMatrixFactory) -> None:
@@ -60,7 +60,7 @@ class L2NormGenomicSelectionMixin(metaclass=ABCMeta):
 
 class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    L2-Norm Genomic Selection (L2GS) in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -91,10 +91,13 @@ class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionPr
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class L2NormGenomicBinarySelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -459,7 +462,7 @@ class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionPr
 
 class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    L2-Norm Genomic Selection (L2GS) in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -490,10 +493,13 @@ class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelection
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class L2NormGenomicIntegerSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -858,7 +864,7 @@ class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelection
 
 class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    L2-Norm Genomic Selection (L2GS) in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -889,10 +895,13 @@ class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtoc
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class L2NormGenomicRealSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1257,7 +1266,7 @@ class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtoc
 
 class L2NormGenomicSubsetSelection(L2NormGenomicSelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    L2-Norm Genomic Selection (L2GS) in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1288,10 +1297,13 @@ class L2NormGenomicSubsetSelection(L2NormGenomicSelectionMixin,SubsetSelectionPr
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class L2NormGenomicSubsetSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         

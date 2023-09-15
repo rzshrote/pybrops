@@ -4,7 +4,7 @@ Module implementing recurrent selection.
 
 __all__ = [
     "RecurrentSelectionBreedingProgram",
-    "check_is_RecurrentSelectionBreedingProgram"
+    "check_is_RecurrentSelectionBreedingProgram",
 ]
 
 import copy

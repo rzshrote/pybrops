@@ -3,7 +3,7 @@ Module containing breeding program parent selection operators.
 """
 
 __all__ = [
-    "ParentSelectionOperator"
+    "ParentSelectionOperator",
 ]
 
 # order dependent import

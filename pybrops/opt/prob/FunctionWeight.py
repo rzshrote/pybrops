@@ -5,7 +5,7 @@ Module defining several helper classes for assigning weights to optimization pro
 __all__ = [
     "FunctionWeight",
     "MinimizingFunctionWeight",
-    "MaximizingFunctionWeight"
+    "MaximizingFunctionWeight",
 ]
 
 from numbers import Real

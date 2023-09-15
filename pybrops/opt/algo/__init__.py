@@ -23,7 +23,7 @@ __all__ = [
     "UnconstrainedSteepestAscentSetHillClimber",
     "UnconstrainedStochasticAscentSetHillClimber",
     "UnconstrainedNSGA2SetGeneticAlgorithm",
-    "UnconstrainedNSGA3UnityConstraintGeneticAlgorithm"
+    "UnconstrainedNSGA3UnityConstraintGeneticAlgorithm",
 ]
 
 # order dependent imports

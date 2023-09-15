@@ -5,7 +5,7 @@ that can have their axes sorted.
 
 __all__ = [
     "SortableMatrix",
-    "check_is_SortableMatrix"
+    "check_is_SortableMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

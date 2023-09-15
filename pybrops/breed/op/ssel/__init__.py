@@ -3,7 +3,7 @@ Module containing breeding program survivor selection operators.
 """
 
 __all__ = [
-    "SurvivorSelectionOperator"
+    "SurvivorSelectionOperator",
 ]
 
 # order dependent import

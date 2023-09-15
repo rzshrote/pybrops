@@ -5,10 +5,10 @@ Module defining mean expected heterozygosity selection protocols.
 # list of all public objects in this module
 __all__ = [
     "MeanExpectedHeterozygositySelectionMixin",
-    "MeanExpectedHeterozygositySubsetSelection",
-    "MeanExpectedHeterozygosityRealSelection",
+    "MeanExpectedHeterozygosityBinarySelection",
     "MeanExpectedHeterozygosityIntegerSelection",
-    "MeanExpectedHeterozygosityBinarySelection"
+    "MeanExpectedHeterozygosityRealSelection",
+    "MeanExpectedHeterozygositySubsetSelection",
 ]
 
 # imports
@@ -27,7 +27,10 @@ from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtoc
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityBinarySelectionProblem, MeanExpectedHeterozygosityIntegerSelectionProblem, MeanExpectedHeterozygosityRealSelectionProblem, MeanExpectedHeterozygositySubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygosityRealSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem import MeanExpectedHeterozygositySubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
@@ -41,7 +44,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class MeanExpectedHeterozygositySelectionMixin(metaclass=ABCMeta):
     """
-    Semi-abstract class for Conventional Genomic Selection (CGS) with constraints.
+    Semi-abstract class for Mean Expected Heterozygosity Selection with constraints.
     """
 
     ########################## Special Object Methods ##########################
@@ -52,7 +55,7 @@ class MeanExpectedHeterozygositySelectionMixin(metaclass=ABCMeta):
 
 class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Mean Expected Heterozygosity Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -82,7 +85,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanExpectedHeterozygosityBinarySelection.
 
         Parameters
         ----------
@@ -453,7 +456,7 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
 
 class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    Mean Expected Heterozygosity Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -483,7 +486,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanExpectedHeterozygosityIntegerSelection.
 
         Parameters
         ----------
@@ -854,7 +857,7 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
 
 class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    Mean Expected Heterozygosity Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -884,7 +887,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanExpectedHeterozygosityRealSelection.
 
         Parameters
         ----------
@@ -1255,7 +1258,7 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
 
 class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Mean Expected Heterozygosity Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1285,7 +1288,7 @@ class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelect
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanExpectedHeterozygositySubsetSelection.
 
         Parameters
         ----------

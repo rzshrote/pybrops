@@ -5,7 +5,7 @@ error checking routines.
 
 __all__ = [
     "DenseTaxaMatrix",
-    "check_is_DenseTaxaMatrix"
+    "check_is_DenseTaxaMatrix",
 ]
 
 import copy

@@ -28,7 +28,7 @@ __all__ = [
     "DenseSquareTaxaMatrix",
     "DenseTaxaTraitMatrix",
     "DenseTaxaVariantMatrix",
-    "DensePhasedTaxaVariantMatrix"
+    "DensePhasedTaxaVariantMatrix",
 ]
 
 # order dependent!

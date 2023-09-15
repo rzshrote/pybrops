@@ -5,7 +5,7 @@ emigration operators.
 
 __all__ = [
     "EmigrationOperator",
-    "check_is_EmigrationOperator"
+    "check_is_EmigrationOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

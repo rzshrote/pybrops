@@ -5,7 +5,7 @@ breeding program logbook operators.
 
 __all__ = [
     "Logbook",
-    "check_is_Logbook"
+    "check_is_Logbook",
 ]
 
 

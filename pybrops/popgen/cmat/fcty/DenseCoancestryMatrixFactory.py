@@ -4,7 +4,7 @@ Module defining basal coancestry matrix factory interfaces and associated error 
 
 __all__ = [
     "DenseCoancestryMatrixFactory",
-    "check_is_DenseCoancestryMatrixFactory"
+    "check_is_DenseCoancestryMatrixFactory",
 ]
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix

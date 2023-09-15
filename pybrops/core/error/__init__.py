@@ -12,7 +12,7 @@ __all__ = [
     "error_io_h5py",
     "error_type_numpy",
     "error_value_numpy",
-    "error_type_pandas"
+    "error_type_pandas",
 ]
 
 # order dependent import

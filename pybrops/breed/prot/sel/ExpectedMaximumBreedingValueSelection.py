@@ -7,7 +7,7 @@ __all__ = [
     "ExpectedMaximumBreedingValueBinarySelection",
     "ExpectedMaximumBreedingValueIntegerSelection",
     "ExpectedMaximumBreedingValueRealSelection",
-    "ExpectedMaximumBreedingValueSubsetSelection"
+    "ExpectedMaximumBreedingValueSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -24,7 +24,10 @@ from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProt
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueBinarySelectionProblem, ExpectedMaximumBreedingValueIntegerSelectionProblem, ExpectedMaximumBreedingValueRealSelectionProblem, ExpectedMaximumBreedingValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueRealSelectionProblem
+from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
@@ -62,22 +65,22 @@ class ExpectedMaximumBreedingValueSelectionMixin(metaclass=ABCMeta):
 
     @property
     def nrep(self) -> Integral:
-        """Description for property nrep."""
+        """Number of replicates performed to estimate expected maximum breeding values."""
         return self._nrep
     @nrep.setter
     def nrep(self, value: Integral) -> None:
-        """Set data for property nrep."""
+        """Set number of replicates performed to estimate expected maximum breeding values."""
         check_is_Integral(value, "nrep")
         check_is_gt(value, "nrep", 0)
         self._nrep = value
     
     @property
     def mateprot(self) -> MatingProtocol:
-        """Description for property mateprot."""
+        """Mating protocol used to calculate expected maximum breeding values."""
         return self._mateprot
     @mateprot.setter
     def mateprot(self, value: MatingProtocol) -> None:
-        """Set data for property mateprot."""
+        """Set mating protocol used to calculate expected maximum breeding values."""
         check_is_MatingProtocol(value, "mateprot")
         self._mateprot = value
 
@@ -128,10 +131,22 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueSe
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class ExpectedMaximumBreedingValueBinarySelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from genomic model inputs.
+        
+        nrep : Integral
+            Number of replicates performed to estimate expected maximum breeding values.
+        
+        mateprot : MatingProtocol
+            Mating protocol used to calculate expected maximum breeding values.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -550,10 +565,22 @@ class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueS
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class ExpectedMaximumBreedingValueIntegerSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from genomic model inputs.
+        
+        nrep : Integral
+            Number of replicates performed to estimate expected maximum breeding values.
+        
+        mateprot : MatingProtocol
+            Mating protocol used to calculate expected maximum breeding values.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -972,10 +999,22 @@ class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueSele
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class ExpectedMaximumBreedingValueRealSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from genomic model inputs.
+        
+        nrep : Integral
+            Number of replicates performed to estimate expected maximum breeding values.
+        
+        mateprot : MatingProtocol
+            Mating protocol used to calculate expected maximum breeding values.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1394,10 +1433,22 @@ class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueSe
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class ExpectedMaximumBreedingValueSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from genomic model inputs.
+        
+        nrep : Integral
+            Number of replicates performed to estimate expected maximum breeding values.
+        
+        mateprot : MatingProtocol
+            Mating protocol used to calculate expected maximum breeding values.
+        
+        unique_parents : bool
+            Whether parents should be unique.
+        
         ncross : Integral
             Number of cross configurations to consider.
         

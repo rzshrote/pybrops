@@ -5,7 +5,7 @@ germplasm bank representation.
 
 __all__ = [
     "BreedingProgram",
-    "check_is_BreedingProgram"
+    "check_is_BreedingProgram",
 ]
 
 from abc import ABCMeta, abstractmethod

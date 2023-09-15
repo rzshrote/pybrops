@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "DenseTraitMatrix",
-    "check_is_DenseTraitMatrix"
+    "check_is_DenseTraitMatrix",
 ]
 
 import numpy

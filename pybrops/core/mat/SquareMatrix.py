@@ -5,7 +5,7 @@ with axes that are square.
 
 __all__ = [
     "SquareMatrix",
-    "check_is_SquareMatrix"
+    "check_is_SquareMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -7,7 +7,7 @@ __all__ = [
     "triuix", 
     "triuix",
     "xmapix",
-    "sliceaxisix"
+    "sliceaxisix",
 ]
 
 def sqarrayix(n: int, k: int) -> list:

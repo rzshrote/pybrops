@@ -7,7 +7,7 @@ __all__ = [
     "gt",
     "mate",
     "pt",
-    "sel"
+    "sel",
 ]
 
 from pybrops.breed.prot import bv

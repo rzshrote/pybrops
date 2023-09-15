@@ -6,7 +6,7 @@ __all__ = [
     "MeanExpectedHeterozygosityBinarySelectionProblem",
     "MeanExpectedHeterozygosityIntegerSelectionProblem",
     "MeanExpectedHeterozygosityRealSelectionProblem",
-    "MeanExpectedHeterozygositySubsetSelectionProblem"
+    "MeanExpectedHeterozygositySubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

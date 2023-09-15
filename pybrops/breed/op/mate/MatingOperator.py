@@ -5,7 +5,7 @@ breeding program mating operators.
 
 __all__ = [
     "MatingOperator",
-    "check_is_MatingOperator"
+    "check_is_MatingOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

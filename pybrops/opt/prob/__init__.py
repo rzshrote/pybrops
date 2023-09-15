@@ -6,7 +6,7 @@ __all__ = [
     "BinaryProblem",
     "IntegerProblem",
     "RealProblem",
-    "SubsetProblem"
+    "SubsetProblem",
 ]
 
 # utilities

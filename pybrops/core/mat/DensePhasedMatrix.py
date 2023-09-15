@@ -4,7 +4,7 @@ Module implementing a dense phased matrix and associated error checking routines
 
 __all__ = [
     "DensePhasedMatrix",
-    "check_is_DensePhasedMatrix"
+    "check_is_DensePhasedMatrix",
 ]
 
 import copy

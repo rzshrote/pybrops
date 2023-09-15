@@ -6,7 +6,7 @@ __all__ = [
     "BreedingValueMatrix",
     "DenseBreedingValueMatrix",
     "DenseEstimatedBreedingValueMatrix",
-    "DenseGenomicEstimatedBreedingValueMatrix"
+    "DenseGenomicEstimatedBreedingValueMatrix",
 ]
 
 # order dependent import

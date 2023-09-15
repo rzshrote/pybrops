@@ -5,7 +5,7 @@ for breeding value matrices.
 
 __all__ = [
     "BreedingValueMatrix",
-    "check_is_BreedingValueMatrix"
+    "check_is_BreedingValueMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

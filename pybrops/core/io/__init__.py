@@ -6,7 +6,7 @@ __all__ = [
     "CSVInputOutput",
     "HDF5InputOutput",
     "PandasInputOutput",
-    "NumPyInputOutput"
+    "NumPyInputOutput",
 ]
 
 # order dependent imports

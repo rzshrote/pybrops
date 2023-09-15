@@ -5,10 +5,10 @@ Module defining mean expected heterozygosity selection protocols.
 # list of all public objects in this module
 __all__ = [
     "MeanGenomicRelationshipSelectionMixin",
-    "MeanGenomicRelationshipSubsetSelection",
-    "MeanGenomicRelationshipRealSelection",
+    "MeanGenomicRelationshipBinarySelection",
     "MeanGenomicRelationshipIntegerSelection",
-    "MeanGenomicRelationshipBinarySelection"
+    "MeanGenomicRelationshipRealSelection",
+    "MeanGenomicRelationshipSubsetSelection",
 ]
 
 # imports
@@ -27,7 +27,10 @@ from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtoc
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipBinarySelectionProblem, MeanGenomicRelationshipIntegerSelectionProblem, MeanGenomicRelationshipRealSelectionProblem, MeanGenomicRelationshipSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipRealSelectionProblem
+from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
@@ -41,7 +44,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class MeanGenomicRelationshipSelectionMixin(metaclass=ABCMeta):
     """
-    Semi-abstract class for Conventional Genomic Selection (CGS) with constraints.
+    Semi-abstract class for Mean Genomic Relationship Selection with constraints.
     """
 
     ########################## Special Object Methods ##########################
@@ -50,7 +53,7 @@ class MeanGenomicRelationshipSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def cmatfcty(self) -> CoancestryMatrixFactory:
-        """Coancestry matrix factory."""
+        """Coancestry matrix factory used to create coancestry matrices."""
         return self._cmatfcty
     @cmatfcty.setter
     def cmatfcty(self, value: CoancestryMatrixFactory) -> None:
@@ -60,7 +63,7 @@ class MeanGenomicRelationshipSelectionMixin(metaclass=ABCMeta):
 
 class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Mean Genomic Relationship Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -91,10 +94,13 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMix
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanGenomicRelationshipBinarySelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -462,7 +468,7 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMix
 
 class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    Mean Genomic Relationship Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -493,10 +499,13 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMi
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanGenomicRelationshipIntegerSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -864,7 +873,7 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMi
 
 class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    Mean Genomic Relationship Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -895,10 +904,13 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanGenomicRelationshipRealSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1266,7 +1278,7 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin
 
 class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipSelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Mean Genomic Relationship Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1297,10 +1309,13 @@ class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipSelectionMix
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MeanGenomicRelationshipSubsetSelection.
 
         Parameters
         ----------
+        cmatfcty : CoancestryMatrixFactory
+            Coancestry matrix factory used to create coancestry matrices.
+        
         ncross : Integral
             Number of cross configurations to consider.
         

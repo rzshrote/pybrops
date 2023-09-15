@@ -5,7 +5,7 @@ matrices with phase, variant, and taxa metadata.
 
 __all__ = [
     "PhasedTaxaVariantMatrix",
-    "check_is_PhasedTaxaVariantMatrix"
+    "check_is_PhasedTaxaVariantMatrix",
 ]
 
 from abc import ABCMeta

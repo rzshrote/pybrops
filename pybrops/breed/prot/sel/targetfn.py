@@ -7,7 +7,7 @@ import numpy
 __all__ = [
     "target_positive",
     "target_negative",
-    "target_stabilizing"
+    "target_stabilizing",
 ]
 
 def target_positive(u_a: numpy.ndarray) -> numpy.ndarray:

@@ -6,7 +6,7 @@ __all__ = [
     "OptimalHaploidValueSubsetSelectionProblem",
     "OptimalHaploidValueRealSelectionProblem",
     "OptimalHaploidValueIntegerSelectionProblem",
-    "OptimalHaploidValueBinarySelectionProblem"
+    "OptimalHaploidValueBinarySelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -16,7 +16,6 @@ import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim

@@ -5,7 +5,7 @@ Partial implementation of the RealProblem interface.
 # list of public objects in this module
 __all__ = [
     "RealProblem",
-    "check_is_RealProblem"
+    "check_is_RealProblem",
 ]
 
 # imports

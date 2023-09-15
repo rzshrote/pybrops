@@ -4,7 +4,7 @@ Module defining basal genetic map interfaces and associated error checking routi
 
 __all__ = [
     "GeneticMap",
-    "check_is_GeneticMap"
+    "check_is_GeneticMap",
 ]
 
 from abc import ABCMeta, abstractmethod

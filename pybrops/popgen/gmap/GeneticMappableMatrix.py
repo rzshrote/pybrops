@@ -5,7 +5,7 @@ that can have variant positions placed on a genetic map.
 
 __all__ = [
     "GeneticMappableMatrix",
-    "check_is_GeneticMappableMatrix"
+    "check_is_GeneticMappableMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -5,7 +5,7 @@ immigration operators.
 
 __all__ = [
     "ImmigrationOperator",
-    "check_is_ImmigrationOperator"
+    "check_is_ImmigrationOperator",
 ]
 
 from abc import ABCMeta, abstractmethod

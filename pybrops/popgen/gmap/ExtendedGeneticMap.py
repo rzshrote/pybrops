@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "ExtendedGeneticMap",
-    "check_is_ExtendedGeneticMap"
+    "check_is_ExtendedGeneticMap",
 ]
 
 from typing import Optional, Sequence, Union

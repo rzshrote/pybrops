@@ -4,7 +4,7 @@ Module containing assertion tools for testing.
 
 __all__ = [
     "assert_python",
-    "assert_numpy"
+    "assert_numpy",
 ]
 
 # order dependent import

@@ -15,7 +15,7 @@ __all__ = [
     "util",
     "random",
     "io",
-    "mat"
+    "mat",
 ]
 
 # order dependent import

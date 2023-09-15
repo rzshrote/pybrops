@@ -5,7 +5,7 @@ with axes that are square and with taxa metadata.
 
 __all__ = [
     "SquareTaxaMatrix",
-    "check_is_SquareTaxaMatrix"
+    "check_is_SquareTaxaMatrix",
 ]
 
 from abc import ABCMeta

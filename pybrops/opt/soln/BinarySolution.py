@@ -5,7 +5,7 @@ Partial implementation of the SetSolution interface.
 # list of all public imports in the module
 __all__ = [
     "BinarySolution",
-    "check_is_BinarySolution"
+    "check_is_BinarySolution",
 ]
 
 # imports

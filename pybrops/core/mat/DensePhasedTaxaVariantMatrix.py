@@ -5,7 +5,7 @@ and associated error checking routines.
 
 __all__ = [
     "DensePhasedTaxaVariantMatrix",
-    "check_is_DensePhasedTaxaVariantMatrix"
+    "check_is_DensePhasedTaxaVariantMatrix",
 ]
 
 import numpy

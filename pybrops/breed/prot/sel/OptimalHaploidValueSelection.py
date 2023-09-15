@@ -7,7 +7,7 @@ __all__ = [
     "OptimalHaploidValueBinarySelection",
     "OptimalHaploidValueIntegerSelection",
     "OptimalHaploidValueRealSelection",
-    "OptimalHaploidValueSubsetSelection"
+    "OptimalHaploidValueSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -17,10 +17,13 @@ from typing import Callable, Optional, Union
 import numpy
 from numpy.random import Generator, RandomState
 import pandas
+
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-
-from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem, OptimalHaploidValueIntegerSelectionProblem, OptimalHaploidValueRealSelectionProblem, OptimalHaploidValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueRealSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
@@ -115,10 +118,19 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,Binar
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalHaploidValueBinarySelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -529,10 +541,19 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalHaploidValueIntegerSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -943,10 +964,19 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSel
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalHaploidValueRealSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1357,10 +1387,19 @@ class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,Subse
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class OptimalHaploidValueSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
         ncross : Integral
             Number of cross configurations to consider.
         

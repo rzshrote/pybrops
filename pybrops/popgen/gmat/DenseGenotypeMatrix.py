@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "DenseGenotypeMatrix",
-    "check_is_DenseGenotypeMatrix"
+    "check_is_DenseGenotypeMatrix",
 ]
 
 import copy

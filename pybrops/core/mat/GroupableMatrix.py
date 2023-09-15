@@ -5,7 +5,7 @@ that can have their axes grouped.
 
 __all__ = [
     "GroupableMatrix",
-    "check_is_GroupableMatrix"
+    "check_is_GroupableMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

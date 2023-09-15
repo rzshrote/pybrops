@@ -3,7 +3,7 @@ Module containing miscellaneous genetic map subroutines.
 """
 
 __all__ = [
-    "cM2d"
+    "cM2d",
 ]
 
 import numpy

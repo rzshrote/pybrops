@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "CSVInputOutput",
-    "check_is_CSVInputOutput"
+    "check_is_CSVInputOutput",
 ]
 
 from abc import ABCMeta, abstractmethod

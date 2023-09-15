@@ -10,7 +10,7 @@ __all__ = [
     "trans_ndpt_to_vec_dist", 
     "trans_sum", 
     "trans_dot", 
-    "trans_flatten"
+    "trans_flatten",
 ]
 
 def trans_ndpt_to_vec_dist(

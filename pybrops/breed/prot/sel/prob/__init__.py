@@ -25,7 +25,7 @@ __all__ = [
     "OptimalPopulationValueSelectionProblem",
     "RandomSelectionProblem",
     "UsefulnessCriterionSelectionProblem",
-    "WeightedGenomicSelectionProblem"
+    "WeightedGenomicSelectionProblem",
 ]
 
 # order dependent imports

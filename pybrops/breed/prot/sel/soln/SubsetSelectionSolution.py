@@ -1,5 +1,5 @@
 __all__ = [
-    "SubsetSelectionSolution"
+    "SubsetSelectionSolution",
 ]
 
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution

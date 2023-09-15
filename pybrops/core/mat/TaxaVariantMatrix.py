@@ -5,7 +5,7 @@ with taxa and variant metadata.
 
 __all__ = [
     "TaxaVariantMatrix",
-    "check_is_TaxaVariantMatrix"
+    "check_is_TaxaVariantMatrix",
 ]
 
 from abc import ABCMeta

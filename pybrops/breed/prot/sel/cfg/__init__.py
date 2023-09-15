@@ -15,7 +15,7 @@ __all__ = [
     "BinaryMateSelectionConfiguration",
     "IntegerMateSelectionConfiguration",
     "RealMateSelectionConfiguration",
-    "SubsetMateSelectionConfiguration"
+    "SubsetMateSelectionConfiguration",
 ]
 
 # order dependent imports

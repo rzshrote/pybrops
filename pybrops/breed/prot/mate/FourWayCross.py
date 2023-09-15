@@ -4,7 +4,7 @@ Module implementing mating protocols for four-way crosses.
 
 __all__ = [
     "FourWayCross",
-    "check_is_FourWayCross"
+    "check_is_FourWayCross",
 ]
 
 from numbers import Integral

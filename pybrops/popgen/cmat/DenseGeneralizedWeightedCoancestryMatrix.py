@@ -4,7 +4,7 @@ Module providing an implementation for a dense generalized weighted genomic rela
 
 __all__ = [
     "DenseGeneralizedWeightedCoancestryMatrix",
-    "check_is_DenseGeneralizedWeightedCoancestryMatrix"
+    "check_is_DenseGeneralizedWeightedCoancestryMatrix",
 ]
 
 import math

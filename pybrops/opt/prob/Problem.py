@@ -5,7 +5,7 @@ Partial implementation of the Problem interface.
 # list of public objects in this module
 __all__ = [
     "Problem",
-    "check_is_Problem"
+    "check_is_Problem",
 ]
 
 # imports

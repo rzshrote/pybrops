@@ -6,7 +6,7 @@ __all__ = [
     "stochastic_universal_sampling",
     "tiled_choice",
     "axis_shuffle",
-    "outcross_shuffle"
+    "outcross_shuffle",
 ]
 
 from numbers import Integral

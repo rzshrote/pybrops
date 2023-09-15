@@ -4,7 +4,7 @@ Module defining protocols for Genotype Builder (GB) selection.
 
 __all__ = [
     "GenotypeBuilderSelectionMixin",
-    "GenotypeBuilderSubsetSelection"
+    "GenotypeBuilderSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -22,7 +22,7 @@ from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval_inclusive
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
@@ -39,7 +39,7 @@ class GenotypeBuilderSelectionMixin(metaclass=ABCMeta):
     ############################ Object Properties #############################
     @property
     def ntrait(self) -> Integral:
-        """Number of traits to expect from EBV matrix inputs."""
+        """Number of traits to expect from matrix inputs."""
         return self._ntrait
     @ntrait.setter
     def ntrait(self, value: Integral) -> None:
@@ -101,15 +101,24 @@ class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelecti
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None,
+            soalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            moalgo: Optional[SubsetOptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class GenotypeBuilderSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+        
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+
+        nbestfndr : Integral
+            Number of best founders to consider.
+
         ncross : Integral
             Number of cross configurations to consider.
         

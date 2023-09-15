@@ -4,7 +4,7 @@ Module defining basal Matrix interfaces and associated error checking routines.
 
 __all__ = [
     "Matrix",
-    "check_is_Matrix"
+    "check_is_Matrix",
 ]
 
 from abc import ABCMeta, abstractmethod

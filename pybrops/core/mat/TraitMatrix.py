@@ -5,7 +5,7 @@ with trait metadata.
 
 __all__ = [
     "TraitMatrix",
-    "check_is_TraitMatrix"
+    "check_is_TraitMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

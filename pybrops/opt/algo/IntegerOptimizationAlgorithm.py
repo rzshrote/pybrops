@@ -4,7 +4,7 @@ Module defining interfaces and error checking routines for integer optimization 
 
 __all__ = [
     "IntegerOptimizationAlgorithm",
-    "check_is_IntegerOptimizationAlgorithm"
+    "check_is_IntegerOptimizationAlgorithm",
 ]
 
 from abc import ABCMeta, abstractmethod

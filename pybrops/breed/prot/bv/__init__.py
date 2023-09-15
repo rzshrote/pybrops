@@ -5,7 +5,7 @@ Module containing breeding value calculation protocols.
 __all__ = [
     "BreedingValueProtocol",
     "TrueBreedingValue",
-    "MeanPhenotypicBreedingValue"
+    "MeanPhenotypicBreedingValue",
 ]
 
 # order depend imports

@@ -2,6 +2,11 @@
 Module defining a general class for subset selection protocols.
 """
 
+__all__ = [
+    "SubsetMateSelectionProtocol",
+    "check_is_SubsetMateSelectionProtocol",
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Integral
 from typing import Optional

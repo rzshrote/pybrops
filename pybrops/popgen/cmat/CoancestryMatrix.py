@@ -4,7 +4,7 @@ Module defining basal coancestry matrix interfaces and associated error checking
 
 __all__ = [
     "CoancestryMatrix",
-    "check_is_CoancestryMatrix"
+    "check_is_CoancestryMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

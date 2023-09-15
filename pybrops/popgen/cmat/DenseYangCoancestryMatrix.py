@@ -5,7 +5,7 @@ method and associated error checking routines.
 
 __all__ = [
     "DenseYangCoancestryMatrix",
-    "check_is_DenseYangCoancestryMatrix"
+    "check_is_DenseYangCoancestryMatrix",
 ]
 
 from numbers import Real

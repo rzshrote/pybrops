@@ -5,7 +5,7 @@ Partial implementation of the SetSolution interface.
 # list of all public imports in the module
 __all__ = [
     "SubsetSolution",
-    "check_is_SubsetSolution"
+    "check_is_SubsetSolution",
 ]
 
 # imports

@@ -3,7 +3,7 @@ Module implementing Multi-Objective Genomic Selection (MOGS) optimization proble
 """
 
 __all__ = [
-    "MultiObjectiveGenomicSubsetSelectionProblem"
+    "MultiObjectiveGenomicSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod

@@ -6,7 +6,7 @@ estimations.
 
 __all__ = [
     "gmod",
-    "vmat"
+    "vmat",
 ]
 
 # imports are order dependent!!!!

@@ -4,7 +4,7 @@ Module defining mutable matrix interfaces and associated error checking routines
 
 __all__ = [
     "MutableMatrix",
-    "check_is_MutableMatrix"
+    "check_is_MutableMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

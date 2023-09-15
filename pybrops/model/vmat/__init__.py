@@ -16,7 +16,7 @@ __all__ = [
     "AdditiveGenicVarianceMatrix",
     "DenseGenicVarianceMatrix",
     "DenseAdditiveGenicVarianceMatrix",
-    "DenseTwoWayDHAdditiveGenicVarianceMatrix"
+    "DenseTwoWayDHAdditiveGenicVarianceMatrix",
 ]
 
 # order dependent imports

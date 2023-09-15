@@ -6,7 +6,7 @@ __all__ = [
     "WeightedGenomicBinarySelectionProblem",
     "WeightedGenomicIntegerSelectionProblem",
     "WeightedGenomicRealSelectionProblem",
-    "WeightedGenomicSubsetSelectionProblem"
+    "WeightedGenomicSubsetSelectionProblem",
 ]
 
 from numbers import Integral, Number, Real

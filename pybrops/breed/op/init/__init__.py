@@ -3,7 +3,7 @@ Module containing breeding program initialization operators.
 """
 
 __all__ = [
-    "InitializationOperator"
+    "InitializationOperator",
 ]
 
 # order dependent import

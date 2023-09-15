@@ -26,7 +26,7 @@ __all__ = [
     "check_ndarray_is_hypercube",
     "check_ndarray_is_square",
     "check_ndarray_is_triu",
-    "check_ndarray_len_is_multiple_of"
+    "check_ndarray_len_is_multiple_of",
 ]
 from numbers import Real
 import numpy

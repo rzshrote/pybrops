@@ -2,7 +2,7 @@
 # import random
 
 __all__ = [
-    "prng"
+    "prng",
 ]
 
 # import everything

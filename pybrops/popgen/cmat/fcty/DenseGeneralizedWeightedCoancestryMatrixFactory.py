@@ -4,7 +4,7 @@ Module defining basal coancestry matrix factory interfaces and associated error 
 
 __all__ = [
     "DenseGeneralizedWeightedCoancestryMatrixFactory",
-    "check_is_DenseGeneralizedWeightedCoancestryMatrixFactory"
+    "check_is_DenseGeneralizedWeightedCoancestryMatrixFactory",
 ]
 
 from numbers import Real

@@ -5,7 +5,7 @@ constrained optimization algorithms.
 
 __all__ = [
     "OptimizationAlgorithm",
-    "check_is_OptimizationAlgorithm"
+    "check_is_OptimizationAlgorithm",
 ]
 
 from abc import ABCMeta, abstractmethod

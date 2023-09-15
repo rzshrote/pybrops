@@ -5,7 +5,7 @@ for dense breeding value matrices estimated from genomic and phenotypic data.
 
 __all__ = [
     "DenseGenomicEstimatedBreedingValueMatrix",
-    "check_is_DenseGenomicEstimatedBreedingValueMatrix"
+    "check_is_DenseGenomicEstimatedBreedingValueMatrix",
 ]
 
 from typing import Optional

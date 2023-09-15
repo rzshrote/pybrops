@@ -5,7 +5,7 @@ checking routines.
 
 __all__ = [
     "GeneticMapFunction",
-    "check_is_GeneticMapFunction"
+    "check_is_GeneticMapFunction",
 ]
 
 from abc import ABCMeta, abstractmethod

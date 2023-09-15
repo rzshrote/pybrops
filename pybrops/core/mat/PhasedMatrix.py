@@ -4,7 +4,7 @@ Module defining phased matrix interfaces and associated error checking routines.
 
 __all__ = [
     "PhasedMatrix",
-    "check_is_PhasedMatrix"
+    "check_is_PhasedMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod

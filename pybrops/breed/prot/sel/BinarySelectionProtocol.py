@@ -2,6 +2,11 @@
 Module defining a general class for binary selection protocols.
 """
 
+__all__ = [
+    "BinarySelectionProtocol",
+    "check_is_BinarySelectionProtocol",
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union

@@ -5,7 +5,7 @@ with taxa and trait metadata.
 
 __all__ = [
     "TaxaTraitMatrix",
-    "check_is_TaxaTraitMatrix"
+    "check_is_TaxaTraitMatrix",
 ]
 
 from abc import ABCMeta

@@ -5,7 +5,7 @@ Module partially implementing the SetSelectionProblem interface.
 # list of public objects in this module
 __all__ = [
     "BinarySelectionProblem",
-    "check_is_BinarySelectionProblem"
+    "check_is_BinarySelectionProblem",
 ]
 
 # imports

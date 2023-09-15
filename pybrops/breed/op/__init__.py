@@ -8,7 +8,7 @@ __all__ = [
     "eval",
     "ssel",
     "init",
-    "log"
+    "log",
 ]
 
 # main loop operators

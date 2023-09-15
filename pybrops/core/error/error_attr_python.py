@@ -5,7 +5,7 @@ Module containing error subroutines related to Python object attributes.
 __all__ = [
     "error_readonly",
     "check_is_callable",
-    "check_is_iterable"
+    "check_is_iterable",
 ]
 
 ### read/write ###

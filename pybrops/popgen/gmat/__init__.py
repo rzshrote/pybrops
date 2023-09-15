@@ -8,7 +8,7 @@ __all__ = [
     "PhasedGenotypeMatrix",
     "PhasedHaplotypeMatrix",
     "DenseGenotypeMatrix",
-    "DensePhasedGenotypeMatrix"
+    "DensePhasedGenotypeMatrix",
 ]
 
 # imports are order dependent!!!

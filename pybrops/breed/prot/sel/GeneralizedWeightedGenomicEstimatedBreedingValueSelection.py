@@ -5,10 +5,10 @@ Module implementing selection protocols for selecting based on Generalized Weigh
 # list of all public objects in this module
 __all__ = [
     "GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection",
     "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection",
-    "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection"
+    "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection",
+    "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection",
 ]
 
 # imports
@@ -78,7 +78,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(metaclass=A
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Generalized Weighted Genomic Estiamted Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -110,10 +110,16 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(Generalize
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        alpha : Real
+            Exponent with which to adjust allele values. Must be in range [0,1].
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -480,7 +486,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(Generalize
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
     """
-    Conventional Genomic Selection in an integer search space.
+    Generalized Weighted Genomic Estiamted Breeding Value Selection in an integer search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -512,10 +518,16 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        alpha : Real
+            Exponent with which to adjust allele values. Must be in range [0,1].
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -882,7 +894,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
     """
-    Conventional Genomic Selection in a real search space.
+    Generalized Weighted Genomic Estiamted Breeding Value Selection in a real search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -914,10 +926,16 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        alpha : Real
+            Exponent with which to adjust allele values. Must be in range [0,1].
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1284,7 +1302,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
 
 class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
     """
-    Conventional Genomic Selection in a subset search space.
+    Generalized Weighted Genomic Estiamted Breeding Value Selection in a subset search space.
     """
     ########################## Special Object Methods ##########################
     def __init__(
@@ -1316,10 +1334,16 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(Generalize
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        alpha : Real
+            Exponent with which to adjust allele values. Must be in range [0,1].
+
         ncross : Integral
             Number of cross configurations to consider.
         

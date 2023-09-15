@@ -1,5 +1,5 @@
 __all__ = [
-    "BinarySelectionSolution"
+    "BinarySelectionSolution",
 ]
 
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution

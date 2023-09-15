@@ -4,7 +4,7 @@ Module implementing the Haldane genetic map function and associated error checki
 
 __all__ = [
     "HaldaneMapFunction",
-    "check_is_HaldaneMapFunction"
+    "check_is_HaldaneMapFunction",
 ]
 
 import numpy

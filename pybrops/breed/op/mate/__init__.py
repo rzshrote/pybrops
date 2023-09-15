@@ -3,7 +3,7 @@ Module containing breeding program mating operators.
 """
 
 __all__ = [
-    "MatingOperator"
+    "MatingOperator",
 ]
 
 # order dependent import

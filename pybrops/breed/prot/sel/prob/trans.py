@@ -5,7 +5,7 @@ Module containing functions for transforming latent space function outputs.
 __all__ = [
     "trans_identity",
     "trans_empty",
-    "trans_ndpt_to_vec_dist"
+    "trans_ndpt_to_vec_dist",
 ]
 
 from numbers import Real

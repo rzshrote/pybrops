@@ -5,7 +5,7 @@ germplasm bank representation.
 
 __all__ = [
     "GermplasmBank",
-    "check_is_GermplasmBank"
+    "check_is_GermplasmBank",
 ]
 
 from abc import ABCMeta

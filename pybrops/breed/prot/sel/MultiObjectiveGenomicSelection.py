@@ -1,10 +1,10 @@
 """
-Module implementing selection protocols for Optimal Population Value selection.
+Module implementing selection protocols for Multi-Objective Genomic Selection.
 """
 
 __all__ = [
     "MultiObjectiveGenomicBaseSelection",
-    "MultiObjectiveGenomicSubsetSelection"
+    "MultiObjectiveGenomicSubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -16,20 +16,20 @@ from numpy.random import Generator, RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem import MultiObjectiveGenomicSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
-from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class MultiObjectiveGenomicSelectionMixin(metaclass=ABCMeta):
     """
-    Semi-abstract class for Optimal Population Value (OPV) Selection with constraints.
+    Semi-abstract class for Multi-Objective Genomic Selection with constraints.
     """
     ########################## Special Object Methods ##########################
 
@@ -106,15 +106,24 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
             ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
             ndset_trans_kwargs: Optional[dict] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
-            soalgo: Optional[OptimizationAlgorithm] = None,
-            moalgo: Optional[OptimizationAlgorithm] = None,
+            soalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            moalgo: Optional[SubsetOptimizationAlgorithm] = None,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class ConstrainedSelectionProtocol.
+        Constructor for the concrete class MultiObjectiveGenomicSubsetSelection.
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        weight : numpy.ndarray, Callable
+            Allele weights.
+
+        target : numpy.ndarray, Callable
+            Target allele frequency.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -412,7 +421,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SelectionProblem:
+        ) -> SubsetSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -437,7 +446,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
 
         Returns
         -------
-        out : SelectionProblem
+        out : SubsetSelectionProblem
             An optimization problem definition.
         """
         # get decision space parameters

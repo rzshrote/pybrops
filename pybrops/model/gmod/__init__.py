@@ -11,7 +11,7 @@ __all__ = [
     "AdditiveDominanceLinearGenomicModel",
     "AdditiveDominanceEpistaticLinearGenomicModel",
     "DenseLinearGenomicModel",
-    "DenseAdditiveLinearGenomicModel"
+    "DenseAdditiveLinearGenomicModel",
 ]
 
 # imports are order dependent!!!

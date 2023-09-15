@@ -6,7 +6,7 @@ __all__ = [
     "WeightedGenomicBinarySelection",
     "WeightedGenomicIntegerSelection",
     "WeightedGenomicRealSelection",
-    "WeightedGenomicSubsetSelection"
+    "WeightedGenomicSubsetSelection",
 ]
 
 from numbers import Integral, Real
@@ -62,6 +62,9 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -379,6 +382,9 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -696,6 +702,9 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1013,6 +1022,9 @@ class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreeding
 
         Parameters
         ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
         ncross : Integral
             Number of cross configurations to consider.
         

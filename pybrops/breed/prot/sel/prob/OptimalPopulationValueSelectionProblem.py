@@ -3,7 +3,7 @@ Module implementing Optimal Population Value (OPV) Selection optimization proble
 """
 
 __all__ = [
-    "OptimalPopulationValueSubsetSelectionProblem"
+    "OptimalPopulationValueSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod
